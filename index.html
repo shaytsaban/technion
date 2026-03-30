@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הרצאה 1 - חלק א' | הארכיטקטים של עידן ה-AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* צבעי בסיס - בהיר ויוקרתי */
+            --primary: #4f46e5; 
+            --primary-light: #eef2ff;
+            --primary-hover: #4338ca;
+            --secondary: #0ea5e9; 
+            --accent: #f43f5e; 
+            --success: #10b981; 
+            --success-light: #d1fae5;
+            --warning: #f59e0b; 
+            --warning-light: #fef3c7;
+            --danger: #ef4444; 
+            --danger-light: #fee2e2;
+            
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-accent: #f1f5f9;
+            
+            --text-main: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            
+            --border: #e2e8f0;
+            --border-focus: #cbd5e1;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            
+            --gradient-main: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ======== SCROLLBAR ======== */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-page); }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; }
+
+        /* ======== PROGRESS BAR ======== */
+        .progress-bar-container {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            z-index: 2000;
+            background: rgba(0,0,0,0.05);
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient-main);
+            width: 0%;
+            transition: width 0.2s ease-out;
+        }
+
+        /* ======== HERO SECTION ======== */
+        .hero {
+            background: linear-gradient(135deg, #ffffff 0%, var(--primary-light) 100%);
+            padding: 100px 20px 80px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: white;
+            padding: 8px 24px; border-radius: 100px; font-weight: 700; font-size: 0.95rem; margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        }
+        .hero h1 { font-family: 'Rubik', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 24px; }
+        .hero h1 span { color: var(--primary); }
+        .hero p { font-size: 1.3rem; color: var(--text-secondary); max-width: 750px; margin: 0 auto 30px; }
+        .hero-meta { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .hero-meta-item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(255,255,255,0.8); border: 1px solid var(--border); border-radius: var(--radius-md); font-weight: 600; color: var(--text-secondary); }
+
+        /* ======== NAVIGATION ======== */
+        .nav-sticky {
+            position: sticky; top: 15px; z-index: 1000; width: 95%; max-width: 1200px; margin: -35px auto 40px;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--border);
+            border-radius: 100px; padding: 8px 15px; display: flex; gap: 5px; box-shadow: var(--shadow-lg); overflow-x: auto; scrollbar-width: none;
+        }
+        .nav-sticky::-webkit-scrollbar { display: none; }
+        .nav-link { color: var(--text-muted); text-decoration: none; padding: 10px 18px; border-radius: 100px; font-size: 0.95rem; font-weight: 700; transition: all 0.2s; white-space: nowrap; }
+        .nav-link:hover { color: var(--primary); background: var(--bg-accent); }
+        .nav-link.active { background: var(--primary); color: white; box-shadow: var(--shadow-sm); }
+
+        /* ======== MAIN CONTENT ======== */
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px 80px; }
+        .section { margin-bottom: 80px; scroll-margin-top: 100px; }
+        .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; border-bottom: 2px solid var(--border); padding-bottom: 15px; }
+        .section-number { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: var(--primary-light); color: var(--primary); border-radius: var(--radius-sm); font-family: 'Rubik', sans-serif; font-weight: 800; font-size: 1.4rem; }
+        .section-title { font-family: 'Rubik', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text-main); }
+
+        .content-block { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 35px; box-shadow: var(--shadow-sm); margin-bottom: 25px; transition: box-shadow 0.3s; }
+        .content-block h3 { font-family: 'Rubik', sans-serif; font-size: 1.5rem; margin-bottom: 15px; color: var(--primary); }
+        .content-block h4 { font-family: 'Rubik', sans-serif; font-size: 1.2rem; margin: 25px 0 10px; color: var(--text-main); }
+        .content-block p { font-size: 1.1rem; margin-bottom: 15px; color: var(--text-secondary); }
+
+        /* ======== ANNOTATED TABLES (VISUALS) ======== */
+        .visual-table-container { margin: 30px 0; overflow-x: auto; background: var(--bg-page); padding: 20px; border-radius: var(--radius-md); border: 1px dashed var(--border-focus); }
+        .visual-table { width: 100%; border-collapse: collapse; background: white; font-size: 1rem; box-shadow: var(--shadow-sm); }
+        .visual-table th { background: var(--primary-light); color: var(--primary); padding: 12px; text-align: right; border: 1px solid var(--border); font-weight: 700; }
+        .visual-table td { padding: 12px; border: 1px solid var(--border); color: var(--text-secondary); }
+        .visual-table td.error-cell { background: #fee2e2; color: #b91c1c; font-weight: bold; text-decoration: line-through; }
+        
+        .highlight-col { background-color: rgba(14, 165, 233, 0.05); border-left: 2px solid var(--secondary) !important; border-right: 2px solid var(--secondary) !important; font-weight: bold;}
+        .highlight-row td { background-color: rgba(16, 185, 129, 0.1); border-top: 2px solid var(--success); border-bottom: 2px solid var(--success); }
+        
+        .key-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-right: 5px; }
+        .pk-badge { background: #fee2e2; color: #b91c1c; }
+        .fk-badge { background: #e0f2fe; color: #0369a1; }
+        .type-badge { background: #f3f4f6; color: #475569; border: 1px solid #cbd5e1; }
+        
+        .annotation { padding: 15px; background: white; border-right: 4px solid var(--warning); margin-top: 15px; font-size: 1rem; box-shadow: var(--shadow-sm); border-radius: var(--radius-sm); }
+
+        /* ======== HIGHLIGHT BOXES ======== */
+        .highlight-box { padding: 20px; border-radius: var(--radius-md); margin: 20px 0; border-right: 5px solid; }
+        .highlight-box.blue { background: var(--primary-light); border-color: var(--primary); }
+        .highlight-box.green { background: var(--success-light); border-color: var(--success); }
+        .highlight-box.purple { background: #f3e8ff; border-color: #d946ef; }
+        .highlight-box p { margin: 0; color: var(--text-main); font-weight: 500; font-size: 1.1rem; }
+
+        /* ======== INTERACTIVE QUIZZES ======== */
+        .quiz-container { background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px; margin: 30px 0; position: relative; box-shadow: var(--shadow-md); }
+        .quiz-container::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 4px; background: var(--gradient-main); }
+        .quiz-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .quiz-icon { width: 40px; height: 40px; background: var(--warning-light); color: var(--warning); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .quiz-title { font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 1.2rem; }
+        .quiz-question { font-size: 1.15rem; font-weight: 600; margin-bottom: 20px; color: var(--text-main); }
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .quiz-option { display: flex; align-items: center; gap: 15px; padding: 15px 20px; background: var(--bg-page); border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; font-size: 1.05rem; font-weight: 500; }
+        .quiz-option:hover { border-color: var(--primary-light); background: white; }
+        .quiz-option.selected { border-color: var(--primary); background: var(--primary-light); }
+        .quiz-option.correct { border-color: var(--success); background: var(--success-light); }
+        .quiz-option.wrong { border-color: var(--danger); background: var(--danger-light); }
+        .quiz-option .option-marker { width: 32px; height: 32px; border-radius: 50%; background: white; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+        .quiz-option.selected .option-marker { border-color: var(--primary); background: var(--primary); color: white; }
+        .quiz-option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .quiz-option.wrong .option-marker { border-color: var(--danger); background: var(--danger); color: white; }
+        .quiz-feedback { padding: 15px 20px; border-radius: var(--radius-md); font-size: 1.05rem; font-weight: 600; display: none; margin-top: 15px; }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct { background: var(--success-light); color: #065f46; border: 1px solid #a7f3d0; }
+        .quiz-feedback.wrong { background: var(--danger-light); color: #991b1b; border: 1px solid #fecaca; }
+
+        .btn-action { padding: 10px 24px; background: var(--primary); border: none; border-radius: 100px; color: white; font-family: 'Assistant', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); }
+        .btn-action:hover { transform: translateY(-2px); background: var(--primary-hover); box-shadow: 0 6px 12px rgba(79, 70, 229, 0.3); }
+        .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text-secondary); box-shadow: none; }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* ======== DRAG & DROP ======== */
+        .drag-source { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; padding: 20px; background: var(--bg-accent); border-radius: var(--radius-md); min-height: 80px; }
+        .drag-item { padding: 8px 16px; background: white; border: 1px solid var(--border-focus); border-radius: 100px; cursor: grab; font-weight: 600; user-select: none; box-shadow: var(--shadow-sm); }
+        .drag-item.placed { background: var(--success-light); border-color: var(--success); color: #065f46; cursor: default; }
+        .drop-zones { display: flex; flex-direction: column; gap: 15px; }
+        .drop-zone { display: flex; align-items: center; gap: 20px; padding: 15px 20px; background: var(--bg-page); border: 2px dashed var(--border); border-radius: var(--radius-md); min-height: 70px; }
+        .drop-zone.over { border-color: var(--primary); background: var(--primary-light); }
+        .drop-area { flex: 1; display: flex; gap: 10px; flex-wrap: wrap; min-height: 40px; align-items: center; }
+
+        /* ======== TOOL CARDS ======== */
+        .tools-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 20px; }
+        @media(min-width: 768px) { .tools-grid { grid-template-columns: 1fr 1fr; } }
+        .tool-card { display: flex; align-items: flex-start; gap: 15px; padding: 20px; background: white; border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+        .tool-icon { font-size: 2rem; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background: var(--bg-page); border-radius: 12px; flex-shrink: 0; }
+
+        /* ======== FLOWCHART ======== */
+        .flowchart { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 30px 0; }
+        .flow-node { padding: 15px 25px; border-radius: var(--radius-md); font-weight: 700; font-size: 1.1rem; text-align: center; min-width: 280px; background: white; border: 2px solid var(--border); box-shadow: var(--shadow-sm); }
+        .flow-node small { display: block; font-weight: 400; font-size: 0.95rem; color: var(--text-muted); margin-top: 5px; }
+        .flow-arrow { color: var(--border-focus); font-size: 1.5rem; }
+
+        /* ======== FLOATING SCORE ======== */
+        .score-floating { position: fixed; bottom: 30px; left: 30px; background: white; border: 2px solid var(--border); border-radius: 100px; padding: 10px 20px; display: flex; align-items: center; gap: 12px; z-index: 1000; box-shadow: var(--shadow-lg); direction: ltr; }
+        .score-value { font-family: 'Rubik', sans-serif; font-weight: 900; font-size: 1.5rem; color: var(--primary); }
+
+        @media (max-width: 768px) {
+            .hero { padding: 60px 20px 40px; }
+            .content-block { padding: 20px; }
+            .score-floating { bottom: 15px; left: 15px; right: 15px; justify-content: center; }
+            .visual-table th, .visual-table td { font-size: 0.85rem; padding: 8px; }
+            .drop-zone { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar-container"><div class="progress-bar-fill" id="progressBar"></div></div>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge"><span class="pulse"></span>חלק א': מתחילים מהבסיס (מאפס)</div>
+        <h1>הארכיטקטים של<br><span>עידן ה-AI</span></h1>
+        <p>לפני שנותנים לבינה המלאכותית לכתוב לנו קוד, אנחנו חייבים להבין איך המחשב שומר נתונים. בשיעור הזה נלמד את שפת האדריכלים: טבלאות, סוגי נתונים ומפתחות.</p>
+        <div class="hero-meta">
+            <div class="hero-meta-item">📚 הרצאה 1 - חלק א'</div>
+            <div class="hero-meta-item">🎯 100% ויזואלי ומודגם</div>
+            <div class="hero-meta-item">🏗️ יסודות הארכיטקטורה</div>
+        </div>
+    </div>
+</section>
+
+<nav class="nav-sticky" id="mainNav">
+    <a href="#section0" class="nav-link active">הקדמה</a>
+    <a href="#section1" class="nav-link">הכלים שלנו</a>
+    <a href="#section2" class="nav-link">מה זה נתון?</a>
+    <a href="#section3" class="nav-link">שפת האדריכלים: טבלאות, סוגים ומפתחות</a>
+    <a href="#sectionSummary" class="nav-link">סיכום ביניים</a>
+</nav>
+
+<main class="container">
+
+<!-- ==================== SECTION 0: INTRO ==================== -->
+<section class="section" id="section0">
+    <div class="section-header">
+        <div class="section-number">0</div>
+        <h2 class="section-title">הזדמנות: למה אנחנו כאן?</h2>
+    </div>
+    <div class="content-block">
+        <p>בעבר, כדי לעבוד עם נתונים בהייטק ולבנות אפליקציות, הייתם צריכים ללמוד שפות תכנות מסובכות חודשים ארוכים. <strong>היום, בינה מלאכותית (כמו ChatGPT) יכולה לכתוב את קוד התכנות במקומנו בשניות.</strong></p>
+        <p>אז למה חברות הייטק ועסקים עדיין צריכים אותנו? ולמה הם משלמים על זה משכורות גבוהות (תפקידי Data Analyst או BI)?</p>
+        <p>כי ה-AI הוא כמו קבלן בניין מהיר וחרוץ - אבל הוא לא יודע <strong>איזה</strong> בית לבנות. הוא צריך <strong>אדריכל</strong>. הוא צריך מישהו שיגיד לו: "תבנה לי מערכת ששומרת לקוחות, מקשרת אותם להזמנות, ומחשבת את סך הקניות שלהם". בקורס הזה, <strong>אתם תלמדו להיות האדריכלים.</strong></p>
+    </div>
+</section>
+
+<!-- ==================== SECTION 1: TOOLS ==================== -->
+<section class="section" id="section1">
+    <div class="section-header">
+        <div class="section-number">1</div>
+        <h2 class="section-title">הכלים שלנו: עושים סדר לפני שמתחילים</h2>
+    </div>
+    <div class="content-block">
+        <p>מושגים עפים באוויר: אקסל, ענן, מסד נתונים, AI. בואו נעשה סדר פשוט, אחת ולתמיד, לגבי הכלים שבהם נשתמש בעולם האמיתי ובקורס:</p>
+        
+        <div class="tools-grid">
+            <div class="tool-card">
+                <div class="tool-icon">📊</div>
+                <div>
+                    <h4 style="margin:0 0 5px 0; font-family:'Rubik';">אקסל (Excel)</h4>
+                    <p style="margin:0; font-size:0.95rem; color:var(--text-secondary);"><strong>המחברת הדיגיטלית.</strong> מעולה לאדם אחד שרוצה לעשות חישובים פשוטים או רשימות קטנות. גרוע מאוד למערכת שמשתמשים בה הרבה אנשים יחד.</p>
+                </div>
+            </div>
+            
+            <div class="tool-card" style="border-color:#0ea5e9; background:#f0f9ff;">
+                <div class="tool-icon" style="background:white; color:#0ea5e9;">🗄️</div>
+                <div>
+                    <h4 style="margin:0 0 5px 0; font-family:'Rubik'; color:#0284c7;">מסד נתונים בענן (Database)</h4>
+                    <p style="margin:0; font-size:0.95rem; color:var(--text-secondary);"><strong>מחסן התעשייה העצום.</strong> מערכת כמו <em>Google BigQuery</em> שיושבת בשרתי ענק. מסוגלת לשמור מיליארדי שורות ולאפשר לאלפי אנשים לעבוד במקביל באפס תקלות.</p>
+                </div>
+            </div>
+
+            <div class="tool-card" style="border-color:#8b5cf6; background:#faf5ff;">
+                <div class="tool-icon" style="background:white; color:#8b5cf6;">🍱</div>
+                <div>
+                    <h4 style="margin:0 0 5px 0; font-family:'Rubik'; color:#7e22ce;">איירטייבל (Airtable)</h4>
+                    <p style="margin:0; font-size:0.95rem; color:var(--text-secondary);"><strong>התחפושת החכמה.</strong> כלי מדהים שנראה ידידותי כמו אקסל, אבל מאחורי הקלעים הוא <em>מסד נתונים אמיתי וחזק</em>. בו נשתמש הרבה בקורס כדי לבנות אפליקציות בקלות.</p>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-icon">🤖</div>
+                <div>
+                    <h4 style="margin:0 0 5px 0; font-family:'Rubik';">מודל שפה (ChatGPT / Claude)</h4>
+                    <p style="margin:0; font-size:0.95rem; color:var(--text-secondary);"><strong>המתכנת האישי.</strong> אנחנו מסבירים לו במילים פשוטות איזו טבלה אנחנו צריכים, והוא כותב את קוד המחשב. <em>חשוב: הוא לא שומר את הנתונים!</em> הוא רק העוזר שלנו לבנייה.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 2: DATA & EXCEL ==================== -->
+<section class="section" id="section2">
+    <div class="section-header">
+        <div class="section-number">2</div>
+        <h2 class="section-title">מה זה בכלל "נתון"? ולמה אקסל נשבר?</h2>
+    </div>
+    
+    <div class="content-block">
+        <h3>סיפור על בית קפה (מנתון להחלטה)</h3>
+        <p>דמיינו שאתם מוצאים פתק על הרצפה שכתוב עליו המספר: <strong>14</strong>. האם זה עוזר לכם? לא. זה סתם מספר. זה נקרא <strong>נתון גולמי (Data)</strong>.</p>
+        <p>עכשיו, אני בא ואומר לכם: "הפתק הזה נפל למלצרית, וזה אומר שנמכרו 14 עוגות גבינה היום". עכשיו הוספנו למספר "הקשר". הוא הפך ל<strong>מידע (Information)</strong>.</p>
+        
+        <div class="flowchart">
+            <div class="flow-node">📝 נתון (Data)<small>המספר 14</small></div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-node">📊 מידע (Information)<small>14 עוגות גבינה נמכרו היום</small></div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-node">💡 תובנה (Insight)<small>מכירות עוגות הגבינה בימי שלישי קפצו פי 2!</small></div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-node" style="border-color:var(--success); color:var(--success);">🎯 החלטה עסקית<small>נזמין כפול עוגות גבינה ליום שלישי הבא.</small></div>
+        </div>
+
+        <p style="margin-top:20px;"><strong>המטרה של מסד הנתונים:</strong> לאסוף מיליוני נתונים גולמיים באופן אוטומטי, לשמור עליהם בסדר מופתי, כדי שאנחנו נוכל להפיק מהם תובנות עסקיות ששוות כסף.</p>
+    </div>
+
+    <div class="content-block">
+        <h3>למה בעצם לא לנהל את העסק באקסל?</h3>
+        <p>אקסל זה מצוין לחנות פרחים קטנה של אדם אחד. אבל דמיינו אפליקציה כמו "Wolt" מנוהלת בקובץ אקסל:</p>
+        <ul>
+            <li><strong>התנגשויות (מי עובד על הקובץ?):</strong> אלפי מסעדות ושליחים צריכים לעדכן נתונים באותה שנייה. באקסל, אם שני אנשים שומרים יחד - אחד דורס את השני. מידע הולך לאיבוד. <em>במסד נתונים יש מנגנון שמסדר את כולם בתור במילי-שניות (Transactions).</em></li>
+            <li><strong>קריסה מכמות נתונים:</strong> לוולט יש מיליוני הזמנות בחודש. קובץ אקסל פשוט יקרוס ולא ייפתח אם תשימו בו כל כך הרבה מידע. <em>מסד נתונים בנוי להכיל מיליארדי שורות.</em></li>
+            <li><strong>שמירה על החוקים (שלמות מידע):</strong> באקסל, בעמודה של "מחיר" הלקוח יכול לכתוב בטעות את המילה "יקר" במקום מספר. זה יהרוס לנו את כל החישובים! <em>במסד נתונים, המחשב חוסם מיד כל דבר שהוא לא מספר.</em></li>
+        </ul>
+    </div>
+
+    <!-- QUIZ 1 -->
+    <div class="quiz-container" id="quiz1">
+        <div class="quiz-header"><div class="quiz-icon">❓</div><span class="quiz-title">בדיקת הבנה #1</span></div>
+        <div class="quiz-question">מהי הבעיה העיקרית בשימוש באקסל לניהול אלפי עסקאות כספיות באפליקציית בנק?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this, 'quiz1')"><span class="option-marker">א</span><span>אקסל עולה כסף, ומסדי נתונים הם תמיד חינמיים.</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quiz1')"><span class="option-marker">ב</span><span>אין מנגנון אמין המאפשר לאלפי משתמשים לעדכן יתרות בו-זמנית ללא חשש של "דריסת" נתונים של משתמש אחר.</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quiz1')"><span class="option-marker">ג</span><span>באקסל אי אפשר לכתוב את הסימן של מטבע הדולר ($).</span></div>
+        </div>
+        <button class="btn-action mt-3" onclick="checkQuiz('quiz1', 1, 'מדויק! בעסק רציני שבו הרבה משתמשים קוראים וכותבים מידע באותו זמן, חייבים מערכת שמנהלת תעבורה (מסד נתונים), אחרת קבצים נדרסים ומידע נמחק.')">בדוק תשובה</button>
+        <div class="quiz-feedback" id="quiz1-feedback"></div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 3: ARCHITECTURE (TABLES, TYPES, KEYS) ==================== -->
+<section class="section" id="section3">
+    <div class="section-header">
+        <div class="section-number">3</div>
+        <h2 class="section-title">שפת האדריכלים: טבלאות, סוגי נתונים ומפתחות</h2>
+    </div>
+    
+    <div class="content-block">
+        <p>כדי לבנות מסד נתונים, אנחנו צריכים להבין איך המחשב "חושב". המחשב הוא טיפש - אם לא נסביר לו הכל בפירוט מראש, הוא לא ידע מה לעשות.</p>
+        <p>מסד הנתונים שלנו מורכב מ<strong>טבלאות (Tables)</strong>. כל טבלה מחזיקה סוג אחד של אובייקטים (למשל: טבלת לקוחות, טבלת מוצרים).</p>
+        <p>הטבלה בנויה מ<strong>עמודות (Columns)</strong> שמתארות את התכונות (שם, מחיר, תאריך), ומ<strong>שורות (Rows)</strong> שבהן נכנס המידע עצמו (לקוח ספציפי אחד).</p>
+    </div>
+
+    <!-- 3.1: Data Types -->
+    <div class="content-block" style="border-top: 4px solid var(--secondary);">
+        <h3>חלק א': סוגי נתונים (Data Types) 🍰</h3>
+        <p>אמרנו מקודם שאנחנו לא רוצים שמישהו יכתוב את המילה "יקר" בעמודה של מחיר. איך עושים את זה? <br>
+        התשובה: כשאנחנו בונים את הטבלה, אנחנו חייבים להגדיר לכל עמודה <strong>סוג נתון</strong> מראש. תחשבו על זה כמו "תבניות אפייה" - אי אפשר למזוג בלילה של עוגה לתבנית של קוביות קרח, זה יישפך הכל.</p>
+        
+        <p>הנה 4 הסוגים העיקריים שאתם חייבים להכיר (אנחנו נשתמש במונחים באנגלית כי ככה מבקשים מה-AI לכתוב את הקוד):</p>
+        
+        <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 15px; padding: 15px; background: white; border: 1px solid var(--border); border-radius: 8px;">
+                🔢 <code style="font-size:1.1rem;">INT</code> (Integer) - <strong>מספר שלם</strong>. מתאים למזהים ממוספרים, כמויות (כמה מוצרים קנה?), גיל.
+            </li>
+            <li style="margin-bottom: 15px; padding: 15px; background: white; border: 1px solid var(--border); border-radius: 8px;">
+                🔤 <code style="font-size:1.1rem;">VARCHAR</code> או <code style="font-size:1.1rem;">TEXT</code> - <strong>טקסט</strong>. יכול להכיל אותיות, מספרים וסימנים. מתאים לשמות, עיר, או אפילו מספרי טלפון (כי לא עושים פעולות חשבון על מספר טלפון!).
+            </li>
+            <li style="margin-bottom: 15px; padding: 15px; background: white; border: 1px solid var(--border); border-radius: 8px;">
+                📅 <code style="font-size:1.1rem;">DATE</code> או <code style="font-size:1.1rem;">DATETIME</code> - <strong>תאריך ושעה</strong>. מתאים לתאריך לידה, או "מתי נוצרה ההזמנה". המחשב ידע שזה זמן ויאפשר לנו לחשב "מי קנה ב-30 הימים האחרונים".
+            </li>
+            <li style="margin-bottom: 15px; padding: 15px; background: white; border: 1px solid var(--border); border-radius: 8px;">
+                ✅ <code style="font-size:1.1rem;">BOOLEAN</code> - <strong>ערך של אמת/שקר (כן/לא)</strong>. מתאים לשאלות של "האם הוא מנוי פרמיום?" או "האם ההזמנה שולמה?".
+            </li>
+        </ul>
+
+        <div class="visual-table-container">
+            <h4 style="margin: 0 0 10px 0; font-family:'Rubik'; color:var(--danger);">מה קורה כשלא מגדירים סוג נתון באקסל? (בלגן!)</h4>
+            <table class="visual-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>שם מוצר</th>
+                        <th>מחיר המוצר (אמור להיות כסף!)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>מחשב נייד</td><td>4500</td></tr>
+                    <tr><td>עכבר אלחוטי</td><td>150</td></tr>
+                    <tr><td>מקלדת גיימינג</td><td class="error-cell">"חינם במבצע"</td></tr>
+                </tbody>
+            </table>
+            <div class="annotation">
+                אם עכשיו המנכ"ל יבקש מכם לחשב "מה סך כל המחירים?" - האקסל יקרוס כי אי אפשר לעשות פעולת חיבור למילה "חינם במבצע". 
+                במסד נתונים, ברגע שהגדרנו לעמודת המחיר סוג של <code>INT</code> או עשרוני, המחשב בכלל לא היה נותן לפקיד לכתוב שם מילים! 
+            </div>
+        </div>
+    </div>
+
+    <!-- QUIZ 2 (Data Types) -->
+    <div class="quiz-container" id="quizTypes">
+        <div class="quiz-header"><div class="quiz-icon">❓</div><span class="quiz-title">בדיקת הבנה #2: תבניות אפייה</span></div>
+        <div class="quiz-question">אתם מתכננים טבלת "מטופלים" למרפאה. יש לכם עמודה של "מספר תעודת זהות" ועמודה של "תאריך ביקור אחרון". אילו סוגי נתונים (Data Types) תגדירו להן?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this, 'quizTypes')"><span class="option-marker">א</span><span>שתיהן צריכות להיות מסוג VARCHAR (טקסט).</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quizTypes')"><span class="option-marker">ב</span><span>תעודת זהות: INT (מספר) <br> תאריך ביקור: DATE (תאריך).</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quizTypes')"><span class="option-marker">ג</span><span>שתיהן מסוג BOOLEAN (כן/לא).</span></div>
+        </div>
+        <button class="btn-action mt-3" onclick="checkQuiz('quizTypes', 1, 'אלופים! תעודת זהות בנויה מספרות (INT או VARCHAR אם רוצים לשמר אפסים בהתחלה, אבל בהחלט לא BOOLEAN), ותאריכים מקבלים יחס מיוחד מהמחשב כ-DATE כדי שנוכל לחשב זמנים שעברו.')">בדוק תשובה</button>
+        <div class="quiz-feedback" id="quizTypes-feedback"></div>
+    </div>
+
+    <!-- 3.2: Primary Key -->
+    <div class="content-block" style="border-top: 4px solid var(--danger);">
+        <h3>חלק ב': מפתח ראשי (Primary Key - PK) 🔑</h3>
+        <p>תארו לעצמכם שיש לכם בטבלה שני לקוחות שקוראים להם "דני כהן". שניהם גם מאותה העיר. איך המחשב ידע לאיזה דני כהן לשלוח את החיוב של כרטיס האשראי?</p>
+        <p>מחשבים לא מזהים אנשים לפי פנים או שמות. מחשבים חייבים <strong>מספר זיהוי חד-משמעי</strong>. זהו ה-<strong>Primary Key</strong>.</p>
+        
+        <div class="highlight-box purple">
+            <p><strong>כלל ברזל בארכיטקטורה:</strong> לכל טבלה שאנחנו בונים, חובה שיהיה לה שדה אחד מיוחד (בדרך כלל נקרא `ID`) שהוא המפתח הראשי. אסור שיהיו שניים מאותו מספר (הוא <strong>ייחודי - Unique</strong>), ואסור שהוא יהיה ריק.</p>
+        </div>
+
+        <div class="visual-table-container">
+            <h4 style="margin: 0 0 10px 0; font-family:'Rubik'; color:var(--text-main);">טבלת לקוחות (תקינה)</h4>
+            <table class="visual-table">
+                <thead>
+                    <tr>
+                        <th class="highlight-col" style="background:#fee2e2;">
+                            Customer_ID <br>
+                            <span class="type-badge">INT</span>
+                            <span class="key-badge pk-badge">🔑 PK</span>
+                        </th>
+                        <th>שם פרטי <br><span class="type-badge">VARCHAR</span></th>
+                        <th>עיר <br><span class="type-badge">VARCHAR</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="highlight-col"><strong>1</strong></td><td>דני כהן</td><td>תל אביב</td></tr>
+                    <tr><td class="highlight-col"><strong>2</strong></td><td>דני כהן</td><td>תל אביב</td></tr>
+                    <tr><td class="highlight-col"><strong>3</strong></td><td>רונית לוי</td><td>חיפה</td></tr>
+                </tbody>
+            </table>
+            <div class="annotation">
+                המחשב לא מתבלבל. כשאנחנו מחייבים, אנחנו אומרים "חייב את לקוח מספר 2". לא אכפת למחשב שיש עוד דני. המספר 2 שייך רק לו.
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.3: Foreign Key -->
+    <div class="content-block" style="border-top: 4px solid #0369a1;">
+        <h3>חלק ג': מפתח זר (Foreign Key - FK) 🔗 וקשרים</h3>
+        <p>הגענו לקסם הגדול ביותר של עולם מסדי הנתונים (ומה שאקסל לא יודע לעשות כמו שצריך).</p>
+        <p>כשיש לנו לקוח שמבצע הזמנה, אנחנו <strong>לא מעתיקים את כל הפרטים שלו</strong> לטבלת ההזמנות! למה? 
+        כי מה יקרה אם רונית תעבור מחיפה לתל אביב? נצטרך למצוא את כל 500 ההזמנות שהיא עשתה אי פעם ולתקן שם את העיר.</p>
+        
+        <p>הפתרון: אנחנו רק שמים "לינק". אנחנו לוקחים את ה-<strong>ID</strong> של רונית (3), וכותבים אותו בטבלת ההזמנות בתוך עמודה מיוחדת שנקראת <strong>מפתח זר (Foreign Key)</strong>.</p>
+
+        <div class="visual-table-container">
+            <h4 style="margin: 0 0 10px 0; font-family:'Rubik'; color:#0369a1;">טבלת הזמנות מקושרת (Relational)</h4>
+            <table class="visual-table">
+                <thead>
+                    <tr>
+                        <th>Order_ID <br><span class="key-badge pk-badge">🔑 PK</span></th>
+                        <th>מוצר שהוזמן</th>
+                        <th style="background:#e0f2fe; border: 2px solid #0369a1;">
+                            הלקוח שהזמין (Customer_ID) <br>
+                            <span class="type-badge">INT</span>
+                            <span class="key-badge fk-badge">🔗 FK</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>5001</td>
+                        <td>מסך מחשב דל</td>
+                        <td style="background:#e0f2fe; border-left: 2px solid #0369a1; border-right: 2px solid #0369a1; font-weight:bold; text-align:center;">3</td>
+                    </tr>
+                    <tr>
+                        <td>5002</td>
+                        <td>מקלדת גיימינג</td>
+                        <td style="background:#e0f2fe; border-left: 2px solid #0369a1; border-right: 2px solid #0369a1; font-weight:bold; text-align:center;">1</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="annotation">
+                <strong>איך המחשב קורא את זה?</strong><br>
+                המחשב מסתכל על הזמנה 5001. הוא רואה שהלקוח הוא "3". הוא קופץ מיד לטבלת הלקוחות (שיצרנו קודם), רואה ש"3" זה רונית לוי מחיפה. ככה אנחנו מונעים כפילויות מידע! המידע של רונית שמור במקום אחד בלבד.
+            </div>
+        </div>
+    </div>
+
+    <!-- DRAG AND DROP 1: Clinic -->
+    <div class="interactive-zone">
+        <h3 style="margin-bottom: 15px; font-family:'Rubik';">🏗️ תרגול 1: תכנון אפליקציה למרפאה (גרירה)</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">בואו נראה שהבנתם את תפקיד המפתחות. גררו כל שדה אל הטבלה הנכונה שלו. שימו לב מי מקבל מפתח ראשי (PK) ומי צריך מפתחות זרים (FK) כדי להצביע לאחרים.</p>
+        
+        <div class="drag-exercise" id="dragExercise1">
+            <div class="drag-source" id="dragSource1">
+                <div class="drag-item" draggable="true" data-target="patients">🔑 מזהה מטופל (PK)</div>
+                <div class="drag-item" draggable="true" data-target="patients">שם המטופל (VARCHAR)</div>
+                <div class="drag-item" draggable="true" data-target="doctors">🔑 מזהה רופא (PK)</div>
+                <div class="drag-item" draggable="true" data-target="doctors">התמחות רפואית (VARCHAR)</div>
+                <div class="drag-item" draggable="true" data-target="appointments">🔑 מזהה תור (PK)</div>
+                <div class="drag-item" draggable="true" data-target="appointments">📅 תאריך התור (DATE)</div>
+                <div class="drag-item" draggable="true" data-target="appointments">🔗 מזהה מטופל (FK)</div>
+                <div class="drag-item" draggable="true" data-target="appointments">🔗 מזהה רופא (FK)</div>
+            </div>
+            
+            <div class="drop-zones">
+                <div class="drop-zone" id="drop-patients" data-name="patients"><span class="drop-label">🤒 טבלת מטופלים</span><div class="drop-area"></div></div>
+                <div class="drop-zone" id="drop-doctors" data-name="doctors"><span class="drop-label">🩺 טבלת רופאים</span><div class="drop-area"></div></div>
+                <div class="drop-zone" id="drop-appointments" data-name="appointments"><span class="drop-label">📅 טבלת תורים (הטבלה המקשרת)</span><div class="drop-area"></div></div>
+            </div>
+            
+            <div style="margin-top: 20px; display:flex; gap:10px;">
+                <button class="btn-action" onclick="checkDragExercise1()">בדיקת מודל הנתונים שלי</button>
+                <button class="btn-action btn-outline" onclick="resetDragExercise('1')">איפוס</button>
+            </div>
+            <div id="dragFeedback1" class="quiz-feedback" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+
+    <!-- DRAG AND DROP 2: eCommerce -->
+    <div class="interactive-zone" style="background:var(--primary-light); border-color:var(--primary);">
+        <h3 style="margin-bottom: 15px; font-family:'Rubik'; color:var(--primary);">🛒 תרגול 2: תכנון חנות אונליין (גרירה)</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">תרגול נוסף להטמעת החומר. הפעם אתם מתכננים חנות סטייל אמזון. איזה שדה שייך לאיזו טבלה?</p>
+        
+        <div class="drag-exercise" id="dragExercise2">
+            <div class="drag-source" id="dragSource2" style="background:white; border-color:var(--primary);">
+                <div class="drag-item" draggable="true" data-target="products">🔑 מק"ט מוצר (PK)</div>
+                <div class="drag-item" draggable="true" data-target="users">🔑 מזהה משתמש (PK)</div>
+                <div class="drag-item" draggable="true" data-target="users">אימייל להתחברות (VARCHAR)</div>
+                <div class="drag-item" draggable="true" data-target="products">מחיר המוצר (INT)</div>
+                <div class="drag-item" draggable="true" data-target="orders">🔑 מספר הזמנה (PK)</div>
+                <div class="drag-item" draggable="true" data-target="orders">סך הכל לתשלום (INT)</div>
+                <div class="drag-item" draggable="true" data-target="orders">🔗 איזה משתמש הזמין? (FK)</div>
+            </div>
+            
+            <div class="drop-zones">
+                <div class="drop-zone" id="drop-users" data-name="users"><span class="drop-label">👥 טבלת משתמשים</span><div class="drop-area"></div></div>
+                <div class="drop-zone" id="drop-products" data-name="products"><span class="drop-label">📦 טבלת מוצרים</span><div class="drop-area"></div></div>
+                <div class="drop-zone" id="drop-orders" data-name="orders"><span class="drop-label">🧾 טבלת הזמנות</span><div class="drop-area"></div></div>
+            </div>
+            
+            <div style="margin-top: 20px; display:flex; gap:10px;">
+                <button class="btn-action" onclick="checkDragExercise2()">בדיקת מודל הנתונים שלי</button>
+                <button class="btn-action btn-outline" onclick="resetDragExercise('2')" style="background:white;">איפוס</button>
+            </div>
+            <div id="dragFeedback2" class="quiz-feedback" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== MIDPOINT SUMMARY ==================== -->
+<section class="section" id="sectionSummary">
+    <div class="content-block" style="border: 2px solid var(--primary); background: white;">
+        <h2 style="color: var(--primary); margin-bottom: 20px; font-family:'Rubik'; text-align:center;">עושים סדר: מה הבנו עד עכשיו?</h2>
+        
+        <p style="font-size: 1.15rem; text-align:center; max-width:800px; margin: 0 auto 30px;">
+            לפני שניגש לחלק ב' (בו נלמד את שפת ה-SQL וניתן לבינה המלאכותית לכתוב לנו את הקוד), אלו יסודות הארכיטקטורה שלמדנו:
+        </p>
+
+        <ol style="font-size: 1.15rem; line-height: 2; max-width:800px; margin: 0 auto; color: var(--text-secondary);">
+            <li><strong>לא עובדים עם אקסל למערכות חיות.</strong> אנחנו בונים <em>מסדי נתונים</em> שיושבים בענן ויודעים לטפל במיליוני משתמשים במקביל.</li>
+            <li>המערכת שלנו מורכבת מ<strong>טבלאות</strong> (לקוחות, מוצרים, תורים).</li>
+            <li>לכל עמודה בטבלה יש <strong>סוג נתון</strong> (כמו <code>INT</code> למספרים או <code>VARCHAR</code> לטקסט). אם נכניס טקסט לעמודת מספר - תהיה שגיאה.</li>
+            <li>לכל טבלה חייב להיות <strong>מפתח ראשי (PK - 🔑)</strong>. זהו מספר תעודת הזהות הייחודי של כל שורה.</li>
+            <li>כדי שטבלאות ידברו אחת עם השנייה מבלי לשכפל מידע, אנחנו משתמשים ב<strong>מפתח זר (FK - 🔗)</strong>. פשוט מצביעים ל-ID של השורה מהטבלה השנייה.</li>
+        </ol>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: var(--bg-accent); border-radius: var(--radius-md);">
+            <h3 style="margin-bottom: 10px; color: var(--text-main);">מוכנים להתקדם לחלק ב'?</h3>
+            <p style="margin-bottom: 0;">בחלק הבא נלמד איך אומרים למחשב לבנות את הטבלאות האלו (שפת SQL), ואיך AI עושה את העבודה הקשה בשבילנו.</p>
+            <p style="font-style: italic; color:var(--text-muted); font-size:0.9rem;">(המשך המערך מופיע בקובץ הבא...)</p>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer style="text-align: center; padding: 40px; color: var(--text-muted); border-top: 1px solid var(--border); background:white;">
+    <p>© 2026 | קורס ניהול נתונים ובינה עסקית (מבוא מאפס - חלק א') | נבנה עם ❤️</p>
+</footer>
+
+<!-- ======== FLOATING SCORE ======== -->
+<div class="score-floating" id="scoreFloat">
+    <span>⭐</span>
+    <span class="score-label">התקדמות חידונים</span>
+    <span class="score-value" id="scoreDisplay">0/2</span>
+</div>
+
+<!-- ======== JAVASCRIPT ======== -->
+<script>
+// ============ GLOBAL STATE ============
+let totalScore = 0;
+let answeredQuizzes = new Set();
+const totalQuizzes = 2; // Quiz 1 and Quiz Types
+
+// ============ QUIZ SYSTEM ============
+function selectOption(el, quizId) {
+    if (answeredQuizzes.has(quizId)) return;
+    const container = document.getElementById(quizId);
+    container.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+}
+
+function checkQuiz(quizId, correctIndex, explanation) {
+    if (answeredQuizzes.has(quizId)) return;
+    
+    const container = document.getElementById(quizId);
+    const options = container.querySelectorAll('.quiz-option');
+    const selected = container.querySelector('.quiz-option.selected');
+    const feedback = document.getElementById(quizId + '-feedback');
+    
+    if (!selected) {
+        alert("אנא בחרו תשובה לפני הבדיקה.");
+        return;
+    }
+    
+    const selectedIndex = Array.from(options).indexOf(selected);
+    answeredQuizzes.add(quizId);
+    
+    options.forEach((o, i) => {
+        if (i === correctIndex) o.classList.add('correct');
+        else if (i === selectedIndex && i !== correctIndex) o.classList.add('wrong');
+        o.style.pointerEvents = 'none';
+    });
+    
+    if (selectedIndex === correctIndex) {
+        totalScore++;
+        feedback.className = 'quiz-feedback show correct';
+        feedback.innerHTML = '✅ ' + explanation;
+    } else {
+        feedback.className = 'quiz-feedback show wrong';
+        feedback.innerHTML = '❌ לא במדויק. ' + explanation;
+    }
+    
+    document.getElementById('scoreDisplay').textContent = totalScore + '/' + totalQuizzes;
+}
+
+// ============ DRAG AND DROP ============
+function initDragDrop() {
+    const items = document.querySelectorAll('.drag-item');
+    const zones = document.querySelectorAll('.drop-zone');
+    
+    items.forEach(item => {
+        item.addEventListener('dragstart', e => {
+            e.dataTransfer.setData('text/plain', item.textContent.trim());
+            e.dataTransfer.setData('target', item.dataset.target);
+            e.dataTransfer.setData('source-exercise', item.closest('.drag-exercise').id);
+            setTimeout(() => item.classList.add('dragging'), 0);
+        });
+        item.addEventListener('dragend', () => item.classList.remove('dragging'));
+    });
+    
+    zones.forEach(zone => {
+        zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+        zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+        zone.addEventListener('drop', e => {
+            e.preventDefault();
+            zone.classList.remove('over');
+            const text = e.dataTransfer.getData('text/plain');
+            const sourceEx = e.dataTransfer.getData('source-exercise');
+            const zoneEx = zone.closest('.drag-exercise').id;
+            
+            if(sourceEx !== zoneEx) return; // Prevent cross-exercise dragging
+            
+            const items = document.querySelectorAll(`#${zoneEx} .drag-item`);
+            items.forEach(item => {
+                if (item.textContent.trim() === text && !item.classList.contains('placed')) {
+                    item.classList.add('placed');
+                    item.setAttribute('draggable', 'false');
+                    item.dataset.placedIn = zone.dataset.name;
+                    zone.querySelector('.drop-area').appendChild(item);
+                }
+            });
+        });
+    });
+}
+
+function checkDragExercise1() {
+    let correct = 0;
+    let total = document.querySelectorAll('#dragExercise1 .drag-item.placed').length;
+    
+    if (total < 8) {
+        alert("נא לגרור את כל 8 השדות לטבלאות קודם.");
+        return;
+    }
+    
+    document.querySelectorAll('#dragExercise1 .drag-item.placed').forEach(item => {
+        if (item.dataset.placedIn === item.dataset.target) {
+            correct++;
+            item.style.borderColor = 'var(--success)';
+            item.style.color = '#065f46';
+        } else {
+            item.style.borderColor = 'var(--danger)';
+            item.style.color = '#991b1b';
+            item.style.background = 'var(--danger-light)';
+        }
+    });
+    
+    const fb = document.getElementById('dragFeedback1');
+    fb.className = 'quiz-feedback show ' + (correct === 8 ? 'correct' : 'wrong');
+    fb.innerHTML = correct === 8 
+        ? `✅ עבודה מושלמת! מודל הנתונים מסודר: למטופלים ורופאים יש PK משלהם, וטבלת התורים משתמשת ב-FK כדי לקשר ביניהם.`
+        : `❌ יש פה קצת בלגן. זכרו: טבלת התורים צריכה להכיל את המפתחות הזרים (FK) של הרופא והמטופל, ומפתח ראשי (PK) משל עצמה. שאר הפרטים הולכים לטבלאות האב (שם ללקוח, התמחות לרופא).`;
+}
+
+function checkDragExercise2() {
+    let correct = 0;
+    let total = document.querySelectorAll('#dragExercise2 .drag-item.placed').length;
+    
+    if (total < 7) {
+        alert("נא לגרור את כל 7 השדות לטבלאות קודם.");
+        return;
+    }
+    
+    document.querySelectorAll('#dragExercise2 .drag-item.placed').forEach(item => {
+        if (item.dataset.placedIn === item.dataset.target) {
+            correct++;
+            item.style.borderColor = 'var(--success)';
+            item.style.color = '#065f46';
+        } else {
+            item.style.borderColor = 'var(--danger)';
+            item.style.color = '#991b1b';
+            item.style.background = 'var(--danger-light)';
+        }
+    });
+    
+    const fb = document.getElementById('dragFeedback2');
+    fb.className = 'quiz-feedback show ' + (correct === 7 ? 'correct' : 'wrong');
+    fb.innerHTML = correct === 7 
+        ? `✅ מעולה! תפסתם את הפרינציפ! טבלת ההזמנות (Orders) מחזיקה את המפתח הזר שמצביע למי שביצע את ההזמנה.`
+        : `❌ נסו שוב. טיפ: "איזה משתמש הזמין?" (FK) חייב לשבת בטבלת ההזמנות, כדי שנדע מי אחראי על ההזמנה.`;
+}
+
+function resetDragExercise(numId) {
+    const source = document.getElementById('dragSource' + numId);
+    document.querySelectorAll('#dragExercise' + numId + ' .drag-item').forEach(item => {
+        item.classList.remove('placed');
+        item.setAttribute('draggable', 'true');
+        item.style.borderColor = 'var(--border-focus)';
+        item.style.color = 'var(--text-main)';
+        item.style.background = 'white';
+        delete item.dataset.placedIn;
+        source.appendChild(item);
+    });
+    document.getElementById('dragFeedback' + numId).classList.remove('show');
+}
+
+// ============ UTILITIES ============
+window.addEventListener('scroll', () => {
+    // Progress Bar
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progressBar').style.width = (scrollTop / docHeight) * 100 + '%';
+
+    // Nav Highlight
+    let current = "";
+    document.querySelectorAll('.section').forEach(section => {
+        if (pageYOffset >= section.offsetTop - 150) current = section.getAttribute('id');
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) link.classList.add('active');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    initDragDrop();
+});
+</script>
+
+</body>
+</html>
