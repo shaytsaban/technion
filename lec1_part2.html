@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הרצאה 1 - חלק ב' | הארכיטקטים של עידן ה-AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* צבעי בסיס - בהיר ויוקרתי */
+            --primary: #4f46e5; 
+            --primary-light: #eef2ff;
+            --primary-hover: #4338ca;
+            --secondary: #0ea5e9; 
+            --accent: #f43f5e; 
+            --success: #10b981; 
+            --success-light: #d1fae5;
+            --warning: #f59e0b; 
+            --warning-light: #fef3c7;
+            --danger: #ef4444; 
+            --danger-light: #fee2e2;
+            
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-accent: #f1f5f9;
+            
+            --text-main: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            
+            --border: #e2e8f0;
+            --border-focus: #cbd5e1;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            
+            --gradient-main: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ======== SCROLLBAR ======== */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-page); }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; }
+
+        /* ======== PROGRESS BAR ======== */
+        .progress-bar-container {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            z-index: 2000;
+            background: rgba(0,0,0,0.05);
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient-main);
+            width: 0%;
+            transition: width 0.2s ease-out;
+        }
+
+        /* ======== HERO SECTION ======== */
+        .hero {
+            background: linear-gradient(135deg, #ffffff 0%, var(--primary-light) 100%);
+            padding: 100px 20px 80px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: white;
+            padding: 8px 24px; border-radius: 100px; font-weight: 700; font-size: 0.95rem; margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        }
+        .hero h1 { font-family: 'Rubik', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 24px; }
+        .hero h1 span { color: var(--primary); }
+        .hero p { font-size: 1.3rem; color: var(--text-secondary); max-width: 750px; margin: 0 auto 30px; }
+        .hero-meta { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .hero-meta-item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(255,255,255,0.8); border: 1px solid var(--border); border-radius: var(--radius-md); font-weight: 600; color: var(--text-secondary); }
+
+        /* ======== NAVIGATION ======== */
+        .nav-sticky {
+            position: sticky; top: 15px; z-index: 1000; width: 95%; max-width: 1200px; margin: -35px auto 40px;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--border);
+            border-radius: 100px; padding: 8px 15px; display: flex; gap: 5px; box-shadow: var(--shadow-lg); overflow-x: auto; scrollbar-width: none;
+        }
+        .nav-sticky::-webkit-scrollbar { display: none; }
+        .nav-link { color: var(--text-muted); text-decoration: none; padding: 10px 18px; border-radius: 100px; font-size: 0.95rem; font-weight: 700; transition: all 0.2s; white-space: nowrap; }
+        .nav-link:hover { color: var(--primary); background: var(--bg-accent); }
+        .nav-link.active { background: var(--primary); color: white; box-shadow: var(--shadow-sm); }
+
+        /* ======== MAIN CONTENT ======== */
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px 80px; }
+        .section { margin-bottom: 80px; scroll-margin-top: 100px; }
+        .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; border-bottom: 2px solid var(--border); padding-bottom: 15px; }
+        .section-number { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: var(--primary-light); color: var(--primary); border-radius: var(--radius-sm); font-family: 'Rubik', sans-serif; font-weight: 800; font-size: 1.4rem; }
+        .section-title { font-family: 'Rubik', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text-main); }
+
+        .content-block { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 35px; box-shadow: var(--shadow-sm); margin-bottom: 25px; transition: box-shadow 0.3s; }
+        .content-block h3 { font-family: 'Rubik', sans-serif; font-size: 1.5rem; margin-bottom: 15px; color: var(--primary); }
+        .content-block h4 { font-family: 'Rubik', sans-serif; font-size: 1.2rem; margin: 25px 0 10px; color: var(--text-main); }
+        .content-block p { font-size: 1.1rem; margin-bottom: 15px; color: var(--text-secondary); }
+
+        /* ======== ANNOTATED TABLES (VISUALS) ======== */
+        .visual-table-container { margin: 30px 0; overflow-x: auto; background: var(--bg-page); padding: 20px; border-radius: var(--radius-md); border: 1px dashed var(--border-focus); }
+        .visual-table { width: 100%; border-collapse: collapse; background: white; font-size: 1rem; box-shadow: var(--shadow-sm); }
+        .visual-table th { background: var(--primary-light); color: var(--primary); padding: 12px; text-align: right; border: 1px solid var(--border); font-weight: 700; }
+        .visual-table td { padding: 12px; border: 1px solid var(--border); color: var(--text-secondary); }
+        
+        .key-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-right: 5px; }
+        .pk-badge { background: #fee2e2; color: #b91c1c; }
+        .fk-badge { background: #e0f2fe; color: #0369a1; }
+        .type-badge { background: #f3f4f6; color: #475569; border: 1px solid #cbd5e1; }
+
+        /* ======== SQL VISUALIZATION ======== */
+        .sql-visual-card { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: var(--radius-md); font-family: 'Fira Code', monospace; margin-bottom: 15px; direction: ltr; text-align: left; position: relative; border-right: 5px solid var(--primary); }
+        .sql-visual-result { background: white; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 40px; box-shadow: var(--shadow-sm); position: relative; }
+        .sql-visual-result::before { content: 'מה קורה במסד הנתונים?'; position: absolute; top: -12px; right: 20px; background: var(--secondary); color: white; font-size: 0.85rem; padding: 4px 12px; border-radius: 10px; font-weight: bold; }
+
+        /* ======== HIGHLIGHT BOXES ======== */
+        .highlight-box { padding: 20px; border-radius: var(--radius-md); margin: 20px 0; border-right: 5px solid; }
+        .highlight-box.blue { background: var(--primary-light); border-color: var(--primary); }
+        .highlight-box.green { background: var(--success-light); border-color: var(--success); }
+        .highlight-box.purple { background: #f3e8ff; border-color: #d946ef; }
+        .highlight-box.orange { background: var(--warning-light); border-color: var(--warning); }
+        .highlight-box p { margin: 0; color: var(--text-main); font-weight: 500; font-size: 1.1rem; }
+
+        /* ======== INTERACTIVE QUIZZES ======== */
+        .quiz-container { background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px; margin: 30px 0; position: relative; box-shadow: var(--shadow-md); }
+        .quiz-container::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 4px; background: var(--gradient-main); }
+        .quiz-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .quiz-icon { width: 40px; height: 40px; background: var(--warning-light); color: var(--warning); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .quiz-title { font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 1.2rem; }
+        .quiz-question { font-size: 1.15rem; font-weight: 600; margin-bottom: 20px; color: var(--text-main); }
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .quiz-option { display: flex; align-items: center; gap: 15px; padding: 15px 20px; background: var(--bg-page); border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; font-size: 1.05rem; font-weight: 500; }
+        .quiz-option:hover { border-color: var(--primary-light); background: white; }
+        .quiz-option.selected { border-color: var(--primary); background: var(--primary-light); }
+        .quiz-option.correct { border-color: var(--success); background: var(--success-light); }
+        .quiz-option.wrong { border-color: var(--danger); background: var(--danger-light); }
+        .quiz-option .option-marker { width: 32px; height: 32px; border-radius: 50%; background: white; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+        .quiz-option.selected .option-marker { border-color: var(--primary); background: var(--primary); color: white; }
+        .quiz-option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .quiz-option.wrong .option-marker { border-color: var(--danger); background: var(--danger); color: white; }
+        .quiz-feedback { padding: 15px 20px; border-radius: var(--radius-md); font-size: 1.05rem; font-weight: 600; display: none; margin-top: 15px; }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct { background: var(--success-light); color: #065f46; border: 1px solid #a7f3d0; }
+        .quiz-feedback.wrong { background: var(--danger-light); color: #991b1b; border: 1px solid #fecaca; }
+
+        .btn-action { padding: 10px 24px; background: var(--primary); border: none; border-radius: 100px; color: white; font-family: 'Assistant', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); }
+        .btn-action:hover { transform: translateY(-2px); background: var(--primary-hover); box-shadow: 0 6px 12px rgba(79, 70, 229, 0.3); }
+        .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text-secondary); box-shadow: none; }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: transparent; }
+
+        /* ======== DRAG & DROP ======== */
+        .interactive-zone { background: #ffffff; border: 2px dashed var(--border-focus); border-radius: var(--radius-lg); padding: 30px; margin: 30px 0; }
+        .drag-source { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; padding: 20px; background: var(--bg-accent); border-radius: var(--radius-md); min-height: 80px; }
+        .drag-item { padding: 8px 16px; background: white; border: 1px solid var(--border-focus); border-radius: 100px; cursor: grab; font-weight: 600; user-select: none; box-shadow: var(--shadow-sm); }
+        .drag-item.placed { background: var(--success-light); border-color: var(--success); color: #065f46; cursor: default; }
+        .drop-zones { display: flex; flex-direction: column; gap: 15px; }
+        .drop-zone { display: flex; align-items: center; gap: 20px; padding: 15px 20px; background: var(--bg-page); border: 2px dashed var(--border); border-radius: var(--radius-md); min-height: 70px; }
+        .drop-zone.over { border-color: var(--primary); background: var(--primary-light); }
+        .drop-area { flex: 1; display: flex; gap: 10px; flex-wrap: wrap; min-height: 40px; align-items: center; }
+        .drop-label { font-weight: 700; font-size: 1.1rem; color: var(--text-main); min-width: 160px; display: flex; align-items: center; gap: 8px; }
+
+        /* ======== SQL PLAYGROUND ======== */
+        .sql-playground { background: #1e1e1e; border-radius: var(--radius-lg); overflow: hidden; margin: 30px 0; box-shadow: var(--shadow-lg); }
+        .sql-header { background: #2d2d2d; padding: 12px 20px; display: flex; align-items: center; gap: 10px; color: #fff; border-bottom: 1px solid #404040; }
+        .sql-editor { padding: 20px; }
+        .sql-input { width: 100%; min-height: 80px; background: #1e1e1e; border: 1px solid #404040; border-radius: var(--radius-sm); padding: 15px; color: #d4d4d4; font-family: 'Fira Code', monospace; font-size: 1.1rem; direction: ltr; text-align: left; resize: vertical; line-height: 1.5; outline: none; }
+        .sql-input:focus { border-color: var(--secondary); }
+        .sql-results { padding: 0 20px 20px; font-family: 'Assistant', sans-serif;}
+        .sql-result-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; direction: ltr; text-align: left; background: #252526; border-radius: 8px; overflow: hidden; }
+        .sql-result-table th { background: #333333; padding: 10px 15px; color: #4fc1ff; }
+        .sql-result-table td { padding: 10px 15px; color: #cccccc; border-top: 1px solid #404040; }
+
+        /* ======== FLOATING SCORE ======== */
+        .score-floating { position: fixed; bottom: 30px; left: 30px; background: white; border: 2px solid var(--border); border-radius: 100px; padding: 10px 20px; display: flex; align-items: center; gap: 12px; z-index: 1000; box-shadow: var(--shadow-lg); direction: ltr; }
+        .score-value { font-family: 'Rubik', sans-serif; font-weight: 900; font-size: 1.5rem; color: var(--primary); }
+
+        @media (max-width: 768px) {
+            .hero { padding: 60px 20px 40px; }
+            .content-block { padding: 20px; }
+            .score-floating { bottom: 15px; left: 15px; right: 15px; justify-content: center; }
+            .visual-table th, .visual-table td { font-size: 0.85rem; padding: 8px; }
+            .drop-zone { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar-container"><div class="progress-bar-fill" id="progressBar"></div></div>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge"><span class="pulse"></span>חלק ב': מתאוריה לפרקטיקה</div>
+        <h1>לדבר עם המחשב,<br><span>ולנהל את ה-AI</span></h1>
+        <p>בחלק א' הבנו איך טבלאות עובדות (PK, FK, סוגי נתונים). עכשיו הגיע הזמן ללכלך את הידיים: נלמד את שפת ה-SQL שאומרת למחשב להקים את הטבלאות, ורק אז ניתן לבינה המלאכותית לכתוב אותה בשבילנו.</p>
+        <div class="hero-meta">
+            <div class="hero-meta-item">📚 הרצאה 1 - חלק ב'</div>
+            <div class="hero-meta-item">💻 מחנה אימונים SQL</div>
+            <div class="hero-meta-item">🤖 Prompt Engineering</div>
+        </div>
+    </div>
+</section>
+
+<nav class="nav-sticky" id="mainNav">
+    <a href="#section0" class="nav-link active">תקציר הקודמים</a>
+    <a href="#section1" class="nav-link">שפת SQL</a>
+    <a href="#section2" class="nav-link">מחנה אימונים בענן (סימולטורים)</a>
+    <a href="#section3" class="nav-link">ה-AI כמתכנת שלנו</a>
+    <a href="#section4" class="nav-link">פיתוח מוצר וסיכום</a>
+</nav>
+
+<main class="container">
+
+<!-- ==================== SECTION 0: RECAP ==================== -->
+<section class="section" id="section0">
+    <div class="section-header">
+        <div class="section-number">0</div>
+        <h2 class="section-title">תקציר תולדות הנתונים (מ-חלק א')</h2>
+    </div>
+    <div class="content-block">
+        <p>לפני שאנחנו צוללים לסימולטורים, נוודא שכולנו יושבים חזק על היסודות:</p>
+        <ul style="font-size: 1.1rem; line-height: 1.8;">
+            <li>אקסל נשבר כשמדובר באפליקציות חיות. אנחנו צריכים <strong>מסד נתונים (Database)</strong> בענן.</li>
+            <li>מסד נתונים מורכב מ<strong>טבלאות</strong>. לכל עמודה בטבלה יש <strong>סוג נתון</strong> (INT למספר, VARCHAR לטקסט).</li>
+            <li>בטבלה חייב להיות <strong>מפתח ראשי (PK)</strong> - ה-ID המיוחד של השורה (הת.ז).</li>
+            <li>טבלאות מדברות אחת עם השנייה בעזרת <strong>מפתח זר (FK)</strong> כדי למנוע כפילויות מידע.</li>
+        </ul>
+        <div class="highlight-box blue">
+            <p><strong>האתגר עכשיו:</strong> באקסל אנחנו פשוט מזיזים את העכבר ומקלידים. בענן - למסד הנתונים אין "מסך הקלדה". הוא מבין רק פקודות טקסט. איך אנחנו מבקשים ממנו לייצר את הטבלה?</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 1: SQL ==================== -->
+<section class="section" id="section1">
+    <div class="section-header">
+        <div class="section-number">1</div>
+        <h2 class="section-title">שפת SQL: איך מדברים עם המחשב?</h2>
+    </div>
+    
+    <div class="content-block">
+        <p><strong>SQL</strong> (Structured Query Language) היא השפה שבה אנחנו נותנים הוראות למסד הנתונים. אל תיבהלו מהמילה "קוד" - זו שפה פשוטה שנשמעת כמעט כמו אנגלית. </p>
+        <p>יש 3 פקודות בסיס שחובה להכיר כדי לבנות אפליקציה. (חשוב: בעולם המודרני, ה-AI יכתוב את הפקודות האלו, אבל אנחנו חייבים לדעת לקרוא אותן כדי לאשר ל-AI את העבודה).</p>
+    </div>
+
+    <!-- SQL COMMAND 1 -->
+    <div class="content-block" style="border-top: 4px solid #0ea5e9;">
+        <h3 style="color:#0ea5e9;">פקודה 1: "תבנה לי תבנית" (CREATE TABLE)</h3>
+        <p>זו הפעולה של האדריכל. לפני שאפשר להכניס נתונים, צריך ליצור את ה"קופסה" הריקה ולהגדיר לה את העמודות והסוגים.</p>
+        
+        <div class="sql-visual-card" style="border-color:#0ea5e9;">
+            <span style="color:#569cd6; font-weight:bold;">CREATE TABLE</span> users (<br>
+            &nbsp;&nbsp;id <span style="color:#4fc1ff;">INT PRIMARY KEY</span>, <span style="color:#8b949e;">-- תעודת הזהות (מספר)</span><br>
+            &nbsp;&nbsp;name <span style="color:#4fc1ff;">VARCHAR(50)</span> <span style="color:#8b949e;">-- שם הלקוח (טקסט עד 50 תווים)</span><br>
+            );
+        </div>
+        <p style="font-size: 0.95rem; color: var(--text-muted);">* התוצאה: המחשב מייצר טבלה ריקה לגמרי בשם `users` שמחכה לנתונים.</p>
+    </div>
+
+    <!-- SQL COMMAND 2 -->
+    <div class="content-block" style="border-top: 4px solid #f59e0b;">
+        <h3 style="color:#f59e0b;">פקודה 2: "תכניס נתון פנימה" (INSERT INTO)</h3>
+        <p>זו הפעולה של הפקיד או האפליקציה. יש לנו טבלה ריקה, ולקוח הרגע נרשם לאתר. המערכת שולחת למחשב פקודה לדחוף את השורה החדשה לטבלה.</p>
+        
+        <div class="sql-visual-card" style="border-color:#f59e0b;">
+            <span style="color:#ce9178; font-weight:bold;">INSERT INTO</span> users (id, name) <br>
+            <span style="color:#569cd6; font-weight:bold;">VALUES</span> (1, 'Yossi');
+        </div>
+        <p style="font-size: 0.95rem; color: var(--text-muted);">* חשוב: שימו לב שהשם 'Yossi' עטוף במירכאות בודדות. המחשב חייב מירכאות כדי להבין שזה טקסט ולא פקודה.</p>
+    </div>
+
+    <!-- SQL COMMAND 3 -->
+    <div class="content-block" style="border-top: 4px solid #10b981;">
+        <h3 style="color:#10b981;">פקודה 3: "תציג לי נתונים" (SELECT)</h3>
+        <p>הפעולה של מנתח הנתונים (Data Analyst). הטבלה מלאה, ואנחנו רק רוצים לשלוף ולראות מידע ספציפי. פקודה זו <strong>לא משנה או מוחקת כלום</strong> במסד.</p>
+        
+        <div class="sql-visual-card" style="border-color:#10b981;">
+            <span style="color:#dcdcaa; font-weight:bold;">SELECT</span> * <br>
+            <span style="color:#569cd6; font-weight:bold;">FROM</span> users <br>
+            <span style="color:#c586c0; font-weight:bold;">WHERE</span> name = 'Yossi';
+        </div>
+        <p style="font-size: 0.95rem; color: var(--text-muted);">* תרגום לעברית: תבחר (SELECT) את כל העמודות (*) מתוך (FROM) טבלת 'users', איפה ש(WHERE) השם הוא 'Yossi'.</p>
+    </div>
+
+    <!-- DRAG AND DROP: Match SQL Commands -->
+    <div class="interactive-zone" style="background:#f8fafc;">
+        <h3 style="margin-bottom: 15px; font-family:'Rubik';">🏗️ תרגול חימום: מילון SQL</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">לפני שנכתוב קוד בעצמנו, גררו כל פקודת SQL באנגלית אל הפעולה העסקית שהיא מבצעת מאחורי הקלעים.</p>
+        
+        <div class="drag-exercise" id="dragExerciseSQL">
+            <div class="drag-source" id="dragSourceSQL" style="background:white; border:2px dashed var(--secondary);">
+                <div class="drag-item" draggable="true" data-target="build">CREATE TABLE</div>
+                <div class="drag-item" draggable="true" data-target="add">INSERT INTO</div>
+                <div class="drag-item" draggable="true" data-target="find">SELECT ... FROM ... WHERE</div>
+            </div>
+            
+            <div class="drop-zones">
+                <div class="drop-zone" id="drop-build" data-name="build"><span class="drop-label">🏗️ שלב האדריכל (בניית תבנית הטבלה הריקה)</span><div class="drop-area"></div></div>
+                <div class="drop-zone" id="drop-add" data-name="add"><span class="drop-label">📥 פעולת הקופה (דחיפת שורה/לקוח חדש למערכת)</span><div class="drop-area"></div></div>
+                <div class="drop-zone" id="drop-find" data-name="find"><span class="drop-label">🔍 פעולת האנליסט (חיפוש ושליפת נתונים קיימים למסך)</span><div class="drop-area"></div></div>
+            </div>
+            
+            <div style="margin-top: 20px; display:flex; gap:10px;">
+                <button class="btn-action" onclick="checkDragExerciseSQL()">בדיקת מילון</button>
+                <button class="btn-action btn-outline" onclick="resetDragExerciseSQL()">איפוס</button>
+            </div>
+            <div id="dragFeedbackSQL" class="quiz-feedback" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 2: SQL SIMULATORS ==================== -->
+<section class="section" id="section2">
+    <div class="section-header">
+        <div class="section-number">2</div>
+        <h2 class="section-title">התנסות בענן: מחנה אימונים SQL</h2>
+    </div>
+    <div class="content-block">
+        <p>כשתעבדו בסביבת ענן אמיתית (כמו Google BigQuery), המסך שלכם ייראה בדיוק ככה: חלון כהה שבו כותבים את הפקודה, וכפתור "Run" שמריץ אותה מול השרתים.</p>
+        <p>הכנו לכם 3 משימות. אל תפחדו לטעות - אם תקלידו משהו שגוי, המערכת תתן לכם הערה באדום. נסו לתקן!</p>
+    </div>
+
+    <!-- MISSION 1: CREATE -->
+    <div class="interactive-zone" style="background:#f0f9ff; border-color:#0ea5e9;">
+        <h3 style="color:#0ea5e9; margin-bottom: 10px;">משימה 1: יצירת תבנית הטבלה (CREATE)</h3>
+        <p>המטרה: להורות למחשב ליצור טבלה ריקה בשם <code>students</code>. הטבלה צריכה להכיל מזהה מסוג מספר שהוא מפתח ראשי (<code>INT PRIMARY KEY</code>), ושם מסוג טקסט (<code>VARCHAR</code>).</p>
+        <p style="font-size:0.9rem; color:var(--text-muted);">* השלמנו לכם את ההתחלה, נסו לסיים את הפקודה בין הסוגריים ולחצו על הרץ:</p>
+        
+        <div class="sql-playground">
+            <div class="sql-header"><span>⚡ Terminal 1: Schema Builder</span></div>
+            <div class="sql-editor">
+                <textarea class="sql-input" id="sqlInputCreate" spellcheck="false" style="min-height: 100px;">CREATE TABLE students (
+   id INT PRIMARY KEY,
+   name VARCHAR
+);</textarea>
+                <div style="margin-top: 15px;">
+                    <button class="btn-action" style="background:#0ea5e9;" onclick="runSQLCreate()">▶ הרץ (Run)</button>
+                </div>
+            </div>
+            <div class="sql-results" id="sqlResultsCreate"></div>
+        </div>
+
+        <div style="background: white; border: 1px solid var(--border); padding: 20px; border-radius: var(--radius-md); margin-top: 20px;">
+            <h4 style="margin-top: 0; color: var(--primary);">מה בדיוק כל מילה אומרת פה?</h4>
+            <ul style="list-style: none; padding: 0; line-height: 1.8;">
+                <li><code>CREATE TABLE students</code> - "מחשב יקר, תיצור לי טבלה חדשה וקרא לה students".</li>
+                <li><code>id INT PRIMARY KEY</code> - "העמודה הראשונה תקרא id. היא תכיל מספרים שלמים (INT), והיא תהיה <strong>המפתח הראשי</strong> של הטבלה (אסור שיהיו שניים זהים)".</li>
+                <li><code>name VARCHAR</code> - "העמודה השנייה תקרא name, והיא תכיל טקסט".</li>
+            </ul>
+            <p style="margin-top: 10px; font-size: 0.95rem; color: var(--text-secondary);"><strong>הערה:</strong> אחרי שלחצתם על "הרץ" המחשב לא הציג כלום על המסך, אבל מאחורי הקלעים בענן הוא ייצר את התבנית הריקה הזו, שמחכה לנתונים:</p>
+            <table class="visual-table" style="width: 100%; max-width: 400px; margin-top: 10px; border: 2px dashed var(--border-focus);">
+                <tr><th>id 🔑</th><th>name</th></tr>
+                <tr><td style="color:#cbd5e1; text-align:center;">(ריק)</td><td style="color:#cbd5e1; text-align:center;">(ריק)</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- QUIZ 2 -->
+    <div class="quiz-container" id="quizCreate">
+        <div class="quiz-header"><div class="quiz-icon">❓</div><span class="quiz-title">בדיקת הבנה: CREATE</span></div>
+        <div class="quiz-question">למה אנחנו חייבים לציין את המילים INT או VARCHAR ליד כל עמודה שאנחנו יוצרים?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this, 'quizCreate')"><span class="option-marker">א</span><span>כדי להגדיר למחשב את ה"תבנית" (סוג הנתון) שהוא יקבל, וכך למנוע שגיאות של הזנת טקסט לתוך עמודה שאמורה להיות מחיר.</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quizCreate')"><span class="option-marker">ב</span><span>כי המחשב קורא רק אנגלית.</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quizCreate')"><span class="option-marker">ג</span><span>זה לא חובה. המחשב מספיק חכם לנחש לבד את סוג הנתונים.</span></div>
+        </div>
+        <button class="btn-action mt-3" onclick="checkQuiz('quizCreate', 0, 'בדיוק! בניגוד לאקסל שבו אפשר לכתוב הכל בכל תא, במסד נתונים אנחנו נועלים מראש את סוג המידע (Type) כדי לשמור על האמינות (Data Integrity) של המערכת.')">בדוק תשובה</button>
+        <div class="quiz-feedback" id="quizCreate-feedback"></div>
+    </div>
+
+    <!-- MISSION 2: INSERT -->
+    <div class="interactive-zone" style="background:#fffbeb; border-color:#f59e0b;">
+        <h3 style="color:#f59e0b; margin-bottom: 10px;">משימה 2: הכנסת נתונים (INSERT) למערכת</h3>
+        <p>הטבלה `students` שיצרתם במשימה 1 מחכה לנתונים. בואו נוסיף לתוכה סטודנטים!</p>
+        
+        <div class="highlight-box orange">
+            <p><strong>המשימה שלכם למחזור חיים מלא:</strong><br>
+            1. לחצו "הרץ" כדי להכניס את הסטודנט מספר 1 ('Tal').<br>
+            2. שנו בחלון השחור את המספר ל-<strong>2</strong> ואת השם ל-<strong>'Dan'</strong> והריצו שוב!<br>
+            3. שנו את המספר ל-<strong>3</strong> ואת השם ל-<strong>'Shir'</strong> והריצו שוב!<br>
+            ראו איך הטבלה שלכם נבנית ומתמלאת למטה בזמן אמת.
+            </p>
+        </div>
+
+        <p style="font-weight: 600; color: var(--danger);">⚠️ חוק ברזל (מירכאות): מילים וטקסט ב-SQL חייבים להיות עטופים במירכאות בודדות (למשל 'Tal'). אם לא נשים מירכאות, המחשב יחשוב ש-Tal זו פקודת מערכת ויקרוס!</p>
+
+        <div class="sql-playground">
+            <div class="sql-header"><span>⚡ Terminal 2: Data Ingestion</span></div>
+            <div class="sql-editor">
+                <textarea class="sql-input" id="sqlInputInsert" spellcheck="false" style="min-height: 80px;">INSERT INTO students (id, name)
+VALUES (1, 'Tal');</textarea>
+                <div style="margin-top: 15px;">
+                    <button class="btn-action" style="background:#f59e0b;" onclick="runSQLInsert()">▶ הרץ והוסף נתון (Run)</button>
+                </div>
+            </div>
+            <div class="sql-results" id="sqlResultsInsert">
+                <div style="color: #a5d6ff; padding: 10px;">הטבלה ריקה. לחצו על "הרץ" כדי להכניס את השורה הראשונה.</div>
+            </div>
+        </div>
+        
+        <div style="background: #fee2e2; border: 1px solid #fecaca; padding: 15px; border-radius: var(--radius-md); margin-top: 20px;">
+            <strong style="color: #b91c1c;">⚡ נסו "לשבור" את המערכת (אתגר המפתח הראשי):</strong><br>
+            <span style="font-size: 0.95rem; color: #7f1d1d;">אחרי שהכנסתם את 'Tal' (עם ID מספר 1), נסו להכניס סטודנט נוסף בשם 'Ron' אבל <strong>השאירו לו גם כן את ה-ID מספר 1</strong>. הריצו את הקוד. מה קרה? המחשב צעק! למה? כי הגדרנו את ID כ-<strong>PRIMARY KEY (מפתח ראשי)</strong>. אסור שיהיו שתי שורות עם אותו מזהה! ככה מסד נתונים מגן עלינו מכפילויות לעומת אקסל.</span>
+        </div>
+    </div>
+
+    <!-- QUIZ 3 -->
+    <div class="quiz-container" id="quizInsert">
+        <div class="quiz-header"><div class="quiz-icon">❓</div><span class="quiz-title">בדיקת הבנה: INSERT</span></div>
+        <div class="quiz-question">מה יקרה אם תנסו להריץ את הפקודה הבאה ללא מירכאות סביב השם? <br><code>INSERT INTO students (id, name) VALUES (1, Tal);</code></div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this, 'quizInsert')"><span class="option-marker">א</span><span>המידע יכנס בהצלחה, המירכאות הן רק המלצה.</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quizInsert')"><span class="option-marker">ב</span><span>המחשב יעצור ויחזיר שגיאה. בלי מירכאות, המחשב יחשוב שהמילה Tal היא פקודה (כמו SELECT) ולא יבין מה אתם רוצים ממנו.</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quizInsert')"><span class="option-marker">ג</span><span>השם ייכנס למסד הנתונים בתור מספר במקום אותיות.</span></div>
+        </div>
+        <button class="btn-action mt-3" onclick="checkQuiz('quizInsert', 1, 'נכון מאוד! כלל ברזל בתכנות ודאטה: טקסט (String/VARCHAR) תמיד, אבל תמיד, חייב להיות עטוף במירכאות (Quotes). מספרים (INT) כותבים כרגיל.')">בדוק תשובה</button>
+        <div class="quiz-feedback" id="quizInsert-feedback"></div>
+    </div>
+
+    <!-- MISSION 3: SELECT -->
+    <div class="interactive-zone" style="background:#ecfdf5; border-color:#10b981;">
+        <h3 style="color:#10b981; margin-bottom: 10px;">משימה 3: שליפה חכמה (SELECT)</h3>
+        <p>עכשיו יש לכם טבלת <code>students</code> אמיתית בזיכרון, והיא מכילה את הסטודנטים שהכנסתם במשימה הקודמת (טל, דן, שיר...).</p>
+        <p><strong>המשימה שלכם:</strong><br>
+        הקוד למטה שולף כרגע את <strong>כל</strong> הסטודנטים בטבלה. שנו את הקוד כך שישלוף <strong>רק את הסטודנט שקוראים לו 'Shir'</strong>. (רמז: תצטרכו להשתמש במילה <code>WHERE</code> שאחריה תנאי על העמודה <code>name</code>).
+        </p>
+
+        <div class="sql-playground">
+            <div class="sql-header"><span>⚡ Terminal 3: Data Analytics</span></div>
+            <div class="sql-editor">
+                <textarea class="sql-input" id="sqlInputSelect" spellcheck="false">SELECT * FROM students;</textarea>
+                <div style="margin-top: 15px;">
+                    <button class="btn-action" style="background:#10b981;" onclick="runSQLSelect()">▶ הרץ שליפה (Run)</button>
+                </div>
+            </div>
+            <div class="sql-results" id="sqlResultsSelect">
+                <div style="color: #a5d6ff; padding: 10px;">לחצו על כפתור ההרצה כדי לשלוף נתונים מהטבלה שבניתם.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUIZ 4 -->
+    <div class="quiz-container" id="quizSelect">
+        <div class="quiz-header"><div class="quiz-icon">❓</div><span class="quiz-title">בדיקת הבנה: SELECT</span></div>
+        <div class="quiz-question">מה יקרה אם תכתבו בסימולטור פקודת SELECT בלי המילה WHERE בכלל? (כמו: <code>SELECT * FROM products;</code>)</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this, 'quizSelect')"><span class="option-marker">א</span><span>המחשב יחזיר שגיאה כי חובה לחפש משהו ספציפי.</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quizSelect')"><span class="option-marker">ב</span><span>המחשב ישלוף את כל השורות הקיימות בטבלת המוצרים (יביא את כל החנות למסך).</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quizSelect')"><span class="option-marker">ג</span><span>המחשב ייצור טבלה חדשה וריקה.</span></div>
+        </div>
+        <button class="btn-action mt-3" onclick="checkQuiz('quizSelect', 1, 'בדיוק! המילה WHERE היא רק מסנן (פילטר). אם לא שמים אותה, אמרנו למחשב תכלס - פשוט תביא לי הכל ללא צנזורה.')">בדוק תשובה</button>
+        <div class="quiz-feedback" id="quizSelect-feedback"></div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 3: AI FIRST ==================== -->
+<section class="section" id="section3">
+    <div class="section-header">
+        <div class="section-number">3</div>
+        <h2 class="section-title">הכוח האמיתי: ה-AI כמתכנת האישי שלכם</h2>
+    </div>
+    <div class="content-block">
+        <p>ראיתם במחנה האימונים שהדברים מתחילים לחזור על עצמם. צריך לכתוב פקודות מדויקות, לזכור מירכאות, להגדיר <code>VARCHAR</code> ו-<code>INT</code>.</p>
+        <p>אני אגלה לכם סוד: <strong>במציאות של 2026, אנחנו כמעט ולא כותבים את הפקודות האלו בעצמנו "מאפס"!</strong></p>
+        <p>במקום לכתוב <code>CREATE TABLE</code> ארוך ומייגע עם כל הסוגים והסוגריים, אנחנו הולכים ל-ChatGPT או Claude, מנחים אותם בשפה פשוטה (Prompt), והם מייצרים את ה-SQL בשנייה.</p>
+        
+        <h3 style="margin-top: 30px; color: var(--danger);">אז איפה המלכודת? (למה חברות משלמות לכם?)</h3>
+        <p>הבינה המלאכותית עושה בדיוק מה שאומרים לה, אבל <strong>אין לה היגיון עסקי חכם משלה</strong>. אם לא נסביר לה איך לקשר טבלאות נכון (מפתח זר - FK), או נשכח לציין עמודה קריטית, ה-AI יכתוב קוד SQL שרץ מעולה במחשב - אבל יהרוס את האפליקציה מבחינה עסקית.</p>
+
+        <!-- AI WARMUP EXERCISE -->
+        <div style="background: var(--bg-card); border: 2px solid var(--border-focus); padding: 25px; border-radius: var(--radius-md); margin: 30px 0;">
+            <h4 style="margin-top: 0; color: var(--text-main);">תרגיל חימום: מצאו את הטעות (הקלה) של ה-AI</h4>
+            <p>ביקשנו מ-ChatGPT: "כתוב לי פקודת יצירת טבלה עבור 'מוצרים' בחנות שלנו. אני צריך מזהה למוצר, שם מוצר, ו<strong>מחיר המוצר</strong>."</p>
+            <p>הנה מה שה-AI הפיק. הסתכלו טוב על שורת המחיר (price):</p>
+            
+            <div class="sql-visual-card" style="margin-bottom: 20px;">
+                <span style="color:#569cd6;">CREATE TABLE</span> products (<br>
+                &nbsp;&nbsp;id <span style="color:#4fc1ff;">INT PRIMARY KEY</span>,<br>
+                &nbsp;&nbsp;name <span style="color:#4fc1ff;">VARCHAR</span>(100),<br>
+                &nbsp;&nbsp;price <span style="color:#4fc1ff;">VARCHAR</span>(50) <br>
+                );
+            </div>
+            
+            <strong>מה הטעות שעשה ה-AI פה?</strong>
+            <div id="aiWarmupQuiz" style="display:flex; flex-direction:column; gap:10px; margin-top: 15px;">
+                <label style="display:flex; align-items:center; gap:12px; padding:15px; background:var(--bg-page); border-radius:var(--radius-sm); border:1px solid var(--border); cursor:pointer;" id="aiw-0">
+                    <input type="radio" name="aiw" id="aiw-cb-0" style="width:18px; height:18px;">
+                    <span>הוא שכח להוסיף את פקודת ה-INSERT.</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:12px; padding:15px; background:var(--bg-page); border-radius:var(--radius-sm); border:1px solid var(--border); cursor:pointer;" id="aiw-1">
+                    <input type="radio" name="aiw" id="aiw-cb-1" style="width:18px; height:18px;">
+                    <span>הוא הגדיר את עמודת המחיר (price) כ-VARCHAR (טקסט) במקום כ-INT (מספר). זה ימנע מאיתנו לעשות חישובים מתמטיים על המחירים אחר כך!</span>
+                </label>
+            </div>
+            <button class="btn-action mt-3" style="margin-top: 15px;" onclick="checkAIWarmup()">בדוק את הביקורת שלי</button>
+            <div id="aiWarmupFeedback" class="quiz-feedback"></div>
+        </div>
+
+        <div style="background: var(--bg-accent); padding: 20px; border-radius: var(--radius-md); border-right: 4px solid var(--warning); margin: 40px 0 20px 0;">
+            <strong style="font-size:1.1rem;">אתגר ברמת ארכיטקט: מקימים את "ספוטיפיי" בעזרת AI</strong><br>
+            המנכ"ל אומר לכם: "אנחנו מקימים אפליקציית מוזיקה. אנחנו צריכים טבלה שתשמור את כל השירים באפליקציה".
+        </div>
+
+        <p><strong>שלב 1: הבקשה שאנחנו ניתן ל-AI (הפרומפט - Prompt):</strong></p>
+        <div style="padding: 15px; background: #fff; border: 1px dashed var(--secondary); border-radius: 8px; margin-bottom:20px; font-style: italic;">
+            "היי AI, אני מרים עכשיו מסד נתונים לאפליקציית מוזיקה בענן. תכתוב לי פקודת SQL שיוצרת טבלה (CREATE TABLE) בשם 'שירים'. הטבלה צריכה לכלול: מזהה שיר, שם השיר, ואורך השיר."
+        </div>
+
+        <p><strong>שלב 2: הקוד שה-AI הקיא לנו תוך שנייה:</strong></p>
+        <div class="sql-visual-card">
+            <span style="color:#569cd6;">CREATE TABLE</span> songs (<br>
+            &nbsp;&nbsp;id <span style="color:#4fc1ff;">INT PRIMARY KEY</span>,<br>
+            &nbsp;&nbsp;title <span style="color:#4fc1ff;">VARCHAR</span>(100),<br>
+            &nbsp;&nbsp;duration_sec <span style="color:#4fc1ff;">INT</span><br>
+            );
+        </div>
+
+        <h3 style="margin-top: 30px; color: var(--primary);">שלב 3: עבודת הארכיטקט (הביקורת שלכם)</h3>
+        <p>הקוד טכנית נכון ועובד. אם נדביק אותו בסימולטור תיבנה טבלת שירים. אבל משהו כאן מאוד חסר בראייה עסקית. בואו נראה אם אתם מצליחים לזהות את הפאדיחה של ה-AI:</p>
+        
+        <!-- AI Review Exercise -->
+        <div class="interactive-zone" style="background:var(--primary-light); border-color:var(--primary);">
+            <h4 style="margin-bottom: 15px; color:var(--text-main);">סמנו את הטעות הקריטית (מבחינת קשרים עסקיים) בקוד שה-AI כתב:</h4>
+            
+            <div id="aiReviewQuiz" style="display:flex; flex-direction:column; gap:10px;">
+                <label style="display:flex; align-items:center; gap:12px; padding:15px; background:white; border-radius:var(--radius-sm); border:1px solid var(--border); cursor:pointer;" id="airev-0">
+                    <input type="checkbox" id="airev-cb-0" style="width:18px; height:18px;">
+                    <span>ה-AI שכח לייצר מפתח זר (Foreign Key) שיקשר את השיר ל"אמן/זמר" (Artist_ID) ששר אותו! האפליקציה לא תדע של מי השיר לעולם.</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:12px; padding:15px; background:white; border-radius:var(--radius-sm); border:1px solid var(--border); cursor:pointer;" id="airev-1">
+                    <input type="checkbox" id="airev-cb-1" style="width:18px; height:18px;">
+                    <span>חסר מפתח ראשי (PK). ה-AI שכח לשים אותו.</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:12px; padding:15px; background:white; border-radius:var(--radius-sm); border:1px solid var(--border); cursor:pointer;" id="airev-2">
+                    <input type="checkbox" id="airev-cb-2" style="width:18px; height:18px;">
+                    <span>הקוד לא יעבוד כי אי אפשר לשמור שם של שיר (title) כ-VARCHAR טקסט.</span>
+                </label>
+            </div>
+            
+            <button class="btn-action mt-3" style="margin-top: 15px;" onclick="checkAIReview()">בצע ביקורת (Code Review)</button>
+            <div id="aiReviewFeedback" class="quiz-feedback"></div>
+        </div>
+
+        <div class="highlight-box green">
+            <p><strong>המסקנה:</strong> גישת AI-First לא אומרת "לכבות את המוח". היא אומרת שאנחנו מבינים את מושגי היסוד שלמדנו היום (PK, FK, סוגי נתונים), מנחים את ה-AI לבצע את כתיבת ה-SQL ה"שחורה", ובודקים שהוא לא פגע בארכיטקטורה שהאפליקציה צריכה כדי להצליח.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 4: PRODUCT LIFECYCLE ==================== -->
+<section class="section" id="section4">
+    <div class="section-header">
+        <div class="section-number">4</div>
+        <h2 class="section-title">התמונה הגדולה: איך באמת בונים אפליקציה?</h2>
+    </div>
+    
+    <div class="content-block">
+        <p>עכשיו שיש לכם את כל החתיכות של הפאזל (טבלאות, SQL, מפתחות, AI), ככה נראה מחזור הפיתוח האמיתי שאתם תבצעו בפרויקט הגמר בקורס ובמקום העבודה:</p>
+        
+        <ol style="font-size: 1.15rem; line-height: 2; margin: 20px 20px 30px 0; color: var(--text-secondary);">
+            <li><strong>איפיון (The Idea):</strong> מבינים מה האפליקציה עושה ואילו אובייקטים היא צריכה (לקוחות, הזמנות).</li>
+            <li><strong>ארכיטקטורה (ERD):</strong> קובעים אילו <strong>טבלאות</strong> ניצור, מי יהיה המפתח הראשי (<strong>PK</strong>) ואיך נקשר ביניהן (<strong>FK</strong>).</li>
+            <li><strong>הקמת התשתית:</strong> משתמשים ב-AI ליצירת פקודת <strong><code>CREATE TABLE</code></strong> או בונים אותה ידנית בכלי נוח כמו Airtable.</li>
+            <li><strong>הזרמת נתונים:</strong> משתמשים עושים פעולות באפליקציה ששולחות פקודות <strong><code>INSERT INTO</code></strong> למסד.</li>
+            <li><strong>הפקת ערך ודשבורדים:</strong> משתמשים בפקודות <strong><code>SELECT</code></strong> כדי לשלוף נתונים, לייצר גרפים ולתת למנכ"ל תובנות.</li>
+        </ol>
+
+        <div class="content-block" style="border: 2px solid var(--primary); background: var(--primary-light); box-shadow:none; margin-bottom:0;">
+            <h3 style="color: var(--primary);">🚀 לקראת השיעור הבא: פרויקט No-Code באיירטייבל</h3>
+            <p>היום הבנו את התיאוריה ואת שפת ה-SQL. בשיעור הבא אנחנו זונחים את המסכים השחורים, נכנסים ל-<strong>Airtable</strong> ומתחילים לבנות מסד נתונים ויזואלי אמיתי (שמשמש אלפי סטארטאפים!). נבנה אפליקציה מתפקדת בלי לכתוב שורת קוד אחת.</p>
+            <p style="font-weight: 600; margin-top:15px;">המשימה שלכם לקראת השיעור (5 דקות):</p>
+            <ul>
+                <li>ודאו שיש לכם דפדפן Google Chrome מותקן ומעודכן על הלפטופ.</li>
+                <li>פתחו חשבון חינמי באתר <a href="https://airtable.com" target="_blank" style="color:var(--primary); font-weight:bold;">Airtable.com</a> (אפשר דרך כניסה עם Google).</li>
+                <li><strong>אתגר חשיבה:</strong> חשבו על רעיון לאפליקציה שתרצו לפתח במהלך הקורס (ניהול משמרות? ניהול סטודיו ליוגה? אפליקציית מתכונים?). נסו לרשום על דף אילו 2 טבלאות תצטרכו עבורה.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer style="text-align: center; padding: 40px; color: var(--text-muted); border-top: 1px solid var(--border); background:white;">
+    <p>© 2026 | קורס ניהול נתונים ובינה עסקית (מבוא מאפס - חלק ב') | נבנה עם ❤️</p>
+</footer>
+
+<!-- ======== FLOATING SCORE ======== -->
+<div class="score-floating" id="scoreFloat">
+    <span>⭐</span>
+    <span class="score-label">התקדמות חידונים</span>
+    <span class="score-value" id="scoreDisplay">0/5</span>
+</div>
+
+<!-- ======== JAVASCRIPT ======== -->
+<script>
+// ============ GLOBAL STATE ============
+let totalScore = 0;
+let answeredQuizzes = new Set();
+const totalQuizzes = 6; // DragSQL, QuizCreate, QuizInsert, QuizSelect, AI Warmup, AI Review
+
+// Simulator State
+let isTableCreated = false;
+let myStudentsDB = [];
+
+function updateScore() {
+    document.getElementById('scoreDisplay').textContent = totalScore + '/' + totalQuizzes;
+}
+
+// ... existing code for quizzes and drag&drop ...
+
+function resetDragExerciseSQL() {
+    if (answeredQuizzes.has('dragSQL')) return; // Don't allow reset if already passed
+    const source = document.getElementById('dragSourceSQL');
+    document.querySelectorAll('#dragExerciseSQL .drag-item').forEach(item => {
+        item.classList.remove('placed');
+        item.setAttribute('draggable', 'true');
+        item.style.borderColor = 'var(--border-focus)';
+        item.style.color = 'var(--text-main)';
+        item.style.background = 'white';
+        delete item.dataset.placedIn;
+        source.appendChild(item);
+    });
+    document.getElementById('dragFeedbackSQL').classList.remove('show');
+}
+
+// ============ SQL SIMULATORS (CREATE, INSERT, SELECT) ============
+
+function runSQLCreate() {
+    const input = document.getElementById('sqlInputCreate').value.trim().toLowerCase();
+    const res = document.getElementById('sqlResultsCreate');
+    
+    if(!input.includes('create table students')) {
+        res.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">❌ שגיאה: הפקודה חייבת להיות CREATE TABLE students.</div>`;
+        return;
+    }
+    if(!input.includes('int primary key') && !input.includes('primary key')) {
+        res.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">❌ שגיאה: שכחתם להגדיר את המזהה כמפתח ראשי (PRIMARY KEY).</div>`;
+        return;
+    }
+    
+    isTableCreated = true;
+    myStudentsDB = []; // Reset DB on fresh create
+    
+    res.innerHTML = `<div style="color: #10b981; padding: 10px; background: rgba(16,185,129,0.1); border-left: 3px solid #10b981;">✅ הצלחה (Success)! טבלת students הוקמה בזיכרון המערכת ומחכה שתכניסו אליה נתונים במשימה הבאה.</div>`;
+}
+
+function renderInsertTable(resElement) {
+    if (myStudentsDB.length === 0) return;
+    let html = '<table class="sql-result-table" style="margin-top: 10px;"><thead><tr><th>id 🔑</th><th>name</th></tr></thead><tbody>';
+    myStudentsDB.forEach(row => {
+        html += `<tr><td>${row.id}</td><td>${row.name}</td></tr>`;
+    });
+    html += '</tbody></table>';
+    resElement.innerHTML += html;
+}
+
+function runSQLInsert() {
+    const input = document.getElementById('sqlInputInsert').value.trim();
+    const inputLower = input.toLowerCase();
+    const res = document.getElementById('sqlResultsInsert');
+    
+    if(!isTableCreated) {
+        res.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">❌ שגיאה: אי אפשר להכניס נתונים לטבלה שעוד לא קיימת! גשו קודם למשימה 1 (CREATE) והקימו את הטבלה.</div>`;
+        return;
+    }
+    if(!inputLower.includes('insert into')) {
+        res.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">❌ שגיאה: חסרה הפקודה INSERT INTO.</div>`;
+        return;
+    }
+    
+    // Extract values using Regex: matches VALUES ( 1 , 'Tal' )
+    const match = input.match(/values\s*\(\s*(\d+)\s*,\s*'([^']+)'\s*\)/i);
+    
+    if (!match) {
+        // Did they forget quotes?
+        const matchNoQuotes = input.match(/values\s*\(\s*(\d+)\s*,\s*([^)]+)\s*\)/i);
+        if (matchNoQuotes && !matchNoQuotes[2].includes("'")) {
+             res.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">❌ שגיאת מערכת (Syntax Error): המערכת קרסה! שכחתם לשים מירכאות בודדות (') סביב השם שהזנתם. המחשב חושב שהשם הוא פקודה.</div>`;
+             return;
+        }
+        res.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">❌ שגיאה: המבנה של הערכים לא תקין. ודאו שכתבתם נכון, למשל: VALUES (1, 'Tal');</div>`;
+        return;
+    }
+
+    const newId = parseInt(match[1]);
+    const newName = match[2];
+
+    // Primary Key Check
+    if (myStudentsDB.some(s => s.id === newId)) {
+        res.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">🚨 שגיאה קריטית במסד הנתונים (Primary Key Violation): כבר קיים סטודנט בטבלה עם המזהה ${newId}! אסור להכניס כפילויות של מפתח ראשי.</div>`;
+        renderInsertTable(res);
+        return;
+    }
+
+    myStudentsDB.push({id: newId, name: newName});
+    
+    res.innerHTML = `<div style="color: #10b981; padding: 10px; background: rgba(16,185,129,0.1); border-left: 3px solid #10b981;">✅ הצלחה! השורה נדחפה למסד הנתונים. המשיכו להכניס שורות נוספות לפי המשימה (שנו את ה-id והשם והריצו שוב).</div>`;
+    renderInsertTable(res);
+    
+    // Auto update terminal 3 hint
+    document.getElementById('sqlResultsSelect').innerHTML = `<div style="color: #a5d6ff; padding: 10px;">לחצו על כפתור ההרצה כדי לשלוף נתונים מהטבלה שבניתם (כרגע יש בה ${myStudentsDB.length} סטודנטים).</div>`;
+}
+
+function runSQLSelect() {
+    const input = document.getElementById('sqlInputSelect').value.trim();
+    const inputLower = input.toLowerCase();
+    const resultsDiv = document.getElementById('sqlResultsSelect');
+    
+    if(!isTableCreated || myStudentsDB.length === 0) {
+        resultsDiv.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">❌ שגיאה: טבלת הסטודנטים שלכם עדיין ריקה! עלו למעלה למשימה 2 והכניסו כמה סטודנטים פנימה לפני שאתם שולפים.</div>`;
+        return;
+    }
+    
+    let data = [...myStudentsDB];
+    
+    try {
+        if (!inputLower.includes('select')) throw new Error("פקודת SQL חסרה. התחילו עם המילה SELECT.");
+        if (!inputLower.includes('from students')) throw new Error("מאיזו טבלה לשלוף? חסר המשפט: FROM students");
+        
+        // Dynamic WHERE parser for simple conditions
+        if (inputLower.includes("where")) {
+            // extract condition like name = 'shir' or id = 2
+            const nameMatch = input.match(/name\s*=\s*'([^']+)'/i);
+            const idMatch = input.match(/id\s*=\s*(\d+)/i);
+            
+            if (nameMatch) {
+                const searchName = nameMatch[1].toLowerCase();
+                data = data.filter(r => r.name.toLowerCase() === searchName);
+            } else if (idMatch) {
+                const searchId = parseInt(idMatch[1]);
+                data = data.filter(r => r.id === searchId);
+            } else {
+                data = []; // Fallback empty if condition is unknown
+            }
+        }
+        
+        if (data.length === 0) {
+            resultsDiv.innerHTML = `<div style="color: #a5d6ff; padding: 10px;">הפקודה רצה בהצלחה (0 שגיאות), אבל לא נמצאו סטודנטים בטבלה שלכם שתואמים לסינון שביקשתם ב-WHERE.</div>`;
+            return;
+        }
+
+        let html = '<table class="sql-result-table"><thead><tr><th>id</th><th>name</th></tr></thead><tbody>';
+        data.forEach(row => {
+            html += `<tr><td>${row.id}</td><td>${row.name}</td></tr>`;
+        });
+        html += '</tbody></table>';
+        html += `<div style="color: #8b949e; margin-top:10px; font-size:0.85rem;">>> המערכת שלפה ${data.length} שורות מהענן.</div>`;
+        resultsDiv.innerHTML = html;
+    } catch(e) {
+        resultsDiv.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">❌ שגיאת מערכת: ${e.message}</div>`;
+    }
+}
+
+// ============ AI REVIEW CHECKLISTS ============
+
+function checkAIWarmup() {
+    if (answeredQuizzes.has('aiWarmup')) return;
+    
+    const isCorrect = document.getElementById('aiw-cb-1').checked;
+    const fb = document.getElementById('aiWarmupFeedback');
+    
+    if (isCorrect) {
+        document.getElementById('aiw-1').style.borderColor = 'var(--success)';
+        document.getElementById('aiw-1').style.background = 'var(--success-light)';
+        
+        fb.className = 'quiz-feedback show correct';
+        fb.innerHTML = `✅ מצוין! תפסתם את ה-AI בטעות של מתחילים. אם נשמור מחיר כטקסט, המערכת תתייחס למחיר 50 כמו למילה "חתול". לא נוכל לחשב סך קניות או מע"מ!`;
+        answeredQuizzes.add('aiWarmup');
+        totalScore++;
+        updateScore();
+        
+        document.getElementById('aiw-cb-0').disabled = true;
+        document.getElementById('aiw-cb-1').disabled = true;
+    } else {
+        fb.className = 'quiz-feedback show wrong';
+        fb.innerHTML = `❌ לא מדויק. ה-AI לא אמור לכתוב פה INSERT (כי בינתיים רק יצרנו את המבנה עם CREATE). הבעיה מסתתרת בסוג המידע (Type) שהוא בחר להקצות לעמודת המחיר.`;
+    }
+}
+
+function checkAIReview() {
+    if (answeredQuizzes.has('aiReview')) return;
+    
+    // Checkbox 0 is the correct finding (missing FK)
+    // Checkbox 1 is false (PK is there)
+    // Checkbox 2 is false (saying it's fine, not an error finding)
+    
+    const isCb0Checked = document.getElementById('airev-cb-0').checked;
+    const isCb1Checked = document.getElementById('airev-cb-1').checked;
+    const isCb2Checked = document.getElementById('airev-cb-2').checked;
+    
+    const fb = document.getElementById('aiReviewFeedback');
+    
+    if (isCb0Checked && !isCb1Checked && !isCb2Checked) {
+        // Perfect
+        document.getElementById('airev-0').style.borderColor = 'var(--success)';
+        document.getElementById('airev-0').style.background = 'var(--success-light)';
+        
+        fb.className = 'quiz-feedback show correct';
+        fb.innerHTML = `✅ עבודת ארכיטקטורה מצוינת! זיהיתם שחסר ה"דבק" - מפתח זר (FK) שיקשר את השיר לאמן במערכת. בלעדיו האפליקציה תהיה חסרת משמעות. שימו לב שה-PK (id) והטקסט (VARCHAR) דווקא הוגדרו נכון על ידי ה-AI.`;
+        answeredQuizzes.add('aiReview');
+        totalScore++;
+        updateScore();
+        
+        // Disable checkboxes
+        document.getElementById('airev-cb-0').disabled = true;
+        document.getElementById('airev-cb-1').disabled = true;
+        document.getElementById('airev-cb-2').disabled = true;
+    } else {
+        fb.className = 'quiz-feedback show wrong';
+        fb.innerHTML = `❌ לא מדויק. ה-AI כן זכר מפתח ראשי (id INT PRIMARY KEY), וזה מצוין שהשם הוא טקסט VARCHAR. מה שחסר לו קריטית בראייה עסקית זה הקשר החוצה (Foreign Key) למי ששר את השיר! נסו לתקן את הסימון שלכם.`;
+    }
+}
+
+// ============ UTILITIES ============
+window.addEventListener('scroll', () => {
+    // Progress Bar
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progressBar').style.width = (scrollTop / docHeight) * 100 + '%';
+
+    // Nav Highlight
+    let current = "";
+    document.querySelectorAll('.section').forEach(section => {
+        if (pageYOffset >= section.offsetTop - 150) current = section.getAttribute('id');
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) link.classList.add('active');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    initDragDropSQL();
+});
+</script>
+
+</body>
+</html>
