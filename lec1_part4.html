@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הרצאה 1 - חלק ד' | אתגרי SQL, אנליטיקה ובקרת AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* צבעי בסיס - בהיר ויוקרתי */
+            --primary: #4f46e5; 
+            --primary-light: #eef2ff;
+            --primary-hover: #4338ca;
+            --secondary: #0ea5e9; 
+            --accent: #f43f5e; 
+            --success: #10b981; 
+            --success-light: #d1fae5;
+            --warning: #f59e0b; 
+            --warning-light: #fef3c7;
+            --danger: #ef4444; 
+            --danger-light: #fee2e2;
+            
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-accent: #f1f5f9;
+            
+            --text-main: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            
+            --border: #e2e8f0;
+            --border-focus: #cbd5e1;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            
+            --gradient-main: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ======== SCROLLBAR ======== */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-page); }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; }
+
+        /* ======== PROGRESS BAR ======== */
+        .progress-bar-container { position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 2000; background: rgba(0,0,0,0.05); }
+        .progress-bar-fill { height: 100%; background: var(--gradient-main); width: 0%; transition: width 0.2s ease-out; }
+
+        /* ======== HERO SECTION ======== */
+        .hero { background: linear-gradient(135deg, #ffffff 0%, var(--primary-light) 100%); padding: 100px 20px 80px; text-align: center; position: relative; border-bottom: 1px solid var(--border); overflow: hidden; }
+        .hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(var(--border) 1px, transparent 1px); background-size: 30px 30px; opacity: 0.5; z-index: 0; }
+        .hero-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: white; padding: 8px 24px; border-radius: 100px; font-weight: 700; font-size: 0.95rem; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25); }
+        .hero h1 { font-family: 'Rubik', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 24px; }
+        .hero h1 span { color: var(--primary); }
+        .hero p { font-size: 1.3rem; color: var(--text-secondary); max-width: 750px; margin: 0 auto 30px; }
+
+        /* ======== NAVIGATION ======== */
+        .nav-sticky { position: sticky; top: 15px; z-index: 1000; width: 95%; max-width: 1200px; margin: -35px auto 40px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 100px; padding: 8px 15px; display: flex; gap: 5px; box-shadow: var(--shadow-lg); overflow-x: auto; scrollbar-width: none; }
+        .nav-sticky::-webkit-scrollbar { display: none; }
+        .nav-link { color: var(--text-muted); text-decoration: none; padding: 10px 18px; border-radius: 100px; font-size: 0.95rem; font-weight: 700; transition: all 0.2s; white-space: nowrap; }
+        .nav-link:hover { color: var(--primary); background: var(--bg-accent); }
+        .nav-link.active { background: var(--primary); color: white; box-shadow: var(--shadow-sm); }
+
+        /* ======== MAIN CONTENT ======== */
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px 80px; }
+        .section { margin-bottom: 80px; scroll-margin-top: 100px; }
+        .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; border-bottom: 2px solid var(--border); padding-bottom: 15px; }
+        .section-number { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: var(--primary-light); color: var(--primary); border-radius: var(--radius-sm); font-family: 'Rubik', sans-serif; font-weight: 800; font-size: 1.4rem; }
+        .section-title { font-family: 'Rubik', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text-main); }
+
+        .content-block { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 35px; box-shadow: var(--shadow-sm); margin-bottom: 25px; }
+        .content-block h3 { font-family: 'Rubik', sans-serif; font-size: 1.5rem; margin-bottom: 15px; color: var(--primary); }
+        .content-block p { font-size: 1.1rem; margin-bottom: 15px; color: var(--text-secondary); }
+
+        /* ======== HIGHLIGHT BOXES ======== */
+        .highlight-box { padding: 20px; border-radius: var(--radius-md); margin: 20px 0; border-right: 5px solid; }
+        .highlight-box.blue { background: var(--primary-light); border-color: var(--primary); }
+        .highlight-box.green { background: var(--success-light); border-color: var(--success); }
+        .highlight-box.orange { background: var(--warning-light); border-color: var(--warning); }
+        .highlight-box.red { background: var(--danger-light); border-color: var(--danger); }
+        .highlight-box.purple { background: #f3e8ff; border-color: #d946ef; }
+        .highlight-box p { margin: 0; color: var(--text-main); font-weight: 500; font-size: 1.1rem; }
+
+        /* ======== SQL PLAYGROUND ======== */
+        .sql-playground { background: #1e1e1e; border-radius: var(--radius-lg); overflow: hidden; margin: 30px 0; box-shadow: var(--shadow-lg); }
+        .sql-header { background: #2d2d2d; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; color: #fff; border-bottom: 1px solid #404040; }
+        .sql-editor { padding: 20px; }
+        .sql-input { width: 100%; min-height: 100px; background: #1e1e1e; border: 1px solid #404040; border-radius: var(--radius-sm); padding: 15px; color: #d4d4d4; font-family: 'Fira Code', monospace; font-size: 1.1rem; direction: ltr; text-align: left; resize: vertical; line-height: 1.5; outline: none; transition: border-color 0.2s; }
+        .sql-input:focus { border-color: var(--secondary); }
+        .sql-results { padding: 0; font-family: 'Assistant', sans-serif; background:#252526;}
+        .results-header { padding: 10px 20px; background: #333333; color: #a5d6ff; font-size: 0.9rem; font-weight: 600; display: flex; justify-content: space-between; }
+        
+        /* ======== VISUAL TABLES ======== */
+        .sql-result-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; direction: ltr; text-align: left; background: #1e1e1e; }
+        .sql-result-table th { background: #2d2d2d; padding: 12px 15px; color: #4fc1ff; font-family: 'Fira Code', monospace; border-bottom: 2px solid #404040; }
+        .sql-result-table td { padding: 12px 15px; color: #cccccc; border-bottom: 1px solid #333333; transition: background 0.3s; }
+        .sql-result-table tr.updated-row td { animation: highlightUpdate 3s ease-out; }
+        @keyframes highlightUpdate { 0% { background-color: rgba(245, 158, 11, 0.4); color: white; font-weight:bold; } 100% { background-color: transparent; } }
+
+        /* ======== INTERACTIVE QUIZZES ======== */
+        .quiz-container { background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px; margin: 30px 0; position: relative; box-shadow: var(--shadow-md); }
+        .quiz-container::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 4px; background: var(--gradient-main); }
+        .quiz-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .quiz-icon { width: 40px; height: 40px; background: var(--warning-light); color: var(--warning); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .quiz-title { font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 1.2rem; }
+        .quiz-question { font-size: 1.15rem; font-weight: 600; margin-bottom: 20px; color: var(--text-main); }
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .quiz-option { display: flex; align-items: center; gap: 15px; padding: 15px 20px; background: var(--bg-page); border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; font-size: 1.05rem; font-weight: 500; }
+        .quiz-option.selected { border-color: var(--primary); background: var(--primary-light); }
+        .quiz-option.correct { border-color: var(--success); background: var(--success-light); }
+        .quiz-option.wrong { border-color: var(--danger); background: var(--danger-light); }
+        .quiz-option .option-marker { width: 32px; height: 32px; border-radius: 50%; background: white; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+        .quiz-option.selected .option-marker { border-color: var(--primary); background: var(--primary); color: white; }
+        .quiz-option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .quiz-option.wrong .option-marker { border-color: var(--danger); background: var(--danger); color: white; }
+        
+        .quiz-feedback { padding: 15px 20px; border-radius: var(--radius-md); font-size: 1.05rem; font-weight: 600; display: none; margin-top: 15px; }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct { background: var(--success-light); color: #065f46; border: 1px solid #a7f3d0; }
+        .quiz-feedback.wrong { background: var(--danger-light); color: #991b1b; border: 1px solid #fecaca; }
+
+        .btn-action { padding: 10px 24px; background: var(--primary); border: none; border-radius: 100px; color: white; font-family: 'Assistant', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); }
+        .btn-action:hover { transform: translateY(-2px); background: var(--primary-hover); box-shadow: 0 6px 12px rgba(79, 70, 229, 0.3); }
+
+        code { background: var(--primary-light); color: var(--primary); padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 0.9rem; font-weight: bold; }
+        .sql-badge { background: #333; color: #4fc1ff; padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 0.8rem; }
+        
+        .ai-code-block { padding: 15px; background: #1e1e1e; color: #d4d4d4; font-family: 'Fira Code', monospace; border-radius: 8px; direction: ltr; text-align: left; margin: 15px 0; border-left: 4px solid var(--accent); }
+
+        /* ======== FLOATING SCORE ======== */
+        .score-floating { position: fixed; bottom: 30px; left: 30px; background: white; border: 2px solid var(--border); border-radius: 100px; padding: 10px 20px; display: flex; align-items: center; gap: 12px; z-index: 1000; box-shadow: var(--shadow-lg); direction: ltr; }
+        .score-value { font-family: 'Rubik', sans-serif; font-weight: 900; font-size: 1.5rem; color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar-container"><div class="progress-bar-fill" id="progressBar"></div></div>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge"><span class="pulse"></span>חלק ד': מים עמוקים. הצלחה מובטחת.</div>
+        <h1>אתגרי SQL, אנליטיקה<br><span>ובקרת AI</span></h1>
+        <p>למדנו ליצור, להכניס ולשלוף. אבל מה קורה כשעובד מבקש העלאה בשכר? איך המנכ"ל מחשב בלחיצת כפתור את סך כל ההוצאות של החברה? ומה קורה כשה-AI שלנו עושה טעויות הרסניות? ברוכים הבאים לעולם האמיתי.</p>
+    </div>
+</section>
+
+<nav class="nav-sticky" id="mainNav">
+    <a href="#section1" class="nav-link active">עדכון (UPDATE)</a>
+    <a href="#section2" class="nav-link">חיפושים מתקדמים</a>
+    <a href="#section3" class="nav-link">אנליטיקה (Aggregations)</a>
+    <a href="#section4" class="nav-link">בקרת AI (The Architect)</a>
+    <a href="#section5" class="nav-link">ארגז החול האולטימטיבי</a>
+</nav>
+
+<main class="container">
+
+<!-- ==================== SECTION 1: UPDATE ==================== -->
+<section class="section" id="section1">
+    <div class="section-header">
+        <div class="section-number">1</div>
+        <h2 class="section-title">החתיכה החסרה: לעדכן בלי למחוק (UPDATE)</h2>
+    </div>
+    <div class="content-block">
+        <p>בעולם הנתונים יש מושג שנקרא <strong>CRUD</strong> - אלו 4 הפעולות שכל אפליקציה בעולם עושה: <br>
+        <strong>C</strong>reate (הכנסה/INSERT) <br>
+        <strong>R</strong>ead (קריאה/SELECT) <br>
+        <strong>U</strong>pdate (עדכון/UPDATE) <br>
+        <strong>D</strong>elete (מחיקה/DELETE).</p>
+        
+        <p>עד עכשיו למדנו את C, R, ו-D. אבל מה קורה כשהעובד Dan (מזהה מס' 3) עובר למחלקת המכירות (Sales) ומקבל העלאה? אנחנו לא נמחק אותו וניצור מחדש! אנחנו נעדכן את השורה שלו בעזרת פקודת <strong>UPDATE</strong>.</p>
+        
+        <div class="highlight-box red">
+            <p style="color:#b91c1c;"><strong>⚠️ סכנה כמו במחיקה:</strong> אם נריץ פקודת UPDATE ללא המילה <code>WHERE</code> שאומרת את מי לעדכן, <strong>המחשב יעדכן את כל השורות בטבלה!</strong> פתאום כל העובדים בחברה ירוויחו 30,000 ש"ח. לכן, משתמשים תמיד ב-<code>WHERE</code> יחד עם המפתח הראשי (id).</p>
+        </div>
+    </div>
+
+    <!-- SIMULATOR: UPDATE -->
+    <div class="interactive-zone" style="background:#fffbeb; border-color:#f59e0b;">
+        <h3 style="color:#f59e0b; margin-bottom: 10px;">משימה 1: מתן העלאה בשכר</h3>
+        <p>העובד <strong>Dan (מזהה 3)</strong> עשה עבודה מצוינת. המנכ"ל מבקש להעלות את השכר (salary) שלו ל-18000 ולהעביר אותו למחלקת 'Sales'.</p>
+        <p><strong>השלימו את הפקודה במסוף והריצו. שימו לב להדגשה בטבלה לאחר ההרצה.</strong> לא לשכוח מירכאות סביב השם 'Sales'!</p>
+
+        <div class="sql-playground">
+            <div class="sql-header">
+                <span>⚡ HR Terminal: Promotion System</span>
+                <span style="font-size:0.8rem; background:#444; padding:2px 6px; border-radius:4px;">UPDATE</span>
+            </div>
+            <div class="sql-results" id="sqlStateUpdate" style="border-bottom: 2px solid #404040;">
+                <!-- Initial State Renders Here -->
+            </div>
+            <div class="sql-editor">
+                <textarea class="sql-input" id="sqlInputUpdate" spellcheck="false" style="min-height:80px;">UPDATE employees
+SET salary = 18000, department = 'Sales'
+WHERE id = 3;</textarea>
+                <div style="margin-top: 15px;">
+                    <button class="btn-action" style="background:#f59e0b;" onclick="runSQLUpdate()">▶ בצע עדכון (Run)</button>
+                </div>
+            </div>
+            <div class="sql-results" id="sqlResultsUpdate" style="padding-top:20px; border-top: 1px dashed #404040; display:none;"></div>
+        </div>
+    </div>
+
+    <!-- QUIZ 1 -->
+    <div class="quiz-container" id="quizUpdate">
+        <div class="quiz-header"><div class="quiz-icon">❓</div><span class="quiz-title">חידון: סכנות ה-UPDATE</span></div>
+        <div class="quiz-question">כתבתם: <code>UPDATE employees SET department = 'HR';</code> והרצתם (בלי המילה WHERE). מה תהיה התוצאה?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this, 'quizUpdate')"><span class="option-marker">א</span><span>המחשב לא יעשה כלום ויבקש WHERE.</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quizUpdate')"><span class="option-marker">ב</span><span>המחשב ישנה את המחלקה של <strong>כל העובדים בחברה</strong> ל-HR. הרסתם את מסד הנתונים!</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quizUpdate')"><span class="option-marker">ג</span><span>המחשב יעדכן רק את העובד הראשון בטבלה.</span></div>
+        </div>
+        <button class="btn-action mt-3" onclick="checkQuiz('quizUpdate', 1, 'נכון (ולצערנו כואב). בדיוק כמו ב-DELETE, פקודות שמשנות מידע ללא פילטר (WHERE), מבצעות את הפעולה על כל השורות בטבלה. תמיד תבדקו פעמיים שיש לכם WHERE מבוסס מפתח ראשי (id)!')">בדוק תשובה</button>
+        <div class="quiz-feedback" id="quizUpdate-feedback"></div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 2: ADVANCED FILTERING ==================== -->
+<section class="section" id="section2">
+    <div class="section-header">
+        <div class="section-number">2</div>
+        <h2 class="section-title">למצוא מחט בערמת שחת (חיפושים מתקדמים)</h2>
+    </div>
+    
+    <div class="content-block">
+        <p>בעולם האמיתי אנחנו לא שולפים נתונים רק לפי id ספציפי או עיר מסוימת. המנכ"ל שואל שאלות מורכבות יותר, למשל: "מי מרוויח בין 15 ל-25 אלף?" או "מי מהעובדים מתחיל באות 'A'?".</p>
+        
+        <p>הכירו את כלי הסינון המתקדמים שמצטרפים למילה <code>WHERE</code>:</p>
+        <ul>
+            <li><code>BETWEEN X AND Y</code> : שולף ערכים שנמצאים בתוך טווח (למשל טווח שכר).</li>
+            <li><code>IN ('Sales', 'HR')</code> : במקום לכתוב (department = 'Sales' OR department = 'HR'), אפשר פשוט לתת רשימה בסוגריים.</li>
+            <li><code>LIKE 'A%'</code> : חיפוש טקסט גמיש. הסימן <code>%</code> אומר "לא אכפת לי מה בא אחרי". כלומר: תביא לי כל שם שמתחיל באות A.</li>
+        </ul>
+    </div>
+
+    <!-- SIMULATOR: ADVANCED WHERE -->
+    <div class="interactive-zone" style="background:#ecfdf5; border-color:#10b981;">
+        <h3 style="color:#10b981; margin-bottom: 10px;">משימה 2: דוחות חיתוך עמוק</h3>
+        <p>נסו את 3 השאילתות הבאות בזו אחר זו (הקלידו במקום השאילתה הקיימת במסוף ולחצו הרץ):</p>
+        <ol style="font-weight: 500; margin-bottom: 15px;">
+            <li>טווח שכר: <code style="direction:ltr;">SELECT * FROM employees WHERE salary BETWEEN 15000 AND 28000;</code></li>
+            <li>מחלקות ספציפיות: <code style="direction:ltr;">SELECT * FROM employees WHERE department IN ('Tech', 'HR');</code></li>
+            <li>שמות שמתחילים ב-A: <code style="direction:ltr;">SELECT * FROM employees WHERE name LIKE 'A%';</code></li>
+        </ol>
+
+        <div class="sql-playground">
+            <div class="sql-header">
+                <span>⚡ Reporting Terminal: Advanced Filters</span>
+            </div>
+            <div class="sql-editor">
+                <textarea class="sql-input" id="sqlInputFilters" spellcheck="false" style="min-height:80px;">SELECT * FROM employees 
+WHERE salary BETWEEN 15000 AND 28000;</textarea>
+                <div style="margin-top: 15px;">
+                    <button class="btn-action" style="background:#10b981;" onclick="runSQLFilters()">▶ הפק דוח מסונן</button>
+                </div>
+            </div>
+            <div class="sql-results" id="sqlResultsFilters"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 3: AGGREGATIONS ==================== -->
+<section class="section" id="section3">
+    <div class="section-header">
+        <div class="section-number">3</div>
+        <h2 class="section-title">אנליטיקה למנכ"לים: פונקציות סכום (Aggregations)</h2>
+    </div>
+    
+    <div class="content-block">
+        <p>הגענו ללב של עבודת ה-Data Analyst (מנתח נתונים). הרבה פעמים לא מעניין אותנו לראות את *כל* השורות. אנחנו רוצים תשובה שהיא <strong>מספר אחד בודד</strong> שנותן ערך עסקי.</p>
+        
+        <p>הכירו את פונקציות האגרגציה. הן יושבות בשאילתה בדיוק איפה ששמנו מקודם כוכבית (<code>*</code>):</p>
+        
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
+            <div style="background:var(--bg-accent); padding:15px; border-radius:8px; border-right:4px solid var(--primary);">
+                <strong>COUNT(id)</strong> - תספור כמה שורות (עובדים) יש. <em>(דוגמה: "כמה לקוחות פעילים יש לנו?")</em>
+            </div>
+            <div style="background:var(--bg-accent); padding:15px; border-radius:8px; border-right:4px solid var(--primary);">
+                <strong>SUM(salary)</strong> - תחבר את כל המשכורות ותחזיר את הסכום הכולל. <em>(דוגמה: "כמה כסף הוצאנו החודש?")</em>
+            </div>
+            <div style="background:var(--bg-accent); padding:15px; border-radius:8px; border-right:4px solid var(--primary);">
+                <strong>AVG(salary)</strong> - מהו הממוצע (Average). <em>(דוגמה: "מה קנייה הממוצעת באתר?")</em>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIMULATOR: AGGREGATIONS -->
+    <div class="interactive-zone" style="background:#e0e7ff; border-color:#4f46e5;">
+        <h3 style="color:#4f46e5; margin-bottom: 10px;">משימה 3: דשבורד מנהלים</h3>
+        <p>הקלידו את הפקודות הבאות וראו איך טבלה שלמה מתכווצת לכדי שורה אחת של נתון עסקי חשוב.</p>
+        <p>נסו לשלוף את השכר הממוצע (AVG) או את סך המשכורות (SUM). תוכלו אפילו לשלב <code>WHERE</code> כדי לראות "מה ממוצע השכר <strong>רק במחלקת Tech</strong>".</p>
+        <p style="font-size:0.9rem; color:var(--text-secondary);">לדוגמה: <code style="font-size:0.8rem;">SELECT AVG(salary) FROM employees WHERE department='Tech';</code></p>
+
+        <div class="sql-playground">
+            <div class="sql-header">
+                <span>⚡ Analytics Terminal: Aggregations</span>
+            </div>
+            <div class="sql-editor">
+                <textarea class="sql-input" id="sqlInputAgg" spellcheck="false" style="min-height:80px;">SELECT SUM(salary) 
+FROM employees;</textarea>
+                <div style="margin-top: 15px;">
+                    <button class="btn-action" style="background:#4f46e5;" onclick="runSQLAgg()">▶ חשב נתון אנליטי</button>
+                </div>
+            </div>
+            <div class="sql-results" id="sqlResultsAgg"></div>
+        </div>
+    </div>
+
+    <!-- QUIZ 2 -->
+    <div class="quiz-container" id="quizAgg">
+        <div class="quiz-header"><div class="quiz-icon">❓</div><span class="quiz-title">חידון: פונקציות סכום</span></div>
+        <div class="quiz-question">מה תעשה הפקודה הבאה? <br><code>SELECT COUNT(id) FROM employees WHERE department = 'Sales';</code></div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this, 'quizAgg')"><span class="option-marker">א</span><span>תחזיר טבלה עם השמות של כל מי שעובד במכירות.</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quizAgg')"><span class="option-marker">ב</span><span>תחזיר מספר בודד המייצג <strong>כמה (כמות)</strong> עובדים יש במחלקת המכירות.</span></div>
+            <div class="quiz-option" onclick="selectOption(this, 'quizAgg')"><span class="option-marker">ג</span><span>תחבר את המשכורות של מחלקת המכירות לסכום אחד.</span></div>
+        </div>
+        <button class="btn-action mt-3" onclick="checkQuiz('quizAgg', 1, 'בול! פונקציית COUNT פשוט סופרת כמות שורות שעונות על התנאי. זה הבסיס של כל דשבורד שמציג KPIs כמו &quot;מספר לקוחות פעילים&quot; או &quot;מספר הזמנות היום&quot;.')">בדוק תשובה</button>
+        <div class="quiz-feedback" id="quizAgg-feedback"></div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 4: AI ERROR CORRECTIONS ==================== -->
+<section class="section" id="section4">
+    <div class="section-header">
+        <div class="section-number">4</div>
+        <h2 class="section-title">בקרת AI: לתקן את המתכנת המלאכותי</h2>
+    </div>
+    
+    <div class="content-block">
+        <p>בעבודה האמיתית ב-2026, אנחנו כבר לא כותבים את הפקודות המורכבות האלו מאפס. אנחנו מזינים "פרומפט" (בקשה) ל-ChatGPT או Claude, והם מייצרים לנו את ה-SQL.</p>
+        <p>הבעיה: מודלי השפה הם גאונים טכניים, אבל הם חסרי היגיון עסקי. אם אנחנו (הארכיטקטים) לא נבדוק את הקוד שלהם בשבע עיניים, <strong>הם יכולים למחוק לנו מידע או לתת נתונים שגויים למנכ"ל.</strong></p>
+    </div>
+
+    <!-- AI ERROR 1: THE DANGEROUS UPDATE -->
+    <div class="content-block" style="border: 2px solid var(--accent); background: var(--bg-page);">
+        <h3 style="color: var(--accent);">תקלה מס' 1: העלאת השכר המסוכנת</h3>
+        <p><strong>הפרומפט שלכם ל-AI:</strong> "היי, תכתוב לי פקודה שנותנת למפתח שלנו עמית (Amit) בונוס של 5,000 שקלים למשכורת הנוכחית שלו."</p>
+        <p><strong>הקוד שה-AI ייצר:</strong></p>
+        <div class="ai-code-block">
+            <span style="color:#c586c0;">UPDATE</span> employees <br>
+            <span style="color:#569cd6;">SET</span> salary = salary + 5000 <br>
+            <span style="color:#c586c0;">WHERE</span> name = 'Amit';
+        </div>
+
+        <div class="quiz-container" id="quizAIUpdate" style="margin-top: 20px; box-shadow:none; border: 1px dashed var(--accent);">
+            <div class="quiz-question">מה מסוכן בקוד שה-AI הציע לנו? (רמז: חשבו על חברה של 1,000 עובדים)</div>
+            <div class="quiz-options">
+                <div class="quiz-option" onclick="selectOption(this, 'quizAIUpdate')"><span class="option-marker">א</span><span>אי אפשר לעשות פעולות מתמטיות (+) בתוך פקודת UPDATE.</span></div>
+                <div class="quiz-option" onclick="selectOption(this, 'quizAIUpdate')"><span class="option-marker">ב</span><span>הוא השתמש בשם (name) ולא במזהה הייחודי (id). אם יש בחברה עוד 3 עובדים שקוראים להם עמית, כולם יקבלו בונוס של 5,000 ש"ח בטעות!</span></div>
+                <div class="quiz-option" onclick="selectOption(this, 'quizAIUpdate')"><span class="option-marker">ג</span><span>הקוד מושלם ומוכן להרצה.</span></div>
+            </div>
+            <button class="btn-action mt-3" onclick="checkQuiz('quizAIUpdate', 1, 'נכון מאוד! זו הסיבה שתמיד צריך מבקר אנושי. בסיסי נתונים משתנים תמיד אך ורק לפי המפתח הראשי (Primary Key) כדי למנוע טעויות של כפילות שמות.')">בדוק את הביקורת שלי</button>
+            <div class="quiz-feedback" id="quizAIUpdate-feedback"></div>
+        </div>
+    </div>
+
+    <!-- AI ERROR 2: THE CONFUSED AGGREGATION -->
+    <div class="content-block" style="border: 2px solid var(--secondary); background: var(--bg-page);">
+        <h3 style="color: var(--secondary);">תקלה מס' 2: הדוח השגוי למנכ"ל</h3>
+        <p><strong>הפרומפט שלכם ל-AI:</strong> "מנהל מחלקת ה-Tech שאל מהו תקציב המשכורות הכולל של המחלקה שלו. כתוב לי שאילתה שמחשבת את זה."</p>
+        <p><strong>הקוד שה-AI ייצר:</strong></p>
+        <div class="ai-code-block" style="border-left-color: var(--secondary);">
+            <span style="color:#c586c0;">SELECT</span> SUM(salary) <br>
+            <span style="color:#569cd6;">FROM</span> employees;
+        </div>
+
+        <div class="quiz-container" id="quizAIAgg" style="margin-top: 20px; box-shadow:none; border: 1px dashed var(--secondary);">
+            <div class="quiz-question">מה חסר בקוד הזה שהופך את הדוח ללא רלוונטי עבור מנהל ה-Tech?</div>
+            <div class="quiz-options">
+                <div class="quiz-option" onclick="selectOption(this, 'quizAIAgg')"><span class="option-marker">א</span><span>ה-AI היה צריך להשתמש ב-COUNT במקום SUM.</span></div>
+                <div class="quiz-option" onclick="selectOption(this, 'quizAIAgg')"><span class="option-marker">ב</span><span>ה-AI סכם את המשכורות של <strong>כל</strong> עובדי החברה! הוא שכח לשים פילטר: <code>WHERE department = 'Tech'</code>.</span></div>
+                <div class="quiz-option" onclick="selectOption(this, 'quizAIAgg')"><span class="option-marker">ג</span><span>ה-AI היה צריך להציג גם את שמות העובדים ב-SELECT.</span></div>
+            </div>
+            <button class="btn-action mt-3" onclick="checkQuiz('quizAIAgg', 1, 'בול פגיעה! אם תריצו את קוד ה-AI כמו שהוא ותעבירו את המספר למנהל, הוא יקבל תקציב מנופח שכולל את אנשי המכירות וה-HR. אנחנו האדריכלים שצריכים להבטיח שהלוגיקה העסקית יושמה.')">בדוק את הביקורת שלי</button>
+            <div class="quiz-feedback" id="quizAIAgg-feedback"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 5: THE ULTIMATE SANDBOX ==================== -->
+<section class="section" id="section5">
+    <div class="section-header">
+        <div class="section-number">5</div>
+        <h2 class="section-title">מבחן הסיום: ארגז החול האולטימטיבי</h2>
+    </div>
+    
+    <div class="content-block" style="border: 2px solid var(--primary);">
+        <h3 style="color: var(--primary);">הוכיחו שאתם ארכיטקטים</h3>
+        <p>לפניכם מסד הנתונים המלא של החברה. כעת אתם חופשיים להשתמש בכל הפקודות שלמדנו: <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, ו-<code>SELECT</code> עם כל הפילטרים והאגרגציות.</p>
+        
+        <p style="font-weight:bold;">אתגרים לביצוע בארגז החול (שלב אחרי שלב):</p>
+        <ol style="margin-right:20px; margin-bottom: 20px; line-height:1.8;">
+            <li>הכניסו עובדת חדשה (INSERT) עם מזהה 5, השם 'Dana', במחלקת 'HR' עם שכר של 16000.</li>
+            <li>תנו העלאה בשכר לעובד Amit (מזהה 4) ל-35000 (UPDATE).</li>
+            <li>חשבו את ממוצע השכר (AVG) בכל החברה כדי לראות איך הוא הושפע מהשינויים שעשיתם.</li>
+            <li>מחקו את עובד מס' 1 (DELETE) וספרו שוב כמה עובדים נשארו (COUNT).</li>
+        </ol>
+
+        <!-- THE ULTIMATE PLAYGROUND -->
+        <div class="sql-playground" style="box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+            <div class="sql-header">
+                <span>⚡ The Ultimate Sandbox</span>
+            </div>
+            
+            <div class="sql-results" id="sandboxState" style="border-bottom: 2px solid #404040;">
+                <!-- Initial State Renders Here -->
+            </div>
+            
+            <div class="sql-editor" style="background:#111;">
+                <textarea class="sql-input" id="sandboxInput" spellcheck="false" style="min-height: 150px; font-size:1.2rem;">-- כתבו כאן את הפקודות שלכם (אחת בכל פעם):
+SELECT * FROM employees;</textarea>
+                <div style="margin-top: 15px; display:flex; gap:10px;">
+                    <button class="btn-action" style="background:var(--primary); padding:12px 30px;" onclick="runSandbox()">▶ הרץ פקודה (Run)</button>
+                    <button class="btn-action btn-outline" style="color:white; border-color:#666;" onclick="resetSandbox()">🔄 איפוס מסד נתונים להתחלה</button>
+                </div>
+            </div>
+            
+            <div class="sql-results" id="sandboxResult" style="padding-top:20px; border-top: 1px dashed #404040; display:none; background:#1e1e1e;">
+                <!-- Result renders here -->
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer style="text-align: center; padding: 40px; color: var(--text-muted); border-top: 1px solid var(--border); background:white;">
+    <p>© 2026 | קורס ניהול נתונים ובינה עסקית (חלק ד' - אתגרי SQL) | נבנה עם ❤️</p>
+</footer>
+
+<!-- ======== FLOATING SCORE ======== -->
+<div class="score-floating" id="scoreFloat">
+    <span>⭐</span>
+    <span class="score-label">בקרות ארכיטקט</span>
+    <span class="score-value" id="scoreDisplay">0/3</span>
+</div>
+
+<!-- ======== JAVASCRIPT ======== -->
+<script>
+// ============ GLOBAL STATE & DB ============
+let totalScore = 0;
+let answeredQuizzes = new Set();
+const totalQuizzes = 3; // Update Quiz, AI Update Quiz, AI Agg Quiz
+
+// Initial HR Database (reset state)
+const initialDB = [
+    { id: 1, name: 'Ron', department: 'Sales', role: 'Agent', salary: 12000, hire_date: '2024-05-01' },
+    { id: 2, name: 'Sarah', department: 'Tech', role: 'Developer', salary: 25000, hire_date: '2023-11-15' },
+    { id: 3, name: 'Dan', department: 'HR', role: 'Recruiter', salary: 14000, hire_date: '2025-01-20' },
+    { id: 4, name: 'Amit', department: 'Tech', role: 'Team Lead', salary: 30000, hire_date: '2022-03-10' },
+    { id: 5, name: 'Adi', department: 'Tech', role: 'Data Analyst', salary: 22000, hire_date: '2024-08-01' }
+];
+
+let dbUpdate = JSON.parse(JSON.stringify(initialDB));
+let dbSandbox = JSON.parse(JSON.stringify(initialDB));
+
+function updateScore() {
+    document.getElementById('scoreDisplay').textContent = totalScore + '/' + totalQuizzes;
+}
+
+// Helper to render the DB table
+function getTableHTML(dataArray, highlightId = null, highlightClass = 'new-row') {
+    let html = '<table class="sql-result-table"><thead><tr><th>id 🔑</th><th>name</th><th>department</th><th>role</th><th>salary</th><th>hire_date</th></tr></thead><tbody>';
+    
+    if (dataArray.length === 0) {
+         html += `<tr><td colspan="6" style="text-align:center; padding:20px; color:#8b949e;">הטבלה ריקה (0 תוצאות)</td></tr>`;
+    } else {
+        dataArray.forEach(row => {
+            const rowClass = (row.id === highlightId) ? highlightClass : '';
+            html += `<tr class="${rowClass}"><td>${row.id}</td><td>${row.name}</td><td>${row.department}</td><td>${row.role}</td><td>₪${row.salary.toLocaleString()}</td><td>${row.hire_date}</td></tr>`;
+        });
+    }
+    html += '</tbody></table>';
+    return html;
+}
+
+function renderStateTable(dataArray, resElement, title) {
+    let html = `<div class="results-header">${title} (${dataArray.length} עובדים)</div>`;
+    html += getTableHTML(dataArray);
+    resElement.innerHTML = html;
+}
+
+function renderAggTable(title, value) {
+    return `<table class="sql-result-table" style="width:auto; min-width:200px;"><thead><tr><th>${title}</th></tr></thead><tbody><tr><td style="font-weight:bold; font-size:1.2rem; color:var(--success);">${value}</td></tr></tbody></table>`;
+}
+
+// ============ QUIZ LOGIC ============
+function selectOption(el, quizId) {
+    if (answeredQuizzes.has(quizId)) return;
+    const container = document.getElementById(quizId);
+    container.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+}
+
+function checkQuiz(quizId, correctIndex, explanation) {
+    if (answeredQuizzes.has(quizId)) return;
+    
+    const container = document.getElementById(quizId);
+    const options = container.querySelectorAll('.quiz-option');
+    const selected = container.querySelector('.quiz-option.selected');
+    const feedback = document.getElementById(quizId + '-feedback');
+    
+    if (!selected) {
+        alert("אנא בחרו תשובה לפני הבדיקה.");
+        return;
+    }
+    
+    const selectedIndex = Array.from(options).indexOf(selected);
+    answeredQuizzes.add(quizId);
+    
+    options.forEach((o, i) => {
+        if (i === correctIndex) o.classList.add('correct');
+        else if (i === selectedIndex && i !== correctIndex) o.classList.add('wrong');
+        o.style.pointerEvents = 'none';
+    });
+    
+    if (selectedIndex === correctIndex) {
+        totalScore++;
+        feedback.className = 'quiz-feedback show correct';
+        feedback.innerHTML = '✅ ' + explanation;
+    } else {
+        feedback.className = 'quiz-feedback show wrong';
+        feedback.innerHTML = '❌ ' + explanation;
+    }
+    updateScore();
+}
+
+// ============ SIMULATOR 1: UPDATE ============
+function runSQLUpdate() {
+    const input = document.getElementById('sqlInputUpdate').value.trim();
+    const inputLower = input.toLowerCase();
+    const resBox = document.getElementById('sqlResultsUpdate');
+    resBox.style.display = 'block';
+    
+    if(!inputLower.includes('update employees')) {
+        resBox.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">❌ שגיאה: הפקודה צריכה להתחיל ב- UPDATE employees.</div>`;
+        return;
+    }
+    
+    if(!inputLower.includes('where')) {
+        resBox.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">🚨 סכנה: המערכת עצרה אותך! פקודת UPDATE ללא WHERE תדרוס את כל העובדים בחברה. הוסף תנאי (WHERE id = X).</div>`;
+        return;
+    }
+
+    // Rough parsing for "SET salary=18000, department='Sales'"
+    const matchId = inputLower.match(/id\s*=\s*(\d+)/);
+    if (!matchId) {
+        resBox.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">❌ נא לבצע עדכון לפי מפתח ראשי בלבד (WHERE id = X).</div>`;
+        return;
+    }
+    const updateId = parseInt(matchId[1]);
+    
+    let salaryMatch = inputLower.match(/salary\s*=\s*(\d+)/);
+    let deptMatch = input.match(/department\s*=\s*'([^']+)'/i);
+    
+    let updated = false;
+    dbUpdate.forEach(e => {
+        if (e.id === updateId) {
+            if (salaryMatch) e.salary = parseInt(salaryMatch[1]);
+            if (deptMatch) e.department = deptMatch[1];
+            updated = true;
+        }
+    });
+
+    if (!updated) {
+        resBox.innerHTML = `<div style="color: #f59e0b; padding: 10px; background: rgba(245,158,11,0.1); border-left: 3px solid #f59e0b;">⚠️ הפקודה רצה, אבל עובד ${updateId} לא קיים במערכת.</div>`;
+        return;
+    }
+
+    let html = `<div class="results-header" style="background:#065f46;">מצב הטבלה לאחר העדכון (השורה עודכנה בהצלחה!):</div>`;
+    html += getTableHTML(dbUpdate, updateId, 'updated-row');
+    resBox.innerHTML = html;
+    
+    renderStateTable(dbUpdate, document.getElementById('sqlStateUpdate'), 'מצב הטבלה לפני העדכון הבא:');
+}
+
+// ============ SIMULATOR 2: ADVANCED FILTERS ============
+function runSQLFilters() {
+    const input = document.getElementById('sqlInputFilters').value.trim();
+    const inputLower = input.toLowerCase();
+    const resBox = document.getElementById('sqlResultsFilters');
+    
+    let filteredData = [...initialDB]; // Use clean DB
+    
+    try {
+        if (inputLower.includes('between')) {
+            const match = inputLower.match(/between\s+(\d+)\s+and\s+(\d+)/);
+            if (match) {
+                const low = parseInt(match[1]);
+                const high = parseInt(match[2]);
+                filteredData = filteredData.filter(e => e.salary >= low && e.salary <= high);
+            }
+        } 
+        else if (inputLower.includes('in (') || inputLower.includes('in(')) {
+            // Rough match for 'Tech', 'HR'
+            if (inputLower.includes('tech') && inputLower.includes('hr')) {
+                 filteredData = filteredData.filter(e => e.department.toLowerCase() === 'tech' || e.department.toLowerCase() === 'hr');
+            } else {
+                 throw new Error("הסימולטור לא תומך במחרוזת זו. נסו IN ('Tech', 'HR')");
+            }
+        }
+        else if (inputLower.includes('like')) {
+            if (inputLower.includes("'s%'") || inputLower.includes("'a%'")) {
+                 const letter = inputLower.includes("'s%'") ? 's' : 'a';
+                filteredData = filteredData.filter(e => e.name.toLowerCase().startsWith(letter));
+            } else {
+                throw new Error("הסימולטור בדוגמה זו מוגבל. נסו LIKE 'S%' או LIKE 'A%'");
+            }
+        }
+        else {
+             throw new Error("לא זוהה פילטר מתקדם. השתמשו ב- BETWEEN, IN, או LIKE לפי ההוראות.");
+        }
+        
+        let html = `<div class="results-header" style="background:#065f46; margin-top:15px; border-radius:8px 8px 0 0;">תוצאות: ${filteredData.length} רשומות נמצאו</div>`;
+        html += getTableHTML(filteredData);
+        resBox.innerHTML = html;
+        
+    } catch(e) {
+        resBox.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72; margin-top:15px;">❌ שגיאה: ${e.message}</div>`;
+    }
+}
+
+// ============ SIMULATOR 3: AGGREGATIONS ============
+function runSQLAgg() {
+    const input = document.getElementById('sqlInputAgg').value.trim();
+    const inputLower = input.toLowerCase();
+    const resBox = document.getElementById('sqlResultsAgg');
+    
+    let db = [...initialDB];
+    
+    // Check WHERE first
+    if (inputLower.includes("where department='tech'") || inputLower.includes("where department = 'tech'")) {
+        db = db.filter(e => e.department.toLowerCase() === 'tech');
+    }
+
+    try {
+        if (inputLower.includes('sum(salary)')) {
+            const sum = db.reduce((acc, curr) => acc + curr.salary, 0);
+            resBox.innerHTML = renderAggTable('SUM(salary)', '₪' + sum.toLocaleString());
+        } 
+        else if (inputLower.includes('avg(salary)')) {
+            const avg = db.reduce((acc, curr) => acc + curr.salary, 0) / (db.length || 1);
+            resBox.innerHTML = renderAggTable('AVG(salary)', '₪' + Math.round(avg).toLocaleString());
+        }
+        else if (inputLower.includes('count(id)') || inputLower.includes('count(*)')) {
+            resBox.innerHTML = renderAggTable('COUNT(id)', db.length + ' עובדים');
+        }
+        else {
+             throw new Error("חסרה פונקציית סכום חוקית. נסו SUM(salary), AVG(salary), או COUNT(id).");
+        }
+        
+    } catch(e) {
+        resBox.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72; margin-top:15px;">❌ שגיאה: ${e.message}</div>`;
+    }
+}
+
+// ============ THE ULTIMATE SANDBOX ============
+function resetSandbox() {
+    dbSandbox = JSON.parse(JSON.stringify(initialDB));
+    renderStateTable(dbSandbox, document.getElementById('sandboxState'), 'מצב הנתונים ההתחלתי שוחזר:');
+    document.getElementById('sandboxResult').style.display = 'none';
+    document.getElementById('sandboxInput').value = "-- כתבו כאן פקודות: INSERT, UPDATE, DELETE, SELECT\nSELECT * FROM employees;";
+}
+
+function runSandbox() {
+    const input = document.getElementById('sandboxInput').value.trim();
+    const inputLower = input.toLowerCase();
+    const resBox = document.getElementById('sandboxResult');
+    resBox.style.display = 'block';
+    
+    try {
+        // --- 1. INSERT ---
+        if (inputLower.startsWith('insert')) {
+            const match = input.match(/values\s*\(\s*(\d+)\s*,\s*'([^']+)'\s*,\s*'([^']+)'\s*,\s*'([^']+)'\s*,\s*(\d+)\s*,\s*'([^']+)'/i);
+            
+            // Allow shorthand for sandbox too if they want
+            if (match) {
+                 const newId = parseInt(match[1]);
+                 if (dbSandbox.some(e => e.id === newId)) throw new Error("Primary Key Violation: ID " + newId + " already exists.");
+                 
+                 dbSandbox.push({
+                     id: newId,
+                     name: match[2],
+                     department: match[3],
+                     role: match[4],
+                     salary: parseInt(match[5]),
+                     hire_date: match[6]
+                 });
+                 renderStateTable(dbSandbox, document.getElementById('sandboxState'), 'מצב הנתונים עודכן:');
+                 resBox.innerHTML = `<div style="color: #10b981;">✅ שורה חדשה הוכנסה בהצלחה.</div>`;
+            } else {
+                 throw new Error("פורמט INSERT שגוי בסימולטור ארגז החול. אנא ספקו 6 ערכים בדיוק. למשל: VALUES (5, 'Dana', 'HR', 'Clerk', 16000, '2026-01-01');");
+            }
+        }
+        // --- 2. UPDATE ---
+        else if (inputLower.startsWith('update')) {
+             if(!inputLower.includes('where')) throw new Error("פקודת UPDATE עצרה - חסר WHERE!");
+             const matchId = inputLower.match(/id\s*=\s*(\d+)/);
+             if (!matchId) throw new Error("חסר זיהוי לפי id בפקודת העדכון.");
+             const updateId = parseInt(matchId[1]);
+             let salaryMatch = inputLower.match(/salary\s*=\s*(\d+)/);
+             
+             dbSandbox.forEach(e => {
+                 if (e.id === updateId && salaryMatch) e.salary = parseInt(salaryMatch[1]);
+             });
+             renderStateTable(dbSandbox, document.getElementById('sandboxState'), 'מצב הנתונים עודכן:');
+             resBox.innerHTML = `<div style="color: #10b981;">✅ שכר העובד עודכן בהצלחה.</div>`;
+        }
+        // --- 3. DELETE ---
+        else if (inputLower.startsWith('delete')) {
+             if(!inputLower.includes('where')) throw new Error("פקודת DELETE עצרה - חסר WHERE!");
+             const matchId = inputLower.match(/id\s*=\s*(\d+)/);
+             if (!matchId) throw new Error("יש למחוק רק לפי מזהה (id).");
+             const deleteId = parseInt(matchId[1]);
+             dbSandbox = dbSandbox.filter(e => e.id !== deleteId);
+             renderStateTable(dbSandbox, document.getElementById('sandboxState'), 'מצב הנתונים לאחר מחיקה:');
+             resBox.innerHTML = `<div style="color: #10b981;">✅ שורת העובד נמחקה בהצלחה.</div>`;
+        }
+        // --- 4. SELECT ---
+        else if (inputLower.startsWith('select')) {
+             let data = [...dbSandbox];
+             
+             // Aggregations
+             if (inputLower.includes('sum(salary)')) {
+                 const sum = data.reduce((a, c) => a + c.salary, 0);
+                 resBox.innerHTML = renderAggTable('SUM(salary)', '₪' + sum.toLocaleString());
+                 return;
+             }
+             if (inputLower.includes('avg(salary)')) {
+                 const avg = data.reduce((a, c) => a + c.salary, 0) / (data.length || 1);
+                 resBox.innerHTML = renderAggTable('AVG(salary)', '₪' + Math.round(avg).toLocaleString());
+                 return;
+             }
+             if (inputLower.includes('count(')) {
+                 resBox.innerHTML = renderAggTable('COUNT(id)', data.length);
+                 return;
+             }
+
+             // Filters
+             if (inputLower.includes("where salary >")) {
+                 const match = inputLower.match(/salary\s*>\s*(\d+)/);
+                 if(match) data = data.filter(e => e.salary > parseInt(match[1]));
+             }
+             
+             let html = `<div class="results-header" style="background:#065f46; border-radius:8px 8px 0 0;">תוצאות השליפה: ${data.length} רשומות</div>`;
+             html += getTableHTML(data);
+             resBox.innerHTML = html;
+        }
+        else {
+             throw new Error("הפקודה לא זוהתה. ארגז החול תומך ב- SELECT, INSERT, UPDATE, DELETE (ראו הוראות האתגר).");
+        }
+        
+    } catch(e) {
+        resBox.innerHTML = `<div style="color: #ff7b72; padding: 10px; background: rgba(255,123,114,0.1); border-left: 3px solid #ff7b72;">❌ שגיאה: ${e.message}</div>`;
+    }
+}
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded', () => {
+    renderStateTable(dbUpdate, document.getElementById('sqlStateUpdate'), 'מצב הטבלה הנוכחי:');
+    renderStateTable(dbSandbox, document.getElementById('sandboxState'), 'מצב הנתונים הנוכחי במסד:');
+});
+
+window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progressBar').style.width = (scrollTop / docHeight) * 100 + '%';
+
+    let current = "";
+    document.querySelectorAll('.section').forEach(section => {
+        if (pageYOffset >= section.offsetTop - 150) current = section.getAttribute('id');
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) link.classList.add('active');
+    });
+});
+</script>
+
+</body>
+</html>
