@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הרצאה 2 - פרק 3 | לוגיקה עסקית וזמן (CASE, NULL, Dates)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5; 
+            --primary-light: #eef2ff;
+            --primary-hover: #4338ca;
+            --secondary: #0ea5e9; 
+            --accent: #f43f5e; 
+            --success: #10b981; 
+            --success-light: #d1fae5;
+            --warning: #f59e0b; 
+            --warning-light: #fef3c7;
+            --danger: #ef4444; 
+            --danger-light: #fee2e2;
+            
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-accent: #f1f5f9;
+            
+            --text-main: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            
+            --border: #e2e8f0;
+            --border-focus: #cbd5e1;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            
+            --gradient-main: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Assistant', sans-serif; background-color: var(--bg-page); color: var(--text-main); line-height: 1.7; overflow-x: hidden; }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-page); }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; }
+
+        .progress-bar-container { position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 2000; background: rgba(0,0,0,0.05); }
+        .progress-bar-fill { height: 100%; background: var(--gradient-main); width: 0%; transition: width 0.2s ease-out; }
+
+        .hero { background: linear-gradient(135deg, #ffffff 0%, var(--primary-light) 100%); padding: 100px 20px 80px; text-align: center; position: relative; border-bottom: 1px solid var(--border); overflow: hidden; }
+        .hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(var(--border) 1px, transparent 1px); background-size: 30px 30px; opacity: 0.5; z-index: 0; }
+        .hero-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: white; padding: 8px 24px; border-radius: 100px; font-weight: 700; font-size: 0.95rem; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25); }
+        .hero h1 { font-family: 'Rubik', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 24px; }
+        .hero h1 span { color: var(--primary); }
+        .hero p { font-size: 1.3rem; color: var(--text-secondary); max-width: 750px; margin: 0 auto 30px; }
+
+        .nav-sticky { position: sticky; top: 15px; z-index: 1000; width: 95%; max-width: 1200px; margin: -35px auto 40px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 100px; padding: 8px 15px; display: flex; gap: 5px; box-shadow: var(--shadow-lg); overflow-x: auto; scrollbar-width: none; }
+        .nav-sticky::-webkit-scrollbar { display: none; }
+        .nav-link { color: var(--text-muted); text-decoration: none; padding: 10px 18px; border-radius: 100px; font-size: 0.95rem; font-weight: 700; transition: all 0.2s; white-space: nowrap; }
+        .nav-link:hover { color: var(--primary); background: var(--bg-accent); }
+        .nav-link.active { background: var(--primary); color: white; box-shadow: var(--shadow-sm); }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px 80px; }
+        .section { margin-bottom: 80px; scroll-margin-top: 100px; }
+        .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; border-bottom: 2px solid var(--border); padding-bottom: 15px; }
+        .section-number { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: var(--primary-light); color: var(--primary); border-radius: var(--radius-sm); font-family: 'Rubik', sans-serif; font-weight: 800; font-size: 1.4rem; }
+        .section-title { font-family: 'Rubik', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text-main); }
+
+        .content-block { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 35px; box-shadow: var(--shadow-sm); margin-bottom: 25px; }
+        .content-block h3 { font-family: 'Rubik', sans-serif; font-size: 1.5rem; margin-bottom: 15px; color: var(--primary); }
+        .content-block p { font-size: 1.1rem; margin-bottom: 15px; color: var(--text-secondary); }
+
+        /* LTR block for SQL/English inside Hebrew text */
+        .ltr-block {
+            direction: ltr;
+            text-align: left;
+            background: #f1f5f9;
+            border-left: 4px solid var(--primary);
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 4px 8px 8px 4px;
+            font-family: 'Fira Code', monospace;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.05rem;
+        }
+
+        .highlight-box { padding: 20px; border-radius: var(--radius-md); margin: 20px 0; border-right: 5px solid; }
+        .highlight-box.blue { background: var(--primary-light); border-color: var(--primary); }
+        .highlight-box.green { background: var(--success-light); border-color: var(--success); }
+        .highlight-box.orange { background: var(--warning-light); border-color: var(--warning); }
+        .highlight-box.red { background: var(--danger-light); border-color: var(--danger); }
+        .highlight-box.purple { background: #f3e8ff; border-color: #d946ef; }
+
+        .visual-table-container { overflow-x: auto; background: var(--bg-page); padding: 20px; border-radius: var(--radius-md); border: 1px dashed var(--border-focus); margin-bottom: 20px; }
+        .visual-table { width: 100%; border-collapse: collapse; background: white; font-size: 1rem; box-shadow: var(--shadow-sm); }
+        .visual-table th { background: var(--primary-light); color: var(--primary); padding: 12px; text-align: left; border: 1px solid var(--border); font-weight: 700; direction: ltr; }
+        .visual-table td { padding: 12px; border: 1px solid var(--border); color: var(--text-secondary); direction: ltr; text-align: left; }
+        
+        .side-by-side { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+        .side-table { flex: 1; min-width: 250px; }
+        .side-table h4 { text-align: center; margin-bottom: 10px; font-family: 'Rubik'; color: var(--text-main); }
+
+        .sql-playground { background: #1e1e1e; border-radius: var(--radius-lg); overflow: hidden; margin: 30px 0; box-shadow: var(--shadow-lg); }
+        .sql-header { background: #2d2d2d; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; color: #fff; border-bottom: 1px solid #404040; }
+        .sql-editor { padding: 20px; }
+        .sql-input { width: 100%; min-height: 120px; background: #1e1e1e; border: 1px solid #404040; border-radius: var(--radius-sm); padding: 15px; color: #d4d4d4; font-family: 'Fira Code', monospace; font-size: 1.1rem; direction: ltr; text-align: left; resize: vertical; line-height: 1.5; outline: none; }
+        .sql-input:focus { border-color: var(--secondary); }
+        .sql-results { padding: 0; font-family: 'Assistant', sans-serif; background:#252526;}
+        .results-header { padding: 10px 20px; background: #333333; color: #a5d6ff; font-size: 0.9rem; font-weight: 600; display: flex; justify-content: space-between; }
+        
+        .sql-result-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; direction: ltr; text-align: left; background: #1e1e1e; }
+        .sql-result-table th { background: #2d2d2d; padding: 12px 15px; color: #4fc1ff; font-family: 'Fira Code', monospace; border-bottom: 2px solid #404040; }
+        .sql-result-table td { padding: 12px 15px; color: #cccccc; border-bottom: 1px solid #333333; }
+        
+        .btn-action { padding: 10px 24px; background: var(--primary); border: none; border-radius: 100px; color: white; font-family: 'Assistant', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); }
+        .btn-action:hover { transform: translateY(-2px); background: var(--primary-hover); box-shadow: 0 6px 12px rgba(79, 70, 229, 0.3); }
+
+        /* Hints System */
+        .hint-box { background: #fffbeb; border: 1px solid #f59e0b; border-radius: var(--radius-md); padding: 15px 20px; margin: 15px 0; }
+        .hint-toggle { cursor: pointer; color: #d97706; font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; transition: color 0.2s; }
+        .hint-toggle:hover { color: #b45309; }
+        .hint-content { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #fcd34d; animation: fadeIn 0.3s ease-out; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .micro-expl { background: #f8fafc; border-right: 4px solid var(--secondary); padding: 15px; margin: 15px 0; border-radius: 8px; font-size: 1.05rem; line-height: 1.8; }
+        .micro-word { display: inline-block; background: #e2e8f0; padding: 2px 8px; border-radius: 4px; font-family: 'Fira Code', monospace; color: #0f172a; font-weight: bold; margin-left: 5px; direction: ltr; }
+
+        .quiz-container { background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px; margin: 30px 0; position: relative; box-shadow: var(--shadow-md); }
+        .quiz-container::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 4px; background: var(--gradient-main); }
+        .quiz-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .quiz-icon { width: 40px; height: 40px; background: var(--warning-light); color: var(--warning); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .quiz-title { font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 1.2rem; }
+        .quiz-question { font-size: 1.15rem; font-weight: 600; margin-bottom: 20px; color: var(--text-main); }
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .quiz-option { display: flex; align-items: center; gap: 15px; padding: 15px 20px; background: var(--bg-page); border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; font-size: 1.05rem; font-weight: 500; }
+        .quiz-option.selected { border-color: var(--primary); background: var(--primary-light); }
+        .quiz-option.correct { border-color: var(--success); background: var(--success-light); }
+        .quiz-option.wrong { border-color: var(--danger); background: var(--danger-light); }
+        .quiz-option .option-marker { width: 32px; height: 32px; border-radius: 50%; background: white; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+        .quiz-feedback { padding: 15px 20px; border-radius: var(--radius-md); font-size: 1.05rem; font-weight: 600; display: none; margin-top: 15px; }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct { background: var(--success-light); color: #065f46; border: 1px solid #a7f3d0; }
+        .quiz-feedback.wrong { background: var(--danger-light); color: #991b1b; border: 1px solid #fecaca; }
+
+        .score-floating { position: fixed; bottom: 30px; left: 30px; background: white; border: 2px solid var(--border); border-radius: 100px; padding: 10px 20px; display: flex; align-items: center; gap: 12px; z-index: 1000; box-shadow: var(--shadow-lg); direction: ltr; }
+        .score-value { font-family: 'Rubik', sans-serif; font-weight: 900; font-size: 1.5rem; color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar-container"><div class="progress-bar-fill" id="progressBar"></div></div>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge"><span class="pulse"></span>פרק 3: כוחה של הלוגיקה</div>
+        <h1>לוגיקה עסקית וזמן<br><span>במסד הנתונים</span></h1>
+        <p>עד עכשיו פשוט שלפנו מידע קיים. בפרק הזה אנחנו הולכים <strong>לייצר</strong> מידע חדש תוך כדי שליפה. נלמד איך להתמודד עם "חורים" בנתונים, איך לסווג נתונים אוטומטית בעזרת תנאים, ואיך לנסוע בזמן.</p>
+    </div>
+</section>
+
+<nav class="nav-sticky" id="mainNav">
+    <a href="#section1" class="nav-link active">האויב השקוף (NULL)</a>
+    <a href="#section2" class="nav-link">סיווג אוטומטי (CASE)</a>
+    <a href="#section3" class="nav-link">מסע בזמן (Dates)</a>
+    <a href="#section4" class="nav-link">סימולטור המאסטר</a>
+</nav>
+
+<main class="container">
+
+<section class="section" id="section1">
+    <div class="section-header">
+        <div class="section-number">1</div>
+        <h2 class="section-title">האויב השקוף: התמודדות עם ריק</h2>
+    </div>
+    
+    <div class="content-block">
+        <p>דמיינו שאתם מנתחי הנתונים של חברת TechCorp. המנכ"ל מבקש לדעת מהי <strong>העלות הכוללת</strong> של כל עובד. העלות מורכבת מחיבור של שתי עמודות:</p>
+        <div class="ltr-block">salary + budget</div>
+        
+        <p>אבל יש בעיה. לא כל העובדים קיבלו עדיין "תקציב אושר" (Budget). לחלקם פשוט <strong>אין נתון</strong> בטבלה. במסדי נתונים, מצב של "אין נתון" נקרא:</p>
+        <div class="ltr-block">NULL</div>
+
+        <h3 style="color: var(--danger); margin-top: 30px;">שלב 1: Visual First - להבין את הבעיה</h3>
+        <p>הביטו בטבלאות למטה (צד מול צד). בטבלה הימנית יש לנו את הנתונים הגולמיים. בטבלה השמאלית, ניסינו לעשות חיבור מתמטי פשוט. ראו מה קרה לרונית!</p>
+
+        <div class="side-by-side">
+            <div class="side-table">
+                <h4 style="color: var(--primary);">הנתונים הגולמיים</h4>
+                <div class="visual-table-container" style="margin:0;">
+                    <table class="visual-table">
+                        <thead><tr><th>name</th><th>salary</th><th>budget</th></tr></thead>
+                        <tbody>
+                            <tr><td>Yossi</td><td>10,000</td><td>500</td></tr>
+                            <tr style="background: #fee2e2;"><td>Ronit</td><td>12,000</td><td style="color:#b91c1c; font-weight:bold;">NULL</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="side-table">
+                <h4 style="color: var(--danger);">התוצאה השבורה</h4>
+                <div class="visual-table-container" style="margin:0;">
+                    <table class="visual-table">
+                        <thead><tr><th>name</th><th>Total Cost (salary + budget)</th></tr></thead>
+                        <tbody>
+                            <tr><td>Yossi</td><td>10,500</td></tr>
+                            <tr style="background: #fee2e2;"><td>Ronit</td><td style="color:#b91c1c; font-weight:bold;">NULL ❌</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box red">
+            <p><strong>למה זה קרה? כלל ברזל מתמטי:</strong><br>
+            כל מספר ועוד ריק, שווה תמיד ריק! המחשב אומר: "אני לא יכול לחבר 12,000 עם משהו שאני לא יודע מהו". בגלל זה, המשכורת של רונית נמחקה מהדוח לחלוטין!</p>
+        </div>
+
+        <h3 style="color: var(--success); margin-top: 30px;">שלב 2: הפתרון</h3>
+        <p>אנחנו צריכים להגיד למחשב: "אם אתה רואה מצב ריק, תתייחס אליו כאל אפס (0)". לשם כך נשתמש בפונקציה מיוחדת:</p>
+        
+        <div class="ltr-block">COALESCE(budget, 0)</div>
+        
+        <div class="micro-expl">
+            <h4 style="margin:0 0 10px 0;">פירוק התחביר:</h4>
+            <span class="micro-word">COALESCE</span> - "קח את הערך הראשון שלא ריק".<br>
+            <span class="micro-word">(budget, 0)</span> - "קודם כל, נסה לקחת את העמודה. אם יש בה מספר, קח אותו. אם יש בה ריק, תדלג ותיקח את המספר 0 במקום".
+        </div>
+    </div>
+
+    <div class="interactive-zone" style="background:#f0fdf4; border-color:#10b981; padding: 20px; border-radius: 12px; margin: 20px 0;">
+        <h3 style="color:#10b981; margin-bottom: 10px;">סימולטור 1: תיקון הדוח</h3>
+        <p>הקוד שלפניכם שבור. הוא מנסה לחבר את השכר והתקציב באופן ישיר.<br>
+        <strong>המשימה שלכם:</strong> עטפו את המילה <bdi><code>budget</code></bdi> בפונקציה שלמדנו, והריצו שוב כדי להציל את הדוח!</p>
+
+        <div class="hint-box">
+            <div class="hint-toggle" onclick="toggleHint(this)">
+                <span>💡 נתקעתם? לחצו כאן לרמז מפורט</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="hint-content">
+                <p>כדי לפתור את התרגיל, עליכם להחליף את המילה הבודדת בתחביר הפונקציה המלא.</p>
+                <p>במקום לכתוב:</p>
+                <div class="ltr-block" style="background: white;">salary + budget</div>
+                <p>עליכם לכתוב:</p>
+                <div class="ltr-block" style="background: white;">salary + COALESCE(budget, 0)</div>
+                <p>הדבר יבטיח שאם התקציב חסר, המחשב יחבר את השכר עם אפס במקום לקרוס.</p>
+            </div>
+        </div>
+
+        <div class="sql-playground">
+            <div class="sql-header">
+                <span>⚡ Terminal: Fix the Bug</span>
+            </div>
+            <div class="sql-editor">
+                <textarea class="sql-input" id="sqlSim1" spellcheck="false">-- תקנו את השורה למטה: הפכו את המילה האחרונה לפונקציה
+SELECT 
+    name, 
+    salary + budget AS total_cost
+FROM employees;</textarea>
+                <div style="margin-top: 15px;">
+                    <button class="btn-action" style="background:#10b981;" onclick="runSim1()">▶ חשב עלויות</button>
+                </div>
+            </div>
+            <div class="sql-results" id="resSim1">
+                <div class="results-header" style="background:#1e293b;">הדוח הנוכחי (לפני התיקון)</div>
+                </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="section2">
+    <div class="section-header">
+        <div class="section-number">2</div>
+        <h2 class="section-title">סיווג אוטומטי: תנאים חכמים</h2>
+    </div>
+    
+    <div class="content-block">
+        <p>המנכ"ל ראה את הדוח ואמר: "מספרים זה יפה, אבל אני צריך לדעת מיד מי בסיכון לעזוב את החברה!".</p>
+        <p>בטבלה שלנו יש עמודה של ציון אושר הנקראת:</p>
+        <div class="ltr-block">happiness_score</div>
+        
+        <p>אנחנו רוצים <strong>לייצר עמודה חדשה</strong> שתקרא את הציון ותסווג אותו למילים ברורות: "בסיכון" או "בטוח". לשם כך משתמשים בכלי החזק ביותר ב-SQL ליצירת לוגיקה:</p>
+        
+        <div class="ltr-block">CASE WHEN</div>
+
+        <h3 style="color: var(--primary); margin-top: 30px;">שלב 1: Visual First - המטרה</h3>
+        <p>הביטו כיצד ציון מספרי הופך לטקסט עסקי ברור בזמן אמת (הטבלה הימנית היא הענן, השמאלית היא התוצאה באפליקציה):</p>
+
+        <div class="side-by-side">
+            <div class="side-table">
+                <h4 style="color: var(--text-muted);">הענן (Raw)</h4>
+                <div class="visual-table-container" style="margin:0;">
+                    <table class="visual-table">
+                        <thead><tr><th>name</th><th>happiness_score</th></tr></thead>
+                        <tbody>
+                            <tr><td>Dan</td><td>8</td></tr>
+                            <tr style="background: #fffbeb;"><td>Sarah</td><td>4</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="side-table">
+                <h4 style="color: var(--primary);">האפליקציה (View)</h4>
+                <div class="visual-table-container" style="margin:0; border-color:var(--primary);">
+                    <table class="visual-table">
+                        <thead><tr><th>name</th><th style="color:var(--primary);">Risk Status</th></tr></thead>
+                        <tbody>
+                            <tr><td>Dan</td><td><span style="color:#10b981; font-weight:bold;">Safe</span></td></tr>
+                            <tr style="background: #fffbeb;"><td>Sarah</td><td><span style="color:#ef4444; font-weight:bold;">High Risk</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="color: var(--success); margin-top: 30px;">שלב 2: פירוק התחביר</h3>
+        <p>ככה כותבים את הפקודה הזו בתוך החלק של הבחירה:</p>
+        
+        <div class="ltr-block" style="background: #1e1e1e; color:#d4d4d4; border-left: none; border-radius: 8px;">
+            <span style="color:#c586c0;">CASE</span><br>
+            &nbsp;&nbsp;<span style="color:#c586c0;">WHEN</span> happiness_score &lt; 5 <span style="color:#c586c0;">THEN</span> <span style="color:#ce9178;">'High Risk'</span><br>
+            &nbsp;&nbsp;<span style="color:#c586c0;">ELSE</span> <span style="color:#ce9178;">'Safe'</span><br>
+            <span style="color:#c586c0;">END</span> <span style="color:#569cd6;">AS</span> Risk_Status
+        </div>
+
+        <div class="micro-expl">
+            <span class="micro-word">CASE</span> - "מחשב יקר, אני פותח כאן קופסה של תנאים."<br>
+            <span class="micro-word">WHEN ... THEN</span> - "כאשר הציון קטן מ-5, אז תדפיס בעמודה 'High Risk'."<br>
+            <span class="micro-word">ELSE</span> - "אחרת (בכל שאר המקרים), תדפיס 'Safe'."<br>
+            <span class="micro-word">END</span> - "סיימתי את התנאים, סגור קופסה."<br>
+            <span class="micro-word">AS</span> - "קרא לעמודה החדשה שיצרנו בשם זה."
+        </div>
+    </div>
+
+    <div class="interactive-zone" style="background:#eff6ff; border-color:#3b82f6; padding: 20px; border-radius: 12px; margin: 20px 0;">
+        <h3 style="color:#3b82f6; margin-bottom: 10px;">סימולטור 2: בוני הלוגיקה</h3>
+        <p><strong>המשימה שלכם:</strong> הוסיפו את בלוק התנאים שלמדנו כדי לסווג את העובדים לפי הציון שלהם. קראו לעמודה <bdi><code>status</code></bdi>.</p>
+
+        <div class="hint-box" style="border-color: #3b82f6; background: #ffffff;">
+            <div class="hint-toggle" style="color: #2563eb;" onclick="toggleHint(this)">
+                <span>💡 טיפ מהארכיטקט: איך לכתוב את הבלוק</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="hint-content" style="border-top-color: #bfdbfe;">
+                <p>1. ודאו שיש פסיק אחרי המילה <code>happiness_score</code> כדי להפריד בין העמודות.</p>
+                <p>2. התחילו עם המילה <code>CASE</code>.</p>
+                <p>3. הגדירו את התנאי: <code>WHEN happiness_score < 5 THEN 'High Risk'</code></p>
+                <p>4. הגדירו את הברירת מחדל: <code>ELSE 'Safe'</code></p>
+                <p>5. סיימו עם: <code>END AS status</code></p>
+            </div>
+        </div>
+
+        <div class="sql-playground">
+            <div class="sql-header">
+                <span>⚡ Terminal: Logic Blocks</span>
+            </div>
+            <div class="sql-editor">
+                <textarea class="sql-input" id="sqlSim2" spellcheck="false">SELECT 
+    name, 
+    happiness_score
+    -- הוסיפו פסיק בשורה שמעל, וכתבו את הבלוק שלכם כאן:
+
+FROM employees;</textarea>
+                <div style="margin-top: 15px;">
+                    <button class="btn-action" style="background:#3b82f6;" onclick="runSim2()">▶ הפעל לוגיקה</button>
+                </div>
+            </div>
+            <div class="sql-results" id="resSim2"></div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="section3">
+    <div class="section-header">
+        <div class="section-number">3</div>
+        <h2 class="section-title">מסע בזמן (תאריכים)</h2>
+    </div>
+    
+    <div class="content-block">
+        <p>בעולם האמיתי, הנתונים הם לעולם לא סטטיים. מנהל לא שואל "כמה הוצאנו אי פעם?", הוא שואל "כמה הוצאנו <strong>בשנת 2026?</strong>".</p>
+        
+        <p>במסדי נתונים, הסטנדרט הבינלאומי לשמירת תאריך הוא תמיד משמאל לימין: שנה, חודש, יום. לדוגמה:</p>
+        <div class="ltr-block">'2026-05-14'</div>
+
+        <h3 style="color: var(--primary); margin-top: 30px;">איך מסננים?</h3>
+        <p>מכיוון שהמחשב שומר את התאריך במבנה אחיד מגדול (שנה) לקטן, אנחנו יכולים להשתמש בסימנים מתמטיים כמו "גדול מ..." או "קטן מ..." כדי לנסוע בזמן בחלק של הסינון (WHERE).</p>
+
+        <div class="micro-expl" style="border-color: var(--warning);">
+            <h4 style="margin:0 0 10px 0;">דוגמאות:</h4>
+            <div class="ltr-block" style="background: white;">WHERE hire_date >= '2026-01-01'</div>
+            <p>תביא לי רק עובדים שהתחילו לעבוד <strong>מ-1 בינואר 2026 והלאה</strong>.</p>
+            
+            <div class="ltr-block" style="background: white;">WHERE hire_date < '2025-01-01'</div>
+            <p>תביא לי עובדים שהתחילו <strong>לפני</strong> שנת 2025.</p>
+        </div>
+    </div>
+
+    <div class="interactive-zone" style="background:#fffbeb; border-color:#f59e0b; padding: 20px; border-radius: 12px; margin: 20px 0;">
+        <h3 style="color:#f59e0b; margin-bottom: 10px;">סימולטור 3: מסנני זמן</h3>
+        <p>הדוח למטה אמור להציג רק את העובדים החדשים. <br>
+        <strong>המשימה שלכם:</strong> הוסיפו את המילה <bdi><code>WHERE</code></bdi> וסננו את עמודת התאריך כך שנקבל רק עובדים משנת 2026 והלאה.</p>
+
+        <div class="hint-box" style="border-color: #f59e0b; background: #ffffff;">
+            <div class="hint-toggle" style="color: #d97706;" onclick="toggleHint(this)">
+                <span>💡 הסתבכתם עם התאריכים? הנה עזרה</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="hint-content" style="border-top-color: #fde68a;">
+                <p>1. כיתבו בשורה האחרונה (אחרי שם הטבלה) את מילת הסינון <code>WHERE</code>.</p>
+                <p>2. ציינו את שם העמודה אותה אנו מסננים: <code>hire_date</code>.</p>
+                <p>3. השתמשו באופרטור "גדול או שווה" (<code>>=</code>) כדי לכלול את היום הראשון של השנה.</p>
+                <p>4. אל תשכחו לעטוף את התאריך במירכאות בודדות! <code>'2026-01-01'</code></p>
+            </div>
+        </div>
+
+        <div class="sql-playground">
+            <div class="sql-header">
+                <span>⚡ Terminal: Time Travel</span>
+            </div>
+            <div class="sql-editor">
+                <textarea class="sql-input" id="sqlSim3" spellcheck="false">SELECT 
+    name, 
+    hire_date
+FROM employees
+-- כתבו כאן את הסינון שלכם
+;</textarea>
+                <div style="margin-top: 15px;">
+                    <button class="btn-action" style="background:#f59e0b;" onclick="runSim3()">▶ סנן לפי תאריך</button>
+                </div>
+            </div>
+            <div class="sql-results" id="resSim3">
+                <div class="results-header" style="background:#1e293b;">הדוח הנוכחי (כל העובדים)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="section4">
+    <div class="section-header">
+        <div class="section-number">4</div>
+        <h2 class="section-title">מבחן הארכיטקט המסכם</h2>
+    </div>
+    
+    <div class="content-block" style="border: 2px solid var(--primary);">
+        <h3 style="color: var(--primary); margin-bottom: 15px;">דרישת המערכת השלמה</h3>
+        <p>מנהלת משאבי אנוש זקוקה לדוח מסכם וביקשה: <br>
+        <em>"אני צריכה דוח על כל העובדים שגויסו בשנת 2026. אני רוצה לדעת את שמם, את העלות האמיתית שלהם (שכר בתוספת תקציב, גם אם אין להם), ואת סיווג הסיכון שלהם (בסיכון או בטוחים)."</em></p>
+        
+        <p><strong>הידע הנדרש מכם:</strong></p>
+        <ol style="margin-right:20px; line-height: 1.8;">
+            <li>שליפת שם.</li>
+            <li>שימוש בתיקון הריקים (COALESCE) לעלות הכוללת.</li>
+            <li>שימוש בבלוק הלוגיקה (CASE) לסיווג.</li>
+            <li>סינון תאריכים (WHERE).</li>
+        </ol>
+
+        <div class="hint-box" style="border-color: var(--primary); background: var(--primary-light);">
+            <div class="hint-toggle" style="color: var(--primary-hover);" onclick="toggleHint(this)">
+                <span>💡 איך מחברים הכל ביחד? (מדריך צעד-אחר-צעד)</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="hint-content" style="border-top-color: var(--border-focus);">
+                <p>האתגר משלב את כל מה שלמדנו. בנו את השאילתה בשלבים:</p>
+                <p><strong>שלב 1:</strong> בחרו את השם והשתמשו בפונקציה מהפרק הראשון. קראו לה בשם שביקשו:</p>
+                <div class="ltr-block" style="background: white;">name, COALESCE(budget, 0) + salary AS total_cost,</div>
+                <p><strong>שלב 2:</strong> מיד אחרי הפסיק, פתחו את קופסת הלוגיקה:</p>
+                <div class="ltr-block" style="background: white;">CASE WHEN happiness_score < 5 THEN 'High Risk' ELSE 'Safe' END AS risk_status</div>
+                <p><strong>שלב 3:</strong> אחרי שסיימתם את הבחירה (SELECT) ואת הגדרת המקור (FROM), הוסיפו את הסינון בתחתית:</p>
+                <div class="ltr-block" style="background: white;">WHERE hire_date >= '2026-01-01'</div>
+                <p>אל תחששו לטעות, המערכת תגיד לכם בדיוק איפה הבעיה.</p>
+            </div>
+        </div>
+
+        <div class="sql-playground" style="box-shadow: 0 10px 30px rgba(79, 70, 229, 0.2);">
+            <div class="sql-header">
+                <span>⚡ The Master Logic Sandbox</span>
+            </div>
+            <div class="sql-editor">
+                <textarea class="sql-input" id="sqlSim4" spellcheck="false" style="min-height: 250px;">SELECT 
+    name
+    -- הוסיפו פה COALESCE לחיבור השכר והתקציב
+    
+    -- הוסיפו פה את ה-CASE WHEN לסיווג סיכון
+    
+FROM employees
+-- הוסיפו פה את סינון התאריך
+;</textarea>
+                <div style="margin-top: 15px;">
+                    <button class="btn-action" style="background:var(--primary);" onclick="runSim4()">▶ הרץ דוח מנהלים סופי</button>
+                </div>
+            </div>
+            <div class="sql-results" id="resSim4" style="display:none; padding-top:20px; border-top: 1px dashed #404040; background:#1e1e1e;">
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer style="text-align: center; padding: 40px; color: var(--text-muted); border-top: 1px solid var(--border); background:white;">
+    <p>© 2026 | ד"ר שי צבאן - קורס מפתחי ומנתחי נתונים (חלק 3 - לוגיקה עסקית) | נבנה עם ❤️</p>
+</footer>
+
+<div class="score-floating" id="scoreFloat">
+    <span>⭐</span>
+    <span class="score-label">בקרות ארכיטקט</span>
+    <span class="score-value" id="scoreDisplay">0/4</span>
+</div>
+
+<script>
+// ============ MOCK DATABASE ============
+const db_employees = [
+    { id: 1, name: 'Dan', department_id: 1, salary: 14000, budget: 1000, happiness_score: 8, hire_date: '2025-01-20' },
+    { id: 2, name: 'Sarah', department_id: 2, salary: 25000, budget: 1500, happiness_score: 4, hire_date: '2026-03-15' },
+    { id: 3, name: 'Ronit', department_id: 1, salary: 12000, budget: null, happiness_score: 9, hire_date: '2026-06-01' },
+    { id: 4, name: 'Amit', department_id: 2, salary: 30000, budget: null, happiness_score: 3, hire_date: '2024-11-10' },
+    { id: 5, name: 'Yossi', department_id: 3, salary: 10000, budget: 500, happiness_score: 6, hire_date: '2026-01-05' }
+];
+
+// ============ UTILITIES ============
+let totalScore = 0;
+let answeredTasks = new Set();
+const totalTasks = 4; // 3 sims + 1 master
+
+function updateScore() {
+    document.getElementById('scoreDisplay').textContent = totalScore + '/' + totalTasks;
+}
+
+function markCompleted(taskId) {
+    if (!answeredTasks.has(taskId)) {
+        answeredTasks.add(taskId);
+        totalScore++;
+        updateScore();
+    }
+}
+
+function toggleHint(element) {
+    const content = element.nextElementSibling;
+    const icon = element.querySelector('.icon');
+    if (content.style.display === 'block') {
+        content.style.display = 'none';
+        icon.textContent = '▼';
+    } else {
+        content.style.display = 'block';
+        icon.textContent = '▲';
+    }
+}
+
+function getTableHTML(dataArray) {
+    if (dataArray.length === 0) return `<div style="padding:20px; text-align:center; color:#8b949e;">אין תוצאות התואמות לחיפוש (0 רשומות).</div>`;
+    const headers = Object.keys(dataArray[0]);
+    let html = '<table class="sql-result-table"><thead><tr>';
+    headers.forEach(h => html += `<th>${h}</th>`);
+    html += '</tr></thead><tbody>';
+    dataArray.forEach(row => {
+        html += '<tr>';
+        headers.forEach(h => {
+            let val = row[h];
+            if (val === null) val = '<span style="color:#ef4444; font-weight:bold;">NULL</span>';
+            html += `<td>${val}</td>`;
+        });
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
+function showError(resBox, msg) {
+    resBox.style.display = 'block';
+    resBox.innerHTML = `<div style="color: #ff7b72; padding: 15px; background: rgba(255,123,114,0.1); border-left: 4px solid #ff7b72;">❌ <strong>שגיאת SQL:</strong><br>${msg}</div>`;
+}
+
+function showSuccess(resBox, dataArray, titleMsg = "הדוח הופק בהצלחה", taskId) {
+    resBox.style.display = 'block';
+    let html = `<div class="results-header" style="background:#065f46;">✅ ${titleMsg} (${dataArray.length} רשומות)</div>`;
+    html += getTableHTML(dataArray);
+    resBox.innerHTML = html;
+    if (taskId) markCompleted(taskId);
+}
+
+// ============ SIMULATOR 1: COALESCE ============
+function runSim1() {
+    const input = document.getElementById('sqlSim1').value;
+    const resBox = document.getElementById('resSim1');
+    const hasCoalesce = /coalesce\s*\(\s*budget\s*,\s*0\s*\)/i.test(input);
+
+    if (!hasCoalesce) {
+        showError(resBox, "לא נמצאה הפונקציה <code>COALESCE(budget, 0)</code>. שימו לב לחלק השמאלי של המסך כדי לראות איך כותבים אותה. תוכלו להיעזר ברמז אם נתקעתם.");
+        return;
+    }
+
+    const outData = db_employees.map(e => ({ name: e.name, total_cost: e.salary + (e.budget === null ? 0 : e.budget) }));
+    showSuccess(resBox, outData, "ה-NULL טופל בהצלחה! רונית חזרה לדוח.", 'sim1');
+}
+
+// ============ SIMULATOR 2: CASE WHEN ============
+function runSim2() {
+    const input = document.getElementById('sqlSim2').value;
+    const resBox = document.getElementById('resSim2');
+    
+    const hasCase = /case/i.test(input);
+    const hasWhen = /when\s+happiness_score\s*<\s*5/i.test(input);
+    const hasElse = /else/i.test(input);
+    const hasEnd = /end/i.test(input);
+
+    if (!hasCase || !hasEnd) {
+        showError(resBox, "חסרה המסגרת. זכרו לפתוח עם <code>CASE</code> ולסגור עם <code>END</code>.");
+        return;
+    }
+    if (!hasWhen || !hasElse) {
+        showError(resBox, "חסרים תנאים. ודאו שיש לכם <code>WHEN happiness_score < 5 THEN...</code> וגם <code>ELSE...</code>. פתחו את הרמז לדוגמה מפורטת.");
+        return;
+    }
+
+    const outData = db_employees.map(e => ({ name: e.name, happiness_score: e.happiness_score, status: e.happiness_score < 5 ? 'High Risk' : 'Safe' }));
+    showSuccess(resBox, outData, "לוגיקה חכמה יושמה!", 'sim2');
+}
+
+// ============ SIMULATOR 3: DATES ============
+function runSim3() {
+    const input = document.getElementById('sqlSim3').value;
+    const resBox = document.getElementById('resSim3');
+    
+    const whereMatch = input.match(/where\s+hire_date\s*(>=|>|=|<|<=)\s*'([^']+)'/i);
+    if (!whereMatch) {
+        showError(resBox, "לא נמצא סינון. יש להשתמש ב- <code>WHERE hire_date >= '2026-01-01'</code>. אל תשכחו מירכאות בודדות!");
+        return;
+    }
+    if (whereMatch[1] !== '>=' || whereMatch[2] !== '2026-01-01') {
+         showError(resBox, "כמעט! המשימה ביקשה את כל שנת 2026 והלאה, כולל ה-1 בינואר. השתמשו ב: <code>>= '2026-01-01'</code>");
+         return;
+    }
+
+    const outData = db_employees.filter(e => e.hire_date >= '2026-01-01').map(e => ({ name: e.name, hire_date: e.hire_date }));
+    showSuccess(resBox, outData, "מסע בזמן בוצע!", 'sim3');
+}
+
+// ============ SIMULATOR 4: MASTER ============
+function runSim4() {
+    const input = document.getElementById('sqlSim4').value;
+    const resBox = document.getElementById('resSim4');
+    
+    const req1 = /name/i.test(input);
+    const req2 = /coalesce\s*\(\s*budget\s*,\s*0\s*\)/i.test(input) && /total_cost/i.test(input);
+    const req3 = /case/i.test(input) && /when\s+happiness_score\s*<\s*5/i.test(input) && /end/i.test(input);
+    const req4 = /where\s+hire_date\s*>=\s*'2026-01-01'/i.test(input);
+
+    let errors = [];
+    if (!req2) errors.push("1. חסר טיפול ב-NULL (COALESCE) או כינוי מתאים לעמודה.");
+    if (!req3) errors.push("2. חסר משפט CASE שלם לסיווג.");
+    if (!req4) errors.push("3. חסר סינון נכון לתאריך.");
+
+    if (errors.length > 0) {
+        showError(resBox, "חסרים אלמנטים בשאילתה:<br>" + errors.join("<br>") + "<br><br><strong>נסו לפתוח את הרמז בראש המשימה!</strong>");
+        return;
+    }
+
+    const outData = db_employees
+        .filter(e => e.hire_date >= '2026-01-01')
+        .map(e => ({
+            name: e.name,
+            total_cost: e.salary + (e.budget === null ? 0 : e.budget),
+            risk_status: e.happiness_score < 5 ? 'High Risk' : 'Safe'
+        }));
+
+    resBox.style.display = 'block';
+    let html = `<div style="text-align:center; padding:30px; background:#065f46; border-radius:8px;">
+        <div style="font-size:3rem; margin-bottom:10px;">🏆</div>
+        <h3 style="color:white; font-family:'Rubik'; margin-bottom:15px;">עבודה מושלמת, ארכיטקט!</h3>
+        <p style="color:#d1fae5;">הצלחתם לשלב COALESCE, לוגיקת CASE וסינון תאריכים.</p>
+    </div>`;
+    html += getTableHTML(outData);
+    resBox.innerHTML = html;
+    markCompleted('sim4');
+}
+
+// Initial state load
+document.addEventListener("DOMContentLoaded", () => {
+    const resBox1 = document.getElementById('resSim1');
+    const outData1 = db_employees.map(e => ({ name: e.name, total_cost: e.budget === null ? null : (e.salary + e.budget) }));
+    resBox1.innerHTML += getTableHTML(outData1);
+    
+    const resBox3 = document.getElementById('resSim3');
+    const outData3 = db_employees.map(e => ({name: e.name, hire_date: e.hire_date}));
+    resBox3.innerHTML += getTableHTML(outData3);
+});
+
+window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progressBar').style.width = (scrollTop / docHeight) * 100 + '%';
+});
+</script>
+
+</body>
+</html>
