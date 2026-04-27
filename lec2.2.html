@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הרצאה 2 - פרק 2 | GROUP BY & HAVING — לחתוך נתונים לקבוצות</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#4f46e5;--primary-light:#eef2ff;--secondary:#0ea5e9;--success:#10b981;--success-light:#d1fae5;--warning:#f59e0b;--warning-light:#fef3c7;--danger:#ef4444;--danger-light:#fee2e2;--purple:#8b5cf6;--purple-light:#f3e8ff;--bg-page:#f8fafc;--bg-card:#fff;--bg-accent:#f1f5f9;--text-main:#0f172a;--text-secondary:#334155;--text-muted:#64748b;--border:#e2e8f0;--r-sm:8px;--r-md:12px;--r-lg:24px;--sh-sm:0 1px 2px rgba(0,0,0,.05);--sh-md:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);--sh-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);--g-main:linear-gradient(135deg,var(--primary),var(--secondary))}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Assistant',sans-serif;background:var(--bg-page);color:var(--text-main);line-height:1.75;overflow-x:hidden}
+::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:var(--bg-page)}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:5px}
+.pb-wrap{position:fixed;top:0;left:0;right:0;height:4px;z-index:2000;background:rgba(0,0,0,.05)}.pb-fill{height:100%;background:var(--g-main);width:0%;transition:width .2s}
+/* HERO */
+.hero{background:linear-gradient(135deg,#fff 0%,var(--primary-light) 100%);padding:110px 20px 90px;text-align:center;position:relative;border-bottom:1px solid var(--border);overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(var(--border) 1px,transparent 1px);background-size:30px 30px;opacity:.5;z-index:0}
+.hero-inner{position:relative;z-index:1;max-width:900px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:#fff;padding:8px 24px;border-radius:100px;font-weight:700;font-size:.95rem;margin-bottom:24px;box-shadow:0 4px 12px rgba(79,70,229,.25)}
+.dot{width:8px;height:8px;background:#a5f3fc;border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'Rubik',sans-serif;font-size:clamp(2rem,5.5vw,3.8rem);font-weight:900;line-height:1.15;margin-bottom:24px}
+.hero h1 span{color:var(--primary)}
+.hero p{font-size:1.18rem;color:var(--text-secondary);max-width:760px;margin:0 auto 30px;line-height:1.8}
+.hero-meta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.hmi{display:flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:var(--r-md);font-weight:600;color:var(--text-secondary);font-size:.93rem}
+/* NAV */
+.nav-sticky{position:sticky;top:15px;z-index:1000;width:95%;max-width:1200px;margin:-30px auto 50px;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:100px;padding:8px 15px;display:flex;gap:5px;box-shadow:var(--sh-lg);overflow-x:auto;scrollbar-width:none}
+.nav-sticky::-webkit-scrollbar{display:none}
+.nl{color:var(--text-muted);text-decoration:none;padding:9px 17px;border-radius:100px;font-size:.88rem;font-weight:700;transition:all .2s;white-space:nowrap}
+.nl:hover{color:var(--primary);background:var(--bg-accent)}.nl.active{background:var(--primary);color:#fff}
+/* LAYOUT */
+.container{max-width:1020px;margin:0 auto;padding:0 20px 100px}
+.sec{margin-bottom:100px;scroll-margin-top:100px}
+.sec-hdr{display:flex;align-items:center;gap:15px;margin-bottom:40px;border-bottom:2px solid var(--border);padding-bottom:18px}
+.sec-num{display:flex;align-items:center;justify-content:center;width:52px;height:52px;background:var(--primary-light);color:var(--primary);border-radius:var(--r-sm);font-family:'Rubik',sans-serif;font-weight:800;font-size:1.6rem;flex-shrink:0}
+.sec-title{font-family:'Rubik',sans-serif;font-size:1.9rem;font-weight:700}
+/* BLOCKS */
+.cb{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:40px;box-shadow:var(--sh-sm);margin-bottom:28px}
+.cb h3{font-family:'Rubik',sans-serif;font-size:1.5rem;margin-bottom:18px;color:var(--primary)}
+.cb h4{font-family:'Rubik',sans-serif;font-size:1.2rem;margin:30px 0 12px;color:var(--text-main);padding-right:14px;border-right:4px solid var(--secondary)}
+.cb p{font-size:1.1rem;margin-bottom:18px;color:var(--text-secondary)}
+.cb p:last-child{margin-bottom:0}
+.cb ul{padding-right:24px;margin-bottom:15px}
+.cb ul li{font-size:1.05rem;color:var(--text-secondary);margin-bottom:8px;line-height:1.65}
+/* HIGHLIGHT */
+.hb{padding:22px 26px;border-radius:var(--r-md);margin:22px 0;border-right:5px solid}
+.hb.blue{background:var(--primary-light);border-color:var(--primary)}
+.hb.green{background:var(--success-light);border-color:var(--success)}
+.hb.purple{background:var(--purple-light);border-color:var(--purple)}
+.hb.orange{background:var(--warning-light);border-color:var(--warning)}
+.hb.red{background:var(--danger-light);border-color:var(--danger)}
+.hb .hbt{font-family:'Rubik',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:8px;display:block}
+.hb p{margin:0;color:var(--text-main);font-size:1.05rem;font-weight:500;line-height:1.75}
+.hb p+p{margin-top:8px}
+/* TABLES */
+.vt-label{font-family:'Rubik',sans-serif;font-size:.93rem;font-weight:700;color:var(--text-muted);margin-bottom:10px;display:block}
+.vt{width:100%;border-collapse:collapse;background:#fff;font-size:.98rem;box-shadow:var(--sh-sm);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border)}
+.vt th{background:var(--primary-light);color:var(--primary);padding:13px 15px;text-align:right;border:1px solid var(--border);font-weight:700;font-family:'Rubik',sans-serif;font-size:.92rem}
+.vt td{padding:12px 15px;border:1px solid var(--border);color:var(--text-secondary);font-size:.98rem}
+.vt tr:hover td{background:#f8fafc}
+.hg{background:rgba(16,185,129,.12)!important;font-weight:700;color:#065f46!important}
+.hy{background:rgba(245,158,11,.15)!important;font-weight:700}
+.hr{background:rgba(239,68,68,.08)!important;color:#991b1b!important}
+.hp{background:rgba(139,92,246,.1)!important;font-weight:700;color:#5b21b6!important}
+.hb2{background:rgba(14,165,233,.1)!important;font-weight:700;color:#0369a1!important}
+.kc{font-family:'Fira Code',monospace!important;font-weight:700!important;font-size:.88rem!important}
+.kbp{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:4px;font-size:.78rem;font-weight:bold;margin-left:6px;background:#fee2e2;color:#b91c1c}
+.kbf{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:4px;font-size:.78rem;font-weight:bold;margin-left:6px;background:#e0f2fe;color:#0369a1}
+/* SIDE BY SIDE */
+.sbs{display:flex;gap:18px;margin:22px 0;flex-wrap:wrap}
+.sbs>div{flex:1;min-width:220px}
+/* CONCEPT VISUAL */
+.cv{background:linear-gradient(135deg,#f8fafc,#eef2ff);border:2px dashed var(--primary);border-radius:var(--r-lg);padding:28px;margin:22px 0}
+.cv-title{font-family:'Rubik',sans-serif;font-weight:800;font-size:1.05rem;color:var(--primary);margin-bottom:18px}
+.cv-steps{display:flex;flex-direction:column;gap:16px}
+.cv-step{display:flex;align-items:flex-start;gap:14px}
+.cv-n{width:34px;height:34px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0;margin-top:2px}
+.cv-t{font-size:1.08rem;color:var(--text-secondary);line-height:1.7}
+.cv-t strong{color:var(--text-main)}
+/* WORD BREAKDOWN */
+.wb{background:#1a1a2e;border-radius:var(--r-lg);padding:26px;margin:22px 0}
+.wb-title{font-family:'Rubik',sans-serif;color:#a5b4fc;font-weight:700;font-size:.98rem;margin-bottom:18px}
+.wr{display:flex;align-items:flex-start;gap:14px;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid #2d2d44}
+.wr:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.wc{font-family:'Fira Code',monospace;font-size:.88rem;font-weight:700;padding:7px 12px;border-radius:6px;white-space:nowrap;flex-shrink:0;min-width:175px;text-align:center}
+.wc.kw{background:rgba(167,139,250,.2);color:#c4b5fd;border:1px solid rgba(167,139,250,.3)}
+.wc.tbl{background:rgba(96,165,250,.2);color:#93c5fd;border:1px solid rgba(96,165,250,.3)}
+.wc.col{background:rgba(251,146,60,.2);color:#fdba74;border:1px solid rgba(251,146,60,.3)}
+.wc.op{background:rgba(52,211,153,.2);color:#6ee7b7;border:1px solid rgba(52,211,153,.3)}
+.wc.fn{background:rgba(244,63,94,.2);color:#fda4af;border:1px solid rgba(244,63,94,.3)}
+.we{color:#cbd5e1;font-size:1.02rem;line-height:1.65}
+.we strong{color:#f1f5f9}
+/* CODE */
+pre.code{background:#1a1a2e;color:#e2e8f0;padding:22px 26px;border-radius:var(--r-md);font-family:'Fira Code',monospace;font-size:.97rem;direction:ltr;text-align:left;overflow-x:auto;border-right:5px solid var(--primary);line-height:1.8;margin:18px 0}
+.ckw{color:#c792ea;font-weight:bold}.ctbl{color:#82aaff}.ccol{color:#f78c6c}.ccmt{color:#546e7a;font-style:italic}.cal{color:#ffcb6b}.cfn{color:#80cbc4}
+/* GROUP FLOW VISUAL */
+.gflow{display:flex;flex-direction:column;gap:0;margin:22px 0}
+.gflow-row{display:flex;align-items:stretch;gap:0}
+.gflow-arrow{display:flex;align-items:center;justify-content:center;font-size:1.8rem;padding:4px 0;color:var(--primary)}
+.gflow-box{flex:1;border:2px solid var(--border);border-radius:var(--r-md);padding:16px;background:#fff;box-shadow:var(--sh-sm)}
+.gflow-box.raw{border-color:var(--warning);background:var(--warning-light)}
+.gflow-box.grouped{border-color:var(--primary);background:var(--primary-light)}
+.gflow-box.result{border-color:var(--success);background:var(--success-light)}
+.gflow-box-title{font-family:'Rubik',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:10px}
+/* BUCKET VISUAL */
+.buckets{display:flex;gap:15px;flex-wrap:wrap;margin:22px 0}
+.bucket{flex:1;min-width:160px;border-radius:var(--r-md);overflow:hidden;box-shadow:var(--sh-sm);border:2px solid var(--border)}
+.bucket-hdr{padding:10px 14px;font-family:'Rubik',sans-serif;font-weight:700;font-size:.93rem;color:#fff;text-align:center}
+.bucket-hdr.s{background:#4f46e5}.bucket-hdr.t{background:#0ea5e9}.bucket-hdr.h{background:#10b981}
+.bucket-row{padding:8px 14px;border-bottom:1px solid var(--border);font-size:.93rem;color:var(--text-secondary);background:#fff}
+.bucket-row:last-child{border-bottom:none}
+.bucket-sum{padding:9px 14px;font-weight:700;font-size:.95rem;background:var(--bg-accent);color:var(--text-main);border-top:2px solid var(--border)}
+/* EXECUTION ORDER */
+.exec-order{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0;align-items:center}
+.exec-step{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:100px;font-size:.93rem;font-weight:700;border:2px solid}
+.exec-step.dim{background:#f8fafc;border-color:var(--border);color:var(--text-muted)}
+.exec-step.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.exec-step.hi{background:var(--warning-light);border-color:var(--warning);color:#92400e}
+.exec-arrow{font-size:1.2rem;color:var(--text-muted)}
+/* HAVING vs WHERE */
+.hvw{display:flex;gap:18px;flex-wrap:wrap;margin:22px 0}
+.hvw>div{flex:1;min-width:240px;border-radius:var(--r-md);padding:20px;border:2px solid}
+.hvw .bad{border-color:var(--warning);background:var(--warning-light)}
+.hvw .good{border-color:var(--success);background:var(--success-light)}
+.hvw h5{font-family:'Rubik',sans-serif;font-size:1rem;font-weight:700;margin-bottom:10px}
+/* ANALOGY */
+.ac{background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:var(--r-lg);padding:26px;margin:22px 0;border:1px solid #3d3d5c}
+.ac .at{font-family:'Rubik',sans-serif;color:#f59e0b;font-weight:700;font-size:1.08rem;margin-bottom:12px}
+.ac p{color:#94a3b8;font-size:1.05rem;line-height:1.75;margin:0}
+.ac p+p{margin-top:10px}
+.ac strong{color:#e2e8f0}
+/* STEP SUMMARY */
+.steps-wrap{margin:22px 0}
+.si{display:flex}
+.sline{display:flex;flex-direction:column;align-items:center;width:46px;flex-shrink:0}
+.scirc{width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem}
+.sconn{width:2px;flex:1;background:var(--border);min-height:18px}
+.si:last-child .sconn{display:none}
+.scontent{padding:2px 0 26px;padding-right:14px}
+.scontent h5{font-family:'Rubik',sans-serif;font-size:1.02rem;font-weight:700;color:var(--text-main);margin-bottom:5px}
+.scontent p{font-size:1.02rem;color:var(--text-secondary);margin:0;line-height:1.65}
+/* SQL PLAYGROUND */
+.pg{background:#1a1a2e;border-radius:var(--r-lg);overflow:hidden;margin:32px 0;box-shadow:0 20px 50px rgba(0,0,0,.25);border:1px solid #2d2d44}
+.pg-hdr{background:#16213e;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2d2d44}
+.pg-dots{display:flex;gap:7px}
+.pd{width:13px;height:13px;border-radius:50%}
+.pd.r{background:#ff5f57}.pd.y{background:#ffbd2e}.pd.g{background:#27c93f}
+.pg-tag{font-family:'Fira Code',monospace;font-size:.83rem;color:#a5b4fc;margin-right:12px}
+.pg-badge{background:var(--g-main);color:#fff;padding:5px 14px;border-radius:100px;font-size:.8rem;font-weight:700}
+.pg-body{padding:20px}
+.pg-task{background:#0f0f1a;border:1px solid #3d3d5c;border-radius:var(--r-md);padding:16px 20px;margin-bottom:16px;color:#a5b4fc;font-size:1.03rem;line-height:1.75}
+.pg-task .tt{color:#f59e0b;font-weight:700;font-size:1.08rem;display:block;margin-bottom:9px}
+.pg-task ul{padding-right:18px;margin-top:8px}
+.pg-task ul li{margin-bottom:6px;color:#94a3b8}
+.pg-task ul li strong{color:#e2e8f0}
+/* Sim tables inside playground */
+.stbls{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.stbls>div{flex:1;min-width:185px}
+.st-lbl{font-family:'Fira Code',monospace;font-size:.77rem;color:#64748b;margin-bottom:6px;font-weight:700}
+.st{width:100%;border-collapse:collapse;font-size:.83rem;direction:ltr;text-align:left}
+.st th{background:#1e1e30;padding:8px 10px;color:#4fc1ff;font-family:'Fira Code',monospace;border-bottom:2px solid #3d3d5c;font-size:.77rem}
+.st td{padding:7px 10px;color:#cbd5e1;border-bottom:1px solid #2d2d44;font-size:.83rem}
+.st td.spk{color:#f87171;font-weight:700}
+.st td.sfk{color:#60a5fa;font-weight:700}
+.st td.sg{background:rgba(16,185,129,.15);color:#6ee7b7;font-weight:700}
+.st td.sy{background:rgba(245,158,11,.15);color:#fde68a;font-weight:700}
+.st td.sp{background:rgba(139,92,246,.15);color:#c4b5fd;font-weight:700}
+/* SQL input */
+.sq-inp{width:100%;min-height:145px;background:#0f0f1a;border:1px solid #3d3d5c;border-radius:var(--r-sm);padding:15px;color:#e2e8f0;font-family:'Fira Code',monospace;font-size:.97rem;direction:ltr;text-align:left;resize:vertical;line-height:1.7;outline:none;transition:border-color .2s}
+.sq-inp:focus{border-color:var(--secondary);box-shadow:0 0 0 3px rgba(14,165,233,.1)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:13px}
+.run-btn{padding:11px 28px;background:var(--g-main);border:none;border-radius:100px;color:#fff;font-family:'Assistant',sans-serif;font-size:1.03rem;font-weight:700;cursor:pointer;transition:all .25s}
+.run-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(79,70,229,.4)}
+.hint-btn{padding:11px 20px;background:transparent;border:1px solid #3d3d5c;border-radius:100px;color:#a5b4fc;font-family:'Assistant',sans-serif;font-size:.93rem;font-weight:600;cursor:pointer;transition:all .2s}
+.hint-btn:hover{background:#2d2d44;color:#fff}
+.hint-box{display:none;margin-top:13px;padding:13px 16px;background:rgba(245,158,11,.08);border-radius:8px;border-right:3px solid var(--warning);color:#fde68a;font-size:.93rem;direction:ltr;text-align:left;line-height:1.7}
+/* Results */
+.pg-res{background:#12121f}
+.res-hdr{padding:10px 20px;background:#1e1e30;color:#64748b;font-size:.83rem;font-weight:600;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #2d2d44}
+.res-body{padding:15px 18px;min-height:55px}
+.rt{width:100%;border-collapse:collapse;font-size:.9rem;direction:ltr;text-align:left}
+.rt th{background:#1e1e30;padding:10px 14px;color:#4fc1ff;font-family:'Fira Code',monospace;border-bottom:2px solid #3d3d5c;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+.rt td{padding:10px 14px;color:#cbd5e1;border-bottom:1px solid #2d2d44}
+.rt tr:last-child td{border-bottom:none}
+.r-ok{color:#34d399;padding:13px 18px 5px;font-weight:700;font-size:1.03rem}
+.r-err{padding:15px 18px;border-right:4px solid #ef4444}
+.r-err .et{color:#f87171;font-weight:700;font-size:1.03rem;margin-bottom:7px}
+.r-err .eb{color:#94a3b8;font-size:.97rem;line-height:1.7}
+.r-cnt{color:#475569;font-size:.83rem;padding:5px 18px 13px}
+.r-idle{color:#4a4a6a;font-size:.93rem}
+/* QUIZ */
+.qz{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:34px;margin:34px 0;position:relative;box-shadow:var(--sh-md);overflow:hidden}
+.qz::before{content:'';position:absolute;top:0;right:0;left:0;height:4px;background:var(--g-main)}
+.qz-hdr{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.qz-icon{width:44px;height:44px;background:var(--warning-light);color:var(--warning);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0}
+.qz-title{font-family:'Rubik',sans-serif;font-weight:700;font-size:1.18rem}
+.qz-q{font-size:1.12rem;font-weight:600;margin-bottom:20px;color:var(--text-main);line-height:1.65}
+.qz-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.opt{display:flex;align-items:flex-start;gap:14px;padding:15px 18px;background:var(--bg-page);border:2px solid var(--border);border-radius:var(--r-md);cursor:pointer;transition:all .2s;font-size:1.03rem;font-weight:500;line-height:1.55}
+.opt:hover:not(.correct):not(.wrong){border-color:var(--primary);background:var(--primary-light)}
+.opt.correct{border-color:var(--success);background:var(--success-light)}
+.opt.wrong{border-color:var(--danger);background:var(--danger-light)}
+.om{width:33px;height:33px;border-radius:50%;background:#fff;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0;margin-top:2px}
+.opt.correct .om{border-color:var(--success);background:var(--success);color:#fff}
+.opt.wrong .om{border-color:var(--danger);background:var(--danger);color:#fff}
+.qz-fb{padding:15px 18px;border-radius:var(--r-md);font-size:1.03rem;font-weight:600;display:none;margin-top:10px;line-height:1.7}
+.qz-fb.show{display:block}
+.qz-fb.correct{background:var(--success-light);color:#065f46;border:1px solid #a7f3d0}
+.qz-fb.wrong{background:var(--danger-light);color:#991b1b;border:1px solid #fecaca}
+/* SCORE */
+.score-w{position:fixed;bottom:28px;left:28px;background:#fff;border:2px solid var(--border);border-radius:100px;padding:10px 20px;display:flex;align-items:center;gap:11px;z-index:1000;box-shadow:var(--sh-lg);direction:ltr;transition:transform .3s}
+.sv{font-family:'Rubik',sans-serif;font-weight:900;font-size:1.45rem;color:var(--primary)}
+.sl{font-size:.83rem;color:var(--text-muted);font-weight:600}
+code{background:var(--primary-light);color:var(--primary);padding:2px 6px;border-radius:4px;font-family:'Fira Code',monospace;font-size:.87em;font-weight:bold}
+@media(max-width:680px){.sbs,.hvw{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="pb-wrap"><div class="pb-fill" id="pb"></div></div>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-inner">
+  <div class="hero-badge"><span class="dot"></span>הרצאה 2 | פרק 2 מתוך 5 — GROUP BY & HAVING</div>
+  <h1>לחתוך נתונים<br><span>לקבוצות ולחשב עליהן</span></h1>
+  <p>בפרק הקודם למדנו לחבר טבלאות. עכשיו נלמד משהו חזק עוד יותר: <strong>לקחת אלפי שורות ולכווץ אותן לסיכומים חכמים</strong> — ממוצע אושר לפי מחלקה, סך השקעה לפי עובד, וכמה כסף הוצא על כל סוג התערבות. כל זאת בשאילתה אחת.</p>
+  <div class="hero-meta">
+    <div class="hmi">⏱️ 120 דקות</div>
+    <div class="hmi">🗂️ 3 סימולטורים</div>
+    <div class="hmi">🔰 ממשיכים מפרק 1</div>
+    <div class="hmi">🏢 מסד EHI</div>
+    <div class="hmi">🧠 4 בחינות</div>
+  </div>
+</div>
+</section>
+
+<nav class="nav-sticky" id="mainNav">
+  <a href="#s1" class="nl active">🤔 מה זה GROUP BY?</a>
+  <a href="#s2" class="nl">📊 GROUP BY בסיסי</a>
+  <a href="#s3" class="nl">💻 הקוד מילה-מילה</a>
+  <a href="#s4" class="nl">🔀 GROUP BY מרובה</a>
+  <a href="#s5" class="nl">🚦 HAVING — סינון אחרי</a>
+  <a href="#s6" class="nl">🏆 אתגר הבוס</a>
+</nav>
+
+<main class="container">
+
+<!-- ====================================
+  SECTION 1: WHAT IS GROUP BY — VISUAL FIRST
+  ==================================== -->
+<section class="sec" id="s1">
+<div class="sec-hdr"><div class="sec-num">1</div><h2 class="sec-title">מה זה GROUP BY? — קודם מבינים, אחר כך קוד</h2></div>
+
+<div class="cb">
+  <h3>📖 השאלה העסקית שמחייבת GROUP BY</h3>
+  <p>מנכ"ל EHI שואל: <em>"כמה עובדים יש בכל מחלקה? מה ממוצע ציון האושר בכל מחלקה?"</em></p>
+  <p>הבעיה: טבלת employees מכילה שורה אחת לכל עובד. אין שורה שאומרת "ממוצע מחלקת מכירות". אנחנו צריכים לבקש מ-SQL <strong>לאסוף שורות לפי קבוצות ולחשב על כל קבוצה</strong>.</p>
+  <p>בדיוק לכך משמש <code>GROUP BY</code>.</p>
+
+  <div class="ac">
+    <div class="at">💡 האנלוגיה: מיון כרטיסיות לערמות</div>
+    <p>דמיינו שיש לכם 5 כרטיסיות על השולחן — אחת לכל עובד. על כל כרטיסייה: שם, מחלקה, וציון אושר.</p>
+    <p><strong>GROUP BY זה כאילו אתם מסדרים את הכרטיסיות לפי מחלקה — ערמה אחת למכירות, ערמה לטכנולוגיה, ערמה ל-HR.</strong> אחרי המיון — אתם יכולים לחשב על כל ערמה: כמה כרטיסיות? מה הממוצע?</p>
+  </div>
+
+  <h3 style="margin-top:28px">👁️ מה GROUP BY עושה — ויזואלית</h3>
+  <p>הנה טבלת employees שאתם כבר מכירים, ואחריה — מה GROUP BY עושה לה בדיוק:</p>
+
+  <div style="overflow-x:auto;margin:18px 0">
+    <span class="vt-label">📋 טבלת employees — נקודת ההתחלה (5 שורות)</span>
+    <table class="vt">
+      <thead><tr><th>id</th><th>full_name</th><th>dept_name</th><th>happiness_score</th><th>cost (intervention)</th></tr></thead>
+      <tbody>
+        <tr><td class="kc">1</td><td>דנה לוי</td><td class="hy">מכירות</td><td>8.2</td><td>32,500</td></tr>
+        <tr><td class="kc">2</td><td>יונתן מזרחי</td><td class="hy">מכירות</td><td>5.1</td><td>8,000</td></tr>
+        <tr><td class="kc">3</td><td>שירה ברק</td><td class="hg">טכנולוגיה</td><td>9.0</td><td>15,000</td></tr>
+        <tr><td class="kc">4</td><td>מוחמד עלי</td><td class="hg">טכנולוגיה</td><td>7.4</td><td>15,000</td></tr>
+        <tr><td class="kc">5</td><td>מיכל רוזן</td><td class="hp">משאבי אנוש</td><td>6.8</td><td>0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cv">
+    <div class="cv-title">🔍 מה קורה כשמבקשים GROUP BY dept_name?</div>
+    <div class="cv-steps">
+      <div class="cv-step"><div class="cv-n">1</div><div class="cv-t">SQL <strong>ממיין</strong> את כל השורות לפי עמודת dept_name — אוסף ביחד את כל שורות "מכירות", כל שורות "טכנולוגיה" וכן הלאה.</div></div>
+      <div class="cv-step"><div class="cv-n">2</div><div class="cv-t">עבור כל <strong>קבוצה</strong> (מחלקה) — SQL מחשב את מה שביקשתם: SUM? AVG? COUNT? הוא מחשב זאת על כל השורות בקבוצה.</div></div>
+      <div class="cv-step"><div class="cv-n">3</div><div class="cv-t"><strong>התוצאה</strong>: במקום 5 שורות — 3 שורות בלבד. שורה אחת לכל קבוצה (מחלקה). כל שורה מכילה את ה"סיכום" של כל עובדי אותה מחלקה.</div></div>
+    </div>
+  </div>
+
+  <!-- BUCKET VISUAL — before and after -->
+  <h4>לפני GROUP BY: 5 שורות בודדות → אחרי GROUP BY: 3 קבוצות מסוכמות</h4>
+
+  <div class="buckets">
+    <div class="bucket">
+      <div class="bucket-hdr s">🏢 מכירות (2 עובדים)</div>
+      <div class="bucket-row">דנה לוי — 8.2</div>
+      <div class="bucket-row">יונתן מזרחי — 5.1</div>
+      <div class="bucket-sum">ממוצע: <strong>6.65</strong> | סה"כ: 2 עובדים</div>
+    </div>
+    <div class="bucket">
+      <div class="bucket-hdr t">💻 טכנולוגיה (2 עובדים)</div>
+      <div class="bucket-row">שירה ברק — 9.0</div>
+      <div class="bucket-row">מוחמד עלי — 7.4</div>
+      <div class="bucket-sum">ממוצע: <strong>8.20</strong> | סה"כ: 2 עובדים</div>
+    </div>
+    <div class="bucket">
+      <div class="bucket-hdr h">👥 משאבי אנוש (1 עובד)</div>
+      <div class="bucket-row">מיכל רוזן — 6.8</div>
+      <div class="bucket-row" style="color:#94a3b8;font-style:italic;font-size:.85rem">(אין עוד)</div>
+      <div class="bucket-sum">ממוצע: <strong>6.80</strong> | סה"כ: 1 עובד</div>
+    </div>
+  </div>
+
+  <div style="overflow-x:auto;margin:18px 0">
+    <span class="vt-label">✅ תוצאת GROUP BY dept_name — 3 שורות במקום 5!</span>
+    <table class="vt">
+      <thead><tr><th>dept_name</th><th>COUNT(*) — כמה עובדים</th><th>AVG(happiness_score) — ממוצע</th></tr></thead>
+      <tbody>
+        <tr><td class="hy">מכירות</td><td class="hg">2</td><td class="hg">6.65</td></tr>
+        <tr><td class="hg">טכנולוגיה</td><td class="hg">2</td><td class="hg">8.20</td></tr>
+        <tr><td class="hp">משאבי אנוש</td><td class="hg">1</td><td class="hg">6.80</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hb blue">
+    <span class="hbt">💡 הכלל הזהב של GROUP BY: מה מותר ב-SELECT?</span>
+    <p>כשמשתמשים ב-GROUP BY, ב-SELECT מותר לכתוב רק שתי סוגי דברים:</p>
+    <p><strong>1.</strong> העמודות שנמצאות ב-GROUP BY (כמו dept_name)</p>
+    <p style="margin-top:6px"><strong>2.</strong> פונקציות אגרגציה — COUNT(), SUM(), AVG(), MAX(), MIN()</p>
+    <p style="margin-top:6px">שגיאה נפוצה: לכתוב ב-SELECT עמודה שלא ב-GROUP BY ולא בפונקציה — SQL יתלונן!</p>
+  </div>
+</div>
+
+<!-- QUIZ 1 -->
+<div class="qz">
+  <div class="qz-hdr"><div class="qz-icon">🧠</div><div class="qz-title">שאלת הבנה — מה GROUP BY עושה?</div></div>
+  <p style="font-size:1rem;color:var(--text-muted);margin-bottom:14px;font-weight:600">הסתכלו על הטבלה לפני שתענו:</p>
+  <div style="overflow-x:auto;margin-bottom:18px">
+    <table class="vt">
+      <thead><tr><th>id</th><th>city</th><th>sales_amount</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td class="hy">תל אביב</td><td>5,000</td></tr>
+        <tr><td>2</td><td class="hy">תל אביב</td><td>8,000</td></tr>
+        <tr><td>3</td><td class="hg">חיפה</td><td>3,000</td></tr>
+        <tr><td>4</td><td class="hg">חיפה</td><td>7,000</td></tr>
+        <tr><td>5</td><td class="hp">ירושלים</td><td>4,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="qz-q">מריצים: <code>SELECT city, SUM(sales_amount) FROM sales GROUP BY city;</code> — כמה שורות תחזיר התוצאה?</div>
+  <div class="qz-opts" id="q1-opts">
+    <div class="opt" onclick="pick('q1',0,this)"><div class="om">א</div>5 שורות — SQL לא משנה את מספר השורות</div>
+    <div class="opt" onclick="pick('q1',1,this)"><div class="om">ב</div>3 שורות — אחת לכל עיר, עם סכום המכירות שלה (תל אביב 13,000, חיפה 10,000, ירושלים 4,000)</div>
+    <div class="opt" onclick="pick('q1',2,this)"><div class="om">ג</div>1 שורה — GROUP BY מחזיר תמיד שורה אחת</div>
+    <div class="opt" onclick="pick('q1',3,this)"><div class="om">ד</div>שגיאה — לא ניתן לשלב SUM עם GROUP BY</div>
+  </div>
+  <div class="qz-fb" id="q1-fb"></div>
+</div>
+</section>
+
+
+<!-- ====================================
+  SECTION 2: GROUP BY + AGGREGATE FUNCTIONS — VISUAL
+  ==================================== -->
+<section class="sec" id="s2">
+<div class="sec-hdr"><div class="sec-num">2</div><h2 class="sec-title">פונקציות האגרגציה — הכלים שמחשבים על קבוצות</h2></div>
+
+<div class="cb">
+  <h3>🛠️ 5 הפונקציות שחייבים להכיר</h3>
+  <p>GROUP BY לבד לא עושה חישוב — הוא רק מסדר לערמות. <strong>פונקציות האגרגציה הן אלה שמחשבות</strong> על כל ערמה. הנה 5 הפונקציות החשובות ביותר:</p>
+
+  <div style="overflow-x:auto;margin:18px 0">
+    <table class="vt">
+      <thead><tr><th>פונקציה</th><th>מה היא עושה?</th><th>דוגמה על EHI</th><th>תוצאה לדוגמה</th></tr></thead>
+      <tbody>
+        <tr><td class="kc hg">COUNT(*)</td><td>סופרת כמה שורות יש בקבוצה</td><td>כמה עובדים יש במחלקה?</td><td>2</td></tr>
+        <tr><td class="kc hy">SUM(col)</td><td>מחשבת סכום של עמודה מספרית</td><td>כמה כסף הוצא על עובדי מחלקה?</td><td>40,500 ₪</td></tr>
+        <tr><td class="kc hb2">AVG(col)</td><td>מחשבת ממוצע של עמודה מספרית</td><td>ממוצע ציון האושר במחלקה?</td><td>6.65</td></tr>
+        <tr><td class="kc hp">MAX(col)</td><td>מוצאת את הערך הגבוה ביותר בקבוצה</td><td>ציון האושר הגבוה ביותר במחלקה?</td><td>8.2</td></tr>
+        <tr><td class="kc hr">MIN(col)</td><td>מוצאת את הערך הנמוך ביותר בקבוצה</td><td>ציון האושר הנמוך ביותר במחלקה?</td><td>5.1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hb orange">
+    <span class="hbt">⚠️ הבדל חשוב: COUNT(*) לעומת COUNT(עמודה)</span>
+    <p><code>COUNT(*)</code> — סופר את מספר <strong>השורות</strong> בקבוצה, כולל NULLs.</p>
+    <p style="margin-top:6px"><code>COUNT(cost)</code> — סופר רק שורות שבהן עמודת cost <strong>אינה NULL</strong>. כשיש עובדים ללא התערבות (cost=NULL), שני הגרסאות יתנו תוצאות שונות!</p>
+  </div>
+
+  <h4>עכשיו נראה ויזואלית: GROUP BY + SUM על מסד EHI</h4>
+  <p>נחבר את הנתונים שלנו — כמה הוצא בסה"כ לכל מחלקה? נסתכל על הנתונים לפני ואחרי:</p>
+
+  <div class="sbs">
+    <div>
+      <span class="vt-label">📋 הנתונים הגולמיים (לפני GROUP BY)</span>
+      <table class="vt">
+        <thead><tr><th>dept_name</th><th>full_name</th><th>intervention_cost</th></tr></thead>
+        <tbody>
+          <tr><td class="hy">מכירות</td><td>דנה לוי</td><td>3,000</td></tr>
+          <tr><td class="hy">מכירות</td><td>דנה לוי</td><td>4,500</td></tr>
+          <tr><td class="hy">מכירות</td><td>דנה לוי</td><td>25,000</td></tr>
+          <tr><td class="hy">מכירות</td><td>יונתן מזרחי</td><td>8,000</td></tr>
+          <tr><td class="hg">טכנולוגיה</td><td>שירה ברק</td><td>15,000</td></tr>
+          <tr><td class="hg">טכנולוגיה</td><td>מוחמד עלי</td><td>3,000</td></tr>
+          <tr><td class="hg">טכנולוגיה</td><td>מוחמד עלי</td><td>12,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 5px">
+      <div style="text-align:center;color:var(--primary)">
+        <div style="font-size:2rem">→</div>
+        <div style="font-size:.75rem;font-family:'Fira Code',monospace;margin-top:4px;color:var(--text-muted)">GROUP BY<br>dept_name</div>
+      </div>
+    </div>
+    <div>
+      <span class="vt-label">✅ אחרי GROUP BY — סיכום לפי מחלקה</span>
+      <table class="vt">
+        <thead><tr><th>dept_name</th><th>total_cost</th><th>num_interventions</th></tr></thead>
+        <tbody>
+          <tr><td class="hy">מכירות</td><td class="hg">40,500 ₪</td><td class="hg">4</td></tr>
+          <tr><td class="hg">טכנולוגיה</td><td class="hg">30,000 ₪</td><td class="hg">3</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.88rem;color:var(--text-muted);margin-top:8px">7 שורות → 2 שורות. מסד HR מקבל תמונה ברורה!</p>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ 2 -->
+<div class="qz">
+  <div class="qz-hdr"><div class="qz-icon">🧠</div><div class="qz-title">בחינה — איזו פונקציה להשתמש?</div></div>
+  <p style="font-size:1rem;color:var(--text-muted);margin-bottom:14px;font-weight:600">הסתכלו על טבלת interventions לפני שתענו:</p>
+  <div style="overflow-x:auto;margin-bottom:18px">
+    <table class="vt">
+      <thead><tr><th>employee_id</th><th>dept_name</th><th>intervention_type</th><th>cost</th><th>roi_score</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td class="hy">מכירות</td><td>מנוי גים</td><td>3,000</td><td>7.5</td></tr>
+        <tr><td>1</td><td class="hy">מכירות</td><td>ריטריט שנתי</td><td>25,000</td><td>9.1</td></tr>
+        <tr><td>2</td><td class="hy">מכירות</td><td>טיפול פסיכולוגי</td><td>8,000</td><td>6.2</td></tr>
+        <tr><td>4</td><td class="hg">טכנולוגיה</td><td>מנוי גים</td><td>3,000</td><td>7.0</td></tr>
+        <tr><td>4</td><td class="hg">טכנולוגיה</td><td>קורס מנהיגות</td><td>12,000</td><td>8.8</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="qz-q">המנכ"ל שואל: "מהו ה-ROI הממוצע של כל מחלקה?" איזו פונקציה ישמש ב-SELECT?</div>
+  <div class="qz-opts" id="q2-opts">
+    <div class="opt" onclick="pick('q2',0,this)"><div class="om">א</div>SUM(roi_score) — לסכם את ה-ROI</div>
+    <div class="opt" onclick="pick('q2',1,this)"><div class="om">ב</div>AVG(roi_score) — לחשב ממוצע ה-ROI לכל מחלקה</div>
+    <div class="opt" onclick="pick('q2',2,this)"><div class="om">ג</div>COUNT(roi_score) — לספור את ה-ROI</div>
+    <div class="opt" onclick="pick('q2',3,this)"><div class="om">ד</div>MAX(roi_score) — להציג את ה-ROI הגבוה ביותר</div>
+  </div>
+  <div class="qz-fb" id="q2-fb"></div>
+</div>
+</section>
+
+
+<!-- ====================================
+  SECTION 3: THE CODE — WORD BY WORD
+  ==================================== -->
+<section class="sec" id="s3">
+<div class="sec-hdr"><div class="sec-num">3</div><h2 class="sec-title">הקוד המלא — מילה אחר מילה</h2></div>
+
+<div class="cb">
+  <h3>💻 שאילתת GROUP BY מלאה — פירוק מוחלט</h3>
+  <p>הנה שאילתה מלאה שמחשבת לכל מחלקה: כמה עובדים, ממוצע אושר, וסכום ההשקעות. נפרק כל מילה:</p>
+
+<pre class="code"><span class="ckw">SELECT</span>
+    <span class="ccol">dept_name</span>,
+    <span class="cfn">COUNT</span>(*) <span class="ckw">AS</span> <span class="cal">num_employees</span>,
+    <span class="cfn">AVG</span>(<span class="ccol">happiness_score</span>) <span class="ckw">AS</span> <span class="cal">avg_happiness</span>,
+    <span class="cfn">SUM</span>(<span class="ccol">total_investment</span>) <span class="ckw">AS</span> <span class="cal">total_spent</span>
+<span class="ckw">FROM</span> <span class="ctbl">employees_summary</span>
+<span class="ckw">GROUP BY</span> <span class="ccol">dept_name</span>
+<span class="ckw">ORDER BY</span> <span class="cal">avg_happiness</span> <span class="ckw">DESC</span>;</pre>
+
+  <div class="wb">
+    <div class="wb-title">🔍 פירוק שורה-שורה — לא נשאיר שום דבר לא מוסבר</div>
+    <div class="wr">
+      <div class="wc kw">SELECT dept_name</div>
+      <div class="we"><strong>dept_name היא עמודת הקיבוץ.</strong> כי כתבנו <code>GROUP BY dept_name</code>, מותר לנו לכתוב dept_name ב-SELECT. אם כתבנו ב-SELECT עמודה אחרת (כמו full_name) שאינה ב-GROUP BY ואינה בפונקציה — SQL יזרוק שגיאה.</div>
+    </div>
+    <div class="wr">
+      <div class="wc fn">COUNT(*) AS num_employees</div>
+      <div class="we"><strong>COUNT(*)</strong> = "ספור את מספר השורות בכל קבוצה". <strong>AS num_employees</strong> = שם לעמודה בתוצאה. AS הוא "כינוי לעמודה" — במקום שעמודה תיקרא "COUNT(*)" (מכוער), נקראת "num_employees" (ברור).</div>
+    </div>
+    <div class="wr">
+      <div class="wc fn">AVG(happiness_score)</div>
+      <div class="we"><strong>AVG</strong> = Average = ממוצע. SQL ייקח את כל ערכי happiness_score בקבוצה, ויחשב את ממוצעם. לדוגמה: מחלקת מכירות עם 8.2 ו-5.1 → ממוצע (8.2+5.1)/2 = 6.65.</div>
+    </div>
+    <div class="wr">
+      <div class="wc fn">SUM(total_investment)</div>
+      <div class="we"><strong>SUM</strong> = סכום. SQL ייקח את כל ערכי total_investment בקבוצה וימיין אותם. לדוגמה: מחלקת מכירות עם 3,000 + 25,000 + 8,000 = 36,000.</div>
+    </div>
+    <div class="wr">
+      <div class="wc kw">GROUP BY dept_name</div>
+      <div class="we"><strong>זו הפקודה המרכזית.</strong> אומרת ל-SQL: "אסוף את כל השורות שיש להן אותה dept_name לקבוצה אחת, ואז חשב את הפונקציות על כל קבוצה". בלי GROUP BY — הפונקציות יחשבו על כל הטבלה כולה (ויחזירו שורה אחת).</div>
+    </div>
+    <div class="wr">
+      <div class="wc kw">ORDER BY avg_happiness DESC</div>
+      <div class="we"><strong>ORDER BY</strong> = מיין את התוצאות. <strong>DESC</strong> = מהגבוה לנמוך (Descending). ASC = מהנמוך לגבוה (Ascending). אחרי GROUP BY, אפשר למיין לפי כל עמודת תוצאה — כולל עמודות שחישבנו כמו avg_happiness.</div>
+    </div>
+  </div>
+
+  <div class="hb purple">
+    <span class="hbt">🎯 מה ההבדל בין ROUND() ל-AVG()?</span>
+    <p>AVG מחשב ממוצע אבל עשוי להחזיר מספרים ארוכים כמו 6.650000000001. כדי לעגל ל-2 ספרות אחרי הנקודה, עוטפים ב-ROUND: <code>ROUND(AVG(happiness_score), 2)</code>. הספרה 2 אומרת "עגל ל-2 ספרות אחרי הנקודה".</p>
+  </div>
+</div>
+
+<!-- SIMULATOR 1 -->
+<div class="pg">
+  <div class="pg-hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="pg-dots"><div class="pd r"></div><div class="pd y"></div><div class="pd g"></div></div>
+      <span class="pg-tag">ehi_database.sql — סימולטור 1</span>
+    </div>
+    <span class="pg-badge">📊 תרגיל: GROUP BY בסיסי</span>
+  </div>
+  <div class="pg-body">
+    <div class="stbls">
+      <div>
+        <div class="st-lbl">📋 הנתונים שיש לכם (לאחר JOIN מפרק 1)</div>
+        <table class="st">
+          <thead><tr><th>dept_name</th><th>full_name</th><th>happiness_score</th><th>intervention_cost</th></tr></thead>
+          <tbody>
+            <tr><td class="sy">מכירות</td><td>דנה לוי</td><td>8.2</td><td>32,500</td></tr>
+            <tr><td class="sy">מכירות</td><td>יונתן מזרחי</td><td>5.1</td><td>8,000</td></tr>
+            <tr><td class="sg">טכנולוגיה</td><td>שירה ברק</td><td>9.0</td><td>15,000</td></tr>
+            <tr><td class="sg">טכנולוגיה</td><td>מוחמד עלי</td><td>7.4</td><td>15,000</td></tr>
+            <tr><td class="sp">משאבי אנוש</td><td>מיכל רוזן</td><td>6.8</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="st-lbl">✅ מה שאמורים לקבל (3 שורות)</div>
+        <table class="st">
+          <thead><tr><th>dept_name</th><th>num_employees</th><th>avg_happiness</th><th>total_spent</th></tr></thead>
+          <tbody>
+            <tr><td class="sy">מכירות</td><td class="sg">2</td><td class="sg">6.65</td><td class="sg">40,500</td></tr>
+            <tr><td class="sg">טכנולוגיה</td><td class="sg">2</td><td class="sg">8.20</td><td class="sg">30,000</td></tr>
+            <tr><td class="sp">משאבי אנוש</td><td class="sg">1</td><td class="sg">6.80</td><td class="sg">0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pg-task">
+      <span class="tt">🎯 המשימה: דוח סיכום מחלקות</span>
+      כתבו שאילתת GROUP BY שמחשבת לכל מחלקה:
+      <ul>
+        <li><strong>dept_name</strong> — שם המחלקה (עמודת הקיבוץ)</li>
+        <li><strong>COUNT(*) AS num_employees</strong> — כמה עובדים</li>
+        <li><strong>ROUND(AVG(happiness_score), 2) AS avg_happiness</strong> — ממוצע ציון אושר</li>
+        <li><strong>SUM(intervention_cost) AS total_spent</strong> — סך ההשקעה</li>
+        <li>מיינו מהמחלקה הכי מאושרת (avg_happiness גבוה → נמוך)</li>
+      </ul>
+    </div>
+
+    <textarea class="sq-inp" id="s1-inp">-- GROUP BY מקבץ שורות לפי ערך משותף
+-- ואז פונקציות כמו AVG, SUM, COUNT מחשבות על כל קבוצה
+
+SELECT
+    dept_name,
+    COUNT(*) AS num_employees,
+    ROUND(AVG(happiness_score), 2) AS avg_happiness,
+    SUM(intervention_cost) AS total_spent
+FROM ehi_summary
+GROUP BY dept_name
+ORDER BY avg_happiness DESC;</textarea>
+
+    <div class="btn-row">
+      <button class="run-btn" onclick="runS1()">▶ הרץ שאילתה</button>
+      <button class="hint-btn" onclick="toggleHint('h1')">💡 רמז</button>
+    </div>
+    <div class="hint-box" id="h1">
+      SELECT dept_name, COUNT(*) AS num_employees,<br>
+      &nbsp;&nbsp;ROUND(AVG(happiness_score), 2) AS avg_happiness,<br>
+      &nbsp;&nbsp;SUM(intervention_cost) AS total_spent<br>
+      FROM ehi_summary<br>
+      GROUP BY dept_name<br>
+      ORDER BY avg_happiness DESC;
+    </div>
+  </div>
+  <div class="pg-res">
+    <div class="res-hdr"><span>📊 תוצאות</span><span id="s1-cnt"></span></div>
+    <div class="res-body" id="s1-res"><p class="r-idle">לחצו "הרץ שאילתה" כדי לראות תוצאות...</p></div>
+  </div>
+</div>
+</section>
+
+
+<!-- ====================================
+  SECTION 4: MULTI-COLUMN GROUP BY
+  ==================================== -->
+<section class="sec" id="s4">
+<div class="sec-hdr"><div class="sec-num">4</div><h2 class="sec-title">GROUP BY על שתי עמודות — "חיתוך עמוק"</h2></div>
+
+<div class="cb">
+  <h3>🔀 מתי צריך לקבץ לפי שתי עמודות?</h3>
+  <p>שאלה עסקית מורכבת יותר: <em>"מה ממוצע ציון האושר לפי מחלקה <strong>וגם</strong> לפי סוג ההתערבות?"</em></p>
+  <p>עם GROUP BY על עמודה אחת נקבל 3 שורות (מחלקה). אבל אם נרצה לראות כל שילוב של מחלקה + סוג התערבות — נשתמש ב-<strong>GROUP BY על שתי עמודות</strong>.</p>
+
+  <div class="ac">
+    <div class="at">💡 האנלוגיה: מיון לפי שתי תיוות</div>
+    <p>חזרו לדוגמת הכרטיסיות. קודם מיינתם לפי מחלקה. עכשיו, <strong>בתוך כל ערמת מחלקה — תמיינו שוב לפי סוג ההתערבות</strong>.</p>
+    <p>תוצאה: ערמה "מכירות + מנוי גים", ערמה "מכירות + ריטריט", ערמה "טכנולוגיה + מנוי גים", וכן הלאה.</p>
+  </div>
+
+  <h4>הנתונים לפני ואחרי GROUP BY על שתי עמודות</h4>
+
+  <div class="sbs">
+    <div>
+      <span class="vt-label">📋 נתונים גולמיים — 7 שורות</span>
+      <table class="vt">
+        <thead><tr><th>dept_name</th><th>intervention_type</th><th>cost</th><th>roi_score</th></tr></thead>
+        <tbody>
+          <tr><td class="hy">מכירות</td><td class="hb2">מנוי גים</td><td>3,000</td><td>7.5</td></tr>
+          <tr><td class="hy">מכירות</td><td class="hp">ריטריט שנתי</td><td>25,000</td><td>9.1</td></tr>
+          <tr><td class="hy">מכירות</td><td class="hr">טיפול פסיכולוגי</td><td>8,000</td><td>6.2</td></tr>
+          <tr><td class="hy">מכירות</td><td class="hp">מיינדפולנס</td><td>4,500</td><td>8.1</td></tr>
+          <tr><td class="hg">טכנולוגיה</td><td class="hb2">מנוי גים</td><td>3,000</td><td>7.0</td></tr>
+          <tr><td class="hg">טכנולוגיה</td><td class="hp">קורס מנהיגות</td><td>12,000</td><td>8.8</td></tr>
+          <tr><td class="hg">טכנולוגיה</td><td class="hr">Team Building</td><td>15,000</td><td>9.3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 5px">
+      <div style="text-align:center;color:var(--primary)">
+        <div style="font-size:2rem">→</div>
+        <div style="font-size:.72rem;font-family:'Fira Code',monospace;margin-top:4px;color:var(--text-muted)">GROUP BY<br>dept_name,<br>type</div>
+      </div>
+    </div>
+    <div>
+      <span class="vt-label">✅ אחרי GROUP BY שתי עמודות</span>
+      <table class="vt">
+        <thead><tr><th>dept_name</th><th>type</th><th>total_cost</th><th>avg_roi</th></tr></thead>
+        <tbody>
+          <tr><td class="hy">מכירות</td><td class="hb2">מנוי גים</td><td class="hg">3,000</td><td>7.5</td></tr>
+          <tr><td class="hy">מכירות</td><td class="hp">ריטריט שנתי</td><td class="hg">25,000</td><td>9.1</td></tr>
+          <tr><td class="hy">מכירות</td><td class="hr">טיפול פסיכולוגי</td><td class="hg">8,000</td><td>6.2</td></tr>
+          <tr><td class="hy">מכירות</td><td class="hp">מיינדפולנס</td><td class="hg">4,500</td><td>8.1</td></tr>
+          <tr><td class="hg">טכנולוגיה</td><td class="hb2">מנוי גים</td><td class="hg">3,000</td><td>7.0</td></tr>
+          <tr><td class="hg">טכנולוגיה</td><td class="hp">קורס מנהיגות</td><td class="hg">12,000</td><td>8.8</td></tr>
+          <tr><td class="hg">טכנולוגיה</td><td class="hr">Team Building</td><td class="hg">15,000</td><td>9.3</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.86rem;color:var(--text-muted);margin-top:8px">כאן כל שילוב ייחודי הוא קבוצה. מכיוון שכל שילוב מופיע פעם אחת — מספר השורות נשמר. אבל עם SUM/AVG על קבוצות גדולות — כאן הכוח מתגלה.</p>
+    </div>
+  </div>
+
+  <h4>הקוד — GROUP BY על שתי עמודות</h4>
+<pre class="code"><span class="ckw">SELECT</span>
+    <span class="ccol">dept_name</span>,
+    <span class="ccol">intervention_type</span>,
+    <span class="cfn">COUNT</span>(*) <span class="ckw">AS</span> <span class="cal">num_times</span>,
+    <span class="cfn">SUM</span>(<span class="ccol">cost</span>) <span class="ckw">AS</span> <span class="cal">total_cost</span>,
+    <span class="cfn">ROUND</span>(<span class="cfn">AVG</span>(<span class="ccol">roi_score</span>), 2) <span class="ckw">AS</span> <span class="cal">avg_roi</span>
+<span class="ckw">FROM</span> <span class="ctbl">happiness_interventions_full</span>
+<span class="ckw">GROUP BY</span> <span class="ccol">dept_name</span>, <span class="ccol">intervention_type</span>
+<span class="ckw">ORDER BY</span> <span class="cal">total_cost</span> <span class="ckw">DESC</span>;
+
+<span class="ccmt">-- GROUP BY על שתי עמודות: מפריד את הוקבוצות
+-- לכל שילוב ייחודי של (dept_name, intervention_type)</span></pre>
+
+  <div class="hb blue">
+    <span class="hbt">💡 הכלל: כל עמודה ב-SELECT שאינה בפונקציה — חייבת ב-GROUP BY</span>
+    <p>כשכותבים <code>SELECT dept_name, intervention_type, SUM(cost)</code> — שתי העמודות dept_name ו-intervention_type חייבות להיות ב-GROUP BY. רק cost נמצא בפונקציה ולכן אינו חייב.</p>
+  </div>
+</div>
+
+<!-- SIMULATOR 2 -->
+<div class="pg">
+  <div class="pg-hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="pg-dots"><div class="pd r"></div><div class="pd y"></div><div class="pd g"></div></div>
+      <span class="pg-tag">ehi_database.sql — סימולטור 2</span>
+    </div>
+    <span class="pg-badge">🔀 GROUP BY על שתי עמודות</span>
+  </div>
+  <div class="pg-body">
+    <div class="stbls">
+      <div>
+        <div class="st-lbl">📋 happiness_interventions — הנתונים</div>
+        <table class="st">
+          <thead><tr><th>dept_name</th><th>intervention_type</th><th>cost</th><th>roi_score</th></tr></thead>
+          <tbody>
+            <tr><td class="sy">מכירות</td><td>מנוי גים</td><td>3,000</td><td>7.5</td></tr>
+            <tr><td class="sy">מכירות</td><td>ריטריט שנתי</td><td>25,000</td><td>9.1</td></tr>
+            <tr><td class="sy">מכירות</td><td>טיפול פסיכולוגי</td><td>8,000</td><td>6.2</td></tr>
+            <tr><td class="sy">מכירות</td><td>מיינדפולנס</td><td>4,500</td><td>8.1</td></tr>
+            <tr><td class="sg">טכנולוגיה</td><td>מנוי גים</td><td>3,000</td><td>7.0</td></tr>
+            <tr><td class="sg">טכנולוגיה</td><td>קורס מנהיגות</td><td>12,000</td><td>8.8</td></tr>
+            <tr><td class="sg">טכנולוגיה</td><td>Team Building</td><td>15,000</td><td>9.3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pg-task">
+      <span class="tt">🔀 משימה: ניתוח ROI לפי מחלקה וסוג התערבות</span>
+      כתבו שאילתת GROUP BY על שתי עמודות שמציגה:
+      <ul>
+        <li><strong>dept_name</strong> ו-<strong>intervention_type</strong> (שתי עמודות הקיבוץ)</li>
+        <li><strong>COUNT(*) AS num_times</strong> — כמה פעמים בוצעה ההתערבות</li>
+        <li><strong>SUM(cost) AS total_cost</strong> — סך עלות</li>
+        <li><strong>ROUND(AVG(roi_score), 2) AS avg_roi</strong> — ממוצע ROI</li>
+        <li>מיינו לפי total_cost מהגבוה לנמוך</li>
+      </ul>
+    </div>
+
+    <textarea class="sq-inp" id="s2-inp">-- GROUP BY על שתי עמודות — כמה עמודות ב-GROUP BY
+-- שווה למספר עמודות לא-אגרגציה ב-SELECT
+
+SELECT
+    dept_name,
+    intervention_type,
+    COUNT(*) AS num_times,
+    SUM(cost) AS total_cost,
+    ROUND(AVG(roi_score), 2) AS avg_roi
+FROM interventions_full
+GROUP BY dept_name, intervention_type
+ORDER BY total_cost DESC;</textarea>
+
+    <div class="btn-row">
+      <button class="run-btn" onclick="runS2()">▶ הרץ שאילתה</button>
+      <button class="hint-btn" onclick="toggleHint('h2')">💡 רמז</button>
+    </div>
+    <div class="hint-box" id="h2">
+      SELECT dept_name, intervention_type,<br>
+      &nbsp;&nbsp;COUNT(*) AS num_times,<br>
+      &nbsp;&nbsp;SUM(cost) AS total_cost,<br>
+      &nbsp;&nbsp;ROUND(AVG(roi_score), 2) AS avg_roi<br>
+      FROM interventions_full<br>
+      GROUP BY dept_name, intervention_type<br>
+      ORDER BY total_cost DESC;
+    </div>
+  </div>
+  <div class="pg-res">
+    <div class="res-hdr"><span>📊 תוצאות</span><span id="s2-cnt"></span></div>
+    <div class="res-body" id="s2-res"><p class="r-idle">לחצו "הרץ שאילתה" כדי לראות תוצאות...</p></div>
+  </div>
+</div>
+</section>
+
+
+<!-- ====================================
+  SECTION 5: HAVING — FILTERING AFTER GROUPING
+  ==================================== -->
+<section class="sec" id="s5">
+<div class="sec-hdr"><div class="sec-num">5</div><h2 class="sec-title">HAVING — איך מסננים אחרי שקיבצנו?</h2></div>
+
+<div class="cb">
+  <h3>🤔 הבעיה: WHERE לא עובד על תוצאות GROUP BY</h3>
+  <p>נניח שגמרנו לחשב ממוצע אושר לכל מחלקה. עכשיו המנכ"ל אומר: <em>"הראה לי רק מחלקות שממוצע האושר שלהן נמוך מ-7.5 — אלה בסיכון."</em></p>
+  <p>הבעיה: <code>WHERE avg_happiness &lt; 7.5</code> לא יעבוד! כי WHERE פועל <strong>לפני</strong> GROUP BY — ב-WHERE עדיין אין עמודת avg_happiness, כי היא נוצרת רק <em>אחרי</em> הקיבוץ.</p>
+  <p>הפתרון: <code>HAVING</code> — פקודה שמסננת <strong>אחרי</strong> GROUP BY.</p>
+
+  <!-- EXECUTION ORDER VISUAL -->
+  <h4>סדר הביצוע של SQL — זה קריטי!</h4>
+  <div class="exec-order">
+    <div class="exec-step active">1. FROM</div>
+    <div class="exec-arrow">→</div>
+    <div class="exec-step hi">2. WHERE<br><span style="font-size:.8rem">(מסנן שורות בודדות)</span></div>
+    <div class="exec-arrow">→</div>
+    <div class="exec-step active">3. GROUP BY</div>
+    <div class="exec-arrow">→</div>
+    <div class="exec-step hi">4. HAVING<br><span style="font-size:.8rem">(מסנן קבוצות)</span></div>
+    <div class="exec-arrow">→</div>
+    <div class="exec-step active">5. SELECT</div>
+    <div class="exec-arrow">→</div>
+    <div class="exec-step active">6. ORDER BY</div>
+  </div>
+
+  <div class="hb orange">
+    <span class="hbt">⚠️ הכלל הזהב: WHERE לפני GROUP BY, HAVING אחרי</span>
+    <p><strong>WHERE</strong> — מסנן <em>שורות בודדות</em> לפני הקיבוץ. לדוגמה: "תסנן רק התערבויות שה-cost שלהן מעל 5,000" — עדיין שורות בודדות.</p>
+    <p style="margin-top:8px"><strong>HAVING</strong> — מסנן <em>קבוצות שלמות</em> לאחר הקיבוץ. לדוגמה: "תסנן מחלקות שה-AVG(happiness) שלהן נמוך מ-7.5" — כאן מדובר בקבוצות, לא בשורות.</p>
+  </div>
+
+  <!-- SIDE BY SIDE: WHERE vs HAVING -->
+  <h4>השוואה: WHERE לעומת HAVING — מה השוני?</h4>
+  <div class="hvw">
+    <div class="bad">
+      <h5>❌ שגוי: WHERE לא מכיר avg_happiness</h5>
+      <pre style="background:rgba(245,158,11,.1);padding:12px;border-radius:8px;font-family:'Fira Code',monospace;font-size:.88rem;direction:ltr;text-align:left;line-height:1.7;color:#92400e">SELECT dept_name,
+  AVG(happiness_score) AS avg_happiness
+FROM employees
+WHERE avg_happiness &lt; 7.5  -- ❌ שגוי!
+GROUP BY dept_name;</pre>
+      <p style="font-size:.9rem;margin-top:10px;color:#92400e">SQL יזרוק שגיאה: avg_happiness לא קיים בשלב ה-WHERE. הוא נוצר רק ב-GROUP BY שמגיע אחר כך.</p>
+    </div>
+    <div class="good">
+      <h5>✅ נכון: HAVING מסנן אחרי GROUP BY</h5>
+      <pre style="background:rgba(16,185,129,.1);padding:12px;border-radius:8px;font-family:'Fira Code',monospace;font-size:.88rem;direction:ltr;text-align:left;line-height:1.7;color:#065f46">SELECT dept_name,
+  AVG(happiness_score) AS avg_happiness
+FROM employees
+GROUP BY dept_name
+HAVING AVG(happiness_score) &lt; 7.5;  -- ✅</pre>
+      <p style="font-size:.9rem;margin-top:10px;color:#065f46">HAVING מגיע אחרי GROUP BY ולכן מכיר את הערכים המחושבים. שימו לב: ב-HAVING כותבים AVG(happiness_score) ולא avg_happiness.</p>
+    </div>
+  </div>
+
+  <h4>ויזואלי: מה HAVING עושה על הנתונים?</h4>
+  <div class="sbs">
+    <div>
+      <span class="vt-label">📋 אחרי GROUP BY — לפני HAVING (3 שורות)</span>
+      <table class="vt">
+        <thead><tr><th>dept_name</th><th>avg_happiness</th><th>total_spent</th></tr></thead>
+        <tbody>
+          <tr><td class="hg">טכנולוגיה</td><td class="hg">8.20</td><td>30,000</td></tr>
+          <tr><td class="hp">משאבי אנוש</td><td class="hy">6.80 ← בסיכון</td><td>0</td></tr>
+          <tr><td class="hy">מכירות</td><td class="hr">6.65 ← בסיכון</td><td>40,500</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 5px">
+      <div style="text-align:center;color:var(--primary)">
+        <div style="font-size:2rem">→</div>
+        <div style="font-size:.72rem;font-family:'Fira Code',monospace;margin-top:4px;color:var(--text-muted)">HAVING<br>AVG &lt; 7.5</div>
+      </div>
+    </div>
+    <div>
+      <span class="vt-label">✅ אחרי HAVING — רק מחלקות בסיכון (2 שורות)</span>
+      <table class="vt">
+        <thead><tr><th>dept_name</th><th>avg_happiness</th><th>total_spent</th></tr></thead>
+        <tbody>
+          <tr><td class="hp">משאבי אנוש</td><td class="hr">6.80</td><td>0</td></tr>
+          <tr><td class="hy">מכירות</td><td class="hr">6.65</td><td>40,500</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.86rem;color:var(--text-muted);margin-top:8px">מחלקת טכנולוגיה (8.20) סוננה — היא מעל הסף 7.5.</p>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ 3 -->
+<div class="qz">
+  <div class="qz-hdr"><div class="qz-icon">🚦</div><div class="qz-title">בחינה — WHERE או HAVING?</div></div>
+  <p style="font-size:1rem;color:var(--text-muted);margin-bottom:14px;font-weight:600">הסתכלו על הנתונים ועל השאלה לפני שתענו:</p>
+  <div style="overflow-x:auto;margin-bottom:18px">
+    <table class="vt">
+      <thead><tr><th>employee_id</th><th>dept_name</th><th>intervention_type</th><th>cost</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td class="hy">מכירות</td><td>מנוי גים</td><td class="hr">3,000</td></tr>
+        <tr><td>1</td><td class="hy">מכירות</td><td>ריטריט שנתי</td><td class="hg">25,000</td></tr>
+        <tr><td>2</td><td class="hy">מכירות</td><td>טיפול פסיכולוגי</td><td class="hg">8,000</td></tr>
+        <tr><td>4</td><td class="hg">טכנולוגיה</td><td>מנוי גים</td><td class="hr">3,000</td></tr>
+        <tr><td>4</td><td class="hg">טכנולוגיה</td><td>קורס מנהיגות</td><td class="hg">12,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="qz-q">אנו רוצים: "הצג מחלקות שסך ההשקעה בהן עולה על 20,000 ₪". איזו פקודה לסינון תשמש?</div>
+  <div class="qz-opts" id="q3-opts">
+    <div class="opt" onclick="pick('q3',0,this)"><div class="om">א</div><code>WHERE SUM(cost) &gt; 20000</code> — מסנן לפני הקיבוץ</div>
+    <div class="opt" onclick="pick('q3',1,this)"><div class="om">ב</div><code>HAVING SUM(cost) &gt; 20000</code> — מסנן אחרי GROUP BY על הסכום המחושב</div>
+    <div class="opt" onclick="pick('q3',2,this)"><div class="om">ג</div><code>WHERE total_cost &gt; 20000</code> — מסנן לפי הכינוי שנתנו</div>
+    <div class="opt" onclick="pick('q3',3,this)"><div class="om">ד</div>לא ניתן לסנן על ערכים מחושבים ב-SQL</div>
+  </div>
+  <div class="qz-fb" id="q3-fb"></div>
+</div>
+
+<!-- SIMULATOR 3 -->
+<div class="pg">
+  <div class="pg-hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="pg-dots"><div class="pd r"></div><div class="pd y"></div><div class="pd g"></div></div>
+      <span class="pg-tag">ehi_database.sql — סימולטור 3</span>
+    </div>
+    <span class="pg-badge">🚦 HAVING — סינון מחלקות בסיכון</span>
+  </div>
+  <div class="pg-body">
+    <div class="stbls">
+      <div>
+        <div class="st-lbl">📋 ehi_summary — הנתונים (אחרי JOIN)</div>
+        <table class="st">
+          <thead><tr><th>dept_name</th><th>full_name</th><th>happiness_score</th><th>intervention_cost</th></tr></thead>
+          <tbody>
+            <tr><td class="sy">מכירות</td><td>דנה לוי</td><td>8.2</td><td>32,500</td></tr>
+            <tr><td class="sy">מכירות</td><td>יונתן מזרחי</td><td>5.1</td><td>8,000</td></tr>
+            <tr><td class="sg">טכנולוגיה</td><td>שירה ברק</td><td>9.0</td><td>15,000</td></tr>
+            <tr><td class="sg">טכנולוגיה</td><td>מוחמד עלי</td><td>7.4</td><td>15,000</td></tr>
+            <tr><td class="sp">משאבי אנוש</td><td>מיכל רוזן</td><td>6.8</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="st-lbl">✅ תוצאה צפויה (2 מחלקות בסיכון)</div>
+        <table class="st">
+          <thead><tr><th>dept_name</th><th>avg_happiness</th><th>total_spent</th></tr></thead>
+          <tbody>
+            <tr><td class="sy">מכירות</td><td style="color:#f87171;font-weight:700">6.65</td><td>40,500</td></tr>
+            <tr><td class="sp">משאבי אנוש</td><td style="color:#f87171;font-weight:700">6.80</td><td>0</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:.8rem;color:#64748b;margin-top:6px">טכנולוגיה (8.20) מעל הסף — לא מופיעה</p>
+      </div>
+    </div>
+
+    <div class="pg-task">
+      <span class="tt">🚦 משימה: מחלקות בסיכון</span>
+      כתבו שאילתה שמציגה <strong>רק מחלקות שממוצע האושר שלהן נמוך מ-7.5</strong>:
+      <ul>
+        <li><strong>GROUP BY dept_name</strong> — לקבץ לפי מחלקה</li>
+        <li><strong>HAVING AVG(happiness_score) &lt; 7.5</strong> — לסנן אחרי GROUP BY</li>
+        <li>הציגו: dept_name, avg_happiness, total_spent</li>
+        <li>מיינו מה-avg_happiness הנמוך ביותר לגבוה (הדחוף ביותר ראשון)</li>
+      </ul>
+    </div>
+
+    <textarea class="sq-inp" id="s3-inp">-- HAVING מגיע אחרי GROUP BY
+-- ומסנן קבוצות שלמות (לא שורות בודדות)
+
+SELECT
+    dept_name,
+    ROUND(AVG(happiness_score), 2) AS avg_happiness,
+    SUM(intervention_cost) AS total_spent
+FROM ehi_summary
+GROUP BY dept_name
+HAVING AVG(happiness_score) < 7.5
+ORDER BY avg_happiness ASC;</textarea>
+
+    <div class="btn-row">
+      <button class="run-btn" onclick="runS3()">▶ הרץ שאילתה</button>
+      <button class="hint-btn" onclick="toggleHint('h3')">💡 רמז</button>
+    </div>
+    <div class="hint-box" id="h3">
+      SELECT dept_name,<br>
+      &nbsp;&nbsp;ROUND(AVG(happiness_score), 2) AS avg_happiness,<br>
+      &nbsp;&nbsp;SUM(intervention_cost) AS total_spent<br>
+      FROM ehi_summary<br>
+      GROUP BY dept_name<br>
+      HAVING AVG(happiness_score) &lt; 7.5<br>
+      ORDER BY avg_happiness ASC;
+    </div>
+  </div>
+  <div class="pg-res">
+    <div class="res-hdr"><span>📊 תוצאות</span><span id="s3-cnt"></span></div>
+    <div class="res-body" id="s3-res"><p class="r-idle">לחצו "הרץ שאילתה" כדי לראות תוצאות...</p></div>
+  </div>
+</div>
+</section>
+
+
+<!-- ====================================
+  SECTION 6: BOSS CHALLENGE
+  ==================================== -->
+<section class="sec" id="s6">
+<div class="sec-hdr"><div class="sec-num">6</div><h2 class="sec-title">🏆 אתגר הבוס — דוח ROI לדירקטוריון</h2></div>
+
+<div class="cb">
+  <div class="hb purple">
+    <span class="hbt">🏆 תרחיש: ישיבת דירקטוריון EHI — מי מקבל תקציב נוסף?</span>
+    <p>הדירקטוריון רוצה להחליט אילו <strong>סוגי התערבויות</strong> מצדיקים השקעה נוספת. הם מבקשים דוח שמציג לכל סוג התערבות: כמה פעמים בוצע, כמה עלה בסה"כ, ומה ה-ROI הממוצע — <strong>אבל רק עבור התערבויות שה-ROI הממוצע שלהן עולה על 7.5</strong>. מיינו מה-ROI הגבוה לנמוך.</p>
+  </div>
+  <p>האתגר הזה משלב: GROUP BY + COUNT + SUM + AVG + HAVING + ORDER BY — הכל ביחד בשאילתה אחת.</p>
+</div>
+
+<!-- QUIZ 4 — BOSS LEVEL -->
+<div class="qz">
+  <div class="qz-hdr"><div class="qz-icon">🏆</div><div class="qz-title">שאלת הבוס — סדר הפקודות</div></div>
+  <p style="font-size:1rem;color:var(--text-muted);margin-bottom:14px;font-weight:600">לפני שכותבים קוד — בדקו שאתם מבינים את הסדר הנכון:</p>
+  <div class="qz-q">מהו הסדר הנכון של פקודות SQL בשאילתת GROUP BY עם HAVING?</div>
+  <div class="qz-opts" id="q4-opts">
+    <div class="opt" onclick="pick('q4',0,this)"><div class="om">א</div>SELECT → FROM → GROUP BY → WHERE → HAVING → ORDER BY</div>
+    <div class="opt" onclick="pick('q4',1,this)"><div class="om">ב</div>SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY</div>
+    <div class="opt" onclick="pick('q4',2,this)"><div class="om">ג</div>FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY (סדר הביצוע, לא הכתיבה)</div>
+    <div class="opt" onclick="pick('q4',3,this)"><div class="om">ד</div>לא משנה הסדר — SQL יבין לבד</div>
+  </div>
+  <div class="qz-fb" id="q4-fb"></div>
+</div>
+
+<div class="pg">
+  <div class="pg-hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="pg-dots"><div class="pd r"></div><div class="pd y"></div><div class="pd g"></div></div>
+      <span class="pg-tag">ehi_boss_challenge.sql</span>
+    </div>
+    <span class="pg-badge">👑 אתגר הבוס — דוח ROI</span>
+  </div>
+  <div class="pg-body">
+    <div class="stbls">
+      <div>
+        <div class="st-lbl">📋 happiness_interventions — כל הנתונים</div>
+        <table class="st">
+          <thead><tr><th>intervention_type</th><th>dept_name</th><th>cost</th><th>roi_score</th></tr></thead>
+          <tbody>
+            <tr><td>מנוי גים</td><td class="sy">מכירות</td><td>3,000</td><td class="sg">7.5</td></tr>
+            <tr><td>ריטריט שנתי</td><td class="sy">מכירות</td><td>25,000</td><td class="sg">9.1</td></tr>
+            <tr><td>טיפול פסיכולוגי</td><td class="sy">מכירות</td><td>8,000</td><td>6.2</td></tr>
+            <tr><td>מיינדפולנס</td><td class="sy">מכירות</td><td>4,500</td><td class="sg">8.1</td></tr>
+            <tr><td>מנוי גים</td><td class="sg">טכנולוגיה</td><td>3,000</td><td>7.0</td></tr>
+            <tr><td>קורס מנהיגות</td><td class="sg">טכנולוגיה</td><td>12,000</td><td class="sg">8.8</td></tr>
+            <tr><td>Team Building</td><td class="sg">טכנולוגיה</td><td>15,000</td><td class="sg">9.3</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="st-lbl">✅ תוצאה צפויה (roi_score &gt; 7.5)</div>
+        <table class="st">
+          <thead><tr><th>intervention_type</th><th>times</th><th>total</th><th>avg_roi</th></tr></thead>
+          <tbody>
+            <tr><td>Team Building</td><td>1</td><td>15,000</td><td class="sg">9.30</td></tr>
+            <tr><td>ריטריט שנתי</td><td>1</td><td>25,000</td><td class="sg">9.10</td></tr>
+            <tr><td>קורס מנהיגות</td><td>1</td><td>12,000</td><td class="sg">8.80</td></tr>
+            <tr><td>מיינדפולנס</td><td>1</td><td>4,500</td><td class="sg">8.10</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:.78rem;color:#64748b;margin-top:5px">מנוי גים (avg 7.25) וטיפול פסיכולוגי (6.2) נסוננו</p>
+      </div>
+    </div>
+
+    <div class="pg-task">
+      <span class="tt">👑 משימה: דוח ROI לדירקטוריון</span>
+      כתבו שאילתה שמציגה לכל <strong>intervention_type</strong>:
+      <ul>
+        <li><strong>COUNT(*) AS times_used</strong> — כמה פעמים בוצע</li>
+        <li><strong>SUM(cost) AS total_cost</strong> — עלות כוללת</li>
+        <li><strong>ROUND(AVG(roi_score), 2) AS avg_roi</strong> — ממוצע ROI</li>
+        <li>סינון: <strong>HAVING AVG(roi_score) &gt; 7.5</strong></li>
+        <li>מיון: לפי avg_roi מהגבוה לנמוך</li>
+      </ul>
+    </div>
+
+    <textarea class="sq-inp" id="s4-inp" style="min-height:175px">-- שלבו: GROUP BY + COUNT + SUM + AVG + HAVING + ORDER BY
+
+SELECT
+    intervention_type,
+    COUNT(*) AS times_used,
+    SUM(cost) AS total_cost,
+    ROUND(AVG(roi_score), 2) AS avg_roi
+FROM interventions_full
+GROUP BY intervention_type
+HAVING AVG(roi_score) > 7.5
+ORDER BY avg_roi DESC;</textarea>
+
+    <div class="btn-row">
+      <button class="run-btn" onclick="runS4()">▶ הגש דוח לדירקטוריון</button>
+      <button class="hint-btn" onclick="toggleHint('h4')">💡 רמז</button>
+    </div>
+    <div class="hint-box" id="h4">
+      SELECT intervention_type,<br>
+      &nbsp;&nbsp;COUNT(*) AS times_used,<br>
+      &nbsp;&nbsp;SUM(cost) AS total_cost,<br>
+      &nbsp;&nbsp;ROUND(AVG(roi_score), 2) AS avg_roi<br>
+      FROM interventions_full<br>
+      GROUP BY intervention_type<br>
+      HAVING AVG(roi_score) &gt; 7.5<br>
+      ORDER BY avg_roi DESC;
+    </div>
+  </div>
+  <div class="pg-res">
+    <div class="res-hdr"><span>📊 תוצאות</span><span id="s4-cnt"></span></div>
+    <div class="res-body" id="s4-res"><p class="r-idle">הגישו את הדוח...</p></div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="cb">
+  <h3>📚 סיכום פרק 2 — מה למדנו</h3>
+  <div class="steps-wrap">
+    <div class="si">
+      <div class="sline"><div class="scirc">1</div><div class="sconn"></div></div>
+      <div class="scontent">
+        <h5>GROUP BY — מיון לערמות ואז חישוב</h5>
+        <p>מאסף שורות עם ערך משותף לקבוצה אחת, ומאפשר לחשב פונקציות (SUM, AVG, COUNT) על כל קבוצה. התוצאה: שורה אחת לכל קבוצה.</p>
+      </div>
+    </div>
+    <div class="si">
+      <div class="sline"><div class="scirc">2</div><div class="sconn"></div></div>
+      <div class="scontent">
+        <h5>פונקציות אגרגציה — COUNT, SUM, AVG, MAX, MIN</h5>
+        <p>כל אחת מחשבת משהו שונה על הקבוצה. COUNT(*) = כמה שורות, SUM = סכום, AVG = ממוצע, MAX/MIN = קצוות.</p>
+      </div>
+    </div>
+    <div class="si">
+      <div class="sline"><div class="scirc">3</div><div class="sconn"></div></div>
+      <div class="scontent">
+        <h5>GROUP BY על מספר עמודות — חיתוך עמוק</h5>
+        <p>כמה עמודות ב-GROUP BY = כמה עמודות ב-SELECT שאינן בפונקציה. כל שילוב ייחודי הופך לקבוצה.</p>
+      </div>
+    </div>
+    <div class="si">
+      <div class="sline"><div class="scirc">4</div><div class="sconn"></div></div>
+      <div class="scontent">
+        <h5>HAVING — לסנן אחרי הקיבוץ</h5>
+        <p>WHERE מסנן שורות לפני GROUP BY. HAVING מסנן קבוצות לאחר GROUP BY. לסינון על ערכים מחושבים — תמיד HAVING.</p>
+      </div>
+    </div>
+    <div class="si">
+      <div class="sline"><div class="scirc">5</div></div>
+      <div class="scontent">
+        <h5>סדר הכתיבה: SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY</h5>
+        <p>SQL ביצוע: FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY. הסדר חשוב — לא ניתן להשתמש ב-avg_happiness ב-HAVING אלא ב-AVG(happiness_score) כי הכינוי עדיין לא קיים בשלב ה-HAVING.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hb green">
+    <span class="hbt">🎓 הפרק הבא: CASE WHEN, COALESCE & תאריכים</span>
+    <p>בפרק 3 נלמד לוגיקה מתקדמת: לסווג עובדים ל"רמות סיכון" אוטומטית עם CASE WHEN, לטפל ב-NULLs עם COALESCE, ולעבוד עם תאריכים — כמו "כמה הוצא בכל חודש?" כל זאת תוך שמירה על אותה גישה: קודם ויזואלי, אחר כך קוד.</p>
+  </div>
+</div>
+</section>
+
+</main>
+
+<div class="score-w" id="sw">
+  <span>🏆</span><span class="sv" id="sv">0</span>
+  <span class="sl">/ 4 נקודות</span>
+</div>
+
+<script>
+// ===== DATA =====
+const summary = [
+  {dept_name:'מכירות', full_name:'דנה לוי', happiness_score:8.2, intervention_cost:32500},
+  {dept_name:'מכירות', full_name:'יונתן מזרחי', happiness_score:5.1, intervention_cost:8000},
+  {dept_name:'טכנולוגיה', full_name:'שירה ברק', happiness_score:9.0, intervention_cost:15000},
+  {dept_name:'טכנולוגיה', full_name:'מוחמד עלי', happiness_score:7.4, intervention_cost:15000},
+  {dept_name:'משאבי אנוש', full_name:'מיכל רוזן', happiness_score:6.8, intervention_cost:0}
+];
+
+const interventionsFull = [
+  {intervention_type:'מנוי גים', dept_name:'מכירות', cost:3000, roi_score:7.5},
+  {intervention_type:'ריטריט שנתי', dept_name:'מכירות', cost:25000, roi_score:9.1},
+  {intervention_type:'טיפול פסיכולוגי', dept_name:'מכירות', cost:8000, roi_score:6.2},
+  {intervention_type:'מיינדפולנס', dept_name:'מכירות', cost:4500, roi_score:8.1},
+  {intervention_type:'מנוי גים', dept_name:'טכנולוגיה', cost:3000, roi_score:7.0},
+  {intervention_type:'קורס מנהיגות', dept_name:'טכנולוגיה', cost:12000, roi_score:8.8},
+  {intervention_type:'Team Building', dept_name:'טכנולוגיה', cost:15000, roi_score:9.3}
+];
+
+// ===== SCORE =====
+let score=0; const done=new Set();
+function bump(){document.getElementById('sv').textContent=score;const w=document.getElementById('sw');w.style.transform='scale(1.12)';setTimeout(()=>w.style.transform='scale(1)',350);}
+
+// ===== QUIZ ENGINE =====
+const ANS={q1:1,q2:1,q3:1,q4:1};
+const FB={
+  q1:{
+    y:'✅ נכון! GROUP BY מכווץ את הטבלה — שורה אחת לכל קיבוץ. 3 ערים = 3 שורות. לכל עיר: SUM של כל המכירות בה. תל אביב 13,000, חיפה 10,000, ירושלים 4,000.',
+    n:'❌ GROUP BY תמיד מוציא שורה אחת לכל קבוצה ייחודית. יש 3 ערים ייחודיות = 3 שורות. לא 5 (שורות מקוריות), לא 1.'
+  },
+  q2:{
+    y:'✅ בדיוק! "ממוצע" = AVG. המנכ"ל רוצה את ממוצע ה-ROI לכל מחלקה — AVG(roi_score). לדוגמה: מחלקת מכירות עם 7.5, 9.1, 6.2, 8.1 → ממוצע (7.5+9.1+6.2+8.1)/4 = 7.725.',
+    n:'❌ "ממוצע ROI" = AVG(roi_score). SUM יסכום, COUNT יספור, MAX יחזיר את הגבוה ביותר. אבל ממוצע = AVG.'
+  },
+  q3:{
+    y:'✅ נכון! HAVING הוא הפקודה שמסננת אחרי GROUP BY על ערכים מחושבים. SUM(cost) > 20000 — כתוב עם הפונקציה עצמה, לא עם הכינוי (total_cost לא קיים עדיין בשלב ה-HAVING).',
+    n:'❌ WHERE לא מכיר ערכים מחושבים (SUM, AVG וכו\') כי הוא פועל לפני GROUP BY. לסינון על ערך מחושב — תמיד HAVING. כינוי (total_cost) גם לא עובד ב-HAVING.'
+  },
+  q4:{
+    y:'✅ מדויק! הסדר ב-SQL: SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY. אבל הסדר שבו SQL מבצע: FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY. לכן לא ניתן לכתוב ב-WHERE דברים שנוצרים רק ב-GROUP BY.',
+    n:'❌ הסדר הנכון לכתיבה: SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY. HAVING תמיד אחרי GROUP BY. WHERE תמיד לפני. לא ניתן להחליף ביניהם.'
+  }
+};
+
+function pick(qid,idx,el){
+  if(done.has(qid))return;
+  document.querySelectorAll('#'+qid+'-opts .opt').forEach(o=>o.classList.remove('correct','wrong'));
+  const ok=idx===ANS[qid];
+  el.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById(qid+'-fb');
+  fb.className='qz-fb show '+(ok?'correct':'wrong');
+  fb.innerHTML=FB[qid][ok?'y':'n'];
+  if(ok){done.add(qid);score++;bump();}
+}
+
+// ===== HINTS =====
+function toggleHint(id){const e=document.getElementById(id);e.style.display=e.style.display==='block'?'none':'block';}
+
+// ===== TABLE BUILDER =====
+function tbl(cols,rows){
+  if(!rows||rows.length===0)return '<p style="color:#64748b;padding:6px 0">השאילתה רצה — אבל לא נמצאו שורות שתואמות לתנאים.</p>';
+  let h='<table class="rt"><thead><tr>';
+  cols.forEach(c=>h+=`<th>${c}</th>`);
+  h+='</tr></thead><tbody>';
+  rows.forEach(r=>{
+    h+='<tr>';
+    cols.forEach(c=>{const v=r[c];h+=v===null||v===undefined?'<td class="nc">NULL</td>':`<td>${v}</td>`;});
+    h+='</tr>';
+  });
+  return h+'</tbody></table>';
+}
+function showOk(bodyId,cntId,html,n,msg){
+  document.getElementById(bodyId).innerHTML=(msg?`<div class="r-ok">${msg}</div>`:'')+html+(n>=0?`<div class="r-cnt">${n} שורות הוחזרו</div>`:'');
+  if(cntId)document.getElementById(cntId).textContent=n>=0?`${n} שורות`:'';
+}
+function showErr(bodyId,cntId,t,b){
+  document.getElementById(bodyId).innerHTML=`<div class="r-err"><div class="et">❌ ${t}</div><div class="eb">${b}</div></div>`;
+  if(cntId)document.getElementById(cntId).textContent='';
+}
+function has(s,w){return s.toLowerCase().includes(w.toLowerCase());}
+function round2(n){return Math.round(n*100)/100;}
+
+// ===== GROUP BY HELPER =====
+function groupBy(data, keyFn) {
+  const groups = {};
+  data.forEach(row => {
+    const key = keyFn(row);
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(row);
+  });
+  return groups;
+}
+
+// ===== SIM 1: GROUP BY dept_name =====
+function runS1(){
+  const q=document.getElementById('s1-inp').value;
+  if(!has(q,'select')) return showErr('s1-res','s1-cnt','חסרה פקודת SELECT','כל שאילתת SQL מתחילה במילה SELECT.');
+  if(!has(q,'from')) return showErr('s1-res','s1-cnt','חסר FROM','כתבו FROM ehi_summary כדי לציין מאיזו טבלה לשלוף.');
+  if(!has(q,'group by')) return showErr('s1-res','s1-cnt','חסר GROUP BY!','בלי GROUP BY, פונקציות כמו AVG ו-SUM יחשבו על כל הטבלה כולה (שורה אחת). הוסיפו: GROUP BY dept_name');
+  if(!has(q,'dept_name')) return showErr('s1-res','s1-cnt','חסר dept_name','כתבו GROUP BY dept_name — זוהי עמודת הקיבוץ שאמרתם לקבץ לפיה.');
+  if(!has(q,'avg') && !has(q,'count')) return showErr('s1-res','s1-cnt','חסרה פונקציית אגרגציה','הוסיפו AVG(happiness_score) ו-COUNT(*) ב-SELECT כדי לחשב על כל קבוצה.');
+
+  const groups = groupBy(summary, r=>r.dept_name);
+  let rows = Object.entries(groups).map(([dept,grp])=>({
+    dept_name: dept,
+    num_employees: grp.length,
+    avg_happiness: round2(grp.reduce((s,r)=>s+r.happiness_score,0)/grp.length),
+    total_spent: grp.reduce((s,r)=>s+r.intervention_cost,0).toLocaleString()+' ₪'
+  }));
+
+  if(has(q,'order by') && has(q,'desc')) rows.sort((a,b)=>b.avg_happiness-a.avg_happiness);
+  else if(has(q,'order by')) rows.sort((a,b)=>a.avg_happiness-b.avg_happiness);
+
+  showOk('s1-res','s1-cnt', tbl(['dept_name','num_employees','avg_happiness','total_spent'],rows), rows.length,
+    '✅ GROUP BY הצליח! 5 שורות → 3 שורות. כל מחלקה קיבלה שורת סיכום משלה.');
+}
+
+// ===== SIM 2: GROUP BY two columns =====
+function runS2(){
+  const q=document.getElementById('s2-inp').value;
+  if(!has(q,'select')) return showErr('s2-res','s2-cnt','חסרה פקודת SELECT','התחילו עם SELECT.');
+  if(!has(q,'group by')) return showErr('s2-res','s2-cnt','חסר GROUP BY','כתבו GROUP BY dept_name, intervention_type');
+  const gbMatch = q.toLowerCase().indexOf('group by');
+  const afterGb = q.toLowerCase().slice(gbMatch+8,gbMatch+60);
+  const colCount = (afterGb.match(/,/g)||[]).length;
+  if(!has(q,'intervention_type') || colCount < 1)
+    return showErr('s2-res','s2-cnt','GROUP BY צריך שתי עמודות','כתבו GROUP BY dept_name, intervention_type — שתי עמודות מופרדות בפסיק.');
+  if(!has(q,'sum') && !has(q,'avg')) return showErr('s2-res','s2-cnt','חסרות פונקציות אגרגציה','הוסיפו SUM(cost) ו-AVG(roi_score) ב-SELECT.');
+
+  const groups = groupBy(interventionsFull, r=>`${r.dept_name}|||${r.intervention_type}`);
+  let rows = Object.entries(groups).map(([key,grp])=>{
+    const [dept,type] = key.split('|||');
+    return {
+      dept_name: dept,
+      intervention_type: type,
+      num_times: grp.length,
+      total_cost: grp.reduce((s,r)=>s+r.cost,0).toLocaleString()+' ₪',
+      avg_roi: round2(grp.reduce((s,r)=>s+r.roi_score,0)/grp.length)
+    };
+  });
+
+  if(has(q,'order by') && has(q,'desc')) rows.sort((a,b)=>parseInt(b.total_cost)-parseInt(a.total_cost));
+
+  showOk('s2-res','s2-cnt', tbl(['dept_name','intervention_type','num_times','total_cost','avg_roi'],rows), rows.length,
+    '✅ GROUP BY על שתי עמודות! כל שילוב ייחודי של מחלקה + סוג התערבות = שורה אחת.');
+}
+
+// ===== SIM 3: HAVING =====
+function runS3(){
+  const q=document.getElementById('s3-inp').value;
+  if(!has(q,'select')) return showErr('s3-res','s3-cnt','חסרה פקודת SELECT','התחילו עם SELECT.');
+  if(!has(q,'group by')) return showErr('s3-res','s3-cnt','חסר GROUP BY','כתבו GROUP BY dept_name.');
+  if(!has(q,'having')) return showErr('s3-res','s3-cnt','חסר HAVING!','כדי לסנן מחלקות לפי ממוצע האושר — חייבים HAVING (לא WHERE). HAVING מגיע אחרי GROUP BY.');
+  if(!has(q,'avg')) return showErr('s3-res','s3-cnt','חסר AVG ב-HAVING','כתבו: HAVING AVG(happiness_score) < 7.5 — חייבים לכתוב את הפונקציה עצמה, לא את הכינוי.');
+  if(!has(q,'7.5') && !has(q,'7.50')) return showErr('s3-res','s3-cnt','חסר הסף 7.5','הוסיפו: HAVING AVG(happiness_score) < 7.5');
+
+  const groups = groupBy(summary, r=>r.dept_name);
+  let rows = Object.entries(groups).map(([dept,grp])=>{
+    const avg = round2(grp.reduce((s,r)=>s+r.happiness_score,0)/grp.length);
+    return {dept_name:dept, avg_happiness:avg, total_spent:grp.reduce((s,r)=>s+r.intervention_cost,0).toLocaleString()+' ₪'};
+  }).filter(r=>r.avg_happiness<7.5);
+
+  if(has(q,'asc')) rows.sort((a,b)=>a.avg_happiness-b.avg_happiness);
+  else rows.sort((a,b)=>b.avg_happiness-a.avg_happiness);
+
+  showOk('s3-res','s3-cnt', tbl(['dept_name','avg_happiness','total_spent'],rows), rows.length,
+    '🚨 '+rows.length+' מחלקות בסיכון זוהו! HAVING סינן בהצלחה אחרי GROUP BY. הדוח מוכן לפגישת HR.');
+}
+
+// ===== SIM 4: BOSS CHALLENGE =====
+function runS4(){
+  const q=document.getElementById('s4-inp').value;
+  if(!has(q,'select')) return showErr('s4-res','s4-cnt','חסרה פקודת SELECT','התחילו עם SELECT.');
+  if(!has(q,'group by')) return showErr('s4-res','s4-cnt','חסר GROUP BY','כתבו GROUP BY intervention_type.');
+  if(!has(q,'having')) return showErr('s4-res','s4-cnt','חסר HAVING','לסינון על AVG(roi_score) > 7.5 — חייבים HAVING אחרי GROUP BY.');
+  if(!has(q,'count')) return showErr('s4-res','s4-cnt','חסר COUNT(*)','הוסיפו COUNT(*) AS times_used כדי לספור כמה פעמים בוצעה כל התערבות.');
+  if(!has(q,'sum')) return showErr('s4-res','s4-cnt','חסר SUM(cost)','הוסיפו SUM(cost) AS total_cost כדי לחשב עלות כוללת.');
+  if(!has(q,'avg')) return showErr('s4-res','s4-cnt','חסר AVG(roi_score)','הוסיפו AVG(roi_score) לחישוב ממוצע ה-ROI ול-HAVING.');
+  if(!has(q,'7.5')) return showErr('s4-res','s4-cnt','חסר הסף 7.5 ב-HAVING','כתבו: HAVING AVG(roi_score) > 7.5');
+
+  const groups = groupBy(interventionsFull, r=>r.intervention_type);
+  let rows = Object.entries(groups).map(([type,grp])=>{
+    const avg_roi = round2(grp.reduce((s,r)=>s+r.roi_score,0)/grp.length);
+    return {
+      intervention_type:type,
+      times_used:grp.length,
+      total_cost:grp.reduce((s,r)=>s+r.cost,0).toLocaleString()+' ₪',
+      avg_roi
+    };
+  }).filter(r=>r.avg_roi>7.5)
+    .sort((a,b)=>b.avg_roi-a.avg_roi);
+
+  showOk('s4-res','s4-cnt', tbl(['intervention_type','times_used','total_cost','avg_roi'],rows), rows.length,
+    '🏆 דוח ROI מוכן לדירקטוריון! שילבתם GROUP BY + COUNT + SUM + AVG + HAVING + ORDER BY — עבודת מנתח נתונים בכיר!');
+}
+
+// ===== SCROLL / NAV =====
+window.addEventListener('scroll',()=>{
+  const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('pb').style.width=(st/dh*100)+'%';
+  let cur='';
+  document.querySelectorAll('.sec').forEach(s=>{if(window.scrollY>=s.offsetTop-155)cur=s.id;});
+  document.querySelectorAll('.nl').forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+cur));
+});
+</script>
+</body>
+</html>
