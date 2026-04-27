@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הרצאה 2 - פרק 1 | לחבר טבלאות: JOINs מהאפס</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#4f46e5;--primary-light:#eef2ff;--secondary:#0ea5e9;--success:#10b981;--success-light:#d1fae5;--warning:#f59e0b;--warning-light:#fef3c7;--danger:#ef4444;--danger-light:#fee2e2;--purple:#8b5cf6;--purple-light:#f3e8ff;--bg-page:#f8fafc;--bg-card:#fff;--bg-accent:#f1f5f9;--text-main:#0f172a;--text-secondary:#334155;--text-muted:#64748b;--border:#e2e8f0;--r-sm:8px;--r-md:12px;--r-lg:24px;--sh-sm:0 1px 2px rgba(0,0,0,.05);--sh-md:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);--sh-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);--g-main:linear-gradient(135deg,var(--primary),var(--secondary))}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Assistant',sans-serif;background:var(--bg-page);color:var(--text-main);line-height:1.75;overflow-x:hidden}
+::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:var(--bg-page)}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:5px}
+.pb-wrap{position:fixed;top:0;left:0;right:0;height:4px;z-index:2000;background:rgba(0,0,0,.05)}.pb-fill{height:100%;background:var(--g-main);width:0%;transition:width .2s}
+/* HERO */
+.hero{background:linear-gradient(135deg,#fff 0%,var(--primary-light) 100%);padding:110px 20px 90px;text-align:center;position:relative;border-bottom:1px solid var(--border);overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(var(--border) 1px,transparent 1px);background-size:30px 30px;opacity:.5;z-index:0}
+.hero-inner{position:relative;z-index:1;max-width:900px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:#fff;padding:8px 24px;border-radius:100px;font-weight:700;font-size:.95rem;margin-bottom:24px;box-shadow:0 4px 12px rgba(79,70,229,.25)}
+.dot{width:8px;height:8px;background:#a5f3fc;border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'Rubik',sans-serif;font-size:clamp(2rem,5.5vw,3.8rem);font-weight:900;line-height:1.15;margin-bottom:24px}
+.hero h1 span{color:var(--primary)}
+.hero p{font-size:1.18rem;color:var(--text-secondary);max-width:760px;margin:0 auto 30px;line-height:1.8}
+.hero-meta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.hmi{display:flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:var(--r-md);font-weight:600;color:var(--text-secondary);font-size:.93rem}
+/* NAV */
+.nav-sticky{position:sticky;top:15px;z-index:1000;width:95%;max-width:1200px;margin:-30px auto 50px;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:100px;padding:8px 15px;display:flex;gap:5px;box-shadow:var(--sh-lg);overflow-x:auto;scrollbar-width:none}
+.nav-sticky::-webkit-scrollbar{display:none}
+.nl{color:var(--text-muted);text-decoration:none;padding:9px 17px;border-radius:100px;font-size:.88rem;font-weight:700;transition:all .2s;white-space:nowrap}
+.nl:hover{color:var(--primary);background:var(--bg-accent)}
+.nl.active{background:var(--primary);color:#fff}
+/* LAYOUT */
+.container{max-width:1020px;margin:0 auto;padding:0 20px 100px}
+.sec{margin-bottom:100px;scroll-margin-top:100px}
+.sec-hdr{display:flex;align-items:center;gap:15px;margin-bottom:40px;border-bottom:2px solid var(--border);padding-bottom:18px}
+.sec-num{display:flex;align-items:center;justify-content:center;width:52px;height:52px;background:var(--primary-light);color:var(--primary);border-radius:var(--r-sm);font-family:'Rubik',sans-serif;font-weight:800;font-size:1.6rem;flex-shrink:0}
+.sec-title{font-family:'Rubik',sans-serif;font-size:1.9rem;font-weight:700}
+/* BLOCKS */
+.cb{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:40px;box-shadow:var(--sh-sm);margin-bottom:28px}
+.cb h3{font-family:'Rubik',sans-serif;font-size:1.5rem;margin-bottom:18px;color:var(--primary)}
+.cb h4{font-family:'Rubik',sans-serif;font-size:1.2rem;margin:30px 0 12px;color:var(--text-main);padding-right:14px;border-right:4px solid var(--secondary)}
+.cb p{font-size:1.1rem;margin-bottom:18px;color:var(--text-secondary)}
+.cb p:last-child{margin-bottom:0}
+.cb ul{padding-right:24px;margin-bottom:15px}
+.cb ul li{font-size:1.05rem;color:var(--text-secondary);margin-bottom:8px;line-height:1.65}
+/* HIGHLIGHT */
+.hb{padding:22px 26px;border-radius:var(--r-md);margin:22px 0;border-right:5px solid}
+.hb.blue{background:var(--primary-light);border-color:var(--primary)}
+.hb.green{background:var(--success-light);border-color:var(--success)}
+.hb.purple{background:var(--purple-light);border-color:var(--purple)}
+.hb.orange{background:var(--warning-light);border-color:var(--warning)}
+.hb.red{background:var(--danger-light);border-color:var(--danger)}
+.hb .hbt{font-family:'Rubik',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:8px;display:block}
+.hb p{margin:0;color:var(--text-main);font-size:1.05rem;font-weight:500;line-height:1.75}
+.hb p+p{margin-top:8px}
+/* TABLES */
+.vt-label{font-family:'Rubik',sans-serif;font-size:.93rem;font-weight:700;color:var(--text-muted);margin-bottom:10px;display:block}
+.vt{width:100%;border-collapse:collapse;background:#fff;font-size:.98rem;box-shadow:var(--sh-sm);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border)}
+.vt th{background:var(--primary-light);color:var(--primary);padding:13px 15px;text-align:right;border:1px solid var(--border);font-weight:700;font-family:'Rubik',sans-serif;font-size:.92rem}
+.vt td{padding:12px 15px;border:1px solid var(--border);color:var(--text-secondary);font-size:.98rem}
+.vt tr:hover td{background:#f8fafc}
+.hg{background:rgba(16,185,129,.12)!important;font-weight:700;color:#065f46!important}
+.hy{background:rgba(245,158,11,.15)!important;font-weight:700}
+.hr{background:rgba(239,68,68,.08)!important;color:#991b1b!important}
+.hn{color:#94a3b8!important;font-style:italic;font-family:'Fira Code',monospace!important;font-size:.88rem!important}
+.kc{font-family:'Fira Code',monospace!important;font-weight:700!important;font-size:.88rem!important}
+.kbp{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:4px;font-size:.78rem;font-weight:bold;margin-left:6px;background:#fee2e2;color:#b91c1c}
+.kbf{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:4px;font-size:.78rem;font-weight:bold;margin-left:6px;background:#e0f2fe;color:#0369a1}
+/* SIDE BY SIDE */
+.sbs{display:flex;gap:18px;margin:22px 0;flex-wrap:wrap}
+.sbs>div{flex:1;min-width:220px}
+/* CONCEPT VISUAL */
+.cv{background:linear-gradient(135deg,#f8fafc,#eef2ff);border:2px dashed var(--primary);border-radius:var(--r-lg);padding:28px;margin:22px 0}
+.cv-title{font-family:'Rubik',sans-serif;font-weight:800;font-size:1.05rem;color:var(--primary);margin-bottom:18px}
+.cv-steps{display:flex;flex-direction:column;gap:16px}
+.cv-step{display:flex;align-items:flex-start;gap:14px}
+.cv-n{width:34px;height:34px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0;margin-top:2px}
+.cv-t{font-size:1.08rem;color:var(--text-secondary);line-height:1.7}
+.cv-t strong{color:var(--text-main)}
+/* WORD BREAKDOWN */
+.wb{background:#1a1a2e;border-radius:var(--r-lg);padding:26px;margin:22px 0}
+.wb-title{font-family:'Rubik',sans-serif;color:#a5b4fc;font-weight:700;font-size:.98rem;margin-bottom:18px}
+.wr{display:flex;align-items:flex-start;gap:14px;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid #2d2d44}
+.wr:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.wc{font-family:'Fira Code',monospace;font-size:.88rem;font-weight:700;padding:7px 12px;border-radius:6px;white-space:nowrap;flex-shrink:0;min-width:175px;text-align:center}
+.wc.kw{background:rgba(167,139,250,.2);color:#c4b5fd;border:1px solid rgba(167,139,250,.3)}
+.wc.tbl{background:rgba(96,165,250,.2);color:#93c5fd;border:1px solid rgba(96,165,250,.3)}
+.wc.col{background:rgba(251,146,60,.2);color:#fdba74;border:1px solid rgba(251,146,60,.3)}
+.wc.op{background:rgba(52,211,153,.2);color:#6ee7b7;border:1px solid rgba(52,211,153,.3)}
+.we{color:#cbd5e1;font-size:1.02rem;line-height:1.65}
+.we strong{color:#f1f5f9}
+/* CODE */
+pre.code{background:#1a1a2e;color:#e2e8f0;padding:22px 26px;border-radius:var(--r-md);font-family:'Fira Code',monospace;font-size:.97rem;direction:ltr;text-align:left;overflow-x:auto;border-right:5px solid var(--primary);line-height:1.8;margin:18px 0}
+.ckw{color:#c792ea;font-weight:bold}.ctbl{color:#82aaff}.ccol{color:#f78c6c}.ccmt{color:#546e7a;font-style:italic}.cal{color:#ffcb6b}
+/* BEFORE/AFTER */
+.ba{display:flex;gap:18px;margin:22px 0;flex-wrap:wrap;align-items:flex-start}
+.ba>div{flex:1;min-width:240px}
+.ba-lbl{font-family:'Rubik',sans-serif;font-size:.93rem;font-weight:700;padding:8px 14px;text-align:center}
+.ba-lbl.bad{background:var(--danger);color:#fff;border-radius:var(--r-sm) var(--r-sm) 0 0}
+.ba-lbl.good{background:var(--success);color:#fff;border-radius:var(--r-sm) var(--r-sm) 0 0}
+.ba-wrap-bad{border:2px solid var(--danger);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);overflow:hidden}
+.ba-wrap-good{border:2px solid var(--success);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);overflow:hidden}
+/* ANALOGY */
+.ac{background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:var(--r-lg);padding:26px;margin:22px 0;border:1px solid #3d3d5c}
+.ac .at{font-family:'Rubik',sans-serif;color:#f59e0b;font-weight:700;font-size:1.08rem;margin-bottom:12px}
+.ac p{color:#94a3b8;font-size:1.05rem;line-height:1.75;margin:0}
+.ac p+p{margin-top:10px}
+.ac strong{color:#e2e8f0}
+/* STEP SUMMARY */
+.steps-wrap{margin:22px 0}
+.si{display:flex}
+.sline{display:flex;flex-direction:column;align-items:center;width:46px;flex-shrink:0}
+.scirc{width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem}
+.sconn{width:2px;flex:1;background:var(--border);min-height:18px}
+.si:last-child .sconn{display:none}
+.scontent{padding:2px 0 26px;padding-right:14px}
+.scontent h5{font-family:'Rubik',sans-serif;font-size:1.02rem;font-weight:700;color:var(--text-main);margin-bottom:5px}
+.scontent p{font-size:1.02rem;color:var(--text-secondary);margin:0;line-height:1.65}
+/* SQL PLAYGROUND */
+.pg{background:#1a1a2e;border-radius:var(--r-lg);overflow:hidden;margin:32px 0;box-shadow:0 20px 50px rgba(0,0,0,.25);border:1px solid #2d2d44}
+.pg-hdr{background:#16213e;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2d2d44}
+.pg-dots{display:flex;gap:7px}
+.pd{width:13px;height:13px;border-radius:50%}
+.pd.r{background:#ff5f57}.pd.y{background:#ffbd2e}.pd.g{background:#27c93f}
+.pg-tag{font-family:'Fira Code',monospace;font-size:.83rem;color:#a5b4fc;margin-right:12px}
+.pg-badge{background:var(--g-main);color:#fff;padding:5px 14px;border-radius:100px;font-size:.8rem;font-weight:700}
+.pg-body{padding:20px}
+.pg-task{background:#0f0f1a;border:1px solid #3d3d5c;border-radius:var(--r-md);padding:16px 20px;margin-bottom:16px;color:#a5b4fc;font-size:1.03rem;line-height:1.75}
+.pg-task .tt{color:#f59e0b;font-weight:700;font-size:1.08rem;display:block;margin-bottom:9px}
+.pg-task ul{padding-right:18px;margin-top:8px}
+.pg-task ul li{margin-bottom:6px;color:#94a3b8}
+.pg-task ul li strong{color:#e2e8f0}
+/* Sim tables inside playground */
+.stbls{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.stbls>div{flex:1;min-width:185px}
+.st-lbl{font-family:'Fira Code',monospace;font-size:.77rem;color:#64748b;margin-bottom:6px;font-weight:700}
+.st{width:100%;border-collapse:collapse;font-size:.83rem;direction:ltr;text-align:left}
+.st th{background:#1e1e30;padding:8px 10px;color:#4fc1ff;font-family:'Fira Code',monospace;border-bottom:2px solid #3d3d5c;font-size:.77rem}
+.st td{padding:7px 10px;color:#cbd5e1;border-bottom:1px solid #2d2d44}
+.st td.spk{color:#f87171;font-weight:700}
+.st td.sfk{color:#60a5fa;font-weight:700}
+.st td.smatch{background:rgba(16,185,129,.15);color:#6ee7b7;font-weight:700}
+.st td.snomatch{background:rgba(239,68,68,.1);color:#fca5a5}
+/* SQL input */
+.sq-inp{width:100%;min-height:145px;background:#0f0f1a;border:1px solid #3d3d5c;border-radius:var(--r-sm);padding:15px;color:#e2e8f0;font-family:'Fira Code',monospace;font-size:.97rem;direction:ltr;text-align:left;resize:vertical;line-height:1.7;outline:none;transition:border-color .2s}
+.sq-inp:focus{border-color:var(--secondary);box-shadow:0 0 0 3px rgba(14,165,233,.1)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:13px}
+.run-btn{padding:11px 28px;background:var(--g-main);border:none;border-radius:100px;color:#fff;font-family:'Assistant',sans-serif;font-size:1.03rem;font-weight:700;cursor:pointer;transition:all .25s}
+.run-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(79,70,229,.4)}
+.hint-btn{padding:11px 20px;background:transparent;border:1px solid #3d3d5c;border-radius:100px;color:#a5b4fc;font-family:'Assistant',sans-serif;font-size:.93rem;font-weight:600;cursor:pointer;transition:all .2s}
+.hint-btn:hover{background:#2d2d44;color:#fff}
+.hint-box{display:none;margin-top:13px;padding:13px 16px;background:rgba(245,158,11,.08);border-radius:8px;border-right:3px solid var(--warning);color:#fde68a;font-size:.93rem;direction:ltr;text-align:left;line-height:1.7}
+/* Results */
+.pg-res{background:#12121f}
+.res-hdr{padding:10px 20px;background:#1e1e30;color:#64748b;font-size:.83rem;font-weight:600;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #2d2d44}
+.res-body{padding:15px 18px;min-height:55px}
+.rt{width:100%;border-collapse:collapse;font-size:.9rem;direction:ltr;text-align:left}
+.rt th{background:#1e1e30;padding:10px 14px;color:#4fc1ff;font-family:'Fira Code',monospace;border-bottom:2px solid #3d3d5c;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+.rt td{padding:10px 14px;color:#cbd5e1;border-bottom:1px solid #2d2d44}
+.rt tr:last-child td{border-bottom:none}
+.rt td.nc{color:#4a4a6a;font-style:italic}
+.r-ok{color:#34d399;padding:13px 18px 5px;font-weight:700;font-size:1.03rem}
+.r-err{padding:15px 18px;border-right:4px solid #ef4444}
+.r-err .et{color:#f87171;font-weight:700;font-size:1.03rem;margin-bottom:7px}
+.r-err .eb{color:#94a3b8;font-size:.97rem;line-height:1.7}
+.r-cnt{color:#475569;font-size:.83rem;padding:5px 18px 13px}
+.r-idle{color:#4a4a6a;font-size:.93rem}
+/* QUIZ */
+.qz{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:34px;margin:34px 0;position:relative;box-shadow:var(--sh-md);overflow:hidden}
+.qz::before{content:'';position:absolute;top:0;right:0;left:0;height:4px;background:var(--g-main)}
+.qz-hdr{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.qz-icon{width:44px;height:44px;background:var(--warning-light);color:var(--warning);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0}
+.qz-title{font-family:'Rubik',sans-serif;font-weight:700;font-size:1.18rem}
+.qz-q{font-size:1.12rem;font-weight:600;margin-bottom:20px;color:var(--text-main);line-height:1.65}
+.qz-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.opt{display:flex;align-items:flex-start;gap:14px;padding:15px 18px;background:var(--bg-page);border:2px solid var(--border);border-radius:var(--r-md);cursor:pointer;transition:all .2s;font-size:1.03rem;font-weight:500;line-height:1.55}
+.opt:hover:not(.correct):not(.wrong){border-color:var(--primary);background:var(--primary-light)}
+.opt.correct{border-color:var(--success);background:var(--success-light)}
+.opt.wrong{border-color:var(--danger);background:var(--danger-light)}
+.om{width:33px;height:33px;border-radius:50%;background:#fff;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0;margin-top:2px}
+.opt.correct .om{border-color:var(--success);background:var(--success);color:#fff}
+.opt.wrong .om{border-color:var(--danger);background:var(--danger);color:#fff}
+.qz-fb{padding:15px 18px;border-radius:var(--r-md);font-size:1.03rem;font-weight:600;display:none;margin-top:10px;line-height:1.7}
+.qz-fb.show{display:block}
+.qz-fb.correct{background:var(--success-light);color:#065f46;border:1px solid #a7f3d0}
+.qz-fb.wrong{background:var(--danger-light);color:#991b1b;border:1px solid #fecaca}
+/* SCORE */
+.score-w{position:fixed;bottom:28px;left:28px;background:#fff;border:2px solid var(--border);border-radius:100px;padding:10px 20px;display:flex;align-items:center;gap:11px;z-index:1000;box-shadow:var(--sh-lg);direction:ltr;transition:transform .3s}
+.sv{font-family:'Rubik',sans-serif;font-weight:900;font-size:1.45rem;color:var(--primary)}
+.sl{font-size:.83rem;color:var(--text-muted);font-weight:600}
+code{background:var(--primary-light);color:var(--primary);padding:2px 6px;border-radius:4px;font-family:'Fira Code',monospace;font-size:.87em;font-weight:bold}
+@media(max-width:680px){.sbs,.ba{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="pb-wrap"><div class="pb-fill" id="pb"></div></div>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-inner">
+  <div class="hero-badge"><span class="dot"></span>הרצאה 2 | פרק 1 מתוך 5 — מהאפס המוחלט</div>
+  <h1>איך מחברים<br><span>שתי טבלאות ביחד?</span></h1>
+  <p>בפרק הקודם למדנו ליצור טבלה אחת ולהכניס אליה נתונים. אבל בעולם האמיתי — המידע תמיד מפוצל בין <strong>מספר טבלאות</strong>. פרק זה לוקח אותנו צעד-צעד: קודם מבינים <em>למה</em>, אחרי זה רואים ויזואלית <em>מה קורה</em>, ורק בסוף — מגיעים לקוד.</p>
+  <div class="hero-meta">
+    <div class="hmi">⏱️ 120 דקות</div>
+    <div class="hmi">🗂️ 3 סימולטורים</div>
+    <div class="hmi">🔰 ללא ידע מוקדם</div>
+    <div class="hmi">🏢 מסד EHI</div>
+    <div class="hmi">🧠 4 בחינות</div>
+  </div>
+</div>
+</section>
+
+<nav class="nav-sticky" id="mainNav">
+  <a href="#s1" class="nl active">🤔 למה מספר טבלאות?</a>
+  <a href="#s2" class="nl">👁️ INNER JOIN ויזואלית</a>
+  <a href="#s3" class="nl">💻 הקוד מילה-מילה</a>
+  <a href="#s4" class="nl">⬅️ LEFT JOIN</a>
+  <a href="#s5" class="nl">🌐 3 טבלאות</a>
+  <a href="#s6" class="nl">💥 מלכודת קרטזית</a>
+</nav>
+
+<main class="container">
+
+<!-- ====================================
+  SECTION 1: WHY MULTIPLE TABLES
+  ==================================== -->
+<section class="sec" id="s1">
+<div class="sec-hdr"><div class="sec-num">1</div><h2 class="sec-title">למה בכלל יש יותר מטבלה אחת?</h2></div>
+
+<div class="cb">
+  <h3>📖 סיפור מהחיים: הגיליון שגרם לכאוס</h3>
+  <p>דמיינו שאתם מנהלים HR בחברת <strong>EHI</strong> — חברה שמשקיעה בשמחת עובדיה. יש לכם 5 עובדים ו-3 מחלקות. ניסיתם לנהל הכל בגיליון אחד גדול שנראה כך:</p>
+
+  <div style="overflow-x:auto;margin:20px 0">
+    <span class="vt-label">❌ הגיליון הישן — כל הנתונים בטבלה אחת</span>
+    <table class="vt">
+      <thead><tr><th>employee_id</th><th>employee_name</th><th>dept_name</th><th>dept_budget</th><th>dept_manager</th></tr></thead>
+      <tbody>
+        <tr><td class="kc">1</td><td>דנה לוי</td><td class="hy">מכירות</td><td class="hy">200,000 ₪</td><td class="hy">רוי כהן</td></tr>
+        <tr><td class="kc">2</td><td>יונתן מזרחי</td><td class="hy">מכירות</td><td class="hy">200,000 ₪</td><td class="hy">רוי כהן</td></tr>
+        <tr><td class="kc">3</td><td>שירה ברק</td><td class="hy">מכירות</td><td class="hy">200,000 ₪</td><td class="hy">רוי כהן</td></tr>
+        <tr><td class="kc">4</td><td>מוחמד עלי</td><td>טכנולוגיה</td><td>350,000 ₪</td><td>אורן לב</td></tr>
+        <tr><td class="kc">5</td><td>מיכל רוזן</td><td>טכנולוגיה</td><td>350,000 ₪</td><td>אורן לב</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hb orange">
+    <span class="hbt">⚠️ הבעיה שמיד מתרחשת: "מנהל מחלקת המכירות עבר"</span>
+    <p>רוי כהן עוזב. עכשיו <strong>3 השורות המסומנות בצהוב</strong> צריכות להתעדכן. אם שכחתם שורה אחת — יש לכם נתון שגוי שאיש לא יגלה. ב-500 עובדים, זה יקרה. זו לא שאלה של "אם" — זו שאלה של "מתי".</p>
+    <p style="margin-top:8px">שם הבעיה: <strong>כפילות נתונים (Data Redundancy)</strong>. הפתרון: לאחסן את פרטי המחלקה <em>פעם אחת בלבד</em> — בטבלה נפרדת.</p>
+  </div>
+</div>
+
+<div class="cb">
+  <h3>✅ הפתרון: שתי טבלאות קטנות וקשורות</h3>
+  <p>במקום גיליון אחד ענקי — מפצלים לשתי טבלאות. כל טבלה אחראית על <strong>נושא אחד בלבד</strong>. שימו לב לשתי הטבלאות זו לצד זו:</p>
+
+  <div class="sbs">
+    <div>
+      <span class="vt-label">👥 טבלה 1: employees</span>
+      <table class="vt">
+        <thead><tr><th><span class="kbp">PK</span>id</th><th>full_name</th><th>role</th><th><span class="kbf">FK</span>dept_id</th></tr></thead>
+        <tbody>
+          <tr><td class="kc">1</td><td>דנה לוי</td><td>מנהלת מכירות</td><td class="hg">1</td></tr>
+          <tr><td class="kc">2</td><td>יונתן מזרחי</td><td>נציג מכירות</td><td class="hg">1</td></tr>
+          <tr><td class="kc">3</td><td>שירה ברק</td><td>מפתחת FullStack</td><td class="hg">2</td></tr>
+          <tr><td class="kc">4</td><td>מוחמד עלי</td><td>Data Engineer</td><td class="hg">2</td></tr>
+          <tr><td class="kc">5</td><td>מיכל רוזן</td><td>מנהלת HR</td><td class="hg">3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;padding:0 4px;flex-shrink:0">
+      <div style="text-align:center">
+        <div style="font-size:2rem">🔗</div>
+        <div style="font-family:'Fira Code',monospace;font-size:.7rem;color:var(--text-muted);margin-top:4px">dept_id<br>↓<br>id</div>
+      </div>
+    </div>
+    <div>
+      <span class="vt-label">🏢 טבלה 2: departments</span>
+      <table class="vt">
+        <thead><tr><th><span class="kbp">PK</span>id</th><th>dept_name</th><th>manager_name</th><th>annual_budget</th></tr></thead>
+        <tbody>
+          <tr><td class="kc hg">1</td><td>מכירות</td><td>רוי כהן</td><td>200,000 ₪</td></tr>
+          <tr><td class="kc hg">2</td><td>טכנולוגיה</td><td>אורן לב</td><td>350,000 ₪</td></tr>
+          <tr><td class="kc hg">3</td><td>משאבי אנוש</td><td>מיכל רוזן</td><td>120,000 ₪</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="hb green">
+    <span class="hbt">✅ עכשיו: מנהל מחלקת המכירות עבר?</span>
+    <p>משנים <strong>שורה אחת בלבד</strong> בטבלת departments (שורה 1, עמודת manager_name). כל 3 עובדי המכירות אוטומטית "יראו" את השם החדש — כי הם מצביעים על אותה שורה דרך dept_id=1.</p>
+  </div>
+
+  <h4>מה זה dept_id? — "הכתובת" שמחברת את הטבלאות</h4>
+  <p>שימו לב לעמודה <code>dept_id</code> בטבלת employees. היא מכילה <strong>רק מספר</strong>: 1, 1, 2, 2, 3. המספר הזה הוא בדיוק ה-<code>id</code> של שורה בטבלת departments. כך:</p>
+  <ul>
+    <li>דנה לוי יש <code>dept_id = 1</code> → מצביע על שורה 1 ב-departments → מחלקת <strong>"מכירות"</strong></li>
+    <li>שירה ברק יש <code>dept_id = 2</code> → מצביע על שורה 2 ב-departments → מחלקת <strong>"טכנולוגיה"</strong></li>
+    <li>מיכל רוזן יש <code>dept_id = 3</code> → מצביע על שורה 3 ב-departments → מחלקת <strong>"משאבי אנוש"</strong></li>
+  </ul>
+  <p>ה-<code>dept_id</code> נקרא <strong>מפתח זר (Foreign Key)</strong> — מפתח שמצביע על טבלה <em>אחרת</em>. הוא הדבק שמחבר את שתי הטבלאות.</p>
+</div>
+
+<!-- QUIZ 1 -->
+<div class="qz">
+  <div class="qz-hdr"><div class="qz-icon">🧠</div><div class="qz-title">שאלת הבנה — מושגי יסוד</div></div>
+  <p style="font-size:1rem;color:var(--text-muted);margin-bottom:14px;font-weight:600">הסתכלו על שתי הטבלאות לפני שתענו:</p>
+  <div class="sbs" style="margin-bottom:20px">
+    <div>
+      <span class="vt-label">👥 employees</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>full_name</th><th>dept_id</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>דנה לוי</td><td class="hg">1</td></tr>
+          <tr><td>2</td><td>יונתן מזרחי</td><td class="hg">1</td></tr>
+          <tr><td>3</td><td>שירה ברק</td><td class="hg">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <span class="vt-label">🏢 departments</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>dept_name</th></tr></thead>
+        <tbody>
+          <tr><td class="hg">1</td><td>מכירות</td></tr>
+          <tr><td class="hg">2</td><td>טכנולוגיה</td></tr>
+          <tr><td>3</td><td>משאבי אנוש</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="qz-q">שירה ברק מבקשת לעבור למחלקת "משאבי אנוש" (HR). איזה ערך צריך להשתנות בטבלת employees?</div>
+  <div class="qz-opts" id="q1-opts">
+    <div class="opt" onclick="pick('q1',0,this)"><div class="om">א</div>לשנות את full_name של שירה ל"מנהלת HR"</div>
+    <div class="opt" onclick="pick('q1',1,this)"><div class="om">ב</div>לשנות את dept_id של שירה מ-2 ל-3 (כי HR היא שורה 3 בטבלת departments)</div>
+    <div class="opt" onclick="pick('q1',2,this)"><div class="om">ג</div>למחוק את שירה ולהכניסה מחדש לטבלה</div>
+    <div class="opt" onclick="pick('q1',3,this)"><div class="om">ד</div>לשנות את שם המחלקה בטבלת departments</div>
+  </div>
+  <div class="qz-fb" id="q1-fb"></div>
+</div>
+</section>
+
+
+<!-- ====================================
+  SECTION 2: INNER JOIN — VISUAL FIRST
+  ==================================== -->
+<section class="sec" id="s2">
+<div class="sec-hdr"><div class="sec-num">2</div><h2 class="sec-title">INNER JOIN — קודם רואים, אחר כך קוד</h2></div>
+
+<div class="cb">
+  <h3>🤔 השאלה שמאלצת אותנו לחבר</h3>
+  <p>מנהל ה-HR שואל: <em>"הכן לי רשימה שמציגה לכל עובד — גם את שמו <strong>וגם</strong> את שם המחלקה שלו."</em></p>
+  <p>הבעיה: שם העובד נמצא ב-<code>employees</code>. שם המחלקה נמצא ב-<code>departments</code>. שתי טבלאות נפרדות. INNER JOIN הוא הפקודה שמחברת אותן.</p>
+
+  <div class="ac">
+    <div class="at">💡 האנלוגיה: תיק זהות + ספר טלפונים</div>
+    <p>דמיינו שיש לכם <strong>תיק זהות של עובד</strong> — שם, תפקיד, ומספר מחלקה (נאמר: "2").</p>
+    <p>ועכשיו יש לכם <strong>ספר טלפונים של מחלקות</strong> — "מחלקה 2 = טכנולוגיה, מנהל: אורן לב".</p>
+    <p>כדי לדעת מה שם המחלקה של העובד — לוקחים את המספר מתיק הזהות ומחפשים אותו בספר הטלפונים. <strong>INNER JOIN עושה בדיוק את זה — אוטומטית, לכל השורות, בשניות.</strong></p>
+  </div>
+
+  <h3 style="margin-top:28px">👁️ מה INNER JOIN עושה — שלב אחר שלב, ויזואלית</h3>
+  <p>לפני שנגיע לקוד, בואו נבין בדיוק מה קורה "מאחורי הקלעים". הנה שתי הטבלאות שיחוברו:</p>
+
+  <div class="sbs">
+    <div>
+      <span class="vt-label">📋 הטבלה הראשונה: employees</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>full_name</th><th>happiness_score</th><th>dept_id</th></tr></thead>
+        <tbody>
+          <tr><td class="kc">1</td><td>דנה לוי</td><td>8.2</td><td class="hg">1</td></tr>
+          <tr><td class="kc">2</td><td>יונתן מזרחי</td><td>5.1</td><td class="hg">1</td></tr>
+          <tr><td class="kc">3</td><td>שירה ברק</td><td>9.0</td><td class="hg">2</td></tr>
+          <tr><td class="kc">4</td><td>מוחמד עלי</td><td>7.4</td><td class="hg">2</td></tr>
+          <tr><td class="kc">5</td><td>מיכל רוזן</td><td>6.8</td><td class="hg">3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <span class="vt-label">📋 הטבלה השנייה: departments</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>dept_name</th><th>manager_name</th></tr></thead>
+        <tbody>
+          <tr><td class="kc hg">1</td><td>מכירות</td><td>רוי כהן</td></tr>
+          <tr><td class="kc hg">2</td><td>טכנולוגיה</td><td>אורן לב</td></tr>
+          <tr><td class="kc hg">3</td><td>משאבי אנוש</td><td>מיכל רוזן</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="cv">
+    <div class="cv-title">🔍 מה המחשב עושה צעד-צעד כשמריץ INNER JOIN?</div>
+    <div class="cv-steps">
+      <div class="cv-step"><div class="cv-n">1</div><div class="cv-t">המחשב לוקח את <strong>השורה הראשונה מ-employees</strong>: דנה לוי, <strong>dept_id = 1</strong>.</div></div>
+      <div class="cv-step"><div class="cv-n">2</div><div class="cv-t">הוא <strong>מחפש ב-departments</strong> שורה שה-id שלה הוא <strong>1</strong>. מצא! → "מכירות", רוי כהן.</div></div>
+      <div class="cv-step"><div class="cv-n">3</div><div class="cv-t">הוא <strong>מחבר</strong> את שתי השורות לשורה אחת ארוכה: דנה לוי + מכירות + רוי כהן. זו שורה בתוצאה!</div></div>
+      <div class="cv-step"><div class="cv-n">4</div><div class="cv-t">חוזר על כך לכל שאר העובדים. <strong>תוצאה סופית: 5 שורות</strong> — כי לכל עובד יש מחלקה תואמת.</div></div>
+    </div>
+  </div>
+
+  <h4>התוצאה הסופית — מה נקבל?</h4>
+  <div style="overflow-x:auto;margin:18px 0">
+    <span class="vt-label">✅ תוצאת INNER JOIN — הטבלה המאוחדת</span>
+    <table class="vt">
+      <thead><tr>
+        <th>full_name <span style="font-weight:400;font-size:.8rem;opacity:.7">(מ-employees)</span></th>
+        <th>happiness_score <span style="font-weight:400;font-size:.8rem;opacity:.7">(מ-employees)</span></th>
+        <th>dept_name <span style="font-weight:400;font-size:.8rem;opacity:.7">(מ-departments)</span></th>
+        <th>manager_name <span style="font-weight:400;font-size:.8rem;opacity:.7">(מ-departments)</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td>דנה לוי</td><td>8.2</td><td class="hg">מכירות</td><td>רוי כהן</td></tr>
+        <tr><td>יונתן מזרחי</td><td>5.1</td><td class="hg">מכירות</td><td>רוי כהן</td></tr>
+        <tr><td>שירה ברק</td><td>9.0</td><td class="hg">טכנולוגיה</td><td>אורן לב</td></tr>
+        <tr><td>מוחמד עלי</td><td>7.4</td><td class="hg">טכנולוגיה</td><td>אורן לב</td></tr>
+        <tr><td>מיכל רוזן</td><td>6.8</td><td class="hg">משאבי אנוש</td><td>מיכל רוזן</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hb blue">
+    <span class="hbt">💡 המילה "INNER" — מה היא אומרת?</span>
+    <p>INNER = "רק מה שנמצא <strong>בתוך שתי הטבלאות</strong> — כלומר שיש לו התאמה בשתיהן". אם עובד מצביע על מחלקה שלא קיימת — הוא <em>לא יופיע</em> בתוצאה כלל. נדגים זאת בשאלה הבאה.</p>
+  </div>
+</div>
+
+<!-- QUIZ 2 — visual before question -->
+<div class="qz">
+  <div class="qz-hdr"><div class="qz-icon">👁️</div><div class="qz-title">בחינה ויזואלית — מה תהיה התוצאה?</div></div>
+  <p style="font-size:1rem;color:var(--text-muted);margin-bottom:14px;font-weight:600">הסתכלו בעיון על שתי הטבלאות:</p>
+  <div class="sbs" style="margin-bottom:20px">
+    <div>
+      <span class="vt-label">👥 employees</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>name</th><th>dept_id</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>אורן</td><td class="hg">10</td></tr>
+          <tr><td>2</td><td>מיה</td><td class="hg">20</td></tr>
+          <tr><td>3</td><td>ניר</td><td class="hr">99 ← לא קיים!</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <span class="vt-label">🏢 departments</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>dept_name</th></tr></thead>
+        <tbody>
+          <tr><td class="hg">10</td><td>מכירות</td></tr>
+          <tr><td class="hg">20</td><td>פיתוח</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.86rem;color:var(--warning);margin-top:8px;font-weight:600">⚠️ מחלקה 99 לא קיימת!</p>
+    </div>
+  </div>
+  <div class="qz-q">מריצים INNER JOIN לפי: employees.dept_id = departments.id. כמה שורות בתוצאה, ומה קורה לניר?</div>
+  <div class="qz-opts" id="q2-opts">
+    <div class="opt" onclick="pick('q2',0,this)"><div class="om">א</div>3 שורות — כולם יופיעו, ניר יקבל NULL בעמודת שם המחלקה</div>
+    <div class="opt" onclick="pick('q2',1,this)"><div class="om">ב</div>2 שורות — ניר ייעלם לגמרי כי dept_id שלו (99) לא קיים ב-departments</div>
+    <div class="opt" onclick="pick('q2',2,this)"><div class="om">ג</div>שגיאת SQL — המחשב לא יכול לעבוד עם ערך שלא קיים</div>
+    <div class="opt" onclick="pick('q2',3,this)"><div class="om">ד</div>6 שורות — כל עובד מוצמד לכל מחלקה</div>
+  </div>
+  <div class="qz-fb" id="q2-fb"></div>
+</div>
+</section>
+
+
+<!-- ====================================
+  SECTION 3: CODE — WORD BY WORD
+  ==================================== -->
+<section class="sec" id="s3">
+<div class="sec-hdr"><div class="sec-num">3</div><h2 class="sec-title">עכשיו הקוד — מילה אחר מילה, לאט לאט</h2></div>
+
+<div class="cb">
+  <h3>💻 הנה קוד INNER JOIN המלא</h3>
+  <p>עכשיו, אחרי שהבנתם בדיוק מה INNER JOIN עושה ויזואלית, נראה את הקוד. נפרק כל מילה בנפרד — לא נשאיר כלום לא מוסבר.</p>
+
+<pre class="code"><span class="ckw">SELECT</span>
+    <span class="cal">e</span>.<span class="ccol">full_name</span>,
+    <span class="cal">e</span>.<span class="ccol">happiness_score</span>,
+    <span class="cal">d</span>.<span class="ccol">dept_name</span>,
+    <span class="cal">d</span>.<span class="ccol">manager_name</span>
+<span class="ckw">FROM</span> <span class="ctbl">employees</span> <span class="cal">e</span>
+<span class="ckw">INNER JOIN</span> <span class="ctbl">departments</span> <span class="cal">d</span>
+    <span class="ckw">ON</span> <span class="cal">e</span>.<span class="ccol">dept_id</span> = <span class="cal">d</span>.<span class="ccol">id</span>;</pre>
+
+  <div class="wb">
+    <div class="wb-title">🔍 פירוק מילה-מילה — לא נשאיר שום דבר לא מוסבר</div>
+    <div class="wr">
+      <div class="wc kw">SELECT</div>
+      <div class="we"><strong>אותה פקודה מהפרק הקודם.</strong> אומרת: "רצוני לשלוף נתונים ולראות אותם". אחריה כותבים בדיוק אילו עמודות רוצים לראות בתוצאה הסופית.</div>
+    </div>
+    <div class="wr">
+      <div class="wc col">e.full_name</div>
+      <div class="we">הנקודה (<code>.</code>) היא <strong>שיוך</strong>. <code>e.full_name</code> אומר: "עמודת full_name מתוך הטבלה שנקראת e". למה e? כי זה הכינוי שנבחר לטבלת employees — עוד רגע נסביר.</div>
+    </div>
+    <div class="wr">
+      <div class="wc kw">FROM employees e</div>
+      <div class="we"><strong>FROM employees</strong> = "הנתונים מגיעים מטבלת employees". ה-<strong>e</strong> שאחריה הוא <strong>כינוי (alias)</strong> — שם מקוצר שנותנים לטבלה. במקום לכתוב "employees.full_name" בכל מקום, כותבים "e.full_name". הבחירה של e שרירותית — יכלנו לבחור "emp" או "workers".</div>
+    </div>
+    <div class="wr">
+      <div class="wc kw">INNER JOIN departments d</div>
+      <div class="we"><strong>INNER JOIN</strong> = פקודת החיבור. <strong>departments</strong> = שם הטבלה שמצרפים. <strong>d</strong> = כינוי לטבלת departments.</div>
+    </div>
+    <div class="wr">
+      <div class="wc op">ON</div>
+      <div class="we"><strong>ON הוא הגשר שאנחנו בונים בין הטבלאות.</strong> בלי ON, המחשב לא יודע לפי מה לחבר — ויצמיד כל עובד לכל מחלקה (אסון שנסביר בסעיף 6!). אחרי ON אנחנו אומרים: "חבר שורות שבהן הערך הזה שווה לערך ההוא".</div>
+    </div>
+    <div class="wr">
+      <div class="wc col">e.dept_id = d.id</div>
+      <div class="we">זהו תנאי הגשר הספציפי: "חבר שורת עובד עם שורת מחלקה, <strong>רק כאשר</strong> dept_id של העובד שווה ל-id של המחלקה". זוהי נקודת ה-match — הערכים שחייבים להיות שווים.</div>
+    </div>
+  </div>
+
+  <div class="hb purple">
+    <span class="hbt">🎯 למה כותבים e.dept_id ולא רק dept_id?</span>
+    <p>כשמחברים שתי טבלאות, יכול להיות ששתיהן יש עמודה עם אותו שם (לדוגמה, שתיהן יכולות להיות עם עמודת "id"). אם כתבנו רק <code>id</code> — SQL לא יודע: id של מי? לכן כותבים <code>e.id</code> או <code>d.id</code> כדי להיות מדויקים.</p>
+  </div>
+</div>
+
+<!-- SIMULATOR 1 -->
+<div class="pg">
+  <div class="pg-hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="pg-dots"><div class="pd r"></div><div class="pd y"></div><div class="pd g"></div></div>
+      <span class="pg-tag">ehi_database.sql — סימולטור 1</span>
+    </div>
+    <span class="pg-badge">🎯 תרגיל: INNER JOIN</span>
+  </div>
+  <div class="pg-body">
+    <div class="stbls">
+      <div>
+        <div class="st-lbl">📋 employees — זכרו את המבנה</div>
+        <table class="st">
+          <thead><tr><th>id (PK)</th><th>full_name</th><th>happiness_score</th><th>dept_id (FK)</th></tr></thead>
+          <tbody>
+            <tr><td class="spk">1</td><td>דנה לוי</td><td>8.2</td><td class="sfk">1</td></tr>
+            <tr><td class="spk">2</td><td>יונתן מזרחי</td><td>5.1</td><td class="sfk">1</td></tr>
+            <tr><td class="spk">3</td><td>שירה ברק</td><td>9.0</td><td class="sfk">2</td></tr>
+            <tr><td class="spk">4</td><td>מוחמד עלי</td><td>7.4</td><td class="sfk">2</td></tr>
+            <tr><td class="spk">5</td><td>מיכל רוזן</td><td>6.8</td><td class="sfk">3</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="st-lbl">🏢 departments — זכרו את המבנה</div>
+        <table class="st">
+          <thead><tr><th>id (PK)</th><th>dept_name</th><th>manager_name</th></tr></thead>
+          <tbody>
+            <tr><td class="spk">1</td><td class="smatch">מכירות</td><td>רוי כהן</td></tr>
+            <tr><td class="spk">2</td><td class="smatch">טכנולוגיה</td><td>אורן לב</td></tr>
+            <tr><td class="spk">3</td><td class="smatch">משאבי אנוש</td><td>מיכל רוזן</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pg-task">
+      <span class="tt">🎯 המשימה:</span>
+      כתבו INNER JOIN שמציג לכל עובד: <strong>שמו המלא</strong>, <strong>ציון האושר שלו</strong>, ו<strong>שם המחלקה</strong>.<br>
+      הצמידו employees לdepartments לפי: <code>e.dept_id = d.id</code>
+      <ul>
+        <li>כתבו <strong>e</strong> אחרי employees (כינוי)</li>
+        <li>כתבו <strong>d</strong> אחרי departments (כינוי)</li>
+        <li>אל תשכחו את <strong>ON</strong> — הגשר!</li>
+      </ul>
+    </div>
+
+    <textarea class="sq-inp" id="s1-inp">-- כתבו את השאילתה שלכם כאן:
+-- זכרו: SELECT ... FROM ... INNER JOIN ... ON ...
+
+SELECT e.full_name, e.happiness_score, d.dept_name
+FROM employees e
+INNER JOIN departments d
+    ON e.dept_id = d.id;</textarea>
+
+    <div class="btn-row">
+      <button class="run-btn" onclick="runS1()">▶ הרץ שאילתה</button>
+      <button class="hint-btn" onclick="toggleHint('h1')">💡 רמז</button>
+    </div>
+    <div class="hint-box" id="h1">
+      SELECT e.full_name, e.happiness_score, d.dept_name<br>
+      FROM employees e<br>
+      INNER JOIN departments d<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;ON e.dept_id = d.id;
+    </div>
+  </div>
+  <div class="pg-res">
+    <div class="res-hdr"><span>📊 תוצאות</span><span id="s1-cnt"></span></div>
+    <div class="res-body" id="s1-res"><p class="r-idle">לחצו "הרץ שאילתה" כדי לראות תוצאות...</p></div>
+  </div>
+</div>
+</section>
+
+
+<!-- ====================================
+  SECTION 4: LEFT JOIN
+  ==================================== -->
+<section class="sec" id="s4">
+<div class="sec-hdr"><div class="sec-num">4</div><h2 class="sec-title">LEFT JOIN — מה קורה כשאין התאמה?</h2></div>
+
+<div class="cb">
+  <h3>🤔 הבעיה עם INNER JOIN: עובדים שנעלמים</h3>
+  <p>ב-EHI יש טבלה שלישית: <strong>happiness_interventions</strong> — מתעדת כל טיפול, ריטריט, מנוי גים, וכל השקעה אחרת. אבל — לא לכל עובד יש התערבות. לעובדים 2, 3, 5 אין שום שורה בטבלה הזו.</p>
+  <p>מה יקרה אם נריץ INNER JOIN בין employees לבין interventions?</p>
+
+  <div class="sbs">
+    <div>
+      <span class="vt-label">👥 employees (כל 5 עובדים)</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>full_name</th></tr></thead>
+        <tbody>
+          <tr><td class="kc">1</td><td>דנה לוי</td></tr>
+          <tr><td class="kc">2</td><td style="color:var(--warning);font-weight:700">יונתן מזרחי ←</td></tr>
+          <tr><td class="kc">3</td><td style="color:var(--warning);font-weight:700">שירה ברק ←</td></tr>
+          <tr><td class="kc">4</td><td>מוחמד עלי</td></tr>
+          <tr><td class="kc">5</td><td style="color:var(--warning);font-weight:700">מיכל רוזן ←</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.86rem;color:var(--warning);margin-top:8px;font-weight:600">← לאלה אין שורה ב-interventions</p>
+    </div>
+    <div>
+      <span class="vt-label">💚 happiness_interventions</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>employee_id</th><th>type</th><th>cost</th></tr></thead>
+        <tbody>
+          <tr><td>101</td><td class="hg">1</td><td>מנוי גים</td><td>3,000</td></tr>
+          <tr><td>102</td><td class="hg">1</td><td>ריטריט שנתי</td><td>25,000</td></tr>
+          <tr><td>103</td><td class="hg">4</td><td>קורס מנהיגות</td><td>12,000</td></tr>
+          <tr><td colspan="4" style="color:#4a4a6a;text-align:center;font-style:italic;font-size:.85rem">לעובדים 2, 3, 5 — אין שורה</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="ba">
+    <div>
+      <div class="ba-lbl bad">❌ תוצאת INNER JOIN — מסוכן!</div>
+      <div class="ba-wrap-bad">
+        <table class="vt">
+          <thead><tr><th>full_name</th><th>intervention_type</th></tr></thead>
+          <tbody>
+            <tr><td>דנה לוי</td><td>מנוי גים</td></tr>
+            <tr><td>דנה לוי</td><td>ריטריט שנתי</td></tr>
+            <tr><td>מוחמד עלי</td><td>קורס מנהיגות</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:.88rem;color:var(--danger);font-weight:600;margin-top:8px;text-align:center">יונתן, שירה, מיכל — נעלמו! המנהל חושב שכולם טופלו.</p>
+    </div>
+    <div>
+      <div class="ba-lbl good">✅ תוצאת LEFT JOIN — בטוח!</div>
+      <div class="ba-wrap-good">
+        <table class="vt">
+          <thead><tr><th>full_name</th><th>intervention_type</th></tr></thead>
+          <tbody>
+            <tr><td>דנה לוי</td><td>מנוי גים</td></tr>
+            <tr><td>דנה לוי</td><td>ריטריט שנתי</td></tr>
+            <tr><td style="color:var(--warning);font-weight:700">יונתן מזרחי</td><td class="hn">NULL ← אין התערבות</td></tr>
+            <tr><td style="color:var(--warning);font-weight:700">שירה ברק</td><td class="hn">NULL ← אין התערבות</td></tr>
+            <tr><td>מוחמד עלי</td><td>קורס מנהיגות</td></tr>
+            <tr><td style="color:var(--warning);font-weight:700">מיכל רוזן</td><td class="hn">NULL ← אין התערבות</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:.88rem;color:var(--success);font-weight:600;margin-top:8px;text-align:center">כולם נראים! NULL = "אין נתון" = מידע חיוני!</p>
+    </div>
+  </div>
+
+  <h4>מה זה NULL ולמה הוא חשוב?</h4>
+  <p><strong>NULL</strong> אינו "אפס". הוא אינו "ריק". הוא אומר: <em>"לא קיים שום מידע על זה"</em>. NULL בעמודת intervention_type אומר: "לעובד הזה אין שום התערבות רשומה". זה בדיוק מה שמנהל ה-HR צריך לדעת!</p>
+
+  <h4>תחביר LEFT JOIN + איך מוצאים רק את ה-NULLs</h4>
+<pre class="code"><span class="ckw">SELECT</span>
+    <span class="cal">e</span>.<span class="ccol">full_name</span>,
+    <span class="cal">e</span>.<span class="ccol">happiness_score</span>,
+    <span class="cal">i</span>.<span class="ccol">intervention_type</span>
+<span class="ckw">FROM</span> <span class="ctbl">employees</span> <span class="cal">e</span>
+<span class="ckw">LEFT JOIN</span> <span class="ctbl">happiness_interventions</span> <span class="cal">i</span>
+    <span class="ckw">ON</span> <span class="cal">e</span>.<span class="ccol">id</span> = <span class="cal">i</span>.<span class="ccol">employee_id</span>;
+
+<span class="ccmt">-- רוצים רק מי שאין לו התערבות? מוסיפים:</span>
+<span class="ckw">WHERE</span> <span class="cal">i</span>.<span class="ccol">id</span> <span class="ckw">IS NULL</span>;</pre>
+
+  <div class="wb">
+    <div class="wb-title">🔍 ההבדל הקריטי: LEFT לעומת INNER — מילה אחת שמשנה הכל</div>
+    <div class="wr">
+      <div class="wc kw">LEFT JOIN</div>
+      <div class="we"><strong>"שמור את כל השורות מהטבלה השמאלית"</strong> — הטבלה שכתובה אחרי FROM נקראת "שמאלית". ב-LEFT JOIN, <strong>כל</strong> שורותיה תמיד יופיעו בתוצאה. אם לשורה שמאלית אין התאמה בטבלה הימנית — השדות הימניים יתמלאו ב-NULL.</div>
+    </div>
+    <div class="wr">
+      <div class="wc op">WHERE i.id IS NULL</div>
+      <div class="we"><strong>IS NULL</strong> = "הוא ריק / לא קיים". אחרי LEFT JOIN, כל עובד ללא התערבות יש לו NULL בעמודות הטבלה הימנית. אז <code>WHERE i.id IS NULL</code> מסנן — "תן לי רק את העובדים שאין להם שורה ב-interventions".</div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ 3 -->
+<div class="qz">
+  <div class="qz-hdr"><div class="qz-icon">🧠</div><div class="qz-title">בחינה — INNER לעומת LEFT JOIN</div></div>
+  <p style="font-size:1rem;color:var(--text-muted);margin-bottom:14px;font-weight:600">הסתכלו על שתי הטבלאות:</p>
+  <div class="sbs" style="margin-bottom:20px">
+    <div>
+      <span class="vt-label">📋 students</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>name</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>אורן</td></tr>
+          <tr><td>2</td><td>שי</td></tr>
+          <tr><td>3</td><td>ליאת</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <span class="vt-label">📋 grades (ציונים)</span>
+      <table class="vt">
+        <thead><tr><th>student_id</th><th>grade</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>85</td></tr>
+          <tr><td>3</td><td>92</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.86rem;color:var(--warning);margin-top:8px;font-weight:600">⚠️ לשי (id=2) אין ציון עדיין!</p>
+    </div>
+  </div>
+  <div class="qz-q">מריצים: students LEFT JOIN grades ON students.id = grades.student_id. כמה שורות בתוצאה ומה יופיע בשורת שי?</div>
+  <div class="qz-opts" id="q3-opts">
+    <div class="opt" onclick="pick('q3',0,this)"><div class="om">א</div>2 שורות — רק אורן וליאת, כי לשי אין ציון</div>
+    <div class="opt" onclick="pick('q3',1,this)"><div class="om">ב</div>3 שורות — אורן (85), שי (NULL = "אין ציון"), ליאת (92)</div>
+    <div class="opt" onclick="pick('q3',2,this)"><div class="om">ג</div>3 שורות — שי יקבל ציון 0 אוטומטית</div>
+    <div class="opt" onclick="pick('q3',3,this)"><div class="om">ד</div>שגיאת SQL — לסטודנט חסר ציון</div>
+  </div>
+  <div class="qz-fb" id="q3-fb"></div>
+</div>
+
+<!-- SIMULATOR 2 -->
+<div class="pg">
+  <div class="pg-hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="pg-dots"><div class="pd r"></div><div class="pd y"></div><div class="pd g"></div></div>
+      <span class="pg-tag">ehi_database.sql — סימולטור 2</span>
+    </div>
+    <span class="pg-badge">🔍 מי עדיין לא קיבל תמיכה?</span>
+  </div>
+  <div class="pg-body">
+    <div class="stbls">
+      <div>
+        <div class="st-lbl">📋 employees — הטבלה "השמאלית"</div>
+        <table class="st">
+          <thead><tr><th>id</th><th>full_name</th><th>happiness_score</th></tr></thead>
+          <tbody>
+            <tr><td class="spk">1</td><td>דנה לוי</td><td>8.2</td></tr>
+            <tr><td class="spk">2</td><td>יונתן מזרחי</td><td>5.1</td></tr>
+            <tr><td class="spk">3</td><td>שירה ברק</td><td>9.0</td></tr>
+            <tr><td class="spk">4</td><td>מוחמד עלי</td><td>7.4</td></tr>
+            <tr><td class="spk">5</td><td>מיכל רוזן</td><td>6.8</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="st-lbl">💚 interventions — הטבלה "הימנית"</div>
+        <table class="st">
+          <thead><tr><th>id</th><th>employee_id</th><th>type</th></tr></thead>
+          <tbody>
+            <tr><td>101</td><td class="smatch">1</td><td>מנוי גים</td></tr>
+            <tr><td>102</td><td class="smatch">1</td><td>ריטריט שנתי</td></tr>
+            <tr><td>103</td><td class="smatch">4</td><td>קורס מנהיגות</td></tr>
+            <tr><td colspan="3" style="color:#4a4a6a;text-align:center;font-style:italic;font-size:.82rem">לעובדים 2, 3, 5 — אין שורה כאן</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pg-task">
+      <span class="tt">🎯 המשימה: מצאו מי עדיין לא קיבל תמיכה</span>
+      מנהל EHI צריך דוח: <strong>אילו עובדים לא קיבלו שום התערבות?</strong><br>
+      כתבו שאילתה עם LEFT JOIN ואז WHERE IS NULL:
+      <ul>
+        <li><strong>FROM employees e</strong> — employees היא הטבלה "השמאלית"</li>
+        <li><strong>LEFT JOIN happiness_interventions i</strong> ON e.id = i.employee_id</li>
+        <li><strong>WHERE i.id IS NULL</strong> — מסנן רק את מי שאין לו שורה ב-interventions</li>
+      </ul>
+    </div>
+
+    <textarea class="sq-inp" id="s2-inp">-- LEFT JOIN שומר את כל employees
+-- WHERE IS NULL מסנן רק חסרי ההתערבויות
+
+SELECT e.full_name, e.happiness_score, i.intervention_type
+FROM employees e
+LEFT JOIN happiness_interventions i
+    ON e.id = i.employee_id
+WHERE i.id IS NULL;</textarea>
+
+    <div class="btn-row">
+      <button class="run-btn" onclick="runS2()">▶ הרץ שאילתה</button>
+      <button class="hint-btn" onclick="toggleHint('h2')">💡 רמז</button>
+    </div>
+    <div class="hint-box" id="h2">
+      SELECT e.full_name, e.happiness_score, i.intervention_type<br>
+      FROM employees e<br>
+      LEFT JOIN happiness_interventions i<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;ON e.id = i.employee_id<br>
+      WHERE i.id IS NULL;
+    </div>
+  </div>
+  <div class="pg-res">
+    <div class="res-hdr"><span>📊 תוצאות</span><span id="s2-cnt"></span></div>
+    <div class="res-body" id="s2-res"><p class="r-idle">לחצו "הרץ שאילתה" כדי לראות תוצאות...</p></div>
+  </div>
+</div>
+</section>
+
+
+<!-- ====================================
+  SECTION 5: 3-TABLE JOIN
+  ==================================== -->
+<section class="sec" id="s5">
+<div class="sec-hdr"><div class="sec-num">5</div><h2 class="sec-title">3 טבלאות ביחד — שרשרת של JOINs</h2></div>
+
+<div class="cb">
+  <h3>📎 מתי צריך 3 טבלאות?</h3>
+  <p>שאלה עסקית: <em>"כמה כסף הוצא על כל עובד, ובאיזו מחלקה הוא עובד?"</em></p>
+  <p>לענות — צריך שם עובד (employees), שם מחלקה (departments), ועלות התערבות (interventions). 3 טבלאות. הפתרון פשוט: <strong>עושים JOIN ראשון, ואז עוד JOIN על התוצאה</strong> — כמו שרשרת.</p>
+
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin:22px 0;align-items:center">
+    <div style="flex:1;min-width:180px">
+      <span class="vt-label">💚 interventions (i)</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>employee_id</th><th>type</th><th>cost</th></tr></thead>
+        <tbody>
+          <tr><td>101</td><td class="hg">1</td><td>מנוי גים</td><td>3,000</td></tr>
+          <tr><td>102</td><td class="hg">1</td><td>ריטריט שנתי</td><td>25,000</td></tr>
+          <tr><td>103</td><td class="hg">4</td><td>קורס מנהיגות</td><td>12,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:1.6rem;color:var(--primary);flex-shrink:0">→</div>
+    <div style="flex:1;min-width:180px">
+      <span class="vt-label">👥 employees (e)</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>full_name</th><th>dept_id</th></tr></thead>
+        <tbody>
+          <tr><td class="hg">1</td><td>דנה לוי</td><td class="hy">1</td></tr>
+          <tr><td>2</td><td>יונתן מזרחי</td><td class="hy">1</td></tr>
+          <tr><td>3</td><td>שירה ברק</td><td class="hy">2</td></tr>
+          <tr><td class="hg">4</td><td>מוחמד עלי</td><td class="hy">2</td></tr>
+          <tr><td>5</td><td>מיכל רוזן</td><td class="hy">3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:1.6rem;color:var(--primary);flex-shrink:0">→</div>
+    <div style="flex:1;min-width:165px">
+      <span class="vt-label">🏢 departments (d)</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>dept_name</th></tr></thead>
+        <tbody>
+          <tr><td class="hy">1</td><td>מכירות</td></tr>
+          <tr><td class="hy">2</td><td>טכנולוגיה</td></tr>
+          <tr><td class="hy">3</td><td>משאבי אנוש</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h4>הקוד — שני JOINs ברצף</h4>
+<pre class="code"><span class="ckw">SELECT</span>
+    <span class="cal">e</span>.<span class="ccol">full_name</span>,
+    <span class="cal">d</span>.<span class="ccol">dept_name</span>,
+    <span class="cal">i</span>.<span class="ccol">intervention_type</span>,
+    <span class="cal">i</span>.<span class="ccol">cost</span>
+<span class="ckw">FROM</span> <span class="ctbl">happiness_interventions</span> <span class="cal">i</span>
+
+<span class="ccmt">-- JOIN ראשון: חבר interventions לעובדים</span>
+<span class="ckw">INNER JOIN</span> <span class="ctbl">employees</span> <span class="cal">e</span>
+    <span class="ckw">ON</span> <span class="cal">i</span>.<span class="ccol">employee_id</span> = <span class="cal">e</span>.<span class="ccol">id</span>
+
+<span class="ccmt">-- JOIN שני: קח את התוצאה ותצמיד למחלקות</span>
+<span class="ckw">INNER JOIN</span> <span class="ctbl">departments</span> <span class="cal">d</span>
+    <span class="ckw">ON</span> <span class="cal">e</span>.<span class="ccol">dept_id</span> = <span class="cal">d</span>.<span class="ccol">id</span>;</pre>
+
+  <div class="hb blue">
+    <span class="hbt">💡 איך המחשב מבצע 2 JOINs?</span>
+    <p><strong>ראשית</strong> מחבר interventions + employees ויוצר טבלה ביניים. <strong>אז</strong> לוקח את הטבלה הביניים ומחבר אותה ל-departments. כל JOIN דורש <code>ON</code> משלו — שתי שורות ON לשני JOINs.</p>
+  </div>
+</div>
+
+<!-- SIMULATOR 3 -->
+<div class="pg">
+  <div class="pg-hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="pg-dots"><div class="pd r"></div><div class="pd y"></div><div class="pd g"></div></div>
+      <span class="pg-tag">ehi_database.sql — סימולטור 3</span>
+    </div>
+    <span class="pg-badge">🔥 3 טבלאות — אתגר מורכב</span>
+  </div>
+  <div class="pg-body">
+    <div class="stbls">
+      <div>
+        <div class="st-lbl">💚 interventions (i)</div>
+        <table class="st">
+          <thead><tr><th>id</th><th>employee_id</th><th>type</th><th>cost</th></tr></thead>
+          <tbody>
+            <tr><td>101</td><td class="sfk">1</td><td>מנוי גים</td><td>3,000</td></tr>
+            <tr><td>102</td><td class="sfk">1</td><td>ריטריט שנתי</td><td>25,000</td></tr>
+            <tr><td>103</td><td class="sfk">4</td><td>קורס מנהיגות</td><td>12,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="st-lbl">👥 employees (e)</div>
+        <table class="st">
+          <thead><tr><th>id</th><th>full_name</th><th>dept_id</th></tr></thead>
+          <tbody>
+            <tr><td class="spk">1</td><td>דנה לוי</td><td class="sfk">1</td></tr>
+            <tr><td class="spk">4</td><td>מוחמד עלי</td><td class="sfk">2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="st-lbl">🏢 departments (d)</div>
+        <table class="st">
+          <thead><tr><th>id</th><th>dept_name</th></tr></thead>
+          <tbody>
+            <tr><td class="spk">1</td><td>מכירות</td></tr>
+            <tr><td class="spk">2</td><td>טכנולוגיה</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pg-task">
+      <span class="tt">🔥 משימה: דוח התערבויות מלא</span>
+      הציגו לכל התערבות: <strong>סוג</strong>, <strong>עלות</strong>, <strong>שם עובד</strong>, ו<strong>שם מחלקה</strong>.
+      <ul>
+        <li><strong>JOIN ראשון:</strong> interventions (i) → employees (e) לפי <code>i.employee_id = e.id</code></li>
+        <li><strong>JOIN שני:</strong> employees (e) → departments (d) לפי <code>e.dept_id = d.id</code></li>
+        <li>כל JOIN דורש ON משלו!</li>
+      </ul>
+    </div>
+
+    <textarea class="sq-inp" id="s3-inp">-- שני JOINs ברצף — כל אחד עם ON משלו:
+
+SELECT e.full_name, d.dept_name, i.intervention_type, i.cost
+FROM happiness_interventions i
+INNER JOIN employees e
+    ON i.employee_id = e.id
+INNER JOIN departments d
+    ON e.dept_id = d.id;</textarea>
+
+    <div class="btn-row">
+      <button class="run-btn" onclick="runS3()">▶ הרץ שאילתה</button>
+      <button class="hint-btn" onclick="toggleHint('h3')">💡 רמז</button>
+    </div>
+    <div class="hint-box" id="h3">
+      SELECT e.full_name, d.dept_name, i.intervention_type, i.cost<br>
+      FROM happiness_interventions i<br>
+      INNER JOIN employees e ON i.employee_id = e.id<br>
+      INNER JOIN departments d ON e.dept_id = d.id;
+    </div>
+  </div>
+  <div class="pg-res">
+    <div class="res-hdr"><span>📊 תוצאות</span><span id="s3-cnt"></span></div>
+    <div class="res-body" id="s3-res"><p class="r-idle">לחצו "הרץ שאילתה" כדי לראות תוצאות...</p></div>
+  </div>
+</div>
+</section>
+
+
+<!-- ====================================
+  SECTION 6: CARTESIAN TRAP
+  ==================================== -->
+<section class="sec" id="s6">
+<div class="sec-hdr"><div class="sec-num">6</div><h2 class="sec-title">💥 מה קורה כשמשכחים את ON?</h2></div>
+
+<div class="cb">
+  <h3>🚨 שגיאת המתחילים הכי יקרה — המכפלה הקרטזית</h3>
+  <p>כבר יודעים ש-ON הוא "הגשר" בין הטבלאות. מה קורה אם שוכחים לבנות את הגשר הזה?</p>
+  <p>התשובה מפחידה: המחשב לא יזרוק שגיאה — הוא פשוט <strong>יצמיד כל שורה מהטבלה הראשונה לכל שורה מהטבלה השנייה</strong>. זו "מכפלה קרטזית".</p>
+
+  <div style="display:flex;gap:15px;flex-wrap:wrap;margin:22px 0;align-items:center">
+    <div style="flex:1;min-width:200px">
+      <span class="vt-label">👥 employees (5 שורות)</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>full_name</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>דנה לוי</td></tr>
+          <tr><td>2</td><td>יונתן מזרחי</td></tr>
+          <tr><td>3</td><td>שירה ברק</td></tr>
+          <tr><td>4</td><td>מוחמד עלי</td></tr>
+          <tr><td>5</td><td>מיכל רוזן</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:2rem;flex-shrink:0;color:var(--danger)">×</div>
+    <div style="flex:1;min-width:180px">
+      <span class="vt-label">🏢 departments (3 שורות)</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>dept_name</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>מכירות</td></tr>
+          <tr><td>2</td><td>טכנולוגיה</td></tr>
+          <tr><td>3</td><td>משאבי אנוש</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:2rem;flex-shrink:0;color:var(--danger)">=</div>
+    <div style="flex:1;min-width:200px">
+      <span class="vt-label">💀 תוצאה ללא ON: 5×3 = 15 שורות שגויות!</span>
+      <table class="vt">
+        <thead><tr><th>full_name</th><th>dept_name</th></tr></thead>
+        <tbody>
+          <tr><td>דנה לוי</td><td class="hg">מכירות ✓</td></tr>
+          <tr><td>דנה לוי</td><td class="hr">טכנולוגיה ✗</td></tr>
+          <tr><td>דנה לוי</td><td class="hr">משאבי אנוש ✗</td></tr>
+          <tr><td>יונתן מזרחי</td><td class="hg">מכירות ✓</td></tr>
+          <tr><td>יונתן מזרחי</td><td class="hr">טכנולוגיה ✗</td></tr>
+          <tr><td colspan="2" style="text-align:center;color:var(--danger);font-weight:700;font-size:.88rem">... עוד 10 שורות שגויות ...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="hb red">
+    <span class="hbt">🔥 הסכנה: בחברות גדולות זה קורס שרתים</span>
+    <p>עם 5 עובדים ו-3 מחלקות = 15 שורות. כאב קטן. אבל עם 50,000 עובדים ו-500 מחלקות — התוצאה: <strong>25,000,000 שורות</strong>. השרת קורס. כל זאת בגלל שכחת שתי מילים: <code>ON e.dept_id = d.id</code>.</p>
+  </div>
+
+  <h4>כלל ברזל: כל JOIN חייב ON</h4>
+<pre class="code"><span class="ccmt">-- ❌ שגוי לגמרי — אין ON! מכפלה קרטזית!</span>
+<span class="ckw">SELECT</span> * <span class="ckw">FROM</span> <span class="ctbl">employees</span>, <span class="ctbl">departments</span>;
+
+<span class="ccmt">-- ✅ נכון — יש ON שמגדיר את הגשר</span>
+<span class="ckw">SELECT</span> * <span class="ckw">FROM</span> <span class="ctbl">employees</span> <span class="cal">e</span>
+<span class="ckw">INNER JOIN</span> <span class="ctbl">departments</span> <span class="cal">d</span>
+    <span class="ckw">ON</span> <span class="cal">e</span>.<span class="ccol">dept_id</span> = <span class="cal">d</span>.<span class="ccol">id</span>;</pre>
+</div>
+
+<!-- QUIZ 4 -->
+<div class="qz">
+  <div class="qz-hdr"><div class="qz-icon">💥</div><div class="qz-title">בחינה סופית — כמה שורות?</div></div>
+  <div class="sbs" style="margin-bottom:20px">
+    <div>
+      <span class="vt-label">📋 טבלה A (4 שורות)</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>name</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>אורן</td></tr><tr><td>2</td><td>שי</td></tr>
+          <tr><td>3</td><td>ליאת</td></tr><tr><td>4</td><td>נועה</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <span class="vt-label">📋 טבלה B (5 שורות)</span>
+      <table class="vt">
+        <thead><tr><th>id</th><th>category</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>קטגוריה א</td></tr><tr><td>2</td><td>קטגוריה ב</td></tr>
+          <tr><td>3</td><td>קטגוריה ג</td></tr><tr><td>4</td><td>קטגוריה ד</td></tr>
+          <tr><td>5</td><td>קטגוריה ה</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="qz-q">מריצים: <code>SELECT * FROM A, B;</code> (ללא JOIN וללא ON). כמה שורות יחזרו?</div>
+  <div class="qz-opts" id="q4-opts">
+    <div class="opt" onclick="pick('q4',0,this)"><div class="om">א</div>9 שורות (4 + 5)</div>
+    <div class="opt" onclick="pick('q4',1,this)"><div class="om">ב</div>4 שורות — רק טבלה A</div>
+    <div class="opt" onclick="pick('q4',2,this)"><div class="om">ג</div>20 שורות (4 × 5) — כל שורה מ-A מוצמדת לכל שורה מ-B</div>
+    <div class="opt" onclick="pick('q4',3,this)"><div class="om">ד</div>שגיאה — SQL לא יכול לקרוא שתי טבלאות בלי JOIN</div>
+  </div>
+  <div class="qz-fb" id="q4-fb"></div>
+</div>
+
+<!-- SUMMARY -->
+<div class="cb">
+  <h3>📚 סיכום פרק 1 — מה למדנו</h3>
+  <div class="steps-wrap">
+    <div class="si">
+      <div class="sline"><div class="scirc">1</div><div class="sconn"></div></div>
+      <div class="scontent">
+        <h5>נרמול — למה מפצלים לטבלאות</h5>
+        <p>כדי למנוע כפילויות: כל מידע מאוחסן פעם אחת, ואחרים מצביעים עליו דרך Foreign Key. שינוי = עדכון שורה אחת.</p>
+      </div>
+    </div>
+    <div class="si">
+      <div class="sline"><div class="scirc">2</div><div class="sconn"></div></div>
+      <div class="scontent">
+        <h5>INNER JOIN — רק שורות עם התאמה בשתי הטבלאות</h5>
+        <p>מחבר שורות לפי תנאי ON. אם אין התאמה — השורה לא מופיעה. בטוח ומדויק, אבל עלול "להחביא" נתונים חשובים.</p>
+      </div>
+    </div>
+    <div class="si">
+      <div class="sline"><div class="scirc">3</div><div class="sconn"></div></div>
+      <div class="scontent">
+        <h5>LEFT JOIN — שמור את כל הטבלה השמאלית</h5>
+        <p>כל שורות הטבלה שאחרי FROM מופיעות תמיד. שורות ללא התאמה מקבלות NULL. מצוין לאיתור "חורים" — מי לא קיבל תמיכה.</p>
+      </div>
+    </div>
+    <div class="si">
+      <div class="sline"><div class="scirc">4</div><div class="sconn"></div></div>
+      <div class="scontent">
+        <h5>JOIN של 3 טבלאות — שרשרת</h5>
+        <p>מחברים JOIN ראשון, תוצאתו מחוברת ב-JOIN שני. כל JOIN דורש ON משלו.</p>
+      </div>
+    </div>
+    <div class="si">
+      <div class="sline"><div class="scirc">5</div></div>
+      <div class="scontent">
+        <h5>מכפלה קרטזית — הבאג הקטלני</h5>
+        <p>שכחת ON = כל שורה מוצמדת לכל שורה. כלל: כל JOIN חייב ON תמיד.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hb green">
+    <span class="hbt">🎓 הפרק הבא: GROUP BY — לחשב על קבוצות</span>
+    <p>בפרק 2 נלמד לקחת את הטבלאות המחוברות ולחשב סטטיסטיקות: כמה הושקע בממוצע לעובד לפי מחלקה? איזו מחלקה הכי מאושרת? ואיך מסננים לאחר חישוב קבוצתי (HAVING)? אותה גישה: קודם דוגמה חיה, אחרי זה הקוד.</p>
+  </div>
+</div>
+</section>
+
+</main>
+
+<div class="score-w" id="sw">
+  <span>🏆</span>
+  <span class="sv" id="sv">0</span>
+  <span class="sl">/ 4 נקודות</span>
+</div>
+
+<script>
+// ===== DATA =====
+const EHI = {
+  employees:[
+    {id:1,full_name:'דנה לוי',role:'מנהלת מכירות',happiness_score:8.2,dept_id:1},
+    {id:2,full_name:'יונתן מזרחי',role:'נציג מכירות',happiness_score:5.1,dept_id:1},
+    {id:3,full_name:'שירה ברק',role:'מפתחת FullStack',happiness_score:9.0,dept_id:2},
+    {id:4,full_name:'מוחמד עלי',role:'Data Engineer',happiness_score:7.4,dept_id:2},
+    {id:5,full_name:'מיכל רוזן',role:'מנהלת HR',happiness_score:6.8,dept_id:3}
+  ],
+  departments:[
+    {id:1,dept_name:'מכירות',manager_name:'רוי כהן',annual_budget:200000},
+    {id:2,dept_name:'טכנולוגיה',manager_name:'אורן לב',annual_budget:350000},
+    {id:3,dept_name:'משאבי אנוש',manager_name:'מיכל רוזן',annual_budget:120000}
+  ],
+  interventions:[
+    {id:101,employee_id:1,intervention_type:'מנוי גים',cost:3000},
+    {id:102,employee_id:1,intervention_type:'ריטריט שנתי',cost:25000},
+    {id:103,employee_id:4,intervention_type:'קורס מנהיגות',cost:12000}
+  ]
+};
+
+// ===== SCORE =====
+let score=0; const done=new Set();
+function bump(){document.getElementById('sv').textContent=score;const w=document.getElementById('sw');w.style.transform='scale(1.12)';setTimeout(()=>w.style.transform='scale(1)',350);}
+
+// ===== QUIZ ENGINE =====
+const ANS={q1:1,q2:1,q3:1,q4:2};
+const FB={
+  q1:{
+    y:'✅ נכון! dept_id הוא הכתובת שמצביעה על שורה בטבלת departments. שינוי dept_id מ-2 ל-3 מחבר את שירה למחלקת "משאבי אנוש" — בלי לנגוע בשום דבר אחר.',
+    n:'❌ לא מדויק. שם המחלקה לא נמצא בטבלת employees כלל — רק הכתובת שלה (dept_id). כדי לשנות את המחלקה של שירה, משנים את dept_id שלה ל-3 (HR = שורה 3 ב-departments).'
+  },
+  q2:{
+    y:'✅ בדיוק! INNER JOIN מחזיר רק שורות עם התאמה. ניר יש לו dept_id=99 שלא קיים ב-departments — אז הוא פשוט נעלם. זה בדיוק הסיכון ב-INNER JOIN.',
+    n:'❌ זכרו: INNER JOIN = רק מה שנמצא "בתוך שתי הטבלאות". ניר מצביע על מחלקה 99 שלא קיימת — הוא נסנן ונעלם לגמרי. INNER JOIN לא מוסיף NULL; זה מה ש-LEFT JOIN עושה.'
+  },
+  q3:{
+    y:'✅ מצוין! LEFT JOIN שומר תמיד את כל שורות הטבלה "השמאלית" (students). שי קיים ב-students אבל אין לו שורה ב-grades — לכן יופיע עם NULL בעמודת הציון. NULL = "אין מידע", לא "אפס"!',
+    n:'❌ LEFT JOIN שומר את כל הטבלה "השמאלית" (students). שי קיים שם, לכן יופיע — אבל עם NULL בעמודות ה-grades. זה ההבדל הגדול בין LEFT JOIN ל-INNER JOIN.'
+  },
+  q4:{
+    y:'✅ נכון! ללא ON, SQL עושה מכפלה קרטזית: 4 × 5 = 20 שורות. כל שורה מ-A מוצמדת לכל שורה מ-B — תוצאה חסרת כל משמעות עסקית.',
+    n:'❌ ללא ON, SQL עושה מכפלה קרטזית = כפל. 4 × 5 = 20 שורות שגויות לחלוטין. לא סכימה, לא שגיאה — פשוט 20 שורות חסרות משמעות.'
+  }
+};
+
+function pick(qid,idx,el){
+  if(done.has(qid))return;
+  document.querySelectorAll('#'+qid+'-opts .opt').forEach(o=>o.classList.remove('correct','wrong'));
+  const ok=idx===ANS[qid];
+  el.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById(qid+'-fb');
+  fb.className='qz-fb show '+(ok?'correct':'wrong');
+  fb.innerHTML=FB[qid][ok?'y':'n'];
+  if(ok){done.add(qid);score++;bump();}
+}
+
+// ===== HINTS =====
+function toggleHint(id){const e=document.getElementById(id);e.style.display=e.style.display==='block'?'none':'block';}
+
+// ===== TABLE BUILDER =====
+function tbl(cols,rows){
+  if(!rows||rows.length===0)return '<p style="color:#64748b;padding:6px 0">השאילתה רצה — אבל לא נמצאו שורות שתואמות לתנאים.</p>';
+  let h='<table class="rt"><thead><tr>';
+  cols.forEach(c=>h+=`<th>${c}</th>`);
+  h+='</tr></thead><tbody>';
+  rows.forEach(r=>{
+    h+='<tr>';
+    cols.forEach(c=>{const v=r[c];h+=v===null||v===undefined?'<td class="nc">NULL</td>':`<td>${v}</td>`;});
+    h+='</tr>';
+  });
+  return h+'</tbody></table>';
+}
+function ok(bodyId,cntId,html,n,msg){document.getElementById(bodyId).innerHTML=(msg?`<div class="r-ok">${msg}</div>`:'')+html+(n>=0?`<div class="r-cnt">${n} שורות הוחזרו</div>`:'');if(cntId)document.getElementById(cntId).textContent=n>=0?`${n} שורות`:'';}
+function err(bodyId,cntId,t,b){document.getElementById(bodyId).innerHTML=`<div class="r-err"><div class="et">❌ ${t}</div><div class="eb">${b}</div></div>`;if(cntId)document.getElementById(cntId).textContent='';}
+function has(s,w){return s.toLowerCase().includes(w.toLowerCase());}
+
+// ===== SIM 1: INNER JOIN =====
+function runS1(){
+  const q=document.getElementById('s1-inp').value;
+  if(!has(q,'select'))return err('s1-res','s1-cnt','חסרה פקודת SELECT','כל שאילתת SQL מתחילה במילה SELECT. אחריה כותבים אילו עמודות רוצים לראות.');
+  if(!has(q,'from employees'))return err('s1-res','s1-cnt','חסר FROM employees','מאיזו טבלה לשלוף? כתבו: FROM employees e');
+  if(!has(q,'inner join')&&!has(q,'join departments'))return err('s1-res','s1-cnt','חסר INNER JOIN departments','צריך לחבר את טבלת departments. כתבו: INNER JOIN departments d');
+  if(!has(q,' on '))return err('s1-res','s1-cnt','חסר ON — הגשר חסר!','בלי ON המחשב לא יודע לפי מה לחבר. הוסיפו: ON e.dept_id = d.id');
+  if(!has(q,'dept_id')||(!has(q,'d.id')&&!has(q,'departments.id')))return err('s1-res','s1-cnt','תנאי ON שגוי','הגשר הנכון: ON e.dept_id = d.id — dept_id בעובד שווה ל-id במחלקה.');
+
+  const rows=EHI.employees.map(e=>{
+    const d=EHI.departments.find(d=>d.id===e.dept_id);
+    return d?{full_name:e.full_name,happiness_score:e.happiness_score,dept_name:d.dept_name,manager_name:d.manager_name}:null;
+  }).filter(Boolean);
+  ok('s1-res','s1-cnt',tbl(['full_name','happiness_score','dept_name','manager_name'],rows),rows.length,'✅ מצוין! INNER JOIN הצליח — כל עובד מחובר למחלקה שלו.');
+}
+
+// ===== SIM 2: LEFT JOIN + IS NULL =====
+function runS2(){
+  const q=document.getElementById('s2-inp').value;
+  if(!has(q,'select'))return err('s2-res','s2-cnt','חסרה פקודת SELECT','התחילו עם SELECT.');
+  if(!has(q,'from employees'))return err('s2-res','s2-cnt','employees חייבת להיות הטבלה השמאלית','כתבו: FROM employees e — employees היא הטבלה "השמאלית" ב-LEFT JOIN.');
+  if(!has(q,'left join')){
+    if(has(q,'inner join'))return err('s2-res','s2-cnt','השתמשתם ב-INNER JOIN במקום LEFT JOIN','INNER JOIN יסנן עובדים ללא התערבויות — הם לא יופיעו. כדי לשמור אותם: LEFT JOIN.');
+    return err('s2-res','s2-cnt','חסר LEFT JOIN','כתבו LEFT JOIN (לא INNER JOIN) כדי לשמור גם עובדים ללא התערבות.');
+  }
+  if(!has(q,' on '))return err('s2-res','s2-cnt','חסר ON','הוסיפו: ON e.id = i.employee_id');
+  if(!has(q,'is null'))return err('s2-res','s2-cnt','חסר WHERE IS NULL','אחרי ה-LEFT JOIN, עובדים ללא התערבות יקבלו NULL. כדי לסנן רק אותם: WHERE i.id IS NULL');
+
+  const hasInt=new Set(EHI.interventions.map(i=>i.employee_id));
+  const rows=EHI.employees.filter(e=>!hasInt.has(e.id)).map(e=>({full_name:e.full_name,happiness_score:e.happiness_score,intervention_type:'NULL'}));
+  ok('s2-res','s2-cnt',tbl(['full_name','happiness_score','intervention_type'],rows),rows.length,'✅ מעולה! זיהיתם את כל העובדים ללא תמיכה — אלה בדיוק מי ש-HR צריך לפנות אליהם!');
+}
+
+// ===== SIM 3: 3-TABLE JOIN =====
+function runS3(){
+  const q=document.getElementById('s3-inp').value;
+  if(!has(q,'select'))return err('s3-res','s3-cnt','חסרה פקודת SELECT','התחילו עם SELECT.');
+  const jc=(q.toLowerCase().match(/join/g)||[]).length;
+  if(jc<2)return err('s3-res','s3-cnt','צריך שני JOINs!','לחיבור שלוש טבלאות צריך שני JOINs. הראשון מחבר interventions לעובדים. השני מחבר עובדים למחלקות.');
+  const oc=(q.toLowerCase().match(/ on /g)||[]).length;
+  if(oc<2)return err('s3-res','s3-cnt','כל JOIN דורש ON משלו','יש לכם שני JOINs — צריך גם שני ONs.');
+  if(!has(q,'employee_id'))return err('s3-res','s3-cnt','תנאי ON ראשון שגוי','ה-ON הראשון צריך: i.employee_id = e.id');
+  if(!has(q,'dept_id'))return err('s3-res','s3-cnt','תנאי ON שני שגוי','ה-ON השני צריך: e.dept_id = d.id');
+
+  const rows=EHI.interventions.map(i=>{
+    const e=EHI.employees.find(em=>em.id===i.employee_id);
+    if(!e)return null;
+    const d=EHI.departments.find(dep=>dep.id===e.dept_id);
+    if(!d)return null;
+    return {full_name:e.full_name,dept_name:d.dept_name,intervention_type:i.intervention_type,cost:i.cost.toLocaleString()+' ₪'};
+  }).filter(Boolean);
+  ok('s3-res','s3-cnt',tbl(['full_name','dept_name','intervention_type','cost'],rows),rows.length,'🏆 מדהים! שלושה JOINs ברצף — זו כבר עבודת BI אמיתית!');
+}
+
+// ===== SCROLL / NAV =====
+window.addEventListener('scroll',()=>{
+  const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('pb').style.width=(st/dh*100)+'%';
+  let cur='';
+  document.querySelectorAll('.sec').forEach(s=>{if(window.scrollY>=s.offsetTop-155)cur=s.id;});
+  document.querySelectorAll('.nl').forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+cur));
+});
+</script>
+</body>
+</html>
