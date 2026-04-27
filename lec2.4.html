@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הארכיטקט בעידן ה-AI | The AI‑Era Data Architect — Complete Workshop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        primary: '#4f46e5',
+                        primaryLight: '#eef2ff',
+                        accent: '#f43f5e',
+                        warn: '#f59e0b',
+                        success: '#10b981',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root { --primary: #4f46e5; --primary-light: #eef2ff; }
+        .progress-bar { position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 9999; background: rgba(0,0,0,0.05); }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #4f46e5, #0ea5e9); width: 0%; transition: width 0.2s; }
+        .hero-grad { background: linear-gradient(135deg, #fff 0%, #eef2ff 100%); }
+        .nav-blur { backdrop-filter: blur(16px); background: rgba(255,255,255,0.88); }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 1.25rem; border-radius: 0.75rem; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; overflow-x: auto; text-align: left; direction: ltr; }
+        .table-visual { width: 100%; border-collapse: collapse; }
+        .table-visual th { background: #f8fafc; padding: 0.75rem 1rem; border: 1px solid #e2e8f0; color: #4f46e5; font-weight: 700; text-align: left; font-size: 0.85rem; }
+        .table-visual td { padding: 0.75rem 1rem; border: 1px solid #e2e8f0; text-align: left; font-size: 0.9rem; }
+        .answer-box { display: none; margin-top: 1rem; padding: 1rem; background: #fffbeb; border: 1px solid #fde68a; border-radius: 0.75rem; color: #92400e; }
+        .btn-reveal { background: #b45309; color: #fff; padding: 0.5rem 1.25rem; border-radius: 100px; font-weight: 600; transition: 0.2s; }
+        .btn-reveal:hover { background: #92400e; }
+        .encourage-msg { color: #f59e0b; font-weight: 700; margin-bottom: 0.75rem; display: block; }
+        .hint-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 0.75rem; margin: 0.5rem 0; display: none; }
+        .pulse-dot { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .data-flow-arrow { font-size: 2rem; text-align: center; color: #4f46e5; margin: 0.5rem 0; }
+        .fade-in { animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="font-sans antialiased bg-slate-50 text-slate-900 ltr">
+
+<div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+
+<header class="hero-grad border-b border-slate-200 py-28 px-4 text-center">
+    <div class="max-w-4xl mx-auto">
+        <span class="inline-flex items-center gap-2 bg-primary text-white px-5 py-2 rounded-full text-sm font-bold shadow mb-6"><i class="fa-solid fa-shield-halved"></i> AI Architect · April 2026 Edition</span>
+        <h1 class="text-5xl md:text-6xl font-black mb-6 tracking-tight leading-tight">When the AI Writes<br>Perfect SQL —<br><span class="text-primary">Your Judgment Wins</span></h1>
+        <p class="text-lg text-slate-600 max-w-2xl mx-auto">Modern AI models (GPT‑5.5, Claude Opus 4.7, Gemini 3.1 Pro, Qwen3.6‑Max, Grok 4.3, Sonnet 4.6) write near‑flawless SQL. But without an architect who understands business intent, edge cases, and verification, even perfect code can produce wrong answers. This workshop turns you into the AI‑powered data leader.</p>
+    </div>
+</header>
+
+<nav class="sticky top-3 z-50 max-w-7xl mx-auto nav-blur border border-slate-200 rounded-full p-2 flex gap-2 overflow-x-auto shadow-lg mt-[-2.5rem] bg-white/90 text-sm font-semibold" id="mainNav">
+    <a href="#landscape" class="nav-link whitespace-nowrap px-4 py-2 rounded-full bg-primary text-white">AI Landscape</a>
+    <a href="#concepts-quiz" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Concepts Quiz</a>
+    <a href="#model-match" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Model Match</a>
+    <a href="#mindset" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Mindset</a>
+    <a href="#schema" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Database</a>
+    <a href="#sim1" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Sim 1</a>
+    <a href="#sim2" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Sim 2</a>
+    <a href="#sim3" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Sim 3</a>
+    <a href="#sim4" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Sim 4</a>
+    <a href="#sim5" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Sim 5</a>
+    <a href="#sim6" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Sim 6</a>
+    <a href="#sim7" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Sim 7</a>
+    <a href="#sim8" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Sim 8</a>
+    <a href="#sim9" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Sim 9</a>
+    <a href="#master" class="nav-link whitespace-nowrap px-4 py-2 rounded-full text-slate-500">Master 🏆</a>
+</nav>
+
+<main class="max-w-5xl mx-auto px-4 py-12 space-y-32">
+
+    <!-- AI LANDSCAPE SECTION -->
+    <section id="landscape" class="scroll-mt-28">
+        <div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in">
+            <h2 class="text-3xl font-black mb-8 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-primaryLight text-primary flex items-center justify-center text-xl font-black">0</span> The AI Landscape for Data Architects · April 2026</h2>
+            <div class="mb-10">
+                <h3 class="font-bold text-xl mb-6 text-primary">📖 Key Concepts — What Every Data Architect Must Know</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-4 rounded-xl"><h4 class="font-bold flex items-center gap-2"><i class="fa-solid fa-robot text-indigo-600"></i> Agentic Coding</h4><p class="text-sm text-slate-600 mt-1">AI that doesn't just suggest code — it <strong>plans, writes, tests, and iterates</strong> autonomously. For a data architect, this means the AI can generate a full SQL pipeline, run it in a sandbox, detect errors, and fix them — all while you oversee. <em>Why it matters:</em> you shift from writing every line to <strong>reviewing the AI's reasoning</strong> and catching logical gaps.</p></div>
+                    <div class="bg-slate-50 p-4 rounded-xl"><h4 class="font-bold flex items-center gap-2"><i class="fa-solid fa-chart-simple text-green-600"></i> SWE‑Bench</h4><p class="text-sm text-slate-600 mt-1">A benchmark that evaluates how well an AI can solve real‑world software engineering tasks (GitHub issues). It measures success rate in automatically producing correct patches. For SQL architects, a high SWE‑Bench score indicates the AI can handle complex, multi‑step query logic correctly.</p></div>
+                    <div class="bg-slate-50 p-4 rounded-xl"><h4 class="font-bold flex items-center gap-2"><i class="fa-solid fa-brain text-purple-600"></i> Dual‑Mode / Thinking Models</h4><p class="text-sm text-slate-600 mt-1">Models like GPT‑5.5 offer <strong>Standard</strong> (fast, low cost) and <strong>Pro</strong> (deeper reasoning, higher accuracy). In Standard mode, you get quick answers; in Pro, the AI "thinks longer," useful for complex joins or nested subqueries. <em>Why it matters:</em> you can balance cost vs. accuracy.</p></div>
+                    <div class="bg-slate-50 p-4 rounded-xl"><h4 class="font-bold flex items-center gap-2"><i class="fa-solid fa-image text-amber-600"></i> Multimodal Reasoning</h4><p class="text-sm text-slate-600 mt-1">AI that processes text, images, videos, and audio together. Gemini 3.1 Pro can look at an ER diagram screenshot and generate the matching DDL + queries. For a data architect, this speeds up schema migration and documentation tasks.</p></div>
+                    <div class="bg-slate-50 p-4 rounded-xl"><h4 class="font-bold flex items-center gap-2"><i class="fa-solid fa-expand text-cyan-600"></i> Context Window</h4><p class="text-sm text-slate-600 mt-1">The total tokens (words/code) an AI can consider at once. Modern models reach <strong>1M–10M tokens</strong> — enough to ingest an entire database schema, sample data, and documentation in one prompt. <em>Why it matters:</em> you can give the AI full schema + sample rows and ask for a query across 50 tables without splitting.</p></div>
+                    <div class="bg-slate-50 p-4 rounded-xl"><h4 class="font-bold flex items-center gap-2"><i class="fa-solid fa-shield-virus text-red-600"></i> Sandbox Execution</h4><p class="text-sm text-slate-600 mt-1">A <strong>safe, isolated environment</strong> where AI can run SQL code without touching production data. Tools like OpenClaw and Continue.dev spin up Docker containers or temporary databases. <em>Why it matters:</em> you can let the AI test its own queries without risking data corruption.</p></div>
+                    <div class="bg-slate-50 p-4 rounded-xl md:col-span-2"><h4 class="font-bold flex items-center gap-2"><i class="fa-solid fa-screwdriver-wrench text-teal-600"></i> Tool Use / Function Calling</h4><p class="text-sm text-slate-600 mt-1">AI's ability to <strong>call external APIs or execute code</strong>. For example, an LLM can run <code>SELECT COUNT(*)</code> against a sandbox database to verify its own query. <em>Why it matters:</em> the AI becomes a closed‑loop system: generate → test → refine → retest, all inside a safe sandbox. You only approve the final, verified output.</p></div>
+                </div>
+            </div>
+            <h3 class="font-bold text-xl mb-4 mt-8 text-primary">☁️ Cloud Frontier Models (April 2026)</h3>
+            <div class="overflow-x-auto border border-slate-200 rounded-xl mb-8">
+                <table class="table-visual"><thead><tr><th>Model</th><th>Organization</th><th>Key Strength</th><th>SWE‑Bench</th><th>Input /1M tok</th></tr></thead><tbody>
+                    <tr class="bg-white"><td class="font-mono font-bold">Claude Opus 4.7</td><td>Anthropic</td><td>Agentic coding; highest SWE‑bench Pro: 64.3%</td><td class="font-bold text-success">87.6%</td><td>$5.00</td></tr>
+                    <tr class="bg-slate-50"><td class="font-mono font-bold">GPT‑5.5</td><td>OpenAI</td><td>Strongest agentic coding; dual‑mode (Standard/Pro)</td><td>—</td><td>$5.00</td></tr>
+                    <tr class="bg-white"><td class="font-mono font-bold">Gemini 3.1 Pro</td><td>Google</td><td>Multimodal reasoning; 1M context; $2 input</td><td>54.2%</td><td>$2.00</td></tr>
+                    <tr class="bg-slate-50"><td class="font-mono font-bold">Qwen3.6‑Max</td><td>Alibaba</td><td>Best open‑weight competitor; strong agentic coding</td><td>—</td><td>$1.30</td></tr>
+                    <tr class="bg-white"><td class="font-mono font-bold">Claude Sonnet 4.6</td><td>Anthropic</td><td>Best balance: near‑Opus perf at 1/5 price</td><td>79.6%</td><td>$3.00</td></tr>
+                    <tr class="bg-slate-50"><td class="font-mono font-bold">Grok 4.3 Beta</td><td>xAI</td><td>0.5T params; native PDF/PPT/Excel generation</td><td>—</td><td>$300/mo</td></tr>
+                </tbody></table>
+            </div>
+            <h3 class="font-bold text-xl mb-4 text-success">🏠 Local / Open‑Weight Models</h3>
+            <p class="mb-4 text-slate-600 text-sm">Self‑hosting keeps sensitive HR/finance data entirely on‑premises — critical for HIPAA, GDPR. Modern local models rival cloud performance.</p>
+            <div class="overflow-x-auto border border-slate-200 rounded-xl mb-8">
+                <table class="table-visual"><thead><tr><th>Model</th><th>Org</th><th>Params</th><th>Context</th><th>Best For</th><th>Cost</th></tr></thead><tbody>
+                    <tr class="bg-white"><td class="font-mono font-bold">DeepSeek V3.2</td><td>DeepSeek</td><td>37B/671B MoE</td><td>160K</td><td>Agentic SQL; tool‑use</td><td>$0.28/$0.42</td></tr>
+                    <tr class="bg-slate-50"><td class="font-mono font-bold">Qwen3.6‑35B‑A3B</td><td>Alibaba</td><td>3B/35B MoE</td><td>128K</td><td>SQL optimization; dialect conversion</td><td>Free</td></tr>
+                    <tr class="bg-white"><td class="font-mono font-bold">Llama 4 Scout</td><td>Meta</td><td>17B/109B MoE</td><td>10M</td><td>Massive document analysis</td><td>Free</td></tr>
+                </tbody></table>
+            </div>
+            <h3 class="font-bold text-xl mb-4 text-warn">🔧 Local Inference & Agent Tools — Detailed</h3>
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-slate-50 p-5 rounded-xl"><h4 class="font-bold flex items-center gap-2"><i class="fa-solid fa-terminal text-blue-600"></i> Ollama v0.13</h4><p class="text-sm mt-2">Lightweight CLI daemon. One‑command model pull, GPU acceleration, OpenAI‑compatible API. Ideal for quick prototyping with local LLMs. <strong>Key for architects:</strong> can run inside a VPN, on air‑gapped servers, with zero data leakage.</p></div>
+                <div class="bg-slate-50 p-5 rounded-xl"><h4 class="font-bold flex items-center gap-2"><i class="fa-solid fa-desktop text-green-600"></i> LM Studio 0.3.23</h4><p class="text-sm mt-2">Full desktop GUI with MCP server support. Built on llama.cpp; CUDA 12.8 optimized. <strong>Best for non‑terminal users</strong> who want a visual chat interface, model download, and agentic setup without CLI.</p></div>
+                <div class="bg-slate-50 p-5 rounded-xl"><h4 class="font-bold flex items-center gap-2"><i class="fa-solid fa-robot text-purple-600"></i> OpenClaw</h4><p class="text-sm mt-2">Open‑source AI agent runtime. Connects Slack/Teams to local LLMs. Can <strong>autonomously execute SQL</strong> in a sandbox, verify results, and reply. Perfect for 24/7 data pipelines where you approve the final output.</p></div>
+                <div class="bg-slate-50 p-5 rounded-xl"><h4 class="font-bold flex items-center gap-2"><i class="fa-solid fa-code text-indigo-600"></i> Continue.dev</h4><p class="text-sm mt-2">Open‑source IDE plugin for VS Code & JetBrains. Full‑repo indexing, custom agents, sandbox execution. <strong>Architect use:</strong> highlight a schema file, press Ctrl+L, and ask "Generate a query that…" — all inside your IDE, with local LLM.</p></div>
+            </div>
+            <div class="bg-amber-50 border-l-4 border-amber-400 p-5 rounded-lg mt-6">
+                <p class="font-bold text-amber-800">⚡ Critical Insight for Data Architects:</p>
+                <p class="text-amber-700">For well‑defined SQL tasks with unambiguous schemas and clear join conditions, modern AI models make <strong>almost zero syntax errors</strong>. The entire risk is in <strong>logical misinterpretation</strong> of the business request — choosing the wrong join type, missing a date filter, or mishandling NULLs. <em>That's where you come in.</em></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONCEPTS QUIZ SECTION -->
+    <section id="concepts-quiz" class="scroll-mt-28">
+        <div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in">
+            <h2 class="text-3xl font-black mb-6 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-primaryLight text-primary flex items-center justify-center text-xl font-black">A1</span> Exercise: AI Core Concepts</h2>
+            <p class="mb-6 text-slate-700">Answer these questions to solidify your understanding of the AI terms we just covered.</p>
+            <div class="space-y-4 mb-6">
+                <div class="bg-slate-50 p-4 rounded-xl"><p class="font-semibold mb-2">1. What does "agentic coding" mean for a data architect?</p><select id="cq1" class="w-full p-2 border rounded-lg"><option value="">-- Choose --</option><option value="auto">AI autonomously plans, writes, tests, and debugs SQL — you review the logic</option><option value="suggest">AI only suggests code snippets; you write everything else</option></select></div>
+                <div class="bg-slate-50 p-4 rounded-xl"><p class="font-semibold mb-2">2. Why is the SWE‑Bench score relevant when choosing an AI for complex SQL tasks?</p><select id="cq2" class="w-full p-2 border rounded-lg"><option value="">-- Choose --</option><option value="measure">It measures real‑world software engineering success — high score = better at complex logic</option><option value="speed">It measures how fast the AI types</option></select></div>
+                <div class="bg-slate-50 p-4 rounded-xl"><p class="font-semibold mb-2">3. A large context window (1M+ tokens) is crucial for:</p><select id="cq3" class="w-full p-2 border rounded-lg"><option value="">-- Choose --</option><option value="schema">Feeding full database schema, sample data, and documentation all at once</option><option value="single">Generating a single SELECT * FROM small_table</option></select></div>
+                <div class="bg-slate-50 p-4 rounded-xl"><p class="font-semibold mb-2">4. What is the main benefit of sandbox execution when working with AI‑generated SQL?</p><select id="cq4" class="w-full p-2 border rounded-lg"><option value="">-- Choose --</option><option value="safe">The AI can test its own queries on a safe clone — no risk to production data</option><option value="faster">The AI runs faster</option></select></div>
+            </div>
+            <div class="flex gap-3"><button class="px-5 py-2.5 bg-primary text-white rounded-full font-bold" onclick="runConceptsQuiz()">Check</button><button class="btn-reveal" onclick="showAnswer('conceptsAnswer')">Show Answers</button></div>
+            <div id="conceptsAnswer" class="answer-box"><span class="encourage-msg">✅ Answers:</span><p><strong>1:</strong> AI autonomously plans, writes, tests, and debugs — you review.<br><strong>2:</strong> It measures real‑world software engineering success.<br><strong>3:</strong> Allows feeding full schema + documentation in one prompt.<br><strong>4:</strong> Safe testing on a clone without risking production.</p></div>
+            <div id="conceptsRes" class="text-sm mt-4"></div>
+        </div>
+    </section>
+
+    <!-- MODEL MATCH SECTION -->
+    <section id="model-match" class="scroll-mt-28">
+        <div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in">
+            <h2 class="text-3xl font-black mb-6 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-primaryLight text-primary flex items-center justify-center text-xl font-black">A2</span> AI Exercise: Which Model for Which Job?</h2>
+            <p class="mb-6 text-slate-700">Match each scenario to the best AI tool, considering the concepts you just learned.</p>
+            <div class="space-y-4 mb-6">
+                <div class="bg-slate-50 p-4 rounded-xl"><p class="font-semibold mb-2">1. You need to generate SQL against a sensitive HR database. Data must never leave your machine.</p><select id="aiQ1" class="w-full p-2 border rounded-lg"><option value="">-- Choose --</option><option value="local">Ollama + DeepSeek V3.2 running locally</option><option value="cloud">GPT‑5.5 via OpenAI API</option></select></div>
+                <div class="bg-slate-50 p-4 rounded-xl"><p class="font-semibold mb-2">2. You need maximum coding accuracy on a complex multi‑file refactor with tool‑calling.</p><select id="aiQ2" class="w-full p-2 border rounded-lg"><option value="">-- Choose --</option><option value="opus">Claude Opus 4.7 (87.6% SWE‑Bench)</option><option value="scout">Llama 4 Scout</option></select></div>
+                <div class="bg-slate-50 p-4 rounded-xl"><p class="font-semibold mb-2">3. You need a 24/7 agent that autonomously runs SQL in a sandbox and reports back.</p><select id="aiQ3" class="w-full p-2 border rounded-lg"><option value="">-- Choose --</option><option value="openclaw">OpenClaw + local LLM</option><option value="chatgpt">ChatGPT web interface</option></select></div>
+                <div class="bg-slate-50 p-4 rounded-xl"><p class="font-semibold mb-2">4. Most cost‑effective cloud model for moderate SQL — high capability, low price.</p><select id="aiQ4" class="w-full p-2 border rounded-lg"><option value="">-- Choose --</option><option value="sonnet">Claude Sonnet 4.6 ($3/$15 per 1M tokens)</option><option value="gpt55">GPT‑5.5 Pro ($30/$180)</option></select></div>
+                <div class="bg-slate-50 p-4 rounded-xl"><p class="font-semibold mb-2">5. Which model holds the #1 public SWE‑bench Verified score (87.6%)?</p><select id="aiQ5" class="w-full p-2 border rounded-lg"><option value="">-- Choose --</option><option value="opus">Claude Opus 4.7</option><option value="gpt55">GPT‑5.5</option></select></div>
+            </div>
+            <div class="flex gap-3"><button class="px-5 py-2.5 bg-primary text-white rounded-full font-bold" onclick="runModelQuiz()">Check Answers</button><button class="btn-reveal" onclick="showAnswer('modelAnswer')">Show Answers</button></div>
+            <div id="modelAnswer" class="answer-box"><span class="encourage-msg">🧠 Answers:</span><p>1: local · 2: Opus 4.7 · 3: OpenClaw · 4: Sonnet 4.6 · 5: Opus 4.7</p></div>
+            <div id="modelRes" class="text-sm mt-4"></div>
+        </div>
+    </section>
+
+    <!-- MINDSET -->
+    <section id="mindset" class="scroll-mt-28">
+        <div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in">
+            <h2 class="text-3xl font-black mb-6 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-primaryLight text-primary flex items-center justify-center text-xl font-black">1</span> The Architect Mindset</h2>
+            <p class="mb-4 text-slate-700">Your new workflow:</p>
+            <ol class="list-decimal list-inside space-y-3 text-slate-700 mb-6"><li><strong>Translate business questions</strong> into precise data requirements.</li><li><strong>Prompt the AI</strong> with schema, joins, edge cases.</li><li><strong>Validate the SQL</strong> — NULLs? empty groups? date boundaries?</li><li><strong>Verify results</strong> via sanity checks and known baselines.</li></ol>
+            <div class="bg-slate-50 rounded-xl p-6 mb-6">
+                <p class="font-bold mb-4 text-center text-primary">📊 Data Flow: The Architect's Pipeline</p>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
+                    <div class="bg-white border border-slate-200 rounded-lg p-3 text-center text-sm"><i class="fa-solid fa-user-tie text-2xl text-primary mb-1 block"></i><span class="font-bold">Business Question</span><br><span class="text-xs text-slate-500">"Show total investment per department"</span></div>
+                    <span class="data-flow-arrow">→</span>
+                    <div class="bg-white border border-slate-200 rounded-lg p-3 text-center text-sm"><i class="fa-solid fa-pen text-2xl text-warn mb-1 block"></i><span class="font-bold">Architect's Prompt</span><br><span class="text-xs text-slate-500">LEFT JOIN, COALESCE, all departments</span></div>
+                    <span class="data-flow-arrow">→</span>
+                    <div class="bg-white border border-slate-200 rounded-lg p-3 text-center text-sm"><i class="fa-solid fa-robot text-2xl text-purple-600 mb-1 block"></i><span class="font-bold">AI Generates SQL</span><br><span class="text-xs text-slate-500">Perfect syntax, logical check needed</span></div>
+                    <span class="data-flow-arrow">→</span>
+                    <div class="bg-white border border-slate-200 rounded-lg p-3 text-center text-sm"><i class="fa-solid fa-magnifying-glass-chart text-2xl text-success mb-1 block"></i><span class="font-bold">Validation</span><br><span class="text-xs text-slate-500">Row counts, known sums, NULL checks</span></div>
+                    <span class="data-flow-arrow">→</span>
+                    <div class="bg-white border border-slate-200 rounded-lg p-3 text-center text-sm"><i class="fa-solid fa-check-circle text-2xl text-green-500 mb-1 block"></i><span class="font-bold">Trusted Report</span><br><span class="text-xs text-slate-500">Board‑ready, architect‑certified</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DATABASE SCHEMA -->
+    <section id="schema" class="scroll-mt-28">
+        <div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in">
+            <h2 class="text-3xl font-black mb-6 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-primaryLight text-primary flex items-center justify-center text-xl font-black">2</span> The CarePlus Health Database</h2>
+            <p class="mb-6 text-slate-600">Every simulation references these two tables. Bookmark them mentally.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div><h3 class="font-bold text-xl mb-3 text-primary"><i class="fa-solid fa-building"></i> departments</h3><div class="overflow-x-auto border border-slate-200 rounded-xl"><table class="table-visual"><thead><tr><th>id</th><th>name</th><th>location</th></tr></thead><tbody><tr class="bg-white"><td>1</td><td>R&D</td><td>Building A</td></tr><tr class="bg-slate-50"><td>2</td><td>Sales</td><td>Building B</td></tr><tr class="bg-white"><td>3</td><td>Innovation</td><td>Building C</td></tr></tbody></table></div></div>
+                <div><h3 class="font-bold text-xl mb-3 text-primary"><i class="fa-solid fa-hand-holding-heart"></i> interventions</h3><div class="overflow-x-auto border border-slate-200 rounded-xl"><table class="table-visual"><thead><tr><th>id</th><th>dept_id</th><th>type</th><th>cost</th><th>date</th></tr></thead><tbody><tr class="bg-white"><td>1</td><td>1</td><td>Gym</td><td>500</td><td>2026‑01‑10</td></tr><tr class="bg-slate-50"><td>2</td><td>1</td><td>Therapy</td><td>800</td><td>2026‑02‑15</td></tr><tr class="bg-white"><td>3</td><td>2</td><td>Workshop</td><td>2500</td><td>2026‑01‑20</td></tr></tbody></table></div></div>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-6 mt-8 border text-center">
+                <p class="font-bold mb-3 text-primary">🔗 Entity‑Relationship Diagram</p>
+                <div class="flex items-center justify-center gap-6">
+                    <div class="bg-white border border-slate-200 rounded-lg p-4"><span class="font-bold block">departments</span><span class="text-xs text-slate-500">id (PK)</span><br><span class="text-xs text-slate-500">name, location</span></div>
+                    <div class="text-center"><span class="text-2xl">1──────0..*</span><br><span class="text-xs text-slate-500">LEFT JOIN on dept_id</span></div>
+                    <div class="bg-white border border-slate-200 rounded-lg p-4"><span class="font-bold block">interventions</span><span class="text-xs text-slate-500">id (PK)</span><br><span class="text-xs text-slate-500">dept_id (FK), type, cost, date</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SIMULATORS (1‑9) -->
+    <!-- Each simulator includes tables, textarea, hints, answer, MCQ. All JS functions are defined. -->
+    <!-- Sim 1 -->
+    <section id="sim1" class="scroll-mt-28"><div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in"><h2 class="text-3xl font-black mb-6">Sim 1: Inclusive Prompt</h2><p class="mb-4">CEO: "Show total investment per department." Include zero‑investment departments.</p><div class="grid md:grid-cols-2 gap-4 mb-6"><div><p class="font-semibold mb-2 text-sm">departments</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>R&D</td></tr><tr><td>2</td><td>Sales</td></tr><tr><td>3</td><td>Innovation</td></tr></tbody></table></div><div><p class="font-semibold mb-2 text-sm">interventions</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>dept_id</th><th>cost</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>500</td></tr><tr><td>2</td><td>1</td><td>800</td></tr><tr><td>3</td><td>2</td><td>2500</td></tr></tbody></table></div></div><div class="bg-gray-900 rounded-xl p-5 mb-4"><textarea id="sim1Prompt" class="w-full h-28 bg-gray-800 border border-gray-700 rounded-lg p-4 text-gray-200 font-mono text-sm resize-y outline-none" placeholder="Write prompt..."></textarea></div><div class="flex flex-wrap gap-3 mb-4"><button class="px-5 py-2.5 bg-primary text-white rounded-full font-bold" onclick="runSim1()">Submit</button><button class="btn-reveal" onclick="showAnswer('sim1Answer')">Show Answer</button><button class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold" onclick="toggleHint('sim1Hint')">Hint</button></div><div id="sim1Hint" class="hint-box">Hint: mention LEFT JOIN, COALESCE, "all departments".</div><div id="sim1Answer" class="answer-box"><span class="encourage-msg">✅ Model prompt:</span><p class="font-mono text-sm">"Write a SQL query that returns all departments from the departments table, along with the sum of intervention costs. Use LEFT JOIN with interventions on dept_id. Ensure departments with no interventions show 0 (use COALESCE). Group by department name."</p></div><div id="sim1Res" class="text-sm mt-3"></div></div></section>
+
+    <!-- Sim 2 -->
+    <section id="sim2" class="scroll-mt-28"><div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in"><h2 class="text-3xl font-black mb-6">Sim 2: Date Filter</h2><p class="mb-4">CEO: "Only January 2026." Write a prompt that adds a date filter while keeping empty departments.</p><div class="grid md:grid-cols-2 gap-4 mb-6"><div><p class="font-semibold mb-2 text-sm">departments</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>R&D</td></tr><tr><td>2</td><td>Sales</td></tr><tr><td>3</td><td>Innovation</td></tr></tbody></table></div><div><p class="font-semibold mb-2 text-sm">interventions (with date)</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>dept_id</th><th>cost</th><th>date</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>500</td><td>2026‑01‑10</td></tr><tr><td>2</td><td>1</td><td>800</td><td>2026‑02‑15</td></tr><tr><td>3</td><td>2</td><td>2500</td><td>2026‑01‑20</td></tr></tbody></table></div></div><div class="bg-gray-900 rounded-xl p-5 mb-4"><textarea id="sim2Prompt" class="w-full h-28 bg-gray-800 border border-gray-700 rounded-lg p-4 text-gray-200 font-mono text-sm" placeholder="Write prompt..."></textarea></div><div class="flex flex-wrap gap-3"><button class="px-5 py-2.5 bg-primary text-white rounded-full font-bold" onclick="runSim2()">Submit</button><button class="btn-reveal" onclick="showAnswer('sim2Answer')">Show Answer</button><button class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold" onclick="toggleHint('sim2Hint')">Hint</button></div><div id="sim2Hint" class="hint-box">Hint: put date condition in ON clause, not WHERE.</div><div id="sim2Answer" class="answer-box"><span class="encourage-msg">📅 Model prompt:</span><p class="font-mono text-sm">"Modify the previous query: still show all departments. Filter interventions to only those with date between '2026‑01‑01' and '2026‑01‑31' by adding the condition in the LEFT JOIN's ON clause (NOT in WHERE). Use COALESCE for 0."</p></div><div id="sim2Res" class="text-sm mt-3"></div></div></section>
+
+    <!-- Sim 3 -->
+    <section id="sim3" class="scroll-mt-28"><div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in"><h2 class="text-3xl font-black mb-6">Sim 3: Analyze the AI's Query</h2><p class="mb-4">The AI returned this SQL. Which departments appear?</p><div class="code-block mb-6"><pre>SELECT d.name, COALESCE(SUM(i.cost),0) AS total_cost
+FROM departments d LEFT JOIN interventions i ON d.id = i.dept_id
+WHERE i.date >= '2026-01-01' AND i.date &lt;= '2026-01-31' GROUP BY d.name;</pre></div><div class="grid md:grid-cols-2 gap-4 mb-6"><div><p class="font-semibold mb-2 text-sm">departments</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>R&D</td></tr><tr><td>2</td><td>Sales</td></tr><tr><td>3</td><td>Innovation</td></tr></tbody></table></div><div><p class="font-semibold mb-2 text-sm">interventions</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>dept_id</th><th>cost</th><th>date</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>500</td><td>2026‑01‑10</td></tr><tr><td>2</td><td>1</td><td>800</td><td>2026‑02‑15</td></tr><tr><td>3</td><td>2</td><td>2500</td><td>2026‑01‑20</td></tr></tbody></table></div></div><div class="space-y-2 mb-4"><label class="block bg-slate-50 p-3 rounded-lg"><input type="radio" name="sim3choice" value="some"> Only R&D and Sales — Innovation vanishes</label><label class="block bg-slate-50 p-3 rounded-lg"><input type="radio" name="sim3choice" value="all"> All three, Innovation shows 0</label></div><div class="flex gap-3"><button class="px-5 py-2.5 bg-primary text-white rounded-full font-bold" onclick="runSim3()">Check</button><button class="btn-reveal" onclick="showAnswer('sim3Answer')">Show Answer</button></div><div id="sim3Answer" class="answer-box"><span class="encourage-msg">Answer: Only R&D and Sales appear. Innovation vanishes because WHERE filters out NULL dates.</span></div><div id="sim3Res" class="text-sm mt-3"></div></div></section>
+
+    <!-- Sim 4 -->
+    <section id="sim4" class="scroll-mt-28"><div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in"><h2 class="text-3xl font-black mb-6">Sim 4: Fix the Query</h2><p class="mb-4">Rewrite the SQL so Innovation shows 0 even with the January filter. (Hint: move date to ON clause.)</p><div class="grid md:grid-cols-2 gap-4 mb-6"><div><p class="font-semibold mb-2 text-sm">departments</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>R&D</td></tr><tr><td>2</td><td>Sales</td></tr><tr><td>3</td><td>Innovation</td></tr></tbody></table></div><div><p class="font-semibold mb-2 text-sm">interventions</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>dept_id</th><th>cost</th><th>date</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>500</td><td>2026‑01‑10</td></tr><tr><td>2</td><td>1</td><td>800</td><td>2026‑02‑15</td></tr><tr><td>3</td><td>2</td><td>2500</td><td>2026‑01‑20</td></tr></tbody></table></div></div><div class="bg-gray-900 rounded-xl p-5 mb-4"><textarea id="sim4Code" class="code-block w-full h-32" placeholder="Your SQL..."></textarea></div><div class="flex gap-3"><button class="px-5 py-2.5 bg-primary text-white rounded-full font-bold" onclick="runSim4()">Run</button><button class="btn-reveal" onclick="showAnswer('sim4Answer')">Show Answer</button></div><div id="sim4Answer" class="answer-box"><pre class="font-mono text-sm">SELECT d.name, COALESCE(SUM(i.cost),0) AS total_cost
+FROM departments d LEFT JOIN interventions i ON d.id = i.dept_id AND i.date BETWEEN '2026-01-01' AND '2026-01-31' GROUP BY d.name;</pre></div><div id="sim4Res" class="text-sm mt-3"></div></div></section>
+
+    <!-- Sim 5 -->
+    <section id="sim5" class="scroll-mt-28"><div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in"><h2 class="text-3xl font-black mb-6">Sim 5: Verify the Result Set</h2><p class="mb-4">Fixed query output: is it correct?</p><div class="grid md:grid-cols-2 gap-6 mb-6"><div><p class="font-semibold mb-2 text-sm">Raw January data</p><table class="table-visual text-sm"><thead><tr><th>dept_id</th><th>cost</th></tr></thead><tbody><tr><td>1</td><td>500</td></tr><tr><td>2</td><td>2500</td></tr></tbody></table></div><div><p class="font-semibold mb-2 text-sm">Query result</p><table class="table-visual text-sm"><thead><tr><th>name</th><th>total_cost</th></tr></thead><tbody><tr><td>R&D</td><td>500</td></tr><tr><td>Sales</td><td>2500</td></tr><tr><td>Innovation</td><td>0</td></tr></tbody></table></div></div><div class="space-y-2 mb-4"><label class="block bg-slate-50 p-3 rounded-lg"><input type="radio" name="sim5verify" value="yes"> Yes, correct</label><label class="block bg-slate-50 p-3 rounded-lg"><input type="radio" name="sim5verify" value="no"> No, R&D should be 1300</label></div><div class="flex gap-3"><button class="px-5 py-2.5 bg-primary text-white rounded-full font-bold" onclick="runSim5()">Check</button><button class="btn-reveal" onclick="showAnswer('sim5Answer')">Show Answer</button></div><div id="sim5Answer" class="answer-box"><span class="encourage-msg">✅ It's correct! R&D Jan only has Gym (500); Therapy is February.</span></div><div id="sim5Res" class="text-sm mt-3"></div></div></section>
+
+    <!-- Sim 6 -->
+    <section id="sim6" class="scroll-mt-28"><div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in"><h2 class="text-3xl font-black mb-6">Sim 6: Add Business Labels</h2><p class="mb-4">"High Investment" if total > 1000 else "Low Investment". Write full SQL.</p><div class="grid md:grid-cols-2 gap-4 mb-6"><div><p class="font-semibold mb-2 text-sm">departments</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>R&D</td></tr><tr><td>2</td><td>Sales</td></tr><tr><td>3</td><td>Innovation</td></tr></tbody></table></div><div><p class="font-semibold mb-2 text-sm">January costs</p><table class="table-visual text-sm"><thead><tr><th>dept_id</th><th>cost</th></tr></thead><tbody><tr><td>1</td><td>500</td></tr><tr><td>2</td><td>2500</td></tr></tbody></table></div></div><div class="bg-gray-900 rounded-xl p-5 mb-4"><textarea id="sim6Code" class="code-block w-full h-36" placeholder="SELECT ... CASE WHEN ..."></textarea></div><div class="flex gap-3"><button class="px-5 py-2.5 bg-primary text-white rounded-full font-bold" onclick="runSim6()">Submit</button><button class="btn-reveal" onclick="showAnswer('sim6Answer')">Show Answer</button></div><div id="sim6Answer" class="answer-box"><pre class="font-mono text-sm">SELECT d.name, COALESCE(SUM(i.cost),0) AS total_cost,
+CASE WHEN COALESCE(SUM(i.cost),0) > 1000 THEN 'High Investment' ELSE 'Low Investment' END AS label
+FROM departments d LEFT JOIN interventions i ON d.id = i.dept_id AND i.date BETWEEN '2026-01-01' AND '2026-01-31' GROUP BY d.name;</pre></div><div id="sim6Res" class="text-sm mt-3"></div></div></section>
+
+    <!-- Sim 7 -->
+    <section id="sim7" class="scroll-mt-28"><div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in"><h2 class="text-3xl font-black mb-6">Sim 7: The NULL Trap</h2><p class="mb-4">CASE WHEN SUM(i.cost) > 1000 THEN 'High' END — without ELSE or COALESCE. What is Innovation's label?</p><div class="grid md:grid-cols-2 gap-4 mb-6"><div><p class="font-semibold mb-2 text-sm">departments</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>R&D</td></tr><tr><td>2</td><td>Sales</td></tr><tr><td>3</td><td>Innovation</td></tr></tbody></table></div><div><p class="font-semibold mb-2 text-sm">interventions</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>dept_id</th><th>cost</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>500</td></tr><tr><td>2</td><td>1</td><td>800</td></tr><tr><td>3</td><td>2</td><td>2500</td></tr></tbody></table></div></div><div class="space-y-2 mb-4"><label class="block bg-slate-50 p-3 rounded-lg"><input type="radio" name="sim7null" value="null"> NULL</label><label class="block bg-slate-50 p-3 rounded-lg"><input type="radio" name="sim7null" value="low"> 'Low'</label></div><div class="flex gap-3"><button class="px-5 py-2.5 bg-primary text-white rounded-full font-bold" onclick="runSim7()">Check</button><button class="btn-reveal" onclick="showAnswer('sim7Answer')">Show Answer</button></div><div id="sim7Answer" class="answer-box"><span class="encourage-msg">NULL > 1000 is UNKNOWN → CASE returns NULL.</span></div><div id="sim7Res" class="text-sm mt-3"></div></div></section>
+
+    <!-- Sim 8 -->
+    <section id="sim8" class="scroll-mt-28"><div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in"><h2 class="text-3xl font-black mb-6">Sim 8: Windows</h2><p class="mb-4">Show each intervention with department name, cost, and running total per department ordered by date.</p><div class="grid md:grid-cols-2 gap-4 mb-6"><div><p class="font-semibold mb-2 text-sm">departments</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>R&D</td></tr><tr><td>2</td><td>Sales</td></tr></tbody></table></div><div><p class="font-semibold mb-2 text-sm">interventions</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>dept_id</th><th>cost</th><th>date</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>500</td><td>2026‑01‑10</td></tr><tr><td>2</td><td>1</td><td>800</td><td>2026‑02‑15</td></tr><tr><td>3</td><td>2</td><td>2500</td><td>2026‑01‑20</td></tr></tbody></table></div></div><div class="bg-gray-900 rounded-xl p-5 mb-4"><textarea id="sim8Code" class="code-block w-full h-32" placeholder="SELECT ... SUM(...) OVER (PARTITION BY ... ORDER BY ...)"></textarea></div><div class="flex gap-3"><button class="px-5 py-2.5 bg-primary text-white rounded-full font-bold" onclick="runSim8()">Submit</button><button class="btn-reveal" onclick="showAnswer('sim8Answer')">Show Answer</button></div><div id="sim8Answer" class="answer-box"><pre class="font-mono text-sm">SELECT d.name, i.date, i.cost,
+       SUM(i.cost) OVER (PARTITION BY d.id ORDER BY i.date) AS running_total
+FROM interventions i JOIN departments d ON i.dept_id = d.id;</pre></div><div id="sim8Res" class="text-sm mt-3"></div></div></section>
+
+    <!-- Sim 9 -->
+    <section id="sim9" class="scroll-mt-28"><div class="bg-white rounded-3xl shadow p-8 border border-slate-200 fade-in"><h2 class="text-3xl font-black mb-6">Sim 9: AI Architect Strategy</h2><p class="mb-4">Answer architectural decisions for CarePlus pipeline.</p><div class="space-y-4 mb-6">
+        <div class="bg-slate-50 p-4 rounded-xl"><p class="font-semibold mb-2">1. Sensitive HR data: deployment strategy?</p><select id="archQ1" class="w-full p-2 border rounded-lg"><option value="">-- Choose --</option><option value="local">Local LLM via Ollama</option><option value="cloud">Cloud GPT‑5.5</option></select></div>
+        <div class="bg-slate-50 p-4 rounded-xl"><p class="font-semibold mb-2">2. Ensure AI outputs JSON plan before SQL?</p><select id="archQ2" class="w-full p-2 border rounded-lg"><option value="">-- Choose --</option><option value="prompt">Write it in the prompt</option><option value="tool">Use an MCP tool</option><option value="both">Both work</option></select></div>
+        <div class="bg-slate-50 p-4 rounded-xl"><p class="font-semibold mb-2">3. Best cost‑performance for moderate SQL?</p><select id="archQ3" class="w-full p-2 border rounded-lg"><option value="">-- Choose --</option><option value="sonnet">Claude Sonnet 4.6</option><option value="gpt55pro">GPT‑5.5 Pro</option></select></div>
+    </div><div class="flex gap-3"><button class="px-5 py-2.5 bg-primary text-white rounded-full font-bold" onclick="runSim9()">Check</button><button class="btn-reveal" onclick="showAnswer('sim9Answer')">Show Answer</button></div><div id="sim9Answer" class="answer-box"><span class="encourage-msg">Answers:</span><p>1: local · 2: both work · 3: Sonnet 4.6</p></div><div id="sim9Res" class="text-sm mt-3"></div></div></section>
+
+    <!-- MASTER -->
+    <section id="master" class="scroll-mt-28"><div class="bg-white rounded-3xl shadow p-8 border border-slate-200 border-t-4 border-t-yellow-400 fade-in"><h2 class="text-3xl font-black mb-6">🏆 Master Challenge</h2><p class="mb-6">Report: department name, intervention count (Jan 2026), total cost, average cost, status "Active"/"Idle". All departments.</p><div class="grid md:grid-cols-2 gap-4 mb-6"><div><p class="font-semibold mb-2 text-sm">departments</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>R&D</td></tr><tr><td>2</td><td>Sales</td></tr><tr><td>3</td><td>Innovation</td></tr></tbody></table></div><div><p class="font-semibold mb-2 text-sm">interventions</p><table class="table-visual text-sm"><thead><tr><th>id</th><th>dept_id</th><th>cost</th><th>date</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>500</td><td>2026‑01‑10</td></tr><tr><td>2</td><td>1</td><td>800</td><td>2026‑02‑15</td></tr><tr><td>3</td><td>2</td><td>2500</td><td>2026‑01‑20</td></tr></tbody></table></div></div><div class="bg-gray-900 rounded-xl p-5 mb-4"><textarea id="masterCode" class="code-block w-full h-40" placeholder="Your masterpiece SQL..."></textarea></div><div class="flex gap-3"><button class="px-5 py-2.5 bg-yellow-500 text-white rounded-full font-bold" onclick="runMaster()">Submit</button><button class="btn-reveal" onclick="showAnswer('masterAnswer')">Show Answer</button></div><div id="masterAnswer" class="answer-box"><pre class="font-mono text-sm">SELECT d.name, COUNT(i.id) AS cnt, COALESCE(SUM(i.cost),0) AS total,
+       COALESCE(AVG(i.cost),0) AS avg, CASE WHEN COUNT(i.id)>0 THEN 'Active' ELSE 'Idle' END AS status
+FROM departments d LEFT JOIN interventions i ON d.id = i.dept_id AND i.date BETWEEN '2026-01-01' AND '2026-01-31' GROUP BY d.name;</pre></div><div id="masterRes" class="text-sm mt-3"></div></div></section>
+
+</main>
+
+<div class="fixed bottom-5 right-5 bg-white border-2 border-slate-200 rounded-full px-5 py-3 shadow-xl flex items-center gap-3 z-50">
+    <i class="fa-solid fa-star text-yellow-500 pulse-dot"></i>
+    <span class="font-bold text-slate-700">Badges:</span>
+    <span id="scoreValue" class="font-black text-primary text-2xl">0/14</span>
+</div>
+
+<script>
+    let score = 0; const completed = new Set();
+    function updateScore(t) { if (!completed.has(t)) { completed.add(t); score++; document.getElementById('scoreValue').textContent = score + '/14'; if (t==='master') confetti({ particleCount: 200, spread: 120, origin: { y: 0.55 } }); } }
+    function showAnswer(id) { const el = document.getElementById(id); el.style.display = 'block'; if (!el.querySelector('.encourage-msg')) { const n = document.createElement('span'); n.className='encourage-msg'; n.textContent='💪 Learning from solutions is smart!'; el.prepend(n); } }
+    function toggleHint(id) { document.getElementById(id).style.display = document.getElementById(id).style.display === 'block' ? 'none' : 'block'; }
+
+    function runConceptsQuiz() {
+        const q1 = document.getElementById('cq1').value, q2 = document.getElementById('cq2').value, q3 = document.getElementById('cq3').value, q4 = document.getElementById('cq4').value;
+        const res = document.getElementById('conceptsRes');
+        if (q1 === 'auto' && q2 === 'measure' && q3 === 'schema' && q4 === 'safe') { res.innerHTML = '✅ All correct!'; updateScore('concepts'); }
+        else { res.innerHTML = '❌ Review concept definitions.'; }
+    }
+
+    function runModelQuiz() {
+        const q1 = document.getElementById('aiQ1').value, q2 = document.getElementById('aiQ2').value, q3 = document.getElementById('aiQ3').value, q4 = document.getElementById('aiQ4').value, q5 = document.getElementById('aiQ5').value;
+        const res = document.getElementById('modelRes');
+        if (q1==='local' && q2==='opus' && q3==='openclaw' && q4==='sonnet' && q5==='opus') { res.innerHTML = '✅ Perfect match!'; updateScore('modelMatch'); }
+        else { res.innerHTML = '❌ Some wrong — check the landscape tables.'; }
+    }
+
+    function runSim1() {
+        const v = document.getElementById('sim1Prompt').value.toLowerCase();
+        const res = document.getElementById('sim1Res');
+        if (v.includes('left join') && v.includes('coalesce') && (v.includes('all departments') || v.includes('every department'))) { res.innerHTML = '✅ Great prompt!'; updateScore('sim1'); }
+        else { res.innerHTML = '❌ Missing LEFT JOIN, COALESCE, "all departments".'; }
+    }
+    function runSim2() {
+        const v = document.getElementById('sim2Prompt').value.toLowerCase();
+        const res = document.getElementById('sim2Res');
+        if (v.includes('left join') && v.includes('january') && (v.includes('on clause') || v.includes('and i.date'))) { res.innerHTML = '✅ Perfect!'; updateScore('sim2'); }
+        else { res.innerHTML = '❌ Need LEFT JOIN, January, date in ON clause.'; }
+    }
+    function runSim3() {
+        const sel = document.querySelector('input[name="sim3choice"]:checked');
+        const res = document.getElementById('sim3Res');
+        if (sel && sel.value === 'some') { res.innerHTML = '✅ Correct — Innovation disappears.'; updateScore('sim3'); }
+        else if (sel) { res.innerHTML = '❌ Only R&D and Sales appear because WHERE removes NULL dates.'; }
+        else { res.innerHTML = '⏳ Select an option.'; }
+    }
+    function runSim4() {
+        const code = document.getElementById('sim4Code').value.toLowerCase();
+        const res = document.getElementById('sim4Res');
+        if (code.includes('left join') && code.includes('and i.date') && code.includes('coalesce') && code.includes('group by')) { res.innerHTML = '✅ Fixed!'; updateScore('sim4'); }
+        else { res.innerHTML = '❌ Must have LEFT JOIN ... ON ... AND i.date BETWEEN ...'; }
+    }
+    function runSim5() {
+        const sel = document.querySelector('input[name="sim5verify"]:checked');
+        const res = document.getElementById('sim5Res');
+        if (sel && sel.value === 'yes') { res.innerHTML = '✅ Correct.'; updateScore('sim5'); }
+        else if (sel) { res.innerHTML = '❌ R&D Jan is only 500.'; }
+        else { res.innerHTML = '⏳ Select an option.'; }
+    }
+    function runSim6() {
+        const code = document.getElementById('sim6Code').value.toLowerCase();
+        const res = document.getElementById('sim6Res');
+        if (code.includes('case') && code.includes('coalesce') && code.includes('left join')) { res.innerHTML = '✅ Label added.'; updateScore('sim6'); }
+        else { res.innerHTML = '❌ Need CASE with COALESCE, LEFT JOIN, GROUP BY.'; }
+    }
+    function runSim7() {
+        const sel = document.querySelector('input[name="sim7null"]:checked');
+        const res = document.getElementById('sim7Res');
+        if (sel && sel.value === 'null') { res.innerHTML = '✅ Correct — returns NULL.'; updateScore('sim7'); }
+        else if (sel) { res.innerHTML = '❌ NULL > 1000 is UNKNOWN → CASE returns NULL.'; }
+        else { res.innerHTML = '⏳ Select an option.'; }
+    }
+    function runSim8() {
+        const code = document.getElementById('sim8Code').value.toLowerCase();
+        const res = document.getElementById('sim8Res');
+        if (code.includes('over') && code.includes('partition by') && code.includes('sum(')) { res.innerHTML = '✅ Windows applied.'; updateScore('sim8'); }
+        else { res.innerHTML = '❌ Must use SUM ... OVER (PARTITION BY ... ORDER BY ...).'; }
+    }
+    function runSim9() {
+        const q1 = document.getElementById('archQ1').value, q2 = document.getElementById('archQ2').value, q3 = document.getElementById('archQ3').value;
+        const res = document.getElementById('sim9Res');
+        if (q1==='local' && (q2==='prompt'||q2==='both') && q3==='sonnet') { res.innerHTML = '✅ Excellent decisions!'; updateScore('sim9'); }
+        else { res.innerHTML = '❌ Check your choices.'; }
+    }
+    function runMaster() {
+        const code = document.getElementById('masterCode').value.toLowerCase();
+        const res = document.getElementById('masterRes');
+        const required = ['left join', 'coalesce', 'case', 'when', 'count(', 'avg(', 'group by', 'and i.date'];
+        const missing = required.filter(t => !code.includes(t));
+        if (missing.length === 0) { res.innerHTML = '🎉 MASTERY UNLOCKED! Confetti! 🎊'; updateScore('master'); }
+        else { res.innerHTML = '❌ Missing: ' + missing.join(', '); }
+    }
+
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY, docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        document.getElementById('progressBar').style.width = Math.min(100, (scrollTop / docHeight) * 100) + '%';
+    });
+    const sections = document.querySelectorAll('section[id]');
+    window.addEventListener('scroll', () => {
+        let curr = '';
+        sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) curr = s.getAttribute('id'); });
+        document.querySelectorAll('#mainNav .nav-link').forEach(l => {
+            l.classList.remove('bg-primary', 'text-white'); l.classList.add('text-slate-500');
+            if (l.getAttribute('href') === '#' + curr) { l.classList.add('bg-primary', 'text-white'); l.classList.remove('text-slate-500'); }
+        });
+    });
+</script>
+</body>
+</html>
