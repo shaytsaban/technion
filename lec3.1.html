@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מפגש 3 – קובץ 1: תיאוריה ומושגי יסוד | ד&quot;ר שי צבאן</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --p:#1d4ed8;--pl:#eff6ff;--pm:#bfdbfe;
+  --teal:#0d9488;--tl:#f0fdfa;
+  --navy:#1e3a5f;--nd:#0f2340;
+  --ok:#16a34a;--okl:#f0fdf4;--okb:#bbf7d0;
+  --warn:#d97706;--wl:#fffbeb;--wb:#fde68a;
+  --err:#dc2626;--el:#fef2f2;--eb:#fecaca;
+  --pur:#7c3aed;--purl:#f5f3ff;
+  --bg:#f0f4f8;--wh:#fff;--bd:#e2e8f0;
+  --tx:#1e293b;--mu:#64748b;
+  --sh:0 1px 3px rgba(0,0,0,.08);
+  --shm:0 4px 16px rgba(0,0,0,.09);
+  --shl:0 10px 40px rgba(0,0,0,.12);
+  --r:14px;--rs:8px;--rl:22px
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Assistant',sans-serif;background:var(--bg);color:var(--tx);line-height:1.75;overflow-x:hidden}
+::-webkit-scrollbar{width:7px}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+
+/* progress */
+.pb{position:fixed;top:0;right:0;left:0;height:4px;z-index:999;background:rgba(0,0,0,.06)}
+.pbf{height:100%;background:linear-gradient(90deg,#1d4ed8,#0d9488);width:0%;transition:width .15s}
+
+/* hero */
+.hero{background:linear-gradient(135deg,#0f2340 0%,#1e3a5f 55%,#1e40af 100%);
+  padding:90px 20px 130px;text-align:center;position:relative;overflow:hidden}
+.hero:before{content:'';position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:26px 26px}
+.hi{position:relative;z-index:1;max-width:860px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.22);color:#fff;padding:6px 20px;border-radius:100px;
+  font-size:.86rem;font-weight:700;margin-bottom:20px}
+.hero h1{font-family:'Rubik',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:900;
+  color:#fff;line-height:1.2;margin-bottom:14px}
+.hero h1 em{color:#7dd3fc;font-style:normal}
+.hero-sub{font-size:1.05rem;color:rgba(255,255,255,.78);max-width:620px;margin:0 auto 26px;line-height:1.7}
+.hmeta{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.hm{display:flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.17);border-radius:var(--rs);font-weight:600;
+  color:rgba(255,255,255,.84);font-size:.84rem}
+
+/* file badge strip */
+.file-strip{background:var(--navy);color:#fff;text-align:center;padding:12px;font-size:.85rem;font-weight:700}
+.file-strip span{background:#1d4ed8;padding:3px 10px;border-radius:100px;margin:0 6px;font-size:.78rem}
+
+/* nav */
+.nav{position:sticky;top:10px;z-index:100;max-width:1020px;margin:-48px auto 48px;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border:1px solid var(--bd);
+  border-radius:100px;padding:6px 10px;display:flex;gap:4px;box-shadow:var(--shl);overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nl{color:var(--mu);text-decoration:none;padding:7px 13px;border-radius:100px;
+  font-size:.8rem;font-weight:700;transition:.2s;white-space:nowrap}
+.nl:hover{color:var(--p);background:var(--pl)}
+.nl.on{background:var(--navy);color:#fff}
+
+/* layout */
+.wrap{max-width:940px;margin:0 auto;padding:0 18px 120px}
+.sec{margin-bottom:80px;scroll-margin-top:85px}
+.sh{display:flex;align-items:flex-start;gap:14px;margin-bottom:28px;
+  padding-bottom:14px;border-bottom:2px solid var(--bd)}
+.sn{flex-shrink:0;width:48px;height:48px;background:var(--navy);color:#fff;
+  border-radius:var(--rs);display:flex;align-items:center;justify-content:center;
+  font-family:'Rubik',sans-serif;font-weight:800;font-size:1.3rem}
+.sh h2{font-family:'Rubik',sans-serif;font-size:1.55rem;font-weight:700;color:var(--navy)}
+.sh .st{font-size:.8rem;color:var(--mu);margin-top:4px;display:flex;align-items:center;gap:5px}
+
+/* card */
+.cb{background:var(--wh);border:1px solid var(--bd);border-radius:var(--rl);
+  padding:34px;box-shadow:var(--sh);margin-bottom:22px}
+.cb h3{font-family:'Rubik',sans-serif;font-size:1.2rem;margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;color:var(--navy)}
+.cb h4{font-family:'Rubik',sans-serif;font-size:1rem;margin:22px 0 9px;
+  padding-right:11px;border-right:3px solid var(--p);color:var(--tx)}
+.cb p{font-size:1rem;margin-bottom:13px;color:#334155;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.cb ul{padding-right:20px;margin-bottom:11px}
+.cb li{font-size:.97rem;color:#334155;margin-bottom:7px;line-height:1.65}
+
+/* highlight boxes */
+.hb{padding:16px 20px;border-radius:var(--r);margin:16px 0;border-right:5px solid}
+.hbt{font-weight:700;font-size:.83rem;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.hb.bl{background:var(--pl);border-color:var(--p)} .hb.bl .hbt{color:var(--p)}
+.hb.gn{background:var(--okl);border-color:var(--ok)} .hb.gn .hbt{color:var(--ok)}
+.hb.or{background:var(--wl);border-color:var(--warn)} .hb.or .hbt{color:var(--warn)}
+.hb.rd{background:var(--el);border-color:var(--err)} .hb.rd .hbt{color:var(--err)}
+.hb.pu{background:var(--purl);border-color:var(--pur)} .hb.pu .hbt{color:var(--pur)}
+.hb.te{background:var(--tl);border-color:var(--teal)} .hb.te .hbt{color:var(--teal)}
+
+/* encourage */
+.enc{background:linear-gradient(135deg,#fdf4ff,#ede9fe);border:1px solid #ddd6fe;
+  border-radius:var(--r);padding:20px;text-align:center;margin:22px 0}
+.enci{font-size:2rem;margin-bottom:6px}
+.enc p{color:#6d28d9;font-weight:600;font-size:1rem}
+
+/* steps */
+.step{display:flex;gap:14px;padding:16px 18px;background:var(--bg);
+  border:1px solid var(--bd);border-radius:var(--r);margin-bottom:9px}
+.stpn{flex-shrink:0;width:34px;height:34px;background:var(--navy);color:#fff;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.85rem}
+.stpc{font-size:.92rem;color:#475569;line-height:1.65}
+.stpc strong{display:block;font-weight:700;color:var(--navy);margin-bottom:3px;font-size:.94rem}
+
+/* quiz */
+.quiz{background:var(--wh);border:2px solid var(--bd);border-radius:var(--rl);
+  padding:26px;margin-bottom:18px}
+.quiz.ok{border-color:var(--ok)}
+.quiz.no{border-color:var(--err)}
+.qn{font-size:.76rem;font-weight:700;color:var(--p);letter-spacing:.5px;margin-bottom:8px}
+.qq{font-size:1.03rem;font-weight:700;color:var(--navy);margin-bottom:16px;line-height:1.55}
+.qopts{display:flex;flex-direction:column;gap:7px}
+.qo{display:flex;align-items:center;gap:11px;padding:11px 15px;border:2px solid var(--bd);
+  border-radius:var(--r);cursor:pointer;transition:.2s;font-size:.93rem;color:var(--tx)}
+.qo:hover{background:var(--pl);border-color:var(--p)}
+.qo.right{background:var(--okl);border-color:var(--ok);color:var(--ok)}
+.qo.wrong{background:var(--el);border-color:var(--err);color:var(--err)}
+.qo.show{background:var(--okl);border-color:var(--ok)}
+.ql{flex-shrink:0;width:28px;height:28px;background:var(--bg);border:2px solid var(--bd);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem}
+.qexpl{display:none;margin-top:16px;padding:16px;background:linear-gradient(135deg,#f0f9ff,#f0fdf4);
+  border-radius:var(--r);border:1px solid var(--pm);font-size:.9rem;line-height:1.7}
+.qet{font-weight:700;color:var(--navy);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+
+/* formula box */
+.formula{background:var(--nd);border-radius:var(--rl);padding:28px;margin:18px 0;text-align:center}
+.formula .f-main{font-family:'Fira Code',monospace;font-size:clamp(1rem,2.5vw,1.5rem);
+  color:#7dd3fc;margin-bottom:16px;line-height:1.6;direction:ltr}
+.formula .f-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:10px;margin-top:18px;text-align:right}
+.fl-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--rs);padding:12px 14px}
+.fl-sym{font-family:'Fira Code',monospace;color:#fbbf24;font-size:.95rem;font-weight:600;margin-bottom:4px}
+.fl-name{font-weight:700;color:#e2e8f0;font-size:.85rem;margin-bottom:3px}
+.fl-desc{font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.45}
+
+/* CAPM scenario cards */
+.capm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0}
+.capm-card{border-radius:var(--r);padding:18px;text-align:center;border:2px solid}
+.capm-card.buy{background:var(--okl);border-color:var(--ok)}
+.capm-card.hold{background:var(--wl);border-color:var(--warn)}
+.capm-card.sell{background:var(--el);border-color:var(--err)}
+.capm-card .cc-ico{font-size:2rem;margin-bottom:6px}
+.capm-card .cc-t{font-weight:800;font-size:1rem;margin-bottom:5px}
+.capm-card.buy .cc-t{color:var(--ok)}
+.capm-card.hold .cc-t{color:var(--warn)}
+.capm-card.sell .cc-t{color:var(--err)}
+.capm-card .cc-d{font-size:.8rem;color:var(--mu);line-height:1.5}
+
+/* beta scale */
+.beta-scale{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);
+  padding:20px;margin:14px 0}
+.beta-bar{height:20px;border-radius:10px;
+  background:linear-gradient(90deg,#3b82f6 0%,#22c55e 33%,#fbbf24 60%,#ef4444 80%,#7c3aed 100%);
+  position:relative;margin:10px 0 24px}
+.beta-markers{display:flex;justify-content:space-between;font-size:.75rem;color:var(--mu);margin-top:4px}
+.beta-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.beta-item{background:var(--bg);border:1px solid var(--bd);border-radius:var(--rs);padding:10px;text-align:center}
+.bi-val{font-weight:800;font-family:'Fira Code',monospace;font-size:1rem;color:var(--navy)}
+.bi-lab{font-size:.75rem;color:var(--mu);margin-top:3px}
+.bi-eg{font-size:.72rem;color:var(--p);margin-top:2px}
+
+/* arch infographic */
+.arch{background:linear-gradient(135deg,#0f2340,#1e3a5f);border-radius:var(--rl);
+  padding:32px;margin:18px 0;overflow:hidden}
+.arch-t{font-family:'Rubik',sans-serif;font-size:1rem;font-weight:700;
+  color:rgba(255,255,255,.9);text-align:center;margin-bottom:24px}
+.arch-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap}
+.an{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+  border-radius:var(--r);padding:14px 16px;text-align:center;min-width:130px}
+.an.hl{background:#1d4ed8;border-color:#60a5fa}
+.an.hl2{background:#0d9488;border-color:#2dd4bf}
+.an .ni{font-size:1.9rem;margin-bottom:5px}
+.an .nt{font-weight:700;font-size:.82rem;color:#fff}
+.an .ns{font-size:.7rem;color:rgba(255,255,255,.6);margin-top:3px;line-height:1.35}
+.aa{font-size:1.6rem;color:#60a5fa;padding:0 6px;flex-shrink:0}
+.vflow{display:flex;flex-direction:column;align-items:center;gap:0}
+.vnode{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+  border-radius:var(--r);padding:14px 20px;text-align:center;width:220px;
+  opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s}
+.vnode.hl{background:#1d4ed8;border-color:#60a5fa}
+.vnode.hl2{background:#0d9488;border-color:#2dd4bf}
+.vnode.vis{opacity:1;transform:translateY(0)}
+.vnode .ni{font-size:1.8rem;margin-bottom:4px}
+.vnode .nt{font-weight:700;font-size:.85rem;color:#fff}
+.vnode .ns{font-size:.71rem;color:rgba(255,255,255,.62);margin-top:3px;line-height:1.35}
+.varrow{font-size:1.4rem;color:#60a5fa;line-height:1;padding:2px 0;
+  opacity:0;transition:opacity .4s}
+.varrow.vis{opacity:1}
+.vfallback{display:flex;gap:12px;justify-content:center;margin:0}
+.ak{display:inline-block;background:#fbbf24;color:#0f172a;border-radius:100px;
+  padding:2px 7px;font-size:.67rem;font-weight:700;margin-top:4px}
+.ak.red{background:#f87171;color:#fff}
+.ak.gr{background:#34d399;color:#0f172a}
+.ak.pu{background:#a78bfa;color:#fff}
+.ak{display:inline-block;background:#fbbf24;color:#0f172a;border-radius:100px;
+  padding:2px 7px;font-size:.67rem;font-weight:700;margin-top:4px}
+.ak.red{background:#f87171;color:#fff}
+.ak.gr{background:#34d399;color:#0f172a}
+
+/* api layers */
+.api-layers{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:16px 0}
+.al{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);
+  padding:18px;text-align:center;box-shadow:var(--sh)}
+.al .ali{font-size:2rem;margin-bottom:7px}
+.al .alt{font-weight:700;font-size:.85rem;color:var(--navy)}
+.al .ald{font-size:.78rem;color:var(--mu);margin-top:4px;line-height:1.45}
+
+/* where to put key */
+.kp{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.kpg{background:var(--okl);border:2px solid var(--ok);border-radius:var(--r);padding:18px;text-align:center}
+.kpb{background:var(--el);border:2px solid var(--err);border-radius:var(--r);padding:18px;text-align:center}
+.kpg h4,.kpb h4{font-family:'Rubik',sans-serif;margin-bottom:8px;font-size:.95rem}
+.kpg h4{color:var(--ok)} .kpb h4{color:var(--err)}
+.kp code{font-family:'Fira Code',monospace;font-size:.8rem;background:rgba(0,0,0,.07);
+  padding:2px 6px;border-radius:4px}
+
+/* av steps */
+.avs{background:linear-gradient(135deg,#fff7ed,#fef9f0);border:1px solid #fed7aa;
+  border-radius:var(--rl);padding:26px;margin:16px 0}
+.avs h4{color:#92400e;font-family:'Rubik',sans-serif;margin-bottom:14px}
+
+/* limits */
+.lg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.li{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:15px}
+.lii{font-size:1.5rem;margin-bottom:5px}
+.lit{font-weight:700;font-size:.85rem;color:var(--navy);margin-bottom:3px}
+.lid{font-size:.78rem;color:var(--mu);line-height:1.45}
+
+/* tbl */
+.tbl{width:100%;border-collapse:collapse;font-size:.88rem;margin:12px 0}
+.tbl th{background:var(--navy);color:#fff;padding:10px 12px;text-align:right;font-weight:700}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--bd);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--bg)}
+.tbl tr:hover td{background:var(--pl)}
+
+@media(max-width:640px){
+  .arch-row{flex-direction:column}
+  .aa{transform:rotate(90deg)}
+  .api-layers,.capm-grid,.lg{grid-template-columns:1fr}
+  .kp{grid-template-columns:1fr}
+  .beta-row{grid-template-columns:1fr 1fr}
+}
+.fi{animation:fi .6s ease both}
+@keyframes fi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="pb"><div class="pbf" id="pbf"></div></div>
+
+<div class="file-strip">
+  <span>קובץ 1 מתוך 3</span> תיאוריה, מושגי יסוד, מודל CAPM וחידוני הבנה — הבסיס לפני כל שורת קוד
+</div>
+
+<header class="hero">
+<div class="hi fi">
+  <div class="badge"><i class="fa-brands fa-google"></i>&nbsp; מפגש 3 | ד&quot;ר שי צבאן, Ph.D.</div>
+  <h1>Google Apps Script:<br><em>הגשר בין נתונים ליישום</em></h1>
+  <p class="hero-sub">לפני שנכתוב שורת קוד אחת — נבין לעומק מה אנחנו בונים, כיצד ה-API עובד, ולמה CAPM הוא הלב הפועם של ניתוח ההשקעות שלנו.</p>
+  <div class="hmeta">
+    <div class="hm"><i class="fa-regular fa-clock"></i> ~90 דקות תיאוריה</div>
+    <div class="hm"><i class="fa-solid fa-file-alt"></i> קובץ 1 מתוך 3</div>
+    <div class="hm"><i class="fa-solid fa-brain"></i> 9 שאלות הבנה</div>
+    <div class="hm"><i class="fa-solid fa-chart-line"></i> מודל CAPM מלא</div>
+  </div>
+</div>
+</header>
+
+<nav class="nav" id="nav">
+  <a class="nl on" href="#s1">פתיחה</a>
+  <a class="nl" href="#s2">ארכיטקטורה</a>
+  <a class="nl" href="#s3">GAS עצמאי</a>
+  <a class="nl" href="#s4">API — מה, מאיפה, איפה</a>
+  <a class="nl" href="#s5">מפתח API</a>
+  <a class="nl" href="#s6">CAPM — תיאוריה</a>
+  <a class="nl" href="#s7">Beta ו-Sharpe</a>
+  <a class="nl" href="#s8">מגבלות GAS</a>
+  <a class="nl" href="#s9">חידון</a>
+</nav>
+
+<div class="wrap">
+
+<section id="s1" class="sec">
+  <div class="sh fi">
+    <div class="sn">1</div>
+    <div>
+      <h2>ברוכים הבאים — מה נלמד ולמה</h2>
+      <div class="st"><i class="fa-regular fa-clock"></i> 10 דקות</div>
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-hand-wave" style="color:#3b82f6"></i> מפגש 3 — הדלקת המנוע</h3>
+    <p>אחרי שלמדנו את עולם ה-SQL — כיצד לשאול שאלות מתוחכמות על נתונים — הגיע הרגע לעשות את הקפיצה הגדולה: <strong>לחבר נתונים חיים ליישום שמשתמשים אמיתיים יכולים לגעת בו</strong>.</p>
+    <p>בקובץ הזה, הראשון מתוך שלושה, נבנה את כל הבסיס התיאורטי שנצטרך לפני שנגע בקוד. אם הקוד הוא הבית — התיאוריה כאן היא התוכנית האדריכלית. בלי להבין אותה, נאבד.</p>
+    <div class="hb bl">
+      <div class="hbt"><i class="fa-solid fa-map"></i> מה כוללים שלושת הקבצים?</div>
+      <ul style="margin-right:18px;line-height:2">
+        <li><strong>קובץ 1 (זה):</strong> תיאוריה עמוקה — GAS, API, CAPM, מגבלות, חידונים</li>
+        <li><strong>קובץ 2:</strong> הפרומפט לסקריפט ה-GAS + הגדרות + פרסום (Deploy)</li>
+        <li><strong>קובץ 3:</strong> הפרומפט לממשק ה-HTML + ייצוא CSV + חיבור הכל יחד</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-question-circle" style="color:#d97706"></i> למה GAS עכשיו — לפני שסיימנו SQL?</h3>
+    <p>הסיבה פשוטה ועמוקה: בעולם הטכנולוגיה, <strong>MVP (Minimum Viable Product)</strong> — מוצר קטן ועובד — שווה יותר מהבטחה לפרויקט מושלם שמגיע בשנה הבאה.</p>
+    <div class="hb or">
+      <div class="hbt"><i class="fa-solid fa-lightbulb"></i> הסבר מונח: MVP</div>
+      <strong>MVP — Minimum Viable Product</strong> (מוצר בר-קיימא מינימלי): הגרסה הקטנה ביותר של מוצר שעדיין עובדת ומספקת ערך אמיתי. הרעיון: "צא לשוק מהר, למד מהמשתמשים, שפר." SQL מושלם ייקח עוד חודשים — אבל <em>יישום עובד</em> אפשר לבנות היום.
+    </div>
+    <p>הדמיון שאהוב עליי: SQL הוא <strong>מחסן ענק וממוחשב</strong> — מסודר, חזק, ומסוגל לנהל מיליוני מוצרים. אבל לשלוח את הסחורה ישירות ממנו ללקוחות? זה דורש תשתית עצומה. Google Apps Script הוא <strong>ואן המשלוחים האגילי</strong>: לוקח מה שיש, ומגיע ללקוח מחר בבוקר.</p>
+  </div>
+</section>
+
+<section id="s2" class="sec">
+  <div class="sh fi">
+    <div class="sn">2</div>
+    <div>
+      <h2>ארכיטקטורת המערכת — כיצד הכל מחובר</h2>
+      <div class="st"><i class="fa-regular fa-clock"></i> 12 דקות</div>
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-diagram-project" style="color:#0d9488"></i> מפת הארכיטקטורה המלאה</h3>
+    <p>לפני שמתחילים — חשוב מאוד להבין את הקשר בין כל חלקי המערכת. להלן דיאגרמת הזרימה המלאה של מה שנבנה:</p>
+
+    <div class="arch" id="archDiagram">
+      <div class="arch-t">🗺️ ארכיטקטורת מערכת ניתוח המניות — זרימה מלמעלה למטה</div>
+      <div class="vflow">
+
+        <div class="vnode" data-d="0">
+          <div class="ni">🧑‍💻</div>
+          <div class="nt">המשתמש</div>
+          <div class="ns">פותח דפדפן, מקליד שם מניה</div>
+        </div>
+        <div class="varrow" data-d="1">⬇️</div>
+
+        <div class="vnode hl" data-d="2">
+          <div class="ni">🌐</div>
+          <div class="nt">BI Front.html</div>
+          <div class="ns">ממשק HTML + CSS + JS<br>שולח בקשה ל-GAS URL</div>
+          <div class="ak">Frontend — קובץ 3</div>
+        </div>
+        <div class="varrow" data-d="3">⬇️</div>
+
+        <div class="vnode hl2" data-d="4">
+          <div class="ni">⚙️</div>
+          <div class="nt">BI Script.gs — Google Apps Script</div>
+          <div class="ns">שרת הלוגיקה | מנהל Fallback | מחשב CAPM</div>
+          <div class="ak gr">Backend — קובץ 2</div>
+        </div>
+        <div class="varrow" data-d="5">⬇️ מנסה לפי סדר</div>
+
+        <!-- Fallback row -->
+        <div class="vfallback" data-d="6" style="opacity:0;transition:opacity .5s">
+          <div class="vnode" style="width:160px;opacity:1;transform:none">
+            <div class="ni">📡</div>
+            <div class="nt">Yahoo Finance</div>
+            <div class="ns">Tier 1 — ללא Key</div>
+            <div class="ak">ראשי</div>
+          </div>
+          <div class="vnode" style="width:160px;opacity:1;transform:none">
+            <div class="ni">🔑</div>
+            <div class="nt">Alpha Vantage</div>
+            <div class="ns">Tier 2 — Key בסקריפט</div>
+            <div class="ak pu">גיבוי 1</div>
+          </div>
+          <div class="vnode" style="width:160px;opacity:1;transform:none">
+            <div class="ni">📊</div>
+            <div class="nt">Google Finance</div>
+            <div class="ns">Tier 3 — דרך Sheets API</div>
+            <div class="ak" style="background:#f97316;color:#fff">גיבוי 2</div>
+          </div>
+        </div>
+        <div class="varrow" data-d="7">⬇️ מחזיר JSON</div>
+
+        <div class="vnode hl" data-d="8">
+          <div class="ni">📈</div>
+          <div class="nt">גרף + ניתוח CAPM</div>
+          <div class="ns">Chart.js | המלצת קנה/מכור/החזק</div>
+        </div>
+        <div class="varrow" data-d="9">⬇️</div>
+
+        <div class="vnode" data-d="10">
+          <div class="ni">📥</div>
+          <div class="nt">ייצוא CSV</div>
+          <div class="ns">הורדה ישירה ללא Google Sheets</div>
+          <div class="ak gr">חדש!</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="hb bl">
+      <div class="hbt"><i class="fa-solid fa-circle-info"></i> מה חדש לעומת הגרסה הקודמת?</div>
+      בגרסה זו: (1) <strong>אין Google Sheets</strong> — GAS עצמאי לחלוטין. (2) <strong>ייצוא CSV</strong> ישיר מהאפליקציה. (3) <strong>מודל CAPM</strong> לניתוח — לא רק SMA פשוט. (4) שני פרומפטים נפרדים — אחד לסקריפט, אחד לממשק.
+    </div>
+
+    <h4>שלושת שכבות הארכיטקטורה</h4>
+    <div class="api-layers">
+      <div class="al">
+        <div class="ali">🌐</div>
+        <div class="alt">שכבת הצגה (Frontend)</div>
+        <div class="ald">קובץ HTML שרץ בדפדפן המשתמש. לא רואה API Keys. שולח בקשות ל-GAS ומציג תוצאות חזותיות.</div>
+      </div>
+      <div class="al" style="border-color:#0d9488;background:var(--tl)">
+        <div class="ali">⚙️</div>
+        <div class="alt">שכבת לוגיקה (Backend/GAS)</div>
+        <div class="ald">הסקריפט שרץ על שרתי Google. כאן נמצאים ה-API Keys! מעבד נתונים ומחזיר JSON.</div>
+      </div>
+      <div class="al">
+        <div class="ali">📡</div>
+        <div class="alt">שכבת נתונים (External APIs)</div>
+        <div class="ald">Yahoo Finance ו-Alpha Vantage. שרתים חיצוניים שמספקים מחירי מניות בזמן אמת.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s3" class="sec">
+  <div class="sh fi">
+    <div class="sn">3</div>
+    <div>
+      <h2>Google Apps Script עצמאי — ללא Google Sheets</h2>
+      <div class="st"><i class="fa-regular fa-clock"></i> 10 דקות</div>
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-brands fa-google" style="color:#1d4ed8"></i> מה זה GAS ולמה לא צריך Sheets?</h3>
+    <p>Google Apps Script (GAS) הוא כלי של Google שמאפשר לכתוב קוד JavaScript שרץ <strong>על שרתי Google</strong>. אנחנו לא צריכים שרת משלנו, לא משלמים, ולא צריכים להתקין כלום.</p>
+    <p>בגרסה הקודמת של השיעור דרשנו Google Sheets כ"מסד נתונים". היום נסיר את ההגבלה הזו: <strong>GAS יכול לעמוד לבד</strong> — לקבל בקשות מהאינטרנט, לשאוב נתונים חיים, לעבד אותם, ולהחזיר תשובות. ללא Sheets, ללא הגבלת 50,000 שורות, ללא תלות.</p>
+
+    <div class="hb or">
+      <div class="hbt"><i class="fa-solid fa-lightbulb"></i> הסבר מונח: Standalone Script</div>
+      <strong>Standalone Script</strong> = סקריפט GAS שלא שייך לאף קובץ Google ספציפי (לא Sheet, לא Doc). יוצרים אותו ישירות ב-<strong>script.google.com</strong> ופורסים אותו כ-Web App עם URL עצמאי. זה מה שנעשה.
+    </div>
+
+    <div class="hb te">
+      <div class="hbt"><i class="fa-solid fa-circle-info"></i> הסבר מונח: Web App</div>
+      <strong>Web App</strong> = יישום רשת. כשפורסים סקריפט GAS כ-Web App, גוגל מקצה לו URL ציבורי. כל מי שיגש ל-URL הזה (דפדפן, אפליקציה, כל דבר) יקבל את התשובה שהסקריפט מחזיר. בדיוק כמו שרת אמיתי.
+    </div>
+
+    <h4>GAS עם Sheets לעומת GAS עצמאי</h4>
+    <table class="tbl">
+      <thead><tr><th>היבט</th><th>GAS + Google Sheets</th><th>GAS עצמאי (היום)</th></tr></thead>
+      <tbody>
+        <tr><td>יצירה</td><td>מתוך Sheets: הרחבות → Apps Script</td><td>ישירות ב-script.google.com</td></tr>
+        <tr><td>אחסון נתונים</td><td>בגיליון (עד ~50,000 שורות)</td><td>ללא — שואב מ-API חי</td></tr>
+        <tr><td>מגבלת גודל</td><td>מוגבל בגודל הגיליון</td><td>ללא מגבלת גיליון</td></tr>
+        <tr><td>תלות</td><td>תלוי קובץ Sheets קיים</td><td>עצמאי לחלוטין</td></tr>
+        <tr><td>מהירות</td><td>איטי יותר (קריאת Sheets)</td><td>מהיר יותר</td></tr>
+        <tr><td>מתאים ל</td><td>ניתוח נתונים קיימים בגיליון</td><td>API שרת, נתונים חיים</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-code" style="color:#0d9488"></i> מה הסקריפט יכול לעשות?</h3>
+    <p>הסקריפט שלנו יוגדר לבצע את הפעולות הבאות:</p>
+    <ul>
+      <li>📡 <strong>לשלוח בקשות HTTP</strong> ל-API חיצוני (Yahoo Finance, Alpha Vantage)</li>
+      <li>📊 <strong>לעבד נתונים פיננסיים</strong>: חישוב Beta, Sharpe Ratio, CAPM Expected Return</li>
+      <li>💾 <strong>לשמור זמנית ב-Cache</strong> כדי לא לחרוג ממכסות</li>
+      <li>📤 <strong>להחזיר JSON</strong> לממשק ה-HTML</li>
+      <li>📥 <strong>לייצא CSV</strong> עם כל הנתונים ההיסטוריים</li>
+    </ul>
+    <div class="hb rd">
+      <div class="hbt"><i class="fa-solid fa-triangle-exclamation"></i> חשוב מאוד: מה <em>לא</em> יעשה הסקריפט</div>
+      הסקריפט <strong>לא יציג ממשק גרפי</strong> — זה תפקיד ה-HTML. הוא רק מחזיר מידע גולמי (JSON/CSV). ממש כמו מלצר שמביא את האוכל — הוא לא מעצב את הצלחת, הוא רק מביא אותה.
+    </div>
+  </div>
+</section>
+
+<section id="s4" class="sec">
+  <div class="sh fi">
+    <div class="sn">4</div>
+    <div>
+      <h2>API — מה זה, מאיפה לוקחים, ואיפה שמים?</h2>
+      <div class="st"><i class="fa-regular fa-clock"></i> 15 דקות — חיוני להבנה!</div>
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-plug" style="color:#7c3aed"></i> מה זה API?</h3>
+    <p><strong>API (Application Programming Interface)</strong> — בעברית: "ממשק תכנות יישומים". נשמע טכני? בואו נפשט.</p>
+    <p>דמיינו מסעדה. אתם (האפליקציה שלנו) יושבים בשולחן. במטבח (השרת) יש שפים מוכשרים עם כל הנתונים. הבעיה: אתם לא יכולים להיכנס למטבח. <strong>ה-API הוא המלצר</strong> — האיש שמעביר את ההזמנה שלכם למטבח ומחזיר לכם את הצלחת.</p>
+
+    <div class="api-layers">
+      <div class="al">
+        <div class="ali">🧑‍💻</div>
+        <div class="alt">האפליקציה שלנו</div>
+        <div class="ald">"רוצה נתוני מניה AAPL מה-3 חודשים האחרונים"</div>
+      </div>
+      <div class="al" style="border-color:var(--pur);background:var(--purl)">
+        <div class="ali">🤝</div>
+        <div class="alt">ה-API (ממשק)</div>
+        <div class="ald">מקבל בקשה בפורמט מוגדר, מעביר לשרת, מחזיר תשובה מובנית</div>
+      </div>
+      <div class="al">
+        <div class="ali">🏦</div>
+        <div class="alt">Yahoo Finance / Alpha Vantage</div>
+        <div class="ald">מסד הנתונים של מחירי המניות. מיליוני נתונים שמתעדכנים בזמן אמת</div>
+      </div>
+    </div>
+
+    <div class="hb pu">
+      <div class="hbt"><i class="fa-solid fa-circle-info"></i> הסבר מונח: JSON</div>
+      <strong>JSON (JavaScript Object Notation)</strong> — פורמט תשובה סטנדרטי של APIs. נראה כך:<br>
+      <code style="font-family:'Fira Code',monospace;font-size:.8rem;background:rgba(0,0,0,.07);padding:2px 6px;border-radius:4px">{"symbol":"AAPL","price":189.3,"change_pct":0.85}</code><br>
+      זה פשוט מילון של שם=ערך, שגם בני אדם וגם מחשבים יכולים לקרוא בקלות.
+    </div>
+
+    <h4>שני ה-APIs שנשתמש בהם</h4>
+    <table class="tbl">
+      <thead><tr><th>API</th><th>מה הוא מספק?</th><th>צריך API Key?</th><th>מגבלה</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Yahoo Finance</strong></td>
+          <td>מחירים, נפחי מסחר, היסטוריה</td>
+          <td>❌ לא! חינמי לחלוטין</td>
+          <td>לא מוגדרת רשמית, לפעמים לא יציב</td>
+        </tr>
+        <tr>
+          <td><strong>Alpha Vantage</strong></td>
+          <td>מחירים, אינדיקטורים, מטבעות</td>
+          <td>✅ כן — חינמי לרישום</td>
+          <td>5 קריאות/דקה, 500/יום (חינמי)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-key" style="color:#d97706"></i> מה זה API Key — ולמה צריך אותו?</h3>
+    <p><strong>API Key</strong> הוא קוד ייחודי — כמו <em>מספר לקוח VIP</em> — שמזהה מי שולח את הבקשה. השרת בודק: "האם המפתח הזה מוכר לי? האם הוא שילם? האם הוא לא עבר את המכסה?" ורק אז מחזיר נתונים.</p>
+    <p>Alpha Vantage מחלקים מפתח חינמי — אבל גם חינמי דורש זיהוי, כדי שיוכלו לספור כמה בקשות שלחתם ביום.</p>
+
+    <div class="hb rd">
+      <div class="hbt"><i class="fa-solid fa-triangle-exclamation"></i> כלל ברזל: API Key הולך בסקריפט — לא ב-HTML!</div>
+      זה הכלל הכי חשוב בארכיטקטורה שלנו. <strong>לעולם אל תכניסו API Key לתוך קובץ HTML</strong> שמגיע למשתמש. קובץ HTML ניתן לצפייה על ידי כל אחד (לחיצה ימנית → "View Source"). מישהו יגנוב את המפתח ויהיה אתם!
+    </div>
+
+    <div class="kp">
+      <div class="kpg">
+        <h4>✅ נכון: Key בסקריפט GAS</h4>
+        <p style="font-size:.85rem;color:#166534">הסקריפט רץ על שרת Google. המשתמש רואה רק את ה-URL הסופי — לא את הקוד. ה-Key בטוח.</p>
+        <code>var API_KEY = 'SYOD0OLV...';</code><br>
+        <small style="color:#16a34a">← בתוך הסקריפט .gs ✅</small>
+      </div>
+      <div class="kpb">
+        <h4>❌ שגוי: Key בממשק HTML</h4>
+        <p style="font-size:.85rem;color:#991b1b">כל גולש יכול ללחוץ F12 ולראות את המפתח. סכנת גניבה ושימוש לרעה!</p>
+        <code>const API_KEY = 'SYOD0OLV...';</code><br>
+        <small style="color:#dc2626">← בתוך ה-.html ❌ אסור!</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s5" class="sec">
+  <div class="sh fi">
+    <div class="sn">5</div>
+    <div>
+      <h2>קבלת מפתח API מ-Alpha Vantage</h2>
+      <div class="st"><i class="fa-regular fa-clock"></i> 8 דקות — עשו עכשיו!</div>
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-id-card" style="color:#d97706"></i> הצעד הזה עושים עכשיו, לפני שממשיכים</h3>
+    <p>קבלת מפתח Alpha Vantage לוקחת בדיוק 60 שניות. עשו את זה עכשיו כדי שהוא יהיה מוכן כשנגיע לכתיבת הסקריפט.</p>
+
+    <div class="avs">
+      <h4><i class="fa-solid fa-steps"></i> צעדים לקבלת מפתח Alpha Vantage חינמי</h4>
+      <div class="step">
+        <div class="stpn">1</div>
+        <div class="stpc">
+          <strong>גשו לאתר Alpha Vantage</strong>
+          פתחו דפדפן וגשו ל: <code style="font-family:'Fira Code',monospace;font-size:.82rem;background:rgba(0,0,0,.08);padding:2px 7px;border-radius:4px">www.alphavantage.co/support/#api-key</code>
+        </div>
+      </div>
+      <div class="step">
+        <div class="stpn">2</div>
+        <div class="stpc">
+          <strong>מלאו את הטופס — 3 שדות בלבד</strong>
+          שם ארגון / שם אישי (אפשר לכתוב "Student"), סיבת שימוש (בחרו "Student/Academic"), ואימייל. <strong>לא צריך כרטיס אשראי!</strong>
+        </div>
+      </div>
+      <div class="step">
+        <div class="stpn">3</div>
+        <div class="stpc">
+          <strong>לחצו "GET FREE API KEY"</strong>
+          מיידית — המפתח מוצג על המסך. הוא נראה כך: <code style="font-family:'Fira Code',monospace;font-size:.82rem;background:rgba(0,0,0,.08);padding:2px 7px;border-radius:4px">SYOD0OLV1L44PABK</code> (דוגמה בלבד!)
+        </div>
+      </div>
+      <div class="step">
+        <div class="stpn">4</div>
+        <div class="stpc">
+          <strong>שמרו את המפתח!</strong>
+          העתיקו אותו למחברת / Notepad. תצטרכו אותו בקובץ 2 כשנכתוב את הסקריפט.
+        </div>
+      </div>
+    </div>
+
+    <div class="hb gn">
+      <div class="hbt"><i class="fa-solid fa-circle-check"></i> מה כוללת החבילה החינמית?</div>
+      5 קריאות API לדקה, 500 קריאות ליום. לשימוש בקורס — <strong>יותר מספיק</strong>. אם תעברו את המגבלה (לא סביר בשימוש רגיל), פשוט חכו דקה. לשימוש מסחרי אמיתי יש חבילות בתשלום.
+    </div>
+
+    <div class="hb bl">
+      <div class="hbt"><i class="fa-solid fa-circle-info"></i> מדוע אנחנו צריכים Fallback?</div>
+      Yahoo Finance בחינם <em>ולא דורש</em> מפתח — אבל הוא API לא רשמי, ולעתים מוחסם או לא יציב. Alpha Vantage הוא ה"גיבוי" שלנו. אנחנו נגדיר סדר עדיפויות: 1) Yahoo (מהיר, חינמי), 2) Alpha Vantage (אמין, דורש מפתח), 3) הודעת שגיאה ידידותית בעברית.
+    </div>
+  </div>
+</section>
+
+<section id="s6" class="sec">
+  <div class="sh fi">
+    <div class="sn">6</div>
+    <div>
+      <h2>מודל CAPM — הלב הפועם של ניתוח ההשקעות</h2>
+      <div class="st"><i class="fa-regular fa-clock"></i> 25 דקות — ה-section החשוב ביותר!</div>
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-scale-balanced" style="color:#1d4ed8"></i> מה זה CAPM ולמה הוא מהפכני?</h3>
+    <p>עד השנות ה-60 של המאה ה-20, ניתוח מניות היה בעיקר "אומנות" — אנליסטים השתמשו בניסיון, אינטואיציה, ותחושות בטן. ב-1964 שינה <strong>William Sharpe</strong> את העולם עם מאמר אחד שהביא לו פרס נובל בכלכלה (1990).</p>
+    <p>הרעיון: ניתן <strong>לכמת מתמטית</strong> כמה תשואה "מגיעה" לך על מניה, בהתחשב בסיכון שלקחת. אם המניה נותנת <em>יותר</em> ממה שמגיע לה לפי הנוסחה — כנראה כדאי לקנות. אם פחות — כנראה כדאי למכור.</p>
+    <div class="hb or">
+      <div class="hbt"><i class="fa-solid fa-lightbulb"></i> הסבר מונח: CAPM</div>
+      <strong>CAPM — Capital Asset Pricing Model</strong> (מודל תמחור נכסי הון): מודל פיננסי מתמטי שקובע מה צריכה להיות <em>התשואה המצופה</em> על נייר ערך, בהינתן רמת הסיכון שלו ביחס לשוק. פותח ב-1964 על ידי William Sharpe, בנוי על עבודה קודמת של Harry Markowitz.
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-function" style="color:#1d4ed8"></i> הנוסחה — ופירוק כל רכיב</h3>
+    <p>זו הנוסחה שתנהל את כל ההחלטות בניתוח שלנו:</p>
+
+    <div class="formula">
+      <div class="f-main">E(Rᵢ) = Rf + βᵢ × [E(Rm) - Rf]</div>
+      <div style="color:rgba(255,255,255,.6);font-size:.8rem;margin-bottom:16px">נקראת: "התשואה המצופה על נכס i שווה לריבית חסרת סיכון פלוס Beta כפול פרמיית הסיכון של השוק"</div>
+      <div class="f-legend">
+        <div class="fl-item">
+          <div class="fl-sym">E(Rᵢ)</div>
+          <div class="fl-name">התשואה המצופה</div>
+          <div class="fl-desc">כמה אחוז תשואה "אמורה" לתת המניה לפי רמת הסיכון שלה. זה מה שנחשב ונשווה למה שקרה בפועל.</div>
+        </div>
+        <div class="fl-item">
+          <div class="fl-sym">Rf</div>
+          <div class="fl-name">ריבית חסרת סיכון</div>
+          <div class="fl-desc">התשואה שניתן לקבל ללא שום סיכון — בדרך כלל אג&quot;ח ממשלתי ל-10 שנים של ארה"ב. כיום: ~4.25% לשנה.</div>
+        </div>
+        <div class="fl-item">
+          <div class="fl-sym">βᵢ (Beta)</div>
+          <div class="fl-name">מקדם הסיכון השיטתי</div>
+          <div class="fl-desc">כמה מניה נעה <em>ביחס לשוק הכללי</em>. Beta=1 = זזה כמו השוק. Beta=2 = זזה פי 2. Beta=0.5 = חצי תנודתיות.</div>
+        </div>
+        <div class="fl-item">
+          <div class="fl-sym">E(Rm)</div>
+          <div class="fl-name">תשואת השוק המצופה</div>
+          <div class="fl-desc">התשואה הממוצעת ארוכת-הטווח של השוק הכללי (S&amp;P 500). היסטורית: ~10% לשנה. בסקריפט נשתמש ב-10%.</div>
+        </div>
+        <div class="fl-item">
+          <div class="fl-sym">E(Rm) - Rf</div>
+          <div class="fl-name">פרמיית סיכון השוק</div>
+          <div class="fl-desc">הפיצוי שמשקיע מקבל על כך שהוא לוקח סיכון שוק במקום להשאיר את הכסף בפיקדון בטוח. ~10% - 4.25% = ~5.75%.</div>
+        </div>
+        <div class="fl-item">
+          <div class="fl-sym">α (Alpha)</div>
+          <div class="fl-name">תשואה עודפת (לא בנוסחה)</div>
+          <div class="fl-desc">ההפרש בין מה שהמניה הניבה <em>בפועל</em> לבין מה שה-CAPM ניבא שהיא אמורה להניב. Alpha חיובי = המניה "הפתיעה לטובה".</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-calculator" style="color:#0d9488"></i> דוגמה מחושבת — Apple (AAPL)</h3>
+    <p>בואו נעבור דוגמה מספרית שלמה:</p>
+    <div class="hb te">
+      <div class="hbt"><i class="fa-solid fa-file-invoice"></i> נתוני הדוגמה</div>
+      <ul style="margin-right:18px;line-height:2">
+        <li><strong>Beta של AAPL:</strong> 1.25 (זזה 25% יותר מהשוק)</li>
+        <li><strong>ריבית חסרת סיכון (Rf):</strong> 4.25% לשנה</li>
+        <li><strong>תשואת שוק מצופה E(Rm):</strong> 10% לשנה</li>
+        <li><strong>תשואת AAPL בפועל (3 חודשים, אנואליזד):</strong> 18%</li>
+      </ul>
+    </div>
+    <div class="hb bl">
+      <div class="hbt"><i class="fa-solid fa-function"></i> החישוב</div>
+      <p style="font-family:'Fira Code',monospace;font-size:.9rem;line-height:2;direction:ltr;text-align:left">
+        E(Rᵢ) = 4.25% + 1.25 × (10% - 4.25%)<br>
+        E(Rᵢ) = 4.25% + 1.25 × 5.75%<br>
+        E(Rᵢ) = 4.25% + 7.19%<br>
+        E(Rᵢ) = 11.44%
+      </p>
+      <p><strong>תוצאה:</strong> לפי CAPM, AAPL "אמורה" להניב ~11.44% לשנה. אבל בפועל היא הניבה 18%. <strong>Alpha = 18% - 11.44% = +6.56%</strong> — חיובי! זה אות לקנייה.</p>
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-traffic-light" style="color:#d97706"></i> כלל ההחלטה CAPM — קנה/החזק/מכור</h3>
+    <p>הכלל שהאפליקציה שלנו תממש:</p>
+    <div class="capm-grid">
+      <div class="capm-card buy">
+        <div class="cc-ico">📈</div>
+        <div class="cc-t">קנה (BUY)</div>
+        <div class="cc-d"><strong>תנאי:</strong> Alpha > +2%<br>כלומר: המניה הניבה בפועל יותר מ-2% מעל מה ש-CAPM מצפה. היא "מתומחרת בחסר".</div>
+      </div>
+      <div class="capm-card hold">
+        <div class="cc-ico">⚖️</div>
+        <div class="cc-t">החזק (HOLD)</div>
+        <div class="cc-d"><strong>תנאי:</strong> Alpha בין -2% ל-+2%<br>המניה בהתאמה סבירה למה שמצפים ממנה לפי הסיכון. אין פעולה ברורה.</div>
+      </div>
+      <div class="capm-card sell">
+        <div class="cc-ico">📉</div>
+        <div class="cc-t">מכור (SELL)</div>
+        <div class="cc-d"><strong>תנאי:</strong> Alpha < -2%<br>כלומר: המניה מניבה פחות מ-2% מתחת לציפיות לפי הסיכון. היא "מתומחרת ביתר".</div>
+      </div>
+    </div>
+    <div class="hb rd">
+      <div class="hbt"><i class="fa-solid fa-triangle-exclamation"></i> אזהרה: CAPM הוא כלי — לא אורקל</div>
+      CAPM מבוסס על הנחות רבות שלא תמיד מתקיימות: שהשווקים יעילים, שה-Beta יציב לאורך זמן, שהמשקיע מפוזר לחלוטין. הוא נקודת פתיחה לניתוח — לא החלטה סופית. <strong>לעולם לא להשקיע אמיתי על בסיס כלי זה בלבד!</strong>
+    </div>
+  </div>
+</section>
+
+<section id="s7" class="sec">
+  <div class="sh fi">
+    <div class="sn">7</div>
+    <div>
+      <h2>Beta, Sharpe Ratio — כלי ההעמקה</h2>
+      <div class="st"><i class="fa-regular fa-clock"></i> 15 דקות</div>
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-wave-square" style="color:#7c3aed"></i> Beta — כמה "בר-סיכון" המניה?</h3>
+    <p><strong>Beta</strong> הוא אחד המדדים החשובים ביותר בפיננסים. הוא מודד <em>כמה מניה מושפעת מתנועות השוק הכללי</em>. נחשב כמתאם (Correlation) בין תשואות המניה לתשואות S&P 500.</p>
+
+    <div class="beta-scale">
+      <div style="font-weight:700;margin-bottom:8px;font-size:.9rem">סקאלת Beta — כיצד לקרוא את המדד</div>
+      <div class="beta-bar"></div>
+      <div class="beta-markers">
+        <span>β &lt; 0</span><span>β = 0.5</span><span>β = 1.0</span><span>β = 1.5</span><span>β &gt; 2.0</span>
+      </div>
+      <div class="beta-row">
+        <div class="beta-item">
+          <div class="bi-val" style="color:#3b82f6">β &lt; 0</div>
+          <div class="bi-lab">הפוך לשוק</div>
+          <div class="bi-eg">כשהשוק עולה — יורד. דוגמה: זהב, VIX.</div>
+        </div>
+        <div class="beta-item">
+          <div class="bi-val" style="color:#22c55e">β = 0.5</div>
+          <div class="bi-lab">פחות תנודתי</div>
+          <div class="bi-eg">כשהשוק עולה 10% — עולה 5%. מניות utility, מזון.</div>
+        </div>
+        <div class="beta-item">
+          <div class="bi-val" style="color:#fbbf24">β = 1.0</div>
+          <div class="bi-lab">כמו השוק</div>
+          <div class="bi-eg">זז בדיוק כמו S&P 500. ETF מדדי.</div>
+        </div>
+        <div class="beta-item">
+          <div class="bi-val" style="color:#ef4444">β &gt; 1.5</div>
+          <div class="bi-lab">תנודתי מהשוק</div>
+          <div class="bi-eg">כשהשוק עולה 10% — עולה 15%+. מניות טכנולוגיה, Tesla.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hb or">
+      <div class="hbt"><i class="fa-solid fa-lightbulb"></i> כיצד הסקריפט מחשב Beta?</div>
+      הסקריפט ייחשב Beta באמצעות <strong>Covariance/Variance</strong> על סמך נתונים היסטוריים:<br>
+      <code style="font-family:'Fira Code',monospace;direction:ltr;display:block;margin-top:6px;font-size:.8rem">β = Covariance(Rstock, Rmarket) / Variance(Rmarket)</code><br>
+      זאת אומרת: ניקח 60 ימי מסחר אחרונים של המניה ושל ה-SPY (תעודת סל של S&P 500), נחשב את הקשר ביניהם.
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-trophy" style="color:#d97706"></i> Sharpe Ratio — תשואה מותאמת סיכון</h3>
+    <p>Beta מספר לנו כמה <em>תנודתי</em> נכס. אבל מה אם נכס תנודתי מאוד נותן תשואה גבוהה מאוד? האם זה עדיין כדאי? כאן נכנס <strong>Sharpe Ratio</strong>.</p>
+    <div class="hb te">
+      <div class="hbt"><i class="fa-solid fa-function"></i> הנוסחה</div>
+      <p style="font-family:'Fira Code',monospace;font-size:.9rem;line-height:1.8;direction:ltr;text-align:left">
+        Sharpe Ratio = (Rp - Rf) / σp
+      </p>
+      <ul style="margin-right:18px;line-height:2;font-size:.93rem;margin-top:8px">
+        <li><strong>Rp:</strong> תשואת התיק/מניה בפועל</li>
+        <li><strong>Rf:</strong> ריבית חסרת סיכון (4.25%)</li>
+        <li><strong>σp:</strong> סטיית התקן של התשואות (מדד התנודתיות)</li>
+      </ul>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>Sharpe Ratio</th><th>פרשנות</th><th>דוגמה</th></tr></thead>
+      <tbody>
+        <tr><td><strong>&lt; 0</strong></td><td>גרוע מהחזקת מזומן — הפסד ביחס לסיכון</td><td>מניה שירדה תוך תנודתיות גבוהה</td></tr>
+        <tr><td><strong>0 – 0.5</strong></td><td>חלש — לא מגמול מספיק על הסיכון</td><td>אג"ח קונצרני</td></tr>
+        <tr><td><strong>0.5 – 1.0</strong></td><td>סביר — רוב תיקי המניות</td><td>S&P 500 ממוצע שנתי</td></tr>
+        <tr><td><strong>1.0 – 2.0</strong></td><td>טוב — תיק מנוהל היטב</td><td>קרנות גידור מובילות</td></tr>
+        <tr><td><strong>&gt; 2.0</strong></td><td>מצוין — נדיר בשוק אמיתי</td><td>Warren Buffett: ~0.79 ממוצע!</td></tr>
+      </tbody>
+    </table>
+    <div class="hb bl">
+      <div class="hbt"><i class="fa-solid fa-circle-info"></i> למה Sharpe חשוב לנו?</div>
+      דמיינו שתי מניות: A נתנה 20% תשואה עם סטייה של 5%, B נתנה 20% עם סטייה של 30%. לכאורה שוות — אבל Sharpe של A הוא 3.15 ושל B הוא 0.53. <strong>A הרבה יותר טובה</strong> — אותה תשואה, הרבה פחות לחץ ולחץ ולב.
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-diagram-project" style="color:#1d4ed8"></i> כיצד CAPM + Beta + Sharpe עובדים יחד באפליקציה</h3>
+    <div class="hb gn">
+      <div class="hbt"><i class="fa-solid fa-gears"></i> לוגיקת ההחלטה המלאה בסקריפט</div>
+      <ol style="margin-right:18px;line-height:2.3;font-size:.93rem">
+        <li>חישוב <strong>Beta</strong> מ-60 ימי מסחר (ביחס ל-SPY)</li>
+        <li>חישוב <strong>E(Rᵢ)</strong> לפי נוסחת CAPM עם Rf=4.25%, E(Rm)=10%</li>
+        <li>חישוב <strong>תשואה בפועל</strong> — אנואליזציה של 3 חודשים אחרונים</li>
+        <li>חישוב <strong>Alpha = תשואה בפועל - E(Rᵢ)</strong></li>
+        <li>חישוב <strong>Sharpe Ratio</strong> מסטיית התקן של ה-60 ימים</li>
+        <li><strong>החלטה:</strong> Alpha &gt; +2% ו-Sharpe &gt; 0.5 → BUY | Alpha בין ±2% → HOLD | Alpha &lt; -2% → SELL</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="s8" class="sec">
+  <div class="sh fi">
+    <div class="sn">8</div>
+    <div>
+      <h2>מגבלות GAS — מה חשוב לדעת</h2>
+      <div class="st"><i class="fa-regular fa-clock"></i> 8 דקות</div>
+    </div>
+  </div>
+  <div class="cb fi">
+    <p>כמו לכל כלי — גם ל-GAS יש מגבלות. מי שמכיר אותן מראש — לא מופתע בהמשך.</p>
+    <div class="lg">
+      <div class="li"><div class="lii">⏱️</div><div class="lit">זמן ריצה מקסימלי</div><div class="lid">כל קריאה יכולה לרוץ עד <strong>6 דקות</strong>. בשביל ניתוח מניה — יותר מספיק. אם רוצים דוחות מורכבים — מחלקים לחלקים.</div></div>
+      <div class="li"><div class="lii">📊</div><div class="lit">מכסת Quota יומית</div><div class="lid">חשבון חינמי: <strong>20,000</strong> קריאות UrlFetch ביום. Workspace: 100,000. לשימוש רגיל — בלתי מושגת.</div></div>
+      <div class="li"><div class="lii">🔄</div><div class="lit">Deploy חדש לכל שינוי</div><div class="lid">שינוי בקוד? חייבים לפרסם גרסה חדשה. לא כמו שרת רגיל שמתעדכן אוטומטית. שכחה נפוצה!</div></div>
+      <div class="li"><div class="lii">❄️</div><div class="lit">Cold Start</div><div class="lid">קריאה ראשונה אחרי חוסר פעילות — 2-4 שניות. ה"שרת" של Google "מתעורר". לאחר מכן — מהיר.</div></div>
+      <div class="li"><div class="lii">🔒</div><div class="lit">ללא SQL אמיתי</div><div class="lid">GAS לא מחליף מסד נתונים. אין Joins, אין indexes, אין transactions. לנתונים מורכבים — נצטרך DB אמיתי.</div></div>
+      <div class="li"><div class="lii">🌐</div><div class="lit">תלות בחיבור אינטרנט</div><div class="lid">הסקריפט שואב נתונים מ-APIs חיצוניים. אם השרת של Yahoo / Alpha Vantage פגוע — נקבל שגיאה. לכן ה-Fallback חיוני.</div></div>
+    </div>
+    <div class="hb gn">
+      <div class="hbt"><i class="fa-solid fa-circle-check"></i> המסקנה: מתי GAS הוא הכלי הנכון?</div>
+      לפרויקטים כמו שלנו — <strong>MVP של BI, דאשבורד מנהלים, כלי ניתוח פנימי, אוטומציה קלה</strong> — GAS הוא מושלם. בחינם, מהיר להקמה, ומספיק חזק. לפרויקטים עם מיליוני בקשות או אבטחה ברמה בנקאית — נצטרך כלים אחרים.
+    </div>
+  </div>
+</section>
+
+<section id="s9" class="sec">
+  <div class="sh fi">
+    <div class="sn">9</div>
+    <div>
+      <h2>חידון הבנה — 9 שאלות</h2>
+      <div class="st"><i class="fa-regular fa-clock"></i> 20 דקות</div>
+    </div>
+  </div>
+
+  <div class="enc fi">
+    <div class="enci">🧠</div>
+    <p>9 שאלות שמכסות את כל החומר שלמדנו. לחצו על תשובה — תקבלו הסבר מפורט לכל בחירה.</p>
+  </div>
+
+  <div class="quiz fi" id="q1">
+    <div class="qn">שאלה 1 מתוך 9</div>
+    <div class="qq">מהו ה-GAS Script שנבנה בשיעור זה, ביחס ל-Google Sheets?</div>
+    <div class="qopts" id="q1-opts">      <div class="qo" onclick="ans('q1',0,1)">
+        <div class="ql">א</div><span>חלק מ-Google Sheets — תמיד צריך גיליון פתוח כדי שיעבוד</span>
+      </div>      <div class="qo" onclick="ans('q1',1,1)">
+        <div class="ql">ב</div><span>עצמאי לחלוטין — נוצר ב-script.google.com, לא תלוי בשום גיליון</span>
+      </div>      <div class="qo" onclick="ans('q1',2,1)">
+        <div class="ql">ג</div><span>תוסף לדפדפן Chrome שמותקן על המחשב</span>
+      </div>      <div class="qo" onclick="ans('q1',3,1)">
+        <div class="ql">ד</div><span>מאקרו ב-Excel שהועלה לגוגל</span>
+      </div>    </div>
+    <div class="qexpl" id="q1-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: ב.</strong> הסקריפט שנבנה הוא <em>Standalone Script</em> — עצמאי לחלוטין. הוא נוצר ישירות ב-script.google.com, לא מתוך Sheets, ורץ על שרתי Google כ-Web App עם URL עצמאי.<br><br>
+  <strong>למה לא א?</strong> Bound Script (מקושר ל-Sheets) הוא סוג אחר — מתאים לאוטומציה של גיליון ספציפי. אנחנו צריכים API שמגיב לכל בקשה ממי שיש לו את ה-URL.<br>
+  <strong>למה לא ג?</strong> GAS רץ על שרתי Google — לא על המחשב. זה לא תוסף מקומי.<br>
+  <strong>למה לא ד?</strong> זה ממש לא Excel. GAS הוא JavaScript שרץ בענן גוגל.
+    </div>
+  </div>
+  <div class="quiz fi" id="q2">
+    <div class="qn">שאלה 2 מתוך 9</div>
+    <div class="qq">ג'ון רוצה לכלול API Key של Alpha Vantage ביישום שלו. איפה הוא צריך לשים אותו?</div>
+    <div class="qopts" id="q2-opts">      <div class="qo" onclick="ans('q2',0,2)">
+        <div class="ql">א</div><span>בקובץ ה-HTML, בתוך תג &lt;script&gt;, כדי שהקוד JavaScript יוכל להשתמש בו</span>
+      </div>      <div class="qo" onclick="ans('q2',1,2)">
+        <div class="ql">ב</div><span>כ-Comment בראש קובץ ה-HTML, כדי שיהיה נגיש לכולם</span>
+      </div>      <div class="qo" onclick="ans('q2',2,2)">
+        <div class="ql">ג</div><span>בתוך קוד ה-GAS Script בלבד — הסקריפט שרץ על השרת</span>
+      </div>      <div class="qo" onclick="ans('q2',3,2)">
+        <div class="ql">ד</div><span>במייל לעצמו — הוא ישנן אותו בעל פה</span>
+      </div>    </div>
+    <div class="qexpl" id="q2-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: ג.</strong> ה-API Key שייך אך ורק לצד השרת — בתוך קוד ה-GAS.<br><br>
+  <strong>למה לא א ו-ב?</strong> קובץ HTML נשלח <em>כולו</em> לדפדפן המשתמש. F12 → Sources — וכל גולש יכול לראות כל שורת קוד ב-HTML/JS. API Key שנמצא שם — <strong>גנוב!</strong> מישהו ישתמש במפתח שלך ויצרוך את כל ה-Quota שלך.<br><br>
+  הכלל הזהב: <em>סודות שייכים לשרת. ממשק שייך ללקוח.</em>
+    </div>
+  </div>
+  <div class="quiz fi" id="q3">
+    <div class="qn">שאלה 3 מתוך 9</div>
+    <div class="qq">בעת פרסום (Deploy) ה-GAS כ-Web App, מה יש לבחור בשדה "Who has access" כדי שכל משתמש — גם לא מחובר לגוגל — יוכל להשתמש ביישום?</div>
+    <div class="qopts" id="q3-opts">      <div class="qo" onclick="ans('q3',0,2)">
+        <div class="ql">א</div><span>Only myself — רק אני יכול לגשת</span>
+      </div>      <div class="qo" onclick="ans('q3',1,2)">
+        <div class="ql">ב</div><span>Anyone with Google Account — רק בעלי חשבון גוגל</span>
+      </div>      <div class="qo" onclick="ans('q3',2,2)">
+        <div class="ql">ג</div><span>Anyone — כולל משתמשים שאינם מחוברים לגוגל</span>
+      </div>      <div class="qo" onclick="ans('q3',3,2)">
+        <div class="ql">ד</div><span>Public — פרסום ב-Google Workspace Marketplace</span>
+      </div>    </div>
+    <div class="qexpl" id="q3-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: ג — Anyone.</strong> זו ההגדרה שמאפשרת ל-HTML Frontend לפנות ל-GAS ללא כל הזדהות מצד המשתמש.<br><br>
+      <strong>למה לא ב?</strong> "Anyone with Google Account" מחייב Login — המשתמש יקבל דף הזדהות לפני שיוכל לקבל נתונים. זה שובר את ה-Frontend לחלוטין.<br><br>
+      <strong>Execute as:</strong> חשוב לא פחות — יש לבחור <strong>"Me"</strong>, כדי שהסקריפט ירוץ עם ההרשאות של <em>המפתח</em> (שלכם), לא של המשתמש. כך ה-API Key שבסקריפט שלכם פועל תמיד.
+    </div>
+  </div>
+  <div class="quiz fi" id="q4">
+    <div class="qn">שאלה 4 מתוך 9</div>
+    <div class="qq">מדוע הסקריפט שלנו משתמש ב-CacheService.getScriptCache() עם TTL של 3600 שניות?</div>
+    <div class="qopts" id="q4-opts">      <div class="qo" onclick="ans('q4',0,1)">
+        <div class="ql">א</div><span>כדי לשמור את ה-API Key בצורה מוצפנת</span>
+      </div>      <div class="qo" onclick="ans('q4',1,1)">
+        <div class="ql">ב</div><span>כדי לא לקרוא ל-API בכל בקשה — שמירת התוצאה שעה אחת מונעת חריגה ממכסת ה-Quota היומית</span>
+      </div>      <div class="qo" onclick="ans('q4',2,1)">
+        <div class="ql">ג</div><span>כדי לגבות את נתוני המניות ל-Google Drive אוטומטית</span>
+      </div>      <div class="qo" onclick="ans('q4',3,1)">
+        <div class="ql">ד</div><span>כדי להאיץ את זמן ה-Deploy בעת פרסום גרסה חדשה</span>
+      </div>    </div>
+    <div class="qexpl" id="q4-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: ב.</strong> CacheService שומר את תוצאת הקריאה ל-API בזיכרון שרתי Google למשך 3600 שניות (שעה). כך, אם 100 משתמשים מבקשים נתוני AAPL באותה שעה — ה-API נקרא <em>פעם אחת בלבד</em>, לא 100 פעמים.<br><br>
+      <strong>חשבון מכסה:</strong> Alpha Vantage חינמי = 500 קריאות ביום. בלי Cache, 500 משתמשים מצרכים את כל המכסה. עם Cache — ניתן לשרת אלפי משתמשים.<br><br>
+      <strong>TTL (Time To Live)</strong> = כמה זמן התוצאה "חיה" ב-Cache. 3600 שניות = שעה אחת.
+    </div>
+  </div>
+  <div class="quiz fi" id="q5">
+    <div class="qn">שאלה 5 מתוך 9</div>
+    <div class="qq">מה תפקידה של הפונקציה doGet(e) בסקריפט ה-GAS שלנו?</div>
+    <div class="qopts" id="q5-opts">      <div class="qo" onclick="ans('q5',0,0)">
+        <div class="ql">א</div><span>היא נקודת הכניסה של ה-Web App — Google מריצה אותה אוטומטית בכל פנייה ל-URL (HTTP GET), ומחזירה JSON/CSV בחזרה</span>
+      </div>      <div class="qo" onclick="ans('q5',1,0)">
+        <div class="ql">ב</div><span>היא פונקציה שמופעלת רק ידנית על ידי המפתח מתוך ה-Editor</span>
+      </div>      <div class="qo" onclick="ans('q5',2,0)">
+        <div class="ql">ג</div><span>היא אחראית על ציור הגרפים ב-Chart.js</span>
+      </div>      <div class="qo" onclick="ans('q5',3,0)">
+        <div class="ql">ד</div><span>היא מאמתת את ה-API Key מול Alpha Vantage לפני כל קריאה</span>
+      </div>    </div>
+    <div class="qexpl" id="q5-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: א.</strong> ב-GAS Web App, הפונקציה <code style="font-family:'Fira Code',monospace;font-size:.85em;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:3px">doGet(e)</code> היא ה"שומר סף" — Google מריצה אותה בכל פעם שמישהו פונה ל-URL.<br><br>
+      הפרמטר <code style="font-family:'Fira Code',monospace;font-size:.85em;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:3px">e</code> מכיל את כל הפרמטרים שהועברו ב-URL. למשל: <code style="font-family:'Fira Code',monospace;font-size:.8em;direction:ltr;display:inline-block">.../exec?symbol=AAPL&action=csv</code> → ניגש אליהם כ-<code style="font-family:'Fira Code',monospace;font-size:.85em">e.parameter.symbol</code>.<br><br>
+      <strong>למה לא ב?</strong> פונקציות שמופעלות ידנית נקראות בשם כלשהו — doGet ספציפית היא Reserved Name של Google לכניסה ל-Web App.
+    </div>
+  </div>
+  <div class="quiz fi" id="q6">
+    <div class="qn">שאלה 6 מתוך 9</div>
+    <div class="qq">מה ההבדל המהותי בין Yahoo Finance API ל-Alpha Vantage API?</div>
+    <div class="qopts" id="q6-opts">      <div class="qo" onclick="ans('q6',0,2)">
+        <div class="ql">א</div><span>Yahoo Finance מדויק יותר, Alpha Vantage מהיר יותר</span>
+      </div>      <div class="qo" onclick="ans('q6',1,2)">
+        <div class="ql">ב</div><span>Yahoo Finance הוא API רשמי ובתשלום, Alpha Vantage הוא חינמי ולא רשמי</span>
+      </div>      <div class="qo" onclick="ans('q6',2,2)">
+        <div class="ql">ג</div><span>Yahoo Finance אינו דורש API Key ואינו רשמי (לא יציב לפעמים), Alpha Vantage דורש Key חינמי אבל מוסדר ואמין יותר</span>
+      </div>      <div class="qo" onclick="ans('q6',3,2)">
+        <div class="ql">ד</div><span>שניהם זהים לחלוטין — ההבדל הוא רק בשם</span>
+      </div>    </div>
+    <div class="qexpl" id="q6-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: ג.</strong> זהו ההבדל המעשי החשוב ביותר לפרויקט שלנו:<br><br>
+  <strong>Yahoo Finance:</strong> API <em>לא רשמי</em> — חברות צד שלישי גילו כיצד לשאוב נתונים מ-Yahoo. Yahoo לא תיעד זאת, לא מבטיח זמינות, ולעתים משנה את המבנה ו"שובר" כלי שנבנו עליו. יתרון: אין צורך במפתח, מהיר.<br><br>
+  <strong>Alpha Vantage:</strong> חברה שמפרסמת API <em>רשמי ומתועד</em>. מבטיחה זמינות, מבנה קבוע. דורש הרשמה (חינמית) לקבלת מפתח. לכן — Tier 2 אצלנו.
+    </div>
+  </div>
+  <div class="quiz fi" id="q7">
+    <div class="qn">שאלה 7 מתוך 9</div>
+    <div class="qq">מדוע ה-Standalone GAS שלנו מגיב לבקשות מבחוץ? מה המנגנון שמאפשר זאת?</div>
+    <div class="qopts" id="q7-opts">      <div class="qo" onclick="ans('q7',0,2)">
+        <div class="ql">א</div><span>כי הסקריפט מותקן כ-Add-on בדפדפן Chrome</span>
+      </div>      <div class="qo" onclick="ans('q7',1,2)">
+        <div class="ql">ב</div><span>כי יש לנו Google Workspace Enterprise עם הרשאות מיוחדות</span>
+      </div>      <div class="qo" onclick="ans('q7',2,2)">
+        <div class="ql">ג</div><span>כי פרסמנו (Deploy) את הסקריפט כ-Web App עם הגדרת גישה 'Anyone' — גוגל הקצתה לו URL ציבורי שמגיב לבקשות HTTP GET/POST</span>
+      </div>      <div class="qo" onclick="ans('q7',3,2)">
+        <div class="ql">ד</div><span>כי הגדרנו Cron Job שמריץ את הסקריפט כל דקה</span>
+      </div>    </div>
+    <div class="qexpl" id="q7-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: ג.</strong> תהליך ה-Deploy יוצר <em>Deployment</em> — גרסה מפורסמת של הסקריפט עם URL קבוע. כשמישהו גולש ל-URL הזה, שרתי Google מריצים את פונקציית <code>doGet(e)</code> ומחזירים את התגובה.<br><br>
+  <strong>ה-URL נראה כך:</strong><br><code style="font-family:'Fira Code',monospace;font-size:.8rem;direction:ltr;background:rgba(0,0,0,.07);padding:2px 6px;border-radius:4px">https://script.google.com/macros/s/AKfycb.../exec</code><br><br>
+  <strong>חשוב:</strong> שינוי בקוד דורש Deploy <em>חדש</em> — URL ישן ממשיך להצביע על הגרסה הישנה עד שמפרסמים גרסה חדשה.
+    </div>
+  </div>
+  <div class="quiz fi" id="q8">
+    <div class="qn">שאלה 8 מתוך 9</div>
+    <div class="qq">מה ייצא הכפתור 'ייצוא CSV' באפליקציה שנבנה?</div>
+    <div class="qopts" id="q8-opts">      <div class="qo" onclick="ans('q8',0,1)">
+        <div class="ql">א</div><span>גיליון Google Sheets חדש עם הנתונים</span>
+      </div>      <div class="qo" onclick="ans('q8',1,1)">
+        <div class="ql">ב</div><span>קובץ CSV שמוריד ישירות לתיקיית ה-Downloads של המשתמש — ללא Google Sheets, ללא חשבון גוגל נדרש</span>
+      </div>      <div class="qo" onclick="ans('q8',2,1)">
+        <div class="ql">ג</div><span>מייל עם קובץ מצורף נשלח לכתובת האימייל שהוזנה</span>
+      </div>      <div class="qo" onclick="ans('q8',3,1)">
+        <div class="ql">ד</div><span>PDF של גרף המחירים</span>
+      </div>    </div>
+    <div class="qexpl" id="q8-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: ב.</strong> ייצוא CSV הוא פיצ'ר חשוב שנוספו לגרסה זו. כשהמשתמש לוחץ על הכפתור:<br><br>
+  1. ה-HTML שולח בקשה ל-GAS עם פרמטר <code>action=csv</code><br>
+  2. ה-GAS מאסף את כל הנתונים ההיסטוריים<br>
+  3. מחזיר טקסט בפורמט CSV עם header מתאים<br>
+  4. ה-JavaScript ב-HTML יוצר Blob ומפעיל הורדה אוטומטית<br><br>
+  <strong>לא צריך Sheets, לא צריך חשבון גוגל</strong> — כל אחד יכול לפתוח את הקובץ ב-Excel.
+    </div>
+  </div>
+  <div class="quiz fi" id="q9">
+    <div class="qn">שאלה 9 מתוך 9</div>
+    <div class="qq">ערן שינה שורת קוד בסקריפט ה-GAS שלו ושמר. הוא פותח את ה-URL הקיים ומגלה שהשינוי לא משתקף. מה הסיבה?</div>
+    <div class="qopts" id="q9-opts">      <div class="qo" onclick="ans('q9',0,2)">
+        <div class="ql">א</div><span>דפדפן ה-Cache שמר גרסה ישנה — מספיק לרענן (F5)</span>
+      </div>      <div class="qo" onclick="ans('q9',1,2)">
+        <div class="ql">ב</div><span>הסקריפט הושבת אוטומטית עקב שגיאת תחביר</span>
+      </div>      <div class="qo" onclick="ans('q9',2,2)">
+        <div class="ql">ג</div><span>שמירה אינה מפרסמת — יש לבצע Deploy חדש ולבחור "New Version" כדי שה-URL יצביע על הקוד המעודכן</span>
+      </div>      <div class="qo" onclick="ans('q9',3,2)">
+        <div class="ql">ד</div><span>עליו למחוק את ה-Deployment הקיים וליצור URL חדש לחלוטין</span>
+      </div>    </div>
+    <div class="qexpl" id="q9-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: ג.</strong> זו אחת הטעויות הנפוצות ביותר עם GAS. ה-URL שנוצר ב-Deploy מצביע על <em>גרסה ספציפית</em> של הקוד — לא על הקוד "החי". שמירה בלבד לא מעדכנת את הגרסה המפורסמת.<br><br>
+      <strong>כיצד לעדכן נכון:</strong> Deploy → Manage Deployments → בחרו את ה-Deployment הקיים → Edit (עיפרון) → Version: "New version" → Deploy. אותו URL, קוד חדש.<br><br>
+      <strong>למה לא ד?</strong> מחיקה ויצירת URL חדש מחייבת עדכון את קבוצת ה-GAS_URL ב-HTML. מיותר לחלוטין.
+    </div>
+  </div>
+  <div class="enc">
+    <div class="enci">🎓</div>
+    <p>כל הכבוד! סיימתם את כל החלק התיאורטי. עכשיו מוכנים לקובץ 2 — שם נכתוב את הסקריפט עצמו.</p>
+  </div>
+</section>
+
+</div><!-- wrap -->
+
+<footer style="background:var(--navy);color:rgba(255,255,255,.7);text-align:center;padding:24px;font-size:.84rem;margin-top:40px">
+  קובץ 1 מתוך 3 | מפגש 3 — ד&quot;ר שי צבאן, Ph.D. | כל הזכויות שמורות © 2026
+</footer>
+
+<script>
+// progress bar
+window.addEventListener('scroll',()=>{
+  const d=document.documentElement;
+  document.getElementById('pbf').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%';
+});
+// nav active
+const secs=document.querySelectorAll('.sec');
+const nls=document.querySelectorAll('.nl');
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){
+    nls.forEach(a=>a.classList.remove('on'));
+    const l=document.querySelector('.nl[href="#'+e.target.id+'"]');
+    if(l)l.classList.add('on');
+  }});
+},{threshold:.25}).observe||secs.forEach(s=>{});
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){
+    nls.forEach(a=>a.classList.remove('on'));
+    const l=document.querySelector('.nl[href="#'+e.target.id+'"]');
+    if(l)l.classList.add('on');
+  }});
+},{threshold:.25});
+secs.forEach(s=>obs.observe(s));
+
+// arch animation
+(function(){
+  function animateArch(){
+    var nodes = document.querySelectorAll('#archDiagram .vnode[data-d], #archDiagram .varrow[data-d], #archDiagram .vfallback[data-d]');
+    nodes.forEach(function(el){
+      var delay = parseInt(el.getAttribute('data-d')) * 300;
+      setTimeout(function(){
+        el.classList.add('vis');
+        if(el.classList.contains('vfallback')) el.style.opacity='1';
+      }, delay);
+    });
+  }
+  var arch = document.getElementById('archDiagram');
+  if(!arch){return;}
+  var ob = new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){ animateArch(); ob.disconnect(); }
+  },{threshold:0.2});
+  ob.observe(arch);
+})();
+
+// quiz
+function ans(id,chosen,correct){
+  const card=document.getElementById(id);
+  if(card.classList.contains('ok')||card.classList.contains('no'))return;
+  const opts=document.querySelectorAll('#'+id+'-opts .qo');
+  opts.forEach((o,i)=>{if(i===correct)o.classList.add('show')});
+  opts[chosen].classList.add(chosen===correct?'right':'wrong');
+  card.classList.add(chosen===correct?'ok':'no');
+  document.getElementById(id+'-expl').style.display='block';
+  setTimeout(()=>document.getElementById(id+'-expl').scrollIntoView({behavior:'smooth',block:'nearest'}),200);
+}
+</script>
+</body></html>
