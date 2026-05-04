@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מפגש 3 – קובץ 2: הסקריפט GAS | ד"ר שי צבאן</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--p:#1d4ed8;--pl:#eff6ff;--pm:#bfdbfe;--teal:#0d9488;--tl:#f0fdfa;
+  --navy:#1e3a5f;--nd:#0f2340;--ok:#16a34a;--okl:#f0fdf4;--okb:#bbf7d0;
+  --warn:#d97706;--wl:#fffbeb;--err:#dc2626;--el:#fef2f2;--pur:#7c3aed;--purl:#f5f3ff;
+  --bg:#f0f4f8;--wh:#fff;--bd:#e2e8f0;--tx:#1e293b;--mu:#64748b;
+  --sh:0 1px 3px rgba(0,0,0,.08);--shm:0 4px 16px rgba(0,0,0,.09);--shl:0 10px 40px rgba(0,0,0,.12);
+  --r:14px;--rs:8px;--rl:22px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Assistant',sans-serif;background:var(--bg);color:var(--tx);line-height:1.75;overflow-x:hidden}
+::-webkit-scrollbar{width:7px}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+.pb{position:fixed;top:0;right:0;left:0;height:4px;z-index:999;background:rgba(0,0,0,.06)}
+.pbf{height:100%;background:linear-gradient(90deg,#1d4ed8,#0d9488);width:0%;transition:width .15s}
+.hero{background:linear-gradient(135deg,#0f2340 0%,#1e3a5f 55%,#1e40af 100%);
+  padding:80px 20px 120px;text-align:center;position:relative;overflow:hidden}
+.hero:before{content:'';position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:26px 26px}
+.hi{position:relative;z-index:1;max-width:860px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.22);color:#fff;padding:6px 20px;border-radius:100px;
+  font-size:.86rem;font-weight:700;margin-bottom:20px}
+.hero h1{font-family:'Rubik',sans-serif;font-size:clamp(1.9rem,4.5vw,3rem);font-weight:900;
+  color:#fff;line-height:1.2;margin-bottom:14px}
+.hero h1 em{color:#7dd3fc;font-style:normal}
+.hero-sub{font-size:1.05rem;color:rgba(255,255,255,.78);max-width:600px;margin:0 auto 26px;line-height:1.7}
+.hmeta{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.hm{display:flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.17);border-radius:var(--rs);font-weight:600;
+  color:rgba(255,255,255,.84);font-size:.84rem}
+.fstrip{background:var(--navy);color:#fff;text-align:center;padding:12px;font-size:.85rem;font-weight:700}
+.fstrip span{background:var(--teal);padding:3px 10px;border-radius:100px;margin:0 6px;font-size:.78rem}
+.nav{position:sticky;top:10px;z-index:100;max-width:1020px;margin:-48px auto 48px;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border:1px solid var(--bd);
+  border-radius:100px;padding:6px 10px;display:flex;gap:4px;box-shadow:var(--shl);overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nl{color:var(--mu);text-decoration:none;padding:7px 13px;border-radius:100px;
+  font-size:.8rem;font-weight:700;transition:.2s;white-space:nowrap}
+.nl:hover{color:var(--p);background:var(--pl)}.nl.on{background:var(--navy);color:#fff}
+.wrap{max-width:940px;margin:0 auto;padding:0 18px 120px}
+.sec{margin-bottom:80px;scroll-margin-top:85px}
+.sh{display:flex;align-items:flex-start;gap:14px;margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid var(--bd)}
+.sn{flex-shrink:0;width:48px;height:48px;background:var(--navy);color:#fff;border-radius:var(--rs);
+  display:flex;align-items:center;justify-content:center;font-family:'Rubik',sans-serif;font-weight:800;font-size:1.3rem}
+.sh h2{font-family:'Rubik',sans-serif;font-size:1.55rem;font-weight:700;color:var(--navy)}
+.sh .st{font-size:.8rem;color:var(--mu);margin-top:4px;display:flex;align-items:center;gap:5px}
+.cb{background:var(--wh);border:1px solid var(--bd);border-radius:var(--rl);padding:34px;box-shadow:var(--sh);margin-bottom:22px}
+.cb h3{font-family:'Rubik',sans-serif;font-size:1.2rem;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:var(--navy)}
+.cb h4{font-family:'Rubik',sans-serif;font-size:1rem;margin:22px 0 9px;padding-right:11px;border-right:3px solid var(--p);color:var(--tx)}
+.cb p{font-size:1rem;margin-bottom:13px;color:#334155;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.cb ul{padding-right:20px;margin-bottom:11px}
+.cb li{font-size:.97rem;color:#334155;margin-bottom:7px;line-height:1.65}
+.hb{padding:16px 20px;border-radius:var(--r);margin:16px 0;border-right:5px solid}
+.hbt{font-weight:700;font-size:.83rem;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.hb.bl{background:var(--pl);border-color:var(--p)}.hb.bl .hbt{color:var(--p)}
+.hb.gn{background:var(--okl);border-color:var(--ok)}.hb.gn .hbt{color:var(--ok)}
+.hb.or{background:var(--wl);border-color:var(--warn)}.hb.or .hbt{color:var(--warn)}
+.hb.rd{background:var(--el);border-color:var(--err)}.hb.rd .hbt{color:var(--err)}
+.hb.te{background:var(--tl);border-color:var(--teal)}.hb.te .hbt{color:var(--teal)}
+.hb.pu{background:var(--purl);border-color:var(--pur)}.hb.pu .hbt{color:var(--pur)}
+.enc{background:linear-gradient(135deg,#fdf4ff,#ede9fe);border:1px solid #ddd6fe;
+  border-radius:var(--r);padding:20px;text-align:center;margin:22px 0}
+.enci{font-size:2rem;margin-bottom:6px}
+.enc p{color:#6d28d9;font-weight:600;font-size:1rem}
+.step{display:flex;gap:14px;padding:16px 18px;background:var(--bg);border:1px solid var(--bd);
+  border-radius:var(--r);margin-bottom:9px}
+.stpn{flex-shrink:0;width:34px;height:34px;background:var(--navy);color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem}
+.stpc{font-size:.92rem;color:#475569;line-height:1.65}
+.stpc strong{display:block;font-weight:700;color:var(--navy);margin-bottom:3px;font-size:.94rem}
+.stpc code{font-family:'Fira Code',monospace;font-size:.82rem;background:rgba(0,0,0,.07);
+  padding:1px 5px;border-radius:3px}
+/* code block */
+.code{background:#0f172a;color:#e2e8f0;border-radius:var(--r);padding:22px 22px 22px 60px;
+  font-family:'Fira Code',monospace;font-size:.79rem;line-height:1.75;
+  overflow-x:auto;direction:ltr;text-align:left;position:relative;margin:14px 0;
+  max-height:520px;overflow-y:auto}
+.copybtn{position:sticky;top:0;float:left;margin-left:-44px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  color:#94a3b8;border-radius:6px;padding:4px 8px;font-size:.72rem;cursor:pointer;
+  transition:.2s;font-family:'Assistant',sans-serif;white-space:nowrap}
+.copybtn:hover{background:rgba(255,255,255,.2);color:#fff}
+.ck{color:#569cd6}.cs{color:#ce9178}.cc{color:#6a9955}.cf{color:#dcdcaa}.cg{color:#4ec9b0}.cn{color:#b5cea8}
+/* anatomy table */
+.atbl{width:100%;border-collapse:collapse;font-size:.88rem;margin:14px 0}
+.atbl th{background:var(--navy);color:#fff;padding:10px 12px;text-align:right;font-weight:700}
+.atbl td{padding:10px 12px;border-bottom:1px solid var(--bd);vertical-align:top;line-height:1.6}
+.atbl tr:nth-child(even) td{background:var(--bg)}
+.atbl tr:hover td{background:var(--pl)}
+.pseg{font-family:'Fira Code',monospace;font-size:.77rem;color:#1d4ed8;direction:ltr;text-align:left;line-height:1.5;display:block}
+/* error table */
+.etbl{width:100%;border-collapse:collapse;font-size:.88rem;margin:14px 0}
+.etbl th{background:#7f1d1d;color:#fff;padding:10px 12px;text-align:right;font-weight:700}
+.etbl td{padding:10px 12px;border-bottom:1px solid var(--bd);vertical-align:top}
+.etbl tr:nth-child(even) td{background:#fff5f5}
+/* progress steps visual */
+.psteps{display:flex;flex-direction:column;gap:0;margin:20px 0}
+.pstep-row{display:flex;align-items:stretch;gap:0}
+.pstep-line{display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0}
+.pstep-circle{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.85rem;color:#fff;flex-shrink:0;z-index:1}
+.pstep-connector{width:2px;background:var(--bd);flex:1;min-height:16px}
+.pstep-body{flex:1;padding:10px 16px 18px;background:var(--wh);border:1px solid var(--bd);
+  border-radius:var(--r);margin-bottom:10px;margin-right:8px}
+.pstep-body strong{display:block;font-weight:700;color:var(--navy);margin-bottom:4px;font-size:.94rem}
+.pstep-body p,.pstep-body span{font-size:.9rem;color:#475569;line-height:1.6}
+@media(max-width:640px){.atbl{font-size:.8rem}}
+.fi{animation:fi .6s ease both}
+@keyframes fi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+</style></head><body>
+<div class="pb"><div class="pbf" id="pbf"></div></div>
+
+<div class="fstrip">
+  <span>קובץ 2 מתוך 3</span> הגדרת סביבת GAS, הפרומפט לסקריפט, פרסום ובדיקה
+</div>
+<header class="hero">
+<div class="hi fi">
+  <div class="badge"><i class="fa-brands fa-google"></i>&nbsp; מפגש 3 | ד"ר שי צבאן, Ph.D.</div>
+  <h1>בניית ה-Backend:<br><em>הסקריפט GAS מאפס</em></h1>
+  <p class="hero-sub">נגדיר סביבה עצמאית ב-script.google.com, נייצר את הסקריפט באמצעות פרומפט מדויק, ונפרסם Web App עובד עם 3 שכבות Fallback ומנוע CAPM מובנה.</p>
+  <div class="hmeta">
+    <div class="hm"><i class="fa-regular fa-clock"></i> ~90 דקות</div>
+    <div class="hm"><i class="fa-solid fa-file-alt"></i> קובץ 2 מתוך 3</div>
+    <div class="hm"><i class="fa-solid fa-code"></i> פרומפט GAS בלבד</div>
+    <div class="hm"><i class="fa-solid fa-rocket"></i> Deploy + בדיקה</div>
+  </div>
+</div>
+</header>
+<nav class="nav" id="nav">
+  <a class="nl on" href="#s1">היכן אנחנו</a>
+  <a class="nl" href="#s2">פתיחת GAS</a>
+  <a class="nl" href="#s3">הפרומפט</a>
+  <a class="nl" href="#s4">אנטומיה</a>
+  <a class="nl" href="#s5">הדבקה ושמירה</a>
+  <a class="nl" href="#s6">Deploy</a>
+  <a class="nl" href="#s7">בדיקת Endpoint</a>
+  <a class="nl" href="#s8">שגיאות נפוצות</a>
+</nav>
+<div class="wrap">
+
+<section id="s1" class="sec">
+  <div class="sh fi"><div class="sn">1</div>
+    <div><h2>היכן אנחנו — מה עשינו ומה הולך לקרות</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 5 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-map-pin" style="color:#1d4ed8"></i> מפת ההתקדמות</h3>
+    <p>בקובץ 1 בנינו את כל הבסיס התיאורטי: הבנו מה GAS, מה API, קיבלנו מפתח Alpha Vantage, ולמדנו CAPM, Beta ו-Sharpe Ratio.</p>
+    <p>בקובץ זה — <strong>נבנה את הלב של המערכת</strong>: הסקריפט שרץ על שרתי Google, שואב נתונים מ-3 מקורות (Yahoo → Alpha Vantage → Google Finance), מחשב CAPM, ומחזיר JSON/CSV לכל מי שפונה אל ה-URL שלו.</p>
+    <div class="hb gn">
+      <div class="hbt"><i class="fa-solid fa-circle-check"></i> רשימת תיוג — לפני שמתחילים</div>
+      <ul style="margin-right:18px;line-height:2.2">
+        <li>✅ קראתם את קובץ 1 (תיאוריה + CAPM)</li>
+        <li>✅ יש לכם מפתח Alpha Vantage (מ-alphavantage.co)</li>
+        <li>✅ יש לכם חשבון Google פעיל</li>
+        <li>✅ פתוח דפדפן מוכן עם script.google.com</li>
+      </ul>
+    </div>
+    <div class="hb bl">
+      <div class="hbt"><i class="fa-solid fa-circle-info"></i> למה פרומפט אחד לסקריפט ואחד לממשק?</div>
+      חלוקה לשני פרומפטים נפרדים מונעת "בלבול" של ה-AI: כשהוא מתמקד <em>רק</em> ב-Backend, הקוד שמייצא מדויק יותר, ללא ניסיון לשלב CSS ו-JavaScript ממשקי באותו פלט. כל פרומפט = תפקיד אחד = פלט נקי יותר.
+    </div>
+  </div>
+</section>
+
+<section id="s2" class="sec">
+  <div class="sh fi"><div class="sn">2</div>
+    <div><h2>פתיחת סביבת GAS — צעד אחר צעד</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 10 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-brands fa-google" style="color:#1d4ed8"></i> הגדרת פרויקט Standalone חדש</h3>
+    <div class="hb rd">
+      <div class="hbt"><i class="fa-solid fa-triangle-exclamation"></i> חשוב: לא דרך Google Sheets!</div>
+      בגרסה זו פותחים GAS <strong>ישירות</strong> — לא דרך Sheets → הרחבות. כתובת הכניסה הישירה היא <code style="font-family:'Fira Code',monospace;font-size:.85rem">script.google.com</code>.
+    </div>
+    <div class="psteps">
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--navy)">1</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>גשו לכתובת script.google.com</strong><span>וודאו שאתם מחוברים עם חשבון Google שבו קיבלתם את מפתח Alpha Vantage.</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--navy)">2</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>לחצו "+ New project"</strong><span>כפתור כחול בצד שמאל למעלה. ייפתח עורך קוד עם קובץ ריק בשם <code style="direction:ltr;unicode-bidi:embed">Code.gs</code>.</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--navy)">3</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>שנו את שם הפרויקט</strong><span>לחצו על "Untitled project" בפינה השמאלית עליונה. כתבו: <code>Business Intelligence Script</code> ← Enter.</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--navy)">4</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>מחקו את תוכן ה-Editor</strong><span>בחרו הכל (<code style="direction:ltr;unicode-bidi:embed">Ctrl+A</code>) ולחצו <code style="direction:ltr;unicode-bidi:embed">Delete</code>. הקובץ צריך להיות ריק לחלוטין לפני ההדבקה.</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--ok)">5</div><div class="pstep-connector" style="background:transparent"></div></div>
+        <div class="pstep-body" style="border-color:var(--ok);background:var(--okl)"><strong>✅ הסביבה מוכנה</strong><span>עורך ריק + שם פרויקט = מוכנים לקבל את הקוד שה-AI ייצור בשלב הבא.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s3" class="sec">
+  <div class="sh fi"><div class="sn">3</div>
+    <div><h2>הפרומפט לסקריפט ה-GAS — העתיקו בדיוק</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 15 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-wand-magic-sparkles" style="color:#7c3aed"></i> כללי שימוש בפרומפט</h3>
+    <div class="hb rd">
+      <div class="hbt"><i class="fa-solid fa-triangle-exclamation"></i> כלל ברזל — העתקה מלאה בלי שינויים</div>
+      הפרומפט כולל מגבלות ("constraints") שמונעות מה-AI לסטות. כל מילה שתוסיפו, תגרעו, או תשנו — עלולה לגרום לסקריפט שגוי שייקח שעות לתקן. העתיקו Copy-Paste כפי שהוא.
+    </div>
+    <div class="hb or">
+      <div class="hbt"><i class="fa-solid fa-key"></i> לפני ההעתקה — החליפו את ה-API Key</div>
+      בפרומפט יש placeholder: <code style="font-family:'Fira Code',monospace;font-size:.85rem">YOUR_ALPHA_VANTAGE_KEY</code>. החליפו אותו במפתח שקיבלתם מ-Alpha Vantage (קובץ 1, סעיף 5) <strong>לפני</strong> שתדביקו ל-AI.
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-copy" style="color:#1d4ed8"></i> הפרומפט המלא — Prompt לסקריפט GAS בלבד</h3>
+    <div class="code" id="gas-prompt">
+      <button class="copybtn" onclick="cpCode('gas-prompt')">📋 העתק</button>
+<span class="cc">// ════════ הדביקו את הפרומפט הזה ל-Claude / ChatGPT / Gemini ════════</span>
+
+You are a senior backend engineer specializing in Google Apps Script.
+
+// === TASK ===
+Create a complete, production-ready Google Apps Script (.gs file) that acts as a
+standalone Web App API for stock analysis. Do NOT generate any HTML or CSS.
+Output ONLY the .gs code, nothing else — no explanations, no markdown, no comments
+outside the code itself.
+
+// === FILE NAME ===
+The output represents: "Business Intelligence Script.gs"
+
+// === API DESIGN ===
+Expose a doGet(e) function as the single entry point.
+Read query parameters from e.parameter:
+  - symbol  (string, required): stock ticker, e.g. "AAPL"
+  - action  (string, optional): "analyze" (default) | "csv" | "health"
+  - nocache (string, optional): "1" to bypass cache
+
+// === DATA SOURCES — 3-TIER FALLBACK (attempt in order) ===
+TIER 1 — Yahoo Finance (no key required):
+  URL: https://query1.finance.yahoo.com/v8/finance/chart/{SYMBOL}?interval=1d&range=4mo
+  Parse: timestamps, close prices, volumes.
+
+TIER 2 — Alpha Vantage (free key):
+  var AV_KEY = 'YOUR_ALPHA_VANTAGE_KEY';
+  URL: https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={SYMBOL}&outputsize=compact&apikey={AV_KEY}
+  Fallback also to TIME_SERIES_DAILY_ADJUSTED if DAILY fails on free tier.
+
+TIER 3 — Google Finance via UrlFetch:
+  URL: https://query1.finance.yahoo.com/v7/finance/quote?symbols={SYMBOL}
+  (Use only for current price + change% if tiers 1-2 fail for history)
+  If all 3 tiers fail, return JSON: { "error": true, "message": "כל מקורות הנתונים אינם זמינים. אנא נסו שוב." }
+
+// === CALCULATIONS (perform server-side) ===
+From the last 60 trading days of close prices + SPY prices (fetch SPY same way):
+  1. Beta = Covariance(stock_returns, spy_returns) / Variance(spy_returns)
+  2. SMA20 = average of last 20 close prices
+  3. annualized_return = ((last_price / price_60d_ago) ^ (252/60)) - 1
+  4. daily_std = standard deviation of daily_returns (last 60d)
+  5. annualized_std = daily_std * sqrt(252)
+  6. RF = 0.0425  (risk-free rate)
+  7. MARKET_RETURN = 0.10
+  8. capm_expected = RF + Beta * (MARKET_RETURN - RF)
+  9. alpha = annualized_return - capm_expected
+  10. sharpe = (annualized_return - RF) / annualized_std
+  11. signal: if alpha > 0.02 AND sharpe > 0.5 → "BUY"
+              elif alpha < -0.02 → "SELL"
+              else → "HOLD"
+
+// === RESPONSE FORMAT — action=analyze ===
+Return ContentService JSON with this exact structure:
+{
+  "symbol": "AAPL",
+  "currentPrice": 189.3,
+  "change_pct": 0.85,
+  "sma20": 185.2,
+  "beta": 1.24,
+  "annualized_return": 0.18,
+  "annualized_std": 0.22,
+  "capm_expected": 0.1139,
+  "alpha": 0.0661,
+  "sharpe": 0.62,
+  "signal": "BUY",
+  "signal_reason": "Alpha חיובי של 6.6% מעל ציפיות CAPM. Sharpe Ratio חיובי.",
+  "history": [
+    { "date": "2024-01-02", "close": 185.1, "volume": 55000000 }
+  ],
+  "source": "yahoo",
+  "cached": false
+}
+
+// === RESPONSE FORMAT — action=csv ===
+Return ContentService text/csv:
+Date,Close,Volume,Daily_Return
+2024-01-02,185.1,55000000,0.0032
+...
+
+// === RESPONSE FORMAT — action=health ===
+Return JSON: { "status": "ok", "timestamp": "...", "version": "2.0" }
+
+// === TECHNICAL REQUIREMENTS ===
+1. CacheService.getScriptCache() with key "v2_{symbol}_{action}", TTL 3600 seconds.
+2. Skip cache when nocache=1.
+3. All ContentService responses must set Access-Control-Allow-Origin: * via
+   ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON)
+   (Note: GAS does not support setHeader on TextOutput — do not attempt it)
+4. Wrap ALL external UrlFetch calls in try/catch. Log errors with console.error().
+5. signal_reason must be a short Hebrew string explaining the signal.
+6. Use only built-in GAS services: UrlFetch, CacheService, JSON, Math, console.
+   Do NOT use SpreadsheetApp or any Sheets-related service.
+7. SPY data fetch uses the same 3-tier logic as the target symbol.
+8. If Beta calculation fails (insufficient data), use Beta = 1.0 as default.
+    </div>
+  </div>
+</section>
+
+<section id="s4" class="sec">
+  <div class="sh fi"><div class="sn">4</div>
+    <div><h2>אנטומיה של הפרומפט — למה כל שורה הכרחית</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 15 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <p>הפרומפט לא נכתב כך "כי כך". כל קטע מגדיר "גדר" שמונע מה-AI לסטות לכיוון לא רצוי. הטבלה הבאה מסבירה כל חלק.</p>
+    <table class="atbl">
+      <thead><tr><th style="width:40%">קטע מהפרומפט</th><th>למה הוא הכרחי</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="pseg">You are a senior backend engineer specializing in Google Apps Script.</span></td>
+          <td><strong>Role Assignment:</strong> AI מייצר קוד ברמה גבוהה יותר כשמגדירים לו תפקיד מומחה. "Backend engineer" מונע מהסקריפט לכלול קוד Frontend.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">Do NOT generate any HTML or CSS. Output ONLY the .gs code</span></td>
+          <td><strong>Output Scoping:</strong> ללא הנחיה זו, AI נוטה להוסיף HTML "שימושי" שמבלבל בין הקבצים ושובר את ההדבקה לעורך.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">TIER 1 — Yahoo Finance... TIER 2 — Alpha Vantage... TIER 3 — Google Finance</span></td>
+          <td><strong>Fallback Architecture:</strong> הגדרת סדר מפורשת מונעת מה-AI לבחור מקור אחד ולהתעלם מהשאר. ה"סדר" חשוב — Yahoo ראשון כי מהיר וחינמי.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">var AV_KEY = 'YOUR_ALPHA_VANTAGE_KEY';</span></td>
+          <td><strong>Key Placement:</strong> מבטיח שה-AI ישים את המפתח בתוך ה-.gs ולא ב-HTML. Placeholder ברור = לא תשכחו להחליף.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">Beta = Covariance(...) / Variance(...)</span></td>
+          <td><strong>Calculation Spec:</strong> בלי נוסחה מפורשת, ה-AI עשוי להשתמש ב-Beta משוער או להוריד מ-API. נוסחה מדויקת = חישוב עצמאי אמין.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">signal_reason must be a short Hebrew string</span></td>
+          <td><strong>Language Constraint:</strong> מבטיח שהסבר ההמלצה יגיע בעברית ישירות מהשרת — לא תצטרכו לתרגם ב-Frontend.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">Do NOT use SpreadsheetApp or any Sheets-related service.</span></td>
+          <td><strong>Dependency Ban:</strong> AI "מכיר" GAS בעיקר בהקשר של Sheets. ללא איסור מפורש — עלול להוסיף SpreadsheetApp.getActiveSpreadsheet() שיישבר ב-Standalone.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">If Beta calculation fails... use Beta = 1.0 as default.</span></td>
+          <td><strong>Graceful Degradation:</strong> SPY לפעמים מחזיר נתונים חסרים. Beta=1.0 (ניטרלי) מבטיח שה-CAPM ימשיך לפעול גם כשאין מספיק היסטוריה.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s5" class="sec">
+  <div class="sh fi"><div class="sn">5</div>
+    <div><h2>הדבקה, בדיקה ושמירה</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 15 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-paste" style="color:#0d9488"></i> לאחר קבלת הקוד מה-AI</h3>
+    <div class="psteps">
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--navy)">1</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>ודאו שה-AI נתן קוד .gs בלבד</strong><span>הפלט צריך להתחיל ב-<code style="direction:ltr;unicode-bidi:embed">var CONFIG = {</code> או <code style="direction:ltr;unicode-bidi:embed">function doGet(e)</code> — ללא תגיות HTML. אם יש HTML — בקשו מה-AI לנסות שוב עם ההנחיה: "Output only .gs code, no HTML".</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--navy)">2</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>החליפו את YOUR_ALPHA_VANTAGE_KEY</strong><span>אם לא עשיתם זאת בפרומפט — עשו זאת עכשיו בקוד שקיבלתם. חפשו <code style="direction:ltr;unicode-bidi:embed">YOUR_ALPHA_VANTAGE_KEY</code> והחליפו במפתח האמיתי שלכם.</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--navy)">3</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>הדביקו לעורך GAS</strong><span>חזרו לחלון script.google.com, לחצו בתוך העורך הריק, <code style="direction:ltr;unicode-bidi:embed">Ctrl+V</code>. הקוד אמור למלא את המסך.</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--navy)">4</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>שמרו — Ctrl+S</strong><span>בר הכלים יציג "Saved" לרגע. אם יש שגיאת syntax (קו אדום), העתיקו את הודעת השגיאה לאותו AI וביקשו תיקון.</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--ok)">5</div><div class="pstep-connector" style="background:transparent"></div></div>
+        <div class="pstep-body" style="border-color:var(--ok);background:var(--okl)"><strong>✅ הקוד שמור — מוכן ל-Deploy</strong><span>הסקריפט קיים בענן Google. עוד לא "חי" — צריך לפרסמו כ-Web App בשלב הבא.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s6" class="sec">
+  <div class="sh fi"><div class="sn">6</div>
+    <div><h2>פרסום כ-Web App — Deploy</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 15 דקות — השלב הקריטי!</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-rocket" style="color:#7c3aed"></i> Deploy — הפיכת הסקריפט ל-API חי</h3>
+    <div class="hb bl">
+      <div class="hbt"><i class="fa-solid fa-circle-info"></i> מה זה בכלל Deploy?</div>
+      "פרסום" (Deploy) הוא הרגע שבו גוגל לוקחת את הקוד השמור שלנו ו<strong>מפעילה אותו על שרת ציבורי</strong>, עם כתובת URL קבועה. רק אז הסקריפט מגיב לבקשות מהאינטרנט. בלי Deploy — הקוד קיים אבל "ישן" בענן ולא נגיש לאף אחד.
+    </div>
+    <div class="hb rd">
+      <div class="hbt"><i class="fa-solid fa-triangle-exclamation"></i> הגדרות שגויות = אפליקציה שבורה</div>
+      שלושה שדות קריטיים ב-Deploy. טעות באחד מהם — ה-URL לא יגיב, ידרוש Login, או ירוץ עם הרשאות שגויות. עקבו בדיוק.
+    </div>
+    <div class="psteps">
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--pur, #7c3aed)">1</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>לחצו "Deploy" → "New deployment"</strong><span>הכפתור הכחול/ירוק בפינה הימנית עליונה של Apps Script Editor.</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--pur, #7c3aed)">2</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>לחצו על גלגל השיניים ⚙️ → בחרו "Web app"</strong><span>ייפתח חלון הגדרות. תחת "Select type" לחצו על הגלגל ובחרו <strong>Web app</strong> בדיוק — לא "API executable", לא "Add-on".</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--pur, #7c3aed)">3</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>הגדרה 1 — Execute as: <span style="color:var(--ok)">Me (your email)</span></strong><span>הסקריפט ירוץ עם ההרשאות <em>שלכם</em>. כך ה-API Key שהכנסתם פועל — הוא בחשבון שלכם.</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--pur, #7c3aed)">4</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>הגדרה 2 — Who has access: <span style="color:var(--ok)">Anyone</span></strong><span><strong>לא</strong> "Anyone with Google Account" — זה דורש Login. <strong>Anyone</strong> = כל URL call עובד ישירות, כולל מה-HTML Frontend שיבנה קובץ 3.</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--pur, #7c3aed)">5</div><div class="pstep-connector"></div></div>
+        <div class="pstep-body"><strong>לחצו "Deploy" ואשרו הרשאות</strong><span>Google תבקש אישור גישה. לחצו "Authorize access" → בחרו את חשבונכם → אם מופיעה "Google hasn't verified this app" — לחצו <strong>"Advanced" ← "Go to Business Intelligence Script (unsafe)"</strong>. זה בטוח — זה הקוד שלכם.</span></div>
+      </div>
+      <div class="pstep-row">
+        <div class="pstep-line"><div class="pstep-circle" style="background:var(--ok)">6</div><div class="pstep-connector" style="background:transparent"></div></div>
+        <div class="pstep-body" style="border-color:var(--ok);background:var(--okl)"><strong>✅ העתיקו את ה-Web App URL!</strong><span>לאחר Deploy מוצלח, Google מציגה URL בפורמט:<br><code style="font-family:'Fira Code',monospace;font-size:.8rem;direction:ltr;display:block;margin-top:4px;background:rgba(0,0,0,.06);padding:4px 8px;border-radius:4px">https://script.google.com/macros/s/AKfycbXXXXXXXX/exec</code><br>שמרו אותו! הוא ה-"כתובת השרת" שתזינו בקובץ 3.</span></div>
+      </div>
+    </div>
+
+    <div class="hb or" style="margin-top:20px">
+      <div class="hbt"><i class="fa-solid fa-rotate"></i> לכל שינוי עתידי בקוד — Deploy מחדש!</div>
+      שמירה לבד לא מעדכנת את ה-URL הקיים. לאחר כל שינוי: Deploy → Manage deployments → עיפרון ✏️ → Version: "New version" → Deploy. אותו URL, קוד חדש.
+    </div>
+  </div>
+</section>
+
+<section id="s7" class="sec">
+  <div class="sh fi"><div class="sn">7</div>
+    <div><h2>בדיקת ה-Endpoint — האם הסקריפט עובד?</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 10 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-vial" style="color:#0d9488"></i> בדיקות שלב-אחר-שלב</h3>
+    <div class="hb bl">
+      <div class="hbt"><i class="fa-solid fa-circle-info"></i> מה זה "Endpoint"?</div>
+      Endpoint הוא פשוט <strong>כתובת URL שמקבלת בקשות ומחזירה נתונים</strong>. ה-URL שקיבלתם לאחר ה-Deploy הוא ה-Endpoint שלכם. בדיוק כמו שאתם פותחים URL של אתר — אתם פותחים URL של ה-API שלכם, רק שבמקום דף HTML מקבלים JSON.
+    </div>
+    <p>לפני שנבנה את ה-Frontend, נוודא שהסקריפט מגיב כהלכה. כל הבדיקות הבאות מתבצעות ישירות בדפדפן — פשוט הכניסו את הכתובת לשורת ה-URL:</p>
+
+    <div class="hb te">
+      <div class="hbt"><i class="fa-solid fa-1"></i> בדיקת Health Check</div>
+      הכניסו בדפדפן:<br>
+      <code style="font-family:'Fira Code',monospace;font-size:.82rem;direction:ltr;display:block;margin-top:6px;background:rgba(0,0,0,.07);padding:5px 10px;border-radius:5px">[YOUR_URL]/exec?action=health</code>
+      <strong>תשובה מצופה:</strong><br>
+      <code style="font-family:'Fira Code',monospace;font-size:.82rem;background:rgba(0,0,0,.07);padding:4px 8px;border-radius:4px;display:inline-block;direction:ltr;margin-top:4px">{"status":"ok","timestamp":"...","version":"2.0"}</code><br>
+      <small style="color:#475569;margin-top:6px;display:block">💡 אם הדפדפן מציג JSON — הכל תקין. אם מופיעה שגיאה — ראו סעיף 8.</small>
+    </div>
+
+    <div class="hb te">
+      <div class="hbt"><i class="fa-solid fa-2"></i> בדיקת ניתוח מניה</div>
+      <code style="font-family:'Fira Code',monospace;font-size:.82rem;direction:ltr;display:block;margin-top:6px;background:rgba(0,0,0,.07);padding:5px 10px;border-radius:5px">[YOUR_URL]/exec?symbol=AAPL&action=analyze</code>
+      <strong>תשובה מצופה:</strong> JSON עם currentPrice, beta, capm_expected, alpha, signal ועוד. הטעינה עשויה לקחת 3-8 שניות בקריאה הראשונה (Cold Start = "התעוררות" השרת).<br>
+      <small style="color:#475569;margin-top:6px;display:block">💡 לא מבינים את ה-JSON שמופיע? זה נורמלי — ה-Frontend בקובץ 3 יהפוך אותו לגרפים וכרטיסים יפים.</small>
+    </div>
+
+    <div class="hb te">
+      <div class="hbt"><i class="fa-solid fa-3"></i> בדיקת ייצוא CSV</div>
+      <code style="font-family:'Fira Code',monospace;font-size:.82rem;direction:ltr;display:block;margin-top:6px;background:rgba(0,0,0,.07);padding:5px 10px;border-radius:5px">[YOUR_URL]/exec?symbol=MSFT&action=csv</code>
+      <strong>תשובה מצופה:</strong> טקסט CSV עם שורות Date,Close,Volume,Daily_Return. אמור להוריד אוטומטית או להציג כטקסט.
+    </div>
+
+    <div class="hb te">
+      <div class="hbt"><i class="fa-solid fa-4"></i> בדיקת Nocache</div>
+      <code style="font-family:'Fira Code',monospace;font-size:.82rem;direction:ltr;display:block;margin-top:6px;background:rgba(0,0,0,.07);padding:5px 10px;border-radius:5px">[YOUR_URL]/exec?symbol=TSLA&nocache=1</code>
+      <strong>תשובה מצופה:</strong> JSON זהה אבל עם <code style="direction:ltr;unicode-bidi:embed;background:rgba(0,0,0,.07);padding:1px 5px;border-radius:3px">"cached":false</code> — מראה שהסקריפט קורא מ-API חי.
+    </div>
+  </div>
+</section>
+
+<section id="s8" class="sec">
+  <div class="sh fi"><div class="sn">8</div>
+    <div><h2>שגיאות נפוצות ואיך לפתור</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 5 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-bug" style="color:#dc2626"></i> 6 השגיאות הנפוצות ביותר</h3>
+    <table class="etbl">
+      <thead><tr><th>מה רואים</th><th>סיבה</th><th>פתרון</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>{"error":true,"message":"כל מקורות..."}</td>
+          <td>כל 3 ה-APIs נכשלו בו-זמנית</td>
+          <td>המתינו 2-3 דקות ונסו שוב. בדקו שמפתח Alpha Vantage תקין.</td>
+        </tr>
+        <tr>
+          <td>404 / "Script not found"</td>
+          <td>ה-URL שגוי או ה-Deployment נמחק</td>
+          <td>חזרו ל-script.google.com, פתחו הפרויקט, Deploy → Manage → ודאו הגדרות.</td>
+        </tr>
+        <tr>
+          <td>דף Login של Google</td>
+          <td>הגדרתם "Anyone with Google Account" במקום "Anyone"</td>
+          <td>Deploy → Manage → ערכו את ה-Deployment → שנו ל-"Anyone" → Deploy.</td>
+        </tr>
+        <tr>
+          <td>שינוי בקוד לא משתקף</td>
+          <td>לא עשיתם Deploy חדש אחרי השינוי</td>
+          <td>Deploy → Manage → ✏️ Edit → Version: "New version" → Deploy.</td>
+        </tr>
+        <tr>
+          <td>TypeError: Cannot read property...</td>
+          <td>Yahoo החזיר מבנה JSON שונה</td>
+          <td>הסקריפט אמור לעבור אוטומטית ל-Tier 2. אם לא — בדקו שה-try/catch קיים.</td>
+        </tr>
+        <tr>
+          <td>beta: null או capm_expected: null</td>
+          <td>נתוני SPY לא הגיעו — חישוב Beta נכשל</td>
+          <td>לפי הפרומפט, Beta אמור לחזור ל-1.0 אוטומטית. אם לא — בקשו מה-AI לתקן.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="enc">
+      <div class="enci">🎯</div>
+      <p>הסקריפט עובד ומחזיר JSON תקין? מצוין — מוכנים לקובץ 3: בניית ה-Frontend!</p>
+    </div>
+  </div>
+</section>
+
+</div><!-- wrap -->
+<footer style="background:var(--navy);color:rgba(255,255,255,.7);text-align:center;padding:24px;font-size:.84rem;margin-top:40px">
+  קובץ 2 מתוך 3 | מפגש 3 — ד"ר שי צבאן, Ph.D. | כל הזכויות שמורות © 2026
+</footer>
+<script>
+window.addEventListener('scroll',()=>{
+  const d=document.documentElement;
+  document.getElementById('pbf').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%';
+});
+const secs=document.querySelectorAll('.sec');
+const nls=document.querySelectorAll('.nl');
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){
+  nls.forEach(a=>a.classList.remove('on'));
+  const l=document.querySelector('.nl[href="#'+x.target.id+'"]');
+  if(l)l.classList.add('on');
+}});},{threshold:.25});
+secs.forEach(s=>obs.observe(s));
+function cpCode(id){
+  const el=document.getElementById(id);
+  const txt=el.innerText.replace('📋 העתק\n','').replace('📋 העתק','').trim();
+  navigator.clipboard.writeText(txt).then(()=>{
+    const b=el.querySelector('.copybtn');
+    const orig=b.textContent;
+    b.textContent='✅ הועתק!';
+    setTimeout(()=>b.textContent=orig,2000);
+  });
+}
+</script></body></html>
