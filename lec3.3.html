@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>מפגש 3 – קובץ 3: ממשק המשתמש | ד"ר שי צבאן</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Rubik:wght@600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --p:#1d4ed8;--pl:#eff6ff;--pm:#bfdbfe;
+  --teal:#0d9488;--tl:#f0fdfa;
+  --navy:#1e3a5f;--nd:#0f2340;
+  --ok:#16a34a;--okl:#f0fdf4;
+  --warn:#d97706;--wl:#fffbeb;
+  --err:#dc2626;--el:#fef2f2;
+  --pur:#7c3aed;--purl:#f5f3ff;
+  --bg:#f0f4f8;--wh:#fff;--bd:#e2e8f0;
+  --tx:#1e293b;--mu:#64748b;
+  --sh:0 1px 3px rgba(0,0,0,.08);
+  --shl:0 10px 40px rgba(0,0,0,.12);
+  --r:14px;--rs:8px;--rl:22px
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Assistant',sans-serif;background:var(--bg);color:var(--tx);line-height:1.75;overflow-x:hidden}
+::-webkit-scrollbar{width:7px}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+.pb{position:fixed;top:0;right:0;left:0;height:4px;z-index:999;background:rgba(0,0,0,.06)}
+.pbf{height:100%;background:linear-gradient(90deg,#1d4ed8,#0d9488);width:0%;transition:width .15s}
+/* HERO */
+.hero{background:linear-gradient(135deg,#0f2340 0%,#1e3a5f 55%,#0d9488 100%);
+  padding:80px 20px 120px;text-align:center;position:relative;overflow:hidden}
+.hero:before{content:'';position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:26px 26px}
+.hi{position:relative;z-index:1;max-width:860px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.22);color:#fff;padding:6px 20px;border-radius:100px;
+  font-size:.86rem;font-weight:700;margin-bottom:20px}
+.hero h1{font-family:'Rubik',sans-serif;font-size:clamp(1.9rem,4.5vw,3rem);font-weight:900;
+  color:#fff;line-height:1.2;margin-bottom:14px}
+.hero h1 em{color:#7dd3fc;font-style:normal}
+.hero-sub{font-size:1.05rem;color:rgba(255,255,255,.78);max-width:600px;margin:0 auto 26px;line-height:1.7}
+.hmeta{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.hm{display:flex;align-items:center;gap:6px;padding:6px 14px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.17);
+  border-radius:var(--rs);font-weight:600;color:rgba(255,255,255,.84);font-size:.84rem}
+/* FILE STRIP */
+.fstrip{background:var(--teal);color:#fff;text-align:center;padding:12px;font-size:.85rem;font-weight:700}
+.fstrip span{background:rgba(0,0,0,.2);padding:3px 10px;border-radius:100px;margin:0 6px;font-size:.78rem}
+/* NAV */
+.nav{position:sticky;top:10px;z-index:100;max-width:1020px;margin:-48px auto 48px;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(16px);
+  border:1px solid var(--bd);border-radius:100px;padding:6px 10px;
+  display:flex;gap:4px;box-shadow:var(--shl);overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nl{color:var(--mu);text-decoration:none;padding:7px 13px;border-radius:100px;
+  font-size:.8rem;font-weight:700;transition:.2s;white-space:nowrap}
+.nl:hover{color:var(--p);background:var(--pl)}.nl.on{background:var(--navy);color:#fff}
+/* LAYOUT */
+.wrap{max-width:940px;margin:0 auto;padding:0 18px 120px}
+.sec{margin-bottom:80px;scroll-margin-top:85px}
+.sh{display:flex;align-items:flex-start;gap:14px;margin-bottom:28px;
+  padding-bottom:14px;border-bottom:2px solid var(--bd)}
+.sn{flex-shrink:0;width:48px;height:48px;background:var(--navy);color:#fff;
+  border-radius:var(--rs);display:flex;align-items:center;justify-content:center;
+  font-family:'Rubik',sans-serif;font-weight:800;font-size:1.3rem}
+.sh h2{font-family:'Rubik',sans-serif;font-size:1.55rem;font-weight:700;color:var(--navy)}
+.sh .st{font-size:.8rem;color:var(--mu);margin-top:4px;display:flex;align-items:center;gap:5px}
+/* CARD */
+.cb{background:var(--wh);border:1px solid var(--bd);border-radius:var(--rl);
+  padding:34px;box-shadow:var(--sh);margin-bottom:22px}
+.cb h3{font-family:'Rubik',sans-serif;font-size:1.2rem;margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;color:var(--navy)}
+.cb h4{font-family:'Rubik',sans-serif;font-size:1rem;margin:22px 0 9px;
+  padding-right:11px;border-right:3px solid var(--p);color:var(--tx)}
+.cb p{font-size:1rem;margin-bottom:13px;color:#334155;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.cb ul,.cb ol{padding-right:20px;margin-bottom:11px}
+.cb li{font-size:.97rem;color:#334155;margin-bottom:7px;line-height:1.65}
+/* HIGHLIGHT BOXES */
+.hb{padding:16px 20px;border-radius:var(--r);margin:16px 0;border-right:5px solid}
+.hbt{font-weight:700;font-size:.83rem;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.hb.bl{background:var(--pl);border-color:var(--p)}.hb.bl .hbt{color:var(--p)}
+.hb.gn{background:var(--okl);border-color:var(--ok)}.hb.gn .hbt{color:var(--ok)}
+.hb.or{background:var(--wl);border-color:var(--warn)}.hb.or .hbt{color:var(--warn)}
+.hb.rd{background:var(--el);border-color:var(--err)}.hb.rd .hbt{color:var(--err)}
+.hb.te{background:var(--tl);border-color:var(--teal)}.hb.te .hbt{color:var(--teal)}
+/* ENCOURAGE */
+.enc{background:linear-gradient(135deg,#fdf4ff,#ede9fe);border:1px solid #ddd6fe;
+  border-radius:var(--r);padding:20px;text-align:center;margin:22px 0}
+.enc p{color:#6d28d9;font-weight:600;font-size:1rem}
+/* STEPS */
+.step{display:flex;gap:14px;padding:16px 18px;background:var(--bg);
+  border:1px solid var(--bd);border-radius:var(--r);margin-bottom:9px}
+.stpn{flex-shrink:0;width:34px;height:34px;background:var(--navy);color:#fff;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem}
+.stpc{font-size:.92rem;color:#475569;line-height:1.65}
+.stpc strong{display:block;font-weight:700;color:var(--navy);margin-bottom:3px;font-size:.94rem}
+/* INLINE CODE - fixed (was broken "cd" rule before) */
+code{font-family:'Fira Code',monospace;font-size:.82rem;background:rgba(0,0,0,.07);
+  padding:1px 6px;border-radius:3px;direction:ltr;unicode-bidi:embed}
+/* CODE BLOCK */
+.codeblock{background:#0f172a;color:#e2e8f0;border-radius:var(--r);
+  padding:22px 22px 22px 60px;font-family:'Fira Code',monospace;font-size:.79rem;
+  line-height:1.75;overflow-x:auto;direction:ltr;text-align:left;
+  position:relative;margin:14px 0;max-height:560px;overflow-y:auto}
+.copybtn{position:sticky;top:0;float:left;margin-left:-44px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  color:#94a3b8;border-radius:6px;padding:4px 8px;font-size:.72rem;cursor:pointer;
+  transition:.2s;font-family:'Assistant',sans-serif}
+.copybtn:hover{background:rgba(255,255,255,.2);color:#fff}
+.ck{color:#569cd6}.cs{color:#ce9178}.cc{color:#6a9955}.cf{color:#dcdcaa}
+/* TABLES */
+.tbl{width:100%;border-collapse:collapse;font-size:.88rem;margin:14px 0}
+.tbl th{background:var(--navy);color:#fff;padding:10px 12px;text-align:right;font-weight:700}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--bd);vertical-align:top;line-height:1.6}
+.tbl tr:nth-child(even) td{background:var(--bg)}
+.tbl tr:hover td{background:var(--pl)}
+.atbl{width:100%;border-collapse:collapse;font-size:.88rem;margin:14px 0}
+.atbl th{background:var(--navy);color:#fff;padding:10px 12px;text-align:right;font-weight:700}
+.atbl td{padding:10px 12px;border-bottom:1px solid var(--bd);vertical-align:top;line-height:1.6}
+.atbl tr:nth-child(even) td{background:var(--bg)}
+.pseg{font-family:'Fira Code',monospace;font-size:.77rem;color:#1d4ed8;
+  direction:ltr;text-align:left;line-height:1.5;display:block}
+/* MOCKUP */
+.mockup{background:#0f172a;border-radius:var(--r);padding:20px;
+  margin:16px 0;border:1px solid #334155}
+.mockup-bar{display:flex;align-items:center;gap:6px;margin-bottom:14px}
+.mock-dot{width:10px;height:10px;border-radius:50%}
+.mockup-title{color:#94a3b8;font-size:.78rem;margin-right:auto;
+  font-family:'Fira Code',monospace;direction:ltr}
+.mock-card{background:#1e293b;border-radius:10px;padding:14px;
+  margin-bottom:10px;border:1px solid #334155}
+.mock-label{font-size:.72rem;color:#64748b;margin-bottom:4px}
+.mock-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.buy-badge{display:inline-block;background:rgba(34,197,94,.15);color:#22c55e;
+  border:1px solid rgba(34,197,94,.3);padding:4px 14px;border-radius:100px;
+  font-size:.88rem;font-weight:700}
+.sell-badge{display:inline-block;background:rgba(239,68,68,.15);color:#ef4444;
+  border:1px solid rgba(239,68,68,.3);padding:4px 14px;border-radius:100px;
+  font-size:.88rem;font-weight:700}
+.hold-badge{display:inline-block;background:rgba(234,179,8,.15);color:#eab308;
+  border:1px solid rgba(234,179,8,.3);padding:4px 14px;border-radius:100px;
+  font-size:.88rem;font-weight:700}
+/* CSV FLOW */
+.csv-flow{display:flex;flex-direction:column;align-items:center;gap:0;margin:20px 0}
+.csv-node{background:var(--wh);border:2px solid var(--bd);border-radius:var(--r);
+  padding:14px 20px;text-align:center;width:260px}
+.csv-node.hl{background:var(--tl);border-color:var(--teal)}
+.csv-node .cn-ico{font-size:1.6rem;margin-bottom:4px}
+.csv-node .cn-t{font-weight:700;font-size:.88rem;color:var(--navy)}
+.csv-node .cn-d{font-size:.78rem;color:var(--mu);margin-top:3px;line-height:1.4}
+.csv-arr{font-size:1.4rem;color:var(--teal);padding:3px 0;line-height:1}
+/* QUIZ */
+.quiz{background:var(--wh);border:2px solid var(--bd);border-radius:var(--rl);
+  padding:26px;margin-bottom:18px}
+.quiz.ok{border-color:var(--ok)}.quiz.no{border-color:var(--err)}
+.qn{font-size:.76rem;font-weight:700;color:var(--p);letter-spacing:.5px;margin-bottom:8px}
+.qq{font-size:1.03rem;font-weight:700;color:var(--navy);margin-bottom:16px;line-height:1.55}
+.qopts{display:flex;flex-direction:column;gap:7px}
+.qo{display:flex;align-items:center;gap:11px;padding:11px 15px;
+  border:2px solid var(--bd);border-radius:var(--r);cursor:pointer;
+  transition:.2s;font-size:.93rem;color:var(--tx)}
+.qo:hover{background:var(--pl);border-color:var(--p)}
+.qo.right{background:var(--okl);border-color:var(--ok);color:var(--ok)}
+.qo.wrong{background:var(--el);border-color:var(--err);color:var(--err)}
+.qo.show{background:var(--okl);border-color:var(--ok)}
+.ql{flex-shrink:0;width:28px;height:28px;background:var(--bg);border:2px solid var(--bd);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.78rem}
+.qexpl{display:none;margin-top:16px;padding:16px;
+  background:linear-gradient(135deg,#f0f9ff,#f0fdf4);
+  border-radius:var(--r);border:1px solid var(--pm);font-size:.9rem;line-height:1.7}
+.qet{font-weight:700;color:var(--navy);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+/* RESPONSIVE */
+@media(max-width:640px){
+  .mock-grid{grid-template-columns:1fr 1fr}
+  .csv-node{width:200px}
+}
+.fi{animation:fi .6s ease both}
+@keyframes fi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+</style></head><body>
+<div class="pb"><div class="pbf" id="pbf"></div></div>
+<div class="fstrip">
+  <span>קובץ 3 מתוך 3</span> ממשק המשתמש — HTML Frontend, ייצוא CSV, חיבור מלא ובדיקות
+</div>
+<header class="hero"><div class="hi fi">
+  <div class="badge"><i class="fa-solid fa-display"></i>&nbsp; מפגש 3 | ד"ר שי צבאן, Ph.D.</div>
+  <h1>בניית ה-Frontend:<br><em>הממשק שהמשתמש רואה</em></h1>
+  <p class="hero-sub">ניצור את ממשק ניתוח המניות — גרף, לוח CAPM, המלצה וייצוא CSV — ונחבר אותו לסקריפט שבנינו בקובץ 2. בסוף המפגש תהיה לכם אפליקציה עובדת לחלוטין.</p>
+  <div class="hmeta">
+    <div class="hm"><i class="fa-regular fa-clock"></i> ~70 דקות</div>
+    <div class="hm"><i class="fa-solid fa-file-alt"></i> קובץ 3 מתוך 3</div>
+    <div class="hm"><i class="fa-solid fa-chart-bar"></i> Chart.js + CAPM UI</div>
+    <div class="hm"><i class="fa-solid fa-download"></i> CSV Export</div>
+    <div class="hm"><i class="fa-solid fa-circle-check"></i> בדיקות מלאות</div>
+  </div>
+</div></header><nav class="nav" id="nav">
+  <a class="nl on" href="#s1">הכנה</a>
+  <a class="nl" href="#s2">מה נבנה</a>
+  <a class="nl" href="#s3">Frontend vs Backend</a>
+  <a class="nl" href="#s4">הפרומפט</a>
+  <a class="nl" href="#s5">אנטומיה</a>
+  <a class="nl" href="#s6">חיבור GAS_URL</a>
+  <a class="nl" href="#s7">ייצוא CSV</a>
+  <a class="nl" href="#s8">בדיקות</a>
+  <a class="nl" href="#s9">שגיאות</a>
+  <a class="nl" href="#s10">חידון</a>
+  <a class="nl" href="#s11">סיכום</a>
+</nav>
+<div class="wrap"><section id="s1" class="sec">
+  <div class="sh fi"><div class="sn">1</div>
+    <div><h2>הכנה — מה צריך לפני שמתחילים</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 5 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-list-check" style="color:#0d9488"></i> רשימת תיוג</h3>
+    <p>קובץ 3 הוא החוליה האחרונה בשרשרת. לפני שמתחילים — ודאו שקובץ 2 הושלם בהצלחה:</p>
+    <div class="hb gn">
+      <div class="hbt"><i class="fa-solid fa-circle-check"></i> כל הסימונים חייבים להיות ✅</div>
+      <ul style="margin-right:18px;line-height:2.4">
+        <li>✅ <strong>הסקריפט GAS נוצר ונשמר</strong> ב-script.google.com</li>
+        <li>✅ <strong>Deploy בוצע</strong> כ-Web App עם "Anyone" + "Execute as Me"</li>
+        <li>✅ <strong>ה-URL שמור אצלכם</strong> — בפורמט <code>https://script.google.com/macros/s/.../exec</code></li>
+        <li>✅ <strong>Health Check עבר</strong> — URL + <code>?action=health</code> מחזיר <code>{"status":"ok"}</code></li>
+        <li>✅ <strong>ניתוח AAPL עבד</strong> — URL + <code>?symbol=AAPL</code> מחזיר JSON עם beta, alpha, signal</li>
+      </ul>
+    </div>
+    <div class="hb rd">
+      <div class="hbt"><i class="fa-solid fa-triangle-exclamation"></i> אם אחד מהסימונים חסר</div>
+      עצרו כאן וחזרו לקובץ 2. ה-Frontend לא יעבוד בלי שרת GAS תקין מאחוריו. זה כמו לבנות חלון ראווה לחנות לפני שהחנות קיימת.
+    </div>
+  </div>
+</section><section id="s2" class="sec">
+  <div class="sh fi"><div class="sn">2</div>
+    <div><h2>מה נבנה — תצוגה מקדימה של הממשק הגמור</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 8 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-eye" style="color:#7c3aed"></i> Mockup — כך ייראה הממשק</h3>
+    <p>הפרומפט יייצר אפליקציה חד-עמודית, עצמאית, שנפתחת ישירות בדפדפן בלחיצה כפולה. להלן תצוגה מקדימה של מה שנקבל:</p>
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mock-dot" style="background:#ef4444"></div>
+        <div class="mock-dot" style="background:#fbbf24"></div>
+        <div class="mock-dot" style="background:#22c55e"></div>
+        <span class="mockup-title">ניתוח מניות — בינה עסקית | ד"ר שי צבאן</span>
+      </div>
+      <div style="background:#1e293b;border-radius:10px;padding:14px;margin-bottom:10px;display:flex;gap:10px;align-items:center;border:1px solid #334155;flex-wrap:wrap">
+        <div style="flex:1;min-width:100px;background:#0f172a;border:1px solid #475569;border-radius:6px;padding:8px 12px;color:#94a3b8;font-size:.85rem;font-family:'Fira Code',monospace;direction:ltr">AAPL</div>
+        <div style="background:#3b82f6;color:#fff;padding:8px 18px;border-radius:6px;font-size:.85rem;font-weight:700;white-space:nowrap">נתח מניה</div>
+        <div style="background:#0d9488;color:#fff;padding:8px 14px;border-radius:6px;font-size:.85rem;font-weight:700;white-space:nowrap">⬇ ייצוא CSV</div>
+      </div>
+      <div class="mock-card" style="height:110px;display:flex;align-items:center;justify-content:center;border-style:dashed">
+        <span style="color:#475569;font-size:.85rem">📈 גרף מחירים — 3 חודשים (Chart.js) + קו SMA-20</span>
+      </div>
+      <div class="mock-grid">
+        <div class="mock-card"><div class="mock-label">מחיר נוכחי</div>
+          <div style="font-family:'Fira Code',monospace;color:#22c55e;font-size:1.1rem">$189.30</div>
+          <div style="font-size:.72rem;color:#22c55e">▲ +0.85%</div></div>
+        <div class="mock-card"><div class="mock-label">Beta (סיכון)</div>
+          <div style="font-family:'Fira Code',monospace;color:#7dd3fc;font-size:1.1rem">1.24</div>
+          <div style="font-size:.72rem;color:#64748b">גבוה מהשוק</div></div>
+        <div class="mock-card"><div class="mock-label">CAPM Expected</div>
+          <div style="font-family:'Fira Code',monospace;color:#a78bfa;font-size:1.1rem">11.4%</div>
+          <div style="font-size:.72rem;color:#64748b">תשואה צפויה לשנה</div></div>
+        <div class="mock-card"><div class="mock-label">Alpha</div>
+          <div style="font-family:'Fira Code',monospace;color:#22c55e;font-size:1.1rem">+6.6%</div>
+          <div style="font-size:.72rem;color:#22c55e">מעל ציפיות CAPM</div></div>
+        <div class="mock-card"><div class="mock-label">Sharpe Ratio</div>
+          <div style="font-family:'Fira Code',monospace;color:#fbbf24;font-size:1.1rem">0.62</div>
+          <div style="font-size:.72rem;color:#64748b">תשואה/סיכון</div></div>
+        <div class="mock-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+          <div class="mock-label">המלצה</div>
+          <div class="buy-badge" style="margin-top:6px">📈 קנה</div></div>
+      </div>
+      <div class="mock-card">
+        <div class="mock-label">הסבר ההמלצה (מגיע מהסקריפט בעברית)</div>
+        <div style="color:#e2e8f0;font-size:.82rem;margin-top:4px">Alpha חיובי של 6.6% מעל ציפיות CAPM. Sharpe Ratio חיובי מעיד על תשואה טובה ביחס לסיכון.</div>
+      </div>
+    </div>
+    <p style="font-size:.85rem;color:var(--mu);margin-top:8px">* Mockup ייצוגי — עיצוב סופי נקבע על ידי ה-AI.</p>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-layer-group" style="color:#1d4ed8"></i> מה כולל הממשק</h3>
+    <table class="tbl">
+      <thead><tr><th>רכיב</th><th>תפקיד</th><th>מאיפה מגיע הנתון?</th></tr></thead>
+      <tbody>
+        <tr><td><strong>שדה חיפוש</strong></td><td>המשתמש מקליד סמל מניה (AAPL, TSLA...)</td><td>קלט ידני</td></tr>
+        <tr><td><strong>גרף מחירים</strong></td><td>קו מחיר 3 חודשים + קו SMA-20</td><td>שדה <code>history</code> בJSON מהסקריפט</td></tr>
+        <tr><td><strong>כרטיסי מדדים</strong></td><td>מחיר, Beta, CAPM, Alpha, Sharpe</td><td>שדות JSON מהסקריפט</td></tr>
+        <tr><td><strong>תגית המלצה</strong></td><td>BUY / HOLD / SELL בצבע</td><td>שדה <code>signal</code> + <code>signal_reason</code></td></tr>
+        <tr><td><strong>כפתור CSV</strong></td><td>הורדה ישירה של נתונים היסטוריים</td><td>קריאת <code>action=csv</code> לסקריפט</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section><section id="s3" class="sec">
+  <div class="sh fi"><div class="sn">3</div>
+    <div><h2>Frontend לעומת Backend — הבנת ההפרדה</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 8 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-scale-balanced" style="color:#7c3aed"></i> מדוע שני פרומפטים נפרדים?</h3>
+    <p>שאלה שרבים שואלים: "למה לא לבקש מה-AI לכתוב הכל בפרומפט אחד?" התשובה פרקטית לחלוטין:</p>
+    <table class="tbl">
+      <thead><tr><th>היבט</th><th>פרומפט אחד (לא מומלץ)</th><th>שני פרומפטים (כפי שעשינו)</th></tr></thead>
+      <tbody>
+        <tr><td>איכות הקוד</td><td>AI מבלבל בין Backend ל-Frontend, מוסיף SpreadsheetApp בתוך HTML</td><td>כל פרומפט מתמקד בתפקיד אחד — קוד נקי יותר</td></tr>
+        <tr><td>שגיאות</td><td>קשה לאתר — הקוד שזור יחד</td><td>קל לתקן — כל שכבה עצמאית</td></tr>
+        <tr><td>גמישות</td><td>שינוי ב-UI = צריך לחזור על הכל</td><td>שינוי ב-UI = רק מעדכנים את קובץ 3</td></tr>
+        <tr><td>API Key</td><td>עלול להגיע בתוך ה-HTML — סכנת אבטחה!</td><td>Key תמיד בסקריפט בלבד</td></tr>
+      </tbody>
+    </table>
+    <div class="hb bl">
+      <div class="hbt"><i class="fa-solid fa-circle-info"></i> כלל מקצועי: "Separation of Concerns"</div>
+      כל שכבה עושה דבר אחד בלבד. ה-Backend (קובץ 2) מספק נתונים. ה-Frontend (קובץ 3) מציג אותם. הם לא יודעים כיצד השני עובד פנימה — רק את ה"חוזה" ביניהם (פורמט ה-JSON).
+    </div>
+  </div>
+</section><section id="s4" class="sec">
+  <div class="sh fi"><div class="sn">4</div>
+    <div><h2>הפרומפט ל-Frontend — העתיקו בדיוק</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 15 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-wand-magic-sparkles" style="color:#7c3aed"></i> כללי שימוש</h3>
+    <div class="hb rd">
+      <div class="hbt"><i class="fa-solid fa-triangle-exclamation"></i> GAS_URL נשאר ריק בכוונה!</div>
+      הפרומפט מכיל <code>const GAS_URL = '';</code> — זה מכוון. תמלאו אותו בסעיף 6 לאחר שה-AI ייצור את הקובץ. אל תשנו שום דבר אחר בפרומפט.
+    </div>
+    <div class="hb or">
+      <div class="hbt"><i class="fa-solid fa-lightbulb"></i> טיפ לשימוש ב-AI</div>
+      אם ה-AI מחזיר קוד שמתחיל ב-<code>```html</code> — העתיקו רק את מה שבין הגרשיים, ללא השורה הראשונה והאחרונה. הקוד עצמו מתחיל ב-<code>&lt;!DOCTYPE html&gt;</code>.
+    </div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-copy" style="color:#1d4ed8"></i> הפרומפט המלא</h3>
+    <div class="codeblock" id="fe-prompt">
+      <button class="copybtn" onclick="cpCode('fe-prompt')">📋 העתק</button>
+<span class="cc">// ════════ הדביקו לכלי AI: Claude / ChatGPT / Gemini ════════</span>
+
+You are a senior frontend engineer.
+
+// === TASK ===
+Create a complete, self-contained HTML file for a stock analysis dashboard.
+Output ONLY the HTML file — no explanations, no markdown fences, no extra text.
+The file must work by opening it directly in a browser (no build step, no server needed).
+
+// === FILE NAME ===
+"Business Intelligence Front.html"
+
+// === CONFIGURATION (place at top of &lt;script&gt; block) ===
+const GAS_URL = '';   // <-- user fills this after deployment
+
+// === REQUIRED EXTERNAL LIBRARY ===
+Chart.js via CDN: https://cdn.jsdelivr.net/npm/chart.js
+
+// === PAGE STRUCTURE ===
+1. <head>: lang="he", dir="rtl", charset="UTF-8", responsive viewport
+2. Header bar: title "ניתוח מניות — בינה עסקית | ד"ר שי צבאן"
+3. Controls row:
+   - Text input (id="symbolInput", placeholder "סמל מניה, למשל AAPL", dir="ltr")
+   - Button id="analyzeBtn": "נתח מניה"
+   - Button id="csvBtn": "⬇ ייצוא CSV"
+4. Status bar (id="statusBar"): shows loading / error / success messages in Hebrew
+5. Dashboard section (id="dashboard", hidden by default via display:none):
+   a. Line chart (canvas id="priceChart", height=300px) — price history last 3 months
+      with SMA-20 as a second dataset (dashed line, different color)
+   b. Metrics grid — 6 cards:
+      מחיר נוכחי (id="valPrice"), שינוי % (id="valChange"),
+      Beta (id="valBeta"), CAPM Expected (id="valCapm"),
+      Alpha (id="valAlpha"), Sharpe Ratio (id="valSharpe")
+   c. Signal box (id="signalBox"): large badge with signal text + signal_reason paragraph
+
+// === JAVASCRIPT: ANALYZE FLOW ===
+async function analyze():
+  1. Read symbol from input, trim and uppercase.
+  2. If GAS_URL is empty string: alert("שגיאה: יש להזין את כתובת ה-GAS בתוך הקובץ. ראו הוראות בקובץ 2."); return;
+  3. If symbol is empty: show statusBar "אנא הזינו סמל מניה" in orange; return;
+  4. Show statusBar "טוען נתונים עבור " + symbol + "..." in blue; hide dashboard.
+  5. try { const res = await fetch(GAS_URL + "?symbol=" + symbol + "&action=analyze");
+           const data = await res.json();
+           if (data.error) { showError(data.message); return; }
+           populateDashboard(data); }
+     catch(e) { showError("שגיאת רשת — ודאו שה-GAS URL תקין ושאתם מחוברים לאינטרנט."); }
+
+function populateDashboard(data):
+  - Fill all metric card values with formatted numbers ($ for price, % for percentages, 2 decimals)
+  - Destroy previous Chart instance if exists, create new Chart.js line chart:
+    dataset 1: data.history map to close prices, label "מחיר סגירה", color #3b82f6
+    dataset 2: SMA-20 array (compute from history inside JS), label "ממוצע נע 20", dashed, color #f59e0b
+  - Set signal badge: BUY→green, HOLD→yellow, SELL→red (colors and backgrounds as defined below)
+  - Show dashboard, update statusBar to success message in green
+
+// === JAVASCRIPT: CSV EXPORT ===
+async function exportCsv():
+  1. If GAS_URL empty: same alert as analyze.
+  2. If symbolInput empty: show statusBar warning "הזינו סמל מניה לפני ייצוא".
+  3. Show statusBar "מכין קובץ CSV...".
+  4. try { const res = await fetch(GAS_URL + "?symbol=" + symbol + "&action=csv");
+           const text = await res.text();
+           const blob = new Blob([text], {type:"text/csv;charset=utf-8;"});
+           const url = URL.createObjectURL(blob);
+           const a = document.createElement("a");
+           a.href = url; a.download = symbol + "_analysis.csv";
+           document.body.appendChild(a); a.click();
+           document.body.removeChild(a); URL.revokeObjectURL(url);
+           showStatus("קובץ CSV הורד בהצלחה ✓", "green"); }
+     catch(e) { showError("שגיאה בייצוא CSV — " + e.message); }
+
+// === SIGNAL COLORS ===
+BUY:  text #22c55e, background rgba(34,197,94,.12),  border rgba(34,197,94,.3)
+HOLD: text #eab308, background rgba(234,179,8,.12),  border rgba(234,179,8,.3)
+SELL: text #ef4444, background rgba(239,68,68,.12),  border rgba(239,68,68,.3)
+
+// === STYLE REQUIREMENTS ===
+- Dark theme: body background #0f172a, card backgrounds #1e293b, borders #334155
+- Font: system-ui, -apple-system, "Segoe UI" — no Google Fonts CDN needed
+- All text, labels, messages in Hebrew
+- Direction: rtl on body; inputs and numeric outputs use dir="ltr" or unicode-bidi
+- Responsive: 1 column mobile (<640px), 2-3 column grid desktop
+- All prices formatted with "$" prefix and toFixed(2)
+- All percentages formatted with "%" suffix, toFixed(2), positive values prefixed "+"
+
+// === CRITICAL CONSTRAINTS ===
+- All CSS and JS must be inline — single self-contained HTML file
+- Do NOT use localStorage, sessionStorage, or any cookies
+- Do NOT use any framework (React, Vue, Angular, jQuery)
+- Do NOT include any CDN except Chart.js
+- Chart canvas MUST have explicit height: 300px set via CSS (not just attribute)
+- All fetch calls MUST use async/await inside try/catch blocks
+- Never expose raw JavaScript Error objects to the user — always show Hebrew messages
+- The dashboard must be hidden (display:none) on page load and shown only after success
+    </div>
+  </div>
+</section><section id="s5" class="sec">
+  <div class="sh fi"><div class="sn">5</div>
+    <div><h2>אנטומיה של הפרומפט — שורה אחרי שורה</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 12 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <p>כל שורה בפרומפט מתפקדת כ"גדר" שמונעת מה-AI לסטות. הטבלה הזו תלמד אתכם לכתוב פרומפטים מדויקים בעצמכם:</p>
+    <table class="atbl">
+      <thead><tr><th style="width:38%">קטע מהפרומפט</th><th>למה הוא הכרחי</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="pseg">Output ONLY the HTML file — no explanations</span></td>
+          <td><strong>Output Scoping:</strong> ללא הנחיה זו, AI מוסיף הסברים לפני ואחרי הקוד שמונעים הדבקה ישירה. "ONLY" = קוד ולא כלום אחר.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">const GAS_URL = '';</span></td>
+          <td><strong>Placeholder מכוון:</strong> AI לא יודע את ה-URL שלכם — Placeholder ריק = תזכורת ברורה. בלי זה AI ממציא URL פיקטיבי שנראה תקין.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">canvas id="priceChart", height=300px</span></td>
+          <td><strong>Chart.js Bug Prevention:</strong> ללא גובה מפורש, Canvas מתרחב לאינסוף ב-RTL. זהו הבאג הנפוץ ביותר עם Chart.js בעברית — גובה קבוע פותר אותו.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">if (data.error) { showError(data.message); return; }</span></td>
+          <td><strong>Error Contract:</strong> מגדיר "חוזה" בין Backend ל-Frontend. הסקריפט מחזיר error:true? ה-HTML יודע בדיוק מה לעשות — מציג את ה-message בעברית.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">Blob + URL.createObjectURL + a.click()</span></td>
+          <td><strong>CSV Download Mechanism:</strong> זהו המנגנון הסטנדרטי להורדת קבצים ב-JavaScript. ללא פירוט זה, AI עשוי לפתוח חלון חדש עם טקסט גולמי במקום להוריד קובץ.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">Do NOT use localStorage, sessionStorage</span></td>
+          <td><strong>Environment Safety:</strong> ב-Incognito, iframe, ובסביבות מסוימות — storage חסום וזורק שגיאה. האיסור מכריח שימוש בזיכרון בלבד.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">Never expose raw JavaScript Error objects</span></td>
+          <td><strong>UX Protection:</strong> שגיאת JS נראית כך: "TypeError: Cannot read properties of undefined (reading 'close')". למשתמש זה מבהיל. ההנחיה מכריחה תרגום לעברית ברורה.</td>
+        </tr>
+        <tr>
+          <td><span class="pseg">dashboard hidden (display:none) on page load</span></td>
+          <td><strong>Clean Initial State:</strong> ללא הגדרה זו, לוח הנתונים יוצג ריק בעת פתיחת הדף — 0 בכל השדות, גרף ריק. חוויה מבלבלת. ה-hide/show מבטיח שהלוח מוצג רק עם נתונים אמיתיים.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section><section id="s6" class="sec">
+  <div class="sh fi"><div class="sn">6</div>
+    <div><h2>חיבור ה-Frontend לסקריפט — הכנסת GAS_URL</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 10 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-link" style="color:#0d9488"></i> 5 צעדים לחיבור המלא</h3>
+    <div class="step"><div class="stpn">1</div>
+      <div class="stpc"><strong>שמרו את הקוד כקובץ HTML</strong>
+        לאחר שה-AI ייצר את הקוד — העתיקו אותו לקובץ טקסט חדש ושמרו בשם בדיוק:
+        <span style="font-family:'Fira Code',monospace;font-size:.82rem;direction:ltr;unicode-bidi:embed;display:block;margin-top:4px;background:rgba(0,0,0,.07);padding:3px 8px;border-radius:4px;width:fit-content">Business Intelligence Front.html</span>
+        ודאו שהסיומת היא <code>.html</code> ולא <code>.txt</code>.
+      </div>
+    </div>
+    <div class="step"><div class="stpn">2</div>
+      <div class="stpc"><strong>פתחו את הקובץ בעורך טקסט</strong>
+        לחצו ימני על הקובץ → "Open with" → בחרו Notepad (Windows) או TextEdit (Mac). <strong>לא</strong> כפול-לחיצה — זה יפתח בדפדפן.
+      </div>
+    </div>
+    <div class="step"><div class="stpn">3</div>
+      <div class="stpc"><strong>חפשו את שורת GAS_URL</strong>
+        השתמשו ב-Ctrl+F וחפשו: <code>GAS_URL</code>. תמצאו שורה כזו:
+        <div style="background:#0f172a;color:#e2e8f0;padding:10px 14px;border-radius:8px;margin-top:8px;font-family:'Fira Code',monospace;font-size:.8rem;direction:ltr;text-align:left">
+          <span style="color:#569cd6">const</span> GAS_URL = <span style="color:#ce9178">''</span>; <span style="color:#6a9955">// &lt;-- user fills this after deployment</span>
+        </div>
+      </div>
+    </div>
+    <div class="step"><div class="stpn">4</div>
+      <div class="stpc"><strong>הכניסו את ה-URL שלכם בין המרכאות</strong>
+        <div style="background:#0f172a;color:#e2e8f0;padding:10px 14px;border-radius:8px;margin-top:8px;font-family:'Fira Code',monospace;font-size:.8rem;direction:ltr;text-align:left">
+          <span style="color:#569cd6">const</span> GAS_URL = <span style="color:#ce9178">'https://script.google.com/macros/s/AKfycb.../exec'</span>;
+        </div>
+        שימו לב: ה-URL מתחיל ב-https ומסתיים ב-/exec. לא להוסיף ? או פרמטרים.
+      </div>
+    </div>
+    <div class="step" style="border-color:var(--ok);background:var(--okl)">
+      <div class="stpn" style="background:var(--ok)">5</div>
+      <div class="stpc"><strong>✅ שמרו (Ctrl+S) ופתחו בדפדפן</strong>
+        עכשיו כפול-לחיצה על הקובץ. הממשק ייפתח. הקלידו AAPL ולחצו "נתח מניה".
+      </div>
+    </div>
+    <div class="hb or" style="margin-top:16px">
+      <div class="hbt"><i class="fa-solid fa-triangle-exclamation"></i> שינוי עתידי בסקריפט — מתי GAS_URL משתנה?</div>
+      ה-URL <strong>לא משתנה</strong> כשאתם עושים Deploy חדש על אותו Deployment קיים (Manage → Edit → New Version). הוא <strong>כן משתנה</strong> רק אם מחקתם את ה-Deployment וייצרתם חדש — מקרה נדיר.
+    </div>
+  </div>
+</section><section id="s7" class="sec">
+  <div class="sh fi"><div class="sn">7</div>
+    <div><h2>ייצוא CSV — כיצד עובד ולמה חשוב</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 8 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-file-csv" style="color:#16a34a"></i> מה זה CSV ולמה צריך אותו?</h3>
+    <div class="hb bl">
+      <div class="hbt"><i class="fa-solid fa-circle-info"></i> הסבר מונח: CSV</div>
+      <strong>CSV — Comma-Separated Values</strong>: קובץ טקסט פשוט שבו כל שורה היא רשומה, וכל עמודה מופרדת בפסיק. Excel, Google Sheets, Power BI, Python — כולם פותחים CSV ישירות. זה "הפורמט האוניברסלי" של נתונים.
+    </div>
+    <p>ה-CSV שנייצא מכיל את כל הנתונים ההיסטוריים של המניה — 60 ימי מסחר — לניתוח מעמיק מחוץ לאפליקציה.</p>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-diagram-project" style="color:#0d9488"></i> זרימת ייצוא CSV — מלמעלה למטה</h3>
+    <div class="csv-flow">
+      <div class="csv-node hl">
+        <div class="cn-ico">👆</div>
+        <div class="cn-t">לחיצה על "⬇ ייצוא CSV"</div>
+        <div class="cn-d">המשתמש לוחץ בממשק</div>
+      </div>
+      <div class="csv-arr">⬇</div>
+      <div class="csv-node">
+        <div class="cn-ico">📤</div>
+        <div class="cn-t">fetch ל-GAS URL</div>
+        <div class="cn-d"><code>?symbol=AAPL&action=csv</code></div>
+      </div>
+      <div class="csv-arr">⬇</div>
+      <div class="csv-node hl">
+        <div class="cn-ico">⚙️</div>
+        <div class="cn-t">הסקריפט מחשב ומחזיר CSV</div>
+        <div class="cn-d">טקסט בפורמט Date,Close,Volume,Daily_Return</div>
+      </div>
+      <div class="csv-arr">⬇</div>
+      <div class="csv-node">
+        <div class="cn-ico">🗃️</div>
+        <div class="cn-t">JavaScript יוצר Blob</div>
+        <div class="cn-d">אובייקט "קובץ וירטואלי" בזיכרון</div>
+      </div>
+      <div class="csv-arr">⬇</div>
+      <div class="csv-node hl">
+        <div class="cn-ico">📥</div>
+        <div class="cn-t">הורדה אוטומטית</div>
+        <div class="cn-d">AAPL_analysis.csv נשמר ב-Downloads</div>
+      </div>
+    </div>
+    <div class="hb te" style="margin-top:16px">
+      <div class="hbt"><i class="fa-solid fa-file-lines"></i> דוגמת תוכן קובץ CSV</div>
+      <div style="background:#0f172a;color:#e2e8f0;padding:12px 16px;border-radius:8px;margin-top:6px;font-family:'Fira Code',monospace;font-size:.79rem;direction:ltr;text-align:left;line-height:1.9">
+Date,Close,Volume,Daily_Return<br>
+2024-02-01,185.10,52400000,0.0032<br>
+2024-02-02,183.45,48900000,-0.0089<br>
+2024-02-05,187.68,61200000,0.0122<br>
+2024-02-06,188.32,55300000,0.0034<br>
+...
+      </div>
+    </div>
+    <div class="hb bl" style="margin-top:12px">
+      <div class="hbt"><i class="fa-solid fa-circle-info"></i> 4 שימושים לקובץ ה-CSV</div>
+      <ul style="margin-right:18px;line-height:2.2">
+        <li>📊 פתיחה ב-Excel לניתוח עמוק + גרפים מתקדמים</li>
+        <li>📂 גיבוי היסטורי — שמירת נתוני מניה לתאריך מסוים</li>
+        <li>🔄 ייבוא ל-SQL לשיעורים הבאים בקורס</li>
+        <li>🤖 הזנה לכלי AI לניתוח כתוב אוטומטי</li>
+      </ul>
+    </div>
+  </div>
+</section><section id="s8" class="sec">
+  <div class="sh fi"><div class="sn">8</div>
+    <div><h2>בדיקת המערכת המלאה — 6 תרחישים</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 10 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-vial" style="color:#0d9488"></i> בדקו כל תרחיש לפי הסדר</h3>
+    <table class="tbl">
+      <thead><tr><th>תרחיש</th><th>מה אתם עושים</th><th>תוצאה מצופה</th><th>אם לא עובד</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>1. פתיחה ראשונה</strong></td>
+          <td>כפול-לחיצה על הקובץ</td>
+          <td>כותרת עברית + שדה חיפוש + כפתורים, ללא לוח נתונים</td>
+          <td>ודאו שסיומת .html (לא .txt)</td>
+        </tr>
+        <tr>
+          <td><strong>2. GAS_URL ריק</strong></td>
+          <td>לחצו "נתח מניה" לפני שמילאתם URL</td>
+          <td>התראה: "שגיאה: יש להזין את כתובת ה-GAS..."</td>
+          <td>AI לא הוסיף בדיקה — בקשו תיקון</td>
+        </tr>
+        <tr>
+          <td><strong>3. ניתוח AAPL</strong></td>
+          <td>הכניסו URL, הקלידו AAPL, לחצו נתח</td>
+          <td>טוען 3-8 שניות → גרף + 6 כרטיסי מדדים + המלצה</td>
+          <td>פתחו F12 → Console לראות שגיאה מדויקת</td>
+        </tr>
+        <tr>
+          <td><strong>4. בדיקת המלצה</strong></td>
+          <td>בדקו את צבע תגית BUY/HOLD/SELL</td>
+          <td>ירוק=קנה, צהוב=החזק, אדום=מכור + הסבר בעברית</td>
+          <td>בדקו ש-signal_reason מגיע בJSON מה-GAS</td>
+        </tr>
+        <tr>
+          <td><strong>5. ייצוא CSV</strong></td>
+          <td>לחצו "⬇ ייצוא CSV" אחרי ניתוח</td>
+          <td>קובץ AAPL_analysis.csv מוריד ל-Downloads</td>
+          <td>אם נפתח כטקסט — Blob חסר, בקשו תיקון</td>
+        </tr>
+        <tr>
+          <td><strong>6. מניה לא קיימת</strong></td>
+          <td>הקלידו XXXX ולחצו נתח</td>
+          <td>הודעת שגיאה ידידותית בעברית (לא קריסה)</td>
+          <td>הסקריפט מחזיר error:true, HTML צריך להציגו</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="enc"><p>🎉 כל 6 הבדיקות עברו? יש לכם מערכת BI עובדת לחלוטין!</p></div>
+  </div>
+</section><section id="s9" class="sec">
+  <div class="sh fi"><div class="sn">9</div>
+    <div><h2>שגיאות נפוצות ב-Frontend — פתרונות</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 7 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-bug" style="color:#dc2626"></i> 7 שגיאות שכולם נתקלים בהן</h3>
+    <table class="tbl">
+      <thead><tr><th>תסמין</th><th>סיבה</th><th>פתרון</th></tr></thead>
+      <tbody>
+        <tr><td>גרף לא מוצג / אינסופי</td><td>Canvas ללא גובה קבוע</td><td>הוסיפו ל-CSS: <code>#priceChart { height: 300px !important; }</code></td></tr>
+        <tr><td>"Failed to fetch" בConsole</td><td>בעיית CORS או URL שגוי</td><td>ודאו שה-GAS מחזיר Access-Control-Allow-Origin: * (מוגדר בפרומפט קובץ 2)</td></tr>
+        <tr><td>הלוח מופיע ריק בפתיחה</td><td>Dashboard לא hidden בטעינה</td><td>הוסיפו <code>style="display:none"</code> לאלמנט <code>id="dashboard"</code></td></tr>
+        <tr><td>CSV נפתח כטקסט בדפדפן</td><td>חסר מנגנון Blob/download</td><td>ודאו שהקוד כולל <code>a.download = symbol + "_analysis.csv"</code></td></tr>
+        <tr><td>מספרים מוצגים ב-LTR הפוך</td><td>חסר <code>dir="ltr"</code> בכרטיסי המדדים</td><td>הוסיפו <code>dir="ltr"</code> לאלמנטים המכילים מספרים</td></tr>
+        <tr><td>שגיאת JS גולמית מוצגת</td><td>AI שכח try/catch</td><td>עטפו את כל ה-fetch calls ב-try/catch + showError בעברית</td></tr>
+        <tr><td>האפליקציה איטית בריענון</td><td>Cache של GAS לא פעיל</td><td>זו תכונה — Cache 1 שעה מוגדר בסקריפט. לאחר שעה — רענון אוטומטי</td></tr>
+      </tbody>
+    </table>
+    <div class="hb bl">
+      <div class="hbt"><i class="fa-solid fa-terminal"></i> איך משתמשים ב-Console (F12) לאיתור שגיאות</div>
+      <ol style="margin-right:18px;line-height:2.2">
+        <li>פתחו את ה-HTML בדפדפן Chrome / Edge</li>
+        <li>לחצו <code>F12</code> (או ימני → "בדיקה")</li>
+        <li>לחצו על לשונית <strong>"Console"</strong></li>
+        <li>הניסה נחזרת ולחצו "נתח מניה"</li>
+        <li>אם יש שגיאה אדומה — העתיקו אותה והדביקו לאותו AI לתיקון</li>
+      </ol>
+    </div>
+  </div>
+</section><section id="s10" class="sec">
+  <div class="sh fi"><div class="sn">10</div>
+    <div><h2>חידון הבנה — 4 שאלות Frontend</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 8 דקות</div></div>
+  </div>
+  <div class="enc fi">
+    <p>🧠 4 שאלות טכניות על הממשק שבנינו. לחצו על תשובה לקבלת הסבר מפורט.</p>
+  </div>  <div class="quiz fi" id="fq1">
+    <div class="qn">שאלה 1 מתוך 4</div>
+    <div class="qq">מה קורה אם המשתמש לוחץ 'נתח מניה' כשה-GAS_URL ריק?</div>
+    <div class="qopts" id="fq1-opts">      <div class="qo" onclick="ans('fq1',0,2)"><div class="ql">א</div><span>שגיאת JavaScript גולמית מוצגת בדפדפן</span></div>      <div class="qo" onclick="ans('fq1',1,2)"><div class="ql">ב</div><span>קריסה שקטה — לא קורה כלום</span></div>      <div class="qo" onclick="ans('fq1',2,2)"><div class="ql">ג</div><span>הודעה עברית ידידותית מוצגת — 'שגיאה: יש להזין את כתובת ה-GAS...'</span></div>      <div class="qo" onclick="ans('fq1',3,2)"><div class="ql">ד</div><span>הדפדפן מנסה לשלוח בקשה ל-URL ריק ומקבל שגיאת רשת</span></div>    </div>
+    <div class="qexpl" id="fq1-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: ג.</strong> הפרומפט הגדיר: <code>if (GAS_URL === '') { alert("שגיאה..."); return; }</code><br><br>
+  <strong>למה זה חשוב?</strong> ללא בדיקה זו, <code>fetch('')</code> שולח בקשה ל-URL ריק שמחזיר שגיאת רשת טכנית. "TypeError: Failed to fetch" לא אומר כלום למשתמש. הבדיקה מוקדמת = חוויה ידידותית.<br><br>
+  <strong>עיקרון:</strong> תמיד אמתו קלט לפני ביצוע פעולה. זה נקרא "Fail Fast" — כשל מוקדם, ברור, ומובן.
+    </div>
+  </div>  <div class="quiz fi" id="fq2">
+    <div class="qn">שאלה 2 מתוך 4</div>
+    <div class="qq">מדוע ה-Dashboard מוסתר (display:none) בעת פתיחת הדף?</div>
+    <div class="qopts" id="fq2-opts">      <div class="qo" onclick="ans('fq2',0,1)"><div class="ql">א</div><span>כדי לחסוך זיכרון דפדפן</span></div>      <div class="qo" onclick="ans('fq2',1,1)"><div class="ql">ב</div><span>כדי שהמשתמש לא יראה לוח ריק עם 0 בכל השדות — הלוח מוצג רק עם נתונים אמיתיים</span></div>      <div class="qo" onclick="ans('fq2',2,1)"><div class="ql">ג</div><span>כי Chart.js לא יכול לרנדר כשהדף נטען</span></div>      <div class="qo" onclick="ans('fq2',3,1)"><div class="ql">ד</div><span>מסיבות אבטחה — המידע חסוי עד לאימות</span></div>    </div>
+    <div class="qexpl" id="fq2-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: ב.</strong> חוויה של "מחיר: $0.00, Beta: 0.00, המלצה: ---" היא מבלבלת ולא מקצועית. ה-hide/show מבטיח שהלוח נגלה רק אחרי <code>populateDashboard(data)</code> — כשכל השדות מלאים.<br><br>
+  <strong>גם:</strong> Chart.js מצייר canvas לפי גודל הכרטיס. אם הכרטיס מוסתר בעת יצירת הגרף — הגרף עלול לצאת ממוזג. לכן <code>chart.update()</code> חשוב לאחר <code>display:block</code>.
+    </div>
+  </div>  <div class="quiz fi" id="fq3">
+    <div class="qn">שאלה 3 מתוך 4</div>
+    <div class="qq">מה ההבדל בין fetch עם ו-fetch בלי try/catch?</div>
+    <div class="qopts" id="fq3-opts">      <div class="qo" onclick="ans('fq3',0,1)"><div class="ql">א</div><span>אין הבדל — try/catch הוא רק סגנון קידוד</span></div>      <div class="qo" onclick="ans('fq3',1,1)"><div class="ql">ב</div><span>ללא try/catch, שגיאת רשת (API נפל, אינטרנט לא יציב) תקרוס את הדף עם הודעה טכנית. עם try/catch — תופסים השגיאה ומציגים הודעה ידידותית</span></div>      <div class="qo" onclick="ans('fq3',2,1)"><div class="ql">ג</div><span>try/catch איטי יותר — כדאי להימנע ממנו בקוד ייצור</span></div>      <div class="qo" onclick="ans('fq3',3,1)"><div class="ql">ד</div><span>fetch תמיד מצליח — אין צורך ב-try/catch</span></div>    </div>
+    <div class="qexpl" id="fq3-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: ב.</strong> <code>fetch</code> זורק Exception כשיש שגיאת רשת (לא כשה-API מחזיר error — זה JSON רגיל). ללא try/catch:<br><br>
+  <code style="font-size:.8rem;direction:ltr;unicode-bidi:embed">Uncaught (in promise) TypeError: Failed to fetch</code><br><br>
+  הדף "קופא", המשתמש בהלה. עם try/catch:<br>
+  <code>catch(e) { showError("שגיאת רשת — בדקו חיבור..."); }</code><br><br>
+  <strong>כלל:</strong> כל <code>fetch</code> = try/catch. ללא יוצא מן הכלל.
+    </div>
+  </div>  <div class="quiz fi" id="fq4">
+    <div class="qn">שאלה 4 מתוך 4</div>
+    <div class="qq">מדוע הפרומפט ציין 'canvas height=300px via CSS' ולא כ-attribute ב-HTML?</div>
+    <div class="qopts" id="fq4-opts">      <div class="qo" onclick="ans('fq4',0,1)"><div class="ql">א</div><span>CSS עדיף מבחינת ביצועים</span></div>      <div class="qo" onclick="ans('fq4',1,1)"><div class="ql">ב</div><span>Chart.js מתעלם מ-attribute height כשה-page הוא RTL — גובה דרך CSS בלבד מבטיח רנדור תקין</span></div>      <div class="qo" onclick="ans('fq4',2,1)"><div class="ql">ג</div><span>attribute height הוצא מה-HTML5 standard</span></div>      <div class="qo" onclick="ans('fq4',3,1)"><div class="ql">ד</div><span>אין הבדל — שתי השיטות שוות</span></div>    </div>
+    <div class="qexpl" id="fq4-expl">
+      <div class="qet"><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> הסבר מפורט</div>
+      <strong>תשובה נכונה: ב.</strong> זהו באג ידוע בשילוב Chart.js + <code>dir="rtl"</code>. כש-<code>height</code> מוגדר כ-attribute בלבד, Chart.js מחשב מחדש את גודל ה-Canvas לפי ה-container ב-RTL — ולפעמים מקבל גובה לא מוגדר ומתרחב לאינסוף.<br><br>
+  <code style="font-size:.8rem;direction:ltr;unicode-bidi:embed">#priceChart { height: 300px !important; max-height: 300px; }</code><br><br>
+  CSS עוקף את חישוב גוגל ונותן גובה קבוע. <code>!important</code> מבטיח שChart.js לא ידרוס זאת.
+    </div>
+  </div></section><section id="s11" class="sec">
+  <div class="sh fi"><div class="sn">11</div>
+    <div><h2>סיכום המפגש — מה בנינו ולאן ממשיכים</h2>
+    <div class="st"><i class="fa-regular fa-clock"></i> 7 דקות</div></div>
+  </div>
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-trophy" style="color:#d97706"></i> 3 קבצים — מערכת BI שלמה</h3>
+    <table class="tbl">
+      <thead><tr><th>קובץ</th><th>מה למדנו</th><th>מה בנינו</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>1 — תיאוריה</strong></td>
+          <td>GAS, API, CAPM, Beta, Sharpe — בסיס מושגי מלא</td>
+          <td>הבנה עמוקה + 9 שאלות הבנה</td>
+        </tr>
+        <tr>
+          <td><strong>2 — Backend</strong></td>
+          <td>Standalone GAS, Deploy, 3-tier Fallback, CAPM server-side</td>
+          <td>API חי עם חישוב CAPM, ייצוא CSV, Health Check</td>
+        </tr>
+        <tr>
+          <td><strong>3 — Frontend</strong></td>
+          <td>HTML/JS/CSS, Fetch, Blob download, Chart.js</td>
+          <td>ממשק מלא: גרף, כרטיסי CAPM, המלצה, ייצוא CSV</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-star" style="color:#f59e0b"></i> מה השגנו ביחד</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:8px">
+      <div style="background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center">
+        <div style="font-size:1.8rem;margin-bottom:6px">🌐</div>
+        <div style="font-weight:700;font-size:.88rem;color:var(--navy)">Web App עובד</div>
+        <div style="font-size:.78rem;color:var(--mu);margin-top:3px">נגיש מכל דפדפן, ללא שרת</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center">
+        <div style="font-size:1.8rem;margin-bottom:6px">📊</div>
+        <div style="font-weight:700;font-size:.88rem;color:var(--navy)">CAPM אמיתי</div>
+        <div style="font-size:.78rem;color:var(--mu);margin-top:3px">Beta, Alpha, Sharpe — מחושב חי</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center">
+        <div style="font-size:1.8rem;margin-bottom:6px">🛡️</div>
+        <div style="font-weight:700;font-size:.88rem;color:var(--navy)">3-Tier Fallback</div>
+        <div style="font-size:.78rem;color:var(--mu);margin-top:3px">Yahoo → Alpha V. → Google Finance</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center">
+        <div style="font-size:1.8rem;margin-bottom:6px">📥</div>
+        <div style="font-weight:700;font-size:.88rem;color:var(--navy)">ייצוא CSV</div>
+        <div style="font-size:.78rem;color:var(--mu);margin-top:3px">הורדה ישירה לניתוח ב-Excel</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center">
+        <div style="font-size:1.8rem;margin-bottom:6px">🔒</div>
+        <div style="font-weight:700;font-size:.88rem;color:var(--navy)">אבטחת API Key</div>
+        <div style="font-size:.78rem;color:var(--mu);margin-top:3px">Key בשרת בלבד — לא ב-HTML</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center">
+        <div style="font-size:1.8rem;margin-bottom:6px">💬</div>
+        <div style="font-weight:700;font-size:.88rem;color:var(--navy)">Vibe Coding</div>
+        <div style="font-size:.78rem;color:var(--mu);margin-top:3px">שליטה ב-AI לייצור קוד מדויק</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cb fi">
+    <h3><i class="fa-solid fa-forward" style="color:#1d4ed8"></i> מה מחכה בהמשך הקורס</h3>
+    <div class="hb bl">
+      <div class="hbt"><i class="fa-solid fa-road"></i> מפגשים הבאים</div>
+      <ul style="margin-right:18px;line-height:2.4">
+        <li>📊 <strong>SQL מתקדם</strong> — Subqueries, Window Functions, CTEs על נתונים פיננסיים אמיתיים</li>
+        <li>🤖 <strong>AI כשותף אנליטי</strong> — שימוש ב-LLM לפרשנות אוטומטית של CAPM ו-Alpha</li>
+        <li>⏱️ <strong>אוטומציה ב-GAS</strong> — טריגרים, דוחות יומיים, התראות מייל אוטומטיות</li>
+        <li>🏗️ <strong>ארכיטקטורת BI מלאה</strong> — מ-Prototype לשרת ייצור עם Supabase</li>
+      </ul>
+    </div>
+    <div class="enc" style="margin-top:20px">
+      <p>🌟 לפני מפגש זה לא ידעתם מה GAS. עכשיו יש לכם אפליקציית BI חיה עם CAPM, Fallback מובנה וייצוא CSV. כל הכבוד!</p>
+    </div>
+  </div>
+</section>
+
+</div><!-- /wrap -->
+<footer style="background:var(--navy);color:rgba(255,255,255,.7);text-align:center;padding:24px;font-size:.84rem;margin-top:40px">
+  קובץ 3 מתוך 3 | מפגש 3 — ד"ר שי צבאן, Ph.D. | כל הזכויות שמורות © 2026
+</footer><script>
+// Progress bar
+window.addEventListener('scroll', function() {
+  var d = document.documentElement;
+  var pct = d.scrollTop / (d.scrollHeight - d.clientHeight) * 100;
+  document.getElementById('pbf').style.width = pct + '%';
+});
+
+// Active nav
+var secEls = document.querySelectorAll('.sec');
+var navLinks = document.querySelectorAll('.nl');
+var navObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      navLinks.forEach(function(a) { a.classList.remove('on'); });
+      var link = document.querySelector('.nl[href="#' + entry.target.id + '"]');
+      if (link) link.classList.add('on');
+    }
+  });
+}, { threshold: 0.25 });
+secEls.forEach(function(s) { navObs.observe(s); });
+
+// Quiz
+function ans(id, chosen, correct) {
+  var card = document.getElementById(id);
+  if (card.classList.contains('ok') || card.classList.contains('no')) return;
+  var opts = document.querySelectorAll('#' + id + '-opts .qo');
+  opts.forEach(function(o, i) { if (i === correct) o.classList.add('show'); });
+  opts[chosen].classList.add(chosen === correct ? 'right' : 'wrong');
+  card.classList.add(chosen === correct ? 'ok' : 'no');
+  var expl = document.getElementById(id + '-expl');
+  expl.style.display = 'block';
+  setTimeout(function() {
+    expl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 200);
+}
+
+// Copy code
+function cpCode(id) {
+  var el = document.getElementById(id);
+  var txt = el.innerText;
+  txt = txt.split('\n').filter(function(l){ return l.indexOf('העתק') < 0; }).join('\n').trim();
+  navigator.clipboard.writeText(txt).then(function() {
+    var btn = el.querySelector('.copybtn');
+    var orig = btn.textContent;
+    btn.textContent = '✅ הועתק!';
+    setTimeout(function() { btn.textContent = orig; }, 2000);
+  });
+}
+</script>
+</body></html>
