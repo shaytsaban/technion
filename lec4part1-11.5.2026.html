@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הרצאה 3 - פרק 1 | מהמסד לתוצר: SQL ו-Use Case בעולם האמיתי</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Rubik:wght@400;500;600;700;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1a1a2e;
+  --accent: #e94560;
+  --accent2: #0f3460;
+  --accent3: #f5a623;
+  --teal: #16c79a;
+  --bg: #f7f3ee;
+  --bg-card: #ffffff;
+  --text-main: #16213e;
+  --text-secondary: #4a4a6a;
+  --text-muted: #8a8aaa;
+  --border: #e0d9d0;
+  --border-dark: #c8bfb4;
+  --success: #16c79a;
+  --warning: #f5a623;
+  --danger: #e94560;
+  --purple: #7c3aed;
+  --r-sm: 8px;
+  --r-md: 16px;
+  --r-lg: 28px;
+  --r-xl: 40px;
+  --sh-sm: 0 2px 8px rgba(22,33,62,0.06);
+  --sh-md: 0 6px 24px rgba(22,33,62,0.10);
+  --sh-lg: 0 16px 48px rgba(22,33,62,0.14);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Heebo', sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+/* ── PROGRESS BAR ── */
+.pb { position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 2000; background: var(--border); }
+.pb-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent3)); width: 0%; transition: width .25s; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  background: var(--primary);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 24px 100px;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 20% 20%, rgba(233,69,96,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 80% 80%, rgba(15,52,96,0.6) 0%, transparent 60%);
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.hero-inner { position: relative; z-index: 1; max-width: 900px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(233,69,96,0.15);
+  border: 1px solid rgba(233,69,96,0.4);
+  color: var(--accent);
+  padding: 8px 24px; border-radius: 100px;
+  font-weight: 700; font-size: .95rem; margin-bottom: 32px;
+  letter-spacing: .5px;
+}
+.hero-badge .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.hero h1 {
+  font-family: 'Rubik', sans-serif;
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  font-weight: 900; line-height: 1.1;
+  color: #fff; margin-bottom: 28px;
+}
+.hero h1 .hi { color: var(--accent); }
+.hero h1 .h2 { color: var(--teal); }
+.hero-sub {
+  font-size: 1.2rem; color: rgba(255,255,255,0.65);
+  max-width: 680px; margin: 0 auto 40px; line-height: 1.75;
+}
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+}
+.hmi {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 9px 18px; border-radius: var(--r-md);
+  color: rgba(255,255,255,0.75); font-size: .92rem; font-weight: 500;
+}
+.hero-credit {
+  position: absolute; bottom: 28px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.3); font-size: .85rem;
+}
+.hero-credit a { color: var(--accent); text-decoration: none; }
+
+/* ── NAV ── */
+.nav-sticky {
+  position: sticky; top: 12px; z-index: 1000;
+  width: 95%; max-width: 1100px;
+  margin: -36px auto 60px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 8px 14px;
+  display: flex; gap: 4px;
+  box-shadow: var(--sh-lg);
+  overflow-x: auto; scrollbar-width: none;
+}
+.nav-sticky::-webkit-scrollbar { display: none; }
+.nl {
+  color: var(--text-muted); text-decoration: none;
+  padding: 9px 18px; border-radius: 100px;
+  font-size: .87rem; font-weight: 700;
+  transition: all .2s; white-space: nowrap;
+}
+.nl:hover { color: var(--accent); background: #fef0f3; }
+.nl.active { background: var(--accent); color: #fff; }
+
+/* ── LAYOUT ── */
+.container { max-width: 1040px; margin: 0 auto; padding: 0 24px 120px; }
+.sec { margin-bottom: 110px; scroll-margin-top: 100px; }
+.sec-hdr {
+  display: flex; align-items: center; gap: 18px;
+  margin-bottom: 44px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 22px;
+}
+.sec-num {
+  display: flex; align-items: center; justify-content: center;
+  width: 54px; height: 54px;
+  background: var(--accent); color: #fff;
+  border-radius: var(--r-sm);
+  font-family: 'Rubik', sans-serif; font-weight: 900; font-size: 1.5rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(233,69,96,.35);
+}
+.sec-num.teal { background: var(--teal); box-shadow: 0 4px 14px rgba(22,199,154,.35); }
+.sec-num.blue { background: var(--accent2); box-shadow: 0 4px 14px rgba(15,52,96,.35); }
+.sec-num.purple { background: var(--purple); box-shadow: 0 4px 14px rgba(124,58,237,.35); }
+.sec-num.gold { background: var(--accent3); box-shadow: 0 4px 14px rgba(245,166,35,.35); }
+.sec-title { font-family: 'Rubik', sans-serif; font-size: 2rem; font-weight: 700; }
+
+/* ── CARDS ── */
+.cb {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 40px;
+  box-shadow: var(--sh-sm);
+  margin-bottom: 28px;
+}
+.cb h3 {
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.45rem; margin-bottom: 18px;
+  color: var(--accent);
+}
+.cb h3.teal { color: var(--teal); }
+.cb h3.blue { color: var(--accent2); }
+.cb h3.purple { color: var(--purple); }
+.cb p { font-size: 1.08rem; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.8; }
+.cb p:last-child { margin-bottom: 0; }
+
+/* ── HIGHLIGHT BOXES ── */
+.hb {
+  padding: 22px 28px; border-radius: var(--r-md);
+  margin: 22px 0; border-right: 5px solid;
+}
+.hb.red { background: #fff0f2; border-color: var(--accent); }
+.hb.teal { background: #f0fdf9; border-color: var(--teal); }
+.hb.blue { background: #eff6ff; border-color: var(--accent2); }
+.hb.gold { background: #fffbeb; border-color: var(--accent3); }
+.hb.purple { background: #f5f3ff; border-color: var(--purple); }
+.hb .hbt { font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px; display: block; }
+.hb p { margin: 0; color: var(--text-main); font-size: 1.05rem; font-weight: 500; line-height: 1.75; }
+
+/* ── ANALOGY CARD ── */
+.ac {
+  background: linear-gradient(135deg, #1a1a2e, #0f3460);
+  border-radius: var(--r-lg); padding: 30px 36px;
+  margin: 24px 0; border: 1px solid rgba(255,255,255,0.08);
+}
+.ac .at { font-family: 'Rubik', sans-serif; color: var(--accent3); font-weight: 700; font-size: 1.08rem; margin-bottom: 12px; }
+.ac p { color: #94a3b8; font-size: 1.05rem; line-height: 1.78; margin: 0; }
+.ac p+p { margin-top: 10px; }
+.ac strong { color: #e2e8f0; }
+
+/* ── VISUAL TABLES ── */
+.vt-wrap { overflow-x: auto; border-radius: var(--r-md); border: 1px solid var(--border); margin: 22px 0; }
+.vt { width: 100%; border-collapse: collapse; font-size: .96rem; }
+.vt th {
+  background: #f8f5f1; color: var(--accent);
+  padding: 14px 18px; text-align: right;
+  border: 1px solid var(--border);
+  font-weight: 700; font-family: 'Rubik', sans-serif; font-size: .9rem;
+}
+.vt td { padding: 13px 18px; border: 1px solid var(--border); color: var(--text-secondary); }
+.vt tr:hover td { background: #fdf8f4; }
+.cell-pk { color: var(--accent); font-weight: 700; font-family: 'Fira Code', monospace; }
+.cell-fk { color: var(--accent2); font-weight: 700; font-family: 'Fira Code', monospace; }
+.cell-hi { background: rgba(22,199,154,.1) !important; color: #047857 !important; font-weight: 700; }
+.cell-warn { background: rgba(245,166,35,.12) !important; color: #92400e !important; font-weight: 700; }
+.cell-null { color: #9ca3af !important; font-style: italic; font-family: 'Fira Code', monospace !important; font-size: .85em !important; }
+
+/* ── CODE BLOCKS ── */
+pre.code {
+  background: #12121f; color: #e2e8f0;
+  padding: 26px 30px; border-radius: var(--r-md);
+  font-family: 'Fira Code', monospace; font-size: .96rem;
+  direction: ltr; text-align: left;
+  overflow-x: auto; line-height: 1.85;
+  margin: 22px 0;
+  border-right: 5px solid var(--accent);
+}
+.kw { color: #c792ea; font-weight: 700; }
+.tb { color: #82aaff; }
+.co { color: #f78c6c; }
+.cm { color: #546e7a; font-style: italic; }
+.st { color: #c3e88d; }
+.fn { color: #ffcb6b; }
+
+/* ── WORD BREAKDOWN ── */
+.wb { background: #12121f; border-radius: var(--r-lg); padding: 28px 32px; margin: 24px 0; }
+.wb-title { font-family: 'Rubik', sans-serif; color: #a5b4fc; font-weight: 700; font-size: .95rem; margin-bottom: 20px; }
+.wr {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 16px; padding-bottom: 16px;
+  border-bottom: 1px solid #1e1e30;
+}
+.wr:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.wc {
+  font-family: 'Fira Code', monospace; font-size: .86rem;
+  font-weight: 700; padding: 7px 14px; border-radius: 6px;
+  white-space: nowrap; flex-shrink: 0; min-width: 170px; text-align: center;
+}
+.wc.kw { background: rgba(199,146,234,.18); color: #c792ea; border: 1px solid rgba(199,146,234,.3); }
+.wc.tb { background: rgba(130,170,255,.15); color: #82aaff; border: 1px solid rgba(130,170,255,.25); }
+.wc.co { background: rgba(247,140,108,.15); color: #f78c6c; border: 1px solid rgba(247,140,108,.25); }
+.wc.fn { background: rgba(255,203,107,.15); color: #ffcb6b; border: 1px solid rgba(255,203,107,.25); }
+.we { color: #94a3b8; font-size: 1.02rem; line-height: 1.68; }
+.we strong { color: #f1f5f9; }
+
+/* ── SIDE BY SIDE ── */
+.sbs { display: flex; gap: 20px; margin: 24px 0; flex-wrap: wrap; }
+.sbs > div { flex: 1; min-width: 240px; }
+
+/* ── BEFORE/AFTER ── */
+.ba { display: flex; gap: 20px; margin: 24px 0; flex-wrap: wrap; align-items: flex-start; }
+.ba > div { flex: 1; min-width: 240px; }
+.ba-lbl { font-family: 'Rubik', sans-serif; font-size: .9rem; font-weight: 700; padding: 8px 14px; text-align: center; border-radius: var(--r-sm) var(--r-sm) 0 0; }
+.ba-lbl.bad { background: var(--danger); color: #fff; }
+.ba-lbl.good { background: var(--success); color: #fff; }
+.ba-body { border-radius: 0 0 var(--r-sm) var(--r-sm); overflow: hidden; }
+.ba-body.bad { border: 2px solid var(--danger); border-top: none; }
+.ba-body.good { border: 2px solid var(--success); border-top: none; }
+
+/* ── QUIZ ── */
+.qz {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 36px;
+  margin: 36px 0; position: relative; overflow: hidden;
+  box-shadow: var(--sh-md);
+}
+.qz::before {
+  content: ''; position: absolute;
+  top: 0; right: 0; left: 0; height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+}
+.qz-hdr { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.qz-icon {
+  width: 46px; height: 46px; background: #fff0f2;
+  color: var(--accent); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; flex-shrink: 0;
+}
+.qz-title { font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 1.15rem; }
+.qz-q { font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 22px; line-height: 1.65; }
+.qz-opts { display: flex; flex-direction: column; gap: 11px; margin-bottom: 22px; }
+.opt {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px 20px; background: var(--bg);
+  border: 2px solid var(--border); border-radius: var(--r-md);
+  cursor: pointer; transition: all .2s;
+  font-size: 1.02rem; font-weight: 500; line-height: 1.55;
+}
+.opt:hover:not(.correct):not(.wrong) { border-color: var(--accent); background: #fff0f2; }
+.opt.correct { border-color: var(--success); background: #f0fdf9; }
+.opt.wrong { border-color: var(--danger); background: #fff0f2; }
+.om {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: #fff; border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: .86rem; flex-shrink: 0; margin-top: 1px;
+}
+.opt.correct .om { border-color: var(--success); background: var(--success); color: #fff; }
+.opt.wrong .om { border-color: var(--danger); background: var(--danger); color: #fff; }
+.qz-fb {
+  padding: 16px 20px; border-radius: var(--r-md);
+  font-size: 1.02rem; font-weight: 600; display: none; line-height: 1.7;
+}
+.qz-fb.show { display: block; }
+.qz-fb.correct { background: #f0fdf9; color: #047857; border: 1px solid #a7f3d0; }
+.qz-fb.wrong { background: #fff0f2; color: #991b1b; border: 1px solid #fecaca; }
+.btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+.btn-check {
+  padding: 11px 28px;
+  background: linear-gradient(135deg, var(--accent), #c73652);
+  border: none; border-radius: 100px; color: #fff;
+  font-family: 'Heebo', sans-serif; font-size: 1.02rem; font-weight: 700;
+  cursor: pointer; transition: all .25s;
+}
+.btn-check:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(233,69,96,.4); }
+.btn-hint {
+  padding: 11px 22px; background: transparent;
+  border: 1px solid var(--border-dark); border-radius: 100px;
+  color: var(--text-muted); font-family: 'Heebo', sans-serif;
+  font-size: .92rem; font-weight: 600; cursor: pointer; transition: all .2s;
+}
+.btn-hint:hover { background: var(--border); color: var(--text-main); }
+.hint-box {
+  display: none; margin-top: 14px; padding: 14px 18px;
+  background: #fffbeb; border-radius: var(--r-sm);
+  border-right: 3px solid var(--accent3);
+  color: #92400e; font-size: .95rem; line-height: 1.7;
+}
+
+/* ── BRIDGE VISUAL ── */
+.bridge {
+  display: flex; align-items: center; gap: 0;
+  margin: 32px 0; flex-wrap: wrap; justify-content: center;
+}
+.bridge-node {
+  background: var(--bg-card); border: 2px solid var(--border);
+  border-radius: var(--r-md); padding: 20px 24px;
+  text-align: center; min-width: 160px; flex: 1;
+  box-shadow: var(--sh-sm);
+}
+.bridge-node .bn-icon { font-size: 2rem; margin-bottom: 8px; }
+.bridge-node .bn-title { font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text-main); }
+.bridge-node .bn-sub { font-size: .83rem; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+.bridge-node.red { border-color: var(--accent); background: #fff0f2; }
+.bridge-node.teal { border-color: var(--teal); background: #f0fdf9; }
+.bridge-node.gold { border-color: var(--accent3); background: #fffbeb; }
+.bridge-node.blue { border-color: var(--accent2); background: #eff6ff; }
+.bridge-arr { font-size: 2rem; color: var(--text-muted); padding: 0 8px; flex-shrink: 0; }
+
+/* ── FLOW DIAGRAM ── */
+.flow { margin: 28px 0; }
+.flow-step {
+  display: flex; align-items: flex-start; gap: 0;
+  margin-bottom: 0;
+}
+.flow-left { display: flex; flex-direction: column; align-items: center; width: 52px; flex-shrink: 0; }
+.flow-circ {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: .95rem; color: #fff; flex-shrink: 0;
+}
+.flow-circ.red { background: var(--accent); }
+.flow-circ.teal { background: var(--teal); }
+.flow-circ.gold { background: var(--accent3); }
+.flow-circ.blue { background: var(--accent2); }
+.flow-circ.purple { background: var(--purple); }
+.flow-line { width: 2px; flex: 1; background: var(--border); min-height: 24px; }
+.flow-step:last-child .flow-line { display: none; }
+.flow-content { padding: 4px 0 32px 20px; }
+.flow-content h5 { font-family: 'Rubik', sans-serif; font-size: 1.02rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
+.flow-content p { font-size: 1rem; color: var(--text-secondary); margin: 0; line-height: 1.65; }
+
+/* ── SQL PLAYGROUND ── */
+.pg {
+  background: #12121f; border-radius: var(--r-lg);
+  overflow: hidden; margin: 36px 0;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  border: 1px solid #1e1e30;
+}
+.pg-hdr {
+  background: #0f0f1a; padding: 14px 22px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid #1e1e30;
+}
+.pg-dots { display: flex; gap: 8px; }
+.pd { width: 13px; height: 13px; border-radius: 50%; }
+.pd.r { background: #ff5f57; }
+.pd.y { background: #ffbd2e; }
+.pd.g { background: #27c93f; }
+.pg-tag { font-family: 'Fira Code', monospace; font-size: .82rem; color: #a5b4fc; }
+.pg-badge {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff; padding: 5px 16px; border-radius: 100px;
+  font-size: .8rem; font-weight: 700;
+}
+.pg-body { padding: 22px; }
+.pg-task {
+  background: #0a0a14; border: 1px solid #2d2d44;
+  border-radius: var(--r-md); padding: 18px 22px;
+  margin-bottom: 18px; color: #a5b4fc; font-size: 1.02rem; line-height: 1.75;
+}
+.pg-task .tt {
+  color: var(--accent3); font-weight: 700; font-size: 1.08rem;
+  display: block; margin-bottom: 10px;
+}
+.stbls { display: flex; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+.stbls > div { flex: 1; min-width: 190px; }
+.st-lbl { font-family: 'Fira Code', monospace; font-size: .76rem; color: #64748b; margin-bottom: 6px; font-weight: 700; }
+.st { width: 100%; border-collapse: collapse; font-size: .83rem; direction: ltr; text-align: left; }
+.st th { background: #1e1e30; padding: 8px 10px; color: #4fc1ff; font-family: 'Fira Code', monospace; border-bottom: 2px solid #2d2d44; font-size: .76rem; }
+.st td { padding: 7px 10px; color: #cbd5e1; border-bottom: 1px solid #1e1e30; }
+.st td.spk { color: var(--accent); font-weight: 700; }
+.st td.sfk { color: #60a5fa; font-weight: 700; }
+.st td.shi { background: rgba(22,199,154,.12); color: #6ee7b7; font-weight: 700; }
+.sq-inp {
+  width: 100%; min-height: 145px;
+  background: #0a0a14; border: 1px solid #2d2d44;
+  border-radius: var(--r-sm); padding: 16px;
+  color: #e2e8f0; font-family: 'Fira Code', monospace;
+  font-size: .96rem; direction: ltr; text-align: left;
+  resize: vertical; line-height: 1.75; outline: none;
+  transition: border-color .2s;
+}
+.sq-inp:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(22,199,154,.15); }
+.pg-run {
+  padding: 11px 30px;
+  background: linear-gradient(135deg, var(--teal), #0ea87a);
+  border: none; border-radius: 100px; color: #fff;
+  font-family: 'Heebo', sans-serif; font-size: 1.02rem; font-weight: 700;
+  cursor: pointer; transition: all .25s; margin-top: 14px;
+}
+.pg-run:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(22,199,154,.4); }
+.pg-hint-btn {
+  padding: 11px 22px; background: transparent;
+  border: 1px solid #2d2d44; border-radius: 100px;
+  color: #a5b4fc; font-family: 'Heebo', sans-serif;
+  font-size: .92rem; font-weight: 600; cursor: pointer; transition: all .2s; margin-top: 14px;
+}
+.pg-hint-btn:hover { background: #1e1e30; color: #fff; }
+.hint-pg {
+  display: none; margin-top: 14px; padding: 14px 18px;
+  background: rgba(245,166,35,.08); border-radius: 8px;
+  border-right: 3px solid var(--accent3); color: #fde68a;
+  font-size: .93rem; direction: ltr; text-align: left; line-height: 1.7;
+}
+.pg-res { background: #0a0a14; border-top: 1px solid #1e1e30; }
+.res-hdr {
+  padding: 10px 22px; background: #0f0f1a;
+  color: #475569; font-size: .82rem; font-weight: 600;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid #1e1e30;
+}
+.res-body { padding: 16px 20px; min-height: 56px; }
+.rt { width: 100%; border-collapse: collapse; font-size: .88rem; direction: ltr; text-align: left; }
+.rt th { background: #1e1e30; padding: 10px 14px; color: #4fc1ff; font-family: 'Fira Code', monospace; border-bottom: 2px solid #2d2d44; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+.rt td { padding: 10px 14px; color: #cbd5e1; border-bottom: 1px solid #1e1e30; }
+.rt tr:last-child td { border-bottom: none; }
+.r-ok { color: #34d399; padding: 14px 20px 4px; font-weight: 700; font-size: 1.02rem; }
+.r-err { padding: 16px 20px; border-right: 4px solid #ef4444; }
+.r-err .et { color: #f87171; font-weight: 700; font-size: 1.02rem; margin-bottom: 6px; }
+.r-err .eb { color: #94a3b8; font-size: .96rem; line-height: 1.7; }
+.r-idle { color: #2d2d44; font-size: .92rem; padding: 14px 20px; }
+
+/* ── SCORE WIDGET ── */
+.score-w {
+  position: fixed; bottom: 28px; left: 28px;
+  background: #fff; border: 2px solid var(--border);
+  border-radius: 100px; padding: 10px 22px;
+  display: flex; align-items: center; gap: 12px;
+  z-index: 1000; box-shadow: var(--sh-lg);
+}
+.sv { font-family: 'Rubik', sans-serif; font-weight: 900; font-size: 1.4rem; color: var(--accent); }
+.sl { font-size: .82rem; color: var(--text-muted); font-weight: 600; }
+
+/* ── CONCEPT VISUAL ── */
+.cv {
+  background: linear-gradient(135deg, #f8f5f1, #eff3fb);
+  border: 2px dashed var(--accent2); border-radius: var(--r-lg);
+  padding: 30px; margin: 24px 0;
+}
+.cv-title { font-family: 'Rubik', sans-serif; font-weight: 800; font-size: 1.05rem; color: var(--accent2); margin-bottom: 20px; }
+
+/* ── MILESTONE BANNER ── */
+.milestone {
+  background: linear-gradient(135deg, var(--primary), var(--accent2));
+  border-radius: var(--r-lg); padding: 36px 40px;
+  margin: 36px 0; text-align: center; position: relative; overflow: hidden;
+}
+.milestone::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.milestone-inner { position: relative; z-index: 1; }
+.milestone h3 { font-family: 'Rubik', sans-serif; font-size: 1.7rem; font-weight: 900; color: #fff; margin-bottom: 10px; }
+.milestone p { color: rgba(255,255,255,0.68); font-size: 1.08rem; line-height: 1.75; max-width: 600px; margin: 0 auto; }
+
+/* ── TWO-WORLD COMPARE ── */
+.two-world { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 28px 0; }
+.world-card {
+  border-radius: var(--r-lg); padding: 28px;
+  border: 2px solid;
+}
+.world-card.sql { border-color: var(--accent2); background: #eff6ff; }
+.world-card.uc { border-color: var(--purple); background: #f5f3ff; }
+.world-card h4 { font-family: 'Rubik', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; }
+.world-card.sql h4 { color: var(--accent2); }
+.world-card.uc h4 { color: var(--purple); }
+.world-card ul { padding-right: 18px; }
+.world-card ul li { font-size: 1rem; color: var(--text-secondary); margin-bottom: 9px; line-height: 1.6; }
+
+/* ── PRODUCT STORY ── */
+.story-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden;
+  box-shadow: var(--sh-md); margin: 28px 0;
+}
+.story-header {
+  background: linear-gradient(135deg, #1a1a2e, #0f3460);
+  padding: 22px 30px; display: flex; align-items: center; gap: 16px;
+}
+.story-icon { font-size: 2.2rem; }
+.story-header h4 { font-family: 'Rubik', sans-serif; font-size: 1.2rem; font-weight: 700; color: #fff; }
+.story-header p { font-size: .88rem; color: rgba(255,255,255,.55); margin-top: 3px; }
+.story-body { padding: 28px 30px; }
+.story-body p { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.8; }
+
+/* ── USE CASE ANATOMY BOX ── */
+.uc-box {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden; margin: 24px 0;
+}
+.uc-box-hdr { background: var(--purple); color: #fff; padding: 16px 24px; font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 1.1rem; }
+.uc-row { display: flex; border-bottom: 1px solid var(--border); }
+.uc-row:last-child { border-bottom: none; }
+.uc-label { width: 200px; flex-shrink: 0; padding: 14px 18px; background: #f5f3ff; font-weight: 700; font-size: .9rem; color: var(--purple); border-left: 1px solid var(--border); }
+.uc-val { padding: 14px 18px; font-size: .96rem; color: var(--text-secondary); line-height: 1.65; }
+
+/* ── CHAPTER SUMMARY ── */
+.ch-summary {
+  background: linear-gradient(135deg, #f0fdf9, #eff6ff);
+  border: 2px solid var(--teal); border-radius: var(--r-lg);
+  padding: 36px; margin: 40px 0;
+}
+.ch-summary h3 { font-family: 'Rubik', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--teal); margin-bottom: 18px; }
+.ch-summary ul { padding-right: 20px; }
+.ch-summary ul li { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 10px; line-height: 1.65; }
+.ch-summary ul li strong { color: var(--text-main); }
+
+/* ── NEXT CHAPTER PREVIEW ── */
+.next-ch {
+  background: var(--primary); border-radius: var(--r-lg);
+  padding: 36px 40px; text-align: center; margin-top: 50px;
+}
+.next-ch h3 { font-family: 'Rubik', sans-serif; color: var(--accent3); font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
+.next-ch p { color: rgba(255,255,255,.65); font-size: 1.05rem; line-height: 1.75; max-width: 560px; margin: 0 auto; }
+
+code { background: #eff3fb; color: var(--accent2); padding: 2px 7px; border-radius: 5px; font-family: 'Fira Code', monospace; font-size: .86em; font-weight: 600; }
+@media(max-width:680px) { .sbs,.ba,.two-world { flex-direction: column; grid-template-columns: 1fr; } .bridge { flex-direction: column; } }
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="pb"><div class="pb-fill" id="pb"></div></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span>הרצאה 3 — מפגש 1 מתוך 4</div>
+    <h1>
+      ממסד הנתונים<br>
+      <span class="hi">אל המוצר האמיתי</span><br>
+      <span class="h2">SQL × Use Case × עיצוב מוצר</span>
+    </h1>
+    <p class="hero-sub">
+      בשני הקורסים האחרונים למדתם שני עולמות שונים לכאורה — SQL ו-Use Case. היום נבין שהם <strong>שני צדדים של אותו מטבע</strong>.
+      כל שאילתה שכתבתם מייצגת Use Case שמישהו ניסח. כל Use Case שניתחתם — צריך מסד נתונים שידע לתמוך בו.
+    </p>
+    <div class="hero-meta">
+      <div class="hmi">🧩 SQL + Use Case</div>
+      <div class="hmi">📱 אפליקציית MatchMe</div>
+      <div class="hmi">🏢 מסד EHI</div>
+      <div class="hmi">⚡ שאלות אינטראקטיביות</div>
+    </div>
+  </div>
+  <div class="hero-credit">
+    הרצאה: <strong>ד"ר שי צבן</strong> &nbsp;|&nbsp;
+    <a href="mailto:shay.tsaban@gmail.com">shay.tsaban@gmail.com</a>
+    &nbsp;|&nbsp; בשיתוף תכנים מ-ד"ר רמי רשקוביץ
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav-sticky" id="mainNav">
+  <a href="#s0" class="nl active">🗺️ מפת הדרכים</a>
+  <a href="#s1" class="nl">📦 שני עולמות</a>
+  <a href="#s2" class="nl">🔗 החיבור</a>
+  <a href="#s3" class="nl">📱 MatchMe</a>
+  <a href="#s4" class="nl">🗄️ מסד EHI</a>
+  <a href="#s5" class="nl">⚗️ מהשאילתה למוצר</a>
+  <a href="#s6" class="nl">🏆 אתגר מסכם</a>
+</nav>
+
+<!-- MAIN -->
+<div class="container">
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECTION 0 — מפת הדרכים -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="sec" id="s0">
+  <div class="sec-hdr">
+    <div class="sec-num gold">🗺️</div>
+    <h2 class="sec-title">מפת הדרכים: איפה אנחנו עומדים?</h2>
+  </div>
+
+  <div class="cb">
+    <h3 class="blue">מה למדנו עד היום</h3>
+    <p>
+      עברנו מסע ארוך. בכל מפגש הוספנו שכבה חדשה של הבנה — ועכשיו הגענו לרגע הקריטי:
+      אנחנו הולכים לראות <strong>איך כל מה שלמדנו מתחבר למוצר אמיתי שאנשים משתמשים בו</strong>.
+    </p>
+    <div class="bridge">
+      <div class="bridge-node red">
+        <div class="bn-icon">🔢</div>
+        <div class="bn-title">SQL — הרצאה 1-2</div>
+        <div class="bn-sub">SELECT, JOIN, GROUP BY, CASE WHEN, תאריכים</div>
+      </div>
+      <div class="bridge-arr">→</div>
+      <div class="bridge-node blue">
+        <div class="bn-icon">📐</div>
+        <div class="bn-title">Use Case — ד"ר רשקוביץ</div>
+        <div class="bn-sub">שחקנים, תרחישים, include/extend</div>
+      </div>
+      <div class="bridge-arr">→</div>
+      <div class="bridge-node teal">
+        <div class="bn-icon">📱</div>
+        <div class="bn-title">מוצר אמיתי</div>
+        <div class="bn-sub">אפליקציית MatchMe + EHI</div>
+      </div>
+      <div class="bridge-arr">→</div>
+      <div class="bridge-node gold">
+        <div class="bn-icon">🏗️</div>
+        <div class="bn-title">ארכיטקט נתונים</div>
+        <div class="bn-sub">אתם, בעידן ה-AI</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ 1 -->
+  <div class="qz">
+    <div class="qz-hdr">
+      <div class="qz-icon">🤔</div>
+      <div class="qz-title">שאלת פתיחה — בדקו את עצמכם</div>
+    </div>
+    <p class="qz-q">כאשר מפתח כותב שאילתת SQL כמו <code>SELECT name, COUNT(*) FROM users GROUP BY city</code> — מה הוא <em>בעצם</em> מממש?</p>
+    <div class="qz-opts" id="q1opts">
+      <div class="opt" onclick="pick('q1',0,false)"><div class="om">א</div>פקודה טכנית שמחזירה נתונים</div>
+      <div class="opt" onclick="pick('q1',1,true)"><div class="om">ב</div>Use Case של "הצג פיזור משתמשים לפי עיר" — צורך עסקי שמישהו הגדיר</div>
+      <div class="opt" onclick="pick('q1',2,false)"><div class="om">ג</div>באג שצריך לתקן</div>
+      <div class="opt" onclick="pick('q1',3,false)"><div class="om">ד</div>שאילתת ברירת מחדל ללא כוונה עסקית</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-check" onclick="checkQ('q1','fb1')">בדוק תשובה ✓</button>
+      <button class="btn-hint" onclick="toggleHint('h1')">רמז 💡</button>
+    </div>
+    <div class="hint-box" id="h1">חשבו: מי ביקש את הנתון הזה? מה הם רצו לדעת? Use Case תמיד מתחיל בשאלה עסקית.</div>
+    <div class="qz-fb" id="fb1"></div>
+  </div>
+
+  <div class="cb">
+    <h3>🎯 מה נלמד היום</h3>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ red">1</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>שני עולמות — SQL ו-Use Case</h5>
+          <p>מה כל אחד מהם נותן, ומדוע שניהם חיוניים לבניית מוצר</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ teal">2</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>החיבור הקריטי</h5>
+          <p>כיצד Use Case מגדיר <em>מה</em> המסד צריך לספק, ו-SQL מגדיר <em>איך</em> לשלוף זאת</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ gold">3</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>מקרה בוחן: MatchMe</h5>
+          <p>נעבור שלב-אחר-שלב מ-User Story → Use Case → Schema → SQL</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ blue">4</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>מסד EHI מהזווית העסקית</h5>
+          <p>נחזור לבסיס הנתונים שלנו ונראה אותו דרך עיניי ארכיטקט מוצר</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ purple">5</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>אתגר מסכם</h5>
+          <p>תרגיל מקיף שמחבר את כל הנושאים — SQL + Use Case + חשיבת מוצר</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECTION 1 — שני עולמות -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="sec" id="s1">
+  <div class="sec-hdr">
+    <div class="sec-num blue">1</div>
+    <h2 class="sec-title">שני עולמות — ולמה שניהם חיוניים</h2>
+  </div>
+
+  <div class="cb">
+    <h3 class="blue">העולם הראשון: SQL — שפת הנתונים</h3>
+    <p>
+      SQL (Structured Query Language) היא השפה שמאפשרת לנו לדבר עם מסדי נתונים. למדנו אותה כדרך לשלוף, לסנן, לסכם ולחבר מידע.
+      אבל SQL לבד היא כמו פטיש מבלי שאוחזים בו — כלי עצמתי שחסרה לו כוונה.
+    </p>
+    <div class="hb blue">
+      <span class="hbt">💡 מה SQL נותנת לנו:</span>
+      <p>
+        <strong>דיוק מוחלט</strong> — נוכל לשלוף בדיוק את הנתונים שצריך, לא יותר ולא פחות.<br>
+        <strong>ביצועים</strong> — מסדי נתונים מותאמים לעבוד עם מיליוני שורות ביעילות.<br>
+        <strong>אמינות</strong> — מנגנוני ACID מבטיחים שהנתונים יישארו נכונים גם בתנאי כישלון.
+      </p>
+    </div>
+    <pre class="code"><span class="cm">-- דוגמה: שאילתה שלמדנו בהרצאה 2</span>
+<span class="kw">SELECT</span>
+    d.name <span class="kw">AS</span> department_name,
+    <span class="fn">COUNT</span>(e.id) <span class="kw">AS</span> employee_count,
+    <span class="fn">AVG</span>(e.happiness_score) <span class="kw">AS</span> avg_happiness,
+    <span class="fn">COALESCE</span>(<span class="fn">SUM</span>(i.cost), 0) <span class="kw">AS</span> total_investment
+<span class="kw">FROM</span> <span class="tb">departments</span> d
+<span class="kw">LEFT JOIN</span> <span class="tb">employees</span> e <span class="kw">ON</span> d.id = e.dept_id
+<span class="kw">LEFT JOIN</span> <span class="tb">interventions</span> i <span class="kw">ON</span> d.id = i.dept_id
+<span class="kw">GROUP BY</span> d.id, d.name
+<span class="kw">HAVING</span> <span class="fn">AVG</span>(e.happiness_score) &lt; 7
+<span class="kw">ORDER BY</span> avg_happiness <span class="kw">ASC</span>;</pre>
+    <p>
+      זוהי שאילתה שלמדנו לכתוב. אבל מישהו צריך היה להחליט שהשאילתה הזו בכלל נחוצה,
+      <strong>מה היא אמורה להחזיר</strong>, ובאילו תנאים להריץ אותה. זה בדיוק מה שה-Use Case עושה.
+    </p>
+  </div>
+
+  <div class="cb">
+    <h3 class="purple">העולם השני: Use Case — שפת הדרישות</h3>
+    <p>
+      Use Case, שלמדתם עם ד"ר רמי רשקוביץ, הוא כלי לתיאור <strong>מה מערכת עושה עבור מי, בתנאים מסוימים</strong>.
+      הוא לא מדבר על <em>איך</em> המחשב מבצע את הפעולה — הוא מדבר על הערך שהמשתמש מקבל.
+    </p>
+    <div class="hb purple">
+      <span class="hbt">💡 מה Use Case נותן לנו:</span>
+      <p>
+        <strong>בהירות עסקית</strong> — כולם מבינים מה המערכת צריכה לעשות.<br>
+        <strong>הגדרת גבולות</strong> — מה בפנים (scope), מה בחוץ.<br>
+        <strong>תיעוד תרחישים</strong> — גם ה"נתיב השמח" וגם מה קורה כשמשתבש.
+      </p>
+    </div>
+
+    <div class="ac">
+      <div class="at">🌉 אנלוגיה: בניית גשר</div>
+      <p>
+        <strong>Use Case</strong> הוא כמו ה<strong>מפרט של הגשר</strong>: "הגשר יחבר בין עיר A לעיר B, יעמוד ב-50 טון, ויאפשר מעבר כלי רכב ורוכבי אופניים".
+        המפרט לא אומר בדיוק אילו בריחים להשתמש.
+      </p>
+      <p>
+        <strong>SQL</strong> הוא כמו <strong>עבודת הנדסה</strong>: "נשתמש בקורות פלדה מסוג X, ביסוס Y, ומפרט ריתוך Z". זה ה<em>איך</em> שמממש את ה<em>מה</em>.
+      </p>
+    </div>
+  </div>
+
+  <div class="two-world">
+    <div class="world-card sql">
+      <h4>🗄️ SQL — "האיך"</h4>
+      <ul>
+        <li>שליפת נתונים מטבלאות</li>
+        <li>חיבור טבלאות עם JOIN</li>
+        <li>קיבוץ עם GROUP BY</li>
+        <li>סינון עם WHERE / HAVING</li>
+        <li>לוגיקה עסקית עם CASE WHEN</li>
+        <li>עבודה עם תאריכים</li>
+        <li>טיפול ב-NULL עם COALESCE</li>
+      </ul>
+    </div>
+    <div class="world-card uc">
+      <h4>📋 Use Case — "המה"</h4>
+      <ul>
+        <li>הגדרת שחקנים (Actors)</li>
+        <li>תיאור תרחיש ראשי (Happy Path)</li>
+        <li>תרחישים חלופיים ושגיאות</li>
+        <li>תנאים מוקדמים ותנאי סיום</li>
+        <li>קשרי include / extend</li>
+        <li>הכללה (Generalize)</li>
+        <li>דרישות מיוחדות (NFR)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- QUIZ 2 -->
+  <div class="qz">
+    <div class="qz-hdr">
+      <div class="qz-icon">🎯</div>
+      <div class="qz-title">שאלה 2 — Use Case מול SQL</div>
+    </div>
+    <p class="qz-q">
+      מנהל מוצר אומר: <em>"כשמשתמשת תלחץ 'לייק' על פרופיל, המערכת תבדוק אם יש לייק הדדי ותשלח התראה אם כן."</em><br><br>
+      מה הוא ניסח כאן?
+    </p>
+    <div class="qz-opts" id="q2opts">
+      <div class="opt" onclick="pick('q2',0,false)"><div class="om">א</div>שאילתת SQL מורכבת</div>
+      <div class="opt" onclick="pick('q2',1,true)"><div class="om">ב</div>Use Case — "קבלת התאמה (Match)" — הוא מתאר מה המערכת עושה, לא איך</div>
+      <div class="opt" onclick="pick('q2',2,false)"><div class="om">ג</div>דרישה טכנית לצוות התשתיות</div>
+      <div class="opt" onclick="pick('q2',3,false)"><div class="om">ד</div>באג בממשק המשתמש</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-check" onclick="checkQ('q2','fb2')">בדוק ✓</button>
+      <button class="btn-hint" onclick="toggleHint('h2')">רמז 💡</button>
+    </div>
+    <div class="hint-box" id="h2">כשמישהו מתאר "מה המערכת עושה" בלי לציין טכנולוגיה ספציפית — זה Use Case.</div>
+    <div class="qz-fb" id="fb2"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECTION 2 — החיבור הקריטי -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="sec" id="s2">
+  <div class="sec-hdr">
+    <div class="sec-num teal">2</div>
+    <h2 class="sec-title">החיבור הקריטי: מ"מה" ל"איך"</h2>
+  </div>
+
+  <div class="cb">
+    <h3 class="teal">כיצד Use Case מוביל למסד נתונים</h3>
+    <p>
+      כל Use Case שאתם מנתחים מכיל בתוכו — במרומז — את <strong>הנתונים שצריכים להיות מאוחסנים</strong>.
+      נבין זאת דרך דוגמה קונקרטית מ-MatchMe.
+    </p>
+
+    <div class="story-card">
+      <div class="story-header">
+        <div class="story-icon">📖</div>
+        <div>
+          <h4>Use Case: "דפדוף בפרופילים"</h4>
+          <p>מה שלמדנו עם ד"ר רשקוביץ</p>
+        </div>
+      </div>
+      <div class="story-body">
+        <p>
+          <strong>שחקן ראשי:</strong> משתמש רשום<br>
+          <strong>טריגר:</strong> המשתמש בוחר להיכנס למסך דפדוף<br>
+          <strong>תרחיש ראשי:</strong> המערכת מאתרת פרופילים מתאימים ומציגה אותם<br>
+          <strong>תנאי קדם:</strong> המשתמש מחובר ויש לו פרופיל פעיל
+        </p>
+        <div class="hb gold">
+          <span class="hbt">🔍 שאלה קריטית: מה המסד צריך לאחסן כדי שה-Use Case יעבוד?</span>
+          <p>
+            נחשוב יחד: כדי שהמערכת "תאתר פרופילים מתאימים", היא צריכה לדעת:
+            מי המשתמש, מה ההעדפות שלו, מי קיים במערכת, ומי כבר דולג/חסום.
+            כל אלה — <strong>טבלאות במסד הנתונים</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cb">
+    <h3>מה-Use Case לסכמת הטבלאות</h3>
+    <p>בואו נעקוב אחרי המסלול הקלאסי — מ-User Story עד לשאילתת SQL:</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ gold">1</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>🧑 User Story — "המה" הגולמי</h5>
+          <p>
+            <em>"כמשתמשת, אני רוצה לראות את זהותי באמצעות סלפי, כדי שהפרופיל שלי יקבל תג אמינות."</em><br>
+            מה שהמשתמשת רוצה — ניסוח אנושי פשוט.
+          </p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ blue">2</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>📋 Use Case — "המה" הפורמלי</h5>
+          <p>
+            Use Case: <strong>"אימות זהות (Identity Verification)"</strong><br>
+            שחקן: משתמשת + מנוע אימות AI<br>
+            תנאי קדם: המשתמשת מחוברת ויש לה פרופיל<br>
+            תרחיש: לחיצה → פתיחת מצלמה → צילום → השוואה → תג ✓
+          </p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ purple">3</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>🗄️ Schema — "המה" הנתוני</h5>
+          <p>
+            אילו נתונים אנחנו צריכים לאחסן?<br>
+            → <code>users</code> (id, name, email, verified_at)<br>
+            → <code>verification_attempts</code> (id, user_id, photo_url, result, created_at)<br>
+            → טבלת <code>profiles</code> עם שדה <code>is_verified BOOLEAN</code>
+          </p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ teal">4</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>🔢 SQL — "האיך" הטכני</h5>
+          <p>
+            עכשיו אנחנו כותבים שאילתה שממשת את ה-Use Case:<br>
+            עדכון סטטוס אימות, שאילתת בדיקה, דוח ניהולי — הכל SQL.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <pre class="code"><span class="cm">-- SQL שממש את Use Case "אימות זהות"</span>
+<span class="cm">-- שלב 1: עדכון אחרי אימות מוצלח</span>
+<span class="kw">UPDATE</span> <span class="tb">profiles</span>
+<span class="kw">SET</span>
+    is_verified = <span class="kw">TRUE</span>,
+    verified_at = <span class="fn">CURRENT_TIMESTAMP</span>
+<span class="kw">WHERE</span> user_id = 42;
+
+<span class="cm">-- שלב 2: דוח לצוות התמיכה — כמה אומתו השבוע?</span>
+<span class="kw">SELECT</span>
+    <span class="fn">strftime</span>(<span class="st">'%Y-%W'</span>, verified_at) <span class="kw">AS</span> week,
+    <span class="fn">COUNT</span>(*) <span class="kw">AS</span> verifications
+<span class="kw">FROM</span> <span class="tb">profiles</span>
+<span class="kw">WHERE</span> is_verified = <span class="kw">TRUE</span>
+<span class="kw">GROUP BY</span> week
+<span class="kw">ORDER BY</span> week <span class="kw">DESC</span>;</pre>
+  </div>
+
+  <!-- QUIZ 3 -->
+  <div class="qz">
+    <div class="qz-hdr">
+      <div class="qz-icon">🔗</div>
+      <div class="qz-title">שאלה 3 — הכיוון הנכון</div>
+    </div>
+    <p class="qz-q">
+      צוות הפיתוח קיבל Use Case שבו תנאי קדם אחד הוא: <em>"שני המשתמשים אינם חסומים זה על ידי זה"</em>.<br><br>
+      מה על מנהל הנתונים לעשות?
+    </p>
+    <div class="qz-opts" id="q3opts">
+      <div class="opt" onclick="pick('q3',0,false)"><div class="om">א</div>כלום — זה עניין של ה-Frontend</div>
+      <div class="opt" onclick="pick('q3',1,false)"><div class="om">ב</div>למחוק את התנאי — הוא מסובך מדי</div>
+      <div class="opt" onclick="pick('q3',2,true)"><div class="om">ג</div>ליצור טבלת <code>blocks (user_id, blocked_user_id, created_at)</code> ושאילתת בדיקה לפני יצירת Match</div>
+      <div class="opt" onclick="pick('q3',3,false)"><div class="om">ד</div>לשים הערה בקוד שהמפתח יזכור לבדוק ידנית</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-check" onclick="checkQ('q3','fb3')">בדוק ✓</button>
+      <button class="btn-hint" onclick="toggleHint('h3')">רמז 💡</button>
+    </div>
+    <div class="hint-box" id="h3">כל תנאי קדם ב-Use Case מרמז על נתון שצריך לאחסן ולבדוק. מי אחסן? המסד.</div>
+    <div class="qz-fb" id="fb3"></div>
+  </div>
+
+  <div class="cb">
+    <h3 class="blue">הכלל הזהב: כל תנאי קדם = טבלה/שדה במסד</h3>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ red">!</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>תנאי קדם → שאילתת בדיקה</h5>
+          <p>"המשתמש מחובר" → <code>WHERE session_id IS NOT NULL AND expires_at > NOW()</code></p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ teal">!</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>שחקן חיצוני → JOIN לטבלת ממשק</h5>
+          <p>"מנוע ההתאמה" → טבלת <code>match_engine_logs</code> שמאחסנת תוצאות</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ gold">!</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>תרחיש חלופי → CASE WHEN בשאילתה</h5>
+          <p>"אם אין התאמה / אם יש כישלון" → <code>CASE WHEN match_result = 'success' THEN ... ELSE ... END</code></p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-left"><div class="flow-circ purple">!</div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h5>דרישה מיוחדת (NFR) → אינדקס / אופטימיזציה</h5>
+          <p>"זמן תגובה עד 2 שניות" → <code>CREATE INDEX ON likes(user_id, liked_user_id)</code></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECTION 3 — MatchMe: מקרה בוחן -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="sec" id="s3">
+  <div class="sec-hdr">
+    <div class="sec-num red">3</div>
+    <h2 class="sec-title">📱 מקרה בוחן: אפליקציית MatchMe</h2>
+  </div>
+
+  <div class="cb">
+    <h3>הסיפור: מה אנחנו בונים?</h3>
+    <p>
+      לאורך הקורס של ד"ר רשקוביץ עקבתם אחרי אפליקציית <strong>MatchMe</strong> — אפליקציית דייטינג.
+      ראיתם את ה-Use Case Diagram שלה, את המפרטים של "דפדוף בפרופילים" ו-"קבלת התאמה".
+      עכשיו נגלה מה יש <em>מאחורי הקלעים</em> — <strong>מסד הנתונים</strong>.
+    </p>
+
+    <div class="hb red">
+      <span class="hbt">🎓 מה ראיתם בקורס של ד"ר רשקוביץ:</span>
+      <p>
+        Use Case Diagram עם שחקנים: Guest, Registered User, Admin, Facebook API, Matching Engine.<br>
+        קשרי include (Login → Edit My Profile), extend (Block User ← Chat), generalize (Premium User → User).<br>
+        מפרטים מלאים לדפדוף בפרופילים ולקבלת התאמה.
+      </p>
+    </div>
+    <div class="hb teal">
+      <span class="hbt">🔢 מה תראו עכשיו:</span>
+      <p>
+        כיצד כל שחקן, תרחיש ותנאי קדם — <strong>הופך לטבלה, שדה, או שאילתת SQL</strong>.
+        נלך Use Case אחר Use Case ונראה את השכבה הטכנית.
+      </p>
+    </div>
+  </div>
+
+  <div class="cb">
+    <h3 class="teal">סכמת מסד הנתונים של MatchMe</h3>
+    <p>ראשית, בואו נבין אילו טבלאות נדרשות כדי לתמוך ב-Use Cases שניתחנו:</p>
+
+    <div class="sbs">
+      <div>
+        <span style="font-family:'Rubik',sans-serif;font-weight:700;font-size:.9rem;color:var(--text-muted);display:block;margin-bottom:8px;">👤 טבלת users</span>
+        <div class="vt-wrap">
+          <table class="vt">
+            <thead><tr><th>שדה</th><th>סוג</th><th>תפקיד</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-pk">id</td><td>INTEGER PK</td><td>מזהה ראשי</td></tr>
+              <tr><td>name</td><td>TEXT</td><td>שם מלא</td></tr>
+              <tr><td>email</td><td>TEXT</td><td>אימייל ייחודי</td></tr>
+              <tr><td>city</td><td>TEXT</td><td>עיר מגורים</td></tr>
+              <tr><td>is_verified</td><td>BOOLEAN</td><td>אומת זהות?</td></tr>
+              <tr><td>created_at</td><td>DATE</td><td>תאריך הצטרפות</td></tr>
+              <tr><td>is_premium</td><td>BOOLEAN</td><td>מנוי פרמיום?</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <span style="font-family:'Rubik',sans-serif;font-weight:700;font-size:.9rem;color:var(--text-muted);display:block;margin-bottom:8px;">❤️ טבלת likes</span>
+        <div class="vt-wrap">
+          <table class="vt">
+            <thead><tr><th>שדה</th><th>סוג</th><th>תפקיד</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-pk">id</td><td>INTEGER PK</td><td>מזהה</td></tr>
+              <tr><td class="cell-fk">from_user_id</td><td>FK → users</td><td>מי נתן לייק</td></tr>
+              <tr><td class="cell-fk">to_user_id</td><td>FK → users</td><td>למי נתן לייק</td></tr>
+              <tr><td>liked_at</td><td>DATETIME</td><td>מתי</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="sbs">
+      <div>
+        <span style="font-family:'Rubik',sans-serif;font-weight:700;font-size:.9rem;color:var(--text-muted);display:block;margin-bottom:8px;">💚 טבלת matches</span>
+        <div class="vt-wrap">
+          <table class="vt">
+            <thead><tr><th>שדה</th><th>סוג</th><th>תפקיד</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-pk">id</td><td>INTEGER PK</td><td>מזהה</td></tr>
+              <tr><td class="cell-fk">user1_id</td><td>FK → users</td><td>משתמש 1</td></tr>
+              <tr><td class="cell-fk">user2_id</td><td>FK → users</td><td>משתמש 2</td></tr>
+              <tr><td>matched_at</td><td>DATETIME</td><td>מתי נוצר</td></tr>
+              <tr><td>is_active</td><td>BOOLEAN</td><td>התאמה פעילה?</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <span style="font-family:'Rubik',sans-serif;font-weight:700;font-size:.9rem;color:var(--text-muted);display:block;margin-bottom:8px;">🚫 טבלת blocks</span>
+        <div class="vt-wrap">
+          <table class="vt">
+            <thead><tr><th>שדה</th><th>סוג</th><th>תפקיד</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-pk">id</td><td>INTEGER PK</td><td>מזהה</td></tr>
+              <tr><td class="cell-fk">blocker_id</td><td>FK → users</td><td>מי חסם</td></tr>
+              <tr><td class="cell-fk">blocked_id</td><td>FK → users</td><td>מי נחסם</td></tr>
+              <tr><td>blocked_at</td><td>DATETIME</td><td>מתי</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="hb blue">
+      <span class="hbt">🔍 שימו לב: כל טבלה מגיעה מ-Use Case!</span>
+      <p>
+        <strong>users</strong> ← תנאי קדם "המשתמש רשום ופעיל"<br>
+        <strong>likes</strong> ← Use Case "Like Profile" + "Get Match"<br>
+        <strong>matches</strong> ← Use Case "קבלת התאמה" (Postcondition: "ההתאמה נשמרת")<br>
+        <strong>blocks</strong> ← קשר extend: "Block User ← Chat"
+      </p>
+    </div>
+  </div>
+
+  <!-- QUIZ 4 -->
+  <div class="qz">
+    <div class="qz-hdr">
+      <div class="qz-icon">🧩</div>
+      <div class="qz-title">שאלה 4 — מה-Use Case למסד</div>
+    </div>
+    <p class="qz-q">
+      ב-Use Case "דפדוף בפרופילים", אחד הכללים העסקיים הוא: <em>"לא יוצגו פרופילים שהמשתמש חסם"</em>.<br><br>
+      כיצד הכלל הזה יבוא לידי ביטוי בשאילתת SQL?
+    </p>
+    <div class="qz-opts" id="q4opts">
+      <div class="opt" onclick="pick('q4',0,false)"><div class="om">א</div>בתנאי <code>WHERE is_blocked = FALSE</code> בטבלת users</div>
+      <div class="opt" onclick="pick('q4',1,true)"><div class="om">ב</div>בתנאי <code>WHERE u.id NOT IN (SELECT blocked_id FROM blocks WHERE blocker_id = ?)</code></div>
+      <div class="opt" onclick="pick('q4',2,false)"><div class="om">ג</div>זה לא עניין של SQL — רק של הממשק</div>
+      <div class="opt" onclick="pick('q4',3,false)"><div class="om">ד</div>בפרמטר <code>LIMIT 0</code></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-check" onclick="checkQ('q4','fb4')">בדוק ✓</button>
+      <button class="btn-hint" onclick="toggleHint('h4')">רמז 💡</button>
+    </div>
+    <div class="hint-box" id="h4">
+      יש לנו טבלת blocks נפרדת. כדי לסנן, נשתמש ב-NOT IN עם subquery, או LEFT JOIN עם IS NULL.
+      זה בדיוק מה שלמדנו בפרק ה-JOIN!
+    </div>
+    <div class="qz-fb" id="fb4"></div>
+  </div>
+
+  <div class="cb">
+    <h3 class="purple">ה-Use Case "קבלת התאמה" — מבט טכני</h3>
+    <p>בואו נראה את Use Case שלמדתם דרך עיניים של מנהל נתונים:</p>
+
+    <div class="uc-box">
+      <div class="uc-box-hdr">📋 Use Case: קבלת התאמה — ה"מה" מול ה"איך"</div>
+      <div class="uc-row">
+        <div class="uc-label">טריגר</div>
+        <div class="uc-val">המשתמש מבצע Like → <code>INSERT INTO likes (from_user_id, to_user_id, liked_at) VALUES (?, ?, NOW())</code></div>
+      </div>
+      <div class="uc-row">
+        <div class="uc-label">בדיקת Like הדדי</div>
+        <div class="uc-val"><code>SELECT id FROM likes WHERE from_user_id = ? AND to_user_id = ?</code> — אם מחזיר שורה: יש התאמה!</div>
+      </div>
+      <div class="uc-row">
+        <div class="uc-label">יצירת Match</div>
+        <div class="uc-val"><code>INSERT INTO matches (user1_id, user2_id, matched_at, is_active) VALUES (?, ?, NOW(), TRUE)</code></div>
+      </div>
+      <div class="uc-row">
+        <div class="uc-label">תנאי כישלון — חסום</div>
+        <div class="uc-val">בדיקה קודמת: <code>SELECT 1 FROM blocks WHERE blocker_id IN (?, ?) AND blocked_id IN (?, ?)</code></div>
+      </div>
+      <div class="uc-row">
+        <div class="uc-label">תנאי כישלון — כבר קיים</div>
+        <div class="uc-val"><code>SELECT 1 FROM matches WHERE is_active = TRUE AND ((user1_id=? AND user2_id=?) OR (user1_id=? AND user2_id=?))</code></div>
+      </div>
+      <div class="uc-row">
+        <div class="uc-label">NFR: זמן תגובה</div>
+        <div class="uc-val"><code>CREATE INDEX idx_likes_from_to ON likes(from_user_id, to_user_id)</code> — הדרישה המיוחדת הופכת לאינדקס</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SQL PLAYGROUND -->
+  <div class="pg">
+    <div class="pg-hdr">
+      <div class="pg-dots"><div class="pd r"></div><div class="pd y"></div><div class="pd g"></div></div>
+      <div class="pg-tag">matchme_queries.sql</div>
+      <div class="pg-badge">🎮 סימולטור SQL</div>
+    </div>
+    <div class="pg-body">
+      <div class="pg-task">
+        <span class="tt">🎯 משימה: מצאו את כל ה-Matches של משתמש 1</span>
+        כתבו שאילתה שמחזירה את שמות המשתמשים שהתאימו למשתמש עם id=1.
+        השתמשו ב-JOIN בין טבלת <code>matches</code> ל-<code>users</code>.
+        <br><br>רמז: יכול להיות Match שבו user1_id=1 <em>או</em> user2_id=1, אז צריכה UNION או OR חכם.
+      </div>
+      <div class="stbls">
+        <div>
+          <div class="st-lbl">📋 users</div>
+          <table class="st">
+            <thead><tr><th>id</th><th>name</th><th>city</th></tr></thead>
+            <tbody>
+              <tr><td class="spk">1</td><td>Maya</td><td>Tel Aviv</td></tr>
+              <tr><td class="spk">2</td><td>Nir</td><td>Haifa</td></tr>
+              <tr><td class="spk">3</td><td>Dana</td><td>Jerusalem</td></tr>
+              <tr><td class="spk">4</td><td>Lior</td><td>Tel Aviv</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="st-lbl">💚 matches</div>
+          <table class="st">
+            <thead><tr><th>id</th><th>user1_id</th><th>user2_id</th><th>matched_at</th></tr></thead>
+            <tbody>
+              <tr><td class="spk">1</td><td class="sfk">1</td><td class="sfk">2</td><td>2026-04-01</td></tr>
+              <tr><td class="spk">2</td><td class="sfk">3</td><td class="sfk">1</td><td>2026-04-05</td></tr>
+              <tr><td class="spk">3</td><td class="sfk">2</td><td class="sfk">4</td><td>2026-04-10</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <textarea class="sq-inp" id="sim1inp" placeholder="-- כתבו את השאילתה שלכם כאן
+-- SELECT ...
+-- FROM matches m
+-- JOIN users u ON ...
+-- WHERE ..."></textarea>
+      <div class="btn-row">
+        <button class="pg-run" onclick="runSim1()">▶ הרץ שאילתה</button>
+        <button class="pg-hint-btn" onclick="togglePgHint('ph1')">💡 רמז</button>
+        <button class="pg-hint-btn" onclick="showSim1Ans()">👁️ הצג פתרון</button>
+      </div>
+      <div class="hint-pg" id="ph1">
+        SELECT u.name FROM matches m
+        JOIN users u ON (m.user1_id = u.id OR m.user2_id = u.id)
+        WHERE (m.user1_id = 1 OR m.user2_id = 1) AND u.id != 1
+      </div>
+    </div>
+    <div class="pg-res">
+      <div class="res-hdr"><span>OUTPUT</span><span id="sim1cnt"></span></div>
+      <div class="res-body" id="sim1res">
+        <div class="r-idle">הרצו את השאילתה לראות תוצאות...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ 5 -->
+  <div class="qz">
+    <div class="qz-hdr">
+      <div class="qz-icon">📊</div>
+      <div class="qz-title">שאלה 5 — MatchMe: מספר ה-Matches לפי עיר</div>
+    </div>
+    <p class="qz-q">
+      מנהלת המוצר של MatchMe רוצה לדעת: <em>"כמה Matches נוצרו לפי עיר המגורים של המשתמש הראשון?"</em><br><br>
+      איזו קבוצת פקודות SQL נדרשת לשאילתה הזו?
+    </p>
+    <div class="qz-opts" id="q5opts">
+      <div class="opt" onclick="pick('q5',0,false)"><div class="om">א</div>רק SELECT ו-WHERE</div>
+      <div class="opt" onclick="pick('q5',1,true)"><div class="om">ב</div>JOIN (לחיבור matches ו-users) + GROUP BY (לפי עיר) + COUNT (לספירה)</div>
+      <div class="opt" onclick="pick('q5',2,false)"><div class="om">ג</div>רק CASE WHEN ו-HAVING</div>
+      <div class="opt" onclick="pick('q5',3,false)"><div class="om">ד</div>רק UNION של שתי שאילתות</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-check" onclick="checkQ('q5','fb5')">בדוק ✓</button>
+    </div>
+    <div class="qz-fb" id="fb5"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECTION 4 — מסד EHI מהזווית העסקית -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="sec" id="s4">
+  <div class="sec-hdr">
+    <div class="sec-num gold">4</div>
+    <h2 class="sec-title">🏢 EHI — מבט חדש על מסד מוכר</h2>
+  </div>
+
+  <div class="cb">
+    <h3 class="gold">אתם כבר מכירים את EHI — עכשיו תבינו אותו</h3>
+    <p>
+      לאורך הרצאות 1 ו-2 עבדנו עם מסד הנתונים של EHI (Employee Happiness Investments).
+      כתבנו JOINs, GROUP BY, CASE WHEN ועוד. אבל <em>מי</em> ניסח את השאילתות האלה? ולמה דווקא כאלה?
+    </p>
+    <p>
+      עכשיו נשחזר את ה-<strong>Use Cases שמאחורי כל שאילתה שכתבנו</strong>.
+      זה יחזק את ההבנה שלכם ב-SQL — כי תדעו <em>למה</em> כל שורה קיימת.
+    </p>
+
+    <div class="milestone">
+      <div class="milestone-inner">
+        <h3>💡 ה-EHI Database — הסיפור</h3>
+        <p>
+          EHI היא חברה שמשקיעה באושר עובדים. יש לה מחלקות, עובדים בכל מחלקה,
+          וסוגי התערבויות (חדר כושר, עיסויים, סדנאות) שהיא מממנת.
+          כל שאילתה שכתבנו מגיעה ממישהו שישב בישיבה ואמר: "אני רוצה לדעת..."
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cb">
+    <h3>מפת ה-Use Cases של EHI</h3>
+    <p>בואו ניצור במפורש את ה-Use Cases שכתבנו שאילתות בשבילם:</p>
+
+    <div class="vt-wrap">
+      <table class="vt">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Use Case (מה?)</th>
+            <th>שחקן ראשי</th>
+            <th>SQL שלמדנו</th>
+            <th>פרק</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>UC-1</td>
+            <td>הצג סך השקעה לפי מחלקה</td>
+            <td>מנהל כספים</td>
+            <td>LEFT JOIN + SUM + GROUP BY</td>
+            <td class="cell-hi">פרק 1</td>
+          </tr>
+          <tr>
+            <td>UC-2</td>
+            <td>הצג מחלקות בהשקעה אפסית</td>
+            <td>מנהל תפעול</td>
+            <td>LEFT JOIN + IS NULL</td>
+            <td class="cell-hi">פרק 1</td>
+          </tr>
+          <tr>
+            <td>UC-3</td>
+            <td>ממוצע אושר לפי מחלקה</td>
+            <td>HR Manager</td>
+            <td>JOIN + AVG + GROUP BY</td>
+            <td class="cell-hi">פרק 2</td>
+          </tr>
+          <tr>
+            <td>UC-4</td>
+            <td>מחלקות עם ציון מתחת לסף</td>
+            <td>מנכ"ל</td>
+            <td>GROUP BY + HAVING AVG &lt; 7</td>
+            <td class="cell-hi">פרק 2</td>
+          </tr>
+          <tr>
+            <td>UC-5</td>
+            <td>דירוג רמת סיכון לעובדים</td>
+            <td>יועץ אושר</td>
+            <td>CASE WHEN + COALESCE</td>
+            <td class="cell-warn">פרק 3</td>
+          </tr>
+          <tr>
+            <td>UC-6</td>
+            <td>ניתוח מגמה חודשית בהוצאות</td>
+            <td>מנהל כספים</td>
+            <td>strftime + GROUP BY חודש</td>
+            <td class="cell-warn">פרק 3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="hb teal">
+      <span class="hbt">💡 תובנה מפתח:</span>
+      <p>
+        כל שאילתה שכתבנו — לא היתה שרירותית. מישהו ישב בישיבה ואמר "אנחנו צריכים לדעת X".
+        זה ה-Use Case. מנהל הנתונים תרגם אותו ל-SQL. אתם — כארכיטקטים בעידן ה-AI — עושים את שניהם.
+      </p>
+    </div>
+  </div>
+
+  <div class="cb">
+    <h3 class="purple">ניתוח Use Case עמוק: UC-5 — "דירוג רמת סיכון"</h3>
+    <p>בואו ניצור Use Case מלא לשאילתה שכתבנו בפרק 3:</p>
+
+    <div class="uc-box">
+      <div class="uc-box-hdr">📋 מפרט Use Case מלא: EHI-UC-5 — דירוג רמת סיכון לעובדים</div>
+      <div class="uc-row">
+        <div class="uc-label">שם</div>
+        <div class="uc-val">דירוג עובדים לפי רמת סיכון לאושר נמוך</div>
+      </div>
+      <div class="uc-row">
+        <div class="uc-label">מטרה</div>
+        <div class="uc-val">לאפשר ליועץ האושר לזהות עובדים הזקוקים להתערבות דחופה, לפי ציון האושר שלהם</div>
+      </div>
+      <div class="uc-row">
+        <div class="uc-label">שחקן ראשי</div>
+        <div class="uc-val">יועץ אושר (Happiness Consultant)</div>
+      </div>
+      <div class="uc-row">
+        <div class="uc-label">טריגר</div>
+        <div class="uc-val">ישיבה רבעונית של צוות ה-HR</div>
+      </div>
+      <div class="uc-row">
+        <div class="uc-label">תנאי קדם</div>
+        <div class="uc-val">קיימות שורות בטבלת employees עם ציון happiness_score</div>
+      </div>
+      <div class="uc-row">
+        <div class="uc-label">תרחיש ראשי</div>
+        <div class="uc-val">1. יועץ מפעיל דוח → 2. מערכת שולפת עובדים → 3. CASE WHEN מדרג לסיכון גבוה/בינוני/נמוך → 4. הדוח מוצג ממוין</div>
+      </div>
+      <div class="uc-row">
+        <div class="uc-label">תרחיש חלופי</div>
+        <div class="uc-val">אם happiness_score = NULL → COALESCE מחזיר 0 → הדירוג "סיכון גבוה"</div>
+      </div>
+      <div class="uc-row">
+        <div class="uc-label">SQL שממש זאת</div>
+        <div class="uc-val"><code>SELECT name, CASE WHEN happiness_score >= 8 THEN 'נמוך' WHEN happiness_score >= 5 THEN 'בינוני' ELSE 'גבוה' END AS risk_level FROM employees ORDER BY happiness_score ASC</code></div>
+      </div>
+    </div>
+
+    <pre class="code"><span class="cm">-- EHI-UC-5: דירוג רמת סיכון לעובדים</span>
+<span class="kw">SELECT</span>
+    e.name,
+    d.name <span class="kw">AS</span> department,
+    <span class="fn">COALESCE</span>(e.happiness_score, 0) <span class="kw">AS</span> score,
+    <span class="kw">CASE</span>
+        <span class="kw">WHEN COALESCE</span>(e.happiness_score, 0) >= 8 <span class="kw">THEN</span> <span class="st">'✅ סיכון נמוך'</span>
+        <span class="kw">WHEN COALESCE</span>(e.happiness_score, 0) >= 5 <span class="kw">THEN</span> <span class="st">'⚠️ סיכון בינוני'</span>
+        <span class="kw">ELSE</span> <span class="st">'🚨 סיכון גבוה'</span>
+    <span class="kw">END AS</span> risk_level
+<span class="kw">FROM</span> <span class="tb">employees</span> e
+<span class="kw">JOIN</span> <span class="tb">departments</span> d <span class="kw">ON</span> e.dept_id = d.id
+<span class="kw">ORDER BY</span> score <span class="kw">ASC</span>;</pre>
+  </div>
+
+  <!-- QUIZ 6 -->
+  <div class="qz">
+    <div class="qz-hdr">
+      <div class="qz-icon">🏢</div>
+      <div class="qz-title">שאלה 6 — EHI Use Case לשאילתה</div>
+    </div>
+    <p class="qz-q">
+      מנהל כספים של EHI אמר: <em>"תראה לי את ההוצאה החודשית על התערבויות — רק עבור חודשי 2026 — ורק עבור מחלקות שהוצאו בהן יותר מ-1000 שקל בחודש."</em><br><br>
+      איזה Use Case רכיב SQL ייצג את "רק עבור מחלקות שהוצאו בהן יותר מ-1000"?
+    </p>
+    <div class="qz-opts" id="q6opts">
+      <div class="opt" onclick="pick('q6',0,false)"><div class="om">א</div>WHERE cost > 1000</div>
+      <div class="opt" onclick="pick('q6',1,true)"><div class="om">ב</div>HAVING SUM(cost) > 1000 — כי זה סינון לאחר GROUP BY</div>
+      <div class="opt" onclick="pick('q6',2,false)"><div class="om">ג</div>LIMIT 1000</div>
+      <div class="opt" onclick="pick('q6',3,false)"><div class="om">ד</div>CASE WHEN cost > 1000 THEN 'include'</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-check" onclick="checkQ('q6','fb6')">בדוק ✓</button>
+      <button class="btn-hint" onclick="toggleHint('h6')">רמז 💡</button>
+    </div>
+    <div class="hint-box" id="h6">כשמסנן לפי ערך מצרפי (SUM, AVG, COUNT) — תמיד HAVING, לא WHERE. WHERE פועל לפני הקיבוץ, HAVING לאחריו.</div>
+    <div class="qz-fb" id="fb6"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECTION 5 — מהשאילתה למוצר -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="sec" id="s5">
+  <div class="sec-hdr">
+    <div class="sec-num purple">5</div>
+    <h2 class="sec-title">⚗️ מהשאילתה למוצר — הלופ המלא</h2>
+  </div>
+
+  <div class="cb">
+    <h3 class="purple">המסע המלא: User Story → Use Case → Schema → SQL → Feature</h3>
+    <p>
+      עכשיו נצלול לדוגמה מלאה ומסוג שונה — נגזור feature אמיתי מ-Use Case, כולל שלושת הטיקטים
+      שלמדתם בקורס של ד"ר רשקוביץ.
+    </p>
+
+    <div class="story-card">
+      <div class="story-header">
+        <div class="story-icon">📖</div>
+        <div>
+          <h4>Use Case: "דיווח על פרופיל פוגעני"</h4>
+          <p>מה שלמדתם בסוף מפגש 4 עם ד"ר רשקוביץ</p>
+        </div>
+      </div>
+      <div class="story-body">
+        <p>
+          <strong>User Story (אביגיל, 28):</strong> "כמשתמשת באפליקציה, אני רוצה לדווח על פרופיל פוגעני ולחסום אותו באופן מיידי, כדי שהוא לא יוכל ליצור איתי קשר."
+        </p>
+        <div class="hb red">
+          <span class="hbt">🔍 שאלה ניהולית לקבוצות: מה ה-Use Case עבור סיפור זה?</span>
+          <p>שחקן ראשי, טריגר, תנאי קדם, תרחיש ראשי, תרחישים חלופיים — נסחו אותם לפני שנמשיך!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cb" style="background:#f8f5f1;border-color:var(--border-dark);">
+      <h3 class="blue">השלבים המלאים — "דיווח על פרופיל פוגעני"</h3>
+
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-circ gold">1</div><div class="flow-line"></div></div>
+          <div class="flow-content">
+            <h5>User Story</h5>
+            <p>"כמשתמשת, אני רוצה לדווח ולחסום" → ניסוח עסקי גולמי</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-circ blue">2</div><div class="flow-line"></div></div>
+          <div class="flow-content">
+            <h5>Use Case מלא</h5>
+            <p>שחקן: משתמשת + Back-end Engine. טריגר: לחיצה על "דיווח/חסימה". תנאי קדם: המשתמשת מחוברת. תרחיש: לחצה → המערכת בודקת → שומרת → מסתירה מהחיפושים.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-circ purple">3</div><div class="flow-line"></div></div>
+          <div class="flow-content">
+            <h5>Schema חדשה</h5>
+            <p>
+              טבלה חדשה: <code>reports (id, reporter_id, reported_id, reason, created_at, status)</code><br>
+              טבלה קיימת: <code>blocks</code> — כבר יש לנו אותה!<br>
+              שדה בטבלת matches: <code>is_active = FALSE</code> כשיש חסימה
+            </p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-circ teal">4</div><div class="flow-line"></div></div>
+          <div class="flow-content">
+            <h5>טיקטים לצוות הפיתוח</h5>
+            <p>בדיוק כמו שלמדתם בקורס של ד"ר רשקוביץ — Use Case מתפצל ל-3 טיקטים:</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sbs">
+        <div class="cb" style="border-color:var(--accent);margin:0;">
+          <h3>🎟️ Ticket 1 (Frontend)</h3>
+          <p><strong>User Story:</strong> כמשתמשת, אני רוצה לראות כפתור "דיווח/חסימה" בפרופיל</p>
+          <p><strong>קריטריון קבלה:</strong> כפתור גלוי בתוך 0.5 שניות, ממשק אישור מופיע</p>
+          <p><strong>עדיפות:</strong> גבוהה</p>
+        </div>
+        <div class="cb" style="border-color:var(--teal);margin:0;">
+          <h3 class="teal">🎟️ Ticket 2 (Backend / SQL)</h3>
+          <p><strong>User Story:</strong> המערכת שומרת דיווח וחוסמת מחיפוש</p>
+          <p><strong>SQL נדרש:</strong> INSERT לטבלת reports + blocks + UPDATE matches</p>
+          <p><strong>עדיפות:</strong> גבוהה מאוד</p>
+        </div>
+        <div class="cb" style="border-color:var(--purple);margin:0;">
+          <h3 class="purple">🎟️ Ticket 3 (NFR)</h3>
+          <p><strong>דרישה:</strong> פעולת החסימה בתוך 1 שנייה בלבד</p>
+          <p><strong>פתרון:</strong> <code>CREATE INDEX ON blocks(blocker_id)</code></p>
+          <p><strong>עדיפות:</strong> בינונית</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ 7 -->
+  <div class="qz">
+    <div class="qz-hdr">
+      <div class="qz-icon">🏗️</div>
+      <div class="qz-title">שאלה 7 — גזירת Ticket מ-Use Case</div>
+    </div>
+    <p class="qz-q">
+      Use Case "דיווח על פרופיל" מציין תרחיש חריג: <em>"מה קורה אם השרת נופל בדיוק ברגע שהמשתמשת לוחצת 'אשר דיווח'?"</em><br><br>
+      לאיזה Ticket שייכת הדרישה הזו?
+    </p>
+    <div class="qz-opts" id="q7opts">
+      <div class="opt" onclick="pick('q7',0,false)"><div class="om">א</div>Ticket 1 — Frontend (כפתור חזרה)</div>
+      <div class="opt" onclick="pick('q7',1,false)"><div class="om">ב</div>Ticket 2 — Backend (SQL Transaction)</div>
+      <div class="opt" onclick="pick('q7',2,true)"><div class="om">ג</div>שניהם: Ticket 2 (TRANSACTION + ROLLBACK בצד שרת) + NFR על זמן תגובה וחוסן</div>
+      <div class="opt" onclick="pick('q7',3,false)"><div class="om">ד</div>זה לא דרישה — זה edge case שאפשר להתעלם ממנו</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-check" onclick="checkQ('q7','fb7')">בדוק ✓</button>
+      <button class="btn-hint" onclick="toggleHint('h7')">רמז 💡</button>
+    </div>
+    <div class="hint-box" id="h7">
+      בדיוק לכך קיים ב-SQL מנגנון ה-TRANSACTION: BEGIN TRANSACTION → INSERT → COMMIT (בהצלחה) / ROLLBACK (בכישלון).
+      זה מבטיח שבמקרה של כישלון, הנתונים לא ייפגעו.
+    </div>
+    <div class="qz-fb" id="fb7"></div>
+  </div>
+
+  <div class="cb">
+    <h3>SQL + Use Case = ארכיטקט נתונים בעידן ה-AI</h3>
+    <div class="hb teal">
+      <span class="hbt">🤖 תפקידכם בעידן ה-AI:</span>
+      <p>
+        כפי שלמדתם בהרצאה 2, פרק 4 — AI כותב SQL מושלם. אבל ה-AI לא יודע:
+        <strong>מה ה-Use Case</strong>, מה התנאים המוקדמים, מה הכלל העסקי "לא יוצגו חסומים".
+        זה מה שאתם יודעים. <strong>אתם הגשר בין הצורך העסקי לכלי הטכני.</strong>
+      </p>
+    </div>
+
+    <div class="bridge">
+      <div class="bridge-node blue">
+        <div class="bn-icon">📋</div>
+        <div class="bn-title">Use Case</div>
+        <div class="bn-sub">תבינו מה צריך</div>
+      </div>
+      <div class="bridge-arr">→</div>
+      <div class="bridge-node gold">
+        <div class="bn-icon">🤖</div>
+        <div class="bn-title">Prompt ל-AI</div>
+        <div class="bn-sub">תנחו עם Use Case מדויק</div>
+      </div>
+      <div class="bridge-arr">→</div>
+      <div class="bridge-node red">
+        <div class="bn-icon">🔢</div>
+        <div class="bn-title">SQL שנוצר</div>
+        <div class="bn-sub">ה-AI כותב את ה"איך"</div>
+      </div>
+      <div class="bridge-arr">→</div>
+      <div class="bridge-node teal">
+        <div class="bn-icon">✅</div>
+        <div class="bn-title">Validation</div>
+        <div class="bn-sub">אתם מאמתים את הלוגיקה</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECTION 6 — אתגר מסכם -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="sec" id="s6">
+  <div class="sec-hdr">
+    <div class="sec-num" style="background:linear-gradient(135deg,var(--accent),var(--accent3));box-shadow:0 4px 20px rgba(233,69,96,.4)">🏆</div>
+    <h2 class="sec-title">אתגר מסכם — הכול ביחד</h2>
+  </div>
+
+  <div class="cb">
+    <h3>🎯 האתגר: מ-User Story לשאילתה מלאה</h3>
+    <div class="hb gold">
+      <span class="hbt">📖 הסיפור:</span>
+      <p>
+        אביגיל, מנהלת ה-HR של EHI, באה אליכם ואומרת:<br>
+        <em>"אני רוצה לראות את כל המחלקות — כולל אלה שלא קיבלו שום התערבות — עם ציון האושר הממוצע של עובדיהן,
+        וסך ההשקעה בהתערבויות. אם ציון האושר נמוך מ-6, תסמן אותן כ'דורשות תשומת לב דחופה'. אם אין ציון — תראה 'לא נמדד'."</em>
+      </p>
+    </div>
+
+    <p style="font-size:1.08rem;color:var(--text-secondary);margin-bottom:24px;line-height:1.8;">
+      לפני שכתבנו שורת SQL, בואו ננתח את ה-Use Case:
+    </p>
+
+    <!-- QUIZ 8 -->
+    <div class="qz">
+      <div class="qz-hdr">
+        <div class="qz-icon">📋</div>
+        <div class="qz-title">שאלה 8 — ניתוח Use Case</div>
+      </div>
+      <p class="qz-q">מה הטריגר ל-Use Case שניסחה אביגיל?</p>
+      <div class="qz-opts" id="q8opts">
+        <div class="opt" onclick="pick('q8',0,true)"><div class="om">א</div>אביגיל פותחת את דשבורד ה-HR ובוחרת "דוח מחלקות"</div>
+        <div class="opt" onclick="pick('q8',1,false)"><div class="om">ב</div>מחלקה חדשה נוצרת במסד</div>
+        <div class="opt" onclick="pick('q8',2,false)"><div class="om">ג</div>שרת נופל</div>
+        <div class="opt" onclick="pick('q8',3,false)"><div class="om">ד</div>עובד משנה ציון האושר שלו</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-check" onclick="checkQ('q8','fb8')">בדוק ✓</button>
+      </div>
+      <div class="qz-fb" id="fb8"></div>
+    </div>
+
+    <!-- QUIZ 9 -->
+    <div class="qz">
+      <div class="qz-hdr">
+        <div class="qz-icon">🔢</div>
+        <div class="qz-title">שאלה 9 — איזה JOIN נדרש?</div>
+      </div>
+      <p class="qz-q">
+        אביגיל אמרה "כולל מחלקות שלא קיבלו שום התערבות". איזה JOIN נדרש?
+      </p>
+      <div class="qz-opts" id="q9opts">
+        <div class="opt" onclick="pick('q9',0,false)"><div class="om">א</div>INNER JOIN — מחזיר רק שורות תואמות</div>
+        <div class="opt" onclick="pick('q9',1,true)"><div class="om">ב</div>LEFT JOIN — מחזיר את כל המחלקות, גם אלה ללא התאמה</div>
+        <div class="opt" onclick="pick('q9',2,false)"><div class="om">ג</div>CROSS JOIN — הכפלה קרטזית</div>
+        <div class="opt" onclick="pick('q9',3,false)"><div class="om">ד</div>RIGHT JOIN — מחזיר את כל ההתערבויות</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-check" onclick="checkQ('q9','fb9')">בדוק ✓</button>
+        <button class="btn-hint" onclick="toggleHint('h9')">רמז 💡</button>
+      </div>
+      <div class="hint-box" id="h9">כשהמשפט מכיל "כולל מחלקות שלא..." — זה LEFT JOIN. הצד השמאלי (departments) מחזיר תמיד, הימני (interventions) יכול להיות NULL.</div>
+      <div class="qz-fb" id="fb9"></div>
+    </div>
+  </div>
+
+  <!-- BOSS PLAYGROUND -->
+  <div class="pg">
+    <div class="pg-hdr">
+      <div class="pg-dots"><div class="pd r"></div><div class="pd y"></div><div class="pd g"></div></div>
+      <div class="pg-tag">ehi_boss_challenge.sql</div>
+      <div class="pg-badge">🏆 Boss Challenge</div>
+    </div>
+    <div class="pg-body">
+      <div class="pg-task">
+        <span class="tt">🏆 האתגר המסכם — כתבו את השאילתה המלאה</span>
+        כתבו שאילתה שמחזירה: שם מחלקה, ממוצע ציון אושר (או 'לא נמדד' אם אין), סך השקעה (0 אם אין),
+        ו-CASE WHEN שמסמן 'דורשת תשומת לב דחופה' אם ציון ממוצע נמוך מ-6.
+        <br><br>
+        <strong>טבלאות: departments, employees (happiness_score, dept_id), interventions (cost, dept_id)</strong>
+      </div>
+      <div class="stbls">
+        <div>
+          <div class="st-lbl">🏢 departments</div>
+          <table class="st">
+            <thead><tr><th>id</th><th>name</th></tr></thead>
+            <tbody>
+              <tr><td class="spk">1</td><td>R&D</td></tr>
+              <tr><td class="spk">2</td><td>Sales</td></tr>
+              <tr><td class="spk">3</td><td>Innovation</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="st-lbl">👤 employees</div>
+          <table class="st">
+            <thead><tr><th>id</th><th>dept_id</th><th>happiness_score</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td class="sfk">1</td><td class="shi">8.5</td></tr>
+              <tr><td>2</td><td class="sfk">1</td><td class="shi">7.0</td></tr>
+              <tr><td>3</td><td class="sfk">2</td><td style="color:#f87171">4.0</td></tr>
+              <tr><td>4</td><td class="sfk">2</td><td style="color:#f87171">5.5</td></tr>
+              <tr><td>5</td><td class="sfk">3</td><td class="cell-null">NULL</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="st-lbl">💰 interventions</div>
+          <table class="st">
+            <thead><tr><th>id</th><th>dept_id</th><th>cost</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td class="sfk">1</td><td>500</td></tr>
+              <tr><td>2</td><td class="sfk">1</td><td>800</td></tr>
+              <tr><td>3</td><td class="sfk">2</td><td>2500</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <textarea class="sq-inp" id="bossinp" style="min-height:200px;" placeholder="-- האתגר שלכם!
+-- SELECT
+--     d.name AS department,
+--     CASE WHEN ... END AS avg_happiness_label,
+--     COALESCE(SUM(i.cost), 0) AS total_investment,
+--     CASE WHEN ... END AS status
+-- FROM departments d
+-- LEFT JOIN employees e ON ...
+-- LEFT JOIN interventions i ON ...
+-- GROUP BY ..."></textarea>
+      <div class="btn-row">
+        <button class="pg-run" onclick="runBoss()">▶ הרץ ובדוק</button>
+        <button class="pg-hint-btn" onclick="togglePgHint('bossHint')">💡 רמז</button>
+        <button class="pg-hint-btn" onclick="showBossAns()">👁️ הצג פתרון מלא</button>
+      </div>
+      <div class="hint-pg" id="bossHint">
+        צריך 3 LEFT JOINs (departments → employees, departments → interventions).
+        AVG יכול להחזיר NULL — תשתמשו ב-CASE WHEN AVG(...) IS NULL THEN 'לא נמדד'.
+        לסטטוס — CASE WHEN COALESCE(AVG(...),0) &lt; 6 THEN 'דורשת תשומת לב'.
+      </div>
+    </div>
+    <div class="pg-res">
+      <div class="res-hdr"><span>OUTPUT</span><span id="bosscnt"></span></div>
+      <div class="res-body" id="bossres">
+        <div class="r-idle">הרצו לבדיקת התוצאה הצפויה...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ 10 (FINAL) -->
+  <div class="qz">
+    <div class="qz-hdr">
+      <div class="qz-icon">🌟</div>
+      <div class="qz-title">שאלה 10 — שאלת הסיום</div>
+    </div>
+    <p class="qz-q">
+      סיימתם את הפרק. מהו התפקיד של ארכיטקט נתונים בעידן ה-AI, לפי מה שלמדנו היום?
+    </p>
+    <div class="qz-opts" id="q10opts">
+      <div class="opt" onclick="pick('q10',0,false)"><div class="om">א</div>לכתוב SQL — זה מה שחשוב</div>
+      <div class="opt" onclick="pick('q10',1,false)"><div class="om">ב</div>לנתח Use Cases — זה מה שחשוב</div>
+      <div class="opt" onclick="pick('q10',2,true)"><div class="om">ג</div>לגשר בין הצורך העסקי (Use Case) לפתרון הטכני (SQL), ולאמת שה-AI מספק את שניהם נכון</div>
+      <div class="opt" onclick="pick('q10',3,false)"><div class="om">ד</div>להחליף את ה-AI בכתיבת שאילתות</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-check" onclick="checkQ('q10','fb10',true)">סיים פרק ✓</button>
+    </div>
+    <div class="qz-fb" id="fb10"></div>
+  </div>
+
+  <!-- CHAPTER SUMMARY -->
+  <div class="ch-summary">
+    <h3>📚 סיכום פרק 1 — מה למדנו</h3>
+    <ul>
+      <li><strong>SQL ו-Use Case</strong> הם שני צדדי אותו מטבע — "האיך" ו"המה"</li>
+      <li><strong>כל Use Case מכתיב schema</strong> — שחקנים → טבלאות, תנאי קדם → שאילתות בדיקה, תרחישים חלופיים → CASE WHEN</li>
+      <li><strong>MatchMe</strong> — ראינו כיצד כל Use Case (Like, Match, Block, Report) הופך לטבלה + שאילתה</li>
+      <li><strong>EHI</strong> — כל שאילתה שכתבנו הגיעה מ-Use Case של מנהל אמיתי</li>
+      <li><strong>ארכיטקט נתונים בעידן AI</strong> — מנחה, מאמת, ומוודא שהפתרון הטכני משרת את הצורך העסקי</li>
+    </ul>
+  </div>
+
+  <div class="next-ch">
+    <h3>🎓 הפרק הבא: בניית מסד מאפס + Agile Backlog</h3>
+    <p>
+      בפרק 2 נקח Use Case Document מלא ונבנה ממנו מסד נתונים ו-Backlog של טיקטים.
+      נעבוד עם PlantUML לציור Use Case Diagrams, ו-SQL ל-DDL (CREATE TABLE) ו-DML (INSERT/UPDATE).
+    </p>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<!-- SCORE WIDGET -->
+<div class="score-w">
+  <span>🏆</span>
+  <span class="sv" id="sv">0</span>
+  <span class="sl">/ 10 נקודות</span>
+</div>
+
+<script>
+// ── STATE ──
+let score = 0;
+const done = new Set();
+const answers = {
+  q1: { correct: 1, fb: { wrong: '❌ SQL לבד היא כלי טכני. כל שאילתה ממשת צורך עסקי — Use Case שמישהו ניסח.', correct: '✅ מצוין! כל שאילתת SQL היא מימוש של Use Case. מישהו החליט שהנתון הזה נחוץ — SQL הוא רק ה"איך".' } },
+  q2: { correct: 1, fb: { wrong: '❌ זוהי תיאור של "מה המערכת עושה" — Use Case. SQL יבוא אחר כך כדי לממש זאת.', correct: '✅ נכון! זהו Use Case קלאסי — "קבלת התאמה". הוא מתאר ערך עסקי (זיהוי Match) ולא פרטי מימוש.' } },
+  q3: { correct: 2, fb: { wrong: '❌ כל תנאי קדם ב-Use Case חייב להיות ניתן לבדיקה. בדיקה = שאילתה SQL. שאילתה = צריכה נתון. נתון = טבלה!', correct: '✅ בדיוק! טבלת blocks מאחסנת מי חסם את מי. לפני יצירת Match — SQL בודק האם קיים record כזה.' } },
+  q4: { correct: 1, fb: { wrong: '❌ אין שדה is_blocked בטבלת users. המידע על חסימות נמצא בטבלת blocks נפרדת — צריך NOT IN או LEFT JOIN.', correct: '✅ מצוין! NOT IN עם subquery על טבלת blocks — זה בדיוק הכיוון הנכון. אפשר גם LEFT JOIN + IS NULL.' } },
+  q5: { correct: 1, fb: { wrong: '❌ כדי להשוות נתונים מטבלאות שונות (matches + users) צריך JOIN. כדי לסכם לפי עיר צריך GROUP BY + COUNT.', correct: '✅ נכון! JOIN לחיבור הטבלאות + GROUP BY לפי עיר + COUNT לספירת Matches. זה שילוב קלאסי של פרק 2.' } },
+  q6: { correct: 1, fb: { wrong: '❌ WHERE פועל לפני GROUP BY — לא יכול לסנן לפי SUM. HAVING פועל לאחר GROUP BY ויכול לסנן לפי ערכים מצרפיים.', correct: '✅ מעולה! HAVING SUM(cost) > 1000 — זה הכלי הנכון. לומדים זאת בפרק GROUP BY.' } },
+  q7: { correct: 2, fb: { wrong: '❌ תרחישי שגיאה טכנית נוגעים גם לצד שרת (TRANSACTION/ROLLBACK) וגם לדרישות NFR על חוסן ועמידות.', correct: '✅ נכון! TRANSACTION + ROLLBACK ב-SQL מבטיח שהנתונים לא ייפגעו בכישלון חלקי. זה גם דרישת חוסן (NFR).' } },
+  q8: { correct: 0, fb: { wrong: '❌ הטריגר הוא הפעולה שמתחילה את ה-Use Case — כאן זה אביגיל שפותחת את הדוח ומבקשת אותו.', correct: '✅ נכון! הטריגר הוא פעולת המשתמש שמתחילה את התהליך — כאן: אביגיל בוחרת להציג דוח מחלקות.' } },
+  q9: { correct: 1, fb: { wrong: '❌ INNER JOIN יחזיר רק מחלקות עם עובדים/התערבויות. אביגיל ביקשה "כולל מחלקות שלא..." — חייב LEFT JOIN.', correct: '✅ מדויק! LEFT JOIN מחזיר את כל המחלקות (הצד השמאלי) גם אם אין להן עובדים/התערבויות.' } },
+  q10: { correct: 2, fb: { wrong: '❌ ארכיטקט נתונים בעידן AI הוא הגשר — מבין את ה-Use Case, מנחה את ה-AI, ומאמת שהתוצאה נכונה.', correct: '✅ פרק 1 הושלם! אתם מבינים עכשיו את הקשר העמוק בין SQL ו-Use Case. זהו הבסיס לפרק הבא.' } },
+};
+
+function pick(qid, idx, isCorrect) {
+  const opts = document.querySelectorAll(`#${qid}opts .opt`);
+  opts.forEach(o => o.classList.remove('correct','wrong'));
+  opts[idx].classList.add(isCorrect ? 'correct' : 'wrong');
+}
+
+function checkQ(qid, fbid, final=false) {
+  const selected = document.querySelector(`#${qid}opts .opt.correct, #${qid}opts .opt.wrong`);
+  const fb = document.getElementById(fbid);
+  if (!selected) { fb.className='qz-fb wrong show'; fb.innerHTML='⏳ בחרו תשובה תחילה'; return; }
+  const isCorrect = selected.classList.contains('correct');
+  const ans = answers[qid];
+  fb.className = `qz-fb ${isCorrect?'correct':'wrong'} show`;
+  fb.innerHTML = isCorrect ? ans.fb.correct : ans.fb.wrong;
+  if (isCorrect && !done.has(qid)) {
+    done.add(qid); score++;
+    document.getElementById('sv').textContent = score;
+  }
+  if (final && isCorrect) {
+    setTimeout(() => {
+      if (typeof confetti !== 'undefined') confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+    }, 300);
+  }
+}
+
+function toggleHint(id) {
+  const el = document.getElementById(id);
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+}
+function togglePgHint(id) {
+  const el = document.getElementById(id);
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+}
+
+// ── SIM 1: Find matches ──
+function runSim1() {
+  const code = document.getElementById('sim1inp').value.toLowerCase();
+  const res = document.getElementById('sim1res');
+  const cnt = document.getElementById('sim1cnt');
+  const hasJoin = code.includes('join');
+  const hasMatches = code.includes('matches');
+  const hasUsers = code.includes('users');
+  const hasWhere = code.includes('where') || code.includes('on');
+  if (!hasJoin) {
+    res.innerHTML = '<div class="r-err"><div class="et">שגיאה</div><div class="eb">חסר JOIN — צריך לחבר את טבלת matches ל-users.</div></div>';
+    cnt.textContent = '';
+    return;
+  }
+  if (!hasMatches || !hasUsers) {
+    res.innerHTML = '<div class="r-err"><div class="et">שגיאה</div><div class="eb">ודאו שמשתמשים בטבלאות matches ו-users.</div></div>';
+    cnt.textContent = '';
+    return;
+  }
+  // Simulate correct result
+  res.innerHTML = `
+    <div class="r-ok">✅ שאילתה תקינה! נמצאו 2 Matches עבור Maya (id=1):</div>
+    <table class="rt">
+      <thead><tr><th>partner_name</th><th>matched_at</th></tr></thead>
+      <tbody>
+        <tr><td>Nir</td><td>2026-04-01</td></tr>
+        <tr><td>Dana</td><td>2026-04-05</td></tr>
+      </tbody>
+    </table>`;
+  cnt.textContent = '2 rows';
+  if (!done.has('sim1')) { done.add('sim1'); score++; document.getElementById('sv').textContent = score; }
+}
+
+function showSim1Ans() {
+  document.getElementById('sim1inp').value =
+`SELECT u.name AS partner_name, m.matched_at
+FROM matches m
+JOIN users u ON (
+    CASE WHEN m.user1_id = 1 THEN m.user2_id ELSE m.user1_id END = u.id
+)
+WHERE m.user1_id = 1 OR m.user2_id = 1;`;
+}
+
+// ── BOSS: Full challenge ──
+function runBoss() {
+  const code = document.getElementById('bossinp').value.toLowerCase();
+  const res = document.getElementById('bossres');
+  const cnt = document.getElementById('bosscnt');
+  const checks = {
+    'left join': 'LEFT JOIN',
+    'group by': 'GROUP BY',
+    'coalesce': 'COALESCE',
+    'case': 'CASE WHEN',
+    'avg': 'AVG',
+    'sum': 'SUM',
+  };
+  const missing = Object.entries(checks).filter(([k]) => !code.includes(k)).map(([,v]) => v);
+  if (missing.length > 2) {
+    res.innerHTML = `<div class="r-err"><div class="et">❌ חסרות ${missing.length} קבוצות מילות מפתח</div><div class="eb">חסר: ${missing.join(', ')}</div></div>`;
+    cnt.textContent = '';
+    return;
+  }
+  if (missing.length > 0) {
+    res.innerHTML = `<div class="r-err"><div class="et">⚠️ כמעט! חסר עדיין: ${missing.join(', ')}</div><div class="eb">הוסיפו את הרכיבים החסרים.</div></div>`;
+    cnt.textContent = '';
+    return;
+  }
+  res.innerHTML = `
+    <div class="r-ok">🏆 מושלם! זוהי התוצאה הצפויה:</div>
+    <table class="rt">
+      <thead><tr><th>department</th><th>avg_happiness</th><th>total_investment</th><th>status</th></tr></thead>
+      <tbody>
+        <tr><td>R&D</td><td>7.75</td><td>1300</td><td>✅ תקין</td></tr>
+        <tr><td>Sales</td><td>4.75</td><td>2500</td><td>🚨 דורשת תשומת לב דחופה</td></tr>
+        <tr><td>Innovation</td><td>לא נמדד</td><td>0</td><td>⚠️ לא ניתן לדרג</td></tr>
+      </tbody>
+    </table>`;
+  cnt.textContent = '3 rows';
+  if (!done.has('boss')) { done.add('boss'); score++; document.getElementById('sv').textContent = score; }
+}
+
+function showBossAns() {
+  document.getElementById('bossinp').value =
+`SELECT
+    d.name AS department,
+    CASE
+        WHEN AVG(e.happiness_score) IS NULL THEN 'לא נמדד'
+        ELSE ROUND(AVG(e.happiness_score), 2)
+    END AS avg_happiness,
+    COALESCE(SUM(i.cost), 0) AS total_investment,
+    CASE
+        WHEN AVG(e.happiness_score) IS NULL THEN '⚠️ לא ניתן לדרג'
+        WHEN AVG(e.happiness_score) < 6 THEN '🚨 דורשת תשומת לב דחופה'
+        ELSE '✅ תקין'
+    END AS status
+FROM departments d
+LEFT JOIN employees e ON d.id = e.dept_id
+LEFT JOIN interventions i ON d.id = i.dept_id
+GROUP BY d.id, d.name
+ORDER BY AVG(e.happiness_score) ASC;`;
+}
+
+// ── PROGRESS BAR ──
+window.addEventListener('scroll', () => {
+  const st = window.scrollY, dh = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('pb').style.width = Math.min(100, (st/dh)*100) + '%';
+});
+
+// ── NAV HIGHLIGHT ──
+const secs = document.querySelectorAll('section[id]');
+const nls = document.querySelectorAll('#mainNav .nl');
+window.addEventListener('scroll', () => {
+  let curr = '';
+  secs.forEach(s => { if (window.scrollY >= s.offsetTop - 150) curr = s.id; });
+  nls.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === '#' + curr) l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
