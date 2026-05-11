@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ממסד נתונים לבינה מלאכותית · MatchMe</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/heebo@5/index.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/rubik@5/index.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5/index.min.css">
+<style>
+:root {
+  --pink: #FF3D71;
+  --pink-soft: #FFD9E5;
+  --blue: #2E5BFF;
+  --blue-soft: #DCE4FF;
+  --cream: #FFF6E5;
+  --cream-deep: #FFE9B8;
+  --ink: #14142B;
+  --ink-soft: #4E4B66;
+  --line: #E4E4F0;
+  --yellow: #FFD23F;
+  --mint: #2BD9B0;
+  --shadow: 6px 6px 0 var(--ink);
+  --shadow-sm: 3px 3px 0 var(--ink);
+}
+* { box-sizing: border-box; }
+deck-stage { font-family: 'Heebo', 'Rubik', system-ui, sans-serif; }
+section {
+  background: var(--cream);
+  color: var(--ink);
+  direction: rtl;
+  padding: 44px 60px;
+  position: relative;
+  overflow: hidden;
+  font-size: 21px;
+  line-height: 1.6;
+}
+section.dark { background: var(--ink); color: var(--cream); }
+section.pink { background: var(--pink); color: white; }
+section.blue { background: var(--blue); color: white; }
+h1, h2, h3, h4 { font-family: 'Rubik', sans-serif; font-weight: 800; line-height: 1.1; margin: 0; }
+h1 { font-size: 68px; }
+h2 { font-size: 48px; }
+h3 { font-size: 34px; }
+h4 { font-size: 26px; }
+p { margin: 0; line-height: 1.65; font-size: 21px; }
+.snum {
+  position: absolute; top: 18px; left: 26px;
+  font-family: 'Rubik', sans-serif; font-weight: 800; font-size: 13px;
+  color: var(--ink-soft); letter-spacing: 0.15em;
+}
+section.dark .snum, section.pink .snum, section.blue .snum { color: rgba(255,255,255,0.55); }
+.chapter-tag {
+  position: absolute; top: 18px; right: 60px;
+  display: inline-block; font-family: 'Rubik', sans-serif; font-weight: 700;
+  font-size: 13px; letter-spacing: 0.1em;
+  background: var(--ink); color: var(--cream); padding: 5px 13px; border-radius: 999px;
+}
+section.dark .chapter-tag { background: var(--cream); color: var(--ink); }
+section.pink .chapter-tag { background: var(--ink); color: var(--pink); }
+section.blue .chapter-tag { background: var(--cream); color: var(--blue); }
+.row { display: flex; gap: 22px; }
+.col { display: flex; flex-direction: column; gap: 18px; }
+.grow { flex: 1; }
+.center { display: flex; align-items: center; justify-content: center; }
+.card {
+  background: white; border: 3px solid var(--ink); border-radius: 16px;
+  padding: 22px 24px; box-shadow: var(--shadow);
+}
+.card.pink { background: var(--pink); color: white; border-color: var(--pink); }
+.card.blue { background: var(--blue); color: white; border-color: var(--blue); }
+.card.yellow { background: var(--yellow); }
+.card.mint { background: var(--mint); }
+.card.cream { background: var(--cream-deep); }
+.card.ink { background: var(--ink); color: var(--cream); }
+.pill {
+  display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px;
+  border-radius: 999px; font-weight: 700; font-size: 15px;
+  border: 2px solid var(--ink); background: white;
+}
+.pill.pink { background: var(--pink); color: white; }
+.pill.blue { background: var(--blue); color: white; }
+.pill.yellow { background: var(--yellow); }
+.pill.mint { background: var(--mint); }
+.pill.ink { background: var(--ink); color: var(--cream); }
+.code {
+  background: var(--ink); color: #F8E9C0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  border-radius: 12px; padding: 18px 22px; direction: ltr; text-align: left;
+  font-size: 17px; line-height: 1.6; white-space: pre; overflow-x: auto;
+  border: 3px solid var(--ink); box-shadow: var(--shadow);
+}
+.code.sm { font-size: 15px; padding: 14px 18px; }
+.code.xs { font-size: 13px; padding: 12px 16px; line-height: 1.5; }
+.code .kw { color: #FF8AB6; font-weight: 700; }
+.code .str { color: #F4D35E; }
+.code .num { color: #7BE7C7; }
+.code .com { color: #8B8AA0; font-style: italic; }
+.code .fn { color: #82B1FF; }
+.code .op { color: #FF6B6B; }
+.try-now {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--yellow); border: 3px solid var(--ink); border-radius: 14px;
+  padding: 10px 18px; font-family: 'Rubik', sans-serif; font-weight: 800;
+  font-size: 21px; box-shadow: var(--shadow-sm); margin-bottom: 14px;
+}
+.try-now::before { content: '💡'; font-size: 24px; }
+.title-mega { font-size: 110px; font-weight: 900; line-height: 0.92; }
+.title-large { font-size: 78px; font-weight: 800; line-height: 1; }
+.title-med { font-size: 54px; font-weight: 800; line-height: 1.05; }
+.title-sm { font-size: 34px; font-weight: 700; line-height: 1.15; }
+.eyebrow {
+  font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 18px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+}
+.step-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 48px; height: 48px; background: var(--pink); color: white;
+  border-radius: 50%; border: 3px solid var(--ink);
+  font-family: 'Rubik', sans-serif; font-weight: 800; font-size: 24px; flex-shrink: 0;
+}
+.step-num.blue { background: var(--blue); }
+.step-num.mint { background: var(--mint); color: var(--ink); }
+.step-num.yellow { background: var(--yellow); color: var(--ink); }
+.tbl {
+  border-collapse: separate; border-spacing: 0; border: 3px solid var(--ink);
+  border-radius: 12px; overflow: hidden; background: white;
+  font-size: 16px; font-family: 'JetBrains Mono', monospace; box-shadow: var(--shadow-sm);
+}
+.tbl th {
+  background: var(--ink); color: var(--cream); padding: 9px 14px;
+  text-align: right; font-family: 'Rubik', sans-serif; font-size: 15px;
+}
+.tbl td { padding: 8px 14px; border-top: 2px solid var(--line); text-align: right; }
+.tbl tr:first-child td { border-top: none; }
+.tbl.hl td { background: #FFF3D6; }
+.tbl.out th { background: var(--pink); }
+.tbl.in th { background: var(--blue); }
+.tbl.compact { font-size: 14px; }
+.tbl.compact th, .tbl.compact td { padding: 6px 11px; }
+.bigletter {
+  position:absolute; top:36px; right:46px; font-family:'Rubik'; font-weight:900;
+  font-size:340px; line-height:0.8; opacity:0.07; pointer-events:none;
+}
+.arrow { display: inline-flex; align-items: center; justify-content: center; font-size: 38px; color: var(--pink); font-weight: 800; }
+.kbd {
+  display: inline-block; background: white; border: 2px solid var(--ink);
+  border-bottom-width: 4px; padding: 2px 7px; border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85em; font-weight: 700;
+}
+.callout {
+  background: var(--blue-soft); border-right: 6px solid var(--blue);
+  padding: 14px 18px; border-radius: 12px; font-size: 19px; line-height: 1.5;
+}
+.callout.pink { background: var(--pink-soft); border-color: var(--pink); }
+.callout.yellow { background: #FFF1B6; border-color: var(--yellow); }
+.callout.mint { background: #D6F5EE; border-color: var(--mint); }
+.bignum { font-family: 'Rubik', sans-serif; font-weight: 900; font-size: 82px; line-height: 0.95; color: var(--pink); }
+.bignum.blue { color: var(--blue); }
+.bignum.mint { color: var(--mint); }
+.heart-bg { position: absolute; font-size: 240px; opacity: 0.07; pointer-events: none; user-select: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.compare > div { background: white; border: 3px solid var(--ink); border-radius: 16px; padding: 20px 22px; }
+.compare h4 { font-size: 23px; margin-bottom: 10px; }
+.foot {
+  position: absolute; bottom: 20px; right: 60px; left: 60px;
+  display: flex; justify-content: space-between; font-family: 'Rubik', sans-serif;
+  font-weight: 600; font-size: 12px; color: var(--ink-soft); letter-spacing: 0.1em;
+}
+section.dark .foot, section.pink .foot, section.blue .foot { color: rgba(255,255,255,0.55); }
+ul.clean, ol.clean { list-style: none; padding: 0; margin: 0; }
+ul.tick li { position: relative; padding-right: 34px; font-size: 20px; line-height: 1.45; margin-bottom: 11px; }
+ul.tick li::before {
+  content: '✓'; position: absolute; right: 0; top: -2px;
+  color: var(--pink); font-weight: 900; font-size: 24px;
+}
+ol.steps { counter-reset: stepc; }
+ol.steps li { counter-increment: stepc; position: relative; padding-right: 42px; font-size: 19px; line-height: 1.5; margin-bottom: 11px; }
+ol.steps li::before {
+  content: counter(stepc); position: absolute; right: 0; top: -2px;
+  width: 30px; height: 30px; background: var(--ink); color: var(--cream);
+  border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  font-family: 'Rubik', sans-serif; font-weight: 800; font-size: 15px;
+}
+.code-explain {
+  display: grid; grid-template-columns: minmax(320px, auto) 1fr;
+  gap: 0; background: var(--ink); border: 3px solid var(--ink);
+  border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); direction:ltr;
+}
+.code-explain .ln {
+  padding: 6px 16px; color:#F8E9C0; font-family:'JetBrains Mono',monospace;
+  font-size:14px; border-top:1px solid #2A2A45; white-space:pre;
+}
+.code-explain .ln:first-child { border-top:none; }
+.code-explain .ex {
+  padding: 6px 14px; color:var(--ink); font-family:'Heebo',sans-serif;
+  font-size:13px; line-height:1.4; background:#FFF6E5; border-top:1px solid var(--line);
+  direction:rtl; text-align:right;
+}
+.code-explain .ex:first-of-type { border-top:none; }
+.flow-arrow { font-size: 28px; color: var(--pink); display: flex; align-items: center; justify-content: center; min-width: 36px; }
+.highlight-row { background: #FFF3D6 !important; }
+.badge {
+  display: inline-flex; align-items: center; gap: 5px; padding: 3px 11px;
+  border-radius: 999px; font-weight: 700; font-size: 13px;
+  background: var(--pink); color: white;
+}
+.badge.blue { background: var(--blue); }
+.badge.mint { background: var(--mint); color: var(--ink); }
+.badge.yellow { background: var(--yellow); color: var(--ink); }
+.erd-box {
+  background: white; border: 3px solid var(--ink); border-radius: 12px;
+  padding: 14px 18px; box-shadow: var(--shadow-sm);
+}
+.erd-box h4 { font-size: 19px; margin-bottom: 5px; }
+.erd-box .fields { font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--ink-soft); line-height: 1.5; }
+.erd-box .pk { color: var(--pink); font-weight: 700; }
+.erd-box .fk { color: var(--blue); font-weight: 700; }
+.rel-line { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 700; }
+.rel-line .dash { border-top: 3px dashed var(--pink); flex: 1; min-width: 28px; }
+.rel-line .solid { border-top: 3px solid var(--ink); flex: 1; min-width: 28px; }
+.action-box {
+  background: var(--mint); border: 3px solid var(--ink); border-radius: 12px;
+  padding: 16px 20px; box-shadow: var(--shadow-sm);
+}
+.action-box h4 { font-size: 21px; margin-bottom: 7px; }
+.explain-block {
+  background: white; border-right: 5px solid var(--blue); border-radius: 12px;
+  padding: 16px 20px; margin: 10px 0;
+}
+.explain-block h4 { color: var(--blue); margin-bottom: 6px; font-size: 20px; }
+.explain-block p { font-size: 19px; line-height: 1.6; }
+.explain-block.pink { border-color: var(--pink); }
+.explain-block.pink h4 { color: var(--pink); }
+.explain-block.mint { border-color: var(--mint); }
+.explain-block.mint h4 { color: #1a9e7e; }
+.explain-block.yellow { border-color: var(--yellow); }
+.explain-block.yellow h4 { color: #b8860b; }
+.syntax-tag {
+  display: inline-block; background: var(--ink); color: #F8E9C0;
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  padding: 2px 8px; border-radius: 5px; font-weight: 700;
+}
+.concept-box {
+  background: #FFF9ED; border: 2px solid var(--cream-deep); border-radius: 14px;
+  padding: 18px 22px;
+}
+.concept-box h4 { font-size: 20px; margin-bottom: 8px; color: #b8860b; }
+.concept-box p { font-size: 18px; line-height: 1.65; }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+<!-- ============ SLIDE 1: TITLE ============ -->
+<section class="pink">
+  <span class="snum">01</span>
+  <div class="heart-bg" style="top:-30px;left:-30px;">💘</div>
+  <div style="position:relative; z-index:1; display:flex; flex-direction:column; justify-content:center; height:100%; gap:18px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.8);">ניתוח מערכות מידע · הטכניון</p>
+    <h1 class="title-mega" style="color:white;">MatchMe</h1>
+    <h2 style="font-size:44px; color:rgba(255,255,255,0.95);">מאפיון עסקי<br>לבסיס נתונים ול-AI</h2>
+    <p style="font-size:22px; color:rgba(255,255,255,0.85); max-width:700px; margin-top:8px;">
+      מדריך שלם, צעד אחר צעד, למי שלא ראה שורת SQL בחיים.<br>
+      נבין <strong>למה</strong> עושים כל דבר, <strong>איך</strong> עושים אותו, ו<strong>מה</strong> כל מילה אומרת.
+    </p>
+    <div style="margin-top:16px;">
+      <span class="pill" style="background:rgba(255,255,255,0.2); color:white; border-color:rgba(255,255,255,0.4);">
+        📖 הסבר מפורט · בלי הנחות · בלי קיצורי דרך
+      </span>
+    </div>
+    <p style="font-size:15px; color:rgba(255,255,255,0.55); margin-top:24px;">לוחצים → או רווח להמשיך</p>
+  </div>
+</section>
+
+<!-- ============ SLIDE 2: WHERE WE STAND ============ -->
+<section>
+  <span class="snum">02</span>
+  <span class="chapter-tag">פתיחה</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;">
+    <h2>איפה אנחנו עומדים?</h2>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="color:var(--pink); margin-bottom:10px;">✓ מה כבר למדנו</h4>
+        <ul class="tick">
+          <li>בנינו מערכת שלמה ב-Google Apps Script</li>
+          <li>הבנו מה זה Use Case ולמה צריך אותו</li>
+          <li>חשבנו על משתמשים, טריגרים, ותרחישים</li>
+          <li>ראינו איך מערכת נראית מבפנים</li>
+        </ul>
+      </div>
+      <div class="card grow" style="border-color:var(--blue);">
+        <h4 style="color:var(--blue); margin-bottom:10px;">→ מה נלמד היום</h4>
+        <ul class="tick">
+          <li>איך הופכים אפיון עסקי לטבלאות</li>
+          <li>מה זה ERD ואיך קוראים אותו</li>
+          <li>מה זה SQL — ממש מההתחלה</li>
+          <li>איך AI עוזר לנו בכל שלב</li>
+          <li>מה זה API ואיך מחברים AI למערכת</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout mint" style="font-size:18px;">
+      💡 לא צריך שום ידע מוקדם. נתחיל מההתחלה המוחלטת. כל מונח יוסבר. כל שורת קוד תפורט.
+    </div>
+  </div>
+  <div class="foot"><span>שיעור · ממסד נתונים ל-AI</span><span>02</span></div>
+</section>
+
+<!-- ============ SLIDE 3: LESSON MAP ============ -->
+<section class="dark">
+  <span class="snum">03</span>
+  <span class="chapter-tag">פתיחה</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;">
+    <h2 style="color:var(--cream);">5 חלקים. כל אחד בונה על הקודם.</h2>
+    <div class="row" style="gap:14px;">
+      <div class="card ink grow" style="text-align:center;">
+        <div class="badge" style="font-size:26px; margin-bottom:6px;">A</div>
+        <h4 style="color:var(--cream);">אפיון עסקי<br>ו-ERD</h4>
+        <p style="font-size:18px; color:var(--yellow); margin-top:6px;">90 דק׳</p>
+      </div>
+      <div class="card ink grow" style="text-align:center;">
+        <div class="badge blue" style="font-size:26px; margin-bottom:6px;">B</div>
+        <h4 style="color:var(--cream);">מ-ERD<br>לטבלאות</h4>
+        <p style="font-size:18px; color:var(--yellow); margin-top:6px;">60 דק׳</p>
+      </div>
+      <div class="card ink grow" style="text-align:center;">
+        <div class="badge mint" style="font-size:26px; margin-bottom:6px;">C</div>
+        <h4 style="color:var(--cream);">SQL<br>מההתחלה</h4>
+        <p style="font-size:18px; color:var(--yellow); margin-top:6px;">75 דק׳</p>
+      </div>
+      <div class="card ink grow" style="text-align:center;">
+        <div class="badge yellow" style="font-size:26px; margin-bottom:6px;">D</div>
+        <h4 style="color:var(--cream);">AI<br>בענן</h4>
+        <p style="font-size:18px; color:var(--yellow); margin-top:6px;">45 דק׳</p>
+      </div>
+      <div class="card ink grow" style="text-align:center;">
+        <div class="badge" style="font-size:26px; margin-bottom:6px;">E</div>
+        <h4 style="color:var(--cream);">API<br>ופרויקט</h4>
+        <p style="font-size:18px; color:var(--yellow); margin-top:6px;">45 דק׳</p>
+      </div>
+    </div>
+    <div class="callout yellow" style="font-size:18px;">
+      📌 הסדר חשוב: קודם מבינים מה בונים (אפיון), אחר כך איך מאחסנים (טבלאות), אחר כך איך שואלים (SQL), ולבסוף איך משלבים AI.
+    </div>
+  </div>
+  <div class="foot"><span>5 חלקים</span><span>03</span></div>
+</section>
+
+<!-- ============ SLIDE 4: PART A OPENER ============ -->
+<section class="pink">
+  <span class="snum">04</span>
+  <span class="chapter-tag">A</span>
+  <div class="bigletter">A</div>
+  <div style="position:relative; z-index:1; display:flex; flex-direction:column; justify-content:center; height:100%; gap:18px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.7);">חלק A · 90 דקות</p>
+    <h1 class="title-large" style="color:white;">אפיון עסקי.<br>לפני שכותבים שורת קוד אחת.</h1>
+    <p style="font-size:22px; color:rgba(255,255,255,0.85); max-width:700px;">
+      לפני שניגשים לבנייה — צריך להבין מה בונים.<br>
+      זה כמו תוכנית אדריכלית לפני ששופכים בטון.
+    </p>
+  </div>
+  <div class="foot"><span>אפיון עסקי · ERD</span><span>A</span></div>
+</section>
+
+<!-- ============ SLIDE 5: WHAT IS MATCHME ============ -->
+<section>
+  <span class="snum">05</span>
+  <span class="chapter-tag">A · אפיון</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:20px;">
+    <h2>מה האפליקציה שאנחנו בונים?</h2>
+    <p style="font-size:20px; color:var(--ink-soft);">לפני הכל — בואו נבין את המוצר. MatchMe היא אפליקציית דייטים.</p>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="margin-bottom:10px;">💘 מה המשתמש עושה?</h4>
+        <ol class="steps">
+          <li><strong>נרשם</strong> — מזין אימייל וסיסמה</li>
+          <li><strong>יוצר פרופיל</strong> — שם, גיל, עיר, תמונה, ביו</li>
+          <li><strong>מדפדף</strong> — רואה פרופילים של אנשים אחרים</li>
+          <li><strong>עושה Like</strong> — לוחץ ❤️ על פרופיל שאהב</li>
+          <li><strong>מקבל Match</strong> — אם שני הצדדים עשו Like, נפתח צ'אט</li>
+        </ol>
+      </div>
+      <div class="card grow" style="border-color:var(--blue);">
+        <h4 style="color:var(--blue); margin-bottom:10px;">🎯 למה צריך בסיס נתונים?</h4>
+        <p>כל פעולה ברשימה למעלה — היא בעצם <strong>שינוי בנתונים</strong>.</p>
+        <p style="margin-top:8px;">כשמשתמש נרשם → צריך לשמור את האימייל והסיסמה שלו.</p>
+        <p>כשעושה Like → צריך לזכור מי אהב את מי.</p>
+        <p>כשיש Match → צריך לדעת ששני ה-Likes קרו.</p>
+        <p style="margin-top:8px; color:var(--blue); font-weight:700;">בסיס הנתונים הוא ה"זיכרון" של המערכת. בלעדיו — כל רענון דף מוחק הכל.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>מה בונים</span><span>05</span></div>
+</section>
+
+<!-- ============ SLIDE 6: WHAT IS BUSINESS ANALYSIS ============ -->
+<section>
+  <span class="snum">06</span>
+  <span class="chapter-tag">A · אפיון</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:18px;">
+    <h2>מה זה "אפיון עסקי" ולמה זה השלב הראשון?</h2>
+    <div class="explain-block">
+      <h4>📋 אפיון עסקי = מסמך שמתאר מה המערכת צריכה לעשות</h4>
+      <p>זה לא קוד. זה לא טבלאות. זה <strong>טקסט בעברית</strong> שמתאר: מי המשתמשים, מה הם יכולים לעשות, ואילו חוקים יש במערכת.</p>
+    </div>
+    <div class="explain-block pink">
+      <h4>🤔 למה מתחילים מזה?</h4>
+      <p>כי אי אפשר לבנות טבלאות אם לא יודעים מה המערכת עושה. זה כמו לבנות ארון בלי לדעת מה צריך להיכנס לתוכו — בגדים? ספרים? כלים?</p>
+    </div>
+    <div class="explain-block mint">
+      <h4>📝 דוגמה לקטע אפיון</h4>
+      <p>"המשתמש נכנס למסך דפדוף. המערכת מציגה לו פרופילים של משתמשים אחרים באותה עיר, בטווח גילאים שהוא הגדיר. המשתמש יכול לעשות Like או לדלג. אם שני משתמשים עשו Like אחד לשני — נוצר Match והם יכולים לשלוח הודעות."</p>
+    </div>
+    <div class="callout yellow" style="font-size:18px;">
+      💡 שימו לב: האפיון כתוב בשפה רגילה. אין בו מילים טכניות כמו "טבלה" או "SQL". הוא מתאר <strong>מה</strong> קורה, לא <strong>איך</strong>.
+    </div>
+  </div>
+  <div class="foot"><span>אפיון עסקי · מה ולמה</span><span>06</span></div>
+</section>
+
+<!-- ============ SLIDE 7: USE CASE WALKTHROUGH ============ -->
+<section>
+  <span class="snum">07</span>
+  <span class="chapter-tag">A · אפיון</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:16px;">
+    <h2>Use Case מלא — דפדוף בפרופילים</h2>
+    <p style="font-size:19px; color:var(--ink-soft);">Use Case = תרחיש שימוש. תיאור של <strong>מה המשתמש עושה</strong> צעד אחר צעד.</p>
+    <div class="col" style="gap:8px;">
+      <div class="row" style="align-items:center; gap:10px;">
+        <div class="step-num" style="width:42px;height:42px;font-size:20px;">1</div>
+        <div class="card grow" style="padding:12px 16px;">
+          <strong>המשתמש נכנס למסך "גילוי"</strong> — האפליקציה צריכה להציג לו פרופילים פוטנציאליים
+        </div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="row" style="align-items:center; gap:10px;">
+        <div class="step-num blue" style="width:42px;height:42px;font-size:20px;">2</div>
+        <div class="card grow" style="padding:12px 16px;">
+          <strong>המערכת מסננת</strong> — רק פרופילים באותה עיר, בטווח גילאים, שלא נחסמו, שעדיין לא נראו
+        </div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="row" style="align-items:center; gap:10px;">
+        <div class="step-num mint" style="width:42px;height:42px;font-size:20px;">3</div>
+        <div class="card grow" style="padding:12px 16px;">
+          <strong>המשתמש רואה כרטיס</strong> — שם, גיל, תמונה, ביו — ומחליט: Like או דילוג
+        </div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="row" style="align-items:center; gap:10px;">
+        <div class="step-num yellow" style="width:42px;height:42px;font-size:20px;">4</div>
+        <div class="card grow" style="padding:12px 16px;">
+          <strong>אם Like</strong> — נרשם במערכת. <strong>אם יש Like הדדי</strong> — נוצר Match ונפתח צ'אט
+        </div>
+      </div>
+    </div>
+    <div class="callout mint" style="font-size:17px;">
+      🎯 כל צעד בזרימה הזו ידרוש אחר כך נתונים אחרים מבסיס הנתונים. לכן חשוב לתאר את זה <strong>לפני</strong> שמתכננים טבלאות.
+    </div>
+  </div>
+  <div class="foot"><span>Use Case · דפדוף</span><span>07</span></div>
+</section>
+
+<!-- ============ SLIDE 8: IDENTIFYING ENTITIES ============ -->
+<section>
+  <span class="snum">08</span>
+  <span class="chapter-tag">A · אפיון</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:16px;">
+    <h2>שלב 1: מהאפיון — מזהים "ישויות"</h2>
+    <div class="explain-block">
+      <h4>🔍 מה זו "ישות" (Entity)?</h4>
+      <p>ישות = <strong>דבר שצריך לשמור עליו מידע</strong>. בדרך כלל שם עצם שחוזר באפיון. אם אפשר לשאול עליו "כמה יש?" או "מה הפרטים של...?" — זו כנראה ישות.</p>
+    </div>
+    <div class="card" style="border-color:var(--blue);">
+      <p style="font-size:17px; font-weight:700; color:var(--blue); margin-bottom:8px;">נסו את זה: קראו את האפיון וסמנו שמות עצם</p>
+      <p style="font-size:19px; line-height:1.9;">
+        ה<span style="background:var(--yellow); padding:2px 6px; border-radius:4px; font-weight:700;">משתמש</span>
+        בוחר להיכנס למסך דפדוף ב<span style="background:var(--yellow); padding:2px 6px; border-radius:4px; font-weight:700;">פרופילים</span>.
+        המערכת מאתרת פרופילים מתאימים לפי
+        <span style="background:var(--yellow); padding:2px 6px; border-radius:4px; font-weight:700;">העדפות המשתמש</span>.
+        המשתמש מבצע <span style="background:var(--pink); color:white; padding:2px 6px; border-radius:4px; font-weight:700;">Like</span>
+        או דילוג, ואם יש
+        <span style="background:var(--pink); color:white; padding:2px 6px; border-radius:4px; font-weight:700;">Like הדדי</span>
+        נוצרת <span style="background:var(--mint); padding:2px 6px; border-radius:4px; font-weight:700;">התאמה (Match)</span>.
+      </p>
+    </div>
+    <div class="row" style="gap:10px;">
+      <div class="card grow" style="text-align:center; padding:14px;"><span style="font-size:32px;">👤</span><h4 style="margin-top:4px;">User<br><small style="font-weight:400;font-size:14px;color:var(--ink-soft);">משתמש</small></h4></div>
+      <div class="card grow" style="text-align:center; padding:14px;"><span style="font-size:32px;">📇</span><h4 style="margin-top:4px;">Profile<br><small style="font-weight:400;font-size:14px;color:var(--ink-soft);">פרופיל</small></h4></div>
+      <div class="card grow" style="text-align:center; padding:14px;"><span style="font-size:32px;">❤️</span><h4 style="margin-top:4px;">Like<br><small style="font-weight:400;font-size:14px;color:var(--ink-soft);">לייק</small></h4></div>
+      <div class="card grow" style="text-align:center; padding:14px;"><span style="font-size:32px;">💘</span><h4 style="margin-top:4px;">Match<br><small style="font-weight:400;font-size:14px;color:var(--ink-soft);">התאמה</small></h4></div>
+      <div class="card grow" style="text-align:center; padding:14px;"><span style="font-size:32px;">⚙️</span><h4 style="margin-top:4px;">Preferences<br><small style="font-weight:400;font-size:14px;color:var(--ink-soft);">העדפות</small></h4></div>
+    </div>
+    <div class="callout yellow" style="font-size:17px;">
+      💡 טכניקה: מה ש<strong>פעולה</strong> ("בוחר", "מציג", "נכנס") — זה לוגיקה בקוד, לא ישות. רק מה שצריך <strong>לשמור</strong> — הופך לישות.
+    </div>
+  </div>
+  <div class="foot"><span>שלב 1 · זיהוי ישויות</span><span>08</span></div>
+</section>
+
+<!-- ============ SLIDE 9: WHY RELATIONSHIPS ============ -->
+<section>
+  <span class="snum">09</span>
+  <span class="chapter-tag">A · אפיון</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:18px;">
+    <h2>שלב 2: למה צריך להגדיר קשרים בין ישויות?</h2>
+    <div class="explain-block">
+      <h4>🤝 מה זה "קשר" (Relationship)?</h4>
+      <p>קשר מתאר <strong>איך שתי ישויות מתקשרות</strong>. למשל: "משתמש <strong>יוצר</strong> פרופיל" או "משתמש <strong>שולח</strong> Like". הקשר אומר לנו: כמה מהצד הזה מתקשרים לכמה מהצד השני.</p>
+    </div>
+    <div class="explain-block pink">
+      <h4>❓ למה זה חשוב?</h4>
+      <p>כי הקשר קובע <strong>איך הטבלאות ייבנו</strong>. אם משתמש אחד יכול לשלוח 100 Likes — צריך לתכנן את טבלת ה-Likes בהתאם. אם כל משתמש יש לו פרופיל אחד בדיוק — זה עיצוב אחר.</p>
+    </div>
+    <div class="explain-block mint">
+      <h4>🔑 שני מושגים שצריך להכיר</h4>
+      <p><strong>מפתח ראשי (Primary Key)</strong> — מספר ייחודי שמזהה כל שורה בטבלה. כמו תעודת זהות. בלעדיו אי אפשר לדעת איזו שורה היא איזו.</p>
+      <p style="margin-top:8px;"><strong>מפתח זר (Foreign Key)</strong> — שדה שמצביע על מפתח ראשי בטבלה אחרת. אומר: "השורה הזו שייכת לשורה ההיא". למשל: פרופיל עם <span class="syntax-tag">user_id = 5</span> שייך למשתמש מספר 5.</p>
+    </div>
+  </div>
+  <div class="foot"><span>שלב 2 · קשרים</span><span>09</span></div>
+</section>
+
+<!-- ============ SLIDE 10: RELATIONSHIP TYPES ============ -->
+<section>
+  <span class="snum">10</span>
+  <span class="chapter-tag">A · אפיון</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>שלושה סוגי קשרים — עם דוגמאות מהחיים</h2>
+    <div class="row" style="gap:12px;">
+      <div class="card grow" style="padding:16px;">
+        <h4 style="color:var(--blue); margin-bottom:6px;">1:1 — אחד לאחד</h4>
+        <p style="font-size:17px;">כל משתמש יש לו <strong>פרופיל אחד</strong>. כל פרופיל שייך ל<strong>משתמש אחד</strong>.</p>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:6px;">בטבלאות: טבלת profiles תכיל שדה <span class="syntax-tag">user_id</span> שמצביע על users.</p>
+        <div style="margin-top:6px; font-size:14px; background:var(--cream); padding:6px 10px; border-radius:6px; font-family:'JetBrains Mono',monospace;">
+          users.id ───── profiles.user_id
+        </div>
+      </div>
+      <div class="card grow" style="padding:16px; border-color:var(--pink);">
+        <h4 style="color:var(--pink); margin-bottom:6px;">1:N — אחד לרבים</h4>
+        <p style="font-size:17px;">משתמש <strong>אחד</strong> שולח <strong>הרבה</strong> Likes. אבל כל Like נשלח ע"י משתמש אחד.</p>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:6px;">בטבלאות: טבלת likes תכיל <span class="syntax-tag">from_user_id</span> שמצביע על users.</p>
+        <div style="margin-top:6px; font-size:14px; background:var(--cream); padding:6px 10px; border-radius:6px; font-family:'JetBrains Mono',monospace;">
+          users.id ─ - - - likes.from_user_id (הרבה)
+        </div>
+      </div>
+      <div class="card grow" style="padding:16px; border-color:var(--mint);">
+        <h4 style="color:#1a9e7e; margin-bottom:6px;">N:M — רבים לרבים</h4>
+        <p style="font-size:17px;">משתמש עושה Like ל<strong>הרבה</strong> אחרים, וכל אחד מקבל Like מ<strong>הרבה</strong>.</p>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:6px;">בטבלאות: טבלת likes <strong>עצמה</strong> היא טבלת קישור! היא מחברת שני users.</p>
+        <div style="margin-top:6px; font-size:14px; background:var(--cream); padding:6px 10px; border-radius:6px; font-family:'JetBrains Mono',monospace;">
+          users ← likes(from,to) → users
+        </div>
+      </div>
+    </div>
+    <div class="callout pink" style="font-size:17px;">
+      💡 הסוד של N:M: <strong>תמיד</strong> פותרים אותו עם טבלת קישור. טבלת likes היא בדיוק זה — טבלה שמחברת שני משתמשים.
+    </div>
+  </div>
+  <div class="foot"><span>שלב 2 · סוגי קשרים</span><span>10</span></div>
+</section>
+
+<!-- ============ SLIDE 11: ERD FULL ============ -->
+<section>
+  <span class="snum">11</span>
+  <span class="chapter-tag">A · אפיון</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>שלב 3: ה-ERD — המפה של כל הנתונים</h2>
+    <div class="explain-block yellow" style="margin-bottom:4px;">
+      <h4>📐 מה זה ERD?</h4>
+      <p>ERD = Entity Relationship Diagram. תרשים שמראה <strong>אילו ישויות יש</strong> ו<strong>איך הן מתקשרות</strong>. זה לא קוד — זה ציור. כמו מפה של עיר לפני שמתחילים לבנות בתים.</p>
+    </div>
+    <div class="row" style="gap:10px; flex-wrap:wrap;">
+      <div class="erd-box" style="flex:1; min-width:170px;">
+        <h4>👤 USER</h4>
+        <div class="fields">
+          <span class="pk">🔑 id</span><br>
+          email<br>password_hash<br>created_at<br>is_active
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; font-size:22px; color:var(--pink); font-weight:900;">───</div>
+      <div class="erd-box" style="flex:1; min-width:170px;">
+        <h4>📇 PROFILE</h4>
+        <div class="fields">
+          <span class="pk">🔑 id</span><br>
+          <span class="fk">🔗 user_id</span><br>display_name<br>age, gender, city<br>bio, photo_url
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; font-size:22px; color:var(--pink); font-weight:900;">───</div>
+      <div class="erd-box" style="flex:1; min-width:170px;">
+        <h4>❤️ LIKE</h4>
+        <div class="fields">
+          <span class="pk">🔑 id</span><br>
+          <span class="fk">🔗 from_user_id</span><br><span class="fk">🔗 to_user_id</span><br>created_at
+        </div>
+      </div>
+    </div>
+    <div class="row" style="gap:10px; flex-wrap:wrap;">
+      <div class="erd-box" style="flex:1; min-width:170px;">
+        <h4>💘 MATCH</h4>
+        <div class="fields">
+          <span class="pk">🔑 id</span><br>
+          <span class="fk">🔗 user_a_id</span><br><span class="fk">🔗 user_b_id</span><br>matched_at
+        </div>
+      </div>
+      <div class="erd-box" style="flex:1; min-width:170px;">
+        <h4>🚩 REPORT</h4>
+        <div class="fields">
+          <span class="pk">🔑 id</span><br>
+          <span class="fk">🔗 reporter_id</span><br><span class="fk">🔗 reported_id</span><br>reason, status
+        </div>
+      </div>
+      <div class="erd-box" style="flex:1; min-width:170px;">
+        <h4>🚫 BLOCK</h4>
+        <div class="fields">
+          <span class="pk">🔑 id</span><br>
+          <span class="fk">🔗 blocker_id</span><br><span class="fk">🔗 blocked_id</span><br>created_at
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="font-size:15px;">
+      📌 <span class="pk" style="font-size:13px;">🔑 PK</span> = מפתח ראשי (מזהה ייחודי) &nbsp;|&nbsp; <span class="fk" style="font-size:13px;">🔗 FK</span> = מפתח זר (מצביע על טבלה אחרת) &nbsp;|&nbsp; הקווים ─── מראים קשרים
+    </div>
+  </div>
+  <div class="foot"><span>שלב 3 · ERD</span><span>11</span></div>
+</section>
+
+<!-- ============ SLIDE 12: ERD RELATIONSHIPS EXPLAINED ============ -->
+<section>
+  <span class="snum">12</span>
+  <span class="chapter-tag">A · אפיון</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>הקשרים ב-ERD — מה כל קו אומר</h2>
+    <p style="font-size:18px; color:var(--ink-soft);">הקווים ב-ERD הם לא קישוט. כל קו אומר: "הטבלה הזו <strong>מכילה מפתח זר</strong> שמצביע על הטבלה ההיא".</p>
+    <div class="col" style="gap:8px;">
+      <div class="card" style="padding:12px 18px;">
+        <div class="rel-line">
+          <span>👤 USER</span>
+          <span class="solid"></span>
+          <span style="font-size:13px; color:var(--pink);">1:1</span>
+          <span class="solid"></span>
+          <span>📇 PROFILE</span>
+        </div>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:4px;">profiles.user_id → users.id &nbsp;|&nbsp; פרופיל אחד לכל משתמש &nbsp;|&nbsp; קו רציף = קשר ישיר אחד-לאחד</p>
+      </div>
+      <div class="card" style="padding:12px 18px;">
+        <div class="rel-line">
+          <span>👤 USER</span>
+          <span class="dash"></span>
+          <span style="font-size:13px; color:var(--pink);">1:N</span>
+          <span class="dash"></span>
+          <span>❤️ LIKE (from)</span>
+        </div>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:4px;">likes.from_user_id → users.id &nbsp;|&nbsp; משתמש אחד שולח הרבה likes &nbsp;|&nbsp; קו מקווקו = "הרבה"</p>
+      </div>
+      <div class="card" style="padding:12px 18px;">
+        <div class="rel-line">
+          <span>👤 USER</span>
+          <span class="dash"></span>
+          <span style="font-size:13px; color:var(--pink);">1:N</span>
+          <span class="dash"></span>
+          <span>❤️ LIKE (to)</span>
+        </div>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:4px;">likes.to_user_id → users.id &nbsp;|&nbsp; משתמש אחד מקבל הרבה likes</p>
+      </div>
+      <div class="card" style="padding:12px 18px;">
+        <div class="rel-line">
+          <span>👤 USER</span>
+          <span class="dash"></span>
+          <span style="font-size:13px; color:var(--pink);">N:M</span>
+          <span class="dash"></span>
+          <span>👤 USER (דרך likes)</span>
+        </div>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:4px;">users ← likes → users &nbsp;|&nbsp; טבלת likes היא טבלת קישור — מחברת שני משתמשים</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>שלב 3 · קשרי ERD</span><span>12</span></div>
+</section>
+
+<!-- ============ SLIDE 13: PART B OPENER ============ -->
+<section class="blue">
+  <span class="snum">13</span>
+  <span class="chapter-tag">B</span>
+  <div class="bigletter">B</div>
+  <div style="position:relative; z-index:1; display:flex; flex-direction:column; justify-content:center; height:100%; gap:18px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.7);">חלק B · 60 דקות</p>
+    <h1 class="title-large" style="color:white;">מ-ERD<br>לטבלאות אמיתיות.</h1>
+    <p style="font-size:22px; color:rgba(255,255,255,0.85); max-width:700px;">
+      עכשיו ניקח את הציור — ונהפוך אותו לטבלאות שאפשר לאחסן בהן נתונים.<br>
+      נבין מה זה CREATE TABLE, מה כל מילה אומרת, ולמה.
+    </p>
+  </div>
+  <div class="foot"><span>ERD → Tables</span><span>B</span></div>
+</section>
+
+<!-- ============ SLIDE 14: WHAT IS A TABLE ============ -->
+<section>
+  <span class="snum">14</span>
+  <span class="chapter-tag">B · טבלאות</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:18px;">
+    <h2>מה זו "טבלה" בבסיס נתונים?</h2>
+    <div class="explain-block">
+      <h4>📊 טבלה = גיליון מסודר עם חוקים</h4>
+      <p>דמיינו גיליון אקסל, אבל עם חוקים נוקשים: כל עמודה חייבת להיות מסוג מסוים (מספר, טקסט, תאריך), ואי אפשר להכניס סתם מה שבא לכם.</p>
+    </div>
+    <p style="font-size:18px; font-weight:700; margin-bottom:4px;">דוגמה: טבלת users</p>
+    <table class="tbl">
+      <tr><th>id</th><th>email</th><th>password_hash</th><th>created_at</th><th>is_active</th></tr>
+      <tr><td>1</td><td>dana@mail.com</td><td>abc123...</td><td>2025-01-05</td><td>true</td></tr>
+      <tr><td>2</td><td>yoav@mail.com</td><td>def456...</td><td>2025-01-06</td><td>true</td></tr>
+      <tr><td>3</td><td>maya@mail.com</td><td>ghi789...</td><td>2025-01-07</td><td>false</td></tr>
+    </table>
+    <div class="explain-block mint">
+      <h4>🔍 שימו לב</h4>
+      <p>כל שורה = משתמש אחד. כל עמודה = סוג מידע אחר. ה-<strong>id</strong> הוא מספר ייחודי — אף שני משתמשים לא יקבלו אותו id. זה מה שנקרא <strong>מפתח ראשי</strong>.</p>
+    </div>
+  </div>
+  <div class="foot"><span>מה זו טבלה</span><span>14</span></div>
+</section>
+
+<!-- ============ SLIDE 15: CREATE TABLE USERS ============ -->
+<section>
+  <span class="snum">15</span>
+  <span class="chapter-tag">B · טבלאות</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>איך יוצרים טבלה — CREATE TABLE שורה אחר שורה</h2>
+    <p style="font-size:18px; color:var(--ink-soft);">הפקודה <span class="syntax-tag">CREATE TABLE</span> אומרת לבסיס הנתונים: "תכין לי מבנה חדש לאחסון נתונים".</p>
+    <div class="code-explain">
+      <div class="ln"><span class="kw">CREATE TABLE</span> users (</div>
+      <div class="ex">"תכין לי טבלה חדשה בשם users"</div>
+      <div class="ln">  id <span class="kw">SERIAL PRIMARY KEY</span>,</div>
+      <div class="ex">עמודה בשם id. SERIAL = מספר שעולה אוטומטית (1,2,3...). PRIMARY KEY = זה המזהה הייחודי של כל שורה — אסור שיהיו שתי שורות עם אותו id.</div>
+      <div class="ln">  email <span class="kw">VARCHAR</span>(<span class="num">255</span>) <span class="kw">UNIQUE NOT NULL</span>,</div>
+      <div class="ex">עמודה בשם email. VARCHAR(255) = טקסט באורך מקסימלי 255 תווים. UNIQUE = אף שני משתמשים לא יכולים להיות עם אותו אימייל. NOT NULL = חובה — אי אפשר להירשם בלי אימייל.</div>
+      <div class="ln">  password <span class="kw">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL</span>,</div>
+      <div class="ex">עמודה בשם password. טקסט עד 255 תווים (הסיסמה המוצפנת). NOT NULL = חובה.</div>
+      <div class="ln">  created_at <span class="kw">TIMESTAMP DEFAULT NOW</span>(),</div>
+      <div class="ex">עמודה בשם created_at. TIMESTAMP = תאריך ושעה. DEFAULT NOW() = אם לא ציינת מתי — תשים את הרגע הנוכחי אוטומטית.</div>
+      <div class="ln">  is_active <span class="kw">BOOLEAN DEFAULT TRUE</span></div>
+      <div class="ex">עמודה בשם is_active. BOOLEAN = אמת או שקר (true/false). DEFAULT TRUE = ברירת מחדל: המשתמש פעיל.</div>
+      <div class="ln">);</div>
+      <div class="ex">סוגרים את הגדרת הטבלה.</div>
+    </div>
+  </div>
+  <div class="foot"><span>CREATE TABLE · users</span><span>15</span></div>
+</section>
+
+<!-- ============ SLIDE 16: CREATE TABLE LIKES ============ -->
+<section>
+  <span class="snum">16</span>
+  <span class="chapter-tag">B · טבלאות</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>טבלת likes — טבלת קישור בין משתמשים</h2>
+    <p style="font-size:18px; color:var(--ink-soft);">זו טבלה מיוחדת: היא לא שומרת מידע על "דבר" — אלא על <strong>קשר</strong> בין שני משתמשים.</p>
+    <div class="code-explain">
+      <div class="ln"><span class="kw">CREATE TABLE</span> likes (</div>
+      <div class="ex">"תכין לי טבלה בשם likes"</div>
+      <div class="ln">  id <span class="kw">SERIAL PRIMARY KEY</span>,</div>
+      <div class="ex">מזהה ייחודי לכל like. מספר אוטומטי.</div>
+      <div class="ln">  from_user_id <span class="kw">INT REFERENCES</span> users(id),</div>
+      <div class="ex">מי שלח את ה-like. INT = מספר שלם. REFERENCES users(id) = המספר הזה חייב להיות id של משתמש שקיים בטבלת users. זה מפתח זר — הוא "מקשר" לטבלה אחרת.</div>
+      <div class="ln">  to_user_id <span class="kw">INT REFERENCES</span> users(id),</div>
+      <div class="ex">מי קיבל את ה-like. גם זה מפתח זר ל-users. שימו לב: שני השדות מצביעים על <strong>אותה טבלה</strong> — כי like הוא בין שני משתמשים.</div>
+      <div class="ln">  created_at <span class="kw">TIMESTAMP DEFAULT NOW</span>(),</div>
+      <div class="ex">מתי נשלח ה-like — אוטומטי.</div>
+      <div class="ln">  <span class="kw">UNIQUE</span>(from_user_id, to_user_id)</div>
+      <div class="ex">השילוב של "מי שלח" + "למי" לא יכול לחזור. כלומר: אותו משתמש לא יכול לעשות Like פעמיים לאותו אדם.</div>
+      <div class="ln">);</div>
+      <div class="ex">סוגרים.</div>
+    </div>
+    <div class="callout mint" style="font-size:17px;">
+      💡 <span class="syntax-tag">REFERENCES</span> זה מה שמונע באגים: אם תנסו לעשות like למשתמש שלא קיים — בסיס הנתונים יסרב. זה נקרא "שלמות referential".
+    </div>
+  </div>
+  <div class="foot"><span>CREATE TABLE · likes</span><span>16</span></div>
+</section>
+
+<!-- ============ SLIDE 17: KEY CONCEPTS ============ -->
+<section>
+  <span class="snum">17</span>
+  <span class="chapter-tag">B · טבלאות</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:16px;">
+    <h2>שלושה מושגים שחוזרים — להבין פעם אחת</h2>
+    <div class="row" style="gap:14px;">
+      <div class="card grow">
+        <span style="font-size:32px;">🔑</span>
+        <h4 style="margin-top:6px;">PRIMARY KEY</h4>
+        <p style="font-size:17px;">המזהה הייחודי של כל שורה. <strong>תמיד</strong> יש אחד בכל טבלה. בדרך כלל קוראים לו <span class="syntax-tag">id</span>.</p>
+        <p style="font-size:16px; color:var(--ink-soft); margin-top:6px;">למה צריך? כי בלי מזהה ייחודי — אי אפשר לדעת איזו שורה היא איזו. אם יש שתי "דנה" בנות 27 מחיפה — איך תדעו מי זו מי?</p>
+      </div>
+      <div class="card grow" style="border-color:var(--blue);">
+        <span style="font-size:32px;">🔗</span>
+        <h4 style="color:var(--blue); margin-top:6px;">FOREIGN KEY (REFERENCES)</h4>
+        <p style="font-size:17px;">שדה שמצביע על מפתח ראשי בטבלה אחרת. אומר: "הערך כאן חייב להיות id קיים שם".</p>
+        <p style="font-size:16px; color:var(--ink-soft); margin-top:6px;">למה צריך? כי זה מונע נתונים "יתומים". אם מוחקים משתמש — בסיס הנתונים יודע למחוק גם את כל ה-likes שלו.</p>
+      </div>
+      <div class="card grow" style="border-color:var(--mint);">
+        <span style="font-size:32px;">🚫</span>
+        <h4 style="color:#1a9e7e; margin-top:6px;">UNIQUE</h4>
+        <p style="font-size:17px;">אומר: "הערך (או השילוב) הזה לא יכול לחזור על עצמו".</p>
+        <p style="font-size:16px; color:var(--ink-soft); margin-top:6px;">למה צריך? כי אימייל צריך להיות ייחודי (UNIQUE על עמודה אחת), וגם Like כפול לא הגיוני (UNIQUE על שילוב של שתי עמודות).</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>מושגי מפתח</span><span>17</span></div>
+</section>
+
+<!-- ============ SLIDE 18: WHERE TO CREATE ============ -->
+<section>
+  <span class="snum">18</span>
+  <span class="chapter-tag">B · טבלאות</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:18px;">
+    <h2>איפה יוצרים את הטבלאות האלה בפועל?</h2>
+    <p style="font-size:19px; color:var(--ink-soft);">יש כמה כלים — כולם חינמיים. הנה האפשרויות העיקריות:</p>
+    <div class="row" style="gap:14px;">
+      <div class="card grow">
+        <h4 style="margin-bottom:8px;">☁️ Neon.tech (מומלץ)</h4>
+        <p style="font-size:17px;">בסיס נתונים PostgreSQL בענן. נרשמים עם Google, יוצרים פרויקט, ומקבלים ממשק SQL בדפדפן.</p>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:6px;">חינם: 0.5GB אחסון — מספיק בהחלט לפרויקט.</p>
+      </div>
+      <div class="card grow" style="border-color:var(--blue);">
+        <h4 style="color:var(--blue); margin-bottom:8px;">☁️ Supabase.com</h4>
+        <p style="font-size:17px;">גם PostgreSQL בענן, אבל עם ממשק ויזואלי — אפשר ליצור טבלאות בלי לכתוב SQL.</p>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:6px;">חינם: 500MB, כולל API מובנה!</p>
+      </div>
+      <div class="card grow" style="border-color:var(--mint);">
+        <h4 style="color:#1a9e7e; margin-bottom:8px;">🖥️ מקומי — PostgreSQL + pgAdmin</h4>
+        <p style="font-size:17px;">מתקינים על המחשב. pgAdmin הוא ממשק גרפי שמאפשר לכתוב SQL ולראות תוצאות.</p>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:6px;">חינם לגמרי, ללא מגבלות ענן.</p>
+      </div>
+    </div>
+    <div class="callout yellow" style="font-size:17px;">
+      📌 בשלב זה — רק חשוב שתדעו <strong>שככה זה עובד</strong>. בהמשך תתנסו ביצירת טבלאות בפועל.
+    </div>
+  </div>
+  <div class="foot"><span>איפה יוצרים</span><span>18</span></div>
+</section>
+
+<!-- ============ SLIDE 19: BREAK ============ -->
+<section class="dark">
+  <span class="snum">19</span>
+  <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:18px;">
+    <span style="font-size:72px;">☕</span>
+    <h2 style="color:var(--cream);">הפסקה.</h2>
+    <p style="font-size:22px; color:rgba(255,255,255,0.7);">15 דקות. שווה לקום.</p>
+    <p style="font-size:19px; color:rgba(255,255,255,0.5); margin-top:8px;">חזרה: SQL — איך שואלים את בסיס הנתונים שאלות.</p>
+  </div>
+</section>
+
+<!-- ============ SLIDE 20: PART C OPENER ============ -->
+<section class="pink">
+  <span class="snum">20</span>
+  <span class="chapter-tag">C</span>
+  <div class="bigletter">C</div>
+  <div style="position:relative; z-index:1; display:flex; flex-direction:column; justify-content:center; height:100%; gap:18px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.7);">חלק C · 75 דקות</p>
+    <h1 class="title-large" style="color:white;">SQL.<br>מההתחלה המוחלטת.</h1>
+    <p style="font-size:22px; color:rgba(255,255,255,0.85); max-width:700px;">
+      SQL היא השפה שבה מדברים עם בסיס נתונים.<br>
+      נלמד אותה ממש מההתחלה — כל מילה, כל פסיק.
+    </p>
+  </div>
+  <div class="foot"><span>SQL · מההתחלה</span><span>C</span></div>
+</section>
+
+<!-- ============ SLIDE 21: WHAT IS SQL ============ -->
+<section>
+  <span class="snum">21</span>
+  <span class="chapter-tag">C · SQL</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:18px;">
+    <h2>מה זה SQL ולמה זה נראה ככה?</h2>
+    <div class="explain-block">
+      <h4>🗣️ SQL = שפה לשאול ולשנות נתונים</h4>
+      <p>SQL (Structured Query Language) היא שפה שנראית כמו אנגלית פשוטה. היא נבנתה כדי שאנשים (לא רק מתכנתים) יוכלו לשאול בסיס נתונים שאלות.</p>
+    </div>
+    <div class="explain-block pink">
+      <h4>📖 דוגמה: איך SQL נראה כמו אנגלית</h4>
+      <p>בעברית: "תביא לי את השם והגיל של כל מי שגר בחיפה"</p>
+      <p>ב-SQL: <span class="syntax-tag">SELECT name, age FROM users WHERE city = 'חיפה'</span></p>
+      <p style="margin-top:6px;">SELECT = "תביא לי" &nbsp;|&nbsp; FROM = "מתוך" &nbsp;|&nbsp; WHERE = "שבהם"</p>
+    </div>
+    <div class="explain-block mint">
+      <h4>🔤 4 הפעולות הבסיסיות</h4>
+      <p><span class="syntax-tag">SELECT</span> — לקרוא נתונים (הכי נפוץ)</p>
+      <p><span class="syntax-tag">INSERT</span> — להוסיף שורה חדשה</p>
+      <p><span class="syntax-tag">UPDATE</span> — לשנות שורה קיימת</p>
+      <p><span class="syntax-tag">DELETE</span> — למחוק שורה</p>
+    </div>
+  </div>
+  <div class="foot"><span>מה זה SQL</span><span>21</span></div>
+</section>
+
+<!-- ============ SLIDE 22: WHY DB OVER SHEETS ============ -->
+<section>
+  <span class="snum">22</span>
+  <span class="chapter-tag">C · SQL</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:20px;">
+    <h2>למה לעבור מ-Sheets לבסיס נתונים אמיתי?</h2>
+    <div class="compare">
+      <div>
+        <h4>📄 Google Sheets + Apps Script</h4>
+        <ul class="tick">
+          <li>קל להתחיל, רואים הכל בעיניים</li>
+          <li>מצוין למערכת ראשונה ולמידה</li>
+        </ul>
+        <p style="color:var(--pink); font-size:17px; margin-top:8px;">✗ נתקע סביב כמה אלפי שורות</p>
+        <p style="color:var(--pink); font-size:17px;">✗ אין הגנה על נתונים מקבילים</p>
+        <p style="color:var(--pink); font-size:17px;">✗ קשה לעשות שאילתות מורכבות</p>
+        <p style="color:var(--pink); font-size:17px;">✗ אבטחה בסיסית בלבד</p>
+      </div>
+      <div>
+        <h4>🗄️ PostgreSQL / MySQL</h4>
+        <ul class="tick">
+          <li>מיליוני שורות בלי להזיע</li>
+          <li>עסקאות (Transactions) — או הכל או כלום</li>
+          <li>JOIN, INDEX, שאילתות עוצמתיות</li>
+          <li>הרשאות, גיבויים, אבטחה</li>
+          <li>עובד מצוין עם כל שפת תכנות</li>
+          <li>AI יודע לכתוב SQL מצוין</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout" style="font-size:17px;">
+      💡 Apps Script לא היה טעות — הוא היה דרך נהדרת לתפוס תחושת תוצר. עכשיו עוברים לכלי הנכון.
+    </div>
+  </div>
+  <div class="foot"><span>למה DB</span><span>22</span></div>
+</section>
+
+<!-- ============ SLIDE 23: SELECT EXPLAINED ============ -->
+<section>
+  <span class="snum">23</span>
+  <span class="chapter-tag">C · SQL</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>SELECT — איך מבקשים נתונים</h2>
+    <p style="font-size:18px; color:var(--ink-soft);">קודם נראה את הטבלה, אחר כך את השאילתה, ואז את הפלט.</p>
+    <p style="font-size:17px; font-weight:700;">טבלת users:</p>
+    <table class="tbl compact">
+      <tr><th>id</th><th>name</th><th>age</th><th>city</th></tr>
+      <tr><td>1</td><td>דנה</td><td>27</td><td>חיפה</td></tr>
+      <tr><td>2</td><td>יואב</td><td>29</td><td>תל אביב</td></tr>
+      <tr><td>3</td><td>מאיה</td><td>24</td><td>חיפה</td></tr>
+      <tr><td>4</td><td>נועה</td><td>31</td><td>חיפה</td></tr>
+    </table>
+    <div class="card" style="border-color:var(--blue);">
+      <p style="font-size:15px; font-weight:700; color:var(--blue); margin-bottom:6px;">השאילתה — עם הסבר:</p>
+      <div class="code-explain">
+        <div class="ln"><span class="kw">SELECT</span> name, age</div>
+        <div class="ex">"תביא לי את העמודות name ו-age" — רק מה שצריך, לא הכל</div>
+        <div class="ln"><span class="kw">FROM</span> users</div>
+        <div class="ex">"מתוך טבלת users" — מאיפה לקחת</div>
+        <div class="ln"><span class="kw">WHERE</span> city = <span class="str">'חיפה'</span>;</div>
+        <div class="ex">"אבל רק שורות שבהן העיר היא חיפה" — סינון</div>
+      </div>
+      <p style="font-size:16px; margin-top:8px;"><strong>הפלט (מה שתקבלו בחזרה):</strong></p>
+      <table class="tbl compact out" style="margin-top:4px;">
+        <tr><th>name</th><th>age</th></tr>
+        <tr><td>דנה</td><td>27</td></tr>
+        <tr><td>מאיה</td><td>24</td></tr>
+        <tr><td>נועה</td><td>31</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="foot"><span>SELECT · בסיס</span><span>23</span></div>
+</section>
+
+<!-- ============ SLIDE 24: INSERT EXPLAINED ============ -->
+<section>
+  <span class="snum">24</span>
+  <span class="chapter-tag">C · SQL</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>INSERT — איך מוסיפים שורה חדשה</h2>
+    <p style="font-size:18px; color:var(--ink-soft);">Use Case: משתמש חדש נרשם לאפליקציה. צריך להוסיף אותו לבסיס הנתונים.</p>
+    <div class="card" style="border-color:var(--blue);">
+      <p style="font-size:15px; font-weight:700; color:var(--blue); margin-bottom:6px;">השאילתה — עם הסבר:</p>
+      <div class="code-explain">
+        <div class="ln"><span class="kw">INSERT INTO</span> users</div>
+        <div class="ex">"תכניס לתוך טבלת users"</div>
+        <div class="ln">  (name, age, city)</div>
+        <div class="ex">את העמודות האלה: שם, גיל, עיר (לא חייבים את כולן — id נוצר אוטומטית)</div>
+        <div class="ln"><span class="kw">VALUES</span></div>
+        <div class="ex">"הערכים שאני רוצה להכניס הם:"</div>
+        <div class="ln">  (<span class="str">'רון'</span>, <span class="num">26</span>, <span class="str">'חיפה'</span>);</div>
+        <div class="ex">רון, בן 26, מחיפה — הסדר חייב להתאים לסדר העמודות למעלה!</div>
+      </div>
+      <p style="font-size:16px; margin-top:8px;"><strong>התוצאה:</strong> שורה חדשה נוספה עם id=5 (הבא בתור).</p>
+    </div>
+    <div class="callout pink" style="font-size:17px;">
+      ⚠️ חשוב: הסדר של הערכים ב-VALUES חייב להתאים בדיוק לסדר העמודות שציינתם. אם כתבתם (name, age, city) — אז הערכים צריכים להיות (שם, גיל, עיר) באותו סדר.
+    </div>
+  </div>
+  <div class="foot"><span>INSERT</span><span>24</span></div>
+</section>
+
+<!-- ============ SLIDE 25: UPDATE EXPLAINED ============ -->
+<section>
+  <span class="snum">25</span>
+  <span class="chapter-tag">C · SQL</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>UPDATE — איך משנים שורה קיימת</h2>
+    <p style="font-size:18px; color:var(--ink-soft);">Use Case: משתמש רוצה לעדכן את הביו שלו.</p>
+    <div class="card" style="border-color:var(--blue);">
+      <p style="font-size:15px; font-weight:700; color:var(--blue); margin-bottom:6px;">השאילתה — עם הסבר:</p>
+      <div class="code-explain">
+        <div class="ln"><span class="kw">UPDATE</span> profiles</div>
+        <div class="ex">"תעדכן בטבלת profiles"</div>
+        <div class="ln"><span class="kw">SET</span> bio = <span class="str">'אוהבת לטייל'</span></div>
+        <div class="ex">"תשנה את עמודת bio לטקסט 'אוהבת לטייל'"</div>
+        <div class="ln"><span class="kw">WHERE</span> user_id = <span class="num">42</span>;</div>
+        <div class="ex">"אבל רק בשורה שבה user_id שווה 42" — בלי זה, הייתם משנים את הביו של <strong>כולם</strong>!</div>
+      </div>
+    </div>
+    <div class="callout pink" style="font-size:17px;">
+      ⚠️ <strong>חשוב מאוד:</strong> כל UPDATE בלי WHERE — משנה את <strong>כל השורות בטבלה</strong>. אם תכתבו <span class="syntax-tag">UPDATE profiles SET bio = 'hello'</span> בלי WHERE — כל המשתמשים יקבלו את אותו ביו. תמיד תבדקו פעמיים שיש WHERE.
+    </div>
+  </div>
+  <div class="foot"><span>UPDATE</span><span>25</span></div>
+</section>
+
+<!-- ============ SLIDE 26: EXERCISE 1 ============ -->
+<section>
+  <span class="snum">26</span>
+  <span class="chapter-tag">C · SQL</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:16px;">
+    <div class="try-now">חישבו · תרגיל 1</div>
+    <h3>בטבלת users — איך תמצאו את כל הנשים בנות 25 עד 30 בחיפה?</h3>
+    <table class="tbl compact">
+      <tr><th>id</th><th>name</th><th>gender</th><th>age</th><th>city</th></tr>
+      <tr><td>1</td><td>דנה</td><td>F</td><td>27</td><td>חיפה</td></tr>
+      <tr><td>2</td><td>יואב</td><td>M</td><td>29</td><td>תל אביב</td></tr>
+      <tr><td>3</td><td>מאיה</td><td>F</td><td>24</td><td>חיפה</td></tr>
+      <tr><td>4</td><td>נועה</td><td>F</td><td>31</td><td>חיפה</td></tr>
+      <tr><td>5</td><td>רון</td><td>M</td><td>26</td><td>חיפה</td></tr>
+    </table>
+    <p style="font-size:17px; color:var(--ink-soft);">💭 חישבו: כמה תוצאות צפויות? מי עובר את כל התנאים?</p>
+    <div class="card" style="border-color:var(--mint);">
+      <p style="font-size:15px; font-weight:700; color:var(--mint); margin-bottom:6px;">✓ תשובה:</p>
+      <div class="code-explain">
+        <div class="ln"><span class="kw">SELECT</span> name, age</div>
+        <div class="ex">תחזיר את השם והגיל</div>
+        <div class="ln"><span class="kw">FROM</span> users</div>
+        <div class="ex">מתוך טבלת users</div>
+        <div class="ln"><span class="kw">WHERE</span> gender = <span class="str">'F'</span></div>
+        <div class="ex">תנאי 1: רק נשים</div>
+        <div class="ln">  <span class="kw">AND</span> age <span class="kw">BETWEEN</span> <span class="num">25</span> <span class="kw">AND</span> <span class="num">30</span></div>
+        <div class="ex">תנאי 2: גיל בין 25 ל-30 (כולל!). BETWEEN כולל את שני הקצוות.</div>
+        <div class="ln">  <span class="kw">AND</span> city = <span class="str">'חיפה'</span>;</div>
+        <div class="ex">תנאי 3: גרה בחיפה</div>
+      </div>
+      <p style="font-size:16px; margin-top:6px;"><strong>פלט:</strong> שורה אחת — דנה, 27. (מאיה בת 24 — צעירה מדי. נועה בת 31 — מבוגרת מדי.)</p>
+    </div>
+  </div>
+  <div class="foot"><span>תרגיל · SELECT + WHERE</span><span>26</span></div>
+</section>
+
+<!-- ============ SLIDE 27: JOIN CONCEPT ============ -->
+<section>
+  <span class="snum">27</span>
+  <span class="chapter-tag">C · SQL</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:16px;">
+    <h2>JOIN — איך מחברים שתי טבלאות</h2>
+    <div class="explain-block">
+      <h4>🤝 מה זה JOIN ולמה צריך אותו?</h4>
+      <p>עד עכשיו שאלנו שאלות על טבלה <strong>אחת</strong>. אבל מה אם אנחנו רוצים מידע מ<strong>שתי טבלאות</strong> ביחד? למשל: "תראה לי את השם של כל מי שעשה לי Like" — השם נמצא ב-users, ה-Like נמצא ב-likes. צריך לחבר.</p>
+    </div>
+    <p style="font-size:17px; font-weight:700;">שתי טבלאות:</p>
+    <div class="row" style="gap:12px;">
+      <table class="tbl compact in" style="flex:1;">
+        <tr><th colspan="4">users</th></tr>
+        <tr><th>id</th><th>name</th></tr>
+        <tr><td>1</td><td>דנה</td></tr>
+        <tr><td>2</td><td>יואב</td></tr>
+        <tr><td>3</td><td>מאיה</td></tr>
+      </table>
+      <table class="tbl compact out" style="flex:1;">
+        <tr><th colspan="4">likes</th></tr>
+        <tr><th>from_user_id</th><th>to_user_id</th></tr>
+        <tr><td>1</td><td>2</td></tr>
+        <tr><td>2</td><td>1</td></tr>
+        <tr><td>1</td><td>3</td></tr>
+      </table>
+    </div>
+    <div class="card" style="border-color:var(--blue);">
+      <div class="code-explain">
+        <div class="ln"><span class="kw">SELECT</span> u.name, l.to_user_id</div>
+        <div class="ex">תחזיר את השם (מ-users) ואת מי קיבל את ה-like (מ-likes)</div>
+        <div class="ln"><span class="kw">FROM</span> users u</div>
+        <div class="ex">תתחיל מטבלת users, ותקרא לה בקיצור "u"</div>
+        <div class="ln"><span class="kw">JOIN</span> likes l</div>
+        <div class="ex">תחבר אליה את טבלת likes, תקרא לה בקיצור "l"</div>
+        <div class="ln">  <span class="kw">ON</span> l.from_user_id = u.id;</div>
+        <div class="ex">החיבור: קח שורות שבהן ה-from_user_id ב-likes שווה ל-id ב-users. כלומר: התאם כל like למשתמש ששלח אותו.</div>
+      </div>
+      <p style="font-size:16px; margin-top:6px;"><strong>פלט:</strong> דנה→2, יואב→1, דנה→3</p>
+    </div>
+  </div>
+  <div class="foot"><span>JOIN · הרעיון</span><span>27</span></div>
+</section>
+
+<!-- ============ SLIDE 28: JOIN TYPES ============ -->
+<section>
+  <span class="snum">28</span>
+  <span class="chapter-tag">C · SQL</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>סוגי JOIN — מה ההבדל?</h2>
+    <div class="row" style="gap:12px;">
+      <div class="card grow" style="padding:16px;">
+        <h4 style="color:var(--blue); margin-bottom:6px;">INNER JOIN (סתם JOIN)</h4>
+        <p style="font-size:16px;">רק שורות שיש להן <strong>התאמה בשתי הטבלאות</strong>.</p>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:4px;">דוגמה: משתמש + הפרופיל שלו — רק למי שיש פרופיל.</p>
+        <div style="margin-top:6px; font-size:14px; background:var(--cream); padding:6px 10px; border-radius:6px;">
+          users: [1,2,3] ← INNER → profiles: [1,3]<br>
+          <strong>פלט:</strong> רק 1 ו-3 (ל-2 אין פרופיל)
+        </div>
+      </div>
+      <div class="card grow" style="padding:16px; border-color:var(--pink);">
+        <h4 style="color:var(--pink); margin-bottom:6px;">LEFT JOIN</h4>
+        <p style="font-size:16px;"><strong>כל</strong> מה שבטבלת שמאל, גם אם אין התאמה בימין. במקום שאין התאמה — יופיע NULL (ריק).</p>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:4px;">דוגמה: כל המשתמשים, גם אלה עם 0 Likes.</p>
+        <div style="margin-top:6px; font-size:14px; background:var(--cream); padding:6px 10px; border-radius:6px;">
+          users: [1,2,3] ← LEFT → profiles: [1,3]<br>
+          <strong>פלט:</strong> 1, 2 (NULL), 3
+        </div>
+      </div>
+      <div class="card grow" style="padding:16px; border-color:var(--mint);">
+        <h4 style="color:#1a9e7e; margin-bottom:6px;">SELF JOIN</h4>
+        <p style="font-size:16px;">טבלה מצטרפת <strong>לעצמה</strong>. נשמע מוזר? זה שימושי!</p>
+        <p style="font-size:15px; color:var(--ink-soft); margin-top:4px;">דוגמה: למצוא Match הדדי — שני Likes הפוכים בטבלת likes.</p>
+        <div style="margin-top:6px; font-size:14px; background:var(--cream); padding:6px 10px; border-radius:6px;">
+          likes: 1→2 וגם 2→1 = Match!
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>JOIN · סוגים</span><span>28</span></div>
+</section>
+
+<!-- ============ SLIDE 29: GROUP BY CONCEPT ============ -->
+<section>
+  <span class="snum">29</span>
+  <span class="chapter-tag">C · SQL</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>GROUP BY — לספור, לסכם, לקבץ</h2>
+    <div class="explain-block">
+      <h4>📊 מתי משתמשים ב-GROUP BY?</h4>
+      <p>כשהשאלה שלכם מתחילה ב<strong>"כמה"</strong>, <strong>"מה הממוצע"</strong>, <strong>"מה המקסימום"</strong> — אתם צריכים GROUP BY. הוא <strong>מקבץ</strong> שורות דומות ואז <strong>מסכם</strong> אותן.</p>
+    </div>
+    <p style="font-size:17px; font-weight:700;">טבלת likes:</p>
+    <table class="tbl compact">
+      <tr><th>id</th><th>from_user_id</th><th>to_user_id</th></tr>
+      <tr><td>1</td><td>1 (דנה)</td><td>2 (יואב)</td></tr>
+      <tr><td>2</td><td>1 (דנה)</td><td>3 (מאיה)</td></tr>
+      <tr><td>3</td><td>2 (יואב)</td><td>1 (דנה)</td></tr>
+      <tr><td>4</td><td>3 (מאיה)</td><td>1 (דנה)</td></tr>
+      <tr><td>5</td><td>1 (דנה)</td><td>5 (רון)</td></tr>
+    </table>
+    <div class="card" style="border-color:var(--blue);">
+      <p style="font-size:15px; font-weight:700; color:var(--blue); margin-bottom:6px;">שאילתה: כמה Likes כל משתמש נתן?</p>
+      <div class="code-explain">
+        <div class="ln"><span class="kw">SELECT</span> from_user_id, <span class="fn">COUNT</span>(*) <span class="kw">AS</span> total_likes</div>
+        <div class="ex">תחזיר: את מי ששלח + ספירה של כמה שורות. COUNT(*) = "תספור את כל השורות". AS total_likes = "תקרא לעמודה בשם total_likes"</div>
+        <div class="ln"><span class="kw">FROM</span> likes</div>
+        <div class="ex">מתוך טבלת likes</div>
+        <div class="ln"><span class="kw">GROUP BY</span> from_user_id</div>
+        <div class="ex">תקבץ לפי from_user_id — כלומר, תאסוף את כל השורות של אותו שולח ותספור אותן ביחד</div>
+        <div class="ln"><span class="kw">ORDER BY</span> total_likes <span class="kw">DESC</span>;</div>
+        <div class="ex">תסדר את התוצאות מהגבוה לנמוך. DESC = descending = יורד</div>
+      </div>
+      <p style="font-size:16px; margin-top:6px;"><strong>פלט:</strong> דנה=3, יואב=1, מאיה=1</p>
+    </div>
+  </div>
+  <div class="foot"><span>GROUP BY</span><span>29</span></div>
+</section>
+
+<!-- ============ SLIDE 30: SUBQUERIES CONCEPT ============ -->
+<section>
+  <span class="snum">30</span>
+  <span class="chapter-tag">C · SQL</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>תת-שאילתות — "שאילתה בתוך שאילתה"</h2>
+    <div class="explain-block">
+      <h4>🔄 מה זו תת-שאילתה?</h4>
+      <p>לפעמים כדי לענות על שאלה, צריך <strong>קודם</strong> תשובה לשאלה אחרת. תת-שאילתה היא שאילתה שרצה <strong>בתוך</strong> שאילתה אחרת — התוצאה שלה משמשת את החיצונית.</p>
+    </div>
+    <div class="explain-block pink">
+      <h4>📝 דוגמה: "תמצא לי את כל הפרופילים שאני לא חסמתי"</h4>
+      <p>כדי לענות, צריך קודם לדעת: <strong>מי חסמתי?</strong> (תת-שאילתה) ואז <strong>לסנן אותם</strong> (שאילתה חיצונית).</p>
+    </div>
+    <div class="card" style="border-color:var(--blue);">
+      <div class="code-explain">
+        <div class="ln"><span class="kw">SELECT</span> *</div>
+        <div class="ex">תחזיר את כל העמודות</div>
+        <div class="ln"><span class="kw">FROM</span> profiles</div>
+        <div class="ex">מתוך טבלת הפרופילים</div>
+        <div class="ln"><span class="kw">WHERE</span> user_id <span class="kw">NOT IN</span> (</div>
+        <div class="ex">סנן: רק פרופילים שה-ID שלהם <strong>לא</strong> נמצא ברשימה הבאה:</div>
+        <div class="ln">  <span class="kw">SELECT</span> blocked_user_id</div>
+        <div class="ex">הרשימה: כל המשתמשים שמישהו חסם (זו התת-שאילתה!)</div>
+        <div class="ln">  <span class="kw">FROM</span> blocks</div>
+        <div class="ex">מתוך טבלת החסימות</div>
+        <div class="ln">  <span class="kw">WHERE</span> user_id = <span class="num">42</span></div>
+        <div class="ex">אבל רק החסימות של משתמש 42</div>
+        <div class="ln">);</div>
+        <div class="ex">סוגרים את התת-שאילתה. בסיס הנתונים קודם מריץ את הפנימית, ואז משתמש בתוצאה לסינון.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Subqueries</span><span>30</span></div>
+</section>
+
+<!-- ============ SLIDE 31: PART D OPENER ============ -->
+<section class="pink">
+  <span class="snum">31</span>
+  <span class="chapter-tag">D</span>
+  <div class="bigletter">D</div>
+  <div style="position:relative; z-index:1; display:flex; flex-direction:column; justify-content:center; height:100%; gap:18px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.7);">חלק D · 45 דקות</p>
+    <h1 class="title-large" style="color:white;">AI בענן.<br>פרקטי. היום.</h1>
+    <p style="font-size:22px; color:rgba(255,255,255,0.85); max-width:700px;">
+      Claude, ChatGPT, Gemini — איך משתמשים בהם נכון,<br>
+      איך מבקשים, ואיך לא נופלים בפח.
+    </p>
+  </div>
+  <div class="foot"><span>AI בענן</span><span>D</span></div>
+</section>
+
+<!-- ============ SLIDE 32: AI AS TEAM MEMBER ============ -->
+<section>
+  <span class="snum">32</span>
+  <span class="chapter-tag">D · AI</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:16px;">
+    <h2>AI הוא לא קסם. הוא חבר צוות שכותב SQL מצוין.</h2>
+    <div class="row" style="gap:12px;">
+      <div class="card grow" style="text-align:center; padding:18px;">
+        <span style="font-size:32px;">🧠</span>
+        <h4 style="margin-top:6px;">חושב איתכם</h4>
+        <p style="font-size:16px;">"מה הטבלאות שיוצאות מהאפיון הזה?"</p>
+      </div>
+      <div class="card grow" style="text-align:center; padding:18px; border-color:var(--blue);">
+        <span style="font-size:32px;">💻</span>
+        <h4 style="color:var(--blue); margin-top:6px;">כותב SQL</h4>
+        <p style="font-size:16px;">"תכתוב לי שאילתה ל-top 10 משתמשים"</p>
+      </div>
+      <div class="card grow" style="text-align:center; padding:18px; border-color:var(--mint);">
+        <span style="font-size:32px;">🔍</span>
+        <h4 style="color:#1a9e7e; margin-top:6px;">מסביר ומתקן</h4>
+        <p style="font-size:16px;">"למה השאילתה לא מחזירה תוצאה?"</p>
+      </div>
+      <div class="card grow" style="text-align:center; padding:18px; border-color:var(--yellow);">
+        <span style="font-size:32px;">📋</span>
+        <h4 style="color:#b8860b; margin-top:6px;">מתעד</h4>
+        <p style="font-size:16px;">"תכין לי README לפרויקט"</p>
+      </div>
+    </div>
+    <div class="callout pink" style="font-size:18px;">
+      ⚠️ מה הוא <strong>לא</strong>: הוא לא יודע מה בבסיס הנתונים שלכם אם לא תספרו לו. הוא לא תמיד צודק. אתם המבוגרים האחראים — תמיד תבדקו את מה שהוא נתן.
+    </div>
+  </div>
+  <div class="foot"><span>AI כחבר צוות</span><span>32</span></div>
+</section>
+
+<!-- ============ SLIDE 33: PROMPTING ============ -->
+<section>
+  <span class="snum">33</span>
+  <span class="chapter-tag">D · AI</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:16px;">
+    <h2>איך מבקשים נכון — תבנית של 4 חלקים</h2>
+    <div class="explain-block">
+      <h4>📐 התבנית</h4>
+      <p><strong>1. הקשר:</strong> "אני בונה מערכת דייטים, יש לי טבלאות X,Y,Z..."</p>
+      <p><strong>2. משימה:</strong> "אני צריך שאילתה שמחזירה..."</p>
+      <p><strong>3. אילוצים:</strong> "ב-PostgreSQL, מהיר ככל האפשר..."</p>
+      <p><strong>4. פורמט:</strong> "תחזיר קוד + הסבר קצר בעברית"</p>
+    </div>
+    <div class="card" style="border-color:var(--blue);">
+      <p style="font-size:15px; font-weight:700; color:var(--blue); margin-bottom:6px;">דוגמה מלאה להעתיק:</p>
+      <div class="code xs">אני בונה מערכת דייטים בשם MatchMe ב-PostgreSQL.
+יש לי טבלאות: users(id,email,is_active),
+profiles(id,user_id,age,city), likes(id,from_user_id,to_user_id).
+
+אני צריך שאילתה שמחזירה לכל משתמש את 10
+הפרופילים הרלוונטיים ביותר: אותה עיר,
+בטווח גילאים ±3, שלא ראה אותם עדיין.
+
+אילוצים: PostgreSQL 15, להחזיר רק id ושם.
+
+פורמט: שאילתה אחת, הערות בעברית בקוד.</div>
+    </div>
+    <div class="callout yellow" style="font-size:17px;">
+      🎯 ככל שתשקיעו יותר בהקשר ובאילוצים — תקבלו תשובה טובה יותר. הזמן ב-prompt נחסך פי 5 בתיקונים.
+    </div>
+  </div>
+  <div class="foot"><span>Prompting</span><span>33</span></div>
+</section>
+
+<!-- ============ SLIDE 34: AI PITFALLS ============ -->
+<section>
+  <span class="snum">34</span>
+  <span class="chapter-tag">D · AI</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:16px;">
+    <h2>⚠️ 3 הפחים שכולם נופלים בהם</h2>
+    <div class="row" style="gap:12px;">
+      <div class="card grow" style="padding:16px;">
+        <span style="font-size:28px;">🎭</span>
+        <h4 style="margin-top:6px;">הזיות (Hallucinations)</h4>
+        <p style="font-size:16px;">AI ימציא שמות טבלאות, פונקציות SQL, או syntax שלא קיים — בביטחון מלא.</p>
+        <div class="callout pink" style="font-size:14px; margin-top:6px; padding:10px 12px;">פתרון: תמיד תריצו את הקוד. אם לא רץ — חזרו אליו עם הודעת השגיאה.</div>
+      </div>
+      <div class="card grow" style="padding:16px; border-color:var(--blue);">
+        <span style="font-size:28px;">📚</span>
+        <h4 style="color:var(--blue); margin-top:6px;">קונטקסט חסר</h4>
+        <p style="font-size:16px;">AI לא מכיר את הקוד שלכם, את הטבלאות שלכם — עד שתספרו לו.</p>
+        <div class="callout" style="font-size:14px; margin-top:6px; padding:10px 12px;">פתרון: בכל שיחה חדשה — הדביקו את ה-schema. זה לא בזבוז.</div>
+      </div>
+      <div class="card grow" style="padding:16px; border-color:var(--mint);">
+        <span style="font-size:28px;">🤝</span>
+        <h4 style="color:#1a9e7e; margin-top:6px;">מסכים יותר מדי</h4>
+        <p style="font-size:16px;">תגידו "זה לא עובד" — הוא יתנצל וייתן קוד אחר, גם אם הראשון היה נכון.</p>
+        <div class="callout mint" style="font-size:14px; margin-top:6px; padding:10px 12px;">פתרון: תגידו <strong>למה</strong> זה לא עובד. הודעת שגיאה, תוצאה מפתיעה.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>פחים של AI</span><span>34</span></div>
+</section>
+
+<!-- ============ SLIDE 35: PART E OPENER ============ -->
+<section class="blue">
+  <span class="snum">35</span>
+  <span class="chapter-tag">E</span>
+  <div class="bigletter">E</div>
+  <div style="position:relative; z-index:1; display:flex; flex-direction:column; justify-content:center; height:100%; gap:18px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.7);">חלק E · 45 דקות</p>
+    <h1 class="title-large" style="color:white;">API, AI<br>ופרויקט הגמר.</h1>
+    <p style="font-size:22px; color:rgba(255,255,255,0.85); max-width:700px;">
+      איך AI מפסיק להיות "צ'אט בלשונית"<br>והופך לחלק מהמערכת שאתם בונים.
+    </p>
+  </div>
+  <div class="foot"><span>API · AI · פרויקט</span><span>E</span></div>
+</section>
+
+<!-- ============ SLIDE 36: API EXPLAINED ============ -->
+<section>
+  <span class="snum">36</span>
+  <span class="chapter-tag">E · API</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:16px;">
+    <h2>API = תפריט מנות של תוכנה</h2>
+    <div class="explain-block">
+      <h4>🍽️ אנלוגיה פשוטה</h4>
+      <p>כשאתם הולכים למסעדה — אתם לא נכנסים למטבח. אתם פותחים <strong>תפריט</strong>, מזמינים מנה, ומקבלים אותה. API זה אותו דבר: תפריט של בקשות שתוכנה מוכנה לקבל, ותשובות שהיא מבטיחה להחזיר.</p>
+    </div>
+    <div class="explain-block pink">
+      <h4>🤔 למה זה חשוב לכם?</h4>
+      <p>לכל מודל AI יש API. מהקוד של MatchMe תוכלו <strong>לקרוא ל-Claude</strong> ולקבל תשובה — בלי שמישהו ייפתח דפדפן. האפליקציה שלכם מדברת עם AI ישירות, ברקע.</p>
+    </div>
+    <div class="explain-block mint">
+      <h4>💡 Use Case מעשי</h4>
+      <p>המשתמש מזין תחביבים: "טיולים, בישול, ג'אז" → הקוד שלכם שולח ל-API: "כתוב bio קצר" → מקבל: "אוהב לטייל בהרים, לבשל פסטות ולהאזין לג'אז בשישי בערב" → שומר בפרופיל.</p>
+    </div>
+  </div>
+  <div class="foot"><span>API · המנות של AI</span><span>36</span></div>
+</section>
+
+<!-- ============ SLIDE 37: API VS MCP ============ -->
+<section>
+  <span class="snum">37</span>
+  <span class="chapter-tag">E · API</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>API מול MCP — מתי כל אחד?</h2>
+    <div class="compare">
+      <div>
+        <h4>🔌 API — הקוד שלכם → AI</h4>
+        <p style="font-size:17px; margin-top:6px;">האפליקציה שלכם <strong>קוראת</strong> ל-AI כחלק מהלוגיקה.</p>
+        <p style="font-size:16px; color:var(--ink-soft); margin-top:6px;">דוגמאות:</p>
+        <ul class="tick">
+          <li>יצירת bio אוטומטית</li>
+          <li>סינון תוכן פוגעני</li>
+          <li>חיפוש סמנטי</li>
+          <li>סיכומי צ'אט</li>
+        </ul>
+        <p style="font-size:15px; color:var(--pink); margin-top:6px;">נשמע: "אני קורא לפונקציה"</p>
+      </div>
+      <div>
+        <h4 style="color:var(--blue);">🔗 MCP — AI → המערכת שלכם</h4>
+        <p style="font-size:17px; margin-top:6px;">ה-AI <strong>מתחבר</strong> לכלים שלכם — לבסיס הנתונים, לקבצים.</p>
+        <p style="font-size:16px; color:var(--ink-soft); margin-top:6px;">דוגמאות:</p>
+        <ul class="tick">
+          <li>לשאול את Claude: "כמה דיווחים פתוחים?"</li>
+          <li>לבקש: "תוריד דיווחים ישנים"</li>
+          <li>Debug: "תראה לי 10 משתמשים אחרונים"</li>
+        </ul>
+        <p style="font-size:15px; color:var(--blue); margin-top:6px;">נשמע: "תרים לי כלי"</p>
+      </div>
+    </div>
+    <div class="callout" style="font-size:17px;">
+      🎯 בפרויקט הגמר — סביר שתשתמשו ב-<strong>API</strong>. MCP זה כלי שיכול לעזור בבדיקות ובניתוח.
+    </div>
+  </div>
+  <div class="foot"><span>API vs MCP</span><span>37</span></div>
+</section>
+
+<!-- ============ SLIDE 38: ARCHITECTURE ============ -->
+<section>
+  <span class="snum">38</span>
+  <span class="chapter-tag">E · פרויקט</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:14px;">
+    <h2>איך נראית מערכת שלמה — ציור אחד</h2>
+    <div class="row" style="gap:12px; align-items:stretch;">
+      <div class="card" style="flex:1; text-align:center; padding:18px;">
+        <span style="font-size:40px;">📱</span>
+        <h4 style="margin-top:6px;">משתמש</h4>
+        <p style="font-size:15px; color:var(--ink-soft);">דפדפן / אפליקציה</p>
+      </div>
+      <div style="display:flex; align-items:center; font-size:30px; color:var(--pink);">←→</div>
+      <div class="card" style="flex:2; text-align:center; padding:18px; border-color:var(--blue);">
+        <span style="font-size:40px;">⚙️</span>
+        <h4 style="color:var(--blue); margin-top:6px;">Backend</h4>
+        <p style="font-size:15px; color:var(--ink-soft);">Node.js / Python<br>REST API · אימות · לוגיקה · קורא ל-AI</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px; justify-content:center;">
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span style="font-size:18px; color:var(--pink);">←→</span>
+          <span style="font-size:13px; color:var(--ink-soft);">SQL</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span style="font-size:18px; color:var(--blue);">←→</span>
+          <span style="font-size:13px; color:var(--ink-soft);">API</span>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; justify-content:center;">
+        <div class="card" style="text-align:center; padding:14px;">
+          <span style="font-size:28px;">🗄️</span>
+          <h4 style="font-size:16px; margin-top:4px;">DB</h4>
+          <p style="font-size:13px; color:var(--ink-soft);">PostgreSQL</p>
+        </div>
+        <div class="card" style="text-align:center; padding:14px; border-color:var(--mint);">
+          <span style="font-size:28px;">🤖</span>
+          <h4 style="font-size:16px; color:var(--mint); margin-top:4px;">AI</h4>
+          <p style="font-size:13px; color:var(--ink-soft);">Claude / GPT</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="font-size:17px;">
+      🎯 ה-Backend הוא המתווך. הוא מדבר עם הבסיס דרך SQL, ועם ה-AI דרך API. המשתמש לא רואה אף אחד מהם ישירות.
+    </div>
+  </div>
+  <div class="foot"><span>ארכיטקטורה</span><span>38</span></div>
+</section>
+
+<!-- ============ SLIDE 39: AI FEATURES ============ -->
+<section>
+  <span class="snum">39</span>
+  <span class="chapter-tag">E · פרויקט</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:12px;">
+    <h2>5 רעיונות לתכונות AI ב-MatchMe</h2>
+    <div class="row" style="gap:10px; flex-wrap:wrap;">
+      <div class="card" style="flex:1; min-width:200px; padding:14px;">
+        <span style="font-size:24px;">✍️</span>
+        <h4 style="margin-top:4px;">כתיבת bio</h4>
+        <p style="font-size:15px;">משתמש נותן תחביבים → AI מציע 3 גרסאות bio</p>
+        <span class="badge mint" style="margin-top:6px;">קל · מומלץ</span>
+      </div>
+      <div class="card" style="flex:1; min-width:200px; padding:14px; border-color:var(--pink);">
+        <span style="font-size:24px;">🛡️</span>
+        <h4 style="color:var(--pink); margin-top:4px;">מודרציה</h4>
+        <p style="font-size:15px;">לפני שמירת bio — AI בודק תוכן פוגעני</p>
+        <span class="badge" style="margin-top:6px;">קל · ערך גבוה</span>
+      </div>
+      <div class="card" style="flex:1; min-width:200px; padding:14px; border-color:var(--blue);">
+        <span style="font-size:24px;">🔎</span>
+        <h4 style="color:var(--blue); margin-top:4px;">חיפוש סמנטי</h4>
+        <p style="font-size:15px;">"חפשי לי מישהו רגוע ויצירתי" → AI מנתח</p>
+        <span class="badge blue" style="margin-top:6px;">בינוני · מרשים</span>
+      </div>
+    </div>
+    <div class="row" style="gap:10px;">
+      <div class="card" style="flex:1; padding:14px; border-color:var(--mint);">
+        <span style="font-size:24px;">💬</span>
+        <h4 style="color:#1a9e7e; margin-top:4px;">פתיחת שיחה</h4>
+        <p style="font-size:15px;">לאחר Match — AI מציע משפט פתיחה</p>
+        <span class="badge mint" style="margin-top:6px;">קל · נחמד</span>
+      </div>
+      <div class="card" style="flex:1; padding:14px; border-color:var(--yellow);">
+        <span style="font-size:24px;">🚩</span>
+        <h4 style="color:#b8860b; margin-top:4px;">סינון דיווחים</h4>
+        <p style="font-size:15px;">AI מתעדף דיווחים לאדמין לפי חומרה</p>
+        <span class="badge yellow" style="margin-top:6px;">בינוני · מעולה</span>
+      </div>
+    </div>
+    <div class="callout yellow" style="font-size:17px;">
+      💡 תבחרו <strong>אחת או שתיים</strong>. עדיף אחת מצוינת על חמש חצויות. שאלו: "מה ה-prompt? מה הפלט? איך שומרים ב-DB?"
+    </div>
+  </div>
+  <div class="foot"><span>רעיונות · AI</span><span>39</span></div>
+</section>
+
+<!-- ============ SLIDE 40: CHECKLIST ============ -->
+<section>
+  <span class="snum">40</span>
+  <span class="chapter-tag">E · פרויקט</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:16px;">
+    <h2>צ'קליסט — איך להגיע לפרויקט מצוין</h2>
+    <div class="callout yellow" style="font-size:18px; margin-bottom:4px;">
+      ⚠️ <strong>חשוב:</strong> דרישות פרויקט הגמר <strong>טרם גובשו סופית</strong>. מה שמוצג כאן הוא כיוון חשיבה ראשוני בלבד.
+    </div>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="margin-bottom:8px;">🗄️ צד הבסיס (כיוון)</h4>
+        <ul class="tick">
+          <li>מסמך אפיון עם 3-5 Use Cases</li>
+          <li>ERD עם כל הישויות והיחסים</li>
+          <li>Schema אמיתי — לפחות 5 טבלאות</li>
+          <li>נתוני דמו (לפחות 30 שורות לטבלה)</li>
+          <li>5 שאילתות SQL שמדגימות שימוש</li>
+        </ul>
+      </div>
+      <div class="card grow" style="border-color:var(--blue);">
+        <h4 style="color:var(--blue); margin-bottom:8px;">🤖 צד ה-AI (כיוון)</h4>
+        <ul class="tick">
+          <li>1-2 תכונות AI ברורות במערכת</li>
+          <li>הסבר: מה הקלט, מה הפלט, ה-prompt</li>
+          <li>טיפול בכשל (מה אם ה-API נופל?)</li>
+          <li>תיעוד של ההחלטות</li>
+          <li>הדגמה חיה — שיעבוד מול הבוחנים</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout mint" style="font-size:17px;">
+      🎯 הטיפ הכי חשוב: <strong>תתעדו תוך כדי.</strong> הדרך שבה הגעתם לתשובה שווה לפעמים יותר מהקוד הסופי.
+    </div>
+  </div>
+  <div class="foot"><span>צ'קליסט</span><span>40</span></div>
+</section>
+
+<!-- ============ SLIDE 41: SUMMARY ============ -->
+<section class="dark">
+  <span class="snum">41</span>
+  <div style="display:flex; flex-direction:column; justify-content:center; height:100%; gap:18px;">
+    <h2 style="color:var(--cream);">לכו לבנות.</h2>
+    <p style="font-size:21px; color:rgba(255,255,255,0.8); max-width:700px;">
+      יש לכם עכשיו את הכלים: חשיבה מאפיון לטבלאות, SQL מההתחלה,<br>
+      AI כעוזר בכל שלב, וההבנה איך הכל מתחבר.
+    </p>
+    <div class="row" style="margin-top:8px;">
+      <div class="card ink grow">
+        <h4 style="color:var(--yellow); margin-bottom:6px;">📖 קוראים</h4>
+        <p style="font-size:16px;">תיעוד Claude API · SQL Tutorial · MCP intro</p>
+      </div>
+      <div class="card ink grow">
+        <h4 style="color:var(--mint); margin-bottom:6px;">🏃 עושים</h4>
+        <p style="font-size:16px;">מתחילים אפיון · מתכננים ERD · כותבים SQL</p>
+      </div>
+      <div class="card ink grow">
+        <h4 style="color:var(--pink); margin-bottom:6px;">❓ שואלים</h4>
+        <p style="font-size:16px;">כשנתקעים — שואלים AI, מרצה, חברים</p>
+      </div>
+    </div>
+    <p style="font-size:26px; margin-top:16px;">תודה. 💘</p>
+    <p style="font-size:17px; color:rgba(255,255,255,0.55);">שאלות? → עכשיו זה הזמן</p>
+  </div>
+  <div class="foot"><span>סיכום</span><span>41</span></div>
+</section>
+
+</deck-stage>
+
+<script>
+(() => {
+const DESIGN_W = 1920, DESIGN_H = 1080, OVERLAY_HIDE_MS = 1800;
+const pad2 = n => String(n).padStart(2, '0');
+const stylesheet = `
+:host { position:fixed; inset:0; display:block; background:#000; color:#fff; font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif; overflow:hidden; }
+.stage { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.canvas { position:relative; transform-origin:center center; flex-shrink:0; background:#fff; will-change:transform; }
+::slotted(*) { position:absolute!important; inset:0!important; width:100%!important; height:100%!important; box-sizing:border-box!important; overflow:hidden; opacity:0; pointer-events:none; visibility:hidden; }
+::slotted([data-deck-active]) { opacity:1; pointer-events:auto; visibility:visible; }
+.tapzones { position:fixed; inset:0; display:flex; z-index:2147482000; pointer-events:none; }
+.tapzone { flex:1; pointer-events:auto; -webkit-tap-highlight-color:transparent; }
+@media (hover:hover) and (pointer:fine) { .tapzones { display:none; } }
+.overlay { position:fixed; left:50%; bottom:22px; transform:translate(-50%,6px) scale(0.92); filter:blur(6px); display:flex; align-items:center; gap:4px; padding:4px; background:#000; color:#fff; border-radius:999px; font-size:12px; letter-spacing:0.01em; opacity:0; pointer-events:none; transition:opacity 260ms ease, transform 260ms cubic-bezier(.2,.8,.2,1), filter 260ms ease; transform-origin:center bottom; z-index:2147483000; user-select:none; }
+.overlay[data-visible] { opacity:1; pointer-events:auto; transform:translate(-50%,0) scale(1); filter:blur(0); }
+.btn { appearance:none; background:transparent; border:0; margin:0; padding:0; color:inherit; font:inherit; cursor:default; display:inline-flex; align-items:center; justify-content:center; height:28px; min-width:28px; border-radius:999px; color:rgba(255,255,255,0.72); transition:background 140ms ease, color 140ms ease; -webkit-tap-highlight-color:transparent; }
+.btn:hover { background:rgba(255,255,255,0.12); color:#fff; }
+.btn svg { width:14px; height:14px; display:block; }
+.btn.reset { font-size:11px; font-weight:500; letter-spacing:0.02em; padding:0 10px 0 12px; gap:6px; }
+.btn.reset .kbd { display:inline-flex; align-items:center; justify-content:center; min-width:16px; height:16px; padding:0 4px; font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:10px; line-height:1; color:rgba(255,255,255,0.88); background:rgba(255,255,255,0.12); border-radius:4px; }
+.count { font-variant-numeric:tabular-nums; color:#fff; font-weight:500; padding:0 8px; min-width:42px; text-align:center; font-size:12px; }
+.count .sep { color:rgba(255,255,255,0.45); margin:0 3px; font-weight:400; }
+.count .total { color:rgba(255,255,255,0.55); }
+.divider { width:1px; height:14px; background:rgba(255,255,255,0.18); margin:0 2px; }
+@media print { :host { position:static; inset:auto; background:none; overflow:visible; color:inherit; } .stage { position:static; display:block; } .canvas { transform:none!important; width:auto!important; height:auto!important; background:none; will-change:auto; } ::slotted(*) { position:relative!important; inset:auto!important; width:var(--deck-design-w)!important; height:var(--deck-design-h)!important; box-sizing:border-box!important; opacity:1!important; visibility:visible!important; pointer-events:auto; break-after:page; page-break-after:always; break-inside:avoid; overflow:hidden; } ::slotted(*:last-child) { break-after:auto; page-break-after:auto; } .overlay, .tapzones { display:none!important; } }
+`;
+
+class DeckStage extends HTMLElement {
+  static get observedAttributes() { return ['width','height','noscale']; }
+  constructor() {
+    super();
+    this._root = this.attachShadow({mode:'open'});
+    this._index = 0;
+    this._slides = [];
+    this._hideTimer = null;
+    this._mouseIdleTimer = null;
+    this._onKey = this._onKey.bind(this);
+    this._onResize = this._onResize.bind(this);
+    this._onSlotChange = this._onSlotChange.bind(this);
+    this._onMouseMove = this._onMouseMove.bind(this);
+    this._onTapBack = this._onTapBack.bind(this);
+    this._onTapForward = this._onTapForward.bind(this);
+  }
+  get designWidth() { return parseInt(this.getAttribute('width'),10) || DESIGN_W; }
+  get designHeight() { return parseInt(this.getAttribute('height'),10) || DESIGN_H; }
+  connectedCallback() {
+    this._render();
+    window.addEventListener('keydown', this._onKey);
+    window.addEventListener('resize', this._onResize);
+    window.addEventListener('mousemove', this._onMouseMove, {passive:true});
+  }
+  disconnectedCallback() {
+    window.removeEventListener('keydown', this._onKey);
+    window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('mousemove', this._onMouseMove);
+    if(this._hideTimer) clearTimeout(this._hideTimer);
+    if(this._mouseIdleTimer) clearTimeout(this._mouseIdleTimer);
+  }
+  attributeChangedCallback() {
+    if(this._canvas) {
+      this._canvas.style.width = this.designWidth+'px';
+      this._canvas.style.height = this.designHeight+'px';
+      this._canvas.style.setProperty('--deck-design-w', this.designWidth+'px');
+      this._canvas.style.setProperty('--deck-design-h', this.designHeight+'px');
+      this._fit();
+    }
+  }
+  _render() {
+    const style = document.createElement('style');
+    style.textContent = stylesheet;
+    const stage = document.createElement('div');
+    stage.className = 'stage';
+    const canvas = document.createElement('div');
+    canvas.className = 'canvas';
+    canvas.style.width = this.designWidth+'px';
+    canvas.style.height = this.designHeight+'px';
+    canvas.style.setProperty('--deck-design-w', this.designWidth+'px');
+    canvas.style.setProperty('--deck-design-h', this.designHeight+'px');
+    const slot = document.createElement('slot');
+    slot.addEventListener('slotchange', this._onSlotChange);
+    canvas.appendChild(slot);
+    stage.appendChild(canvas);
+    const tapzones = document.createElement('div');
+    tapzones.className = 'tapzones';
+    tapzones.setAttribute('aria-hidden','true');
+    const tzBack = document.createElement('div');
+    tzBack.className = 'tapzone';
+    const tzMid = document.createElement('div');
+    tzMid.className = 'tapzone';
+    tzMid.style.pointerEvents = 'none';
+    const tzFwd = document.createElement('div');
+    tzFwd.className = 'tapzone';
+    tzBack.addEventListener('click', this._onTapBack);
+    tzFwd.addEventListener('click', this._onTapForward);
+    tapzones.append(tzBack, tzMid, tzFwd);
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    overlay.setAttribute('role','toolbar');
+    overlay.setAttribute('aria-label','Deck controls');
+    overlay.innerHTML = `
+      <button class="btn prev" type="button" aria-label="Previous slide" title="Previous">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+      </button>
+      <span class="count" aria-live="polite"><span class="current">1</span><span class="sep">/</span><span class="total">1</span></span>
+      <button class="btn next" type="button" aria-label="Next slide" title="Next">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
+      </button>
+      <span class="divider"></span>
+      <button class="btn reset" type="button" aria-label="Reset to first slide" title="Reset (R)">Reset <span class="kbd">R</span></button>
+    `;
+    overlay.querySelector('.prev').addEventListener('click', () => this._advance(-1,'click'));
+    overlay.querySelector('.next').addEventListener('click', () => this._advance(1,'click'));
+    overlay.querySelector('.reset').addEventListener('click', () => this._go(0,'click'));
+    this._root.append(style, stage, tapzones, overlay);
+    this._canvas = canvas;
+    this._slot = slot;
+    this._overlay = overlay;
+    this._tapzones = tapzones;
+    this._countEl = overlay.querySelector('.current');
+    this._totalEl = overlay.querySelector('.total');
+  }
+  _fit() {
+    if(!this._canvas) return;
+    if(this.hasAttribute('noscale')) { this._canvas.style.transform='none'; return; }
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const s = Math.min(vw/this.designWidth, vh/this.designHeight);
+    this._canvas.style.transform = `scale(${s})`;
+  }
+  _onResize() { this._fit(); }
+  _onMouseMove() { this._flashOverlay(); }
+  _onTapBack(e) { e.preventDefault(); this._advance(-1,'tap'); }
+  _onTapForward(e) { e.preventDefault(); this._advance(1,'tap'); }
+  _onKey(e) {
+    const t = e.target;
+    if(t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    if(e.metaKey || e.ctrlKey || e.altKey) return;
+    const key = e.key;
+    let handled = true;
+    if(key==='ArrowRight'||key==='PageDown'||key===' '||key==='Spacebar') this._advance(1,'keyboard');
+    else if(key==='ArrowLeft'||key==='PageUp') this._advance(-1,'keyboard');
+    else if(key==='Home') this._go(0,'keyboard');
+    else if(key==='End') this._go(this._slides.length-1,'keyboard');
+    else if(key==='r'||key==='R') this._go(0,'keyboard');
+    else if(/^[0-9]$/.test(key)) { const n=key==='0'?9:parseInt(key,10)-1; if(n<this._slides.length) this._go(n,'keyboard'); }
+    else handled = false;
+    if(handled) { e.preventDefault(); this._flashOverlay(); }
+  }
+  _onSlotChange() {
+    const assigned = this._slot.assignedElements({flatten:true});
+    this._slides = assigned.filter(el => { const tag=el.tagName; return tag!=='TEMPLATE'&&tag!=='SCRIPT'&&tag!=='STYLE'; });
+    this._slides.forEach((slide,i) => {
+      const n = i+1;
+      let label = slide.getAttribute('data-label');
+      if(!label) { const h=slide.querySelector('h1,h2,h3'); label=h?(h.textContent||'').trim().slice(0,40):'Slide'; }
+      slide.setAttribute('data-screen-label', `${pad2(n)} ${label}`);
+      slide.setAttribute('data-deck-slide', String(i));
+    });
+    if(this._totalEl) this._totalEl.textContent = String(this._slides.length||1);
+    this._restoreIndex();
+    this._applyIndex({showOverlay:false, broadcast:true, reason:'init'});
+    this._fit();
+  }
+  _restoreIndex() {
+    const h = (location.hash||'').match(/^#(\d+)$/);
+    if(h) { const n=parseInt(h[1],10)-1; if(n>=0&&n<this._slides.length) this._index=n; }
+  }
+  _applyIndex({showOverlay=true, broadcast=true, reason='init'}={}) {
+    if(!this._slides.length) return;
+    const prev = this._prevIndex==null?-1:this._prevIndex;
+    const curr = this._index;
+    try{history.replaceState(null,'','#'+(curr+1));}catch(e){}
+    this._slides.forEach((s,i) => { if(i===curr) s.setAttribute('data-deck-active',''); else s.removeAttribute('data-deck-active'); });
+    if(this._countEl) this._countEl.textContent = String(curr+1);
+    if(broadcast) {
+      const detail = { index:curr, previousIndex:prev, total:this._slides.length, slide:this._slides[curr]||null, previousSlide:prev>=0?(this._slides[prev]||null):null, reason };
+      this.dispatchEvent(new CustomEvent('slidechange', {detail, bubbles:true, composed:true}));
+    }
+    this._prevIndex = curr;
+    if(showOverlay) this._flashOverlay();
+  }
+  _flashOverlay() {
+    if(!this._overlay) return;
+    this._overlay.setAttribute('data-visible','');
+    if(this._hideTimer) clearTimeout(this._hideTimer);
+    this._hideTimer = setTimeout(() => { this._overlay.removeAttribute('data-visible'); }, OVERLAY_HIDE_MS);
+  }
+  _go(i, reason='api') {
+    if(!this._slides.length) return;
+    const clamped = Math.max(0, Math.min(this._slides.length-1, i));
+    if(clamped===this._index) { this._flashOverlay(); return; }
+    this._index = clamped;
+    this._applyIndex({showOverlay:true, broadcast:true, reason});
+  }
+  _advance(dir, reason) {
+    if(!this._slides.length) return;
+    let i = this._index + dir;
+    while(i>=0&&i<this._slides.length&&this._slides[i].hasAttribute('data-deck-skip')) i+=dir;
+    if(i<0||i>=this._slides.length) { this._flashOverlay(); return; }
+    this._go(i, reason);
+  }
+  get index() { return this._index; }
+  get length() { return this._slides.length; }
+  goTo(i) { this._go(i,'api'); }
+  next() { this._advance(1,'api'); }
+  prev() { this._advance(-1,'api'); }
+  reset() { this._go(0,'api'); }
+}
+if(!customElements.get('deck-stage')) customElements.define('deck-stage', DeckStage);
+})();
+</script>
+
+<style>deck-stage:not(:defined){visibility:hidden}</style>
+<style id="deck-stage-print-page">
+@page { size: 1920px 1080px; margin: 0; }
+@media print { html, body { margin:0!important; padding:0!important; background:none!important; overflow:visible!important; height:auto!important; } * { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+</style>
+
+</body>
+</html>
+
