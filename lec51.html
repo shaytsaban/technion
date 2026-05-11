@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>כלי AI לעובי הקורה · מדריך פרקטי מלא</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/heebo@5/index.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/rubik@5/index.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5/index.min.css">
+<style>
+:root {
+  --pink: #FF3D71; --pink-soft: #FFD9E5;
+  --blue: #2E5BFF; --blue-soft: #DCE4FF;
+  --cream: #FFF6E5; --cream-deep: #FFE9B8;
+  --ink: #14142B; --ink-soft: #4E4B66; --line: #E4E4F0;
+  --yellow: #FFD23F; --mint: #2BD9B0;
+  --orange: #FF8C42; --purple: #9B59B6;
+  --shadow: 6px 6px 0 var(--ink); --shadow-sm: 3px 3px 0 var(--ink);
+}
+* { box-sizing: border-box; }
+deck-stage { font-family: 'Heebo', 'Rubik', system-ui, sans-serif; }
+section {
+  background: var(--cream); color: var(--ink); direction: rtl;
+  padding: 40px 56px; position: relative; overflow: hidden; font-size: 20px; line-height: 1.6;
+}
+section.dark { background: var(--ink); color: var(--cream); }
+section.pink { background: var(--pink); color: white; }
+section.blue { background: var(--blue); color: white; }
+section.mint { background: var(--mint); color: var(--ink); }
+section.orange { background: var(--orange); color: white; }
+h1,h2,h3,h4 { font-family: 'Rubik', sans-serif; font-weight: 800; line-height: 1.1; margin: 0; }
+h1 { font-size: 64px; } h2 { font-size: 46px; } h3 { font-size: 32px; } h4 { font-size: 24px; }
+p { margin: 0; line-height: 1.65; font-size: 20px; }
+.snum { position: absolute; top: 16px; left: 24px; font-family: 'Rubik'; font-weight: 800; font-size: 12px; color: var(--ink-soft); letter-spacing: 0.15em; }
+section.dark .snum, section.pink .snum, section.blue .snum, section.mint .snum, section.orange .snum { color: rgba(255,255,255,0.55); }
+.chapter-tag { position: absolute; top: 16px; right: 56px; display: inline-block; font-family: 'Rubik'; font-weight: 700; font-size: 12px; letter-spacing: 0.1em; background: var(--ink); color: var(--cream); padding: 4px 12px; border-radius: 999px; }
+section.dark .chapter-tag { background: var(--cream); color: var(--ink); }
+section.pink .chapter-tag { background: var(--ink); color: var(--pink); }
+section.blue .chapter-tag { background: var(--cream); color: var(--blue); }
+section.mint .chapter-tag { background: var(--ink); color: var(--mint); }
+section.orange .chapter-tag { background: var(--ink); color: var(--orange); }
+.row { display: flex; gap: 20px; } .col { display: flex; flex-direction: column; gap: 16px; } .grow { flex: 1; }
+.card { background: white; border: 3px solid var(--ink); border-radius: 14px; padding: 20px 22px; box-shadow: var(--shadow); }
+.card.pink { background: var(--pink); color: white; border-color: var(--pink); }
+.card.blue { background: var(--blue); color: white; border-color: var(--blue); }
+.card.yellow { background: var(--yellow); } .card.mint { background: var(--mint); }
+.card.cream { background: var(--cream-deep); } .card.ink { background: var(--ink); color: var(--cream); }
+.card.orange { background: var(--orange); color: white; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: 999px; font-weight: 700; font-size: 14px; border: 2px solid var(--ink); background: white; }
+.pill.pink { background: var(--pink); color: white; } .pill.blue { background: var(--blue); color: white; }
+.pill.yellow { background: var(--yellow); } .pill.mint { background: var(--mint); }
+.pill.ink { background: var(--ink); color: var(--cream); } .pill.orange { background: var(--orange); color: white; }
+.code { background: var(--ink); color: #F8E9C0; font-family: 'JetBrains Mono', ui-monospace, monospace; border-radius: 10px; padding: 16px 20px; direction: ltr; text-align: left; font-size: 16px; line-height: 1.55; white-space: pre; overflow-x: auto; border: 3px solid var(--ink); box-shadow: var(--shadow); }
+.code.sm { font-size: 14px; padding: 13px 16px; } .code.xs { font-size: 12px; padding: 11px 14px; line-height: 1.45; }
+.code .kw { color: #FF8AB6; font-weight: 700; } .code .str { color: #F4D35E; } .code .num { color: #7BE7C7; }
+.code .com { color: #8B8AA0; font-style: italic; } .code .fn { color: #82B1FF; } .code .op { color: #FF6B6B; }
+.try-now { display: inline-flex; align-items: center; gap: 10px; background: var(--yellow); border: 3px solid var(--ink); border-radius: 12px; padding: 9px 16px; font-family: 'Rubik'; font-weight: 800; font-size: 20px; box-shadow: var(--shadow-sm); margin-bottom: 12px; }
+.try-now::before { content: '⚡'; font-size: 22px; }
+.title-mega { font-size: 100px; font-weight: 900; line-height: 0.92; }
+.title-large { font-size: 72px; font-weight: 800; line-height: 1; }
+.title-med { font-size: 50px; font-weight: 800; line-height: 1.05; }
+.eyebrow { font-family: 'Rubik'; font-weight: 700; font-size: 17px; letter-spacing: 0.18em; text-transform: uppercase; }
+.step-num { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: var(--pink); color: white; border-radius: 50%; border: 3px solid var(--ink); font-family: 'Rubik'; font-weight: 800; font-size: 22px; flex-shrink: 0; }
+.step-num.blue { background: var(--blue); } .step-num.mint { background: var(--mint); color: var(--ink); }
+.step-num.yellow { background: var(--yellow); color: var(--ink); } .step-num.orange { background: var(--orange); }
+.tbl { border-collapse: separate; border-spacing: 0; border: 3px solid var(--ink); border-radius: 10px; overflow: hidden; background: white; font-size: 15px; font-family: 'JetBrains Mono', monospace; box-shadow: var(--shadow-sm); }
+.tbl th { background: var(--ink); color: var(--cream); padding: 8px 13px; text-align: right; font-family: 'Rubik'; font-size: 14px; }
+.tbl td { padding: 7px 13px; border-top: 2px solid var(--line); text-align: right; }
+.tbl tr:first-child td { border-top: none; } .tbl.hl td { background: #FFF3D6; }
+.tbl.out th { background: var(--pink); } .tbl.in th { background: var(--blue); }
+.tbl.compact { font-size: 14px; } .tbl.compact th, .tbl.compact td { padding: 6px 10px; }
+.bigletter { position: absolute; top: 30px; right: 40px; font-family: 'Rubik'; font-weight: 900; font-size: 300px; line-height: 0.8; opacity: 0.07; pointer-events: none; }
+.kbd { display: inline-block; background: white; border: 2px solid var(--ink); border-bottom-width: 4px; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; font-weight: 700; }
+.callout { background: var(--blue-soft); border-right: 5px solid var(--blue); padding: 13px 16px; border-radius: 10px; font-size: 18px; line-height: 1.5; }
+.callout.pink { background: var(--pink-soft); border-color: var(--pink); }
+.callout.yellow { background: #FFF1B6; border-color: var(--yellow); }
+.callout.mint { background: #D6F5EE; border-color: var(--mint); }
+.callout.orange { background: #FFE8D6; border-color: var(--orange); }
+.heart-bg { position: absolute; font-size: 220px; opacity: 0.07; pointer-events: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.compare > div { background: white; border: 3px solid var(--ink); border-radius: 14px; padding: 18px 20px; }
+.compare h4 { font-size: 22px; margin-bottom: 8px; }
+.foot { position: absolute; bottom: 18px; right: 56px; left: 56px; display: flex; justify-content: space-between; font-family: 'Rubik'; font-weight: 600; font-size: 11px; color: var(--ink-soft); letter-spacing: 0.1em; }
+section.dark .foot, section.pink .foot, section.blue .foot, section.mint .foot, section.orange .foot { color: rgba(255,255,255,0.55); }
+ul.tick li { position: relative; padding-right: 32px; font-size: 19px; line-height: 1.45; margin-bottom: 10px; }
+ul.tick li::before { content: '✓'; position: absolute; right: 0; top: -2px; color: var(--pink); font-weight: 900; font-size: 22px; }
+ol.steps { counter-reset: stepc; }
+ol.steps li { counter-increment: stepc; position: relative; padding-right: 40px; font-size: 18px; line-height: 1.5; margin-bottom: 10px; }
+ol.steps li::before { content: counter(stepc); position: absolute; right: 0; top: -2px; width: 28px; height: 28px; background: var(--ink); color: var(--cream); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: 'Rubik'; font-weight: 800; font-size: 14px; }
+.code-explain { display: grid; grid-template-columns: minmax(300px, auto) 1fr; gap: 0; background: var(--ink); border: 3px solid var(--ink); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); direction: ltr; }
+.code-explain .ln { padding: 5px 14px; color: #F8E9C0; font-family: 'JetBrains Mono', monospace; font-size: 13px; border-top: 1px solid #2A2A45; white-space: pre; }
+.code-explain .ln:first-child { border-top: none; }
+.code-explain .ex { padding: 5px 12px; color: var(--ink); font-family: 'Heebo', sans-serif; font-size: 12px; line-height: 1.4; background: #FFF6E5; border-top: 1px solid var(--line); direction: rtl; text-align: right; }
+.code-explain .ex:first-of-type { border-top: none; }
+.flow-arrow { font-size: 26px; color: var(--pink); display: flex; align-items: center; justify-content: center; min-width: 32px; }
+.highlight-row { background: #FFF3D6 !important; }
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; background: var(--pink); color: white; }
+.badge.blue { background: var(--blue); } .badge.mint { background: var(--mint); color: var(--ink); }
+.badge.yellow { background: var(--yellow); color: var(--ink); } .badge.orange { background: var(--orange); }
+.explain-block { background: white; border-right: 5px solid var(--blue); border-radius: 10px; padding: 14px 18px; margin: 8px 0; }
+.explain-block h4 { color: var(--blue); margin-bottom: 5px; font-size: 19px; }
+.explain-block p { font-size: 18px; line-height: 1.65; }
+.explain-block.pink { border-color: var(--pink); } .explain-block.pink h4 { color: var(--pink); }
+.explain-block.mint { border-color: var(--mint); } .explain-block.mint h4 { color: #1a9e7e; }
+.explain-block.yellow { border-color: var(--yellow); } .explain-block.yellow h4 { color: #b8860b; }
+.explain-block.orange { border-color: var(--orange); } .explain-block.orange h4 { color: var(--orange); }
+.syntax-tag { display: inline-block; background: var(--ink); color: #F8E9C0; font-family: 'JetBrains Mono', monospace; font-size: 13px; padding: 2px 7px; border-radius: 4px; font-weight: 700; }
+.concept-box { background: #FFF9ED; border: 2px solid var(--cream-deep); border-radius: 12px; padding: 16px 20px; }
+.concept-box h4 { font-size: 19px; margin-bottom: 6px; color: #b8860b; }
+.concept-box p { font-size: 17px; line-height: 1.65; }
+.action-box { background: var(--mint); border: 3px solid var(--ink); border-radius: 12px; padding: 14px 18px; box-shadow: var(--shadow-sm); }
+.action-box h4 { font-size: 20px; margin-bottom: 6px; }
+.param-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.param-card { background: white; border: 2px solid var(--ink); border-radius: 10px; padding: 12px 14px; }
+.param-card h4 { font-size: 17px; margin-bottom: 4px; }
+.param-card p { font-size: 15px; line-height: 1.5; }
+.tool-card { background: white; border: 3px solid var(--ink); border-radius: 14px; padding: 18px 20px; text-align: center; box-shadow: var(--shadow); }
+.tool-card .icon { font-size: 40px; margin-bottom: 6px; }
+.tool-card h4 { font-size: 20px; margin-bottom: 4px; }
+.tool-card p { font-size: 15px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+<!-- ============ SLIDE 1: TITLE ============ -->
+<section class="pink">
+  <span class="snum">01</span>
+  <div class="heart-bg" style="top:-20px;left:-20px;">🤖</div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.8);">המשך מערך · ניתוח מערכות מידע · הטכניון</p>
+    <h1 class="title-mega" style="color:white;">כלי AI<br>לעובי הקורה.</h1>
+    <h2 style="font-size:40px;color:rgba(255,255,255,0.92);">מדריך פרקטי מלא — API, MCP, מודלים מקומיים, OpenWebUI, ועוד</h2>
+    <p style="font-size:20px;color:rgba(255,255,255,0.82);max-width:680px;margin-top:6px;">
+      לא רק תיאוריה. כל שלב — פותחים, מתקינים, מקנפגים, מריצים.<br>
+      בסוף השיעור תהיו עם מערכת AI עובדת שמחוברת לבסיס נתונים.
+    </p>
+    <div style="margin-top:14px;">
+      <span class="pill" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.4);">⚡ Hands-on · 60+ שקפים · הכל מוסבר</span>
+    </div>
+    <p style="font-size:14px;color:rgba(255,255,255,0.5);margin-top:20px;">לוחצים → או רווח להמשיך</p>
+  </div>
+</section>
+
+<!-- ============ SLIDE 2: MAP ============ -->
+<section>
+  <span class="snum">02</span>
+  <span class="chapter-tag">מפה</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:22px;">
+    <h2>מפת השיעור — 8 תחנות</h2>
+    <div class="row" style="gap:12px;flex-wrap:wrap;">
+      <div class="card grow" style="text-align:center;padding:14px;"><span style="font-size:28px;">🌐</span><h4 style="margin-top:4px;">נוף ה-AI</h4><p style="font-size:14px;color:var(--ink-soft);">מה יש שם בחוץ</p></div>
+      <div class="card grow" style="text-align:center;padding:14px;border-color:var(--blue);"><span style="font-size:28px;">☁️</span><h4 style="color:var(--blue);margin-top:4px;">API בענן</h4><p style="font-size:14px;color:var(--ink-soft);">Claude, GPT, Gemini</p></div>
+      <div class="card grow" style="text-align:center;padding:14px;border-color:var(--mint);"><span style="font-size:28px;">🔑</span><h4 style="color:#1a9e7e;margin-top:4px;">API Keys</h4><p style="font-size:14px;color:var(--ink-soft);">איך משיגים, כמה עולה</p></div>
+      <div class="card grow" style="text-align:center;padding:14px;border-color:var(--orange);"><span style="font-size:28px;">💻</span><h4 style="color:var(--orange);margin-top:4px;">מודלים מקומיים</h4><p style="font-size:14px;color:var(--ink-soft);">Ollama, LM Studio</p></div>
+      <div class="card grow" style="text-align:center;padding:14px;"><span style="font-size:28px;">🎛️</span><h4 style="margin-top:4px;">פרמטרים</h4><p style="font-size:14px;color:var(--ink-soft);">Temperature, Top-P</p></div>
+      <div class="card grow" style="text-align:center;padding:14px;border-color:var(--blue);"><span style="font-size:28px;">🖥️</span><h4 style="color:var(--blue);margin-top:4px;">OpenWebUI</h4><p style="font-size:14px;color:var(--ink-soft);">התקנה וקונפיגורציה</p></div>
+      <div class="card grow" style="text-align:center;padding:14px;border-color:var(--pink);"><span style="font-size:28px;">🔗</span><h4 style="color:var(--pink);margin-top:4px;">MCP</h4><p style="font-size:14px;color:var(--ink-soft);">חיבור AI ל-DB</p></div>
+      <div class="card grow" style="text-align:center;padding:14px;border-color:var(--mint);"><span style="font-size:28px;">🏗️</span><h4 style="color:#1a9e7e;margin-top:4px;">Hermes + אינטגרציה</h4><p style="font-size:14px;color:var(--ink-soft);">הכל ביחד</p></div>
+    </div>
+    <div class="callout yellow" style="font-size:17px;">⚡ כל תחנה כוללת משימות מעשיות. לא עוברים הלאה בלי לבצע.</div>
+  </div>
+  <div class="foot"><span>מפת השיעור</span><span>02</span></div>
+</section>
+
+<!-- ============ SLIDE 3: PART A ============ -->
+<section class="blue">
+  <span class="snum">03</span>
+  <span class="chapter-tag">A</span>
+  <div class="bigletter">A</div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.7);">תחנה A · 30 דקות</p>
+    <h1 class="title-large" style="color:white;">נוף ה-AI.<br>מה יש שם בחוץ?</h1>
+    <p style="font-size:20px;color:rgba(255,255,255,0.82);max-width:650px;">לפני שצלילים פנימה — בואו נבין את התמונה הגדולה.</p>
+  </div>
+  <div class="foot"><span>נוף ה-AI</span><span>A</span></div>
+</section>
+
+<!-- ============ SLIDE 4: AI LANDSCAPE ============ -->
+<section>
+  <span class="snum">04</span>
+  <span class="chapter-tag">A · נוף</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <h2>הנוף המלא — כל מה שצריך להכיר</h2>
+    <div class="row" style="gap:12px;">
+      <div class="col grow" style="gap:10px;">
+        <div class="card" style="padding:14px;">
+          <h4 style="color:var(--blue);">☁️ מודלים בענן (API)</h4>
+          <p style="font-size:16px;">מודלים חזקים שרצים על שרתים של חברות. אתם שולחים בקשה ומקבלים תשובה. <strong>לא צריך מחשב חזק.</strong></p>
+          <div class="chips" style="margin-top:6px;"><span class="badge blue">Claude</span><span class="badge">GPT-4o</span><span class="badge mint">Gemini</span></div>
+        </div>
+        <div class="card" style="padding:14px;border-color:var(--orange);">
+          <h4 style="color:var(--orange);">💻 מודלים מקומיים</h4>
+          <p style="font-size:16px;">מודלים שרצים <strong>על המחשב שלכם</strong>. בלי אינטרנט, בלי תשלום, בלי שמישהו רואה את הנתונים.</p>
+          <div class="chips" style="margin-top:6px;"><span class="badge orange">Ollama</span><span class="badge yellow">LM Studio</span><span class="badge">llama.cpp</span></div>
+        </div>
+      </div>
+      <div class="col grow" style="gap:10px;">
+        <div class="card" style="padding:14px;border-color:var(--mint);">
+          <h4 style="color:#1a9e7e;">🖥️ ממשקים</h4>
+          <p style="font-size:16px;">כלים שנותנים לכם צ'אט יפה שמחובר למודלים — בענן או מקומי. במקום להשתמש ב-API ישירות.</p>
+          <div class="chips" style="margin-top:6px;"><span class="badge mint">OpenWebUI</span><span class="badge blue">ChatGPT</span><span class="badge">claude.ai</span></div>
+        </div>
+        <div class="card" style="padding:14px;border-color:var(--pink);">
+          <h4 style="color:var(--pink);">🔗 פרוטוקולי חיבור</h4>
+          <p style="font-size:16px;">איך AI מתחבר לכלים שלכם — לבסיס נתונים, לקבצים, למערכת.</p>
+          <div class="chips" style="margin-top:6px;"><span class="badge pink">API</span><span class="badge">MCP</span><span class="badge yellow">Hermes</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>נוף ה-AI</span><span>04</span></div>
+</section>
+
+<!-- ============ SLIDE 5: CLOUD VS LOCAL ============ -->
+<section>
+  <span class="snum">05</span>
+  <span class="chapter-tag">A · נוף</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <h2>ענן מול מקומי — השוואה מלאה</h2>
+    <div class="compare">
+      <div>
+        <h4>☁️ מודלים בענן</h4>
+        <ul class="tick">
+          <li>איכות תשובות מעולה 🥇</li>
+          <li>מהיר — רץ על שרתים חזקים</li>
+          <li>קל לשימוש — נרשמים ומתחילים</li>
+          <li>עלות: לפי שימוש (זול לפרויקט)</li>
+          <li>דורש אינטרנט תמיד</li>
+          <li>הנתונים עוברים לחברה חיצונית</li>
+          <li>מגבלות rate limit</li>
+        </ul>
+        <p style="font-size:15px;color:var(--ink-soft);margin-top:8px;">Claude, GPT-4o, Gemini Pro, AI Studio</p>
+      </div>
+      <div>
+        <h4 style="color:var(--orange);">💻 מודלים מקומיים</h4>
+        <ul class="tick">
+          <li>איכות: בינונית-טובה (תלוי מודל)</li>
+          <li>מהירות: תלוי במחשב שלכם</li>
+          <li>דורש התקנה והגדרה</li>
+          <li>עלות: חינם לגמרי 🥇</li>
+          <li>עובד בלי אינטרנט 🥇</li>
+          <li>פרטיות מלאה — הנתונים נשארים אצלכם 🥇</li>
+          <li>אין rate limit 🥇</li>
+        </ul>
+        <p style="font-size:15px;color:var(--ink-soft);margin-top:8px;">Llama 3, Gemma, Mistral, Phi דרך Ollama/LM Studio</p>
+      </div>
+    </div>
+    <div class="callout yellow" style="font-size:17px;">💡 <strong>לפרויקט סטודנט:</strong> התחילו עם ענן (חינם/זול, איכות גבוהה). הוסיפו מקומי אם צריכים פרטיות או רוצים להתנסות.</div>
+  </div>
+  <div class="foot"><span>ענן מול מקומי</span><span>05</span></div>
+</section>
+
+<!-- ============ SLIDE 6: PART B ============ -->
+<section class="pink">
+  <span class="snum">06</span>
+  <span class="chapter-tag">B</span>
+  <div class="bigletter">B</div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.7);">תחנה B · 45 דקות</p>
+    <h1 class="title-large" style="color:white;">API בענן.<br>איך מדברים עם AI מהקוד.</h1>
+    <p style="font-size:20px;color:rgba(255,255,255,0.82);max-width:650px;">Claude, ChatGPT, Gemini, AI Studio — איך משיגים, איך משתמשים, כמה עולה.</p>
+  </div>
+  <div class="foot"><span>API בענן</span><span>B</span></div>
+</section>
+
+<!-- ============ SLIDE 7: WHAT IS API ============ -->
+<section>
+  <span class="snum">07</span>
+  <span class="chapter-tag">B · API</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <h2>מה זה API — הסבר למי שלא ראה קוד</h2>
+    <div class="explain-block">
+      <h4>🍽️ אנלוגיה: מסעדה</h4>
+      <p>כשאתם הולכים למסעדה — אתם לא נכנסים למטבח. אתם פותחים <strong>תפריט</strong>, בוחרים מנה, המלצר מעביר למטבח, ומקבלים את האוכל. API זה בדיוק אותו דבר.</p>
+    </div>
+    <div class="explain-block pink">
+      <h4>📖 API = Application Programming Interface</h4>
+      <p>ממשק שמאפשר לתוכנה אחת לדבר עם תוכנה אחרת. במקרה שלנו: <strong>הקוד שלכם</strong> מדבר עם <strong>מודל AI</strong> דרך API. אתם שולחים טקסט (ה"הזמנה"), ה-AI מעבד, ומחזיר תשובה (ה"מנה").</p>
+    </div>
+    <div class="explain-block mint">
+      <h4>🔄 איך זה עובד בפועל</h4>
+      <p>הקוד שלכם שולח <strong>בקשת HTTP</strong> (כמו כשאתם פותחים אתר) לכתובת של ה-AI. הבקשה כוללת: (1) מפתח API שמזהה אתכם, (2) הטקסט שאתם רוצים שה-AI יעבד, (3) הגדרות כמו איזה מודל להשתמש. ה-AI מחזיר <strong>תשובה ב-JSON</strong> — פורמט טקסט מסודר.</p>
+    </div>
+    <div class="callout" style="font-size:17px;">🎯 <strong>למה זה חשוב?</strong> כי בלי API — ה-AI הוא רק צ'אט בדפדפן. עם API — ה-AI הופך לחלק מהמערכת שלכם. המשתמש לא צריך לפתוח שום דבר — הכל קורה ברקע.</div>
+  </div>
+  <div class="foot"><span>מה זה API</span><span>07</span></div>
+</section>
+
+<!-- ============ SLIDE 8: API FLOW ============ -->
+<section>
+  <span class="snum">08</span>
+  <span class="chapter-tag">B · API</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>זרימת API — מהרגע שלוחצים עד שמקבלים תשובה</h2>
+    <div class="col" style="gap:8px;">
+      <div class="row" style="align-items:center;gap:10px;">
+        <div class="step-num" style="width:40px;height:40px;font-size:20px;">1</div>
+        <div class="card grow" style="padding:11px 16px;"><strong>המשתמש מבצע פעולה</strong> — למשל, כותב תחביבים בטופס פרופיל ולוחץ "צור bio"</div>
+      </div>
+      <div class="flow-arrow" style="font-size:22px;">↓</div>
+      <div class="row" style="align-items:center;gap:10px;">
+        <div class="step-num blue" style="width:40px;height:40px;font-size:20px;">2</div>
+        <div class="card grow" style="padding:11px 16px;"><strong>ה-Backend שלכם</strong> אוסף את הנתונים ובונה prompt: "כתוב bio קצר עבור: טיולים, בישול, ג'אז"</div>
+      </div>
+      <div class="flow-arrow" style="font-size:22px;">↓</div>
+      <div class="row" style="align-items:center;gap:10px;">
+        <div class="step-num mint" style="width:40px;height:40px;font-size:20px;">3</div>
+        <div class="card grow" style="padding:11px 16px;"><strong>שליחת בקשת HTTP</strong> ל-API של Claude/GPT/Gemini עם המפתח שלכם וה-prompt</div>
+      </div>
+      <div class="flow-arrow" style="font-size:22px;">↓</div>
+      <div class="row" style="align-items:center;gap:10px;">
+        <div class="step-num yellow" style="width:40px;height:40px;font-size:20px;">4</div>
+        <div class="card grow" style="padding:11px 16px;"><strong>ה-AI מעבד</strong> — לוקח 1-5 שניות — ומחזיר JSON עם התשובה</div>
+      </div>
+      <div class="flow-arrow" style="font-size:22px;">↓</div>
+      <div class="row" style="align-items:center;gap:10px;">
+        <div class="step-num" style="width:40px;height:40px;font-size:20px;">5</div>
+        <div class="card grow" style="padding:11px 16px;"><strong>ה-Backend שלכם</strong> מקבל את התשובה, שומר ב-DB, ומציג למשתמש</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>זרימת API</span><span>08</span></div>
+</section>
+
+<!-- ============ SLIDE 9: CLAUDE API ============ -->
+<section>
+  <span class="snum">09</span>
+  <span class="chapter-tag">B · API</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>⚡ Claude API — איך משיגים API Key</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">Anthropic (החברה שמאחורי Claude) נותנת API חזק ונוח. הנה איך מתחילים:</p>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="margin-bottom:8px;">📝 שלבי הרשמה</h4>
+        <ol class="steps">
+          <li>היכנסו ל-<strong>console.anthropic.com</strong></li>
+          <li>לחצו "Sign up" — הירשמו עם Google</li>
+          <li>אשרו אימייל</li>
+          <li>בתפריט הצד — לחצו "API Keys"</li>
+          <li>לחצו "Create Key"</li>
+          <li><strong>העתיקו מיד!</strong> לא תראו את המפתח שוב</li>
+          <li>שמרו בקובץ <span class="kbd">.env</span> (לא ב-GitHub!)</li>
+        </ol>
+      </div>
+      <div class="card grow" style="border-color:var(--blue);">
+        <h4 style="color:var(--blue);margin-bottom:8px;">💰 עלויות ומודלים</h4>
+        <table class="tbl compact">
+          <tr><th>מודל</th><th>קלט / 1M</th><th>פלט / 1M</th><th>מתי</th></tr>
+          <tr class="highlight-row"><td>Haiku</td><td>$0.25</td><td>$1.25</td><td>זול, מהיר</td></tr>
+          <tr><td>Sonnet</td><td>$3.00</td><td>$15.00</td><td>מאוזן</td></tr>
+          <tr><td>Opus</td><td>$15.00</td><td>$75.00</td><td>חזק ביותר</td></tr>
+        </table>
+        <p style="font-size:14px;color:var(--ink-soft);margin-top:8px;">$5 חינם להתחלה — מספיק לאלפי בקשות עם Haiku</p>
+      </div>
+    </div>
+    <div class="action-box">
+      <h4>⚡ משימה: פתחו חשבון Anthropic עכשיו</h4>
+      <p style="font-size:17px;">console.anthropic.com → Sign up → צרו API Key → העתיקו. זמן משוער: 2 דקות.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Claude API</span><span>09</span></div>
+</section>
+
+<!-- ============ SLIDE 10: OPENAI API ============ -->
+<section>
+  <span class="snum">10</span>
+  <span class="chapter-tag">B · API</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>⚡ OpenAI API — ChatGPT מהקוד</h2>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="margin-bottom:8px;">📝 שלבי הרשמה</h4>
+        <ol class="steps">
+          <li>היכנסו ל-<strong>platform.openai.com</strong></li>
+          <li>Sign up עם Google/GitHub</li>
+          <li>בתפריט → "API Keys"</li>
+          <li>"Create new secret key"</li>
+          <li>העתיקו מיד ושמרו ב-.env</li>
+        </ol>
+        <p style="font-size:14px;color:var(--ink-soft);margin-top:6px;">$5 חינם להתחלה (ל-3 חודשים)</p>
+      </div>
+      <div class="card grow" style="border-color:var(--blue);">
+        <h4 style="color:var(--blue);margin-bottom:8px;">💰 מודלים ומחירים</h4>
+        <table class="tbl compact">
+          <tr><th>מודל</th><th>קלט / 1M</th><th>פלט / 1M</th><th>מתי</th></tr>
+          <tr class="highlight-row"><td>GPT-4o Mini</td><td>$0.15</td><td>$0.60</td><td>זול ביותר</td></tr>
+          <tr><td>GPT-4o</td><td>$2.50</td><td>$10.00</td><td>מאוזן</td></tr>
+          <tr><td>o1-mini</td><td>$1.10</td><td>$4.40</td><td>חשיבה</td></tr>
+        </table>
+        <p style="font-size:14px;color:var(--ink-soft);margin-top:6px;">GPT-4o Mini הוא הזול ביותר — מצוין לפרויקט</p>
+      </div>
+    </div>
+    <div class="action-box">
+      <h4>⚡ משימה: פתחו חשבון OpenAI עכשיו</h4>
+      <p style="font-size:17px;">platform.openai.com → צרו API Key. שימו לב: החשבון ב-platform.openai.com שונה מ-chatgpt.com!</p>
+    </div>
+  </div>
+  <div class="foot"><span>OpenAI API</span><span>10</span></div>
+</section>
+
+<!-- ============ SLIDE 11: GEMINI + AI STUDIO ============ -->
+<section>
+  <span class="snum">11</span>
+  <span class="chapter-tag">B · API</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>⚡ Google AI Studio + Gemini — הכי נדיב בחינם</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">Google נותנת גישה חינמית נדיבה מאוד למודלים שלה דרך AI Studio. זה המקום הכי טוב להתחיל אם אין תקציב.</p>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="margin-bottom:8px;">📝 שלבי הרשמה</h4>
+        <ol class="steps">
+          <li>היכנסו ל-<strong>aistudio.google.com</strong></li>
+          <li>התחברו עם חשבון Google</li>
+          <li>לחצו "Get API key" בתפריט</li>
+          <li>"Create API key in new project"</li>
+          <li>העתיקו — זהו!</li>
+        </ol>
+      </div>
+      <div class="card grow" style="border-color:var(--mint);">
+        <h4 style="color:#1a9e7e;margin-bottom:8px;">💰 מה מקבלים בחינם?</h4>
+        <table class="tbl compact">
+          <tr><th>מודל</th><th>חינם</th><th>מגבלה</th></tr>
+          <tr class="highlight-row"><td>Gemini 2.0 Flash</td><td>15 RPM</td><td>1M TPM</td></tr>
+          <tr><td>Gemini 2.5 Flash</td><td>7 RPM</td><td>400K TPM</td></tr>
+          <tr><td>Gemma 3 (דרך Ollama)</td><td>חינם מקומי</td><td>תלוי מחשב</td></tr>
+        </table>
+        <p style="font-size:14px;color:var(--ink-soft);margin-top:6px;">RPM = בקשות לדקה | TPM = tokens לדקה</p>
+      </div>
+    </div>
+    <div class="callout mint" style="font-size:17px;">💡 <strong>Gemma</strong> הוא המודל הפתוח של Google. אפשר להריץ אותו מקומי דרך Ollama (נראה בהמשך). ב-AI Studio מקבלים קרדיטים חינמיים נדיבים — מספיק לפרויקט שלם.</div>
+    <div class="action-box">
+      <h4>⚡ משימה: פתחו AI Studio עכשיו</h4>
+      <p style="font-size:17px;">aistudio.google.com → התחברו → צרו API Key → נסו את ה-playground. זמן: 2 דקות.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Google AI Studio + Gemini</span><span>11</span></div>
+</section>
+
+<!-- ============ SLIDE 12: API COSTS COMPARISON ============ -->
+<section>
+  <span class="snum">12</span>
+  <span class="chapter-tag">B · API</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>💰 השוואת עלויות מלאה — מה הכי משתלם?</h2>
+    <table class="tbl" style="font-size:15px;">
+      <tr><th>מודל</th><th>חברה</th><th>קלט / 1M</th><th>פלט / 1M</th><th>חינם</th><th>הערכה לפרויקט</th></tr>
+      <tr class="highlight-row"><td>GPT-4o Mini</td><td>OpenAI</td><td>$0.15</td><td>$0.60</td><td>$5</td><td>~$0.03</td></tr>
+      <tr><td>Claude Haiku</td><td>Anthropic</td><td>$0.25</td><td>$1.25</td><td>$5</td><td>~$0.05</td></tr>
+      <tr><td>Gemini 2.0 Flash</td><td>Google</td><td>$0.10</td><td>$0.40</td><td>נדיב!</td><td>~$0.02</td></tr>
+      <tr><td>Gemini 2.5 Flash</td><td>Google</td><td>$0.30</td><td>$2.50</td><td>נדיב!</td><td>~$0.10</td></tr>
+      <tr><td>GPT-4o</td><td>OpenAI</td><td>$2.50</td><td>$10.00</td><td>$5</td><td>~$0.50</td></tr>
+      <tr><td>Claude Sonnet</td><td>Anthropic</td><td>$3.00</td><td>$15.00</td><td>$5</td><td>~$0.80</td></tr>
+      <tr><td>Claude Opus</td><td>Anthropic</td><td>$15.00</td><td>$75.00</td><td>$5</td><td>~$4.00</td></tr>
+    </table>
+    <div class="concept-box">
+      <h4>📊 איך חישבנו "הערכה לפרויקט"?</h4>
+      <p>100 משתמשים × 10 בקשות AI × ~200 tokens = 200,000 tokens סה"כ. המחיר הוא הערכה גסה לקלט+פלט. בפועל — תלוי באורך ה-prompts והתשובות.</p>
+    </div>
+    <div class="callout yellow" style="font-size:17px;">💡 <strong>המלצה:</strong> התחילו עם Gemini Flash או GPT-4o Mini — הזולים ביותר. אם צריכים איכות גבוהה יותר — עלו ל-Haiku או Sonnet.</div>
+  </div>
+  <div class="foot"><span>השוואת עלויות</span><span>12</span></div>
+</section>
+
+<!-- ============ SLIDE 13: API CODE EXAMPLE ============ -->
+<section>
+  <span class="snum">13</span>
+  <span class="chapter-tag">B · API</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:12px;">
+    <h2>קריאה ל-Claude מתוך הקוד — שורה אחר שורה</h2>
+    <p style="font-size:17px;color:var(--ink-soft);">Use Case: משתמש מזין תחביבים → הקוד שולח ל-Claude → מקבל bio מוכן.</p>
+    <div class="code-explain">
+      <div class="ln"><span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(</div>
+      <div class="ex">שולחים בקשת HTTP ומחכים לתשובה. fetch = הפונקציה הבסיסית לשליחת בקשות באינטרנט.</div>
+      <div class="ln">  <span class="str">'https://api.anthropic.com/v1/messages'</span>,</div>
+      <div class="ex">הכתובת (URL) של Claude API. כל בקשה ל-Claude הולכת לכאן.</div>
+      <div class="ln">  {</div>
+      <div class="ex">מתחילים את אובייקט הבקשה — ההגדרות של מה אנחנו שולחים.</div>
+      <div class="ln">    method: <span class="str">'POST'</span>,</div>
+      <div class="ex">סוג הבקשה: POST = "אני שולח נתונים, תעבד אותם ותחזיר תשובה".</div>
+      <div class="ln">    headers: {</div>
+      <div class="ex">כותרות — מידע על השולח ועל סוג הנתונים.</div>
+      <div class="ln">      <span class="str">'x-api-key'</span>: API_KEY,</div>
+      <div class="ex">המפתח הסודי שלכם. בלעדיו — Claude יסרב. זה כמו סיסמה.</div>
+      <div class="ln">      <span class="str">'content-type'</span>: <span class="str">'application/json'</span></div>
+      <div class="ex">אומרים לשרת: "הנתונים שאני שולח הם בפורמט JSON".</div>
+      <div class="ln">    },</div>
+      <div class="ex">סוגרים כותרות.</div>
+      <div class="ln">    body: <span class="fn">JSON.stringify</span>({</div>
+      <div class="ex">גוף הבקשה — הנתונים עצמם. JSON.stringify הופך אובייקט JavaScript לטקסט.</div>
+      <div class="ln">      model: <span class="str">'claude-haiku-4-5'</span>,</div>
+      <div class="ex">איזה מודל לבקש. Haiku = הזול והמהיר. אפשר גם sonnet או opus.</div>
+      <div class="ln">      max_tokens: <span class="num">200</span>,</div>
+      <div class="ex">מקסימום אורך תשובה. 200 tokens ≈ 150 מילים בעברית.</div>
+      <div class="ln">      messages: [{</div>
+      <div class="ex">רשימת ההודעות בשיחה. יכול להיות יותר מהודעה אחת.</div>
+      <div class="ln">        role: <span class="str">'user'</span>,</div>
+      <div class="ex">תפקיד: "user" = המשתמש שואל. יש גם "assistant" (ה-AI עונה) ו-"system" (הוראות).</div>
+      <div class="ln">        content: <span class="str">`כתוב bio קצר עבור: ${profile.hobbies}`</span></div>
+      <div class="ex">הטקסט עצמו — התחביבים של המשתמש מוכנסים לתוך ה-prompt.</div>
+      <div class="ln">      }]</div>
+      <div class="ex">סוגרים הודעה.</div>
+      <div class="ln">    })</div>
+      <div class="ex">סוגרים גוף הבקשה.</div>
+      <div class="ln">  }</div>
+      <div class="ex">סוגרים את אובייקט הבקשה.</div>
+      <div class="ln">);</div>
+      <div class="ex">סוגרים fetch. עכשיו מחכים לתשובה מהשרת.</div>
+      <div class="ln"><span class="kw">const</span> data = <span class="kw">await</span> response.<span class="fn">json</span>();</div>
+      <div class="ex">ממירים את התשובה מ-JSON (טקסט) לאובייקט JavaScript שאפשר לעבוד איתו.</div>
+      <div class="ln"><span class="com">// data.content[0].text = ה-bio הסופי!</span></div>
+      <div class="ex">ה-bio המוכן נמצא כאן. שומרים אותו ב-DB ומציגים למשתמש.</div>
+    </div>
+  </div>
+  <div class="foot"><span>API · קוד מוסבר</span><span>13</span></div>
+</section>
+
+<!-- ============ SLIDE 14: GEMINI API CODE ============ -->
+<section>
+  <span class="snum">14</span>
+  <span class="chapter-tag">B · API</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:12px;">
+    <h2>קריאה ל-Gemini — אותו רעיון, כתובת אחרת</h2>
+    <p style="font-size:17px;color:var(--ink-soft);">העיקרון זהה — רק ה-URL והפורמט שונים קצת.</p>
+    <div class="code-explain">
+      <div class="ln"><span class="kw">const</span> API_KEY = <span class="str">'YOUR_GEMINI_KEY'</span>;</div>
+      <div class="ex">המפתח שקיבלתם מ-AI Studio.</div>
+      <div class="ln"><span class="kw">const</span> url = <span class="str">`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`</span>;</div>
+      <div class="ex">הכתובת של Gemini. שימו לב: ה-API Key נמצא ב-URL עצמו (לא ב-headers). וגם: שם המודל הוא חלק מה-URL.</div>
+      <div class="ln"><span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(url, {</div>
+      <div class="ex">שולחים בקשה כמו קודם.</div>
+      <div class="ln">  method: <span class="str">'POST'</span>,</div>
+      <div class="ex">POST = שליחת נתונים.</div>
+      <div class="ln">  headers: { <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span> },</div>
+      <div class="ex">רק Content-Type — ה-API Key כבר ב-URL.</div>
+      <div class="ln">  body: <span class="fn">JSON.stringify</span>({</div>
+      <div class="ex">גוף הבקשה — הפורמט של Gemini קצת שונה.</div>
+      <div class="ln">    contents: [{</div>
+      <div class="ex">ב-Gemini קוראים לזה "contents" במקום "messages".</div>
+      <div class="ln">      parts: [{ text: <span class="str">`כתוב bio: ${hobbies}`</span> }]</div>
+      <div class="ex">ב-Gemini כל הודעה מחולקת ל-"parts". יכול להיות טקסט, תמונה, וכו'.</div>
+      <div class="ln">    }]</div>
+      <div class="ex">סוגרים.</div>
+      <div class="ln">  })</div>
+      <div class="ex">סוגרים גוף.</div>
+      <div class="ln">});</div>
+      <div class="ex">סוגרים fetch.</div>
+      <div class="ln"><span class="kw">const</span> data = <span class="kw">await</span> response.<span class="fn">json</span>();</div>
+      <div class="ex">ממירים תשובה.</div>
+      <div class="ln"><span class="com">// data.candidates[0].content.parts[0].text</span></div>
+      <div class="ex">התשובה נמצאת כאן — המבנה של Gemini קצת יותר עמוק.</div>
+    </div>
+  </div>
+  <div class="foot"><span>API · Gemini</span><span>14</span></div>
+</section>
+
+<!-- ============ SLIDE 15: PART C ============ -->
+<section class="orange">
+  <span class="snum">15</span>
+  <span class="chapter-tag">C</span>
+  <div class="bigletter">C</div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.7);">תחנה C · 60 דקות</p>
+    <h1 class="title-large" style="color:white;">מודלים מקומיים.<br>AI על המחשב שלכם.</h1>
+    <p style="font-size:20px;color:rgba(255,255,255,0.82);max-width:650px;">Ollama, LM Studio, llama.cpp — איך מתקינים, איך מריצים, מה המגבלות.</p>
+  </div>
+  <div class="foot"><span>מודלים מקומיים</span><span>C</span></div>
+</section>
+
+<!-- ============ SLIDE 16: WHY LOCAL ============ -->
+<section>
+  <span class="snum">16</span>
+  <span class="chapter-tag">C · מקומי</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <h2>למה בכלל להריץ מודל מקומי?</h2>
+    <div class="explain-block orange">
+      <h4>🔒 פרטיות</h4>
+      <p>הנתונים <strong>לא יוצאים מהמחשב שלכם</strong>. אם אתם בונים מערכת עם נתונים רגישים (רפואיים, פיננסיים, אישיים) — מקומי הוא הפתרון היחיד שמבטיח שאף אחד לא רואה את המידע.</p>
+    </div>
+    <div class="explain-block">
+      <h4>💰 עלות</h4>
+      <p><strong>חינם לגמרי.</strong> אחרי שהתקנתם — אין עלות per-request. אין API Key, אין חיוב, אין rate limit.</p>
+    </div>
+    <div class="explain-block pink">
+      <h4>🌐 בלי אינטרנט</h4>
+      <p>עובד גם בטיסה, גם בלי WiFi, גם כשהשרת של OpenAI נופל. <strong>תמיד זמין.</strong></p>
+    </div>
+    <div class="explain-block mint">
+      <h4>🎓 למידה</h4>
+      <p>מבינים איך מודלים עובדים מבפנים — מה זה quantization, מה זה context window, איך טמפרטורה משפיעה. ידע ששווה הרבה.</p>
+    </div>
+  </div>
+  <div class="foot"><span>למה מקומי</span><span>16</span></div>
+</section>
+
+<!-- ============ SLIDE 17: OLLAMA ============ -->
+<section>
+  <span class="snum">17</span>
+  <span class="chapter-tag">C · מקומי</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>⚡ Ollama — הדרך הקלה ביותר להתחיל</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">Ollama הוא כלי שמוריד ומריץ מודלי AI על המחשב שלכם בשורה אחת בטרמינל.</p>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="margin-bottom:8px;">📝 התקנה</h4>
+        <ol class="steps">
+          <li>היכנסו ל-<strong>ollama.com</strong></li>
+          <li>לחצו "Download" — בחרו Mac/Windows/Linux</li>
+          <li>התקינו כמו כל תוכנה</li>
+          <li>פתחו טרמינל (Terminal/CMD)</li>
+        </ol>
+      </div>
+      <div class="card grow" style="border-color:var(--orange);">
+        <h4 style="color:var(--orange);margin-bottom:8px;">🚀 הרצת מודל ראשון</h4>
+        <div class="code sm"><span class="com"># הורדה והרצה של Llama 3.2</span>
+ollama run llama3.2
+
+<span class="com"># הורדה והרצה של Gemma</span>
+ollama run gemma3
+
+<span class="com"># הורדה והרצה של Mistral</span>
+ollama run mistral</div>
+        <p style="font-size:14px;color:var(--ink-soft);margin-top:6px;">זהו! אחרי שהמודל ירד — אתם בצ'אט איתו.</p>
+      </div>
+    </div>
+    <div class="action-box">
+      <h4>⚡ משימה: התקינו Ollama עכשיו</h4>
+      <p style="font-size:17px;">ollama.com → Download → התקינו → פתחו טרמינל → כתבו <span class="kbd">ollama run llama3.2</span>. זמן: 5-10 דקות (כולל הורדת המודל).</p>
+    </div>
+  </div>
+  <div class="foot"><span>Ollama</span><span>17</span></div>
+</section>
+
+<!-- ============ SLIDE 18: OLLAMA MODELS ============ -->
+<section>
+  <span class="snum">18</span>
+  <span class="chapter-tag">C · מקומי</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>אילו מודלים אפשר להריץ ב-Ollama?</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">כל מודל שמופיע ב-ollama.com/library. הנה הפופולריים:</p>
+    <table class="tbl" style="font-size:15px;">
+      <tr><th>מודל</th><th>חברה</th><th>גודל</th><th>RAM נדרש</th><th>פקודה</th><th>מתי לבחור</th></tr>
+      <tr class="highlight-row"><td>Llama 3.2</td><td>Meta</td><td>3B</td><td>~4GB</td><td><span class="kbd">ollama run llama3.2</span></td><td>קל, מהיר, טוב להתחלה</td></tr>
+      <tr><td>Llama 3.1</td><td>Meta</td><td>8B</td><td>~8GB</td><td><span class="kbd">ollama run llama3.1</span></td><td>מאוזן, איכות טובה</td></tr>
+      <tr><td>Gemma 3</td><td>Google</td><td>4B</td><td>~5GB</td><td><span class="kbd">ollama run gemma3</span></td><td>מעולה, מבוסס Gemini</td></tr>
+      <tr><td>Mistral</td><td>Mistral AI</td><td>7B</td><td>~8GB</td><td><span class="kbd">ollama run mistral</span></td><td>טוב לקוד</td></tr>
+      <tr><td>Phi-3</td><td>Microsoft</td><td>3.8B</td><td>~4GB</td><td><span class="kbd">ollama run phi3</span></td><td>קטן וחזק</td></tr>
+      <tr><td>CodeLlama</td><td>Meta</td><td>7B</td><td>~8GB</td><td><span class="kbd">ollama run codellama</span></td><td>מיוחד לקוד</td></tr>
+    </table>
+    <div class="callout yellow" style="font-size:17px;">💡 <strong>מה זה "B"?</strong> Billions = מיליארדי פרמטרים. יותר פרמטרים = יותר חכם, אבל צריך יותר זיכרון (RAM) ויותר איטי. למחשב עם 8GB RAM — התחילו עם 3B-4B.</div>
+  </div>
+  <div class="foot"><span>מודלים ב-Ollama</span><span>18</span></div>
+</section>
+
+<!-- ============ SLIDE 19: OLLAMA API ============ -->
+<section>
+  <span class="snum">19</span>
+  <span class="chapter-tag">C · מקומי</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>Ollama כ-API — לחבר לקוד שלכם</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">כש-Ollama רץ, הוא פותח API מקומי ב-<span class="kbd">http://localhost:11434</span>. אפשר לקרוא לו מהקוד בדיוק כמו API בענן!</p>
+    <div class="code-explain">
+      <div class="ln"><span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(</div>
+      <div class="ex">אותו fetch כמו קודם — אבל הפעם לכתובת מקומית!</div>
+      <div class="ln">  <span class="str">'http://localhost:11434/api/generate'</span>,</div>
+      <div class="ex">ה-API של Ollama רץ על המחשב שלכם בפורט 11434. אין צורך באינטרנט.</div>
+      <div class="ln">  {</div>
+      <div class="ex">מתחילים את הבקשה.</div>
+      <div class="ln">    method: <span class="str">'POST'</span>,</div>
+      <div class="ex">POST = שליחת נתונים.</div>
+      <div class="ln">    body: <span class="fn">JSON.stringify</span>({</div>
+      <div class="ex">גוף הבקשה.</div>
+      <div class="ln">      model: <span class="str">'llama3.2'</span>,</div>
+      <div class="ex">איזה מודל להריץ — חייב להיות מודל שכבר הורדתם.</div>
+      <div class="ln">      prompt: <span class="str">'כתוב bio קצר עבור: טיולים, בישול'</span>,</div>
+      <div class="ex">הטקסט שאתם רוצים שהמודל יעבד.</div>
+      <div class="ln">      stream: <span class="kw">false</span></div>
+      <div class="ex">false = תחזיר את כל התשובה בבת אחת. true = תזרים מילה-מילה (כמו ChatGPT).</div>
+      <div class="ln">    })</div>
+      <div class="ex">סוגרים גוף.</div>
+      <div class="ln">  }</div>
+      <div class="ex">סוגרים בקשה.</div>
+      <div class="ln">);</div>
+      <div class="ex">סוגרים fetch.</div>
+      <div class="ln"><span class="kw">const</span> data = <span class="kw">await</span> response.<span class="fn">json</span>();</div>
+      <div class="ex">ממירים תשובה.</div>
+      <div class="ln">console.<span class="fn">log</span>(data.response);</div>
+      <div class="ex">התשובה של המודל נמצאת ב-data.response.</div>
+    </div>
+    <div class="callout mint" style="font-size:17px;">💡 שימו לב: <strong>אין צורך ב-API Key!</strong> Ollama רץ מקומי — אין שרת חיצוני, אין חיוב, אין סיסמה.</div>
+  </div>
+  <div class="foot"><span>Ollama API</span><span>19</span></div>
+</section>
+
+<!-- ============ SLIDE 20: LM STUDIO ============ -->
+<section>
+  <span class="snum">20</span>
+  <span class="chapter-tag">C · מקומי</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>⚡ LM Studio — ממשק גרפי למודלים מקומיים</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">אם Ollama הוא ה"טרמינל" — LM Studio הוא ה"אפליקציה". ממשק יפה עם חיפוש מודלים, צ'אט, והגדרות.</p>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="margin-bottom:8px;">📝 התקנה</h4>
+        <ol class="steps">
+          <li>היכנסו ל-<strong>lmstudio.ai</strong></li>
+          <li>לחצו "Download" — Mac/Windows/Linux</li>
+          <li>התקינו ופתחו</li>
+          <li>בצד שמאל — לחצו 🔍 Search</li>
+          <li>חפשו "llama" או "gemma"</li>
+          <li>לחצו Download על מודל</li>
+          <li>לחצו 💬 Chat — ותתחילו לדבר!</li>
+        </ol>
+      </div>
+      <div class="card grow" style="border-color:var(--orange);">
+        <h4 style="color:var(--orange);margin-bottom:8px;">🎛️ מה מיוחד ב-LM Studio?</h4>
+        <ul class="tick">
+          <li>ממשק גרפי יפה — לא צריך טרמינל</li>
+          <li>חיפוש מודלים מובנה (מ-Hugging Face)</li>
+          <li>הגדרות פרמטרים ויזואליות (טמפרטורה, context)</li>
+          <li>Server mode — API מקומי כמו Ollama</li>
+          <li>תומך ב-GPU (NVIDIA) להאצה</li>
+          <li>חינם לגמרי</li>
+        </ul>
+      </div>
+    </div>
+    <div class="action-box">
+      <h4>⚡ משימה: התקינו LM Studio</h4>
+      <p style="font-size:17px;">lmstudio.ai → Download → התקינו → חפשו "Llama 3.2" → הורידו → Chat. זמן: 5-10 דקות.</p>
+    </div>
+  </div>
+  <div class="foot"><span>LM Studio</span><span>20</span></div>
+</section>
+
+<!-- ============ SLIDE 21: LLAMA.CPP ============ -->
+<section>
+  <span class="snum">21</span>
+  <span class="chapter-tag">C · מקומי</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>llama.cpp — למתקדמים</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">llama.cpp הוא המנוע שרץ מתחת ל-Ollama ו-LM Studio. אם רוצים שליטה מלאה — זה הכלי.</p>
+    <div class="explain-block orange">
+      <h4>🤔 מה זה בעצם?</h4>
+      <p>ספרייה ב-C++ שמריצה מודלי LLM על CPU (מעבד רגיל) — בלי צורך ב-GPU יקר. היא משתמשת בפורמט GGUF — קבצים דחוסים שמאפשרים להריץ מודלים גדולים על מחשבים רגילים.</p>
+    </div>
+    <div class="explain-block">
+      <h4>📦 מה זה GGUF?</h4>
+      <p>פורמט קובץ שמכיל מודל AI <strong>דחוס</strong>. במקום מודל של 16GB — מקבלים קובץ של 4GB (quantization). הרמות הנפוצות:</p>
+      <p style="margin-top:6px;"><strong>Q4_K_M</strong> — דחיסה בינונית, איכות טובה, ~4GB ל-8B model</p>
+      <p><strong>Q8_0</strong> — דחיסה קלה, איכות מעולה, ~8GB ל-8B model</p>
+      <p><strong>Q2_K</strong> — דחיסה חזקה, איכות נמוכה, ~2GB ל-8B model</p>
+    </div>
+    <div class="callout yellow" style="font-size:17px;">💡 <strong>לפרויקט סטודנט:</strong> Ollama או LM Studio מספיקים בהחלט. llama.cpp הוא למי שרוצה להבין מה קורה "מתחת למכסה המנוע".</div>
+  </div>
+  <div class="foot"><span>llama.cpp</span><span>21</span></div>
+</section>
+
+<!-- ============ SLIDE 22: MLX (MAC) ============ -->
+<section>
+  <span class="snum">22</span>
+  <span class="chapter-tag">C · מקומי</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>MLX — למשתמשי Mac עם Apple Silicon</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">אם יש לכם Mac עם שבב M1/M2/M3/M4 — MLX הוא המנוע המותאם של Apple להרצת מודלים.</p>
+    <div class="explain-block">
+      <h4>🍎 מה זה MLX?</h4>
+      <p>ספרייה של Apple שמריצה מודלי AI <strong>על ה-GPU של Apple Silicon</strong>. מהיר יותר מ-Ollama על Mac כי משתמש בשבב הייעודי (Neural Engine).</p>
+    </div>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="margin-bottom:6px;">📝 התקנה</h4>
+        <div class="code sm"><span class="com"># צריך Python מותקן</span>
+pip install mlx-lm
+
+<span class="com"># הרצת מודל</span>
+python -m mlx_lm.generate \
+  --model mlx-community/Llama-3.2-3B-Instruct-4bit \
+  --prompt <span class="str">"כתוב bio"</span></div>
+      </div>
+      <div class="card grow" style="border-color:var(--orange);">
+        <h4 style="color:var(--orange);margin-bottom:6px;">📊 MLX מול Ollama על Mac</h4>
+        <table class="tbl compact">
+          <tr><th></th><th>Ollama</th><th>MLX</th></tr>
+          <tr><td>קלות</td><td>🥇 קל</td><td>בינוני</td></tr>
+          <tr><td>מהירות</td><td>טוב</td><td>🥇 מהיר יותר</td></tr>
+          <tr><td>מודלים</td><td>הרבה</td><td>פחות</td></tr>
+          <tr><td>API</td><td>🥇 מובנה</td><td>צריך להגדיר</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>MLX · Mac</span><span>22</span></div>
+</section>
+
+<!-- ============ SLIDE 23: LOCAL LIMITATIONS ============ -->
+<section>
+  <span class="snum">23</span>
+  <span class="chapter-tag">C · מקומי</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>מגבלות של מודלים מקומיים — מה צריך לדעת</h2>
+    <div class="row" style="gap:12px;">
+      <div class="card grow" style="padding:16px;">
+        <span style="font-size:28px;">💾</span>
+        <h4 style="margin-top:4px;">זיכרון (RAM)</h4>
+        <p style="font-size:16px;">מודל 3B צריך ~4GB RAM. מודל 8B צריך ~8GB. מודל 70B צריך ~40GB. <strong>המחשב שלכם הוא המגבלה.</strong></p>
+      </div>
+      <div class="card grow" style="padding:16px;border-color:var(--orange);">
+        <span style="font-size:28px;">🐌</span>
+        <h4 style="color:var(--orange);margin-top:4px;">מהירות</h4>
+        <p style="font-size:16px;">מודל מקומי על CPU: 5-20 tokens/שנייה. בענן: 50-100 tokens/שנייה. <strong>פי 5-10 יותר איטי.</strong></p>
+      </div>
+      <div class="card grow" style="padding:16px;border-color:var(--pink);">
+        <span style="font-size:28px;">🧠</span>
+        <h4 style="color:var(--pink);margin-top:4px;">איכות</h4>
+        <p style="font-size:16px;">מודל 3B מקומי ≠ Claude Opus. המודלים המקומיים <strong>חלשים משמעותית</strong> ממודלי הענן הגדולים.</p>
+      </div>
+    </div>
+    <div class="row" style="gap:12px;">
+      <div class="card grow" style="padding:16px;">
+        <span style="font-size:28px;">📦</span>
+        <h4 style="margin-top:4px;">שטח אחסון</h4>
+        <p style="font-size:16px;">כל מודל שוקל 2-8GB. אם תורידו 5 מודלים — זה 20-40GB על הדיסק.</p>
+      </div>
+      <div class="card grow" style="padding:16px;border-color:var(--mint);">
+        <span style="font-size:28px;">🔋</span>
+        <h4 style="color:#1a9e7e;margin-top:4px;">סוללה</h4>
+        <p style="font-size:16px;">הרצת מודל מקומי <strong>צורכת הרבה חשמל</strong>. על לפטופ — הסוללה תיגמר מהר.</p>
+      </div>
+    </div>
+    <div class="callout yellow" style="font-size:17px;">💡 <strong>השורה התחתונה:</strong> מודלים מקומיים מעולים ללמידה, פרטיות, ופרויקטים קטנים. לפרויקט production — ענן עדיף.</div>
+  </div>
+  <div class="foot"><span>מגבלות מקומיות</span><span>23</span></div>
+</section>
+
+<!-- ============ SLIDE 24: PART D ============ -->
+<section class="pink">
+  <span class="snum">24</span>
+  <span class="chapter-tag">D</span>
+  <div class="bigletter">D</div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.7);">תחנה D · 40 דקות</p>
+    <h1 class="title-large" style="color:white;">פרמטרים של מודלים.<br>טמפרטורה, Top-P, ועוד.</h1>
+    <p style="font-size:20px;color:rgba(255,255,255,0.82);max-width:650px;">איך שולטים בהתנהגות של ה-AI — יצירתי? מדויק? קצר? ארוך?</p>
+  </div>
+  <div class="foot"><span>פרמטרים</span><span>D</span></div>
+</section>
+
+<!-- ============ SLIDE 25: TEMPERATURE ============ -->
+<section>
+  <span class="snum">25</span>
+  <span class="chapter-tag">D · פרמטרים</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>Temperature — כמה "יצירתי" יהיה ה-AI?</h2>
+    <div class="explain-block">
+      <h4>🌡️ מה זה?</h4>
+      <p>Temperature שולט ב<strong>רמת האקראיות</strong> של המודל. ערך בין 0 ל-2 (בדרך כלל 0-1).</p>
+    </div>
+    <div class="row" style="gap:12px;">
+      <div class="card grow" style="padding:16px;text-align:center;">
+        <h4 style="color:var(--blue);">🧊 Temperature = 0</h4>
+        <p style="font-size:17px;margin-top:6px;"><strong>דטרמיניסטי.</strong> תמיד אותה תשובה לאותה שאלה. הכי "בטוח" ו"מדויק".</p>
+        <p style="font-size:15px;color:var(--ink-soft);margin-top:4px;">מתאים ל: כתיבת SQL, קוד, תשובות עובדתיות</p>
+      </div>
+      <div class="card grow" style="padding:16px;text-align:center;border-color:var(--yellow);">
+        <h4 style="color:#b8860b;">🌤️ Temperature = 0.5</h4>
+        <p style="font-size:17px;margin-top:6px;"><strong>מאוזן.</strong> קצת גיוון אבל עדיין אמין.</p>
+        <p style="font-size:15px;color:var(--ink-soft);margin-top:4px;">מתאים ל: כתיבת bio, סיכומים, הסברים</p>
+      </div>
+      <div class="card grow" style="padding:16px;text-align:center;border-color:var(--pink);">
+        <h4 style="color:var(--pink);">🔥 Temperature = 1.0</h4>
+        <p style="font-size:17px;margin-top:6px;"><strong>יצירתי.</strong> תשובות מגוונות, לפעמים מפתיעות, לפעמים לא מדויקות.</p>
+        <p style="font-size:15px;color:var(--ink-soft);margin-top:4px;">מתאים ל: כתיבה יצירתית, רעיונות, brainstorming</p>
+      </div>
+    </div>
+    <div class="code-explain">
+      <div class="ln"><span class="com">// בקשה ל-Claude עם temperature</span></div>
+      <div class="ex">איך מוסיפים temperature לבקשת API:</div>
+      <div class="ln">body: <span class="fn">JSON.stringify</span>({</div>
+      <div class="ex">גוף הבקשה.</div>
+      <div class="ln">  model: <span class="str">'claude-haiku-4-5'</span>,</div>
+      <div class="ex">המודל.</div>
+      <div class="ln">  temperature: <span class="num">0.3</span>,</div>
+      <div class="ex">0.3 = קצת יצירתי אבל בעיקר אמין. טוב לכתיבת bio.</div>
+      <div class="ln">  max_tokens: <span class="num">200</span>,</div>
+      <div class="ex">מקסימום אורך.</div>
+      <div class="ln">  messages: [{ role: <span class="str">'user'</span>, content: <span class="str">'...'</span> }]</div>
+      <div class="ex">ההודעה.</div>
+      <div class="ln">})</div>
+      <div class="ex">סוגרים.</div>
+    </div>
+  </div>
+  <div class="foot"><span>Temperature</span><span>25</span></div>
+</section>
+
+<!-- ============ SLIDE 26: MORE PARAMETERS ============ -->
+<section>
+  <span class="snum">26</span>
+  <span class="chapter-tag">D · פרמטרים</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:12px;">
+    <h2>עוד פרמטרים שחשוב להכיר</h2>
+    <div class="param-grid">
+      <div class="param-card">
+        <h4>📏 max_tokens</h4>
+        <p>מקסימום אורך התשובה. 100 = קצר, 500 = בינוני, 4000 = ארוך. <strong>יותר tokens = יותר יקר.</strong></p>
+      </div>
+      <div class="param-card">
+        <h4>🎯 top_p</h4>
+        <p>חלופה ל-temperature. במקום לשלוט באקראיות — מגביל את המודל ל"הסתברות מצטברת". 0.9 = רק המילים הכי סבירות. <strong>לא צריך גם temperature וגם top_p — בחרו אחד.</strong></p>
+      </div>
+      <div class="param-card">
+        <h4>🚫 stop_sequences</h4>
+        <p>רשימת מילים/תווים שאם המודל מגיע אליהם — הוא עוצר. למשל: <span class="syntax-tag">["\n\n"]</span> = עצור אחרי שתי שורות ריקות.</p>
+      </div>
+      <div class="param-card">
+        <h4>📐 presence_penalty</h4>
+        <p>מעניש את המודל על חזרה על אותם נושאים. 0 = רגיל, 2 = ימנע מחזרות. טוב כשרוצים תשובה מגוונת.</p>
+      </div>
+      <div class="param-card">
+        <h4>🔄 frequency_penalty</h4>
+        <p>דומה ל-presence_penalty אבל מעניש על חזרה על <strong>אותן מילים</strong>. טוב למניעת "דיבורים באוויר".</p>
+      </div>
+      <div class="param-card">
+        <h4>📋 system prompt</h4>
+        <p>הוראות כלליות שמוגדרות מראש. למשל: "אתה עוזר כתיבה בעברית. כתוב בקצרה." <strong>משפיע על כל התשובות.</strong></p>
+      </div>
+    </div>
+    <div class="callout" style="font-size:17px;">💡 <strong>לפרויקט:</strong> ברוב המקרים — temperature + max_tokens מספיקים. אל תסבכו את עצמכם עם כל הפרמטרים בהתחלה.</div>
+  </div>
+  <div class="foot"><span>פרמטרים נוספים</span><span>26</span></div>
+</section>
+
+<!-- ============ SLIDE 27: EXERCISE PARAMETERS ============ -->
+<section>
+  <span class="snum">27</span>
+  <span class="chapter-tag">D · פרמטרים</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <div class="try-now">נסו עכשיו · תרגיל</div>
+    <h2>שחקו עם Temperature — ראו את ההבדל</h2>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="margin-bottom:8px;">📝 המשימה</h4>
+        <ol class="steps">
+          <li>פתחו claude.ai או chatgpt.com</li>
+          <li>כתבו: "כתוב bio לאפליקציית דייטים עבור מישהו שאוהב טיולים ובישול"</li>
+          <li>עכשיו בקשו: "עכשיו כתוב את אותו bio אבל יותר יצירתי ומפתיע"</li>
+          <li>השוו את שתי התשובות</li>
+        </ol>
+      </div>
+      <div class="card grow" style="border-color:var(--orange);">
+        <h4 style="color:var(--orange);margin-bottom:8px;">💻 למתקדמים — ב-Ollama</h4>
+        <div class="code sm"><span class="com"># temperature נמוך — תשובה יבשה</span>
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2",
+  "prompt": "כתוב bio",
+  "temperature": 0.1,
+  "stream": false
+}'
+
+<span class="com"># temperature גבוה — תשובה יצירתית</span>
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2",
+  "prompt": "כתוב bio",
+  "temperature": 1.0,
+  "stream": false
+}'</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>תרגיל · פרמטרים</span><span>27</span></div>
+</section>
+
+<!-- ============ SLIDE 28: PART E ============ -->
+<section class="blue">
+  <span class="snum">28</span>
+  <span class="chapter-tag">E</span>
+  <div class="bigletter">E</div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.7);">תחנה E · 60 דקות</p>
+    <h1 class="title-large" style="color:white;">OpenWebUI.<br>הצ'אט הפרטי שלכם.</h1>
+    <p style="font-size:20px;color:rgba(255,255,255,0.82);max-width:650px;">התקנה מלאה, קונפיגורציה, חיבור למודלים מקומיים ובענן.</p>
+  </div>
+  <div class="foot"><span>OpenWebUI</span><span>E</span></div>
+</section>
+
+<!-- ============ SLIDE 29: WHAT IS OPENWEBUI ============ -->
+<section>
+  <span class="snum">29</span>
+  <span class="chapter-tag">E · OpenWebUI</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <h2>מה זה OpenWebUI ולמה זה שווה?</h2>
+    <div class="explain-block">
+      <h4>🖥️ OpenWebUI = ממשק צ'אט קוד-פתוח</h4>
+      <p>דמיינו את הממשק של ChatGPT — אבל <strong>שלכם</strong>. רץ על המחשב שלכם, מתחבר לכל מודל שרוצים (מקומי או ענן), ושומר את היסטוריית השיחות אצלכם.</p>
+    </div>
+    <div class="explain-block pink">
+      <h4>💰 למה לא לשלם $20/חודש?</h4>
+      <p>מנוי Claude Pro או ChatGPT Plus עולה $20/חודש. עם OpenWebUI + API Key — אתם משלמים <strong>רק לפי שימוש</strong>. אם שולחים 100 הודעות בחודש — זה אולי $0.50. אם 1000 — אולי $3.</p>
+    </div>
+    <div class="explain-block mint">
+      <h4>🔗 מה עוד אפשר?</h4>
+      <p>OpenWebUI תומך ב:<strong> מספר מודלים במקביל</strong> (Claude + GPT + Ollama), <strong>MCP servers</strong> (חיבור לבסיס נתונים!), <strong>היסטוריית שיחות</strong>, <strong>ניהול משתמשים</strong>, ועוד.</p>
+    </div>
+  </div>
+  <div class="foot"><span>מה זה OpenWebUI</span><span>29</span></div>
+</section>
+
+<!-- ============ SLIDE 30: INSTALL OPENWEBUI DOCKER ============ -->
+<section>
+  <span class="snum">30</span>
+  <span class="chapter-tag">E · OpenWebUI</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:12px;">
+    <h2>⚡ התקנת OpenWebUI — דרך Docker (מומלץ)</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">Docker הוא הדרך הקלה ביותר להתקין OpenWebUI. אם אין לכם Docker — התקינו קודם מ-docker.com.</p>
+    <div class="code-explain">
+      <div class="ln"><span class="com"># שלב 1: התקינו Docker מ-docker.com</span></div>
+      <div class="ex">Docker Desktop — חינם. מתקין כמו כל תוכנה.</div>
+      <div class="ln"></div>
+      <div class="ex"></div>
+      <div class="ln"><span class="com"># שלב 2: הריצו את הפקודה הבאה בטרמינל</span></div>
+      <div class="ex">זו פקודה אחת ארוכה — מעתיקים הכל ומדביקים.</div>
+      <div class="ln">docker run -d \</div>
+      <div class="ex">docker run = "תריץ container חדש". -d = "ברקע" (detached), לא חוסם את הטרמינל.</div>
+      <div class="ln">  -p 3000:8080 \</div>
+      <div class="ex">-p = port mapping. פורט 3000 במחשב שלכם ← פורט 8080 בתוך ה-container. אחרי זה תיכנסו ל-localhost:3000.</div>
+      <div class="ln">  --add-host=host.docker.internal:host-gateway \</div>
+      <div class="ex">מאפשר ל-OpenWebUI לגשת ל-Ollama שרץ על המחשב שלכם (ב-localhost:11434).</div>
+      <div class="ln">  -v open-webui:/app/backend/data \</div>
+      <div class="ex">-v = volume. שומר את הנתונים (שיחות, הגדרות) גם אחרי שמכבים את ה-container. "open-webui" הוא שם ה-volume.</div>
+      <div class="ln">  --name open-webui \</div>
+      <div class="ex">נותן שם ל-container — כדי שתוכלו לעצור/להתחיל אותו בקלות.</div>
+      <div class="ln">  ghcr.io/open-webui/open-webui:main</div>
+      <div class="ex">ה-image של OpenWebUI — התמונה שממנה נוצר ה-container. מוריד אוטומטית מ-GitHub.</div>
+    </div>
+    <div class="action-box">
+      <h4>⚡ משימה: התקינו Docker + OpenWebUI</h4>
+      <p style="font-size:17px;">docker.com → התקינו Docker Desktop → פתחו טרמינל → הדביקו את הפקודה למעלה → פתחו localhost:3000. זמן: 10 דקות.</p>
+    </div>
+  </div>
+  <div class="foot"><span>OpenWebUI · Docker</span><span>30</span></div>
+</section>
+
+<!-- ============ SLIDE 31: OPENWEBUI WITHOUT DOCKER ============ -->
+<section>
+  <span class="snum">31</span>
+  <span class="chapter-tag">E · OpenWebUI</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>OpenWebUI בלי Docker — התקנה ישירה</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">אם לא רוצים Docker — אפשר להתקין ישירות עם Python. קצת יותר מסובך, אבל עובד.</p>
+    <div class="code-explain">
+      <div class="ln"><span class="com"># שלב 1: ודאו ש-Python 3.11+ מותקן</span></div>
+      <div class="ex">python --version — צריך להיות 3.11 ומעלה.</div>
+      <div class="ln">python --version</div>
+      <div class="ex">בודקים גרסה.</div>
+      <div class="ln"></div>
+      <div class="ex"></div>
+      <div class="ln"><span class="com"># שלב 2: התקינו את OpenWebUI עם pip</span></div>
+      <div class="ex">pip = מנהל החבילות של Python.</div>
+      <div class="ln">pip install open-webui</div>
+      <div class="ex">מוריד ומתקין את OpenWebUI וכל התלויות שלו.</div>
+      <div class="ln"></div>
+      <div class="ex"></div>
+      <div class="ln"><span class="com"># שלב 3: הריצו!</span></div>
+      <div class="ex">הפעלה של השרת.</div>
+      <div class="ln">open-webui serve</div>
+      <div class="ex">מתחיל שרת וובי. פתחו localhost:8080 בדפדפן.</div>
+    </div>
+    <div class="callout yellow" style="font-size:17px;">💡 <strong>המלצה:</strong> Docker עדיף כי הוא מבודד את ההתקנה. אם משהו משתבש — פשוט מוחקים את ה-container ומתחילים מחדש. בלי Docker — יכולים להיות התנגשויות עם חבילות Python אחרות.</div>
+  </div>
+  <div class="foot"><span>OpenWebUI · בלי Docker</span><span>31</span></div>
+</section>
+
+<!-- ============ SLIDE 32: CONFIGURE OPENWEBUI ============ -->
+<section>
+  <span class="snum">32</span>
+  <span class="chapter-tag">E · OpenWebUI</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>⚡ קונפיגורציה של OpenWebUI — חיבור מודלים</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">אחרי שהתקנתם — צריך לחבר מודלים. הנה איך:</p>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="margin-bottom:8px;">🔌 חיבור Ollama (מקומי)</h4>
+        <ol class="steps">
+          <li>ודאו ש-Ollama רץ (<span class="kbd">ollama serve</span>)</li>
+          <li>ב-OpenWebUI → Settings (⚙️)</li>
+          <li>לחצו "Connections"</li>
+          <li>ב-OLLAMA_BASE_URL כתבו: <span class="kbd">http://host.docker.internal:11434</span></li>
+          <li>(אם בלי Docker: <span class="kbd">http://localhost:11434</span>)</li>
+          <li>לחצו "Save" — המודלים של Ollama יופיעו!</li>
+        </ol>
+      </div>
+      <div class="card grow" style="border-color:var(--blue);">
+        <h4 style="color:var(--blue);margin-bottom:8px;">☁️ חיבור API בענן</h4>
+        <ol class="steps">
+          <li>Settings → Connections</li>
+          <li>לחצו "Add Connection"</li>
+          <li>בחרו "OpenAI API" או "Anthropic API"</li>
+          <li>הדביקו את ה-API Key שלכם</li>
+          <li>בחרו מודל (GPT-4o Mini, Claude Haiku)</li>
+          <li>Save — מוכן!</li>
+        </ol>
+      </div>
+    </div>
+    <div class="action-box">
+      <h4>⚡ משימה: חברו לפחות מודל אחד</h4>
+      <p style="font-size:17px;">OpenWebUI → Settings → Connections → חברו Ollama או API בענן → נסו לשלוח הודעה.</p>
+    </div>
+  </div>
+  <div class="foot"><span>OpenWebUI · קונפיגורציה</span><span>32</span></div>
+</section>
+
+<!-- ============ SLIDE 33: OPENWEBUI ADVANCED ============ -->
+<section>
+  <span class="snum">33</span>
+  <span class="chapter-tag">E · OpenWebUI</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>OpenWebUI — הגדרות מתקדמות</h2>
+    <div class="row" style="gap:12px;">
+      <div class="card grow" style="padding:16px;">
+        <h4 style="margin-bottom:6px;">🎛️ Admin Panel</h4>
+        <p style="font-size:16px;">ב-Admin Panel אפשר: לנהל משתמשים, להגדיר מודל ברירת מחדל, לקבוע הגדרות מערכת.</p>
+        <p style="font-size:15px;color:var(--ink-soft);margin-top:4px;">המשתמש הראשון שנוצר הופך אוטומטית ל-Admin.</p>
+      </div>
+      <div class="card grow" style="padding:16px;border-color:var(--blue);">
+        <h4 style="color:var(--blue);margin-bottom:6px;">📋 Prompts Templates</h4>
+        <p style="font-size:16px;">אפשר ליצור templates של prompts שחוזרים על עצמם. למשל: "כתוב bio" עם שדות משתנים.</p>
+        <p style="font-size:15px;color:var(--ink-soft);margin-top:4px;">Settings → Prompts → Create</p>
+      </div>
+      <div class="card grow" style="padding:16px;border-color:var(--mint);">
+        <h4 style="color:#1a9e7e;margin-bottom:6px;">🔗 Functions (Tools)</h4>
+        <p style="font-size:16px;">אפשר להוסיף "functions" — קוד Python שה-AI יכול לקרוא לו. למשל: פונקציה ששולפת נתונים מה-DB.</p>
+        <p style="font-size:15px;color:var(--ink-soft);margin-top:4px;">Workspace → Functions → Create</p>
+      </div>
+      <div class="card grow" style="padding:16px;border-color:var(--orange);">
+        <h4 style="color:var(--orange);margin-bottom:6px;">📊 RAG (Retrieval)</h4>
+        <p style="font-size:16px;">אפשר להעלות מסמכים (PDF, TXT) ולשאול שאלות עליהם. OpenWebUI יחפש במסמכים ויענה.</p>
+        <p style="font-size:15px;color:var(--ink-soft);margin-top:4px;">Workspace → Documents → Upload</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>OpenWebUI · מתקדם</span><span>33</span></div>
+</section>
+
+<!-- ============ SLIDE 34: PART F ============ -->
+<section class="pink">
+  <span class="snum">34</span>
+  <span class="chapter-tag">F</span>
+  <div class="bigletter">F</div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.7);">תחנה F · 45 דקות</p>
+    <h1 class="title-large" style="color:white;">MCP.<br>ה-AI ניגש למערכת שלכם.</h1>
+    <p style="font-size:20px;color:rgba(255,255,255,0.82);max-width:650px;">עד עכשיו דיברנו על הקוד שלכם → AI. MCP הופך את הכיוון.</p>
+  </div>
+  <div class="foot"><span>MCP</span><span>F</span></div>
+</section>
+
+<!-- ============ SLIDE 35: WHAT IS MCP ============ -->
+<section>
+  <span class="snum">35</span>
+  <span class="chapter-tag">F · MCP</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <h2>מה זה MCP — הסבר מלא</h2>
+    <div class="explain-block">
+      <h4>🔗 MCP = Model Context Protocol</h4>
+      <p>פרוטוקול (סטנדרט) שמאפשר ל-AI <strong>לגשת לכלים חיצוניים</strong> — בסיס נתונים, קבצים, API של שירותים אחרים. במקום שה-AI יהיה "עיוור" למערכת שלכם — הוא יכול <strong>לראות ולפעול</strong>.</p>
+    </div>
+    <div class="explain-block pink">
+      <h4>🍕 אנלוגיה</h4>
+      <p><strong>API</strong> = אתם מזמינים פיצה בטלפון (אתם מבקשים, הם מביאים).</p>
+      <p style="margin-top:4px;"><strong>MCP</strong> = אתם נותנים לשליח מפתח לדלת, כדי שיוכל גם להיכנס למטבח, לקחת צלחת, ולהניח את הפיצה על השולחן. ה-AI לא רק עונה — הוא <strong>ניגש למערכת</strong> ו<strong>עושה פעולות</strong>.</p>
+    </div>
+    <div class="explain-block mint">
+      <h4>🎯 Use Case קונקרטי ל-MatchMe</h4>
+      <p>אתם פותחים את Claude בדפדפן ושואלים: <em>"כמה דיווחים פתוחים יש לנו? תוריד את הישנים מהשבוע שעבר."</em></p>
+      <p style="margin-top:4px;"><strong>בלי MCP:</strong> אי אפשר. Claude לא יודע מה בבסיס הנתונים שלכם.</p>
+      <p><strong>עם MCP server</strong> שמחובר ל-DB שלכם: Claude ניגש, מריץ SQL, ועונה — או אפילו מבצע פעולות (למחוק, לעדכן). הכל בהרשאות שאתם נותנים.</p>
+    </div>
+  </div>
+  <div class="foot"><span>מה זה MCP</span><span>35</span></div>
+</section>
+
+<!-- ============ SLIDE 36: MCP ARCHITECTURE ============ -->
+<section>
+  <span class="snum">36</span>
+  <span class="chapter-tag">F · MCP</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>איך MCP עובד — הארכיטקטורה</h2>
+    <div class="row" style="gap:12px;align-items:stretch;">
+      <div class="card" style="flex:1;text-align:center;padding:18px;">
+        <span style="font-size:36px;">🤖</span>
+        <h4 style="margin-top:6px;">AI Client</h4>
+        <p style="font-size:15px;color:var(--ink-soft);">Claude Desktop<br>OpenWebUI<br>Cursor IDE</p>
+      </div>
+      <div style="display:flex;align-items:center;font-size:28px;color:var(--pink);">←→<br><span style="font-size:12px;">MCP Protocol</span></div>
+      <div class="card" style="flex:1;text-align:center;padding:18px;border-color:var(--blue);">
+        <span style="font-size:36px;">🔧</span>
+        <h4 style="color:var(--blue);margin-top:6px;">MCP Server</h4>
+        <p style="font-size:15px;color:var(--ink-soft);">הקוד שלכם שמחבר<br>בין ה-AI לכלים</p>
+      </div>
+      <div style="display:flex;align-items:center;font-size:28px;color:var(--blue);">←→<br><span style="font-size:12px;">SQL / API</span></div>
+      <div class="card" style="flex:1;text-align:center;padding:18px;">
+        <span style="font-size:36px;">🗄️</span>
+        <h4 style="margin-top:6px;">הכלים שלכם</h4>
+        <p style="font-size:15px;color:var(--ink-soft);">PostgreSQL<br>קבצים<br>API חיצוני</p>
+      </div>
+    </div>
+    <div class="explain-block">
+      <h4>📖 איך זה עובד בפועל</h4>
+      <p>1. אתם כותבים <strong>MCP Server</strong> — תוכנה קטנה שיודעת לדבר עם בסיס הנתונים שלכם.</p>
+      <p>2. אתם <strong>מגדירים</strong> את ה-MCP Server ב-Claude Desktop או OpenWebUI.</p>
+      <p>3. כשאתם שואלים את Claude שאלה — הוא <strong>בודק</strong> אם יש MCP Server רלוונטי, ואם כן — <strong>קורא לו</strong> כדי לקבל נתונים.</p>
+      <p>4. ה-MCP Server מריץ SQL, מחזיר תוצאה ל-Claude, ו-Claude <strong>עונה לכם</strong> בשפה טבעית.</p>
+    </div>
+  </div>
+  <div class="foot"><span>MCP · ארכיטקטורה</span><span>36</span></div>
+</section>
+
+<!-- ============ SLIDE 37: MCP SERVER EXAMPLE ============ -->
+<section>
+  <span class="snum">37</span>
+  <span class="chapter-tag">F · MCP</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:12px;">
+    <h2>כתיבת MCP Server ל-MatchMe — שורה אחר שורה</h2>
+    <p style="font-size:17px;color:var(--ink-soft);">דוגמה: MCP Server שמאפשר ל-Claude לשאול שאלות על בסיס הנתונים של MatchMe.</p>
+    <div class="code-explain">
+      <div class="ln"><span class="kw">import</span> { McpServer } <span class="kw">from</span> <span class="str">"@modelcontextprotocol/sdk"</span>;</div>
+      <div class="ex">מייבאים את ספריית MCP — הכלי הרשמי לכתיבת MCP servers.</div>
+      <div class="ln"><span class="kw">import</span> pg <span class="kw">from</span> <span class="str">"pg"</span>;</div>
+      <div class="ex">מייבאים את ספריית PostgreSQL — כדי לדבר עם בסיס הנתונים.</div>
+      <div class="ln"></div>
+      <div class="ex"></div>
+      <div class="ln"><span class="kw">const</span> db = <span class="kw">new</span> pg.<span class="fn">Pool</span>({ connectionString: process.env.DATABASE_URL });</div>
+      <div class="ex">יוצרים חיבור לבסיס הנתונים. DATABASE_URL הוא ה-connection string של Neon/Supabase.</div>
+      <div class="ln"></div>
+      <div class="ex"></div>
+      <div class="ln"><span class="kw">const</span> server = <span class="kw">new</span> <span class="fn">McpServer</span>({ name: <span class="str">"matchme-db"</span>, version: <span class="str">"1.0.0"</span> });</div>
+      <div class="ex">יוצרים MCP Server חדש בשם "matchme-db". זה השם ש-Claude יראה.</div>
+      <div class="ln"></div>
+      <div class="ex"></div>
+      <div class="ln">server.<span class="fn">tool</span>(</div>
+      <div class="ex">מגדירים "כלי" (tool) — פעולה שה-AI יכול לבצע.</div>
+      <div class="ln">  <span class="str">"get_open_reports"</span>,</div>
+      <div class="ex">שם הכלי: "קבל דיווחים פתוחים". Claude יראה את השם הזה.</div>
+      <div class="ln">  <span class="str">"Returns all pending reports from the database"</span>,</div>
+      <div class="ex">תיאור הכלי — Claude קורא את זה כדי להבין מתי להשתמש בכלי.</div>
+      <div class="ln">  {},</div>
+      <div class="ex">פרמטרים — במקרה הזה אין (הכלי מחזיר הכל).</div>
+      <div class="ln">  <span class="kw">async</span> () => {</div>
+      <div class="ex">הפונקציה שרצה כש-Claude קורא לכלי.</div>
+      <div class="ln">    <span class="kw">const</span> result = <span class="kw">await</span> db.<span class="fn">query</span>(</div>
+      <div class="ex">מריצים שאילתת SQL על בסיס הנתונים.</div>
+      <div class="ln">      <span class="str">"SELECT * FROM reports WHERE status = 'pending' ORDER BY created_at"</span></div>
+      <div class="ex">השאילתה: כל הדיווחים בסטטוס pending, מסודרים לפי תאריך.</div>
+      <div class="ln">    );</div>
+      <div class="ex">סוגרים את השאילתה.</div>
+      <div class="ln">    <span class="kw">return</span> { content: [{ type: <span class="str">"text"</span>, text: <span class="fn">JSON.stringify</span>(result.rows) }] };</div>
+      <div class="ex">מחזירים את התוצאה ל-Claude בפורמט שהוא מבין.</div>
+      <div class="ln">  }</div>
+      <div class="ex">סוגרים פונקציה.</div>
+      <div class="ln">);</div>
+      <div class="ex">סוגרים הגדרת כלי.</div>
+    </div>
+  </div>
+  <div class="foot"><span>MCP Server · קוד</span><span>37</span></div>
+</section>
+
+<!-- ============ SLIDE 38: MCP CONFIG ============ -->
+<section>
+  <span class="snum">38</span>
+  <span class="chapter-tag">F · MCP</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>⚡ איך מחברים MCP Server ל-Claude Desktop</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">אחרי שכתבתם MCP Server — צריך להגדיר אותו ב-Claude Desktop.</p>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="margin-bottom:8px;">📝 שלבי חיבור</h4>
+        <ol class="steps">
+          <li>פתחו Claude Desktop</li>
+          <li>לחצו ⚙️ Settings</li>
+          <li>לחצו "Developer" → "Edit Config"</li>
+          <li>ייפתח קובץ JSON — ערכו אותו:</li>
+        </ol>
+      </div>
+      <div class="card grow" style="border-color:var(--blue);">
+        <h4 style="color:var(--blue);margin-bottom:8px;">📄 קובץ הקונפיגורציה</h4>
+        <div class="code sm">{
+  <span class="str">"mcpServers"</span>: {
+    <span class="str">"matchme-db"</span>: {
+      <span class="str">"command"</span>: <span class="str">"node"</span>,
+      <span class="str">"args"</span>: [<span class="str">"/path/to/matchme-mcp-server.js"</span>],
+      <span class="str">"env"</span>: {
+        <span class="str">"DATABASE_URL"</span>: <span class="str">"postgresql://..."</span>
+      }
+    }
+  }
+}</div>
+        <p style="font-size:14px;color:var(--ink-soft);margin-top:6px;">command = איך להריץ | args = הקובץ | env = משתני סביבה</p>
+      </div>
+    </div>
+    <div class="callout mint" style="font-size:17px;">💡 אחרי השמירה — הפעילו מחדש את Claude Desktop. תראו 🔧 ליד שם ה-Server. עכשיו תוכלו לשאול: "כמה דיווחים פתוחים יש?"</div>
+  </div>
+  <div class="foot"><span>MCP · קונפיגורציה</span><span>38</span></div>
+</section>
+
+<!-- ============ SLIDE 39: MCP EXISTING SERVERS ============ -->
+<section>
+  <span class="snum">39</span>
+  <span class="chapter-tag">F · MCP</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>MCP Servers מוכנים — לא צריך לכתוב הכל</h2>
+    <p style="font-size:18px;color:var(--ink-soft);">יש MCP Servers מוכנים להרבה כלים פופולריים. הנה החשובים:</p>
+    <div class="row" style="gap:12px;">
+      <div class="card grow" style="padding:16px;">
+        <span style="font-size:28px;">🗄️</span>
+        <h4 style="margin-top:4px;">PostgreSQL MCP Server</h4>
+        <p style="font-size:16px;">מתחבר ישירות ל-PostgreSQL. לא צריך לכתוב קוד.</p>
+        <div class="code xs" style="margin-top:6px;">npx @modelcontextprotocol/server-postgresql \
+  postgresql://user:pass@host/db</div>
+      </div>
+      <div class="card grow" style="padding:16px;border-color:var(--blue);">
+        <span style="font-size:28px;">📁</span>
+        <h4 style="color:var(--blue);margin-top:4px;">Filesystem MCP Server</h4>
+        <p style="font-size:16px;">נותן ל-AI גישה לקבצים במחשב.</p>
+        <div class="code xs" style="margin-top:6px;">npx @modelcontextprotocol/server-filesystem \
+  /path/to/project</div>
+      </div>
+      <div class="card grow" style="padding:16px;border-color:var(--mint);">
+        <span style="font-size:28px;">🐙</span>
+        <h4 style="color:#1a9e7e;margin-top:4px;">GitHub MCP Server</h4>
+        <p style="font-size:16px;">נותן ל-AI גישה ל-repos, issues, PRs.</p>
+        <div class="code xs" style="margin-top:6px;">npx @modelcontextprotocol/server-github</div>
+      </div>
+    </div>
+    <div class="callout yellow" style="font-size:17px;">💡 רשימה מלאה: github.com/modelcontextprotocol/servers — יש שם עשרות MCP Servers מוכנים.</div>
+  </div>
+  <div class="foot"><span>MCP · servers מוכנים</span><span>39</span></div>
+</section>
+
+<!-- ============ SLIDE 40: PART G ============ -->
+<section class="orange">
+  <span class="snum">40</span>
+  <span class="chapter-tag">G</span>
+  <div class="bigletter">G</div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <p class="eyebrow" style="color:rgba(255,255,255,0.7);">תחנה G · 30 דקות</p>
+    <h1 class="title-large" style="color:white;">Hermes.<br>AI Agent שמבצע פעולות.</h1>
+    <p style="font-size:20px;color:rgba(255,255,255,0.82);max-width:650px;">לא רק עונה על שאלות — מבצע פעולות במערכת שלכם.</p>
+  </div>
+  <div class="foot"><span>Hermes</span><span>G</span></div>
+</section>
+
+<!-- ============ SLIDE 41: WHAT IS HERMES ============ -->
+<section>
+  <span class="snum">41</span>
+  <span class="chapter-tag">G · Hermes</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <h2>מה זה Hermes ואיך הוא עוזר?</h2>
+    <div class="explain-block orange">
+      <h4>🤖 Hermes = מודל AI שמבצע פעולות (Agent)</h4>
+      <p>Hermes הוא מודל AI (מבוסס Llama) שאומן במיוחד <strong>להשתמש בכלים</strong> (tool use / function calling). הוא לא רק עונה על שאלות — הוא יודע <strong>לקרוא לפונקציות</strong>, <strong>להריץ SQL</strong>, ו<strong>לבצע פעולות</strong> במערכת שלכם.</p>
+    </div>
+    <div class="explain-block">
+      <h4>🔄 ההבדל בין ChatGPT ל-Hermes</h4>
+      <p><strong>ChatGPT/Claude</strong> — עונים על שאלות בטקסט. אם תשאלו "כמה משתמשים יש?" — הם יגידו "אני לא יודע, אין לי גישה ל-DB".</p>
+      <p style="margin-top:4px;"><strong>Hermes</strong> — כשמגדירים לו כלים (tools), הוא <strong>יודע לקרוא להם</strong>. אם תשאלו "כמה משתמשים?" — הוא יקרא לפונקציה שמריצה SQL, יקבל את התוצאה, ויענה: "יש 1,247 משתמשים".</p>
+    </div>
+    <div class="explain-block mint">
+      <h4>🎯 איך משתמשים?</h4>
+      <p>Hermes זמין דרך Ollama: <span class="kbd">ollama run hermes3</span>. אחרי שהורדתם — אפשר להשתמש בו דרך ה-API של Ollama עם function calling.</p>
+    </div>
+  </div>
+  <div class="foot"><span>מה זה Hermes</span><span>41</span></div>
+</section>
+
+<!-- ============ SLIDE 42: HERMES FUNCTION CALLING ============ -->
+<section>
+  <span class="snum">42</span>
+  <span class="chapter-tag">G · Hermes</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:12px;">
+    <h2>Hermes + Function Calling — דוגמה מלאה</h2>
+    <p style="font-size:17px;color:var(--ink-soft);">Use Case: המשתמש שואל "כמה matches נוצרו השבוע?" — Hermes קורא לפונקציה שמריצה SQL.</p>
+    <div class="code-explain">
+      <div class="ln"><span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'http://localhost:11434/api/chat'</span>, {</div>
+      <div class="ex">שולחים בקשה ל-Ollama (שמריץ Hermes מקומי).</div>
+      <div class="ln">  method: <span class="str">'POST'</span>,</div>
+      <div class="ex">POST = שליחת נתונים.</div>
+      <div class="ln">  body: <span class="fn">JSON.stringify</span>({</div>
+      <div class="ex">גוף הבקשה.</div>
+      <div class="ln">    model: <span class="str">'hermes3'</span>,</div>
+      <div class="ex">המודל: Hermes 3 — מאומן ב-function calling.</div>
+      <div class="ln">    messages: [{</div>
+      <div class="ex">ההודעה.</div>
+      <div class="ln">      role: <span class="str">'user'</span>,</div>
+      <div class="ex">תפקיד: משתמש.</div>
+      <div class="ln">      content: <span class="str">'כמה matches נוצרו השבוע?'</span></div>
+      <div class="ex">השאלה.</div>
+      <div class="ln">    }],</div>
+      <div class="ex">סוגרים הודעות.</div>
+      <div class="ln">    tools: [{</div>
+      <div class="ex">מגדירים כלים (tools) שהמודל יכול להשתמש בהם.</div>
+      <div class="ln">      type: <span class="str">'function'</span>,</div>
+      <div class="ex">סוג הכלי: פונקציה.</div>
+      <div class="ln">      function: {</div>
+      <div class="ex">הגדרת הפונקציה.</div>
+      <div class="ln">        name: <span class="str">'count_matches'</span>,</div>
+      <div class="ex">שם הפונקציה — Hermes יקרא לה בשם הזה.</div>
+      <div class="ln">        description: <span class="str">'Counts matches in a date range'</span>,</div>
+      <div class="ex">תיאור — Hermes קורא את זה כדי להבין מתי להשתמש.</div>
+      <div class="ln">        parameters: {</div>
+      <div class="ex">הפרמטרים שהפונקציה מקבלת.</div>
+      <div class="ln">          type: <span class="str">'object'</span>,</div>
+      <div class="ex">סוג: אובייקט.</div>
+      <div class="ln">          properties: {</div>
+      <div class="ex">השדות באובייקט.</div>
+      <div class="ln">            start_date: { type: <span class="str">'string'</span> },</div>
+      <div class="ex">פרמטר: תאריך התחלה (טקסט).</div>
+      <div class="ln">            end_date: { type: <span class="str">'string'</span> }</div>
+      <div class="ex">פרמטר: תאריך סיום.</div>
+      <div class="ln">          }</div>
+      <div class="ex">סוגרים properties.</div>
+      <div class="ln">        }</div>
+      <div class="ex">סוגרים parameters.</div>
+      <div class="ln">      }</div>
+      <div class="ex">סוגרים function.</div>
+      <div class="ln">    }]</div>
+      <div class="ex">סוגרים tools.</div>
+      <div class="ln">  })</div>
+      <div class="ex">סוגרים body.</div>
+      <div class="ln">});</div>
+      <div class="ex">סוגרים fetch.</div>
+    </div>
+  </div>
+  <div class="foot"><span>Hermes · Function Calling</span><span>42</span></div>
+</section>
+
+<!-- ============ SLIDE 43: PART H ============ -->
+<section class="mint">
+  <span class="snum">43</span>
+  <span class="chapter-tag">H</span>
+  <div class="bigletter">H</div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <p class="eyebrow" style="color:rgba(0,0,0,0.5);">תחנה H · 45 דקות</p>
+    <h1 class="title-large" style="color:var(--ink);">הכל ביחד.<br>AI + DB + API.</h1>
+    <p style="font-size:20px;color:rgba(0,0,0,0.65);max-width:650px;">איך מרכיבים את כל החלקים למערכת עובדת.</p>
+  </div>
+  <div class="foot"><span>אינטגרציה</span><span>H</span></div>
+</section>
+
+<!-- ============ SLIDE 44: FULL ARCHITECTURE ============ -->
+<section>
+  <span class="snum">44</span>
+  <span class="chapter-tag">H · אינטגרציה</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>הארכיטקטורה המלאה — כל החלקים ביחד</h2>
+    <div class="row" style="gap:10px;align-items:stretch;">
+      <div class="card" style="flex:1;text-align:center;padding:16px;">
+        <span style="font-size:32px;">📱</span>
+        <h4 style="margin-top:4px;">משתמש</h4>
+        <p style="font-size:14px;color:var(--ink-soft);">דפדפן / אפליקציה</p>
+      </div>
+      <div style="display:flex;align-items:center;font-size:24px;color:var(--pink);">←→</div>
+      <div class="card" style="flex:2;text-align:center;padding:16px;border-color:var(--blue);">
+        <span style="font-size:32px;">⚙️</span>
+        <h4 style="color:var(--blue);margin-top:4px;">Backend</h4>
+        <p style="font-size:14px;color:var(--ink-soft);">Node.js / Python<br>REST API · אימות · לוגיקה</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;justify-content:center;">
+        <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:16px;color:var(--pink);">←→</span><span style="font-size:12px;color:var(--ink-soft);">SQL</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:16px;color:var(--blue);">←→</span><span style="font-size:12px;color:var(--ink-soft);">API</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:16px;color:var(--mint);">←→</span><span style="font-size:12px;color:var(--ink-soft);">MCP</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;justify-content:center;">
+        <div class="card" style="text-align:center;padding:12px;"><span style="font-size:24px;">🗄️</span><h4 style="font-size:14px;margin-top:2px;">DB</h4><p style="font-size:12px;color:var(--ink-soft);">PostgreSQL</p></div>
+        <div class="card" style="text-align:center;padding:12px;border-color:var(--mint);"><span style="font-size:24px;">🤖</span><h4 style="font-size:14px;color:var(--mint);margin-top:2px;">AI</h4><p style="font-size:12px;color:var(--ink-soft);">Claude/GPT/Ollama</p></div>
+        <div class="card" style="text-align:center;padding:12px;border-color:var(--orange);"><span style="font-size:24px;">🖥️</span><h4 style="font-size:14px;color:var(--orange);margin-top:2px;">OpenWebUI</h4><p style="font-size:12px;color:var(--ink-soft);">צ'אט + MCP</p></div>
+      </div>
+    </div>
+    <div class="callout" style="font-size:17px;">🎯 <strong>ה-Backend הוא המתווך:</strong> הוא מדבר עם הבסיס דרך SQL, עם ה-AI דרך API, ועם OpenWebUI דרך MCP. המשתמש לא רואה אף אחד מהם ישירות.</div>
+  </div>
+  <div class="foot"><span>ארכיטקטורה מלאה</span><span>44</span></div>
+</section>
+
+<!-- ============ SLIDE 45: MODERATION EXAMPLE ============ -->
+<section>
+  <span class="snum">45</span>
+  <span class="chapter-tag">H · אינטגרציה</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:12px;">
+    <h2>דוגמה מלאה: סינון bio פוגעני — מההתחלה עד הסוף</h2>
+    <p style="font-size:17px;color:var(--ink-soft);">Use Case: משתמש כותב bio → AI בודק אם תקין → נשמר ב-DB או נדחה.</p>
+    <div class="col" style="gap:6px;">
+      <div class="row" style="align-items:center;gap:8px;">
+        <div class="step-num" style="width:36px;height:36px;font-size:18px;">1</div>
+        <p style="font-size:16px;">משתמש כותב bio בטופס → לוחץ "שמירה"</p>
+      </div>
+      <div class="flow-arrow" style="font-size:20px;">↓</div>
+      <div class="row" style="align-items:center;gap:8px;">
+        <div class="step-num blue" style="width:36px;height:36px;font-size:18px;">2</div>
+        <p style="font-size:16px;">ה-Backend מקבל את הטקסט ושולח ל-AI: "האם זה פוגעני? החזר JSON"</p>
+      </div>
+      <div class="flow-arrow" style="font-size:20px;">↓</div>
+      <div class="row" style="align-items:center;gap:8px;">
+        <div class="step-num mint" style="width:36px;height:36px;font-size:18px;">3</div>
+        <p style="font-size:16px;">AI עונה: <span class="syntax-tag">{safe: false, reason: "התקפה אישית"}</span></p>
+      </div>
+      <div class="flow-arrow" style="font-size:20px;">↓</div>
+      <div class="row" style="align-items:center;gap:8px;">
+        <div class="step-num yellow" style="width:36px;height:36px;font-size:18px;">4</div>
+        <p style="font-size:16px;">Backend מחליט: אם safe → <span class="syntax-tag">INSERT</span> ל-DB. אחרת → שגיאה למשתמש</p>
+      </div>
+    </div>
+    <div class="code-explain" style="margin-top:8px;">
+      <div class="ln"><span class="kw">async function</span> <span class="fn">checkBioSafe</span>(text) {</div>
+      <div class="ex">פונקציה שמקבלת טקסט ובודקת אם הוא בטוח.</div>
+      <div class="ln">  <span class="kw">const</span> r = <span class="kw">await</span> <span class="fn">callClaude</span>({</div>
+      <div class="ex">שולחים בקשה ל-Claude (או Ollama/Hermes).</div>
+      <div class="ln">    prompt: <span class="str">`האם הטקסט מכיל תוכן פוגעני? החזר JSON.`</span>,</div>
+      <div class="ex">ההוראה: בדוק ותחזיר JSON מסודר.</div>
+      <div class="ln">    format: <span class="str">'json'</span>,</div>
+      <div class="ex">בקשה מפורשת לפורמט JSON.</div>
+      <div class="ln">    temperature: <span class="num">0.1</span></div>
+      <div class="ex">טמפרטורה נמוכה — רוצים תשובה עקבית ואמינה, לא יצירתית.</div>
+      <div class="ln">  });</div>
+      <div class="ex">סוגרים בקשה.</div>
+      <div class="ln">  <span class="kw">return</span> <span class="fn">JSON.parse</span>(r);</div>
+      <div class="ex">ממירים את התשובה לאובייקט.</div>
+      <div class="ln">}</div>
+      <div class="ex">סוגרים פונקציה.</div>
+    </div>
+  </div>
+  <div class="foot"><span>דוגמה · מודרציה</span><span>45</span></div>
+</section>
+
+<!-- ============ SLIDE 46: AI FEATURES FOR PROJECT ============ -->
+<section>
+  <span class="snum">46</span>
+  <span class="chapter-tag">H · אינטגרציה</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:12px;">
+    <h2>5 רעיונות לתכונות AI בפרויקט — עם כל הפרטים</h2>
+    <div class="row" style="gap:10px;flex-wrap:wrap;">
+      <div class="card" style="flex:1;min-width:200px;padding:14px;">
+        <span style="font-size:22px;">✍️</span>
+        <h4 style="margin-top:4px;">כתיבת bio</h4>
+        <p style="font-size:14px;"><strong>קלט:</strong> תחביבים (טקסט)</p>
+        <p style="font-size:14px;"><strong>פלט:</strong> 3 גרסאות bio</p>
+        <p style="font-size:14px;"><strong>מודל:</strong> Haiku / GPT-4o Mini</p>
+        <p style="font-size:14px;"><strong>Temp:</strong> 0.7 (יצירתי)</p>
+        <span class="badge mint" style="margin-top:4px;">קל</span>
+      </div>
+      <div class="card" style="flex:1;min-width:200px;padding:14px;border-color:var(--pink);">
+        <span style="font-size:22px;">🛡️</span>
+        <h4 style="color:var(--pink);margin-top:4px;">מודרציה</h4>
+        <p style="font-size:14px;"><strong>קלט:</strong> bio/הודעה</p>
+        <p style="font-size:14px;"><strong>פלט:</strong> {safe, reason}</p>
+        <p style="font-size:14px;"><strong>מודל:</strong> Haiku / Gemini Flash</p>
+        <p style="font-size:14px;"><strong>Temp:</strong> 0.1 (אמין)</p>
+        <span class="badge" style="margin-top:4px;">קל · ערך גבוה</span>
+      </div>
+      <div class="card" style="flex:1;min-width:200px;padding:14px;border-color:var(--blue);">
+        <span style="font-size:22px;">🔎</span>
+        <h4 style="color:var(--blue);margin-top:4px;">חיפוש סמנטי</h4>
+        <p style="font-size:14px;"><strong>קלט:</strong> "מישהו רגוע ויצירתי"</p>
+        <p style="font-size:14px;"><strong>פלט:</strong> רשימת IDs</p>
+        <p style="font-size:14px;"><strong>מודל:</strong> Sonnet / GPT-4o</p>
+        <p style="font-size:14px;"><strong>Temp:</strong> 0.3</p>
+        <span class="badge blue" style="margin-top:4px;">בינוני</span>
+      </div>
+    </div>
+    <div class="row" style="gap:10px;">
+      <div class="card" style="flex:1;padding:14px;border-color:var(--mint);">
+        <span style="font-size:22px;">💬</span>
+        <h4 style="color:#1a9e7e;margin-top:4px;">פתיחת שיחה</h4>
+        <p style="font-size:14px;"><strong>קלט:</strong> 2 פרופילים</p>
+        <p style="font-size:14px;"><strong>פלט:</strong> משפט פתיחה</p>
+        <p style="font-size:14px;"><strong>מודל:</strong> Haiku</p>
+        <p style="font-size:14px;"><strong>Temp:</strong> 0.8</p>
+        <span class="badge mint" style="margin-top:4px;">קל</span>
+      </div>
+      <div class="card" style="flex:1;padding:14px;border-color:var(--orange);">
+        <span style="font-size:22px;">🚩</span>
+        <h4 style="color:var(--orange);margin-top:4px;">סינון דיווחים</h4>
+        <p style="font-size:14px;"><strong>קלט:</strong> רשימת דיווחים</p>
+        <p style="font-size:14px;"><strong>פלט:</strong> סדרי עדיפות</p>
+        <p style="font-size:14px;"><strong>מודל:</strong> Sonnet</p>
+        <p style="font-size:14px;"><strong>Temp:</strong> 0.2</p>
+        <span class="badge orange" style="margin-top:4px;">בינוני</span>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>רעיונות · AI</span><span>46</span></div>
+</section>
+
+<!-- ============ SLIDE 47: FINAL CHECKLIST ============ -->
+<section>
+  <span class="snum">47</span>
+  <span class="chapter-tag">H · אינטגרציה</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:14px;">
+    <h2>צ'קליסט סופי — מה צריך להיות לכם</h2>
+    <div class="row">
+      <div class="card grow">
+        <h4 style="margin-bottom:8px;">☁️ חשבונות ענן</h4>
+        <ul class="tick">
+          <li>חשבון Anthropic + API Key</li>
+          <li>חשבון OpenAI + API Key</li>
+          <li>חשבון Google AI Studio + API Key</li>
+          <li>חשבון Neon.tech או Supabase (DB)</li>
+        </ul>
+      </div>
+      <div class="card grow" style="border-color:var(--orange);">
+        <h4 style="color:var(--orange);margin-bottom:8px;">💻 כלים מקומיים</h4>
+        <ul class="tick">
+          <li>Ollama מותקן + מודל אחד לפחות</li>
+          <li>LM Studio מותקן (אופציונלי)</li>
+          <li>Docker Desktop מותקן</li>
+          <li>OpenWebUI רץ ומחובר למודל</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="card grow" style="border-color:var(--blue);">
+        <h4 style="color:var(--blue);margin-bottom:8px;">🔗 חיבורים</h4>
+        <ul class="tick">
+          <li>API call עובד מהקוד ל-Claude/GPT</li>
+          <li>Ollama API עובד מהקוד</li>
+          <li>MCP Server מחובר ל-OpenWebUI</li>
+          <li>לפחות תכונת AI אחת עובדת</li>
+        </ul>
+      </div>
+      <div class="card grow" style="border-color:var(--mint);">
+        <h4 style="color:#1a9e7e;margin-bottom:8px;">📋 ידע</h4>
+        <ul class="tick">
+          <li>מבינים מה זה API ואיך קוראים לו</li>
+          <li>יודעים מה זה Temperature ומתי לשנות</li>
+          <li>מבינים את ההבדל ענן/מקומי</li>
+          <li>יודעים מה זה MCP ומתי צריך</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>צ'קליסט</span><span>47</span></div>
+</section>
+
+<!-- ============ SLIDE 48: SUMMARY ============ -->
+<section class="dark">
+  <span class="snum">48</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px;">
+    <h2 style="color:var(--cream);">סיכום — מה לקחת מהשיעור</h2>
+    <div class="row" style="gap:12px;">
+      <div class="card ink grow">
+        <h4 style="color:var(--yellow);margin-bottom:6px;">🌐 API בענן</h4>
+        <p style="font-size:16px;">Claude, GPT, Gemini — כולם נותנים API. משיגים Key, שולחים fetch, מקבלים תשובה. זול לפרויקט (גרושים).</p>
+      </div>
+      <div class="card ink grow">
+        <h4 style="color:var(--mint);margin-bottom:6px;">💻 מודלים מקומיים</h4>
+        <p style="font-size:16px;">Ollama, LM Studio — מריצים מודל על המחשב. חינם, פרטי, בלי אינטרנט. חלשים יותר מענן.</p>
+      </div>
+      <div class="card ink grow">
+        <h4 style="color:var(--orange);margin-bottom:6px;">🎛️ פרמטרים</h4>
+        <p style="font-size:16px;">Temperature שולט ביצירתיות. max_tokens באורך. system prompt בהתנהגות. אל תסבכו — התחילו פשוט.</p>
+      </div>
+    </div>
+    <div class="row" style="gap:12px;">
+      <div class="card ink grow">
+        <h4 style="color:var(--blue);margin-bottom:6px;">🖥️ OpenWebUI</h4>
+        <p style="font-size:16px;">צ'אט פרטי שמתחבר לכל מודל. Docker → התקנה → חיבור מודלים → מוכן.</p>
+      </div>
+      <div class="card ink grow">
+        <h4 style="color:var(--pink);margin-bottom:6px;">🔗 MCP</h4>
+        <p style="font-size:16px;">פרוטוקול שנותן ל-AI גישה לכלים שלכם. DB, קבצים, APIs. Claude Desktop + MCP Server = AI שיודע מה קורה במערכת.</p>
+      </div>
+      <div class="card ink grow">
+        <h4 style="color:var(--yellow);margin-bottom:6px;">🤖 Hermes</h4>
+        <p style="font-size:16px;">מודל שמבצע פעולות (function calling). דרך Ollama. טוב ל-AI Agent שמבצע פעולות במערכת.</p>
+      </div>
+    </div>
+    <p style="font-size:24px;margin-top:12px;">תודה. 💘 שאלות? → עכשיו זה הזמן</p>
+  </div>
+  <div class="foot"><span>סיכום</span><span>48</span></div>
+</section>
+
+</deck-stage>
+
+<script>
+(() => {
+const DESIGN_W = 1920, DESIGN_H = 1080, OVERLAY_HIDE_MS = 1800;
+const pad2 = n => String(n).padStart(2, '0');
+const stylesheet = `
+:host { position:fixed; inset:0; display:block; background:#000; color:#fff; font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif; overflow:hidden; }
+.stage { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.canvas { position:relative; transform-origin:center center; flex-shrink:0; background:#fff; will-change:transform; }
+::slotted(*) { position:absolute!important; inset:0!important; width:100%!important; height:100%!important; box-sizing:border-box!important; overflow:hidden; opacity:0; pointer-events:none; visibility:hidden; }
+::slotted([data-deck-active]) { opacity:1; pointer-events:auto; visibility:visible; }
+.tapzones { position:fixed; inset:0; display:flex; z-index:2147482000; pointer-events:none; }
+.tapzone { flex:1; pointer-events:auto; -webkit-tap-highlight-color:transparent; }
+@media (hover:hover) and (pointer:fine) { .tapzones { display:none; } }
+.overlay { position:fixed; left:50%; bottom:22px; transform:translate(-50%,6px) scale(0.92); filter:blur(6px); display:flex; align-items:center; gap:4px; padding:4px; background:#000; color:#fff; border-radius:999px; font-size:12px; letter-spacing:0.01em; opacity:0; pointer-events:none; transition:opacity 260ms ease, transform 260ms cubic-bezier(.2,.8,.2,1), filter 260ms ease; transform-origin:center bottom; z-index:2147483000; user-select:none; }
+.overlay[data-visible] { opacity:1; pointer-events:auto; transform:translate(-50%,0) scale(1); filter:blur(0); }
+.btn { appearance:none; background:transparent; border:0; margin:0; padding:0; color:inherit; font:inherit; cursor:default; display:inline-flex; align-items:center; justify-content:center; height:28px; min-width:28px; border-radius:999px; color:rgba(255,255,255,0.72); transition:background 140ms ease, color 140ms ease; -webkit-tap-highlight-color:transparent; }
+.btn:hover { background:rgba(255,255,255,0.12); color:#fff; }
+.btn svg { width:14px; height:14px; display:block; }
+.btn.reset { font-size:11px; font-weight:500; letter-spacing:0.02em; padding:0 10px 0 12px; gap:6px; }
+.btn.reset .kbd { display:inline-flex; align-items:center; justify-content:center; min-width:16px; height:16px; padding:0 4px; font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:10px; line-height:1; color:rgba(255,255,255,0.88); background:rgba(255,255,255,0.12); border-radius:4px; }
+.count { font-variant-numeric:tabular-nums; color:#fff; font-weight:500; padding:0 8px; min-width:42px; text-align:center; font-size:12px; }
+.count .sep { color:rgba(255,255,255,0.45); margin:0 3px; font-weight:400; }
+.count .total { color:rgba(255,255,255,0.55); }
+.divider { width:1px; height:14px; background:rgba(255,255,255,0.18); margin:0 2px; }
+@media print { :host { position:static; inset:auto; background:none; overflow:visible; color:inherit; } .stage { position:static; display:block; } .canvas { transform:none!important; width:auto!important; height:auto!important; background:none; will-change:auto; } ::slotted(*) { position:relative!important; inset:auto!important; width:var(--deck-design-w)!important; height:var(--deck-design-h)!important; box-sizing:border-box!important; opacity:1!important; visibility:visible!important; pointer-events:auto; break-after:page; page-break-after:always; break-inside:avoid; overflow:hidden; } ::slotted(*:last-child) { break-after:auto; page-break-after:auto; } .overlay, .tapzones { display:none!important; } }
+`;
+
+class DeckStage extends HTMLElement {
+  static get observedAttributes() { return ['width','height','noscale']; }
+  constructor() {
+    super();
+    this._root = this.attachShadow({mode:'open'});
+    this._index = 0;
+    this._slides = [];
+    this._hideTimer = null;
+    this._mouseIdleTimer = null;
+    this._onKey = this._onKey.bind(this);
+    this._onResize = this._onResize.bind(this);
+    this._onSlotChange = this._onSlotChange.bind(this);
+    this._onMouseMove = this._onMouseMove.bind(this);
+    this._onTapBack = this._onTapBack.bind(this);
+    this._onTapForward = this._onTapForward.bind(this);
+  }
+  get designWidth() { return parseInt(this.getAttribute('width'),10) || DESIGN_W; }
+  get designHeight() { return parseInt(this.getAttribute('height'),10) || DESIGN_H; }
+  connectedCallback() {
+    this._render();
+    window.addEventListener('keydown', this._onKey);
+    window.addEventListener('resize', this._onResize);
+    window.addEventListener('mousemove', this._onMouseMove, {passive:true});
+  }
+  disconnectedCallback() {
+    window.removeEventListener('keydown', this._onKey);
+    window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('mousemove', this._onMouseMove);
+    if(this._hideTimer) clearTimeout(this._hideTimer);
+    if(this._mouseIdleTimer) clearTimeout(this._mouseIdleTimer);
+  }
+  attributeChangedCallback() {
+    if(this._canvas) {
+      this._canvas.style.width = this.designWidth+'px';
+      this._canvas.style.height = this.designHeight+'px';
+      this._canvas.style.setProperty('--deck-design-w', this.designWidth+'px');
+      this._canvas.style.setProperty('--deck-design-h', this.designHeight+'px');
+      this._fit();
+    }
+  }
+  _render() {
+    const style = document.createElement('style');
+    style.textContent = stylesheet;
+    const stage = document.createElement('div');
+    stage.className = 'stage';
+    const canvas = document.createElement('div');
+    canvas.className = 'canvas';
+    canvas.style.width = this.designWidth+'px';
+    canvas.style.height = this.designHeight+'px';
+    canvas.style.setProperty('--deck-design-w', this.designWidth+'px');
+    canvas.style.setProperty('--deck-design-h', this.designHeight+'px');
+    const slot = document.createElement('slot');
+    slot.addEventListener('slotchange', this._onSlotChange);
+    canvas.appendChild(slot);
+    stage.appendChild(canvas);
+    const tapzones = document.createElement('div');
+    tapzones.className = 'tapzones';
+    tapzones.setAttribute('aria-hidden','true');
+    const tzBack = document.createElement('div');
+    tzBack.className = 'tapzone';
+    const tzMid = document.createElement('div');
+    tzMid.className = 'tapzone';
+    tzMid.style.pointerEvents = 'none';
+    const tzFwd = document.createElement('div');
+    tzFwd.className = 'tapzone';
+    tzBack.addEventListener('click', this._onTapBack);
+    tzFwd.addEventListener('click', this._onTapForward);
+    tapzones.append(tzBack, tzMid, tzFwd);
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    overlay.setAttribute('role','toolbar');
+    overlay.setAttribute('aria-label','Deck controls');
+    overlay.innerHTML = `
+      <button class="btn prev" type="button" aria-label="Previous slide" title="Previous">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+      </button>
+      <span class="count" aria-live="polite"><span class="current">1</span><span class="sep">/</span><span class="total">1</span></span>
+      <button class="btn next" type="button" aria-label="Next slide" title="Next">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
+      </button>
+      <span class="divider"></span>
+      <button class="btn reset" type="button" aria-label="Reset to first slide" title="Reset (R)">Reset <span class="kbd">R</span></button>
+    `;
+    overlay.querySelector('.prev').addEventListener('click', () => this._advance(-1,'click'));
+    overlay.querySelector('.next').addEventListener('click', () => this._advance(1,'click'));
+    overlay.querySelector('.reset').addEventListener('click', () => this._go(0,'click'));
+    this._root.append(style, stage, tapzones, overlay);
+    this._canvas = canvas;
+    this._slot = slot;
+    this._overlay = overlay;
+    this._tapzones = tapzones;
+    this._countEl = overlay.querySelector('.current');
+    this._totalEl = overlay.querySelector('.total');
+  }
+  _fit() {
+    if(!this._canvas) return;
+    if(this.hasAttribute('noscale')) { this._canvas.style.transform='none'; return; }
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const s = Math.min(vw/this.designWidth, vh/this.designHeight);
+    this._canvas.style.transform = `scale(${s})`;
+  }
+  _onResize() { this._fit(); }
+  _onMouseMove() { this._flashOverlay(); }
+  _onTapBack(e) { e.preventDefault(); this._advance(-1,'tap'); }
+  _onTapForward(e) { e.preventDefault(); this._advance(1,'tap'); }
+  _onKey(e) {
+    const t = e.target;
+    if(t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    if(e.metaKey || e.ctrlKey || e.altKey) return;
+    const key = e.key;
+    let handled = true;
+    if(key==='ArrowRight'||key==='PageDown'||key===' '||key==='Spacebar') this._advance(1,'keyboard');
+    else if(key==='ArrowLeft'||key==='PageUp') this._advance(-1,'keyboard');
+    else if(key==='Home') this._go(0,'keyboard');
+    else if(key==='End') this._go(this._slides.length-1,'keyboard');
+    else if(key==='r'||key==='R') this._go(0,'keyboard');
+    else if(/^[0-9]$/.test(key)) { const n=key==='0'?9:parseInt(key,10)-1; if(n<this._slides.length) this._go(n,'keyboard'); }
+    else handled = false;
+    if(handled) { e.preventDefault(); this._flashOverlay(); }
+  }
+  _onSlotChange() {
+    const assigned = this._slot.assignedElements({flatten:true});
+    this._slides = assigned.filter(el => { const tag=el.tagName; return tag!=='TEMPLATE'&&tag!=='SCRIPT'&&tag!=='STYLE'; });
+    this._slides.forEach((slide,i) => {
+      const n = i+1;
+      let label = slide.getAttribute('data-label');
+      if(!label) { const h=slide.querySelector('h1,h2,h3'); label=h?(h.textContent||'').trim().slice(0,40):'Slide'; }
+      slide.setAttribute('data-screen-label', `${pad2(n)} ${label}`);
+      slide.setAttribute('data-deck-slide', String(i));
+    });
+    if(this._totalEl) this._totalEl.textContent = String(this._slides.length||1);
+    this._restoreIndex();
+    this._applyIndex({showOverlay:false, broadcast:true, reason:'init'});
+    this._fit();
+  }
+  _restoreIndex() {
+    const h = (location.hash||'').match(/^#(\d+)$/);
+    if(h) { const n=parseInt(h[1],10)-1; if(n>=0&&n<this._slides.length) this._index=n; }
+  }
+  _applyIndex({showOverlay=true, broadcast=true, reason='init'}={}) {
+    if(!this._slides.length) return;
+    const prev = this._prevIndex==null?-1:this._prevIndex;
+    const curr = this._index;
+    try{history.replaceState(null,'','#'+(curr+1));}catch(e){}
+    this._slides.forEach((s,i) => { if(i===curr) s.setAttribute('data-deck-active',''); else s.removeAttribute('data-deck-active'); });
+    if(this._countEl) this._countEl.textContent = String(curr+1);
+    if(broadcast) {
+      const detail = { index:curr, previousIndex:prev, total:this._slides.length, slide:this._slides[curr]||null, previousSlide:prev>=0?(this._slides[prev]||null):null, reason };
+      this.dispatchEvent(new CustomEvent('slidechange', {detail, bubbles:true, composed:true}));
+    }
+    this._prevIndex = curr;
+    if(showOverlay) this._flashOverlay();
+  }
+  _flashOverlay() {
+    if(!this._overlay) return;
+    this._overlay.setAttribute('data-visible','');
+    if(this._hideTimer) clearTimeout(this._hideTimer);
+    this._hideTimer = setTimeout(() => { this._overlay.removeAttribute('data-visible'); }, OVERLAY_HIDE_MS);
+  }
+  _go(i, reason='api') {
+    if(!this._slides.length) return;
+    const clamped = Math.max(0, Math.min(this._slides.length-1, i));
+    if(clamped===this._index) { this._flashOverlay(); return; }
+    this._index = clamped;
+    this._applyIndex({showOverlay:true, broadcast:true, reason});
+  }
+  _advance(dir, reason) {
+    if(!this._slides.length) return;
+    let i = this._index + dir;
+    while(i>=0&&i<this._slides.length&&this._slides[i].hasAttribute('data-deck-skip')) i+=dir;
+    if(i<0||i>=this._slides.length) { this._flashOverlay(); return; }
+    this._go(i, reason);
+  }
+  get index() { return this._index; }
+  get length() { return this._slides.length; }
+  goTo(i) { this._go(i,'api'); }
+  next() { this._advance(1,'api'); }
+  prev() { this._advance(-1,'api'); }
+  reset() { this._go(0,'api'); }
+}
+if(!customElements.get('deck-stage')) customElements.define('deck-stage', DeckStage);
+})();
+</script>
+
+<style>deck-stage:not(:defined){visibility:hidden}</style>
+<style id="deck-stage-print-page">
+@page { size: 1920px 1080px; margin: 0; }
+@media print { html, body { margin:0!important; padding:0!important; background:none!important; overflow:visible!important; height:auto!important; } * { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+</style>
+
+</body>
+</html>
+
