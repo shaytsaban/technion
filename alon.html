@@ -1,0 +1,1442 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alon Jacoby Looks for a Mermaid - PAC-MAN Style!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Global Error Overlay for Debugging -->
+  <div id="error-console" style="display:none; background:rgba(255, 0, 0, 0.95); color:#fff; border:3px solid #fff; border-radius:10px; padding:20px; font-family:monospace; font-size:1rem; position:fixed; top:10px; left:10px; right:10px; z-index:99999; box-shadow:0 0 30px #f00; text-align:left;">
+    <h3 style="margin-bottom:10px; font-weight:bold;">🚨 JAVASCRIPT RUNTIME ERROR DETECTED:</h3>
+    <p id="error-message" style="word-break:break-all; white-space:pre-wrap;"></p>
+    <p style="margin-top:10px; font-size:0.8rem; color:#ffd700;">Please tell me this error so I can fix it immediately!</p>
+  </div>
+
+  <!-- Animated Cyber Sea Background -->
+  <div class="space-bg">
+    <div class="bubbles"></div>
+  </div>
+
+  <div class="arcade-container">
+    <!-- Header Title -->
+    <header class="arcade-header">
+      <h1 class="glitch-title" data-text="ALON JACOBY">ALON JACOBY</h1>
+      <h2 class="sub-title">Looks for a Mermaid 🧜‍♀️</h2>
+      <p class="tagline">Avoid the Relentless Dr. Rashkovitz! 👹</p>
+    </header>
+
+    <div class="arcade-cabinet">
+      <!-- Left Panel: Stats & Controls -->
+      <aside class="panel left-panel">
+        <div class="cabinet-brand">
+          <span class="brand-text">NEON ARCADE 3000</span>
+        </div>
+        
+        <div class="score-board">
+          <div class="score-card current-score">
+            <span class="label">SCORE</span>
+            <span id="score-val" class="value">00000</span>
+          </div>
+          <div class="score-card high-score">
+            <span class="label">HIGH SCORE</span>
+            <span id="highscore-val" class="value">05000</span>
+          </div>
+          <div class="score-card lives-card">
+            <span class="label">LIVES</span>
+            <div id="lives-container" class="lives-icons">
+              <!-- Hearts / Faces dynamically added -->
+            </div>
+          </div>
+        </div>
+
+        <div class="controls-guide">
+          <h3>🕹️ CONTROLS</h3>
+          <ul>
+            <li><span class="key">▲</span> or <span class="key">W</span> : Move Up</li>
+            <li><span class="key">▼</span> or <span class="key">S</span> : Move Down</li>
+            <li><span class="key">◀</span> or <span class="key">A</span> : Move Left</li>
+            <li><span class="key">▶</span> or <span class="key">D</span> : Move Right</li>
+            <li><span class="key">Spacebar</span> : Shoot Sausage 🌭</li>
+          </ul>
+        </div>
+
+        <div class="audio-controls">
+          <button id="mute-btn" class="glow-btn small">
+            <span class="icon">🔊</span> MUTE SOUNDS
+          </button>
+        </div>
+      </aside>
+
+      <!-- Center Screen: The Game Area -->
+      <main class="arcade-screen-wrapper">
+        <div class="screen-frame">
+          <div class="crt-overlay"></div>
+          <div class="screen-content">
+            <!-- Start Screen Overlay -->
+            <div id="start-screen" class="overlay-screen active">
+              <div class="scrolling-marquee">
+                <span>WARNING: RAMI IS ON THE PROWL! STAY ALERT! &nbsp;&nbsp;&bull;&nbsp;&nbsp; MERMAIDS AHEAD!</span>
+              </div>
+              <div class="funny-logo">
+                <div class="logo-character alon-mouth-anim">🧔</div>
+                <div class="logo-vs">VS</div>
+                <div class="logo-character rami-shake">👹</div>
+              </div>
+              <h2>INSERT COIN TO PLAY</h2>
+              <p class="funny-intro">
+                Help <strong>Alon Jacoby</strong> find his true love, the beautiful mermaids! 
+                But watch out! The terrifying manager <strong>Dr. Rashkovitz</strong> wants to drag Alon back to work! 
+                Eat <em>Super Mermaids</em> to turn Dr. Rashkovitz vulnerable and eat him instead!
+              </p>
+              <button id="start-btn" class="glow-btn start-pulse">
+                INSERT COIN & START
+              </button>
+            </div>
+
+            <!-- Game Over / Victory Overlay -->
+            <div id="game-over-screen" class="overlay-screen hidden">
+              <h2 id="end-title" class="glitch-title">GAME OVER</h2>
+              <p id="end-message" class="funny-message">Dr. Rashkovitz caught you and assigned you 50 new spreadsheets!</p>
+              <div class="end-stats">
+                <p>Final Score: <span id="final-score" class="highlight">0</span></p>
+              </div>
+              <div class="leaderboard-entry">
+                <input type="text" id="player-name" placeholder="Enter Your Name" maxlength="10">
+                <button id="submit-score-btn" class="glow-btn small">Submit Score</button>
+              </div>
+              <button id="restart-btn" class="glow-btn">
+                PLAY AGAIN
+              </button>
+            </div>
+
+            <!-- Funny Speech Bubble Overlay -->
+            <div id="dialog-bubble" class="speech-bubble hidden">
+              <div class="bubble-speaker" id="bubble-speaker">Alon:</div>
+              <div class="bubble-text" id="bubble-text">"Let me find love, Dr. Rashkovitz!"</div>
+            </div>
+
+            <!-- The game canvas -->
+            <canvas id="game-canvas" width="560" height="620"></canvas>
+          </div>
+        </div>
+      </main>
+
+      <!-- Right Panel: High Scores & Funny Lore -->
+      <aside class="panel right-panel">
+        <div class="lore-box">
+          <h3>🧜‍♀️ THE LEGEND</h3>
+          <p>
+            Alon Jacoby, an adventurer at heart, has heard the sirens calling. 
+            Dr. Rashkovitz, his formidable boss, has set up a labyrinth of endless office corridors to block Alon's escape. 
+            Can Alon eat all the mermaids before Dr. Rashkovitz gives him a performance review?
+          </p>
+        </div>
+
+        <div class="leaderboard">
+          <h3>🏆 HALL OF LOVE</h3>
+          <ol id="leaderboard-list">
+            <!-- Dynamically populated -->
+          </ol>
+        </div>
+
+        <!-- Virtual Joystick for mobile users -->
+        <div class="virtual-joystick-container">
+          <h3>🕹️ MOBILE JOYSTICK</h3>
+          <div class="joystick-pad">
+            <button class="joy-btn btn-up" id="joy-up">▲</button>
+            <div class="joy-row">
+              <button class="joy-btn btn-left" id="joy-left">◀</button>
+              <button class="joy-btn btn-down" id="joy-down">▼</button>
+              <button class="joy-btn btn-right" id="joy-right">▶</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="arcade-footer">
+      <p>&copy; 2026 Alon Jacoby & Dr. Rashkovitz Sea Adventures Ltd. Made for absolute hilarity.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Global error listener to display runtime errors on-screen for debugging
+    window.addEventListener('error', (event) => {
+      const consoleEl = document.getElementById('error-console');
+      const messageEl = document.getElementById('error-message');
+      if (consoleEl && messageEl) {
+        consoleEl.style.display = 'block';
+        messageEl.textContent = `${event.message}\nFile: ${event.filename}\nLine: ${event.lineno}:${event.colno}`;
+      }
+    });
+
+    // Sound System (Web Audio API Synthesizer)
+    class AudioSynth {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+
+      init() {
+        if (!this.ctx) {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+      }
+
+      playMunch() {
+        if (this.muted) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(150, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.08);
+        
+        gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+        
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.08);
+      }
+
+      playPowerup() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(300, now);
+        osc.frequency.linearRampToValueAtTime(600, now + 0.15);
+        osc.frequency.linearRampToValueAtTime(1200, now + 0.3);
+        
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(now + 0.3);
+      }
+
+      playDeath() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.linearRampToValueAtTime(100, now + 0.8);
+        
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.001, now + 0.8);
+        
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(now + 0.8);
+      }
+
+      playEatMonster() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(100, now);
+        osc.frequency.setValueAtTime(200, now + 0.08);
+        osc.frequency.setValueAtTime(400, now + 0.16);
+        osc.frequency.setValueAtTime(800, now + 0.24);
+        
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(now + 0.35);
+      }
+
+      playWin() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, index) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          
+          gain.gain.setValueAtTime(0.12, now + index * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.1 + 0.25);
+          
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + index * 0.1);
+          osc.stop(now + index * 0.1 + 0.25);
+        });
+      }
+
+      playBeat(step) {
+        if (this.muted) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        
+        osc.type = 'triangle';
+        const freq = step % 2 === 0 ? 80 : 70;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        
+        gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+        
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.15);
+      }
+    }
+
+    const audio = new AudioSynth();
+
+    // Safe LocalStorage Wrapper for file:// protocol compatibility
+    class SafeStorage {
+      constructor() {
+        this.fallbackStore = {};
+      }
+      getItem(key) {
+        try {
+          return localStorage.getItem(key);
+        } catch (e) {
+          return this.fallbackStore[key] || null;
+        }
+      }
+      setItem(key, value) {
+        try {
+          localStorage.setItem(key, value);
+        } catch (e) {
+          this.fallbackStore[key] = String(value);
+        }
+      }
+    }
+    const storage = new SafeStorage();
+
+    // Funny dialogue sets
+    const ALON_DESSERT_QUOTES = [
+      "Wait for me, my sweet mermaid! I'm coming to the deep sea!",
+      "Dr. Rashkovitz is making me work overtime again! Save me, scales of love!",
+      "Did someone say seafood buffet?! Oh wait, she's my true love and future wife!",
+      "No Dr. Rashkovitz! I already filled out my timesheet with 8 hours of dreaming!",
+      "Is that sea breeze, or did Dr. Rashkovitz open a box of cold fish fingers in the breakroom?",
+      "I am navigating these office corridors of doom for love! Mermaid, wait up!",
+      "Once I find my mermaid, I am taking a forever vacation and turning off my Slack notifications!",
+      "Hold on! Dr. Rashkovitz is running after me with a heavy stack of code reviews!",
+      "Hey Dr. Rashkovitz, do mermaids count as dependants on form 101?!"
+    ];
+
+    const RAMI_DEMON_QUOTES = [
+      "ALON! Get back to your desk immediately! No mermaid searching on company hours!",
+      "Why are you looking at mythical sea creatures?! They don't have a dental plan!",
+      "Your annual leave request to the deep ocean is strictly DENIED!",
+      "I will personally review your HTML syntax right now, Alon!",
+      "There is no escaping the annual performance review, not even under the sea!",
+      "Mermaids don't pay your monthly pension contributions, Alon!",
+      "Your PhD in Mermaidology is completely fake! Back to the sprint board!",
+      "I have a doctorate in catching lazy software developers, Alon!",
+      "If you eat one more mermaid, I will assign you 50 legacy spreadsheets!"
+    ];
+
+    // Game Configuration & Maze Matrix
+    const TILE_SIZE = 20;
+    const COLS = 28;
+    const ROWS = 30;
+
+    // 1 = Wall, 0 = Pellet/Mermaid, 2 = Powerup/SuperMermaid, 3 = Empty, 4 = Rami's home door/area
+    const MAZE = [
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      [1,2,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,2,1],
+      [1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1],
+      [1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1],
+      [1,0,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,1],
+      [1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1],
+      [3,3,3,3,3,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,3,3,3,3,3],
+      [3,3,3,3,3,1,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,1,3,3,3,3,3],
+      [3,3,3,3,3,1,0,1,1,0,1,1,1,4,4,1,1,1,0,1,1,0,1,3,3,3,3,3],
+      [1,1,1,1,1,1,0,1,1,0,1,3,3,3,3,3,3,1,0,1,1,0,1,1,1,1,1,1],
+      [3,3,3,3,3,3,0,0,0,0,1,3,3,3,3,3,3,1,0,0,0,0,3,3,3,3,3,3],
+      [1,1,1,1,1,1,0,1,1,0,1,3,3,3,3,3,3,1,0,1,1,0,1,1,1,1,1,1],
+      [3,3,3,3,3,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,3,3,3,3,3],
+      [3,3,3,3,3,1,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,1,3,3,3,3,3],
+      [3,3,3,3,3,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,3,3,3,3,3],
+      [1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1],
+      [1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1],
+      [1,2,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,2,1],
+      [1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1],
+      [1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1],
+      [1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1],
+      [1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    ];
+
+    // Game State Class
+    class Game {
+      constructor() {
+        this.canvas = document.getElementById('game-canvas');
+        if (!this.canvas) {
+          console.error("Canvas element not found!");
+          return;
+        }
+        this.ctx = this.canvas.getContext('2d');
+        
+        this.grid = JSON.parse(JSON.stringify(MAZE));
+        this.score = 0;
+        this.highScore = parseInt(storage.getItem('mermaid_high') || '5000');
+        this.lives = 3;
+        this.gameState = 'START'; // START, PLAYING, GAMEOVER, WIN
+        this.totalPellets = 0;
+        
+        // Player (Alon Jacoby)
+        this.player = {
+          x: 14 * TILE_SIZE,
+          y: 23 * TILE_SIZE,
+          speed: 2,
+          dirX: 0,
+          dirY: 0,
+          nextDirX: 0,
+          nextDirY: 0,
+          mouthAnim: 0,
+          mouthSpeed: 0.15,
+          mouthOpening: true
+        };
+        
+        // Multiple Monsters (Dr. Rashkovitz, Assistant Rami, HR Intern Rami)
+        this.monsters = [
+          {
+            name: 'Dr. Rashkovitz',
+            role: 'doctor',
+            x: 13 * TILE_SIZE,
+            y: 11 * TILE_SIZE,
+            startX: 13 * TILE_SIZE,
+            startY: 11 * TILE_SIZE,
+            speed: 1.8,
+            dirX: 0,
+            dirY: -1,
+            mode: 'CHASE', // CHASE, SCURED, DEAD
+            modeTimer: 0,
+            color: '#ff3131', // Red
+            emoji: '👹'
+          },
+          {
+            name: 'Assistant Rami',
+            role: 'assistant',
+            x: 14 * TILE_SIZE,
+            y: 11 * TILE_SIZE,
+            startX: 14 * TILE_SIZE,
+            startY: 11 * TILE_SIZE,
+            speed: 1.6,
+            dirX: 0,
+            dirY: -1,
+            mode: 'CHASE',
+            modeTimer: 0,
+            color: '#ff007f', // Pink
+            emoji: '🤡'
+          },
+          {
+            name: 'HR Intern Rami',
+            role: 'intern',
+            x: 13 * TILE_SIZE,
+            y: 12 * TILE_SIZE,
+            startX: 13 * TILE_SIZE,
+            startY: 12 * TILE_SIZE,
+            speed: 1.4,
+            dirX: 0,
+            dirY: -1,
+            mode: 'CHASE',
+            modeTimer: 0,
+            color: '#39ff14', // Green
+            emoji: '👽'
+          }
+        ];
+
+        this.beatTimer = 0;
+        this.beatStep = 0;
+        this.sausages = [];
+        this.spawnTimer = 0;
+        this.monsterIndex = 1;
+        
+        this.initEventListeners();
+        this.resetGridCount();
+        this.updateScoreUI();
+        this.renderLives();
+        this.initLeaderboard();
+        this.draw();
+      }
+
+      resetGridCount() {
+        this.totalPellets = 0;
+        for (let r = 0; r < ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            if (this.grid[r][c] === 0 || this.grid[r][c] === 2) {
+              this.totalPellets++;
+            }
+          }
+        }
+      }
+
+      initEventListeners() {
+        // Keyboard Controls
+        window.addEventListener('keydown', (e) => {
+          if (this.gameState !== 'PLAYING') return;
+          
+          switch(e.key) {
+            case 'ArrowUp':
+            case 'w':
+            case 'W':
+              this.player.nextDirX = 0; this.player.nextDirY = -1;
+              e.preventDefault();
+              break;
+            case 'ArrowDown':
+            case 's':
+            case 'S':
+              this.player.nextDirX = 0; this.player.nextDirY = 1;
+              e.preventDefault();
+              break;
+            case 'ArrowLeft':
+            case 'a':
+            case 'A':
+              this.player.nextDirX = -1; this.player.nextDirY = 0;
+              e.preventDefault();
+              break;
+            case 'ArrowRight':
+            case 'd':
+            case 'D':
+              this.player.nextDirX = 1; this.player.nextDirY = 0;
+              e.preventDefault();
+              break;
+            case ' ':
+              this.shootSausage();
+              e.preventDefault();
+              break;
+          }
+        });
+
+        // On-screen Joystick Controls for Mobile/Touch
+        const setupJoyBtn = (id, dx, dy) => {
+          const btn = document.getElementById(id);
+          if (btn) {
+            const trigger = (e) => {
+              if (this.gameState === 'PLAYING') {
+                this.player.nextDirX = dx;
+                this.player.nextDirY = dy;
+              }
+              e.preventDefault();
+            };
+            btn.addEventListener('touchstart', trigger);
+            btn.addEventListener('mousedown', trigger);
+          }
+        };
+
+        setupJoyBtn('joy-up', 0, -1);
+        setupJoyBtn('joy-down', 0, 1);
+        setupJoyBtn('joy-left', -1, 0);
+        setupJoyBtn('joy-right', 1, 0);
+
+        // Mute button logic
+        const muteBtn = document.getElementById('mute-btn');
+        muteBtn.addEventListener('click', () => {
+          audio.muted = !audio.muted;
+          muteBtn.innerHTML = audio.muted ? '🔇 SOUNDS MUTED' : '🔊 MUTE SOUNDS';
+          muteBtn.blur();
+        });
+
+        // Start Button
+        document.getElementById('start-btn').addEventListener('click', () => {
+          this.startGame();
+        });
+
+        // Restart Button
+        document.getElementById('restart-btn').addEventListener('click', () => {
+          this.restartGame();
+        });
+
+        // High Score Submission
+        document.getElementById('submit-score-btn').addEventListener('click', () => {
+          this.submitScore();
+        });
+      }
+
+      startGame() {
+        audio.init();
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('start-screen').classList.remove('active');
+        this.gameState = 'PLAYING';
+        
+        // Trigger first funny dialog immediately
+        this.triggerDialogue('alon', "Alright, time to find my beautiful mermaid!");
+        
+        // Core game loop
+        this.lastTime = performance.now();
+        requestAnimationFrame((t) => this.loop(t));
+      }
+
+      restartGame() {
+        this.grid = JSON.parse(JSON.stringify(MAZE));
+        this.score = 0;
+        this.lives = 3;
+        this.gameState = 'PLAYING';
+        
+        this.player.x = 14 * TILE_SIZE;
+        this.player.y = 23 * TILE_SIZE;
+        this.player.dirX = 0;
+        this.player.dirY = 0;
+        this.player.nextDirX = 0;
+        this.player.nextDirY = 0;
+
+        this.monsters.forEach(monster => {
+          monster.x = monster.startX;
+          monster.y = monster.startY;
+          monster.mode = 'CHASE';
+          monster.modeTimer = 0;
+          monster.dirX = 0;
+          monster.dirY = -1;
+        });
+        
+        this.resetGridCount();
+        this.updateScoreUI();
+        this.renderLives();
+        
+        document.getElementById('game-over-screen').classList.add('hidden');
+        document.getElementById('game-over-screen').classList.remove('active');
+
+        this.triggerDialogue('alon', "Let's try this again! Love is worth the swim!");
+      }
+
+      triggerDialogue(speaker, text) {
+        const bubble = document.getElementById('dialog-bubble');
+        const speakerEl = document.getElementById('bubble-speaker');
+        const textEl = document.getElementById('bubble-text');
+
+        speakerEl.textContent = speaker === 'alon' ? "Alon Jacoby 🧔:" : "Dr. Rashkovitz 👹:";
+        speakerEl.style.color = speaker === 'alon' ? 'var(--neon-yellow)' : 'var(--neon-red)';
+        textEl.textContent = `"${text}"`;
+        
+        bubble.classList.remove('hidden');
+
+        // Hide after 3 seconds
+        if (this.bubbleTimeout) clearTimeout(this.bubbleTimeout);
+        this.bubbleTimeout = setTimeout(() => {
+          bubble.classList.add('hidden');
+        }, 4500);
+      }
+
+      shootSausage() {
+        let dx = this.player.dirX;
+        let dy = this.player.dirY;
+        if (dx === 0 && dy === 0) {
+          dx = 1; // default to right
+        }
+        
+        this.sausages.push({
+          x: this.player.x + TILE_SIZE / 2,
+          y: this.player.y + TILE_SIZE / 2,
+          dirX: dx,
+          dirY: dy,
+          speed: 6
+        });
+        
+        if (!audio.muted) {
+          audio.init();
+          const osc = audio.ctx.createOscillator();
+          const gain = audio.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(800, audio.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(300, audio.ctx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.12, audio.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audio.ctx.currentTime + 0.15);
+          osc.connect(gain);
+          gain.connect(audio.ctx.destination);
+          osc.start();
+          osc.stop(audio.ctx.currentTime + 0.15);
+        }
+      }
+
+      updateSausages() {
+        for (let i = this.sausages.length - 1; i >= 0; i--) {
+          const sausage = this.sausages[i];
+          sausage.x += sausage.dirX * sausage.speed;
+          sausage.y += sausage.dirY * sausage.speed;
+          
+          if (sausage.x < 0 || sausage.x > this.canvas.width || sausage.y < 0 || sausage.y > this.canvas.height) {
+            this.sausages.splice(i, 1);
+            continue;
+          }
+          
+          const gridX = Math.floor(sausage.x / TILE_SIZE);
+          const gridY = Math.floor(sausage.y / TILE_SIZE);
+          if (gridY >= 0 && gridY < ROWS && gridX >= 0 && gridX < COLS) {
+            if (this.grid[gridY][gridX] === 1) {
+              this.sausages.splice(i, 1);
+              continue;
+            }
+          }
+          
+          for (let mIndex = 0; mIndex < this.monsters.length; mIndex++) {
+            const m = this.monsters[mIndex];
+            if (m.mode !== 'DEAD') {
+              const dist = Math.hypot(sausage.x - (m.x + TILE_SIZE/2), sausage.y - (m.y + TILE_SIZE/2));
+              if (dist < 14) {
+                m.mode = 'DEAD';
+                this.score += 100;
+                this.updateScoreUI();
+                this.sausages.splice(i, 1);
+                this.triggerDialogue('rami', `Splat! Alon's flying sausage knocked out ${m.name}!`);
+                audio.playEatMonster();
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      spawnNewMonster() {
+        const roles = ['Auditor', 'Project Manager', 'QA Lead', 'VP of Overtime', 'Coffee Inspector'];
+        const emojis = ['👽', '👾', '🧛', '🧙', '🧟'];
+        const colors = ['#e67e22', '#9b59b6', '#1abc9c', '#f1c40f', '#e74c3c'];
+        
+        const randomRole = roles[Math.floor(Math.random() * roles.length)];
+        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        const randomSpeed = 1.2 + Math.random() * 0.6;
+        
+        const newMonster = {
+          name: `Rami #${this.monsterIndex++} (${randomRole})`,
+          role: 'intern',
+          x: 13 * TILE_SIZE,
+          y: 11 * TILE_SIZE,
+          startX: 13 * TILE_SIZE,
+          startY: 11 * TILE_SIZE,
+          speed: randomSpeed,
+          dirX: 0,
+          dirY: -1,
+          mode: 'CHASE',
+          modeTimer: 0,
+          color: randomColor,
+          emoji: randomEmoji
+        };
+        
+        this.monsters.push(newMonster);
+        this.triggerDialogue('rami', `Watch out, Alon! ${newMonster.name} has just entered the office!`);
+      }
+
+      // A simple BFS search to find shortest path in the labyrinth
+      bfs(startX, startY, targetX, targetY) {
+        const queue = [{x: startX, y: startY, path: []}];
+        const visited = new Set();
+        const key = (x, y) => `${x},${y}`;
+        visited.add(key(startX, startY));
+        
+        const dirs = [
+          {dx: 0, dy: -1}, // Up
+          {dx: 0, dy: 1},  // Down
+          {dx: -1, dy: 0}, // Left
+          {dx: 1, dy: 0}   // Right
+        ];
+
+        while (queue.length > 0) {
+          const current = queue.shift();
+          
+          if (current.x === targetX && current.y === targetY) {
+            return current.path;
+          }
+          
+          for (const d of dirs) {
+            const nextX = current.x + d.dx;
+            const nextY = current.y + d.dy;
+            
+            // Wrap-around handling
+            let gridX = nextX;
+            if (gridX < 0) gridX = COLS - 1;
+            if (gridX >= COLS) gridX = 0;
+            
+            if (nextY >= 0 && nextY < ROWS) {
+              // If not a wall
+              if (this.grid[nextY][gridX] !== 1 && !visited.has(key(gridX, nextY))) {
+                visited.add(key(gridX, nextY));
+                queue.push({
+                  x: gridX,
+                  y: nextY,
+                  path: current.path.concat({dx: d.dx, dy: d.dy})
+                });
+              }
+            }
+          }
+        }
+        return []; // No path found
+      }
+
+      updatePlayer() {
+        // Attempt to turn
+        const curGridX = Math.round(this.player.x / TILE_SIZE);
+        const curGridY = Math.round(this.player.y / TILE_SIZE);
+        
+        // Check if player is perfectly aligned with a tile to make decisions
+        const isAligned = (this.player.x % TILE_SIZE === 0) && (this.player.y % TILE_SIZE === 0);
+        
+        if (isAligned) {
+          // Handle Wrap-around on the horizontal side passages (classic Pacman tunnel)
+          if (curGridX < 0) {
+            this.player.x = (COLS - 1) * TILE_SIZE;
+          } else if (curGridX >= COLS) {
+            this.player.x = 0;
+          }
+
+          // Check if next direction is valid
+          const nextX = curGridX + this.player.nextDirX;
+          const nextY = curGridY + this.player.nextDirY;
+          
+          // Keep inside vertical borders
+          if (nextY >= 0 && nextY < ROWS) {
+            let wrapNextX = nextX;
+            if (wrapNextX < 0) wrapNextX = COLS - 1;
+            if (wrapNextX >= COLS) wrapNextX = 0;
+
+            if (this.grid[nextY][wrapNextX] !== 1) {
+              this.player.dirX = this.player.nextDirX;
+              this.player.dirY = this.player.nextDirY;
+            }
+          }
+        }
+        
+        // Perform actual movement
+        const finalNextX = curGridX + this.player.dirX;
+        const finalNextY = curGridY + this.player.dirY;
+        
+        let canMove = true;
+        if (isAligned) {
+          if (finalNextY < 0 || finalNextY >= ROWS) {
+            canMove = false;
+          } else {
+            let wrapFinalNextX = finalNextX;
+            if (wrapFinalNextX < 0) wrapFinalNextX = COLS - 1;
+            if (wrapFinalNextX >= COLS) wrapFinalNextX = 0;
+
+            if (this.grid[finalNextY][wrapFinalNextX] === 1) {
+              canMove = false;
+            }
+          }
+        }
+        
+        if (canMove) {
+          this.player.x += this.player.dirX * this.player.speed;
+          this.player.y += this.player.dirY * this.player.speed;
+          
+          // Update mouth animation
+          if (this.player.dirX !== 0 || this.player.dirY !== 0) {
+            if (this.player.mouthOpening) {
+              this.player.mouthAnim += this.player.mouthSpeed;
+              if (this.player.mouthAnim >= 0.4) this.player.mouthOpening = false;
+            } else {
+              this.player.mouthAnim -= this.player.mouthSpeed;
+              if (this.player.mouthAnim <= 0) this.player.mouthOpening = true;
+            }
+          }
+        }
+        
+        // Eat Pellets / Mermaids
+        const pGridX = Math.floor((this.player.x + TILE_SIZE / 2) / TILE_SIZE);
+        const pGridY = Math.floor((this.player.y + TILE_SIZE / 2) / TILE_SIZE);
+        
+        if (pGridY >= 0 && pGridY < ROWS && pGridX >= 0 && pGridX < COLS) {
+          const tile = this.grid[pGridY][pGridX];
+          if (tile === 0) {
+            // Eat Mermaid
+            this.grid[pGridY][pGridX] = 3; // Empty
+            this.score += 10;
+            this.totalPellets--;
+            audio.playMunch();
+            this.updateScoreUI();
+            
+            // Random funny remark on eat
+            if (Math.random() < 0.05) {
+              const quotes = ALON_DESSERT_QUOTES;
+              this.triggerDialogue('alon', quotes[Math.floor(Math.random() * quotes.length)]);
+            }
+          } else if (tile === 2) {
+            // Eat Super Mermaid!
+            this.grid[pGridY][pGridX] = 3;
+            this.score += 50;
+            this.totalPellets--;
+            audio.playPowerup();
+            this.updateScoreUI();
+            
+            this.monsters.forEach(m => {
+              m.mode = 'SCURED';
+              m.modeTimer = 400; // Timer in frames (~8 seconds)
+            });
+            this.triggerDialogue('alon', "Aha! I found a mermaid! Dr. Rashkovitz, you're the one in trouble now!");
+          }
+        }
+
+        if (this.totalPellets <= 0) {
+          this.triggerWin();
+        }
+      }
+
+      updateMonsters() {
+        this.monsters.forEach(monster => {
+          const curGridX = Math.round(monster.x / TILE_SIZE);
+          const curGridY = Math.round(monster.y / TILE_SIZE);
+          
+          const pGridX = Math.round(this.player.x / TILE_SIZE);
+          const pGridY = Math.round(this.player.y / TILE_SIZE);
+          
+          const isAligned = (monster.x % TILE_SIZE === 0) && (monster.y % TILE_SIZE === 0);
+          
+          if (isAligned) {
+            // Decrease scared timer
+            if (monster.mode === 'SCURED') {
+              monster.modeTimer--;
+              if (monster.modeTimer <= 0) {
+                monster.mode = 'CHASE';
+                this.triggerDialogue('rami', "Our coffee break is over, Alon! Back to the sprint board!");
+              }
+            } else if (monster.mode === 'DEAD') {
+              // If monster got home, revive him
+              const homeX = Math.round(monster.startX / TILE_SIZE);
+              const homeY = Math.round(monster.startY / TILE_SIZE);
+              if (curGridX === homeX && curGridY === homeY) {
+                monster.mode = 'CHASE';
+                this.triggerDialogue('rami', `I am back! With fully stamped approval!`);
+              }
+            }
+
+            // Pick next direction based on pathfinding
+            let targetX = pGridX;
+            let targetY = pGridY;
+            
+            if (monster.mode === 'SCURED') {
+              // Scared: Run away from Alon (target opposite corner)
+              targetX = pGridX < COLS / 2 ? COLS - 1 : 0;
+              targetY = pGridY < ROWS / 2 ? ROWS - 1 : 0;
+            } else if (monster.mode === 'DEAD') {
+              // Dead: Target start home
+              targetX = Math.round(monster.startX / TILE_SIZE);
+              targetY = Math.round(monster.startY / TILE_SIZE);
+            } else {
+              // Different behaviors based on role
+              if (monster.role === 'assistant') {
+                // Intercept Alon: Target 3 tiles ahead of Alon
+                targetX = pGridX + this.player.dirX * 3;
+                targetY = pGridY + this.player.dirY * 3;
+                if (targetX < 0) targetX = 0;
+                if (targetX >= COLS) targetX = COLS - 1;
+                if (targetY < 0) targetY = 0;
+                if (targetY >= ROWS) targetY = ROWS - 1;
+              } else if (monster.role === 'intern') {
+                // Random siliness: 30% chance to target Alon, 70% random target
+                targetX = Math.random() < 0.3 ? pGridX : Math.floor(Math.random() * COLS);
+                targetY = Math.random() < 0.3 ? pGridY : Math.floor(Math.random() * ROWS);
+              }
+            }
+
+            const path = this.bfs(curGridX, curGridY, targetX, targetY);
+            
+            if (path.length > 0) {
+              monster.dirX = path[0].dx;
+              monster.dirY = path[0].dy;
+            } else {
+              // Fallback: choose any valid move
+              const dirs = [
+                {dx: 0, dy: -1}, {dx: 0, dy: 1}, {dx: -1, dy: 0}, {dx: 1, dy: 0}
+              ];
+              // Shuffle
+              dirs.sort(() => Math.random() - 0.5);
+              for (const d of dirs) {
+                const checkY = curGridY + d.dy;
+                const checkX = curGridX + d.dx;
+                if (checkY >= 0 && checkY < ROWS && checkX >= 0 && checkX < COLS) {
+                  if (this.grid[checkY][checkX] !== 1) {
+                    monster.dirX = d.dx;
+                    monster.dirY = d.dy;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+          
+          // Move Monster
+          const speed = monster.mode === 'DEAD' ? 4 : (monster.mode === 'SCURED' ? 1 : monster.speed);
+          monster.x += monster.dirX * speed;
+          monster.y += monster.dirY * speed;
+
+          // Check collision with player
+          const dist = Math.hypot(this.player.x - monster.x, this.player.y - monster.y);
+          if (dist < 12) {
+            if (monster.mode === 'CHASE') {
+              this.triggerDeath();
+            } else if (monster.mode === 'SCURED') {
+              // Eat Rami!
+              audio.playEatMonster();
+              this.score += 200;
+              this.updateScoreUI();
+              monster.mode = 'DEAD';
+              this.triggerDialogue('rami', `Eat this, peer review! Alon chomped ${monster.name}!`);
+            }
+          }
+
+          // Dynamic banter trigger
+          if (monster.mode === 'CHASE' && Math.random() < 0.001) {
+            const quotes = RAMI_DEMON_QUOTES;
+            this.triggerDialogue('rami', `${monster.name}: ${quotes[Math.floor(Math.random() * quotes.length)]}`);
+          }
+        });
+      }
+
+      triggerDeath() {
+        this.lives--;
+        audio.playDeath();
+        this.renderLives();
+        
+        if (this.lives <= 0) {
+          this.endGame(false);
+        } else {
+          this.triggerDialogue('rami', "Gotcha! That's 10 hours of overtime for you, Alon!");
+          
+          // Respawn positions
+          this.player.x = 14 * TILE_SIZE;
+          this.player.y = 23 * TILE_SIZE;
+          this.player.dirX = 0;
+          this.player.dirY = 0;
+          this.player.nextDirX = 0;
+          this.player.nextDirY = 0;
+
+          this.monsters.forEach(monster => {
+            monster.x = monster.startX;
+            monster.y = monster.startY;
+            monster.mode = 'CHASE';
+            monster.dirX = 0;
+            monster.dirY = -1;
+          });
+        }
+      }
+
+      triggerWin() {
+        audio.playWin();
+        this.endGame(true);
+      }
+
+      endGame(won) {
+        this.gameState = 'GAMEOVER';
+        
+        const screen = document.getElementById('game-over-screen');
+        const title = document.getElementById('end-title');
+        const msg = document.getElementById('end-message');
+        const scoreVal = document.getElementById('final-score');
+        
+        screen.classList.remove('hidden');
+        screen.classList.add('active');
+        
+        scoreVal.textContent = this.score;
+        
+        if (won) {
+          title.textContent = "VICTORY!";
+          title.style.color = "var(--neon-green)";
+          title.style.textShadow = "0 0 10px var(--neon-green)";
+          msg.textContent = "Alon Jacoby successfully swam to the deep sea with his mermaid bride! Rami has lost all control!";
+        } else {
+          title.textContent = "YOU DIED!";
+          title.style.color = "var(--neon-red)";
+          title.style.textShadow = "0 0 10px var(--neon-red)";
+          msg.textContent = "Rami caught you, gave you a stern performance review, and forced you to work on weekends!";
+        }
+        
+        if (this.score > this.highScore) {
+          this.highScore = this.score;
+          storage.setItem('mermaid_high', this.highScore);
+          document.getElementById('highscore-val').textContent = this.formatScore(this.highScore);
+        }
+      }
+
+      formatScore(num) {
+        return String(num).padStart(5, '0');
+      }
+
+      updateScoreUI() {
+        document.getElementById('score-val').textContent = this.formatScore(this.score);
+        document.getElementById('highscore-val').textContent = this.formatScore(this.highScore);
+      }
+
+      renderLives() {
+        const container = document.getElementById('lives-container');
+        container.innerHTML = '';
+        for (let i = 0; i < this.lives; i++) {
+          const heart = document.createElement('span');
+          heart.textContent = '🧔';
+          container.appendChild(heart);
+        }
+      }
+
+      initLeaderboard() {
+        const defaultScores = [
+          { name: "Alon J.", score: 8500, comment: "Looking for love" },
+          { name: "Rami R.", score: 6200, comment: "KPI Master" },
+          { name: "Mermaid", score: 4500, comment: "Under the sea" },
+          { name: "HR Dep.", score: 2000, comment: "Form 101 filled" }
+        ];
+        
+        let scores = JSON.parse(storage.getItem('mermaid_leaderboard'));
+        if (!scores) {
+          scores = defaultScores;
+          storage.setItem('mermaid_leaderboard', JSON.stringify(scores));
+        }
+        
+        this.renderLeaderboard(scores);
+      }
+
+      renderLeaderboard(scores) {
+        const list = document.getElementById('leaderboard-list');
+        list.innerHTML = '';
+        scores.sort((a,b) => b.score - a.score).slice(0, 5).forEach(item => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <span class="entry-name">${item.name}</span>
+            <span class="entry-score">${item.score}</span>
+            <br><span style="font-size:0.65rem; color:#718096; font-style:italic;">"${item.comment}"</span>
+          `;
+          list.appendChild(li);
+        });
+      }
+
+      submitScore() {
+        const nameInput = document.getElementById('player-name');
+        const name = nameInput.value.trim() || "Gamer";
+        
+        const comments = [
+          "I love mermaids!", "Rami, leave me alone!", "Eat sand, Rami!", "Chasing fish all day", "Overtime paid in full!"
+        ];
+        const randomComment = comments[Math.floor(Math.random() * comments.length)];
+        
+        let scores = JSON.parse(storage.getItem('mermaid_leaderboard')) || [];
+        scores.push({ name: name, score: this.score, comment: randomComment });
+        scores.sort((a,b) => b.score - a.score);
+        storage.setItem('mermaid_leaderboard', JSON.stringify(scores));
+        
+        this.renderLeaderboard(scores);
+        nameInput.value = '';
+        
+        const submitBtn = document.getElementById('submit-score-btn');
+        submitBtn.textContent = 'Submitted!';
+        submitBtn.disabled = true;
+        setTimeout(() => {
+          submitBtn.textContent = 'Submit Score';
+          submitBtn.disabled = false;
+        }, 2000);
+      }
+
+      // Draw Game Loop
+      loop(timestamp) {
+        if (this.gameState !== 'PLAYING') return;
+        
+        const elapsed = timestamp - this.lastTime;
+        this.lastTime = timestamp;
+
+        this.updatePlayer();
+        this.updateMonsters();
+        this.updateSausages();
+        
+        // Spawn a new monster every 10 seconds (10000 ms)
+        this.spawnTimer += elapsed;
+        if (this.spawnTimer >= 10000) {
+          this.spawnTimer = 0;
+          this.spawnNewMonster();
+        }
+        
+        // Background Beat Synth
+        this.beatTimer += elapsed;
+        if (this.beatTimer >= 400) {
+          audio.playBeat(this.beatStep);
+          this.beatStep++;
+          this.beatTimer = 0;
+        }
+
+        this.draw();
+        
+        requestAnimationFrame((t) => this.loop(t));
+      }
+
+      draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Draw Maze Walls & Paths
+        for (let r = 0; r < ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            const x = c * TILE_SIZE;
+            const y = r * TILE_SIZE;
+            const tile = this.grid[r][c];
+            
+            if (tile === 1) {
+              // Draw Neon Wall
+              this.ctx.strokeStyle = '#1d3557';
+              this.ctx.lineWidth = 2;
+              this.ctx.fillStyle = '#0a192f';
+              this.ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
+              
+              this.ctx.shadowBlur = 10;
+              this.ctx.shadowColor = 'var(--neon-blue)';
+              this.ctx.strokeRect(x + 2, y + 2, TILE_SIZE - 4, TILE_SIZE - 4);
+              this.ctx.shadowBlur = 0; // Reset
+            } else if (tile === 0) {
+              // Draw Glowing Yellow Dots (Pac-Man style!)
+              this.ctx.fillStyle = 'var(--neon-yellow)';
+              this.ctx.shadowBlur = 8;
+              this.ctx.shadowColor = 'var(--neon-yellow)';
+              this.ctx.beginPath();
+              this.ctx.arc(x + TILE_SIZE/2, y + TILE_SIZE/2, 3, 0, Math.PI * 2);
+              this.ctx.fill();
+              this.ctx.shadowBlur = 0;
+            } else if (tile === 2) {
+              // Draw Super Mermaid (Glowing Pink heart/tail silhouette!)
+              this.ctx.fillStyle = 'var(--neon-pink)';
+              this.ctx.shadowBlur = 15;
+              this.ctx.shadowColor = 'var(--neon-pink)';
+              const cx = x + TILE_SIZE/2;
+              const cy = y + TILE_SIZE/2;
+              
+              // Draw glowing tail fin
+              this.ctx.beginPath();
+              this.ctx.arc(cx, cy - 2, 4, 0, Math.PI * 2);
+              this.ctx.fill();
+              this.ctx.beginPath();
+              this.ctx.moveTo(cx, cy + 1);
+              this.ctx.lineTo(cx - 6, cy + 7);
+              this.ctx.lineTo(cx - 3, cy + 4);
+              this.ctx.lineTo(cx, cy + 1);
+              this.ctx.lineTo(cx + 3, cy + 4);
+              this.ctx.lineTo(cx + 6, cy + 7);
+              this.ctx.closePath();
+              this.ctx.fill();
+              
+              this.ctx.shadowBlur = 0;
+            }
+          }
+        }
+
+        // Draw Alon Jacoby (Player)
+        this.ctx.save();
+        this.ctx.translate(this.player.x + TILE_SIZE/2, this.player.y + TILE_SIZE/2);
+        
+        // Rotate Alon based on movement direction
+        let angle = 0;
+        if (this.player.dirX === 1) angle = 0;
+        else if (this.player.dirX === -1) angle = Math.PI;
+        else if (this.player.dirY === 1) angle = Math.PI / 2;
+        else if (this.player.dirY === -1) angle = -Math.PI / 2;
+        this.ctx.rotate(angle);
+        
+        // Draw Alon's face
+        this.ctx.shadowBlur = 10;
+        this.ctx.shadowColor = 'var(--neon-yellow)';
+        
+        // Chomp wedge mouth
+        this.ctx.fillStyle = '#ffea00';
+        this.ctx.beginPath();
+        const chomp = this.player.mouthAnim;
+        this.ctx.arc(0, 0, 9, chomp, Math.PI * 2 - chomp);
+        this.ctx.lineTo(0, 0);
+        this.ctx.closePath();
+        this.ctx.fill();
+        
+        // Draw hair & beard (brown details)
+        this.ctx.fillStyle = '#5c4033';
+        // Back hair
+        this.ctx.beginPath();
+        this.ctx.arc(-4, 0, 6, Math.PI/2, -Math.PI/2);
+        this.ctx.fill();
+        // Beard bottom
+        this.ctx.beginPath();
+        this.ctx.arc(0, 5, 4, 0, Math.PI);
+        this.ctx.fill();
+        
+        // Eye
+        this.ctx.fillStyle = '#000';
+        this.ctx.beginPath();
+        this.ctx.arc(2, -4, 1.5, 0, Math.PI * 2);
+        this.ctx.fill();
+        
+        this.ctx.restore();
+        this.ctx.shadowBlur = 0;
+
+        // Draw All Monsters
+        this.monsters.forEach(monster => {
+          this.ctx.save();
+          this.ctx.translate(monster.x + TILE_SIZE/2, monster.y + TILE_SIZE/2);
+          
+          if (monster.mode === 'SCURED') {
+            // Scared Blue/Sweating Rami
+            this.ctx.fillStyle = '#00a8ff';
+            this.ctx.shadowBlur = 10;
+            this.ctx.shadowColor = '#00a8ff';
+            
+            // Scary blob body
+            this.ctx.beginPath();
+            this.ctx.arc(0, -2, 9, Math.PI, 0);
+            this.ctx.lineTo(9, 9);
+            // squiggly legs
+            this.ctx.lineTo(6, 6);
+            this.ctx.lineTo(3, 9);
+            this.ctx.lineTo(0, 6);
+            this.ctx.lineTo(-3, 9);
+            this.ctx.lineTo(-6, 6);
+            this.ctx.lineTo(-9, 9);
+            this.ctx.closePath();
+            this.ctx.fill();
+            
+            // Scared crying eyes
+            this.ctx.fillStyle = '#fff';
+            this.ctx.beginPath();
+            this.ctx.arc(-3, -2, 2.5, 0, Math.PI*2);
+            this.ctx.arc(3, -2, 2.5, 0, Math.PI*2);
+            this.ctx.fill();
+            
+            this.ctx.fillStyle = '#000';
+            this.ctx.beginPath();
+            this.ctx.arc(-3, -2, 1, 0, Math.PI*2);
+            this.ctx.arc(3, -2, 1, 0, Math.PI*2);
+            this.ctx.fill();
+            
+            // Crying tears (neon light blue drops)
+            this.ctx.fillStyle = '#00f0ff';
+            this.ctx.fillRect(-4, 1, 1.5, 4);
+            this.ctx.fillRect(2.5, 1, 1.5, 4);
+            
+          } else if (monster.mode === 'DEAD') {
+            // Eaten Rami: just floating glasses/eyes
+            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            this.ctx.beginPath();
+            this.ctx.arc(-4, -1, 3.5, 0, Math.PI*2);
+            this.ctx.arc(4, -1, 3.5, 0, Math.PI*2);
+            this.ctx.fill();
+            
+            this.ctx.fillStyle = 'var(--neon-blue)';
+            this.ctx.beginPath();
+            this.ctx.arc(-4, -1, 1.5, 0, Math.PI*2);
+            this.ctx.arc(4, -1, 1.5, 0, Math.PI*2);
+            this.ctx.fill();
+            
+          } else {
+            // Normal Monster (glowing with custom monster color!)
+            this.ctx.fillStyle = monster.color;
+            this.ctx.shadowBlur = 12;
+            this.ctx.shadowColor = monster.color;
+            
+            // Horned head
+            this.ctx.beginPath();
+            this.ctx.arc(0, -1, 9, Math.PI, 0);
+            this.ctx.lineTo(9, 9);
+            // Legs
+            this.ctx.lineTo(5, 6);
+            this.ctx.lineTo(2, 9);
+            this.ctx.lineTo(0, 6);
+            this.ctx.lineTo(-2, 9);
+            this.ctx.lineTo(-5, 6);
+            this.ctx.lineTo(-9, 9);
+            this.ctx.closePath();
+            this.ctx.fill();
+            
+            // Angry horns
+            this.ctx.fillStyle = '#ff9f43';
+            this.ctx.beginPath();
+            this.ctx.moveTo(-7, -7);
+            this.ctx.lineTo(-10, -13);
+            this.ctx.lineTo(-3, -9);
+            this.ctx.closePath();
+            this.ctx.fill();
+            
+            this.ctx.beginPath();
+            this.ctx.moveTo(7, -7);
+            this.ctx.lineTo(10, -13);
+            this.ctx.lineTo(3, -9);
+            this.ctx.closePath();
+            this.ctx.fill();
+            
+            // Glasses rims (glow yellow/orange)
+            this.ctx.strokeStyle = 'var(--neon-yellow)';
+            this.ctx.lineWidth = 1.5;
+            this.ctx.beginPath();
+            this.ctx.arc(-3.5, -1, 3, 0, Math.PI*2);
+            this.ctx.arc(3.5, -1, 3, 0, Math.PI*2);
+            this.ctx.stroke();
+            
+            // Angry eyes (red dots inside glasses)
+            this.ctx.fillStyle = '#fff';
+            this.ctx.beginPath();
+            this.ctx.arc(-3.5, -1, 1.5, 0, Math.PI*2);
+            this.ctx.arc(3.5, -1, 1.5, 0, Math.PI*2);
+            this.ctx.fill();
+          }
+          
+          this.ctx.restore();
+          this.ctx.shadowBlur = 0;
+        });
+
+        // Draw Sausages (plump sausage capsules flying around!)
+        this.sausages.forEach(s => {
+          this.ctx.fillStyle = '#b75a3e';
+          this.ctx.strokeStyle = '#8c3c25';
+          this.ctx.lineWidth = 1.5;
+          this.ctx.save();
+          this.ctx.translate(s.x, s.y);
+          
+          let angle = 0;
+          if (s.dirX === 1) angle = 0;
+          else if (s.dirX === -1) angle = Math.PI;
+          else if (s.dirY === 1) angle = Math.PI / 2;
+          else if (s.dirY === -1) angle = -Math.PI / 2;
+          this.ctx.rotate(angle);
+          
+          this.ctx.beginPath();
+          this.ctx.roundRect(-8, -4, 16, 8, 4);
+          this.ctx.fill();
+          this.ctx.stroke();
+          
+          this.ctx.restore();
+        });
+      }
+    }
+
+    // Initializing the game object on page load
+    let game;
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', () => {
+        game = new Game();
+      });
+    } else {
+      game = new Game();
+    }
+  </script>
+</body>
+</html>
