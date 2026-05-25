@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>פרק 7.5 — להתמודד עם מיליון משתמשים: Caching, PgBouncer וחלוקת עומסים</title>
+    
+    <!-- Tailwind CSS לעיצוב מהיר, תוסס ונוזלי -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&family=Platypi:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #faf9f6;
+            --card-bg: #ffffff;
+            --accent-color: #f43f5e; /* ורוד-אדום לוהט */
+            --accent-dark: #be123c;
+            --accent-hover: #e11d48;
+            --accent-soft: #fff1f2;
+            --text-color: #334155;
+            --heading-color: #0f172a;
+            --muted-text: #64748b;
+            --border-color: #e2e8f0;
+            --gold-accent: #d4af37;
+            --gold-soft: #fdfaf2;
+            --success-bg: #dcfce7;
+            --success-text: #166534;
+            --warn-bg: #fef3c7;
+            --warn-text: #92400e;
+            --danger-bg: #fee2e2;
+            --danger-text: #991b1b;
+            --purple: #7c3aed;
+            --purple-soft: #f5f3ff;
+            --serif: 'Platypi', Georgia, serif;
+            --sans: 'Assistant', -apple-system, BlinkMacSystemFont, sans-serif;
+            --mono: 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: var(--sans);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.75;
+            margin: 0;
+            padding: 0;
+            font-size: 16.5px;
+        }
+
+        header.hero {
+            background: linear-gradient(135deg, #ffffff 0%, #fdfaf2 50%, #fff1f2 100%);
+            border-bottom: 4px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .serif-font {
+            font-family: var(--serif);
+        }
+
+        .mono-font {
+            font-family: var(--mono);
+        }
+
+        /* ========== תיבות אינטראקטיביות ========== */
+        .interactive-container {
+            border: 2px dashed var(--accent-color);
+            background-color: var(--accent-soft);
+        }
+
+        .simulator-step {
+            display: none;
+            animation: slideUp 0.4s ease-in-out forwards;
+        }
+        .simulator-step.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== תרשימי זרימה צבעוניים ========== */
+        .visual-flow {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+        .visual-flow b { color: #f43f5e; }
+        .visual-flow i { color: #38bdf8; font-style: normal; }
+        .visual-flow span.glow { color: #eab308; text-shadow: 0 0 8px rgba(234,179,8,0.6); }
+
+        /* ========== שרת מונפש מהבהב ========== */
+        .server-grid {
+            background-color: #0f172a;
+            border: 2px solid #1e293b;
+        }
+
+        /* ========== עוזר אישי מונפש (Mascot) ========== */
+        .mascot-container {
+            border: 1px solid rgba(244, 63, 94, 0.15);
+        }
+        .mascot-svg {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(2deg); }
+        }
+
+        /* ========== כרטיסיות אינטראקטיביות ========== */
+        .simple-card {
+            transition: all 0.25s ease-in-out;
+        }
+        .simple-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 6px 18px rgba(244, 63, 94, 0.08);
+        }
+
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        .quiz-option:hover {
+            border-color: var(--accent-color);
+            background-color: var(--accent-soft);
+            transform: translateX(-4px);
+        }
+
+        /* ========== סימולטור פלאפון מונפש ========== */
+        .phone-mockup {
+            border: 12px solid #0f172a;
+            border-radius: 36px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            background-color: #faf9f6;
+            overflow: hidden;
+            position: relative;
+        }
+        .phone-notch {
+            width: 110px;
+            height: 18px;
+            background-color: #0f172a;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            margin: 0 auto;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===================== כותרת ראשית (HEADER) ===================== -->
+<header class="hero py-20 px-6 text-center">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <span class="kicker inline-block text-xs font-bold tracking-widest text-rose-800 bg-rose-100 rounded-full px-4 py-1.5 mb-6 uppercase mono-font">
+            ניהול ביצועים ועומסים · פרק 7.5
+        </span>
+        <h1 class="serif-font text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-tight tracking-tight mb-6">
+            התמודדות עם מיליוני משתמשים:<br><span class="italic text-rose-600">Caching, PgBouncer ו-Scaling!</span>
+        </h1>
+        <p class="text-slate-500 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
+            מזל טוב! אפליקציית ההיכרויות שלנו הפכה לויראלית ומאות אלפי משתמשים עושים סוואיפ בכל שניה! בפרק זה נלמד איך למנוע מהדאטה-בייס שלנו לקרוס תחת העומס, לשמור עליו מהיר כמו ברק, ולבנות ארכיטקטורה של מקצוענים!
+        </p>
+    </div>
+</header>
+
+<!-- ===================== מערך דף (LAYOUT) ===================== -->
+<div class="layout max-w-7xl mx-auto px-6 py-12 gap-12 grid grid-cols-1 lg:grid-cols-[290px_1fr]">
+
+    <!-- ============ סרגל ניווט צידי ============ -->
+    <aside class="toc-wrapper">
+        <nav class="toc sticky top-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-md max-h-[85vh] overflow-y-auto">
+            <h3 class="serif-font text-rose-900 font-bold uppercase tracking-wider text-sm mb-4">צעדי הלמידה</h3>
+            <ol class="space-y-1">
+                <li><a href="#intro" class="block text-slate-600 hover:text-rose-700 font-medium py-1">1. כשהשרת מתחיל להזיע</a></li>
+                <li><a href="#caching-playground" class="block text-slate-600 hover:text-rose-700 font-medium py-1">2. סימולטור Redis Caching</a></li>
+                <li><a href="#pooling-concept" class="block text-slate-600 hover:text-rose-700 font-medium py-1">3. פקק התנועה של החיבורים</a></li>
+                <li><a href="#pooling-playground" class="block text-slate-600 hover:text-rose-700 font-medium py-1">4. פלייגראונד PgBouncer</a></li>
+                <li><a href="#replicas-concept" class="block text-slate-600 hover:text-rose-700 font-medium py-1">5. שרתים משוכפלים</a></li>
+                <li><a href="#replicas-playground" class="block text-slate-600 hover:text-rose-700 font-medium py-1">6. סימולטור חלוקת העבודה</a></li>
+            </ol>
+        </nav>
+    </aside>
+
+    <!-- ============ תוכן מרכזי ============ -->
+    <main class="space-y-12">
+
+    <!-- ============================================== -->
+    <!-- SECTION 1 · WHEN THE SERVER SWEATS             -->
+    <!-- ============================================== -->
+    <section id="intro" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-rose-600 text-white"><span class="dot"></span> חלק 1 · האתגר בקנה מידה</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">כשהדאטה-בייס מתחיל להזיע 🥵</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            הסבר פשוט: מה קורה לבסיס הנתונים שלנו כשיש פתאום מיליון כניסות בבת אחת?
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            עד עכשיו בנינו דאטה-בייס מדהים, הוספנו מפתחות, אינדקסים, חוקי אבטחה (RLS) ואפילו חיברנו בינה מלאכותית של גוגל. הכל עבד מעולה במחשב המקומי שלנו כשעבדנו לבד. 
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            אבל במציאות, כשהאפליקציה שלכם עולה לחנויות, אלפי משתמשים נכנסים **בכל שניה**. השרת מתחיל לקבל מבול של שאילתות, הדיסק הקשיח מסתובב בטירוף, המעבד מגיע ל-100% ניצולת, והאפליקציה מתחילה "להיתקע" למשתמשים.
+        </p>
+
+        <!-- עוזר אישי מונפש - Sentry Bot -->
+        <div class="mascot-container flex items-center gap-6 bg-rose-50/50 p-6 rounded-2xl border border-rose-100 mb-8">
+            <svg class="mascot-svg w-20 h-20 flex-shrink-0" viewBox="0 0 100 100">
+                <rect x="20" y="20" width="60" height="50" rx="18" fill="#f43f5e" stroke="#fda4af" stroke-width="3" />
+                <rect x="28" y="28" width="44" height="24" rx="8" fill="#0f172a" />
+                <!-- עיניים מהבהבות בחום -->
+                <circle cx="40" cy="40" r="5" fill="#fda4af">
+                    <animate attributeName="r" values="5;2;5" dur="1.5s" repeatCount="indefinite" />
+                </circle>
+                <circle cx="60" cy="40" r="5" fill="#fda4af">
+                    <animate attributeName="r" values="5;2;5" dur="1.5s" repeatCount="indefinite" />
+                </circle>
+                <!-- אדים של חום -->
+                <line x1="40" y1="15" x2="40" y2="5" stroke="#fda4af" stroke-width="2" stroke-linecap="round" />
+                <line x1="50" y1="12" x2="50" y2="4" stroke="#fda4af" stroke-width="2" stroke-linecap="round" />
+                <line x1="60" y1="15" x2="60" y2="5" stroke="#fda4af" stroke-width="2" stroke-linecap="round" />
+                <!-- פה דואג -->
+                <path d="M 45 62 Q 50 58 55 62" stroke="#fda4af" stroke-width="3" stroke-linecap="round" fill="none" />
+            </svg>
+            <div class="speech-bubble text-slate-700 text-sm leading-relaxed">
+                <strong>אוי ואבוי, השרת חם מדי! 🌡️</strong> אלפי משתמשים מבקשים לראות את תמונת הפרופיל של אליס בכל דקה. למה שהדאטה-בייס שלנו יעבוד קשה וישלוף את אותה תמונה שוב ושוב מהדיסק הקשיח? בואו נלמד איך להשתמש בקיצור דרך גאוני שנקרא <strong>Caching (זיכרון מטמון)</strong> כדי לשמור את התמונה "על המדף" בגישה סופר מהירה!
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+            <div class="p-6 border border-slate-200 rounded-xl bg-slate-50/50 simple-card">
+                <h4 class="font-bold text-rose-800 text-lg mb-2">גישה רגילה לדאטה-בייס 💾</h4>
+                <p class="text-slate-500 text-sm">בכל פנייה, השרת קורא את המידע מהדיסק הקשיח, מריץ בדיקות ובוחן אינדקסים. תהליך יסודי אך איטי יחסית (לוקח כ-50 מילי-שניות).</p>
+            </div>
+            <div class="p-6 border border-slate-200 rounded-xl bg-slate-50/50 simple-card">
+                <h4 class="font-bold text-rose-800 text-lg mb-2">זיכרון מטמון מהיר (Redis Caching) ⚡</h4>
+                <p class="text-slate-500 text-sm">המידע השכיח נשמר ישירות בתוך זיכרון ה-RAM הסופר-מהיר של השרת. שליפה מיידית ללא מאמץ של הדאטה-בייס (לוקח פחות מ-1 מילי-שניה!).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 2 · REDIS CACHING PLAYGROUND           -->
+    <!-- ============================================== -->
+    <section id="caching-playground" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-rose-600 text-white"><span class="dot"></span> חלק 2 · סימולטור מטמון</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">סימולטור זיכרון המטמון (Redis Caching Simulator)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: שלחו בקשות לפרופיל של אליס, צפו בטמפרטורת הדאטה-בייס עולה, ואז הפעילו את "מגן ה-Redis" כדי להציל את השרת!
+        </p>
+
+        <!-- סימולטור Caching -->
+        <div class="interactive-container p-6 rounded-2xl mb-8">
+            <h3 class="serif-font font-bold text-slate-800 text-lg mb-4 flex items-center gap-2">🌡️ ניטור חום וביצועי שרת הדאטה-בייס</h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <!-- צד שמאל: כפתורי פעולה ומד חום -->
+                <div class="space-y-4">
+                    <span class="font-bold text-slate-700 text-xs uppercase tracking-wider block">מד חום שרת מעבד (CPU Core Temp):</span>
+                    
+                    <!-- מד חום ויזואלי -->
+                    <div class="w-full bg-slate-200 rounded-full h-6 overflow-hidden relative shadow-inner">
+                        <div id="cpuTempBar" class="bg-emerald-500 h-6 rounded-full transition-all duration-500" style="width: 30%"></div>
+                        <span id="cpuTempText" class="absolute inset-0 flex items-center justify-center text-xs font-extrabold text-slate-900">35°C (תקין וקריר 🟢)</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center shadow-sm">
+                        <div>
+                            <strong class="text-slate-800 text-sm block">מצב זיכרון מטמון (Redis Caching)</strong>
+                            <span id="cacheStatusLabel" class="text-xs font-bold text-rose-600">OFF (כל הבקשות מגיעות לדאטה-בייס)</span>
+                        </div>
+                        <button id="cacheToggleBtn" class="bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors" onclick="toggleCacheState()">
+                            הפעל Redis ⚡
+                        </button>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-xl text-xs transition" onclick="simulateProfileRequest()">
+                            בקש פרופיל אליס 👱‍♀️ (סריקה)
+                        </button>
+                        <button class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-6 rounded-xl text-xs transition" onclick="resetCacheSimulation()">
+                            איפוס שרת
+                        </button>
+                    </div>
+                </div>
+
+                <!-- צד ימין: לוג השרת -->
+                <div class="flex flex-col space-y-2">
+                    <span class="font-bold text-slate-700 text-xs uppercase tracking-wider block">לוג תעבורת רשת (Server Request Logs):</span>
+                    <div id="cacheLogBox" class="visual-flow p-4 rounded-xl font-mono text-xs min-h-[160px] max-h-[160px] overflow-y-auto">
+                        [מערכת] שרת PostgreSQL ושרת Redis מוכנים לעבודה...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- שאלון מהיר -->
+        <div class="quiz-box rounded-2xl border border-rose-300 p-6 bg-rose-50/50 text-rose-950">
+            <div class="quiz-title font-bold text-lg mb-2 flex items-center gap-2">💡 בחנו את עצמכם!</div>
+            <p class="mb-4">מה מייצג המושג "Cache Hit" (פגיעת מטמון מוצלחת) בעולם מערכות המידע?</p>
+            <div class="quiz-option p-4 rounded-xl border bg-white cursor-pointer hover:bg-slate-50 mb-2 transition text-sm" onclick="selectQuizAnswer(this, true, 'נכון מאוד! המידע נמצא בזיכרון המטמון המהיר (Redis) ונשלח מיד חזר למשתמש מבלי לעשות שימוש במשאבי הדאטה-בייס הראשי!')">
+                א) המידע המבוקש נמצא בתוך זיכרון המטמון המהיר (Redis) ונשלף בשבריר שניה.
+            </div>
+            <div class="quiz-option p-4 rounded-xl border bg-white cursor-pointer hover:bg-slate-50 transition text-sm" onclick="selectQuizAnswer(this, false, 'לא מדויק. זהו Cache Miss, מצב שבו המידע לא קיים במטמון וצריך ללכת לדאטה-בייס ולשמור אותו שם מחדש.')">
+                ב) המידע לא נמצא במטמון, ולכן השרת חייב לגשת לדאטה-בייס פוסטגרס הראשי.
+            </div>
+            <div class="quiz-feedback mt-4 font-bold text-rose-800 hidden" id="quiz-feedback-1">משוב טוען...</div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 3 · CONNECTION POOLING                 -->
+    <!-- ============================================== -->
+    <section id="pooling-concept" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-rose-600 text-white"><span class="dot"></span> חלק 3 · פקק החיבורים</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">פקק התנועה של החיבורים (Connection Pooling)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            הסבר פשוט: מה קורה כשמאה אנשים מנסים לדבר עם פקיד בנק אחד בבת אחת?
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            בכל פעם שהטלפון של המשתמש פונה לדאטה-בייס, הוא צריך לפתוח ערוץ תקשורת מיוחד שנקרא <strong>Connection</strong> (חיבור). לפתוח חיבור חדש זה תהליך כבד ויקר עבור השרת: הוא צריך לבדוק סיסמה, לאמת את המשתמש ולהקצות זיכרון.
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            בבסיס נתונים פוסטגרס רגיל, יש מגבלה לכמות החיבורים שניתן לפתוח בו-זמנית (למשל, מקסימום 100). אם באותו רגע 500 משתמשים ינסו להיכנס — השרת פשוט יזרוק שגיאות חיבור ויסרב לעבוד!
+        </p>
+
+        <div class="important-note border-l-4 border-rose-500 bg-rose-50 p-6 rounded-r-xl my-6 text-rose-950">
+            <strong>מתאם התור החכם (PgBouncer):</strong>
+            <p class="mt-2 text-sm">חשבו על מועדון VIP סגור. אם 100 אנשים ינסו להידחף דרך הדלת בבת אחת — הדלת תישבר והשומר יקרוס. <strong>PgBouncer הוא המאבטח החכם בכניסה!</strong> במקום לתת לכולם לפתוח חיבור כבד חדש, הוא מחזיק "בריכת חיבורים" (Connection Pool) מוכנה מראש. הוא נותן למשתמש הראשון לעשות שאילתה מהירה, לוקח ממנו את החיבור ומעביר אותו מיד למשתמש הבא בתור!</p>
+        </div>
+
+        <div class="simple-card-grid my-8">
+            <div class="simple-card border border-slate-200">
+                <h4 class="font-bold text-rose-800 text-lg mb-2">ללא Connection Pooling ❌</h4>
+                <p class="text-slate-500 text-sm">כל משתמש פותח חיבור חדש ומחזיק אותו גם כשהוא לא עושה כלום. המשאבים נגמרים מהר מאוד והשרת קורס תחת העומס.</p>
+            </div>
+            <div class="simple-card border border-slate-200">
+                <h4 class="font-bold text-rose-800 text-lg mb-2">עם PgBouncer (Pooling) 🛡️</h4>
+                <p class="text-slate-500 text-sm">קבוצה קטנה של חיבורים פתוחים מראש מחולקת בין אלפי משתמשים בצורה דינמית ויעילה. אין שגיאות קריסה והדאטה-בייס נשאר רגוע.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 4 · PGBOUNCER PLAYGROUND               -->
+    <!-- ============================================== -->
+    <section id="pooling-playground" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-rose-600 text-white"><span class="dot"></span> חלק 4 · פלייגראונד תור</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">סימולטור פקק החיבורים (PgBouncer Traffic Controller)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: שלחו זרם של חיבורים בבת אחת, ראו את השרת נחסם, והפעילו את שרת התור כדי לסדר את התנועה!
+        </p>
+
+        <!-- סימולטור פקקי תנועה -->
+        <div class="interactive-container p-6 rounded-2xl mb-8 bg-rose-50/30 border-rose-300">
+            <h3 class="serif-font font-bold text-slate-800 text-sm mb-4">🚗 נהלו את זרימת התנועה מול הדאטה-בייס:</h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <!-- שמאל: בקרה וחיווי -->
+                <div class="space-y-4">
+                    <div>
+                        <span class="font-bold text-slate-700 text-xs uppercase tracking-wider block mb-1">מדד חיבורים פתוחים בדאטה-בייס (Active Database Connections):</span>
+                        <span id="activeConnectionsLabel" class="text-xs font-mono font-bold text-rose-600">0 / 5 חיבורים פתוחים (בטוח 🟢)</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center shadow-sm">
+                        <div>
+                            <strong class="text-slate-800 text-sm block">שרת תיווך PgBouncer (Connection Pooler)</strong>
+                            <span id="bouncerStatusLabel" class="text-xs font-bold text-rose-600">OFF (חיבור ישיר ללא ניהול תור)</span>
+                        </div>
+                        <button id="bouncerToggleBtn" class="bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors" onclick="toggleBouncerState()">
+                            הפעל PgBouncer 🛡️
+                        </button>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-xl text-xs transition" onclick="simulateBulkConnections()">
+                            שלח 10 חיבורים במכה! ⚡
+                        </button>
+                        <button class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-6 rounded-xl text-xs transition" onclick="resetBouncerSimulation()">
+                            איפוס מערכת
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ימין: ייצוג גרפי של החיבורים -->
+                <div class="flex flex-col items-center">
+                    <span class="text-xs text-slate-500 font-bold mb-2">מצב שער הכניסה של הדאטה-בייס (Database Port 5432)</span>
+                    <div id="gateVisualBox" class="w-full h-[180px] bg-slate-950 rounded-xl relative flex flex-col items-center justify-center p-4 overflow-hidden border-2 border-slate-800">
+                        <span class="text-5xl block mb-2" id="gateEmoji">🟢</span>
+                        <strong class="text-white text-xs block" id="gateTitle">השער פתוח ותקין</strong>
+                        <p class="text-slate-500 text-[10px] mt-1 text-center" id="gateDesc">אין פקקי תנועה או חיבורים חסומים כרגע.</p>
+                        
+                        <!-- חיבורים מיוצגים כקווים מהבהבים -->
+                        <div id="connectionLinesContainer" class="absolute inset-0 flex justify-around items-end p-2 pointer-events-none opacity-20">
+                            <div class="w-2 bg-emerald-500 h-0 transition-all duration-300" id="cline-1"></div>
+                            <div class="w-2 bg-emerald-500 h-0 transition-all duration-300" id="cline-2"></div>
+                            <div class="w-2 bg-emerald-500 h-0 transition-all duration-300" id="cline-3"></div>
+                            <div class="w-2 bg-emerald-500 h-0 transition-all duration-300" id="cline-4"></div>
+                            <div class="w-2 bg-emerald-500 h-0 transition-all duration-300" id="cline-5"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 5 · DATABASE REPLICATION               -->
+    <!-- ============================================== -->
+    <section id="replicas-concept" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-rose-600 text-white"><span class="dot"></span> חלק 5 · חלוקת עבודה</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">שרתים משוכפלים (Primary vs. Read Replicas)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            הסבר פשוט: סופר אחד שכותב את הספר, ושישה עוזרים שמקריאים עותקים שלו לקהל!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            באפליקציית היכרויות, רוב הפעולות של המשתמשים הן פעולות של **קריאה** (Reading) — הם צופים בפרופילים, קוראים הודעות ומסתכלים בתמונות. רק אחוז קטן מהפעולות הן פעולות של **כתיבה** (Writing) — כמו הרשמה מחדש או שינוי תמונת פרופיל.
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            <strong>הפתרון החכם:</strong> למה ששרת אחד יעשה את כל העבודה? אנחנו מייצרים שרת אחד ראשי שנקרא <strong>Primary Database</strong>. הוא היחיד שמותר לו לבצע כתיבה ועדכון נתונים. 
+            במקביל, אנחנו מייצרים שרתים משוכפלים שנקראים <strong>Read Replicas</strong>. הם מקבלים העתק מדויק של המידע ומטפלים אך ורק בקריאת המידע של המשתמשים!
+        </p>
+
+        <div class="flow-diagram p-6 rounded-xl font-mono text-xs">
+            <b>[תרשים חלוקת העבודה הוקטורי]</b><br>
+            משתמש עושה סוואיפ (כתיבה) ──► נרשם רק בשרת הראשי <b>[Primary DB (Write)]</b><br>
+                                                       │  (משתכפל אוטומטית)<br>
+                                                       ▼<br>
+            משתמש קורא פרופיל (קריאה) ──► נשלף משרת משוכפל <i>[Read Replica DB (Read Only)]</i>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 6 · REPLICAS PLAYGROUND                -->
+    <!-- ============================================== -->
+    <section id="replicas-playground" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-rose-600 text-white"><span class="dot"></span> חלק 6 · סימולטור חלוקת עבודה</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">סימולטור חלוקת העבודה (Write vs. Read Routing)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: נתבו את הפעולות של המשתמשים לשרת הנכון כדי למנוע עומסים בדאטה-בייס הראשי!
+        </p>
+
+        <!-- סימולטור חלוקת עבודה -->
+        <div class="interactive-container p-6 rounded-2xl mb-8 bg-slate-50 border-slate-300">
+            <h3 class="serif-font font-bold text-slate-800 text-sm mb-4">⚖️ נתבו את השאילתות הבאות אל השרת המתאים:</h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- צד שמאל: כרטיסיית המשימה הדינמית -->
+                <div id="routingTaskCard" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all duration-300">
+                    <!-- ייטען דינמית ע"י JS -->
+                    <span class="text-xs font-mono font-bold text-rose-600 bg-rose-50 px-3 py-1 rounded-full uppercase" id="taskTypeTag">סוג: כתיבת נתונים</span>
+                    <h4 class="font-bold text-slate-800 text-lg mt-3 mb-2" id="taskName">עדכון ביוגרפיה חדשה</h4>
+                    <p class="text-slate-500 text-xs leading-relaxed mb-4" id="taskDesc">המשתמש בוב שינה את הביוגרפיה שלו ורוצה לעדכן את השורה בטבלת Profiles.</p>
+                </div>
+
+                <!-- צד ימין: שרתי היעד לניתוב -->
+                <div class="flex flex-col gap-3 justify-center">
+                    <button class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl text-xs transition text-right flex justify-between items-center" onclick="routeQuery('primary')">
+                        <span>🗄️ שרת ראשי [Primary DB - כותב וקורא]</span>
+                        <span>──►</span>
+                    </button>
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl text-xs transition text-right flex justify-between items-center" onclick="routeQuery('replica')">
+                        <span>📑 שרת משוכפל [Read Replica - קורא בלבד]</span>
+                        <span>──►</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ציון והודעת פידבק -->
+            <div class="flex justify-between items-center mt-6 border-t pt-4 text-xs font-bold text-slate-600">
+                <span id="routingScoreLabel">ניקוד דיוק הניתוב: 0 / 3 (0%)</span>
+                <span id="routingFeedbackText" class="text-rose-500">בחרו לאן לנתב את המשימה למעלה...</span>
+            </div>
+        </div>
+
+        <div class="success-box">מדהים ביותר! השלמתם את פרק 7.5 בהצלחה אדירה! כעת אתם מבינים איך מעצבים ארכיטקטורה של מקצוענים: מונעים עומסים באמצעות Redis Caching, פותרים פקקי חיבורים עם PgBouncer, ומחלקים את העבודה בבטחה עם Read Replicas!</div>
+    </section>
+
+    </main>
+</div>
+
+<!-- ===================== כותרת תחתונה (FOOTER) ===================== -->
+<footer class="page-footer">
+    <p><strong>המדריך המלא למפתח מערכות ובסיסי נתונים מודרניים</strong></p>
+    <p>פרק 7.5 — להתמודד עם מיליון משתמשים: Caching, PgBouncer וחלוקת עומסים</p>
+    <div class="hearts">♥ ♥ ♥</div>
+    <p style="font-size:0.85rem;opacity:0.7;">כל הזכויות שמורות לקורס מפתחי מערכות מתקדמים, 2026.</p>
+</footer>
+
+<!-- ========== אפקטים קוליים וקוד דינמי ========== -->
+<script>
+    // ----------------------------------------------------
+    // מחולל קולות סינתטיים (Web Audio API Synthesizer)
+    // ----------------------------------------------------
+    let audioCtx = null;
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+
+    function playSynthSound(frequency, type = 'sine', duration = 0.1, sweepFreq = 0) {
+        initAudio();
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+
+        try {
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+
+            if (sweepFreq > 0) {
+                osc.frequency.exponentialRampToValueAtTime(sweepFreq, audioCtx.currentTime + duration);
+            }
+
+            gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        } catch (e) {
+            console.log("Audio failed to play", e);
+        }
+    }
+
+    function playBeep(presetName) {
+        if (presetName === 'connect') {
+            playSynthSound(587.33, 'sine', 0.12, 880); // D5 to A5
+        } else if (presetName === 'click') {
+            playSynthSound(600, 'sine', 0.04);
+        } else if (presetName === 'success') {
+            playSynthSound(523.25, 'sine', 0.15, 659.25); // C5 to E5
+        } else if (presetName === 'failure') {
+            playSynthSound(180, 'triangle', 0.3, 100);
+        } else if (presetName === 'flow') {
+            playSynthSound(440, 'triangle', 0.15, 660);
+        } else if (presetName === 'alarm') {
+            playSynthSound(220, 'sawtooth', 0.3, 110);
+        }
+    }
+
+    // ----------------------------------------------------
+    // חלק 2: סימולטור Caching
+    // ----------------------------------------------------
+    let cacheActive = false;
+    let cpuTemp = 35;
+
+    function toggleCacheState() {
+        cacheActive = !cacheActive;
+        playBeep('connect');
+
+        const label = document.getElementById('cacheStatusLabel');
+        const btn = document.getElementById('cacheToggleBtn');
+        const logs = document.getElementById('cacheLogBox');
+
+        if (cacheActive) {
+            label.innerText = "ON (שרת Redis מיירט שאילתות משוכפלות!)";
+            label.className = "text-xs font-bold text-emerald-600";
+            btn.innerText = "כבה Redis 🔴";
+            btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors";
+            logs.innerHTML += `<br><span style="color:#34d399;">[SYSTEM] Redis caching layer activated successfully. Monitoring fast buffers.</span>`;
+        } else {
+            label.innerText = "OFF (כל הבקשות מגיעות לדאטה-בייס)";
+            label.className = "text-xs font-bold text-rose-600";
+            btn.innerText = "הפעל Redis ⚡";
+            btn.className = "bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors";
+            logs.innerHTML += `<br><span style="color:#f43f5e;">[SYSTEM] Redis caching layer deactivated. Direct disk scan enabled.</span>`;
+        }
+        logs.scrollTop = logs.scrollHeight;
+    }
+
+    function simulateProfileRequest() {
+        const logs = document.getElementById('cacheLogBox');
+        const tempBar = document.getElementById('cpuTempBar');
+        const tempText = document.getElementById('cpuTempText');
+
+        playBeep('click');
+
+        if (cacheActive) {
+            // Cache Hit! Stays cool
+            logs.innerHTML += `<br><span style="color:#34d399;">[CACHE HIT] Requested profile: Alice. Loaded instantly from memory buffer (0.4ms)</span>`;
+            if (cpuTemp > 35) cpuTemp -= 2;
+        } else {
+            // Cache Miss! Runs hot
+            playBeep('alarm');
+            logs.innerHTML += `<br><span style="color:#f43f5e;">[CACHE MISS] Requested profile: Alice. PostgreSQL reading from disk (45ms)...</span>`;
+            cpuTemp += 10;
+        }
+
+        // Limit temperature
+        if (cpuTemp > 100) cpuTemp = 100;
+        if (cpuTemp < 35) cpuTemp = 35;
+
+        // Render Heat status
+        tempBar.style.width = `${cpuTemp}%`;
+        tempText.innerText = `${cpuTemp}°C`;
+
+        if (cpuTemp < 50) {
+            tempBar.className = "bg-emerald-500 h-6 rounded-full transition-all duration-500";
+            tempText.innerText += " (תקין וקריר 🟢)";
+        } else if (cpuTemp < 80) {
+            tempBar.className = "bg-amber-500 h-6 rounded-full transition-all duration-500";
+            tempText.innerText += " (עומס קל - מתחיל להתחמם 🟡)";
+        } else {
+            tempBar.className = "bg-rose-600 h-6 rounded-full transition-all duration-500 animate-pulse";
+            tempText.innerText += " (סכנה! עומס יתר, שגיאות איטיות מתרחשות! 🔴)";
+        }
+
+        logs.scrollTop = logs.scrollHeight;
+    }
+
+    function resetCacheSimulation() {
+        playBeep('click');
+        cpuTemp = 35;
+        document.getElementById('cpuTempBar').style.width = "30%";
+        document.getElementById('cpuTempText').innerText = "35°C (תקין וקריר 🟢)";
+        document.getElementById('cpuTempBar').className = "bg-emerald-500 h-6 rounded-full transition-all duration-500";
+        document.getElementById('cacheLogBox').innerHTML = `[מערכת] שרת PostgreSQL ושרת Redis מוכנים לעבודה...`;
+    }
+
+    function selectQuizAnswer(element, isCorrect, feedback) {
+        const feedbackEl = document.getElementById('quiz-feedback-1');
+        feedbackEl.style.display = 'block';
+        feedbackEl.innerText = feedback;
+        
+        if (isCorrect) {
+            playBeep('success');
+            feedbackEl.className = "quiz-feedback mt-4 font-bold text-emerald-800 block text-xs";
+            element.style.borderColor = '#16a34a';
+            element.style.backgroundColor = '#f0fdf4';
+        } else {
+            playBeep('failure');
+            feedbackEl.className = "quiz-feedback mt-4 font-bold text-rose-800 block text-xs";
+            element.style.borderColor = '#ef4444';
+            element.style.backgroundColor = '#fef2f2';
+        }
+    }
+
+    // ----------------------------------------------------
+    // חלק 4: סימולטור פקק חיבורים
+    // ----------------------------------------------------
+    let bouncerActive = false;
+    let openedConnections = 0;
+
+    function toggleBouncerState() {
+        bouncerActive = !bouncerActive;
+        playBeep('connect');
+
+        const label = document.getElementById('bouncerStatusLabel');
+        const btn = document.getElementById('bouncerToggleBtn');
+
+        if (bouncerActive) {
+            label.innerText = "ON (שער PgBouncer מנהל את החיבורים בתור!)";
+            label.className = "text-xs font-bold text-emerald-600";
+            btn.innerText = "כבה PgBouncer 🔴";
+            btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors";
+        } else {
+            label.innerText = "OFF (חיבור ישיר ללא ניהול תור)";
+            label.className = "text-xs font-bold text-rose-600";
+            btn.innerText = "הפעל PgBouncer 🛡️";
+            btn.className = "bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors";
+        }
+    }
+
+    function simulateBulkConnections() {
+        const label = document.getElementById('activeConnectionsLabel');
+        const emoji = document.getElementById('gateEmoji');
+        const title = document.getElementById('gateTitle');
+        const desc = document.getElementById('gateDesc');
+
+        playBeep('click');
+
+        if (bouncerActive) {
+            // Smoothly handles, limits physical connections to 2
+            openedConnections = 2;
+            playBeep('success');
+            label.innerText = `${openedConnections} / 5 חיבורים פתוחים (בטוח 🟢)`;
+            label.className = "text-xs font-mono font-bold text-emerald-600";
+            emoji.innerText = "🛡️🟢";
+            title.innerText = "PgBouncer ניתב את כולם דרך 2 חיבורים פתוחים בלבד!";
+            desc.innerText = "שאר 8 המשתמשים ביצעו את השאילתה במהירות ושוחררו. אין עומס!";
+            animateLines(2);
+        } else {
+            // Crashes, exceeds maximum limit of 5
+            openedConnections = 10;
+            playBeep('alarm');
+            label.innerText = `${openedConnections} / 5 חיבורים פתוחים (קריסה! 🔴)`;
+            label.className = "text-xs font-mono font-bold text-rose-600 animate-pulse";
+            emoji.innerText = "💥❌";
+            title.innerText = "שגיאת שרת: Too many connections !";
+            desc.innerText = "שרת פוסטגרס חרג ממכסת 5 החיבורים המותרים. 5 משתמשים נחסמו וקיבלו שגיאת מערכת!";
+            animateLines(5, true);
+        }
+    }
+
+    function animateLines(count, alert = false) {
+        // Simple visual line indicator animations
+        for (let i = 1; i <= 5; i++) {
+            const line = document.getElementById(`cline-${i}`);
+            if (i <= count) {
+                line.style.height = "120px";
+                line.style.backgroundColor = alert ? "#ef4444" : "#10b981";
+            } else {
+                line.style.height = "0px";
+            }
+        }
+    }
+
+    function resetBouncerSimulation() {
+        playBeep('click');
+        openedConnections = 0;
+        document.getElementById('activeConnectionsLabel').innerText = "0 / 5 חיבורים פתוחים (בטוח 🟢)";
+        document.getElementById('activeConnectionsLabel').className = "text-xs font-mono font-bold text-emerald-600";
+        document.getElementById('gateEmoji').innerText = "🟢";
+        document.getElementById('gateTitle').innerText = "השער פתוח ותקין";
+        document.getElementById('gateDesc').innerText = "אין פקקי תנועה או חיבורים חסומים כרגע.";
+        animateLines(0);
+    }
+
+    // ----------------------------------------------------
+    // חלק 6: סימולטור חלוקת עבודה
+    // ----------------------------------------------------
+    let routingTurn = 0;
+    let routingCorrectCount = 0;
+    const routingTasks = [
+        {
+            type: "סוג: כתיבת נתונים",
+            name: "עדכון ביוגרפיה חדשה",
+            desc: "המשתמש בוב שינה את הביוגרפיה שלו ורוצה לעדכן את השורה בטבלת Profiles.",
+            correct: "primary",
+            feedbackCorrect: "נכון מאוד! כתיבה או עדכון נתונים חייבים להתבצע בשרת הראשי (Primary) בלבד! 🟢",
+            feedbackIncorrect: "לא נכון! אסור לכתוב מידע חדש לשרת משוכפל (Read Replica). הם קוראים בלבד."
+        },
+        {
+            type: "סוג: קריאת נתונים",
+            name: "טעינת תמונת הפרופיל של אליס",
+            desc: "בוב פתח את כרטיסיית ההיכרויות של אליס וצריך למשוך את ה-Primary Photo שלה.",
+            correct: "replica",
+            feedbackCorrect: "מצוין! קריאת תמונה היא משימה קלאסית לשרת משוכפל (Read Replica), כדי להקל על העומס מהראשי! 🟢",
+            feedbackIncorrect: "לא מדויק. זה יעבוד בשרת הראשי, אך עדיף להעביר את זה לשרת המשוכפל כדי לחסוך משאבים!"
+        },
+        {
+            type: "סוג: כתיבת נתונים",
+            name: "רישום סוואיפ ימינה (לייק)",
+            desc: "אליס החליקה ימינה על בוב ורוצה לרשום שורה חדשה בטבלת User_Swipes.",
+            correct: "primary",
+            feedbackCorrect: "כל הכבוד! רישום סוואיפ חדש הוא כתיבת נתונים חדשים, ולכן הוא חייב להתבצע בשרת הראשי! 🟢",
+            feedbackIncorrect: "טעות! שרת משוכפל הוא Read-Only, אסור לכתוב אליו מידע חדש."
+        }
+    ];
+
+    function loadRoutingTurn() {
+        if (routingTurn >= routingTasks.length) {
+            document.getElementById('routingScoreLabel').innerText = "חלוקת המשימות הושלמה!";
+            document.getElementById('routingTaskCard').innerHTML = `
+                <span class="text-3xl block text-center mb-2">🎉🏆</span>
+                <h4 class="font-bold text-center text-slate-800 text-lg">ארכיטקטורת ניתוב תקינה!</h4>
+                <p class="text-slate-500 text-xs text-center leading-relaxed mt-2">חילקתם את העבודה בצורה מושלמת. המערכת מוכנה להתמודד עם עומסים של מיליוני משתמשים ללא קריסות!</p>
+            `;
+            return;
+        }
+
+        const data = routingTasks[routingTurn];
+        document.getElementById('taskTypeTag').innerText = data.type;
+        document.getElementById('taskName').innerText = data.name;
+        document.getElementById('taskDesc').innerText = data.desc;
+    }
+
+    function routeQuery(studentChoice) {
+        const data = routingTasks[routingTurn];
+        const feedbackEl = document.getElementById('routingFeedbackText');
+
+        if (studentChoice === data.correct) {
+            playBeep('success');
+            routingCorrectCount++;
+            feedbackEl.innerText = data.feedbackCorrect;
+            feedbackEl.style.color = "#10b981";
+        } else {
+            playBeep('failure');
+            feedbackEl.innerText = data.feedbackIncorrect;
+            feedbackEl.style.color = "#ef4444";
+        }
+
+        routingTurn++;
+        const scorePercentage = Math.round((routingCorrectCount / routingTasks.length) * 100);
+        document.getElementById('routingScoreLabel').innerText = `ניקוד דיוק הניתוב: ${routingCorrectCount} / ${routingTasks.length} (${scorePercentage}%)`;
+
+        setTimeout(() => {
+            feedbackEl.innerText = "";
+            loadRoutingTurn();
+        }, 2200);
+    }
+
+    // Init simulators
+    loadRoutingTurn();
+    resetBouncerSimulation();
+</script>
+
+</body>
+</html>
