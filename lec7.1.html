@@ -1,0 +1,1179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity Chatbot Laboratory 💬</title>
+  <!-- Premium Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Premium Light Mode Color Palette */
+    :root {
+      --bg-dark: #f8f6fc;
+      --bg-card: #ffffff;
+      --bg-inner: #f3effc;
+      --border-color: rgba(143, 0, 255, 0.12);
+      --border-glow: rgba(0, 163, 255, 0.4);
+      --primary: #7c00e6;
+      --primary-light: #a347ff;
+      --accent-cyan: #00a3ff;
+      --accent-pink: #e6006f;
+      --text-main: #2b233c;
+      --text-muted: #6b5f85;
+      --success: #00b33c;
+      --font-outfit: 'Outfit', sans-serif;
+      --font-code: 'Fira Code', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(143, 0, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 163, 255, 0.05) 0%, transparent 45%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: var(--font-outfit);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 1320px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+    }
+
+    /* Premium Light Mode Panels */
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 2.2rem;
+      box-shadow: 0 10px 30px rgba(124, 0, 230, 0.04);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--primary), var(--accent-pink));
+      opacity: 0.9;
+    }
+
+    .panel:hover {
+      border-color: rgba(124, 0, 230, 0.25);
+      box-shadow: 0 12px 35px rgba(124, 0, 230, 0.08);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      max-width: 850px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--primary);
+      background: linear-gradient(135deg, var(--primary) 20%, var(--accent-cyan) 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.6rem;
+      letter-spacing: -1px;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* Lesson Navigation bar */
+    .steps-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .step-tab {
+      background: rgba(124, 0, 230, 0.04);
+      border: 1px solid rgba(124, 0, 230, 0.08);
+      color: var(--text-muted);
+      padding: 0.9rem 0.5rem;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .step-tab.active {
+      background: var(--primary);
+      border-color: var(--primary-light);
+      color: white;
+      box-shadow: 0 6px 20px rgba(124, 0, 230, 0.35);
+    }
+
+    /* Mascot Speech */
+    .mascot-container {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      background: var(--bg-inner);
+      padding: 1.2rem;
+      border-radius: 20px;
+      border: 1px solid rgba(124, 0, 230, 0.1);
+      margin-bottom: 1.8rem;
+    }
+
+    .mascot-svg {
+      width: 75px;
+      height: 75px;
+      animation: float 4s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(2deg); }
+    }
+
+    .speech-bubble {
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--text-main);
+    }
+
+    .speech-bubble strong {
+      color: var(--primary);
+    }
+
+    /* Lesson Cards animations */
+    .guide-card-content {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .guide-card-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Practice exercise boxes */
+    .exercise-box {
+      background: #faf9ff;
+      border: 2px dashed rgba(124, 0, 230, 0.2);
+      border-radius: 18px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .exercise-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .screenshot-mock {
+      background: #120e20;
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.2rem;
+      margin: 1.2rem 0;
+      position: relative;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+    }
+
+    .screenshot-header {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.5rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot.red { background: #ff5f56; }
+    .dot.yellow { background: #ffbd2e; }
+    .dot.green { background: #27c93f; }
+
+    .screenshot-title {
+      font-family: var(--font-code);
+      font-size: 0.8rem;
+      color: #a69cb8;
+      margin-left: 0.5rem;
+    }
+
+    /* RIGHT PANEL: Chatbot Sandbox Viewport */
+    .chatbot-sandbox-container {
+      background: #ffffff;
+      border: 2px solid var(--border-color);
+      border-radius: 20px;
+      height: 340px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+
+    .chatbot-header {
+      background: #fcfbfe;
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .chatbot-status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    .chatbot-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .chatbot-messages {
+      flex: 1;
+      padding: 1.2rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      background: #FAF8FD;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 0.8rem 1rem;
+      border-radius: 16px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+
+    .message.bot {
+      background: #ffffff;
+      color: var(--text-main);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+      border: 1px solid var(--border-color);
+    }
+
+    .message.user {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chatbot-input-area {
+      background: #ffffff;
+      border-top: 1px solid var(--border-color);
+      padding: 0.8rem;
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .chatbot-input {
+      flex: 1;
+      background: #f7f6fc;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0.7rem 1rem;
+      color: var(--text-main);
+      font-family: var(--font-outfit);
+      outline: none;
+      font-size: 0.95rem;
+    }
+
+    .chatbot-input:focus {
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    .chatbot-send-btn {
+      background: var(--primary);
+      border: none;
+      color: white;
+      padding: 0 1.2rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    .chatbot-send-btn:hover {
+      background: var(--primary-light);
+    }
+
+    /* Terminal logs */
+    .console-box {
+      background: #141021;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 16px;
+      padding: 1.1rem;
+      height: 110px;
+      overflow-y: auto;
+      font-family: var(--font-code);
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+      margin-bottom: 1.5rem;
+    }
+
+    .console-line {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+      line-height: 1.4;
+    }
+
+    .console-line.info { color: #00d2ff; }
+    .console-line.action { color: #ff529c; }
+    .console-line.success { color: #3df363; }
+    .console-line.standard { color: #a49cb5; }
+
+    /* Active Tool display labels */
+    .tool-bar {
+      display: flex;
+      gap: 0.8rem;
+      background: #f6f3fc;
+      padding: 0.8rem;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .tool-icon {
+      padding: 0.6rem 0.8rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0.35;
+      transition: all 0.3s;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      flex: 1;
+      justify-content: center;
+      color: var(--text-muted);
+    }
+
+    .tool-icon.active {
+      opacity: 1;
+      transform: scale(1.03);
+    }
+
+    .tool-icon.reader.active {
+      background: rgba(0, 163, 255, 0.08);
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(0, 163, 255, 0.15);
+    }
+
+    .tool-icon.coder.active {
+      background: rgba(230, 0, 111, 0.08);
+      border: 1px solid var(--accent-pink);
+      color: var(--accent-pink);
+      box-shadow: 0 0 10px rgba(230, 0, 111, 0.15);
+    }
+
+    .tool-icon.commander.active {
+      background: rgba(0, 179, 60, 0.08);
+      border: 1px solid var(--success);
+      color: var(--success);
+      box-shadow: 0 0 10px rgba(0, 179, 60, 0.15);
+    }
+
+    /* Code highlights */
+    .code-viewer {
+      background: #141021;
+      border-radius: 16px;
+      padding: 1.2rem;
+      font-family: var(--font-code);
+      font-size: 0.8rem;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+      white-space: pre;
+      overflow-x: auto;
+      color: #dfd8eb;
+      line-height: 1.5;
+    }
+
+    .keyword { color: #ff79c6; font-weight: bold; }
+    .value { color: #f1fa8c; }
+    .variable { color: #50fa7b; }
+    .comment { color: #6272a4; font-style: italic; }
+
+    /* Inputs & Inputs elements */
+    .input-prompt {
+      width: 100%;
+      background: #ffffff;
+      border: 2px solid var(--border-color);
+      border-radius: 14px;
+      padding: 0.9rem 1.2rem;
+      color: var(--text-main);
+      font-family: var(--font-outfit);
+      font-size: 1rem;
+      font-weight: 500;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .input-prompt:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(124, 0, 230, 0.15);
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border: none;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 14px;
+      cursor: pointer;
+      font-family: var(--font-outfit);
+      font-weight: 800;
+      font-size: 1.05rem;
+      transition: all 0.2s;
+      width: 100%;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(124, 0, 230, 0.25);
+    }
+
+    .chatbot-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(243, 239, 252, 0.96);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.5s ease;
+      z-index: 10;
+    }
+
+    .chatbot-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(1.05);
+    }
+
+    /* Radio items and custom select forms */
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin: 0.8rem 0;
+    }
+
+    .radio-label {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .radio-label:hover {
+      background: var(--bg-inner);
+    }
+
+    .radio-label input {
+      accent-color: var(--primary);
+      width: 18px;
+      height: 18px;
+    }
+
+    .code-hack-input {
+      background: #231c38;
+      border: 1.5px solid var(--accent-pink);
+      border-radius: 6px;
+      color: #50fa7b;
+      font-family: var(--font-code);
+      font-size: 0.85rem;
+      padding: 2px 8px;
+      outline: none;
+      width: 140px;
+    }
+
+    .audio-switch {
+      background: rgba(124, 0, 230, 0.05);
+      border: 1px solid rgba(124, 0, 230, 0.12);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      color: var(--primary);
+    }
+
+    .audio-switch:hover {
+      background: rgba(124, 0, 230, 0.1);
+    }
+
+    .hint-bubble {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      font-style: italic;
+    }
+
+    .correct-badge {
+      display: inline-block;
+      background: var(--success);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 0.5rem;
+      animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.5); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Build Your Local Chatbot with Antigravity! 💬</h1>
+    <p class="subtitle">A hands-on coding classroom where YOU help instruct your AI developer agent!</p>
+  </header>
+
+  <div class="container">
+    
+    <!-- LEFT PANEL: Active detailed lesson & interactive student tasks -->
+    <div class="panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.4rem; color: var(--primary); font-weight: 800;">📖 Lesson Panel</h2>
+        <span class="audio-switch" onclick="toggleAudio()" id="audioToggle">🔊 Audio: ON</span>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="steps-nav">
+        <button class="step-tab active" onclick="showStep(1)" id="tab1">1. Prompt</button>
+        <button class="step-tab" onclick="showStep(2)" id="tab2">2. Plan Quiz</button>
+        <button class="step-tab" onclick="showStep(3)" id="tab3">3. Code Hack</button>
+        <button class="step-tab" onclick="showStep(4)" id="tab4">4. Live Chat</button>
+      </div>
+
+      <!-- Helper Mascot -->
+      <div class="mascot-container">
+        <svg class="mascot-svg" viewBox="0 0 100 100">
+          <rect x="25" y="25" width="50" height="40" rx="15" fill="#7c00e6" stroke="#a347ff" stroke-width="3" />
+          <rect x="32" y="32" width="36" height="20" rx="6" fill="#141021" />
+          <circle cx="42" cy="42" r="4" fill="#00a3ff">
+            <animate attributeName="r" values="4;1;4" dur="3s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="58" cy="42" r="4" fill="#00a3ff">
+            <animate attributeName="r" values="4;1;4" dur="3s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="36" cy="48" r="2" fill="#e6006f" />
+          <circle cx="64" cy="48" r="2" fill="#e6006f" />
+          <line x1="50" y1="25" x2="50" y2="12" stroke="#a347ff" stroke-width="4" stroke-linecap="round" />
+          <circle cx="50" cy="10" r="5" fill="#00a3ff" />
+          <ellipse cx="40" cy="72" rx="6" ry="3" fill="#e6006f" />
+          <ellipse cx="60" cy="72" rx="6" ry="3" fill="#e6006f" />
+        </svg>
+        <div class="speech-bubble" id="mascotSpeech">
+          Welcome to the Antigravity Code Lab! Today, you are the **Lead Engineer**. Instead of writing thousands of lines of code yourself, you will guide me (your AI agent) to build a beautiful local chatbot! Let's get started.
+        </div>
+      </div>
+
+      <!-- STEP 1: Write Custom Prompt -->
+      <div class="guide-card-content active" id="stepContent1">
+        <h3 style="color: var(--primary); margin-bottom: 0.8rem; font-size: 1.3rem;">Step 1: Write Your Agent Instructions ✍️</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+          To make an AI agent build an app, you need to write a clear **Instruction Prompt**. If your instructions are too vague (like <em>"make a bot"</em>), the AI won't know what styles, themes, or rules to build!
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+          <strong>Your Turn:</strong> Write the configuration prompt for your chatbot. For example, tell it what the chatbot should be named, what emoji it should use, and how it should speak! Try typing:
+          <br><em style="color: var(--primary); font-weight: 500;">"Create a space explorer bot named Cosmo using 🚀 emoji"</em>
+        </p>
+
+        <!-- STUDENT WORK: Write Prompt Input -->
+        <div class="exercise-box">
+          <div class="exercise-title">✍️ TASK: Write the prompt below!</div>
+          <input type="text" class="input-prompt" id="studentPromptInput" placeholder="Create a chatbot configured as [Bot Name] using [Emoji]..." oninput="parseStudentPrompt()">
+          <div class="hint-bubble" id="promptFeedback">Prompt Guidelines: Make sure to include the word "named" followed by your bot's name, and state which emoji it should use!</div>
+          <div id="promptValidationBadge"></div>
+        </div>
+
+        <button class="btn-action" id="btnNext1" onclick="goToStep2()" style="opacity: 0.5; pointer-events: none;">Unlock Step 2 🔒</button>
+      </div>
+
+      <!-- STEP 2: The Tool Quiz -->
+      <div class="guide-card-content" id="stepContent2">
+        <h3 style="color: var(--accent-pink); margin-bottom: 0.8rem; font-size: 1.3rem;">Step 2: Tool Management & Planning Quiz 📋</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+          Excellent! Now that I know your goal, I generated an **Implementation Plan**. But wait! To let me run, you must assign the correct **Agent Spy Tools** to their corresponding tasks. 
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+          AI agents use three magic tools:
+          <br>🔍 **Reader** (inspects existing codes), 🪄 **Coder** (rewrites variables), and 🚀 **Commander** (runs host servers).
+        </p>
+
+        <!-- STUDENT WORK: Drag/Select Quiz -->
+        <div class="exercise-box">
+          <div class="exercise-title">🧩 QUIZ: Match Tasks to the Correct Tool!</div>
+          
+          <div style="margin-bottom: 1rem;">
+            <label style="font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 0.4rem;">1. Which tool should I use to inspect template files already on your hard drive?</label>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="q1" value="reader" onchange="checkQuizAnswer()"> 🔍 Reader Spyglass</label>
+              <label class="radio-label"><input type="radio" name="q1" value="coder" onchange="checkQuizAnswer()"> 🪄 Coder Wand</label>
+              <label class="radio-label"><input type="radio" name="q1" value="commander" onchange="checkQuizAnswer()"> 🚀 Commander Rocket</label>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 0.4rem;">2. Which tool should I use to execute the command 'npm start' to run the chatbot server?</label>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="q2" value="reader" onchange="checkQuizAnswer()"> 🔍 Reader Spyglass</label>
+              <label class="radio-label"><input type="radio" name="q2" value="coder" onchange="checkQuizAnswer()"> 🪄 Coder Wand</label>
+              <label class="radio-label"><input type="radio" name="q2" value="commander" onchange="checkQuizAnswer()"> 🚀 Commander Rocket</label>
+            </div>
+          </div>
+          
+          <div id="quizValidationBadge"></div>
+        </div>
+
+        <button class="btn-action" id="btnNext2" onclick="goToStep3()" style="opacity: 0.5; pointer-events: none;">Unlock Step 3 🔒</button>
+      </div>
+
+      <!-- STEP 3: Complete Broken Code -->
+      <div class="guide-card-content" id="stepContent3">
+        <h3 style="color: var(--success); margin-bottom: 0.8rem; font-size: 1.3rem;">Step 3: Solve the Code Bug! 🪄</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+          Oh no! While I was trying to write the chatbot logic, the **Coder Wand** encountered a syntax bug in the configuration file! A keyword is missing from the JavaScript header.
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+          <strong>Your Turn:</strong> Look at the file editor on the right. In the active code window, find the blank box <span style="background:#141021; color:#ff79c6; padding:1px 6px; border-radius:4px; font-family:var(--font-code);">______</span> and write the correct JavaScript keyword to define the configuration variable.
+          <br><em style="font-size:0.85rem; color:var(--text-muted);">Hint: JavaScript uses the keyword <strong>const</strong> to create a variable that doesn't change!</em>
+        </p>
+
+        <!-- STUDENT WORK: Syntax bug hack -->
+        <div class="exercise-box">
+          <div class="exercise-title">💻 TASK: Type 'const' in the code blank on the right!</div>
+          <div style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.8rem;">
+            Find the box in the active editor on the right and type the word **const** to repair the source file!
+          </div>
+          <div id="codeHackFeedback"></div>
+        </div>
+
+        <button class="btn-action" id="btnNext3" onclick="triggerAgentBuild()" style="opacity: 0.5; pointer-events: none;">Compile Chatbot Server 🔒</button>
+      </div>
+
+      <!-- STEP 4: Live Interactive Chat -->
+      <div class="guide-card-content" id="stepContent4">
+        <h3 style="color: var(--primary-light); margin-bottom: 0.8rem; font-size: 1.3rem;">Step 4: Chat with Your New Assistant! 💬</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+          Success! The code is compiled and the server is fully online! Because you typed the prompts, solved the quiz, and resolved the syntax bugs, you successfully instructed Antigravity to build a gorgeous chatbot app.
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+          <strong>Your Turn:</strong> Type messages into the input box on the right. You can ask it details like *"hello"*, *"tell me a secret"*, or *"what is space like?"* and watch how your customized bot responds with custom text and synthesized sounds!
+        </p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANEL: Live simulated agent workspace and dynamic viewer -->
+    <div class="panel">
+      <h2 style="font-size: 1.4rem; margin-bottom: 1.2rem; color: var(--primary); font-weight: 800;">🪐 Agent Viewport</h2>
+
+      <!-- Chatbot Viewport box -->
+      <div class="chatbot-sandbox-container">
+        
+        <!-- Live status locked overlay -->
+        <div class="chatbot-overlay" id="chatbotOverlay">
+          <span style="font-size: 3.5rem; margin-bottom: 0.6rem;">🔒</span>
+          <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-weight:800;">Chatbot Build Offline</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); max-width: 280px; line-height: 1.5;">
+            Follow the steps on the left, solve the quizzes, and compile the code to launch the chat client!
+          </p>
+        </div>
+
+        <div class="chatbot-header">
+          <div class="chatbot-status-dot"></div>
+          <div class="chatbot-avatar" id="botAvatar">🤖</div>
+          <div>
+            <strong style="font-size: 0.95rem; color: var(--text-main);" id="botName">Pending Bot...</strong>
+            <p style="font-size: 0.75rem; color: var(--text-muted);" id="botStatus">Waiting for deployment</p>
+          </div>
+        </div>
+
+        <div class="chatbot-messages" id="chatMessages">
+          <div class="message bot">
+            System waiting for Coder tools compiles...
+          </div>
+        </div>
+
+        <div class="chatbot-input-area">
+          <input type="text" class="chatbot-input" id="chatInput" placeholder="Send a message to your custom bot..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+          <button class="chatbot-send-btn" onclick="sendChatMessage()">Send</button>
+        </div>
+
+      </div>
+
+      <!-- Active logs console -->
+      <div class="console-box" id="terminalLogs">
+        <div class="console-line standard"><span>ℹ</span> [SYSTEM] Waiting for Step 1 input parameters...</div>
+      </div>
+
+      <!-- Active spy tool labels -->
+      <h3 style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.6rem; font-weight: 600;">📡 Active Agent Tools</h3>
+      <div class="tool-bar">
+        <div class="tool-icon reader" id="toolReader">
+          <span>🔍</span> Reader
+        </div>
+        <div class="tool-icon coder" id="toolCoder">
+          <span>🪄</span> Coder
+        </div>
+        <div class="tool-icon commander" id="toolCommander">
+          <span>🚀</span> Commander
+        </div>
+      </div>
+
+      <!-- Editor config window -->
+      <h3 style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.6rem; font-weight: 600;">📂 Active File Editor</h3>
+      <div class="code-viewer" id="codeContent"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // ----------------------------------------------------
+    // Sound Generator (Web Audio API Synthesizer)
+    // ----------------------------------------------------
+    let audioMuted = false;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function toggleAudio() {
+      audioMuted = !audioMuted;
+      const btn = document.getElementById('audioToggle');
+      btn.innerText = audioMuted ? "🔇 Audio: OFF" : "🔊 Audio: ON";
+      playSynthSound(400, 'triangle', 0.05);
+    }
+
+    function playSynthSound(frequency, type = 'sine', duration = 0.1, sweepFreq = 0) {
+      if (audioMuted) return;
+      initAudio();
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+
+      try {
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+
+        if (sweepFreq > 0) {
+          osc.frequency.exponentialRampToValueAtTime(sweepFreq, audioCtx.currentTime + duration);
+        }
+
+        gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.log("Audio failed to play", e);
+      }
+    }
+
+    function playBeep(presetName) {
+      if (presetName === 'read') {
+        playSynthSound(520, 'sine', 0.08);
+      } else if (presetName === 'write') {
+        playSynthSound(780, 'triangle', 0.15, 1200);
+      } else if (presetName === 'run') {
+        playSynthSound(300, 'sawtooth', 0.25, 800);
+      } else if (presetName === 'click') {
+        playSynthSound(600, 'sine', 0.03);
+      } else if (presetName === 'success') {
+        playSynthSound(500, 'sine', 0.15, 900);
+      } else if (presetName === 'msg') {
+        playSynthSound(880, 'sine', 0.08, 440);
+      } else if (presetName === 'reply') {
+        playSynthSound(440, 'triangle', 0.15, 660);
+      }
+    }
+
+    // ----------------------------------------------------
+    // Terminal Log Controller
+    // ----------------------------------------------------
+    const terminal = document.getElementById('terminalLogs');
+
+    function logTerminal(text, type = 'standard') {
+      const line = document.createElement('div');
+      line.className = `console-line ${type}`;
+      
+      const promptSign = document.createElement('span');
+      promptSign.innerText = type === 'action' ? '🪄' : type === 'success' ? '✔' : 'ℹ';
+      line.appendChild(promptSign);
+      
+      const content = document.createElement('span');
+      content.innerHTML = text;
+      line.appendChild(content);
+      
+      terminal.appendChild(line);
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    // ----------------------------------------------------
+    // Student Work State Variables
+    // ----------------------------------------------------
+    let studentPromptVal = '';
+    let parsedBotName = 'My Robot';
+    let parsedEmoji = '🤖';
+    let codeHackSolved = false;
+
+    // Default template rendering
+    function renderCodeBlock(customKeyword = '______') {
+      const code = `// chatbot_config.js - Local Chatbot Configuration
+
+<span class="keyword">${customKeyword}</span> config = {
+  botName: <span class="value">"${parsedBotName}"</span>,
+  avatarEmoji: <span class="value">"${parsedEmoji}"</span>,
+  hostUrl: <span class="value">"http://localhost:3000"</span>,
+  replies: {
+    greeting: <span class="value">"BEEP BOOP! Active and online!"</span>,
+    secret: <span class="value">"I hide space treasures in stardust clouds!"</span>
+  }
+};`;
+      document.getElementById('codeContent').innerHTML = code;
+    }
+    renderCodeBlock();
+
+    // ----------------------------------------------------
+    // Step 1: Parsing Student custom prompt
+    // ----------------------------------------------------
+    function parseStudentPrompt() {
+      const input = document.getElementById('studentPromptInput');
+      const val = input.value.trim();
+      studentPromptVal = val;
+
+      const feedback = document.getElementById('promptFeedback');
+      const validationBadge = document.getElementById('promptValidationBadge');
+      const btn = document.getElementById('btnNext1');
+
+      if (val.length < 15) {
+        feedback.innerHTML = "Instruction needs to be a bit longer! Type out what your bot should be named!";
+        validationBadge.innerHTML = '';
+        btn.style.opacity = 0.5;
+        btn.style.pointerEvents = 'none';
+        btn.innerText = 'Unlock Step 2 🔒';
+        return;
+      }
+
+      // Simple regex extraction for bot name and emoji
+      // e.g. "named Cosmo"
+      const nameMatch = val.match(/named\s+([A-Za-z0-9]+)/i);
+      const emojiMatch = val.match(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF])/g);
+
+      if (nameMatch) {
+        parsedBotName = nameMatch[1];
+      } else {
+        parsedBotName = "Cosmo Bot";
+      }
+
+      if (emojiMatch) {
+        parsedEmoji = emojiMatch[0];
+      } else {
+        parsedEmoji = "🤖";
+      }
+
+      renderCodeBlock();
+
+      feedback.innerHTML = `Awesome! I parsed your parameters:<br>🤖 Bot Name: <strong>${parsedBotName}</strong><br>⭐ Emoji: <strong>${parsedEmoji}</strong>`;
+      validationBadge.innerHTML = `<span class="correct-badge">✔ Prompt Approved!</span>`;
+      btn.style.opacity = 1;
+      btn.style.pointerEvents = 'auto';
+      btn.innerText = 'Go to Step 2 ➡️';
+      
+      playBeep('success');
+    }
+
+    function goToStep2() {
+      showStep(2);
+      logTerminal(`[PROMPT] User prompt parsed. Bot name set to "${parsedBotName}". Ready to plan.`, 'info');
+    }
+
+    // ----------------------------------------------------
+    // Step 2: Plan Quiz logic
+    // ----------------------------------------------------
+    function checkQuizAnswer() {
+      const q1 = document.querySelector('input[name="q1"]:checked');
+      const q2 = document.querySelector('input[name="q2"]:checked');
+      
+      const badge = document.getElementById('quizValidationBadge');
+      const btn = document.getElementById('btnNext2');
+
+      if (!q1 || !q2) return;
+
+      if (q1.value === 'reader' && q2.value === 'commander') {
+        badge.innerHTML = `<span class="correct-badge">✔ Quiz Solved! You understand tool orchestration!</span>`;
+        btn.style.opacity = 1;
+        btn.style.pointerEvents = 'auto';
+        btn.innerText = 'Go to Step 3 ➡️';
+        playBeep('success');
+      } else {
+        badge.innerHTML = `<span style="background:var(--accent-pink); color:white; padding:2px 8px; border-radius:8px; font-size:0.75rem; font-weight:700; display:inline-block; margin-top:0.5rem;">❌ Incorrect combo! Try matching tasks carefully.</span>`;
+        btn.style.opacity = 0.5;
+        btn.style.pointerEvents = 'none';
+        btn.innerText = 'Unlock Step 3 🔒';
+      }
+    }
+
+    function goToStep3() {
+      showStep(3);
+      logTerminal(`[PLAN] Implementation plan approved. Moving to edit code source.`, 'success');
+      
+      // Inject input field in the editor block to make it highly immersive!
+      renderCodeBlock(`<input type='text' class='code-hack-input' id='codeHackInput' placeholder='Type const...' oninput='checkCodeHack()'>`);
+    }
+
+    // ----------------------------------------------------
+    // Step 3: Hack Broken Code
+    // ----------------------------------------------------
+    function checkCodeHack() {
+      const input = document.getElementById('codeHackInput');
+      const val = input.value.trim().toLowerCase();
+      
+      const feedback = document.getElementById('codeHackFeedback');
+      const btn = document.getElementById('btnNext3');
+
+      if (val === 'const') {
+        codeHackSolved = true;
+        feedback.innerHTML = `<span class="correct-badge">✔ Code Repaired! Variable successfully defined.</span>`;
+        btn.style.opacity = 1;
+        btn.style.pointerEvents = 'auto';
+        btn.innerText = 'Trigger Agent Build Tools 🚀';
+        
+        // Solidify code view with const highlighted
+        renderCodeBlock('<span class="keyword">const</span>');
+        playBeep('success');
+      } else {
+        feedback.innerHTML = `<span style="font-size:0.8rem; color:var(--accent-pink);">Keep trying! Type the JavaScript keyword 'const' in the editor block box!</span>`;
+        btn.style.opacity = 0.5;
+        btn.style.pointerEvents = 'none';
+        btn.innerText = 'Compile Chatbot Server 🔒';
+      }
+    }
+
+    // Agent building tools animation sequence
+    let compiling = false;
+    function triggerAgentBuild() {
+      if (compiling) return;
+      compiling = true;
+
+      document.getElementById('mascotSpeech').innerHTML = "Let's launch the compiled codebase! Watch the viewport tools and logs as I execute the host commands.";
+
+      // Reader
+      setTimeout(() => {
+        document.getElementById('toolReader').classList.add('active');
+        playBeep('read');
+        logTerminal(`[TOOL] Reader verifying repaired file structures...`, 'info');
+      }, 100);
+
+      // Coder
+      setTimeout(() => {
+        document.getElementById('toolReader').classList.remove('active');
+        document.getElementById('toolCoder').classList.add('active');
+        playBeep('write');
+        logTerminal(`[TOOL] Coder Wand sealing build hashes in chatbot_config.js...`, 'action');
+      }, 1100);
+
+      // Commander
+      setTimeout(() => {
+        document.getElementById('toolCoder').classList.remove('active');
+        document.getElementById('toolCommander').classList.add('active');
+        playBeep('run');
+        logTerminal(`[TOOL] Commander executing command <span class='keyword'>node server.js --bot="${parsedBotName}" --emoji="${parsedEmoji}"</span>...`, 'success');
+      }, 2100);
+
+      // Deploy online
+      setTimeout(() => {
+        document.getElementById('toolCommander').classList.remove('active');
+        logTerminal(`[SYSTEM] Local chatbot server running on host port 3000!`, 'success');
+
+        // Update Viewport bot profile
+        document.getElementById('botAvatar').innerText = parsedEmoji;
+        document.getElementById('botName').innerText = parsedBotName;
+        document.getElementById('botStatus').innerText = "Online Localhost";
+
+        // Reset chat messages
+        const chatbox = document.getElementById('chatMessages');
+        chatbox.innerHTML = `<div class="message bot">Hello! 🪐 I am <strong>${parsedBotName}</strong> ${parsedEmoji}, coded by Antigravity! Type a message below to talk to me!</div>`;
+
+        // Slide away lock overlay
+        document.getElementById('chatbotOverlay').classList.add('hidden');
+        
+        showStep(4);
+        document.getElementById('mascotSpeech').innerHTML = "Excellent work, Lead Engineer! The local chatbot is online. Start typing messages in the input box on the right!";
+        compiling = false;
+      }, 3200);
+    }
+
+    // ----------------------------------------------------
+    // Step 4: Chat logic
+    // ----------------------------------------------------
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim().toLowerCase();
+      if (!text) return;
+
+      input.value = '';
+      playBeep('msg');
+
+      const chatbox = document.getElementById('chatMessages');
+      
+      const userBubble = document.createElement('div');
+      userBubble.className = 'message user';
+      userBubble.innerText = text;
+      chatbox.appendChild(userBubble);
+      chatbox.scrollTop = chatbox.scrollHeight;
+
+      logTerminal(`[CHAT] User sent: "${text}"`, 'info');
+
+      // Bot typing simulation reply
+      setTimeout(() => {
+        const botBubble = document.createElement('div');
+        botBubble.className = 'message bot';
+
+        let reply = `BEEP BOOP! The stardust waves are strong! I am still learning, but you can configure more options in chatbot_config.js!`;
+
+        if (text.includes('hello') || text.includes('hi') || text.includes('hey')) {
+          reply = `Salutations! 🪐 It's awesome to talk to a brilliant developer. I am configured as ${parsedBotName}!`;
+        } else if (text.includes('secret') || text.includes('hide')) {
+          reply = `My secret? I hid a chest of magic galactic gems inside the space coordinates of stardust! 🌌 Keep it secret!`;
+        } else if (text.includes('space') || text.includes('star') || text.includes('moon')) {
+          reply = `Space is extremely cool, full of floating orbits and bouncy planetary rings!`;
+        } else if (text.includes('creator') || text.includes('who made you') || text.includes('developer')) {
+          reply = `A brilliant student developer and the Google Antigravity team assembled my local configs!`;
+        }
+
+        botBubble.innerText = reply;
+        chatbox.appendChild(botBubble);
+        chatbox.scrollTop = chatbox.scrollHeight;
+        
+        playBeep('reply');
+        logTerminal(`[CHAT] ${parsedBotName} replied: "${reply.slice(0, 30)}..."`, 'success');
+      }, 850);
+    }
+
+    // ----------------------------------------------------
+    // Step Navigation
+    // ----------------------------------------------------
+    function showStep(stepNum) {
+      playBeep('click');
+      
+      document.querySelectorAll('.step-tab').forEach(el => el.classList.remove('active'));
+      document.getElementById(`tab${stepNum}`).classList.add('active');
+
+      document.querySelectorAll('.guide-card-content').forEach(el => el.classList.remove('active'));
+      document.getElementById(`stepContent${stepNum}`).classList.add('active');
+
+      const speeches = {
+        1: "To start, type out your **Instruction Prompt** below! Tell me your bot's name and its favorite emoji.",
+        2: "Now, match the tasks to their correct **Agent Spy Tools**! Prove you know your tool orchestra to unlock the plan!",
+        3: "Oh no! There's a bug in our JavaScript variable declaration on the right! Type **const** inside the blank editor box to fix the syntax!",
+        4: "Brilliant! The server compiled. You are now chatting with a dynamic local chatbot that you helped code!"
+      };
+
+      document.getElementById('mascotSpeech').innerHTML = speeches[stepNum];
+      logTerminal(`[GUIDE] Navigated to Step ${stepNum}.`, 'info');
+    }
+  </script>
+</body>
+</html>
