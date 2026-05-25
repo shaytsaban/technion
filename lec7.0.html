@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 7.0 — Meet Google Antigravity: The Magical AI Agent Builder!</title>
+    
+    <!-- Tailwind CSS for modern fluid layouts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #faf9f6;
+            --card-bg: #ffffff;
+            --accent-color: #e11d48;
+            --accent-dark: #9f1239;
+            --accent-hover: #be123c;
+            --accent-soft: #ffe4e6;
+            --text-color: #334155;
+            --heading-color: #0f172a;
+            --muted-text: #64748b;
+            --border-color: #e2e8f0;
+            --gold-accent: #d4af37;
+            --gold-soft: #fdfaf2;
+            --success-bg: #dcfce7;
+            --success-text: #166534;
+            --warn-bg: #fef3c7;
+            --warn-text: #92400e;
+            --danger-bg: #fee2e2;
+            --danger-text: #991b1b;
+            --purple: #7c3aed;
+            --purple-soft: #f5f3ff;
+            --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+            --sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --mono: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: var(--sans);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.75;
+            margin: 0;
+            padding: 0;
+            font-size: 16.5px;
+        }
+
+        header.hero {
+            background: linear-gradient(135deg, #ffffff 0%, #fdfaf2 50%, #ffe4e6 100%);
+            border-bottom: 3px solid var(--gold-accent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .serif-font {
+            font-family: var(--serif);
+        }
+
+        .mono-font {
+            font-family: var(--mono);
+        }
+
+        /* ========== VISUAL SYSTEM PLAYGROUNDS ========== */
+        .interactive-container {
+            border: 2px dashed var(--gold-accent);
+            background-color: var(--gold-soft);
+        }
+
+        .simulator-step {
+            display: none;
+            animation: slideUp 0.4s ease-in-out forwards;
+        }
+        .simulator-step.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== FLOW PATH GRAPHICS ========== */
+        .visual-flow {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+        .visual-flow b { color: #f43f5e; }
+        .visual-flow i { color: #38bdf8; font-style: normal; }
+        .visual-flow span.glow { color: #eab308; text-shadow: 0 0 8px rgba(234,179,8,0.6); }
+
+        /* ========== TABS BROWSER SIMULATOR ========== */
+        .tabs-screen {
+            background-color: #1e293b;
+            border: 2px solid #334155;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .fake-tab {
+            background-color: #334155;
+            color: #f1f5f9;
+            animation: tabPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes tabPop {
+            0% { transform: translateY(10px) scale(0.8); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        /* ========== THEME MORPHER PREVIEWS ========== */
+        .morph-preview {
+            transition: all 0.5s ease-in-out;
+        }
+
+        /* ========== DRAG APP ANIMATIONS ========== */
+        .draggable-app {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .draggable-app:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .drop-target {
+            transition: all 0.3s ease;
+        }
+        .drop-target.hovered {
+            background-color: #d1fae5;
+            transform: scale(1.05);
+            border-color: #059669;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="hero py-20 px-6 text-center">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <span class="kicker inline-block text-xs font-bold tracking-widest text-rose-700 bg-rose-100 rounded-full px-4 py-1.5 mb-6 uppercase mono-font">
+            Google Antigravity Platform · Chapter 7.0
+        </span>
+        <h1 class="serif-font text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-tight tracking-tight mb-6">
+            Building Autonomous Chatbots with <br><span class="italic text-amber-500">Google Antigravity</span>
+        </h1>
+        <p class="text-slate-500 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
+            Forget standard coding! Today, you won't write hundreds of lines of python. We are taking an agent-first approach to deploy safe, loop-free local chatbot clients that connect securely with global Postgres databases.
+        </p>
+    </div>
+</header>
+
+<!-- ===================== LAYOUT ===================== -->
+<div class="layout max-w-7xl mx-auto px-6 py-12 gap-12 grid grid-cols-1 lg:grid-cols-[290px_1fr]">
+
+    <!-- ============ SIDEBAR TOC ============ -->
+    <aside class="toc-wrapper">
+        <nav class="toc sticky top-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-md max-h-[85vh] overflow-y-auto">
+            <h3 class="serif-font text-rose-900 font-bold uppercase tracking-wider text-sm mb-4">Learning Path</h3>
+            <ol class="space-y-1">
+                <li><a href="#antigravity" class="block text-slate-600 hover:text-rose-700 font-medium py-1">1. Meet Antigravity</a></li>
+                <li><a href="#dependency-hell" class="block text-slate-600 hover:text-rose-700 font-medium py-1">2. Missing Toy Bricks</a></li>
+                <li><a href="#wrapper" class="block text-slate-600 hover:text-rose-700 font-medium py-1">3. Directing the Agent</a></li>
+                <li><a href="#multitabs" class="block text-slate-600 hover:text-rose-700 font-medium py-1">4. The Clone Army Bug</a></li>
+                <li><a href="#dmg-installer" class="block text-slate-600 hover:text-rose-700 font-medium py-1">5. Desktop Packaging (DMG)</a></li>
+                <li><a href="#database" class="block text-slate-600 hover:text-rose-700 font-medium py-1">6. The Database Bridge</a></li>
+            </ol>
+        </nav>
+    </aside>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <main class="space-y-12">
+
+    <!-- ============================================== -->
+    <!-- SECTION 1 · MEET GOOGLE ANTIGRAVITY            -->
+    <!-- ============================================== -->
+    <section id="antigravity" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge"><span class="dot"></span> Section 1 · The Platform</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">Meet Google Antigravity (No Coding Required!)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            Analogy: Telling a magical builder what kind of playhouse you want vs. carrying every wooden plank yourself.
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            In standard development workshops, you have to find and fix syntax typos, manage server runtimes, and write standard socket connectors. But inside the <strong>Google Antigravity platform</strong>, everything is <strong>agent-first</strong>. 
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            You don't write code. Instead, you supply structured <strong>Prompts</strong> describing your application. The Antigravity agent allocates a temporary sandbox environment on your machine, reviews local code configurations, spins up local servers, and handles deployment details.
+        </p>
+
+        <div class="simple-card-grid my-8">
+            <div class="simple-card border border-slate-200">
+                <h4 class="font-bold text-rose-800 text-lg mb-2">What You Do 💡</h4>
+                <p class="text-slate-500 text-sm">Write your instructions (prompts) using simple, plain-English commands. Tell it exactly who your bot is and how its user interface should look.</p>
+            </div>
+            <div class="simple-card border border-slate-200">
+                <h4 class="font-bold text-rose-800 text-lg mb-2">What the Agent Handles 🦾</h4>
+                <p class="text-slate-500 text-sm">The agent reads your files, constructs folders, spins up local testing servers, checks for syntax errors, and validates that everything runs without crashing.</p>
+            </div>
+        </div>
+
+        <h3 class="serif-font font-bold text-slate-800 text-xl mt-8 mb-4">Interactive Sandbox Builder Playground</h3>
+        <p class="text-slate-600 mb-4 text-sm">
+            Click <strong>"Execute Plan"</strong> to watch the Antigravity agent process, build, and test your chatbot client interface inside a local virtual playground:
+        </p>
+
+        <!-- Sandbox Simulation Screen -->
+        <div class="interactive-container p-6 rounded-2xl mb-6">
+            
+            <div id="sim-step-1" class="simulator-step active">
+                <span class="text-3xl block mb-2">📝 Step 1: Submit Your Agent Instructions</span>
+                <p class="text-slate-600 text-sm mb-4">You declare your target configuration file using standard words. You request a premium luxury light-themed chat bubble featuring Cobra Chadstone's dating advice.</p>
+                <div class="visual-flow p-4 rounded-xl font-mono text-xs">
+                    <i># Input System Prompt:</i><br>
+                    "Configure premium luxury gold theme (#d4af37). AI coach must be direct, use high-octane emojis (🦅, 🔥), and order 100 pushups."
+                </div>
+            </div>
+
+            <div id="sim-step-2" class="simulator-step">
+                <span class="text-3xl block mb-2">⚙️ Step 2: Agent Sandbox Allocation</span>
+                <p class="text-slate-600 text-sm mb-4">The Google Antigravity Agent receives your configuration. It allocates a tiny sandbox workspace, structures files, and reviews dependency alignments.</p>
+                <div class="visual-flow p-4 rounded-xl font-mono text-xs">
+                    [Antigravity System-Allocation] <span class="glow">Processing Workspace Directories...</span><br>
+                    - App Directory: `usr/local/temp_chat/`<br>
+                    - Tasks: Build `index.html` ──► Verify Local Port Bindings ──► Launch Stasis Engine.
+                </div>
+            </div>
+
+            <div id="sim-step-3" class="simulator-step">
+                <span class="text-3xl block mb-2">🔨 Step 3: Local Sandboxed Verification</span>
+                <p class="text-slate-600 text-sm mb-4">The agent spins up a local server inside its private bubble tent, tests the connection ports, and ensures the chatbot runs smoothly with 0 compilation errors.</p>
+                <div class="visual-flow p-4 rounded-xl font-mono text-xs">
+                    - Deploying sandbox framework... <i>Success!</i><br>
+                    - Running local health checks on port 5000... <span class="glow">Active (0 errors returned!)</span>
+                </div>
+            </div>
+
+            <div id="sim-step-4" class="simulator-step">
+                <span class="text-3xl block mb-2">🚀 Step 4: Standalone Application Released!</span>
+                <p class="text-slate-600 text-sm mb-4">Success! The agent outputs a single loop-free application bundle and automatically launches exactly one browser window displaying your luxury chat client!</p>
+                <div class="visual-flow p-4 rounded-xl font-mono text-xs bg-emerald-50 text-slate-900 border border-emerald-300">
+                    <b class="text-emerald-700">Cobra Academy Chatbot is online! 🦅🔥</b><br>
+                    "Quit complaining and do 100 gravel pushups! Ask me how to escape the matrix!"
+                </div>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="sim-navigation flex justify-between items-center mt-6">
+                <button class="sim-btn" id="prev-btn" onclick="moveSimulator(-1)">Back</button>
+                <button class="sim-btn" id="next-btn" onclick="moveSimulator(1)">Execute Plan ⚙️</button>
+                <div class="flex gap-2">
+                    <span class="nav-dot active w-3.5 h-3.5 rounded-full cursor-pointer bg-rose-700" onclick="jumpToSimulator(1)"></span>
+                    <span class="nav-dot w-3.5 h-3.5 rounded-full cursor-pointer bg-slate-300" onclick="jumpToSimulator(2)"></span>
+                    <span class="nav-dot w-3.5 h-3.5 rounded-full cursor-pointer bg-slate-300" onclick="jumpToSimulator(3)"></span>
+                    <span class="nav-dot w-3.5 h-3.5 rounded-full cursor-pointer bg-slate-300" onclick="jumpToSimulator(4)"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Pop Quiz Section -->
+        <div class="quiz-box rounded-2xl border border-emerald-300 p-6 my-6 bg-emerald-50 text-emerald-950">
+            <div class="quiz-title font-bold text-lg mb-2 flex items-center gap-2">💡 Quick Pop Quiz!</div>
+            <p class="mb-4">How does the Antigravity Agent ensure your chatbot application doesn't crash before it launches?</p>
+            <div class="quiz-option p-4 rounded-xl border bg-white cursor-pointer hover:bg-slate-50 mb-2 transition" onclick="selectQuizAnswer(this, false, 'Oops! That would take forever. The agent has a faster way.')">
+                A) It asks you to run it and report back any errors manually.
+            </div>
+            <div class="quiz-option p-4 rounded-xl border bg-white cursor-pointer hover:bg-slate-50 transition" onclick="selectQuizAnswer(this, true, 'Spot on! The agent runs a quick automated sandbox verification loop, making sure everything is perfectly configured before running your browser.')">
+                B) It executes automated verification checks inside a sandboxed local environment first.
+            </div>
+            <div class="quiz-feedback mt-4 font-bold text-emerald-800 hidden" id="quiz-feedback-1">Feedback loading...</div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 2 · THE LEGOS ASSEMBLY LINE            -->
+    <!-- ============================================== -->
+    <section id="dependency-hell" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge"><span class="dot"></span> Section 2 · Environment Protection</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">The Missing Toy Bricks Trap (Dependencies)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            Analogy: Blueprinting a LEGO castle vs. having the actual bag of gold bricks in your room.
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            In our last lecture, many students ran into instant crashes with bright red error messages. They saw names like <code>ModuleNotFound</code> or <code>ImportError</code>. Let's explain why this happens using a simple analogy:
+        </p>
+
+        <div class="important-note border-l-4 border-rose-500 bg-rose-50 p-6 rounded-r-xl my-6 text-rose-950">
+            <strong>The Toy Box Analogy:</strong>
+            <p class="mt-2 text-sm">Your application files are blueprint maps for building a toy fortress. If you don't have the physical toy blocks installed on your bedroom shelf, you can't construct it! In software development, those physical blocks are called <strong>dependencies</strong>.</p>
+        </div>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            In Google Antigravity, while our agent handles the heavy lifting, your local system still needs its package libraries (like the <code>google-antigravity</code> SDK) loaded inside a secure sandbox called a <strong>Virtual Environment (venv)</strong>.
+        </p>
+
+        <div class="important-note border-l-4 border-amber-500 bg-amber-50 p-6 rounded-r-xl my-6 text-amber-950">
+            <strong>What is a Virtual Environment (venv)?</strong>
+            <p class="mt-2 text-sm">Think of a virtual environment as a <strong>Private Workspace Tent</strong> inside your computer. It prevents different projects from mixing up their libraries. It acts as a clean, fresh space where only your current project's toy bricks are kept.</p>
+        </div>
+
+        <h3 class="serif-font font-bold text-slate-800 text-xl mt-8 mb-4">Interactive Dependency Constructor</h3>
+        <p class="text-slate-600 mb-4 text-sm">
+            Toggle the package bricks below to load them into your environment, and test if the combination can successfully boot the chatbot:
+        </p>
+
+        <!-- Package Playground -->
+        <div class="interactive-container p-6 rounded-2xl mb-6 bg-amber-50 border-amber-300">
+            <p class="font-bold text-slate-700 text-sm mb-3">Load your package library bricks:</p>
+            <div class="flex flex-wrap gap-3 mb-6">
+                <button class="sim-btn bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm transition" id="pkg-flask" onclick="togglePackage('flask')">➕ Flask Server</button>
+                <button class="sim-btn bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm transition" id="pkg-antigravity" onclick="togglePackage('antigravity')">➕ google-antigravity SDK</button>
+                <button class="sim-btn bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm transition" id="pkg-torch" onclick="togglePackage('torch')">➕ PyTorch Calculator</button>
+            </div>
+
+            <div class="visual-flow p-4 rounded-xl font-mono text-xs" id="assembly-output">
+                System Status: [Waiting for package assembly...]
+            </div>
+
+            <button class="sim-btn mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl hidden transition" id="pkg-boot-btn" onclick="testAssembledPackages()">
+                Boot Application Server 🚀
+            </button>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 3 · DIRECTING YOUR FIRST AGENT         -->
+    <!-- ============================================== -->
+    <section id="wrapper" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge"><span class="dot"></span> Section 3 · Prompt Control</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">Prompting: Directing Your Agentic Assistant</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            Analogy: Programming an electronic dog with raw binary codes vs. blowing a whistle to guide its actions.
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            Under the hood, the Google Antigravity Agent doesn't need hardcoded interface files. It evaluates a master guideline called the <strong>System Prompt</strong>.
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            A System Prompt represents the fundamental rules of conduct. It defines how the agent acts, what language it uses, and what visual luxury theme it should apply to your application window.
+        </p>
+
+        <h3 class="serif-font font-bold text-slate-800 text-xl mt-8 mb-4">Interactive Theme and Prompt Morpher</h3>
+        <p class="text-slate-600 mb-4 text-sm">
+            Select one of our suggested system prompts below to watch the Antigravity Agent dynamically redesign our chatbot landing page, instructions, and asset links in real-time:
+        </p>
+
+        <!-- Prompts Selector and Visual Preview -->
+        <div class="interactive-container p-6 rounded-2xl mb-6 bg-rose-50 border-rose-300">
+            <div class="prompt-bubble p-4 border border-rose-300 rounded-xl bg-white cursor-pointer hover:bg-amber-50 mb-3 relative transition" onclick="morphBotTheme('topg')">
+                <span class="prompt-badge bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full absolute -top-2.5 right-4 uppercase">Elite Coach</span>
+                <strong>Prompt: "You are Cobra Chadstone"</strong><br>
+                <span class="text-slate-500 text-xs">"Speak aggressively, call out beta habits, use emojis (🦅, 🔥), and order 100 pushups."</span>
+            </div>
+
+            <div class="prompt-bubble p-4 border border-rose-300 rounded-xl bg-white cursor-pointer hover:bg-emerald-50 mb-3 relative transition" onclick="morphBotTheme('mermaid')">
+                <span class="prompt-badge bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full absolute -top-2.5 right-4 uppercase">Magic Mermaid</span>
+                <strong>Prompt: "You are Marina the Coral Mermaid"</strong><br>
+                <span class="text-slate-500 text-xs">"Speak in gentle, ocean-themed words. Use aquatic emojis (🧜‍♀️, 🐚) and offer beach dates."</span>
+            </div>
+
+            <div class="prompt-bubble p-4 border border-rose-300 rounded-xl bg-white cursor-pointer hover:bg-violet-50 mb-4 relative transition" onclick="morphBotTheme('space')">
+                <span class="prompt-badge bg-violet-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full absolute -top-2.5 right-4 uppercase">Cosmic Sage</span>
+                <strong>Prompt: "You are Nebula the Galactic Explorer"</strong><br>
+                <span class="text-slate-500 text-xs">"Speak with cosmic wisdom. Match star signs, use celestial emojis (🪐, 💫), and trace galaxy compatibility."</span>
+            </div>
+
+            <!-- Dynamic Preview Container -->
+            <div class="morph-preview p-6 rounded-xl border border-slate-200 bg-white text-center shadow-sm" id="morphing-box">
+                <span class="text-6xl block mb-2" id="morph-avatar">🦅</span>
+                <h4 class="font-bold text-slate-800 text-lg mb-1" id="morph-title">THE COBRA ACADEMY</h4>
+                <p class="text-slate-500 text-sm italic mb-4" id="morph-text">Select a prompt above to watch the Antigravity Agent remodel the screen!</p>
+                <div class="visual-flow p-4 rounded-xl font-mono text-left text-xs" id="morph-plan-details">
+                    No prompt loaded yet. Click a bubble above to begin.
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-box rounded-2xl border border-violet-300 p-6 my-6 bg-violet-50 text-violet-950">
+            <div class="quiz-title font-bold text-lg mb-2 flex items-center gap-2">💡 Quick Pop Quiz!</div>
+            <p class="mb-4">Why do we call these rules the "System Prompt" instead of standard chat messages?</p>
+            <div class="quiz-option p-4 rounded-xl border bg-white cursor-pointer hover:bg-slate-50 mb-2 transition" onclick="selectQuizAnswer2(this, true, 'Exactly! System prompts are structural rule sets that act as physical walls for the AI persona, ensuring it never goes out of character.')">
+                A) It represents the master rules of conduct that the AI agent cannot violate.
+            </div>
+            <div class="quiz-option p-4 rounded-xl border bg-white cursor-pointer hover:bg-slate-50 transition" onclick="selectQuizAnswer2(this, false, 'Not quite. User prompts are normal questions, but System prompts are master rule limits.')">
+                B) It's just a cosmetic title for normal user messages.
+            </div>
+            <div class="quiz-feedback mt-4 font-bold text-violet-800 hidden" id="quiz-feedback-2">Feedback loading...</div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 4 · THE CONFUSED CLONE ARMY            -->
+    <!-- ============================================== -->
+    <section id="multitabs" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge"><span class="dot"></span> Section 4 · Process Locks</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">The Confused Clone Army Bug</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            Analogy: A master kitchen chef cloning himself to chop carrots, but every clone tries to build a new restaurant.
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            Once you compile your python script into a standalone desktop application (so you can share it as a double-clickable program with friends), a severe operational system conflict can occur.
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            To calculate complex machine-learning math fast, background libraries spawn parallel workers (sub-processes) to speed up equations. In a packaged app environment, every spawned background worker tries to re-run your startup script.
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            Without a process check, every calculation worker thinks: <em>"I am the main program!"</em> and spawns a new web server and opens a new browser tab. Within seconds, your desktop opens hundreds of browser tabs in an endless loop, crashing the operating system.
+        </p>
+
+        <div class="simple-card-grid my-8">
+            <div class="simple-card border border-rose-200 bg-rose-50/50">
+                <h4 class="font-bold text-rose-800 text-lg mb-2">The Copycat Clone Loop 🤖</h4>
+                <p class="text-slate-500 text-sm">Background workers re-execute application startup files. Each worker starts its own web host and spawns new duplicate windows endlessly.</p>
+            </div>
+            <div class="simple-card border border-emerald-200 bg-emerald-50/50">
+                <h4 class="font-bold text-emerald-800 text-lg mb-2">The "Boss Guard" (Process Lock) 🛡️</h4>
+                <p class="text-slate-500 text-sm">We query the executing thread name. Only the primary <code>MainProcess</code> is permitted to trigger the browser launch and web server. Workers are blocked!</p>
+            </div>
+        </div>
+
+        <h3 class="serif-font font-bold text-slate-800 text-xl mt-8 mb-4">Clone Army Battle Simulator</h3>
+        <p class="text-slate-600 mb-4 text-sm">
+            Launch our simulated macOS server below to watch the background thread clone army spawn infinite duplicate browser tabs, and then apply the <strong>Process Guard</strong> to restore stasis:
+        </p>
+
+        <!-- Visual Tab Simulator -->
+        <div class="tabs-screen rounded-2xl p-5 mb-6 min-h-[220px]">
+            <div class="flex justify-between items-center mb-4 text-xs font-mono text-slate-400">
+                <span class="font-bold text-sky-400">macOS Process Manager</span>
+                <span class="font-bold text-rose-400" id="tab-count-label">Browser Tabs Open: 0</span>
+            </div>
+            <div class="tab-bar flex flex-wrap gap-2" id="simulator-tab-bar">
+                <!-- Spawning clone tabs will dynamically load here -->
+            </div>
+            <div class="flex flex-wrap gap-3 mt-6">
+                <button class="sim-btn bg-rose-600 hover:bg-rose-700 text-white" onclick="simulateTabLoop()">Spawn Clone Army Bug 💥</button>
+                <button class="sim-btn bg-emerald-600 hover:bg-emerald-700 text-white" onclick="applyBossGuard()">Apply Boss Guard 🛡️</button>
+                <button class="sim-btn bg-slate-600 hover:bg-slate-700 text-white" onclick="resetTabSimulation()">Reset Simulator</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 5 · COMPILING YOUR INSTALLER (DMG)     -->
+    <!-- ============================================== -->
+    <section id="dmg-installer" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge"><span class="dot"></span> Section 5 · Desktop Distribution</span>
+        <h2>Shipping Your Toy Box (DMG Installers)</h2>
+        <p class="subtitle">Analogy: Shipping a raw plastic manufacturing facility to your friend vs. shipping a finished castle in a gift-wrapped box.</p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            Your users don't know how to navigate terminals, open command lines, or verify virtual environments. We must package our entire python agent workspace, local assets, and model engines into a single, beautifully wrapped installation package: a <strong>DMG disk image</strong>.
+        </p>
+
+        <div class="simple-card-grid my-8">
+            <div class="simple-card border border-slate-200">
+                <h4 class="font-bold text-slate-800 text-lg mb-2">Standalone App (.app) 📁</h4>
+                <p class="text-slate-500 text-sm">A unified macOS bundle directory. It looks like a single executable icon on macOS, but it is actually a nested folder containing the python script, assets, and the local AI runtime.</p>
+            </div>
+            <div class="simple-card border border-slate-200">
+                <h4 class="font-bold text-slate-800 text-lg mb-2">Installer Disk Image (.dmg) 📦</h4>
+                <p class="text-slate-500 text-sm">A virtual disk package. When double-clicked, it mounts on the user's desktop, displaying a clean workspace that directs them to drag the app into their Applications folder.</p>
+            </div>
+        </div>
+
+        <h3 class="serif-font font-bold text-slate-800 text-xl mt-8 mb-4">Interactive macOS Installer Playground</h3>
+        <p class="text-slate-600 mb-4 text-sm">
+            Simulate the native macOS installation experience! Drag the **Cobra Academy App** icon on the left directly into the **Applications Folder** target on the right to complete the installation safely:
+        </p>
+
+        <!-- Drag and Drop Mini-Game -->
+        <div class="installer-screen bg-slate-100 border-2 border-slate-300 rounded-2xl p-8 relative">
+            <p class="font-bold text-slate-700 text-sm mb-2">Cobra Academy Installation Mount</p>
+            <p class="text-slate-400 text-xs mb-6">Drag the app icon into the applications shortcut target:</p>
+
+            <div class="drag-zone flex justify-around items-center gap-6 flex-wrap">
+                <div class="draggable-app bg-white border border-slate-400 rounded-2xl p-4 w-32 cursor-grab shadow-sm flex flex-col items-center" id="app-icon" draggable="true" ondragstart="dragApp(event)">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f172a'/><text x='50' y='65' font-size='45' text-anchor='middle'>🦅</text></svg>" alt="Cobra Icon" class="w-16 h-16 mb-2">
+                    <span class="text-xs font-bold text-slate-800">Cobra App</span>
+                </div>
+
+                <div class="text-2xl font-bold text-slate-400">───►</div>
+
+                <div class="drop-target border-3 border-dashed border-emerald-500 bg-emerald-50/50 rounded-2xl p-6 w-40 min-h-[140px] flex flex-col justify-center items-center" id="drop-target" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropApp(event)">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e2e8f0' stroke='%2310b981' stroke-width='4' stroke-dasharray='8'/><text x='50' y='65' font-size='40' text-anchor='middle'>📂</text></svg>" alt="Applications" class="w-16 h-16 mb-2">
+                    <span class="text-xs font-bold text-emerald-700">Applications</span>
+                </div>
+            </div>
+            <p id="installer-success-text" class="mt-6 font-bold text-emerald-600 hidden">✨ Cobra Academy installed perfectly into /Applications! Ready to launch cleanly!</p>
+        </div>
+
+        <div class="troubleshoot-box border-l-4 border-amber-500 bg-amber-50 p-6 rounded-r-xl my-6 text-amber-950">
+            <h4>Bypassing Apple Gatekeeper Sandbox blocks (Quarantine)</h4>
+            <p class="text-sm mt-1">Because you compiled this app locally, macOS gatekeeper will block its initial execution. Do not panic! Open your terminal, paste this command, and press enter to manually unblock your application:</p>
+            <pre class="bg-white border border-slate-300 p-3 rounded-lg font-mono text-xs mt-3 text-slate-800"><code>xattr -cr /Applications/Cobra\ Academy.app</code></pre>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 6 · THE SECRET DATABASE TUNNEL         -->
+    <!-- ============================================== -->
+    <section id="database" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge"><span class="dot"></span> Section 6 · Datastores</span>
+        <h2>How Local Apps Talk to Central Databases</h2>
+        <p class="subtitle">Analogy: Sending a message through the royal gatekeeper vs. letting a peasant walk directly into the king's treasure vault with the keys.</p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            Even though your compiled desktop application runs its AI calculations locally inside the user's laptop memory at $0 recurring cost, how do we synchronize conversation records, swipe directions, and match results back to our global Postgres tables?
+        </p>
+
+        <div class="important-note border-l-4 border-violet-500 bg-violet-50 p-6 rounded-r-xl my-6 text-violet-950">
+            <strong>The Security Constraint:</strong>
+            <p class="mt-2 text-sm">Standalone client-side applications should <strong>never</strong> connect directly to your SQL database. If your packaged `.dmg` app contained your master database connection password, any user could decompile your code, extract your key, and delete your entire database! Clients must talk to databases through intermediate API services.</p>
+        </div>
+
+        <h3 class="serif-font font-bold text-slate-800 text-xl mt-8 mb-4">Interactive Database Sync Pipeline</h3>
+        <p class="text-slate-600 mb-4 text-sm">
+            Trigger a chat message to watch the asynchronous synchronization pipe write conversation rows into our centralized SQL datastore:
+        </p>
+
+        <!-- Dynamic Sync visual tracker -->
+        <div class="interactive-container p-6 rounded-2xl mb-6 bg-violet-50 border-violet-300">
+            <div class="flex justify-center mb-6">
+                <button class="sim-btn bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-6 rounded-xl transition shadow" onclick="runSyncSimulation()">
+                    Trigger Chat Sync 💬
+                </button>
+            </div>
+
+            <div id="sync-step-1" class="flex items-center gap-4 p-4 border border-violet-200 bg-white rounded-xl mb-3 opacity-30 transition-all duration-300 transform">
+                <span class="text-3xl">📱</span>
+                <div>
+                    <strong class="text-slate-800 block">Step 1: Local Session Processing</strong>
+                    <span class="text-slate-500 text-xs">User chats with local "Cobra Agent" in client memory. No internet latency.</span>
+                </div>
+            </div>
+
+            <div id="sync-step-2" class="flex items-center gap-4 p-4 border border-violet-200 bg-white rounded-xl mb-3 opacity-30 transition-all duration-300 transform">
+                <span class="text-3xl">☁️</span>
+                <div>
+                    <strong class="text-slate-800 block">Step 2: Asynchronous REST API Post</strong>
+                    <span class="text-slate-500 text-xs">The background thread pushes the prompt and reply as clean JSON to our Central API server.</span>
+                </div>
+            </div>
+
+            <div id="sync-step-3" class="flex items-center gap-4 p-4 border border-violet-200 bg-white rounded-xl opacity-30 transition-all duration-300 transform">
+                <span class="text-3xl">🗄️</span>
+                <div>
+                    <strong class="text-slate-800 block">Step 3: Central Database Writes</strong>
+                    <span class="text-slate-500 text-xs">The Central server securely writes the conversation record into our global SQL <code>messages</code> table.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="success-box">Outstanding job! You started with zero-knowledge, and you have successfully completed Chapter 7.0. You now understand how agentic workspaces work, how standalone packages operate safely on macOS, and how local clients bridge back to Postgres datastores!</div>
+    </section>
+
+    </main>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="page-footer">
+    <p><strong>The Complete Database Developer&apos;s Lecture Companion</strong></p>
+    <p>Chapter 7.0 — Building Chatbots with Google Antigravity, Standalone macOS Apps &amp; Database Integration</p>
+    <div class="hearts">♥ ♥ ♥</div>
+    <p style="font-size:0.85rem;opacity:0.7;">Designed to teach scalable, reliable systems design simply.</p>
+</footer>
+
+<!-- ========== INTERACTIVE ELEMENT SCRIPTS ========== -->
+<script>
+    // Simulator State (Section 1)
+    let currentSimStep = 1;
+    const totalSimSteps = 4;
+
+    function moveSimulator(direction) {
+        currentSimStep += direction;
+        if (currentSimStep > totalSimSteps) currentSimStep = 1;
+        if (currentSimStep < 1) currentSimStep = totalSimSteps;
+        updateSimulatorUI();
+    }
+
+    function jumpToSimulator(step) {
+        currentSimStep = step;
+        updateSimulatorUI();
+    }
+
+    function updateSimulatorUI() {
+        // Update Step Views
+        for (let i = 1; i <= totalSimSteps; i++) {
+            const stepEl = document.getElementById(`sim-step-${i}`);
+            if (i === currentSimStep) {
+                stepEl.classList.add('active');
+            } else {
+                stepEl.classList.remove('active');
+            }
+        }
+        // Update Dots
+        const dots = document.querySelectorAll('.nav-dot');
+        dots.forEach((dot, index) => {
+            if (index + 1 === currentSimStep) {
+                dot.classList.add('active');
+                dot.classList.replace('bg-slate-300', 'bg-rose-700');
+            } else {
+                dot.classList.remove('active');
+                dot.classList.replace('bg-rose-700', 'bg-slate-300');
+            }
+        });
+    }
+
+    // Quiz Widget Script
+    function selectQuizAnswer(element, isCorrect, feedback) {
+        const feedbackEl = document.getElementById('quiz-feedback-1');
+        feedbackEl.style.display = 'block';
+        feedbackEl.innerText = feedback;
+        
+        if (isCorrect) {
+            feedbackEl.className = "quiz-feedback mt-4 font-bold text-emerald-800 block";
+            element.style.borderColor = '#16a34a';
+            element.style.backgroundColor = '#f0fdf4';
+        } else {
+            feedbackEl.className = "quiz-feedback mt-4 font-bold text-rose-800 block";
+            element.style.borderColor = '#ef4444';
+            element.style.backgroundColor = '#fef2f2';
+        }
+    }
+
+    // Dependency Assembly Playground (Section 2)
+    let selectedPackages = {
+        flask: false,
+        antigravity: false,
+        torch: false
+    };
+
+    function togglePackage(pkgId) {
+        selectedPackages[pkgId] = !selectedPackages[pkgId];
+        const btn = document.getElementById(`pkg-${pkgId}`);
+        const output = document.getElementById('assembly-output');
+        const bootBtn = document.getElementById('pkg-boot-btn');
+
+        if (selectedPackages[pkgId]) {
+            btn.classList.replace('bg-slate-600', 'bg-emerald-600');
+            btn.innerText = btn.innerText.replace('➕', '✓');
+        } else {
+            btn.classList.replace('bg-emerald-600', 'bg-slate-600');
+            btn.innerText = btn.innerText.replace('✓', '➕');
+        }
+
+        // Evaluate State
+        let active = [];
+        if (selectedPackages.flask) active.push('Flask Web Server');
+        if (selectedPackages.antigravity) active.push('google-antigravity SDK');
+        if (selectedPackages.torch) active.push('PyTorch Heavy Tensor Calculator');
+
+        if (active.length > 0) {
+            output.innerHTML = `Loaded Packages: [ ${active.join(' + ')} ]<br><span style="color:#eab308;">System checked. Click boot to initialize environment.</span>`;
+            bootBtn.classList.remove('hidden');
+        } else {
+            output.innerText = 'System Status: [Waiting for package assembly...]';
+            bootBtn.classList.add('hidden');
+        }
+    }
+
+    function testAssembledPackages() {
+        const output = document.getElementById('assembly-output');
+        
+        if (selectedPackages.flask && selectedPackages.antigravity && selectedPackages.torch) {
+            output.innerHTML = `<span style="color:#10b981; font-weight:700;">🟢 SUCCESS! Server fully assembled.</span> All core blocks are locked in. The agent is online on port 5000 with active ML subprocesses!`;
+        } else if (selectedPackages.flask && selectedPackages.antigravity && !selectedPackages.torch) {
+            output.innerHTML = `<span style="color:#ef4444; font-weight:700;">🔴 WARNING: ModuleNotFoundError!</span><br>The environment tried to boot, but PyTorch was missing. We cannot run local machine learning without a tensor calculator!`;
+        } else if (!selectedPackages.flask && selectedPackages.antigravity && selectedPackages.torch) {
+            output.innerHTML = `<span style="color:#ef4444; font-weight:700;">🔴 WARNING: Server Failed to Host!</span><br>We loaded the AI model, but there is no Flask Web Server brick to host our localhost chat interface!`;
+        } else {
+            output.innerHTML = `<span style="color:#ef4444; font-weight:700;">🔴 CRASHED: Core libraries missing!</span><br>Make sure both Google Antigravity and Flask packages are loaded into memory first.`;
+        }
+    }
+
+    // Theme Morpher Playground (Section 3)
+    function morphBotTheme(theme) {
+        const box = document.getElementById('morphing-box');
+        const avatar = document.getElementById('morph-avatar');
+        const title = document.getElementById('morph-title');
+        const text = document.getElementById('morph-text');
+        const plan = document.getElementById('morph-plan-details');
+
+        if (theme === 'topg') {
+            box.style.backgroundColor = '#ffffff';
+            box.style.borderColor = '#d4af37';
+            avatar.innerText = '🦅';
+            title.innerText = 'THE COBRA ACADEMY';
+            title.style.color = '#0f172a';
+            text.innerText = '"Stop complaining and do 100 pushups! Escaping the matrix is won by grinding and building absolute frame control!"';
+            plan.innerHTML = `<i>Agent Plan:</i> Set theme to Luxury Gold (#d4af37) ──► Apply high-energy Cobra system instruction matrix rules ──► Success.`;
+        } else if (theme === 'mermaid') {
+            box.style.backgroundColor = '#ecfdf5';
+            box.style.borderColor = '#10b981';
+            avatar.innerText = '🧜‍♀️';
+            title.innerText = 'MARINA\'S CORAL BAY';
+            title.style.color = '#065f46';
+            text.innerText = '"Welcome to the oceanic dating reef! Let\'s plan a gentle sunset beach walk with some seashells and ocean-themed snacks!"';
+            plan.innerHTML = `<i>Agent Plan:</i> Set theme to Oceanic Aqua (#10b981) ──► Apply gentle Coral Mermaid instructions rules ──► Success.`;
+        } else if (theme === 'space') {
+            box.style.backgroundColor = '#f5f3ff';
+            box.style.borderColor = '#7c3aed';
+            avatar.innerText = '🪐';
+            title.innerText = 'NEBULA\'S GALACTIC COMPASS';
+            title.style.color = '#4c1d95';
+            text.innerText = '"I have consulted the stars. Your stellar alignment indicates high compatibility with fiery star signs. Let\'s check the charts!"';
+            plan.innerHTML = `<i>Agent Plan:</i> Set theme to Cosmic Purple (#7c3aed) ──► Apply starry Cosmic Sage relationships instructions ──► Success.`;
+        }
+    }
+
+    function selectQuizAnswer2(element, isCorrect, feedback) {
+        const feedbackEl = document.getElementById('quiz-feedback-2');
+        feedbackEl.style.display = 'block';
+        feedbackEl.innerText = feedback;
+        
+        if (isCorrect) {
+            feedbackEl.className = "quiz-feedback mt-4 font-bold text-violet-800 block";
+            element.style.borderColor = '#7c3aed';
+            element.style.backgroundColor = '#f5f3ff';
+        } else {
+            feedbackEl.className = "quiz-feedback mt-4 font-bold text-rose-800 block";
+            element.style.borderColor = '#ef4444';
+            element.style.backgroundColor = '#fef2f2';
+        }
+    }
+
+    // Tab Loop Simulator (Section 4)
+    let tabCount = 0;
+    let tabInterval = null;
+    let bossGuardApplied = false;
+
+    function simulateTabLoop() {
+        resetTabSimulation();
+        const tabContainer = document.getElementById('simulator-tab-bar');
+        const countLabel = document.getElementById('tab-count-label');
+        bossGuardApplied = false;
+
+        tabInterval = setInterval(() => {
+            if (tabCount >= 18) {
+                clearInterval(tabInterval);
+                countLabel.innerText = "System Blocked! 💥 Browser Crashed due to Clone Army!";
+                countLabel.style.color = "#ef4444";
+                return;
+            }
+            tabCount++;
+            countLabel.innerText = `Browser Tabs Open: ${tabCount}`;
+            const newTab = document.createElement('div');
+            newTab.className = 'fake-tab bg-slate-700 text-slate-100 text-xs px-3 py-1.5 rounded flex items-center gap-2';
+            newTab.style.display = 'flex';
+            newTab.innerHTML = `<span>🤖 Worker Thread Tab ${tabCount}</span>`;
+            tabContainer.appendChild(newTab);
+        }, 200);
+    }
+
+    function applyBossGuard() {
+        clearInterval(tabInterval);
+        resetTabSimulation();
+        bossGuardApplied = true;
+        const tabContainer = document.getElementById('simulator-tab-bar');
+        const countLabel = document.getElementById('tab-count-label');
+        
+        countLabel.innerText = "Boss Guard Active: Exactly 1 Tab Open! 🛡️";
+        countLabel.style.color = "#10b981";
+
+        const singleTab = document.createElement('div');
+        singleTab.className = 'fake-tab bg-emerald-600 text-slate-100 text-xs px-3 py-1.5 rounded flex items-center gap-2';
+        singleTab.style.display = 'flex';
+        singleTab.innerHTML = `<span>🛡️ Cobra App (Main Process)</span>`;
+        tabContainer.appendChild(singleTab);
+    }
+
+    function resetTabSimulation() {
+        clearInterval(tabInterval);
+        tabCount = 0;
+        const tabContainer = document.getElementById('simulator-tab-bar');
+        tabContainer.innerHTML = '';
+        const countLabel = document.getElementById('tab-count-label');
+        countLabel.innerText = "Browser Tabs Open: 0";
+        countLabel.style.color = "#f43f5e";
+    }
+
+    // Drag and Drop (Section 5)
+    function dragApp(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+        const target = document.getElementById('drop-target');
+        target.classList.add('hovered');
+    }
+
+    function dragLeave(ev) {
+        const target = document.getElementById('drop-target');
+        target.classList.remove('hovered');
+    }
+
+    function dropApp(ev) {
+        ev.preventDefault();
+        const target = document.getElementById('drop-target');
+        target.classList.remove('hovered');
+        const data = ev.dataTransfer.getData("text");
+        const app = document.getElementById(data);
+        
+        // Hide original icon, morph the target icon
+        app.style.display = 'none';
+        target.style.backgroundColor = '#d1fae5';
+        target.style.borderColor = '#10b981';
+        target.innerHTML = `<img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f172a'/><text x='50' y='65' font-size='45' text-anchor='middle'>🦅</text></svg>" style="width:60px; margin-bottom:8px;"><span style="font-size:0.8rem; font-weight:700; color:#065f46;">Installed!</span>`;
+        
+        document.getElementById('installer-success-text').classList.remove('hidden');
+    }
+
+    // Sync Simulation (Section 6)
+    function runSyncSimulation() {
+        const step1 = document.getElementById('sync-step-1');
+        const step2 = document.getElementById('sync-step-2');
+        const step3 = document.getElementById('sync-step-3');
+
+        // Reset
+        step1.style.opacity = '0.3';
+        step2.style.opacity = '0.3';
+        step3.style.opacity = '0.3';
+        step1.style.transform = 'scale(1)';
+        step2.style.transform = 'scale(1)';
+        step3.style.transform = 'scale(1)';
+
+        setTimeout(() => {
+            step1.style.opacity = '1';
+            step1.style.transform = 'scale(1.05)';
+        }, 100);
+
+        setTimeout(() => {
+            step1.style.transform = 'scale(1)';
+            step2.style.opacity = '1';
+            step2.style.transform = 'scale(1.05)';
+        }, 1000);
+
+        setTimeout(() => {
+            step2.style.transform = 'scale(1)';
+            step3.style.opacity = '1';
+            step3.style.transform = 'scale(1.05)';
+        }, 2000);
+        
+        setTimeout(() => {
+            step3.style.transform = 'scale(1)';
+        }, 2800);
+    }
+</script>
+
+</body>
+</html>
