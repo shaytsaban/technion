@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>פרק 7.2 — חיפוש סמנטי (Vector Search), מסדי נתונים וקטוריים ותקשורת בזמן אמת</title>
+    
+    <!-- Tailwind CSS לעיצוב מהיר, תוסס ונוזלי -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&family=Platypi:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #faf9f6;
+            --card-bg: #ffffff;
+            --accent-color: #7c3aed; /* סגול מלכותי */
+            --accent-dark: #5b21b6;
+            --accent-hover: #6d28d9;
+            --accent-soft: #f5f3ff;
+            --text-color: #334155;
+            --heading-color: #0f172a;
+            --muted-text: #64748b;
+            --border-color: #e2e8f0;
+            --gold-accent: #d4af37;
+            --gold-soft: #fdfaf2;
+            --success-bg: #dcfce7;
+            --success-text: #166534;
+            --warn-bg: #fef3c7;
+            --warn-text: #92400e;
+            --danger-bg: #fee2e2;
+            --danger-text: #991b1b;
+            --cyan-accent: #06b6d4;
+            --cyan-soft: #ecfeff;
+            --serif: 'Platypi', Georgia, serif;
+            --sans: 'Assistant', -apple-system, BlinkMacSystemFont, sans-serif;
+            --mono: 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: var(--sans);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.75;
+            margin: 0;
+            padding: 0;
+            font-size: 16.5px;
+        }
+
+        header.hero {
+            background: linear-gradient(135deg, #ffffff 0%, #fdfaf2 50%, #f5f3ff 100%);
+            border-bottom: 4px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .serif-font {
+            font-family: var(--serif);
+        }
+
+        .mono-font {
+            font-family: var(--mono);
+        }
+
+        /* ========== תיבות אינטראקטיביות ========== */
+        .interactive-container {
+            border: 2px dashed var(--accent-color);
+            background-color: var(--accent-soft);
+        }
+
+        .simulator-step {
+            display: none;
+            animation: slideUp 0.4s ease-in-out forwards;
+        }
+        .simulator-step.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== תרשימי זרימה צבעוניים ========== */
+        .visual-flow {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+        .visual-flow b { color: #f43f5e; }
+        .visual-flow i { color: #38bdf8; font-style: normal; }
+        .visual-flow span.glow { color: #eab308; text-shadow: 0 0 8px rgba(234,179,8,0.6); }
+
+        /* ========== פלוטר וקטורי מונפש ========== */
+        .vector-grid {
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            border: 2px solid #1e293b;
+            position: relative;
+        }
+        .vector-dot {
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* ========== עוזר אישי מונפש (Mascot) ========== */
+        .mascot-container {
+            border: 1px solid rgba(124, 58, 237, 0.15);
+        }
+        .mascot-svg {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(2deg); }
+        }
+
+        /* ========== כרטיסיות אינטראקטיביות ========== */
+        .simple-card {
+            transition: all 0.25s ease-in-out;
+        }
+        .simple-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 6px 18px rgba(124, 58, 237, 0.08);
+        }
+
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        .quiz-option:hover {
+            border-color: var(--accent-color);
+            background-color: var(--accent-soft);
+            transform: translateX(-4px);
+        }
+
+        /* ========== סימולטור פלאפון מונפש ========== */
+        .phone-mockup {
+            border: 12px solid #0f172a;
+            border-radius: 36px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            background-color: #faf9f6;
+            overflow: hidden;
+            position: relative;
+        }
+        .phone-notch {
+            width: 110px;
+            height: 18px;
+            background-color: #0f172a;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            margin: 0 auto;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        /* ========== גלי תקשורת מונפשים ========== */
+        .signal-wave {
+            animation: pulseWave 2s infinite;
+        }
+        @keyframes pulseWave {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===================== כותרת ראשית (HEADER) ===================== -->
+<header class="hero py-20 px-6 text-center">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <span class="kicker inline-block text-xs font-bold tracking-widest text-purple-800 bg-purple-100 rounded-full px-4 py-1.5 mb-6 uppercase mono-font">
+            מסדי נתונים מתקדמים · פרק 7.2
+        </span>
+        <h1 class="serif-font text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-tight tracking-tight mb-6">
+            חיפוש סמנטי, וקטורים<br><span class="italic text-purple-600">ותקשורת בזמן אמת!</span>
+        </h1>
+        <p class="text-slate-500 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
+            ברוכים הבאים לפרק 7.2! היום נעשה שדרוג מטורף לדאטה-בייס שלנו: נלמד איך למצוא התאמות חכמות לפי תחומי עניין ומשפטים שלמים (ולא רק לפי גיל או עיר), ונבנה מערכת דחיפת הודעות מהירה בזמן אמת ללא צורך בריענון!
+        </p>
+    </div>
+</header>
+
+<!-- ===================== מערך דף (LAYOUT) ===================== -->
+<div class="layout max-w-7xl mx-auto px-6 py-12 gap-12 grid grid-cols-1 lg:grid-cols-[290px_1fr]">
+
+    <!-- ============ סרגל ניווט צידי ============ -->
+    <aside class="toc-wrapper">
+        <nav class="toc sticky top-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-md max-h-[85vh] overflow-y-auto">
+            <h3 class="serif-font text-purple-900 font-bold uppercase tracking-wider text-sm mb-4">צעדי הלמידה</h3>
+            <ol class="space-y-1">
+                <li><a href="#vector-intro" class="block text-slate-600 hover:text-purple-700 font-medium py-1">1. מה זה חיפוש סמנטי?</a></li>
+                <li><a href="#vector-plotter" class="block text-slate-600 hover:text-purple-700 font-medium py-1">2. מקרן הווקטורים החי</a></li>
+                <li><a href="#semantic-matchmaker" class="block text-slate-600 hover:text-purple-700 font-medium py-1">3. שדכן התחושות של AI</a></li>
+                <li><a href="#code-challenge" class="block text-slate-600 hover:text-purple-700 font-medium py-1">4. אתגר קוד ה-pgvector</a></li>
+                <li><a href="#realtime-intro" class="block text-slate-600 hover:text-purple-700 font-medium py-1">5. תקשורת חיה (WebSockets)</a></li>
+                <li><a href="#websocket-playground" class="block text-slate-600 hover:text-purple-700 font-medium py-1">6. סימולטור הצ'אט המהיר</a></li>
+            </ol>
+        </nav>
+    </aside>
+
+    <!-- ============ תוכן מרכזי ============ -->
+    <main class="space-y-12">
+
+    <!-- ============================================== -->
+    <!-- SECTION 1 · THE SEMANTIC SEARCH CONCEPT        -->
+    <!-- ============================================== -->
+    <section id="vector-intro" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-purple-600 text-white"><span class="dot"></span> חלק 1 · קונספט</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">מה זה חיפוש סמנטי (Vector Search)?</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            הסבר פשוט: איך מלמדים את הדאטה-בייס להבין מילים נרדפות ותחושות בטן?
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            עד עכשיו, כשחיפשנו מידע בדאטה-בייס, השתמשנו במילים מדויקות. למשל, חיפשנו פרופילים שכתוב בהם <code>city = 'Tel Aviv'</code>. אבל מה קורה אם משתמש מחפש מישהו ש**"אוהב את הים והגלים"** ומשתמש אחר כתב בביוגרפיה שלו **"מדריך גלישה בנשמה"**? 
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            שאילתת SQL רגילה תיכשל כי המילים לא זהות! בשביל זה המציאו את <strong>החיפוש הסמנטי</strong>.
+        </p>
+
+        <!-- עוזר אישי מונפש - Sentry Bot -->
+        <div class="mascot-container flex items-center gap-6 bg-purple-50/50 p-6 rounded-2xl border border-purple-100 mb-8">
+            <svg class="mascot-svg w-20 h-20 flex-shrink-0" viewBox="0 0 100 100">
+                <rect x="20" y="20" width="60" height="50" rx="18" fill="#7c3aed" stroke="#a78bfa" stroke-width="3" />
+                <rect x="28" y="28" width="44" height="24" rx="8" fill="#0f172a" />
+                <circle cx="40" cy="40" r="5" fill="#a78bfa">
+                    <animate attributeName="r" values="5;2;5" dur="2s" repeatCount="indefinite" />
+                </circle>
+                <circle cx="60" cy="40" r="5" fill="#a78bfa">
+                    <animate attributeName="r" values="5;2;5" dur="2s" repeatCount="indefinite" />
+                </circle>
+                <line x1="50" y1="20" x2="50" y2="8" stroke="#a78bfa" stroke-width="3" />
+                <circle cx="50" cy="6" r="4" fill="#d4af37" />
+                <path d="M 45 60 Q 50 64 55 60" stroke="#a78bfa" stroke-width="3" stroke-linecap="round" fill="none" />
+            </svg>
+            <div class="speech-bubble text-slate-700 text-sm leading-relaxed">
+                <strong>היי חברים!</strong> שאלתם את עצמכם פעם איך בינה מלאכותית "מבינה" משפטים? היא הופכת כל משפט לרשימה ארוכה של מספרים שנקראת <strong>וקטור (Vector Embedding)</strong>. המספרים האלו מייצגים נקודה על מפה ענקית. משפטים עם משמעות דומה יקבלו מיקום קרוב מאוד על המפה! בואו נראה איך זה עובד בעיניים:
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+            <div class="p-6 border border-slate-200 rounded-xl bg-slate-50/50 simple-card">
+                <h4 class="font-bold text-purple-800 text-lg mb-2">חיפוש מילות מפתח רגיל 🔍</h4>
+                <p class="text-slate-500 text-sm">מחפש התאמה מדויקת של אותיות. אם חיפשת "כלב" ומישהו כתב "גור חמוד" — הדאטה-בייס לא ימצא אותו.</p>
+            </div>
+            <div class="p-6 border border-slate-200 rounded-xl bg-slate-50/50 simple-card">
+                <h4 class="font-bold text-purple-800 text-lg mb-2">חיפוש סמנטי וקטורי 🧠</h4>
+                <p class="text-slate-500 text-sm">מבין את המשמעות מאחורי המילים. הוא יודע ש"חתול", "גור פרוותי" ו"מילקי החתולה שלי" קשורים לאותו נושא, ומקרב אותם בדאטה-בייס.</p>
+            </div>
+        </div>
+    </section>
+
+<!-- ========== STREAMING_CHUNK:Rendering the Vector Plotter Playground... ========== -->
+    <!-- ============================================== -->
+    <!-- SECTION 2 · THE VECTOR PLOTTER                 -->
+    <!-- ============================================== -->
+    <section id="vector-plotter" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-purple-600 text-white"><span class="dot"></span> חלק 2 · פלייגראונד אינטראקטיבי</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">מקרן הווקטורים האינטראקטיבי</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: כתבו ביוגרפיה קצרה, ראו איך הבינה המלאכותית מתרגמת אותה לווקטור, ואיפה היא נוחתת על המפה הדו-ממדית!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            כדי לפשט את זה: דמיינו מפה שבה הציר האופקי מייצג <strong>"אהבה לטבע מול עירוניות"</strong>, והציר האנכי מייצג <strong>"ספורט מול רביצה בבית"</strong>.
+            כשאתם כותבים טקסט, הבוט יחשב את המיקום המתאים לו וימקם אותו כנקודה על המפה (וקטור).
+        </p>
+
+        <!-- סימולטור פלוטר וקטורים -->
+        <div class="interactive-container p-6 rounded-2xl mb-8">
+            <h3 class="serif-font font-bold text-slate-800 text-sm mb-4">📍 גזרו וקטור ומקמו אותו על המפה:</h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- שמאל: קלט משתמש -->
+                <div class="flex flex-col justify-between space-y-4">
+                    <div>
+                        <label class="block text-slate-700 text-xs font-bold uppercase mb-2">בחרו או כתבו ביוגרפיה לפרופיל:</label>
+                        <textarea id="vectorBioInput" class="w-full bg-white border-2 border-slate-200 focus:border-purple-500 rounded-xl p-3 text-xs outline-none transition font-sans" rows="3">מתה על כלבים, טיפוס הרים מטורף, ומחפשת שותף לקמפינג תחת הכוכבים 🏕️🐾</textarea>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-3 rounded-lg text-xs transition" onclick="setVectorPreset('nature')">🏕️ פרופיל טבע</button>
+                        <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-3 rounded-lg text-xs transition" onclick="setVectorPreset('city')">🏙️ פרופיל עירוני</button>
+                        <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-3 rounded-lg text-xs transition" onclick="setVectorPreset('couch')">🍕 פרופיל עצלן</button>
+                    </div>
+
+                    <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow" onclick="projectVector()">
+                        גזרו וקטור ומקמו על המפה! 🚀
+                    </button>
+
+                    <div class="visual-flow p-3 rounded-xl font-mono text-[10px] min-h-[80px]" id="vectorValueOutput">
+                        ווקטור: [ממתין ללחיצה...]
+                    </div>
+                </div>
+
+                <!-- ימין: מפת וקטורים גרפית -->
+                <div class="flex flex-col items-center">
+                    <span class="text-xs text-slate-500 font-bold mb-2">מפת המשיכה הדו-ממדית (2D Embedding Space)</span>
+                    <div class="vector-grid w-full h-[240px] rounded-xl relative overflow-hidden">
+                        
+                        <!-- לייבלים של צירים -->
+                        <span class="absolute top-2 left-1/2 -translate-x-1/2 text-[9px] text-emerald-400 font-bold uppercase">ספורטיבי 🏃‍♂️</span>
+                        <span class="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] text-rose-400 font-bold uppercase">אוהב בית 🍕</span>
+                        <span class="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] text-cyan-400 font-bold uppercase rotate-90">עירוני 🏙️</span>
+                        <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] text-amber-400 font-bold uppercase -rotate-90">חובב טבע 🏕️</span>
+
+                        <!-- נקודות קיימות -->
+                        <!-- אליס (טבע וספורט) -->
+                        <div class="absolute w-3 h-3 bg-amber-400 rounded-full vector-dot" style="left: 20%; top: 20%;" title="אליס - טבע וספורט">
+                            <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-[8px] bg-slate-900 text-white px-1 rounded whitespace-nowrap">אליס</span>
+                        </div>
+                        <!-- בוב (עירוני ועצלן) -->
+                        <div class="absolute w-3 h-3 bg-cyan-400 rounded-full vector-dot" style="left: 70%; top: 70%;" title="בוב - עירוני ועצלן">
+                            <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-[8px] bg-slate-900 text-white px-1 rounded whitespace-nowrap">בוב</span>
+                        </div>
+
+                        <!-- הנקודה החדשה של המשתמש -->
+                        <div id="newVectorDot" class="absolute w-4 h-4 bg-purple-500 border-2 border-white rounded-full vector-dot hidden" style="left: 50%; top: 50%;">
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px] bg-purple-600 text-white font-bold px-1.5 py-0.5 rounded whitespace-nowrap animate-bounce">אתה!</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- ========== STREAMING_CHUNK:Rendering the Semantic Matchmaker Simulator... ========== -->
+    <!-- ============================================== -->
+    <!-- SECTION 3 · SEMANTIC MATCHMAKING               -->
+    <!-- ============================================== -->
+    <section id="semantic-matchmaker" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-purple-600 text-white"><span class="dot"></span> חלק 3 · שדכן הבינה המלאכותית</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">שדכן התחושות של AI (Semantic Distance)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: בחרו משפט של משתמש אנונימי וראו איך האלגוריתם מחשב מרחק קוסינוס (Cosine Distance) כדי למצוא לו התאמה מושלמת!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            בבסיסי נתונים וקטוריים (כמו תוסף <strong>pgvector</strong> לפוסטגרס), אנחנו לא משתמשים בסימן שוויון רגיל (<code>=</code>). במקום זאת, אנחנו מבקשים מהדאטה-בייס למדוד את המרחק הפיזי בין שתי הנקודות על המפה!
+            המרחק הזה נקרא **Cosine Similarity** (דמיון קוסינוס). ככל שהמרחק קרוב יותר ל-0.0, כך הפרופילים חולקים תחומי עניין דומים יותר!
+        </p>
+
+        <!-- סימולטור התאמה סמנטית -->
+        <div class="interactive-container p-6 rounded-2xl mb-8 bg-purple-50/30 border-purple-300">
+            <h3 class="serif-font font-bold text-slate-800 text-sm mb-4">🧬 מצאו התאמה סמנטית למשפט הבא:</h3>
+            
+            <div class="p-4 bg-white border border-slate-200 rounded-xl mb-4 text-center">
+                <span class="text-xs text-purple-600 font-bold uppercase block mb-1">הפרופיל שלך מחפש:</span>
+                <strong class="text-slate-800 text-sm">"מישהו שאוהב לרוץ מוקדם בבוקר לאורך החוף ולשתות שייק פירות חלבון"</strong>
+            </div>
+
+            <span class="text-xs font-bold text-slate-700 block mb-2">בחרו מועמד לבדיקת מרחק סמנטי:</span>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <button class="bg-white border border-slate-200 hover:border-purple-400 p-3 rounded-xl text-right text-xs transition" onclick="checkSemanticMatch(1, 'גלידה, פיצה במיטה וסרטים בנטפליקס כל הסופש')">
+                    <strong>גלית:</strong> "גלידה, פיצה במיטה וסרטים בנטפליקס כל הסופש" 🍕
+                </button>
+                <button class="bg-white border border-slate-200 hover:border-purple-400 p-3 rounded-xl text-right text-xs transition" onclick="checkSemanticMatch(2, 'רצה חצי מרתון, שומרת על כושר ותזונה נקייה ובריאה')">
+                    <strong>דנה:</strong> "רצה חצי מרתון, שומרת על כושר ותזונה נקייה ובריאה" 🏃‍♀️
+                </button>
+                <button class="bg-white border border-slate-200 hover:border-purple-400 p-3 rounded-xl text-right text-xs transition" onclick="checkSemanticMatch(3, 'אוהב לנגן בגיטרה קלאסית בחדר שקט ולקרוא שירה')">
+                    <strong>ערן:</strong> "אוהב לנגן בגיטרה קלאסית בחדר שקט ולקרוא שירה" 🎸
+                </button>
+            </div>
+
+            <!-- פלט מרחק סמנטי -->
+            <div class="mt-6 p-4 bg-slate-900 text-slate-200 rounded-xl text-center hidden" id="semanticMatchResultBox">
+                <span class="text-5xl block mb-2" id="semanticEmoji">🤔</span>
+                <strong class="text-sm block" id="semanticDistanceTitle">מרחק קוסינוס מחושב...</strong>
+                <div class="w-full bg-slate-800 rounded-full h-2.5 my-3 overflow-hidden">
+                    <div id="semanticBar" class="bg-purple-500 h-2.5 rounded-full transition-all duration-700" style="width: 50%"></div>
+                </div>
+                <p class="text-xs text-slate-400" id="semanticDistanceDesc">מנתח קרבה...</p>
+            </div>
+        </div>
+    </section>
+
+<!-- ========== STREAMING_CHUNK:Rendering the Code Challenge Playground... ========== -->
+    <!-- ============================================== -->
+    <!-- SECTION 4 · PGVECTOR CODE CHALLENGE            -->
+    <!-- ============================================== -->
+    <section id="code-challenge" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-purple-600 text-white"><span class="dot"></span> חלק 4 · אתגר קוד קל</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">אתגר קוד ה-pgvector</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: תקנו את שאילתת ה-SQL הוקטורית המיוחדת כדי שהדאטה-בייס ידע למדוד מרחק קוסינוס בין פרופילים!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            בבסיס נתונים רגיל, לכל טיפוס מידע יש אופרטור (סימן פעולה). פלוס (<code>+</code>) לחסר, שווה (<code>=</code>) להשוות.
+            בתוסף הוקטורי **pgvector** של פוסטגרס, הומצא סימן מיוחד ומגניב למדידת מרחק קוסינוס: האופרטור <code>&lt;=&gt;</code> (שנראה כמו חץ דו-כיווני קטן!).
+        </p>
+
+        <!-- אתגר הקוד האינטראקטיבי -->
+        <div class="interactive-container p-6 rounded-2xl mb-8 bg-slate-900 border-slate-700 text-slate-200">
+            <h4 class="font-mono text-xs text-purple-400 mb-3">// השלימו את סימן האופרטור הוקטורי למדידת מרחק קוסינוס: &lt;=&gt;</h4>
+            <div class="visual-flow p-4 rounded-xl font-mono text-xs bg-slate-950 border border-slate-800 space-y-2">
+                <div><span class="text-pink-500">SELECT</span> first_name, city</div>
+                <div><span class="text-pink-500">FROM</span> profiles</div>
+                <div><span class="text-pink-500">ORDER BY</span> bio_embedding <input type="text" id="vectorOperatorInput" class="bg-slate-800 border-2 border-slate-700 rounded px-2 py-0.5 text-emerald-400 outline-none w-20 text-center font-mono" placeholder="סימן..." oninput="checkVectorOperator()"> <span class="text-emerald-400">'[0.15, -0.23, 0.82, ...]'</span></div>
+                <div><span class="text-pink-500">LIMIT</span> 3;</div>
+            </div>
+
+            <div class="mt-4 flex justify-between items-center text-xs">
+                <span id="vectorCodeFeedback" class="font-bold text-rose-400">הקוד לא שלם. השלימו את הסימן שמודד מרחק קוסינוס.</span>
+                <span id="vectorCodeSuccess" class="hidden bg-emerald-500 text-white font-bold px-2.5 py-1 rounded">הקוד תקין! תוסף pgvector מופעל 🟢</span>
+            </div>
+        </div>
+
+        <div class="quiz-box rounded-2xl border border-purple-300 p-6 bg-purple-50/50 text-purple-950">
+            <div class="quiz-title font-bold text-lg mb-2 flex items-center gap-2">💡 בחנו את עצמכם!</div>
+            <p class="mb-4">מה מייצג הווקטור ששמור בתוך העמודה <code>bio_embedding</code>?</p>
+            <div class="quiz-option p-4 rounded-xl border bg-white cursor-pointer hover:bg-slate-50 mb-2 transition text-sm" onclick="selectQuizAnswer3(this, false, 'לא נכון! המיקום הגיאוגרפי נשמר כנקודת GPS (Point) באמצעות תוסף PostGIS, כפי שלמדנו בפרק 7.1.')">
+                א) את המיקום הגיאוגרפי וה-GPS של המשתמש על פני כדור הארץ.
+            </div>
+            <div class="quiz-option p-4 rounded-xl border bg-white cursor-pointer hover:bg-slate-50 transition text-sm" onclick="selectQuizAnswer3(this, true, 'מדויק! הווקטור הוא רשימה של מספרים (כמו קורדינאטות רב-ממדיות) המייצגת את המשמעות הסמנטית והרגשית של הביוגרפיה שכתב המשתמש.')">
+                ב) את המשמעות הסמנטית והתוכן של הטקסט שכתב המשתמש, מתורגם למספרים.
+            </div>
+            <div class="quiz-feedback mt-4 font-bold text-purple-800 hidden" id="quiz-feedback-3">משוב טוען...</div>
+        </div>
+    </section>
+
+<!-- ========== STREAMING_CHUNK:Rendering the Real-time Communication Section... ========== -->
+    <!-- ============================================== -->
+    <!-- SECTION 5 · REAL-TIME WEBSOCKETS INTRO         -->
+    <!-- ============================================== -->
+    <section id="realtime-intro" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-cyan-600 text-white"><span class="dot"></span> חלק 5 · פרוטוקול תקשורת</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">תקשורת מהירה וחיה (WebSockets)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            הסבר לילדים: ההבדל בין שליחת מכתבים בדואר לבין שיחת טלפון פתוחה וקבועה!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            עכשיו, כשיש לנו התאמות סמנטיות מדהימות, המשתמשים שלנו רוצים להתחיל לדבר בצ'אט. 
+            בפרוטוקול אינטרנט רגיל (HTTP), בכל פעם שאתם רוצים לבדוק אם קיבלתם הודעה, האפליקציה בטלפון צריכה "לצעוק" לשרת: *"היי! הגיעה הודעה?"*, והשרת עונה *"לא"*. עשר שניות אחרי זה שוב: *"היי! הגיעה הודעה?"*. השיטה הזו נקראת **Polling** והיא מבזבזת סוללה ואינטרנט.
+        </p>
+
+        <div class="important-note border-l-4 border-cyan-500 bg-cyan-50 p-6 rounded-r-xl my-6 text-cyan-950">
+            <strong>טלפון פתוח תמידית (WebSocket):</strong>
+            <p class="mt-2 text-sm">פרוטוקול <strong>WebSocket</strong> יוצר צינור תקשורת פתוח וקבוע בין הטלפון לשרת. הצינור הזה נשאר פתוח כל הזמן. ברגע שאליס שולחת הודעה, השרת פשוט "דוחף" אותה מיד דרך הצינור הפתוח אל הטלפון של בוב, ללא שום עיכוב ובלי לבזבז אנרגיה!</p>
+        </div>
+
+        <div class="simple-card-grid my-8">
+            <div class="simple-card border border-slate-200">
+                <h4 class="font-bold text-cyan-800 text-lg mb-2">שיטת הפולניג (HTTP Polling) 📯</h4>
+                <p class="text-slate-500 text-sm">הטלפון שואל שוב ושוב כל כמה שניות אם יש מידע חדש. מייצר עומס רב, איטי, ומרוקן את הסוללה במהירות.</p>
+            </div>
+            <div class="simple-card border border-slate-200">
+                <h4 class="font-bold text-cyan-800 text-lg mb-2">שיטת הוובסוקט (WebSocket) ⚡</h4>
+                <p class="text-slate-500 text-sm">ערוץ תקשורת דו-כיווני פתוח תמידית. הודעות "נדחפות" ברגע שהן נשלחות. חוויית צ'אט מיידית וחלקה כמו בווטסאפ!</p>
+            </div>
+        </div>
+    </section>
+
+<!-- ========== STREAMING_CHUNK:Rendering the Live Chat Sandbox Playground... ========== -->
+    <!-- ============================================== -->
+    <!-- SECTION 6 · LIVE CHATPLAYGROUND                -->
+    <!-- ============================================== -->
+    <section id="websocket-playground" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-cyan-600 text-white"><span class="dot"></span> חלק 6 · סימולטור בזמן אמת</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">סימולטור הצ'אט המהיר (Live WebSocket Sandbox)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: שלחו הודעות צ'אט, ראו את אות ה-WebSocket נדחף דרך ערוצי הרשת, וצפו בו מתעדכן בשני הטלפונים בו-זמנית!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            בסימולטור הבא, נדמה שני מכשירי טלפון המחוברים יחד לאותו ערוץ WebSocket מאובטח בדאטה-בייס של Supabase.
+            כתבו הודעה באחד המכשירים ולחצו על "שלח חיה" כדי לראות את האנימציה בפעולה!
+        </p>
+
+        <!-- סימולטור שני טלפונים בזמן אמת -->
+        <div class="interactive-container p-6 rounded-2xl mb-8 bg-slate-50 border-slate-300">
+            <h3 class="serif-font font-bold text-slate-800 text-sm mb-4">💬 התכתבות חיה בצינור WebSocket פתוח:</h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center justify-items-center">
+                
+                <!-- טלפון 1: אליס -->
+                <div class="flex flex-col items-center">
+                    <span class="text-xs font-bold text-slate-700 mb-2">📱 הטלפון של אליס (תל אביב)</span>
+                    <div class="phone-mockup w-[260px] h-[400px] relative p-3 flex flex-col justify-between">
+                        <div class="phone-notch" style="width: 80px; height: 12px;"></div>
+                        <div class="text-center font-bold text-xs text-indigo-700 pt-4 border-b pb-1">אליס 👱‍♀️</div>
+                        
+                        <!-- הודעות -->
+                        <div id="aliceChatMessages" class="flex-1 overflow-y-auto p-2 space-y-2 text-xs flex flex-col justify-end">
+                            <div class="bg-slate-200 p-2 rounded-lg self-start max-w-[80%]">היי בוב, ראיתי שאנחנו מתאימים ב-90%! 🏃‍♀️</div>
+                            <div class="bg-indigo-600 text-white p-2 rounded-lg self-end max-w-[80%]">לגמרי! רצה מחר בבוקר בים?</div>
+                        </div>
+
+                        <!-- קלט -->
+                        <div class="flex gap-1 border-t pt-2 mt-1">
+                            <input type="text" id="aliceInput" class="flex-1 bg-slate-100 border rounded px-2 py-1 text-[11px] outline-none" placeholder="הקלידו משהו..." onkeydown="if(event.key==='Enter') sendWebSocketMsg('alice')">
+                            <button class="bg-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded" onclick="sendWebSocketMsg('alice')">שלח ⚡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- טלפון 2: בוב -->
+                <div class="flex flex-col items-center">
+                    <span class="text-xs font-bold text-slate-700 mb-2">📱 הטלפון של בוב (הרצליה)</span>
+                    <div class="phone-mockup w-[260px] h-[400px] relative p-3 flex flex-col justify-between">
+                        <div class="phone-notch" style="width: 80px; height: 12px;"></div>
+                        <div class="text-center font-bold text-xs text-indigo-700 pt-4 border-b pb-1">בוב 👨</div>
+                        
+                        <!-- הודעות -->
+                        <div id="bobChatMessages" class="flex-1 overflow-y-auto p-2 space-y-2 text-xs flex flex-col justify-end">
+                            <div class="bg-indigo-600 text-white p-2 rounded-lg self-end max-w-[80%]">היי בוב, ראיתי שאנחנו מתאימים ב-90%! 🏃‍♀️</div>
+                            <div class="bg-slate-200 p-2 rounded-lg self-start max-w-[80%]">לגמרי! רצה מחר בבוקר בים?</div>
+                        </div>
+
+                        <!-- קלט -->
+                        <div class="flex gap-1 border-t pt-2 mt-1">
+                            <input type="text" id="bobInput" class="flex-1 bg-slate-100 border rounded px-2 py-1 text-[11px] outline-none" placeholder="הקלידו משהו..." onkeydown="if(event.key==='Enter') sendWebSocketMsg('bob')">
+                            <button class="bg-purple-600 text-white text-[10px] font-bold px-3 py-1 rounded" onclick="sendWebSocketMsg('bob')">שלח ⚡</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- תצוגת לוגים של השרת ה-WebSocket -->
+            <div class="mt-6">
+                <span class="text-xs font-bold text-slate-700 block mb-2">ניטור ערוצי WebSocket חיות (Server Subscription Logs):</span>
+                <div class="visual-flow p-4 rounded-xl font-mono text-[11px] min-h-[90px] overflow-y-auto" id="websocketLogs">
+                    [ערוץ] שרת ה-WebSocket נטען וממתין להזרמת הודעות חיות...
+                </div>
+            </div>
+        </div>
+
+        <div class="success-box">מדהים ביותר! השלמתם את פרק 7.2 בהצלחה אדירה! כעת אתם מבינים איך לבצע התאמות סמנטיות מבוססות AI בדאטה-בייס שלכם (Vector Search), ואיך לגרום להודעות ולנתונים לזרום בזמן אמת (WebSockets) במהירות הבזק!</div>
+    </section>
+
+    </main>
+</div>
+
+<!-- ===================== כותרת תחתונה (FOOTER) ===================== -->
+<footer class="page-footer">
+    <p><strong>המדריך המלא למפתח מערכות ובסיסי נתונים מודרניים</strong></p>
+    <p>פרק 7.2 — חיפוש סמנטי (Vector Search), מסדי נתונים וקטוריים ותקשורת בזמן אמת</p>
+    <div class="hearts">♥ ♥ ♥</div>
+    <p style="font-size:0.85rem;opacity:0.7;">כל הזכויות שמורות לקורס מפתחי מערכות מתקדמים, 2026.</p>
+</footer>
+
+<!-- ========== אפקטים קוליים וקוד דינמי ========== -->
+<script>
+    // ----------------------------------------------------
+    // מחולל קולות סינתטיים (Web Audio API Synthesizer)
+    // ----------------------------------------------------
+    let audioCtx = null;
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+
+    function playSynthSound(frequency, type = 'sine', duration = 0.1, sweepFreq = 0) {
+        initAudio();
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+
+        try {
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+
+            if (sweepFreq > 0) {
+                osc.frequency.exponentialRampToValueAtTime(sweepFreq, audioCtx.currentTime + duration);
+            }
+
+            gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        } catch (e) {
+            console.log("Audio failed to play", e);
+        }
+    }
+
+    function playBeep(presetName) {
+        if (presetName === 'connect') {
+            playSynthSound(587.33, 'sine', 0.12, 880); // D5 to A5
+        } else if (presetName === 'click') {
+            playSynthSound(600, 'sine', 0.04);
+        } else if (presetName === 'success') {
+            playSynthSound(523.25, 'sine', 0.15, 659.25); // C5 to E5
+        } else if (presetName === 'failure') {
+            playSynthSound(180, 'triangle', 0.3, 100);
+        } else if (presetName === 'flow') {
+            playSynthSound(440, 'triangle', 0.15, 660);
+        } else if (presetName === 'pulse') {
+            playSynthSound(880, 'sine', 0.08, 1200);
+        }
+    }
+
+    // ----------------------------------------------------
+    // חלק 2: מקרן וקטורים
+    // ----------------------------------------------------
+    function setVectorPreset(presetType) {
+        playBeep('click');
+        const input = document.getElementById('vectorBioInput');
+        if (presetType === 'nature') {
+            input.value = "אוהבת קמפינג, טיפוס הרים מטורף, ומחפשת שותף ללילות תחת הכוכבים 🏕️🐾";
+        } else if (presetType === 'city') {
+            input.value = "חובב מוזיאונים, גלריות לאמנות, מסעדות גורמה וקפה משובח במרכז תל אביב 🏙️☕";
+        } else if (presetType === 'couch') {
+            input.value = "מעדיפה פיצה חמה, משחקי פלייסטיישן ורביצה ממושכת על הספה עם החתול שלי 🍕🎮";
+        }
+    }
+
+    function projectVector() {
+        playBeep('connect');
+        const val = document.getElementById('vectorBioInput').value.trim();
+        const dot = document.getElementById('newVectorDot');
+        const output = document.getElementById('vectorValueOutput');
+
+        dot.classList.remove('hidden');
+
+        // Calculate visual mapping coordinates on-screen based on content keywords
+        let x = 50;
+        let y = 50;
+        let mockEmbedding = [];
+
+        if (val.includes('טבע') || val.includes('קמפינג') || val.includes('הרים')) {
+            x = 15; // Left/Nature side
+            y = 15; // Top/Sporty side
+            mockEmbedding = [0.92, -0.12, 0.43, -0.74];
+        } else if (val.includes('תל אביב') || val.includes('גורמה') || val.includes('קפה')) {
+            x = 80; // Right/City side
+            y = 20; // Top/Sporty side
+            mockEmbedding = [-0.15, 0.88, 0.23, 0.54];
+        } else if (val.includes('פיצה') || val.includes('ספה') || val.includes('פלייסטיישן')) {
+            x = 75; // Right/City side
+            y = 80; // Bottom/Couch side
+            mockEmbedding = [-0.34, 0.45, -0.87, 0.12];
+        } else {
+            // Random default vector
+            x = 35 + Math.random() * 30;
+            y = 35 + Math.random() * 30;
+            mockEmbedding = [0.15, -0.22, 0.31, 0.05];
+        }
+
+        dot.style.left = `${x}%`;
+        dot.style.top = `${y}%`;
+
+        output.innerHTML = `<span class="text-purple-400">// וקטור ה-Embedding נוצר בהצלחה (4 ממדים):</span><br>[ ${mockEmbedding.join(', ')} ]`;
+    }
+
+    // ----------------------------------------------------
+    // חלק 3: התאמה סמנטית
+    // ----------------------------------------------------
+    function checkSemanticMatch(candidateId, candidateText) {
+        const box = document.getElementById('semanticMatchResultBox');
+        const emoji = document.getElementById('semanticEmoji');
+        const title = document.getElementById('semanticDistanceTitle');
+        const desc = document.getElementById('semanticDistanceDesc');
+        const bar = document.getElementById('semanticBar');
+
+        box.classList.remove('hidden');
+
+        if (candidateId === 1) { // גלית
+            playBeep('failure');
+            emoji.innerText = "😴";
+            title.innerText = "מרחק קוסינוס: 0.88 (רחוק מאוד)";
+            desc.innerText = "אין התאמה! המשתמש מחפש ריצת בוקר וכושר, וגלית מעדיפה רביצה ופיצה במיטה.";
+            bar.style.width = "15%";
+            bar.className = "bg-rose-500 h-2.5 rounded-full transition-all duration-700";
+        } else if (candidateId === 2) { // דנה
+            playBeep('success');
+            emoji.innerText = "🔥😍";
+            title.innerText = "מרחק קוסינוס: 0.08 (קרוב בצורה מטורפת!)";
+            desc.innerText = "התאמה מושלמת! שני המשתמשים חולקים אהבה עמוקה לכושר, ריצה ותזונה בריאה.";
+            bar.style.width = "95%";
+            bar.className = "bg-emerald-500 h-2.5 rounded-full transition-all duration-700";
+        } else if (candidateId === 3) { // ערן
+            playBeep('click');
+            emoji.innerText = "🤔";
+            title.innerText = "מרחק קוסינוס: 0.54 (רחוק בינוני)";
+            desc.innerText = "התאמה קלושה בלבד. מוזיקה קלאסית ושירה לא ממש קשורים לספורט ריצה ותזונה.";
+            bar.style.width = "45%";
+            bar.className = "bg-amber-500 h-2.5 rounded-full transition-all duration-700";
+        }
+    }
+
+    function selectQuizAnswer3(element, isCorrect, feedback) {
+        const feedbackEl = document.getElementById('quiz-feedback-3');
+        feedbackEl.style.display = 'block';
+        feedbackEl.innerText = feedback;
+        
+        if (isCorrect) {
+            playBeep('success');
+            feedbackEl.className = "quiz-feedback mt-4 font-bold text-emerald-800 block";
+            element.style.borderColor = '#16a34a';
+            element.style.backgroundColor = '#f0fdf4';
+        } else {
+            playBeep('failure');
+            feedbackEl.className = "quiz-feedback mt-4 font-bold text-rose-800 block";
+            element.style.borderColor = '#ef4444';
+            element.style.backgroundColor = '#fef2f2';
+        }
+    }
+
+    // ----------------------------------------------------
+    // חלק 4: אופרטור pgvector
+    // ----------------------------------------------------
+    function checkVectorOperator() {
+        const input = document.getElementById('vectorOperatorInput').value.trim();
+        const feedback = document.getElementById('vectorCodeFeedback');
+        const success = document.getElementById('vectorCodeSuccess');
+
+        if (input === '<=>') {
+            playBeep('success');
+            feedback.classList.add('hidden');
+            success.classList.remove('hidden');
+            document.getElementById('vectorOperatorInput').classList.add('border-emerald-500', 'bg-emerald-950');
+        } else {
+            feedback.classList.remove('hidden');
+            success.classList.add('hidden');
+            document.getElementById('vectorOperatorInput').classList.remove('border-emerald-500', 'bg-emerald-950');
+        }
+    }
+
+    // ----------------------------------------------------
+    // חלק 6: סימולטור וובסוקטים בזמן אמת
+    // ----------------------------------------------------
+    function sendWebSocketMsg(sender) {
+        const input = document.getElementById(`${sender}Input`);
+        const text = input.value.trim();
+        if (!text) return;
+
+        playBeep('pulse');
+        input.value = '';
+
+        const aliceChat = document.getElementById('aliceChatMessages');
+        const bobChat = document.getElementById('bobChatMessages');
+        const logs = document.getElementById('websocketLogs');
+
+        // Create the message elements
+        const formattedTime = new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+
+        // User block (sender side) and Bot block (recipient side)
+        const senderBubble = `<div class="bg-indigo-600 text-white p-2 rounded-lg self-end max-w-[80%] animate-pulse">${text}</div>`;
+        const recipientBubble = `<div class="bg-slate-200 p-2 rounded-lg self-start max-w-[80%] animate-pulse">${text}</div>`;
+
+        if (sender === 'alice') {
+            aliceChat.innerHTML += senderBubble;
+            bobChat.innerHTML += recipientBubble;
+            logs.innerHTML += `<br><span class="text-cyan-400">[צינור WebSockets] אליס שלחה הודעה ──► הועבר מיד לבוב (Latency: 4ms) ⚡</span>`;
+        } else {
+            bobChat.innerHTML += senderBubble;
+            aliceChat.innerHTML += recipientBubble;
+            logs.innerHTML += `<br><span class="text-purple-400">[צינור WebSockets] בוב שלח הודעה ──► הועבר מיד לאליס (Latency: 3ms) ⚡</span>`;
+        }
+
+        // Scroll to end of chat
+        aliceChat.scrollTop = aliceChat.scrollHeight;
+        bobChat.scrollTop = bobChat.scrollHeight;
+        logs.scrollTop = logs.scrollHeight;
+    }
+</script>
+
+</body>
+</html>
