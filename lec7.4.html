@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>פרק 7.4 — חיבור Google AI Studio ו-MCP לאפליקציה ודאטה-בייס</title>
+    
+    <!-- Tailwind CSS לעיצוב מודרני, תוסס ונוזלי -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&family=Platypi:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #faf9f6;
+            --card-bg: #ffffff;
+            --accent-color: #4f46e5; /* אינדיגו מלכותי */
+            --accent-dark: #3730a3;
+            --accent-hover: #4338ca;
+            --accent-soft: #eef2ff;
+            --text-color: #334155;
+            --heading-color: #0f172a;
+            --muted-text: #64748b;
+            --border-color: #e2e8f0;
+            --gold-accent: #d4af37;
+            --gold-soft: #fdfaf2;
+            --success-bg: #dcfce7;
+            --success-text: #166534;
+            --warn-bg: #fef3c7;
+            --warn-text: #92400e;
+            --danger-bg: #fee2e2;
+            --danger-text: #991b1b;
+            --purple: #7c3aed;
+            --purple-soft: #f5f3ff;
+            --serif: 'Platypi', Georgia, serif;
+            --sans: 'Assistant', -apple-system, BlinkMacSystemFont, sans-serif;
+            --mono: 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: var(--sans);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.75;
+            margin: 0;
+            padding: 0;
+            font-size: 16.5px;
+        }
+
+        header.hero {
+            background: linear-gradient(135deg, #ffffff 0%, #fdfaf2 50%, #eef2ff 100%);
+            border-bottom: 4px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .serif-font {
+            font-family: var(--serif);
+        }
+
+        .mono-font {
+            font-family: var(--mono);
+        }
+
+        /* ========== תיבות אינטראקטיביות ========== */
+        .interactive-container {
+            border: 2px dashed var(--accent-color);
+            background-color: var(--accent-soft);
+        }
+
+        .simulator-step {
+            display: none;
+            animation: slideUp 0.4s ease-in-out forwards;
+        }
+        .simulator-step.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== תרשימי זרימה צבעוניים ========== */
+        .visual-flow {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+        .visual-flow b { color: #f43f5e; }
+        .visual-flow i { color: #38bdf8; font-style: normal; }
+        .visual-flow span.glow { color: #eab308; text-shadow: 0 0 8px rgba(234,179,8,0.6); }
+
+        /* ========== הנפשת למידה מרחפת (Sentry Bot) ========== */
+        .mascot-container {
+            border: 1px solid rgba(79, 70, 229, 0.15);
+        }
+        .mascot-svg {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(2deg); }
+        }
+
+        /* ========== משחק כבלי MCP ========== */
+        .mcp-cable {
+            transition: all 0.3s ease;
+        }
+        .mcp-socket {
+            transition: all 0.3s ease;
+        }
+        .mcp-socket.connected {
+            background-color: #dcfce7;
+            border-color: #10b981;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+        }
+
+        /* ========== שאלונים וכרטיסיות ========== */
+        .simple-card {
+            transition: all 0.25s ease-in-out;
+        }
+        .simple-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 6px 18px rgba(79, 70, 229, 0.08);
+        }
+
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        .quiz-option:hover {
+            border-color: var(--accent-color);
+            background-color: var(--accent-soft);
+            transform: translateX(-4px);
+        }
+
+        /* ========== סימולטור פלאפון מונפש ========== */
+        .phone-mockup {
+            border: 12px solid #0f172a;
+            border-radius: 36px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            background-color: #faf9f6;
+            overflow: hidden;
+            position: relative;
+        }
+        .phone-notch {
+            width: 110px;
+            height: 18px;
+            background-color: #0f172a;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            margin: 0 auto;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===================== כותרת ראשית (HEADER) ===================== -->
+<header class="hero py-20 px-6 text-center">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <span class="kicker inline-block text-xs font-bold tracking-widest text-indigo-800 bg-indigo-100 rounded-full px-4 py-1.5 mb-6 uppercase mono-font">
+            פלטפורמת הקישוריות · פרק 7.4
+        </span>
+        <h1 class="serif-font text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-tight tracking-tight mb-6">
+            חיבור הבוט לדאטה-בייס:<br><span class="italic text-indigo-600">Google AI Studio ו-MCP!</span>
+        </h1>
+        <p class="text-slate-500 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
+            ברוכים הבאים לשיעור הכי מעשי וחווייתי שלנו! היום נלמד איך לקחת את הצ'אטבוט החכם שבנינו, ולתת לו "עיניים" לקרוא ישירות מתוך בסיס הנתונים (הדאטה-בייס) של אפליקציית ההיכרויות שלנו, בעזרת כלים פורצי דרך!
+        </p>
+    </div>
+</header>
+
+<!-- ===================== מערך דף (LAYOUT) ===================== -->
+<div class="layout max-w-7xl mx-auto px-6 py-12 gap-12 grid grid-cols-1 lg:grid-cols-[290px_1fr]">
+
+    <!-- ============ סרגל ניווט צידי ============ -->
+    <aside class="toc-wrapper">
+        <nav class="toc sticky top-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-md max-h-[85vh] overflow-y-auto">
+            <h3 class="serif-font text-indigo-900 font-bold uppercase tracking-wider text-sm mb-4">צעדי הלמידה</h3>
+            <ol class="space-y-1">
+                <li><a href="#intro" class="block text-slate-600 hover:text-indigo-700 font-medium py-1">1. הגשר של AI Studio</a></li>
+                <li><a href="#api-vault" class="block text-slate-600 hover:text-indigo-700 font-medium py-1">2. כספת מפתחות ה-API</a></li>
+                <li><a href="#ai-studio-playground" class="block text-slate-600 hover:text-indigo-700 font-medium py-1">3. מעבדת הבטיחות של גוגל</a></li>
+                <li><a href="#mcp-concept" class="block text-slate-600 hover:text-indigo-700 font-medium py-1">4. מה זה בכלל MCP?</a></li>
+                <li><a href="#mcp-playground" class="block text-slate-600 hover:text-indigo-700 font-medium py-1">5. פאזל כבלי ה-MCP</a></li>
+                <li><a href="#code-challenge" class="block text-slate-600 hover:text-indigo-700 font-medium py-1">6. אשף השלמת הקוד</a></li>
+                <li><a href="#sql-flow" class="block text-slate-600 hover:text-indigo-700 font-medium py-1">7. מריץ ה-SQL לטלפון</a></li>
+                <li><a href="#debugger-playground" class="block text-slate-600 hover:text-indigo-700 font-medium py-1">8. מעבדת איתור התקלות</a></li>
+            </ol>
+        </nav>
+    </aside>
+
+    <!-- ============ תוכן מרכזי ============ -->
+    <main class="space-y-12">
+
+    <!-- ============================================== -->
+    <!-- SECTION 1 · INTRODUCTION TO AI STUDIO          -->
+    <!-- ============================================== -->
+    <section id="intro" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-indigo-600 text-white"><span class="dot"></span> חלק 1 · המוח בענן</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">הגשר החכם של Google AI Studio</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            הסבר פשוט: איך מחברים את ה"מוח" של גוגל לקבצי האפליקציה שלנו?
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            בפרק 7.0 למדנו שבינה מלאכותית מקומית היא מדהימה כי היא חינמית ופרטית. אבל לפעמים, אנחנו רוצים להשתמש במוח חזק במיוחד שנמצא בענן של גוגל — <strong>Google AI Studio</strong>.
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            איך המוח הזה מדבר עם הקוד שלנו? באמצעות מפתח קסמים סודי שנקרא <strong>API Key</strong> (קוד גישה). תחשבו על זה כמו כרטיס VIP מגנטי שמאפשר לאפליקציה שלכם לשלוח שאלה לענן של גוגל, ולקבל תשובה מושלמת בשבריר שנייה!
+        </p>
+
+        <!-- עוזר אישי מונפש - Sentry Bot -->
+        <div class="mascot-container flex items-center gap-6 bg-indigo-50/50 p-6 rounded-2xl border border-indigo-100 mb-8">
+            <svg class="mascot-svg w-20 h-20 flex-shrink-0" viewBox="0 0 100 100">
+                <rect x="20" y="20" width="60" height="50" rx="18" fill="#4f46e5" stroke="#818cf8" stroke-width="3" />
+                <rect x="28" y="28" width="44" height="24" rx="8" fill="#0f172a" />
+                <!-- עיניים מהבהבות -->
+                <circle cx="40" cy="40" r="5" fill="#818cf8">
+                    <animate attributeName="r" values="5;2;5" dur="2s" repeatCount="indefinite" />
+                </circle>
+                <circle cx="60" cy="40" r="5" fill="#818cf8">
+                    <animate attributeName="r" values="5;2;5" dur="2s" repeatCount="indefinite" />
+                </circle>
+                <!-- אנטנה קטנה למעלה -->
+                <line x1="50" y1="20" x2="50" y2="8" stroke="#818cf8" stroke-width="3" />
+                <circle cx="50" cy="6" r="4" fill="#d4af37" />
+                <!-- חיוך חביב -->
+                <path d="M 45 60 Q 50 64 55 60" stroke="#818cf8" stroke-width="3" stroke-linecap="round" fill="none" />
+            </svg>
+            <div class="speech-bubble text-slate-700 text-sm leading-relaxed">
+                <strong>שלום מהנדסים צעירים!</strong> אני סנטרי-בוט. בפרק זה נגלה בדיוק איך מחברים את המוח של גוגל ישירות לדאטה-בייס שלנו! בנינו עבורכם שיעור מורחב ומלא פלייגראונדים סופר-אינטראקטיביים כדי שתוכלו לעצב, לחבר, לבחון ולהריץ קוד במו ידיכם. מוכנים להתחיל?
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+            <div class="p-6 border border-slate-200 rounded-xl bg-slate-50/50 simple-card">
+                <h4 class="font-bold text-indigo-800 text-lg mb-2">Google AI Studio 🧠</h4>
+                <p class="text-slate-500 text-sm">הלובי שבו שוכן מודל ה-Gemini של גוגל. שם אנחנו מעצבים את הוראות המערכת, קובעים את גבולות היצירתיות ושולפים מפתח גישה מאובטח.</p>
+            </div>
+            <div class="p-6 border border-slate-200 rounded-xl bg-slate-50/50 simple-card">
+                <h4 class="font-bold text-indigo-800 text-lg mb-2">האפליקציה והדאטה-בייס שלנו 🗄️</h4>
+                <p class="text-slate-500 text-sm">המקום שבו שמורות פרופילי המשתמשים שלנו, כרטיסיות ה-Matches וההודעות שלהם. המטרה שלנו היא ליצור חיבור מאובטח ביניהם!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 2 · API KEY & ENV VAULT                -->
+    <!-- ============================================== -->
+    <section id="api-vault" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-indigo-600 text-white"><span class="dot"></span> חלק 2 · אבטחת מפתחות</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">כספת מפתחות ה-API (API Key &amp; Env Vault)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: צרו מפתח API סודי, ראו איך הוא נראה, ונעלו אותו בתוך קובץ הגדרות סודי (.env) כדי להגן עליו מגניבות!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            מפתח ה-API הוא קו המחשבה והתקציב שלכם. אם תעלו אותו בטעות ל-GitHub או תכתבו אותו ישירות בתוך קוד האתר שלכם, האקרים יוכלו לגנוב אותו ולבצע שאילתות יקרות על חשבונכם!
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            <strong>הפתרון המקצועי:</strong> אנחנו לעולם לא כותבים מפתח API בתוך הקוד! במקום זאת, אנחנו שומרים אותו בקובץ נפרד וסודי שנקרא <code>.env</code> (קיצור של Environment, כלומר משתני סביבה של השרת). השרת קורא את הקובץ הזה בזיכרון הפנימי שלו והקוד נשאר נקי ובטוח!
+        </p>
+
+        <!-- סימולטור API Vault -->
+        <div class="interactive-container p-6 rounded-2xl mb-8 bg-slate-50 border-slate-300">
+            <h3 class="serif-font font-bold text-slate-800 text-sm mb-4">🔒 סימולטור כספת מפתחות ה-API:</h3>
+
+            <div class="space-y-4">
+                <div class="flex flex-col md:flex-row gap-3">
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition" onclick="generateApiKey()">
+                        🔑 צור מפתח API חדש של Google Gemini
+                    </button>
+                    <input type="text" id="generatedApiKeyInput" class="flex-1 bg-white border border-slate-300 rounded-xl px-4 py-2 text-xs font-mono outline-none text-slate-500" readonly placeholder="כאן יופיע מפתח ה-API הסודי שלך...">
+                </div>
+
+                <div class="p-4 bg-slate-900 text-slate-200 rounded-xl font-mono text-xs relative overflow-hidden" id="envFileBox">
+                    <span class="absolute top-2 left-3 text-[10px] text-slate-500 uppercase tracking-wider">קובץ: .env</span>
+                    <br>
+                    <div><span class="text-rose-400">PORT</span>=5000</div>
+                    <div><span class="text-rose-400">DATABASE_URL</span>=postgresql://user:pass@localhost:5432/dating_db</div>
+                    <div id="envKeyLine"><span class="text-rose-400">GEMINI_API_KEY</span>=<span class="text-amber-300 font-bold" id="envKeyValue">"ממתין למפתח..."</span></div>
+                </div>
+
+                <div class="flex justify-between items-center text-xs">
+                    <button id="lockEnvBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl hidden transition" onclick="lockEnvFile()">
+                        🔒 נעל קובץ .env בכספת השרת
+                    </button>
+                    <span id="envStatusText" class="font-bold text-rose-500">המפתח לא שמור. הקוד לא מאובטח!</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 3 · SYSTEM PROMPT SANDBOX              -->
+    <!-- ============================================== -->
+    <section id="ai-studio-playground" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-indigo-600 text-white"><span class="dot"></span> חלק 3 · פלייגראונד הסטודיו</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">מעבדת הבטיחות והפרומפטים (Prompt &amp; Safety Filter Lab)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: עצבו את הוראות המערכת, שחקו בטמפרטורה, הגדירו מסנני הגנה מפני הטרדות, וראו את חבילת ה-JSON המלאה!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            ב-<strong>Google AI Studio</strong> אנחנו יכולים לכתוב לבוט **System Instructions** (הוראות מערכת) ולקבוע את מדד ה-<strong>Temperature</strong> (מדד היצירתיות והחום של הבוט: 0.0 אומר בוט קר ומדויק כמו מחשבון, 1.0 אומר בוט חם ויצירתי כמו משורר!).
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            <strong>מסנני בטיחות (Safety Settings):</strong> פלטפורמת היכרויות דורשת שמירה על כבוד ואבטחת תוכן. גוגל מאפשרת לנו להגדיר מסננים מובנים שיחסמו באופן אוטומטי תוכן המכיל שנאה, הטרדות, או אלימות, עוד לפני שהמידע נשלח למשתמש באפליקציה!
+        </p>
+
+        <!-- סימולטור פלייגראונד 1 -->
+        <div class="interactive-container p-6 rounded-2xl mb-8">
+            <h3 class="serif-font font-bold text-slate-800 text-lg mb-4 flex items-center gap-2">✨ Google AI Studio - Prompt &amp; Safety Workshop</h3>
+            
+            <div class="space-y-4">
+                <!-- System Instruction input -->
+                <div>
+                    <label class="block text-slate-700 text-xs font-bold uppercase mb-2">הוראות מערכת (System Instructions):</label>
+                    <textarea id="systemPromptInput" class="w-full bg-white border-2 border-slate-200 focus:border-indigo-500 rounded-xl p-3 text-xs outline-none transition font-sans" rows="3">You are Cobra Chadstone, an aggressive Top G dating coach. Speak with direct, blunt advice and use emojis like 🦅, 🔥, 👑!</textarea>
+                </div>
+
+                <!-- Temperature control -->
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="text-slate-700 text-xs font-bold uppercase">טמפרטורה (Creativity Temperature):</label>
+                        <span id="tempValueLabel" class="text-xs font-mono font-bold text-indigo-600">0.7 (מאוזן ויצירתי)</span>
+                    </div>
+                    <input type="range" id="tempRangeInput" min="0" max="1" step="0.1" value="0.7" class="w-full accent-indigo-600" oninput="updateTempLabel(this.value)">
+                </div>
+
+                <!-- Safety Filters -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <label class="block text-slate-700 text-xs font-bold mb-1 uppercase">מסנן הטרדה (Harassment Block Level):</label>
+                        <select id="safetyHarassment" class="w-full bg-slate-50 border border-slate-300 rounded px-2 py-1.5 text-xs outline-none text-slate-700 font-bold" onchange="generateApiPayload()">
+                            <option value="BLOCK_LOW_AND_ABOVE">חסימה מחמירה (Low &amp; Above)</option>
+                            <option value="BLOCK_MEDIUM_AND_ABOVE" selected>חסימה בינונית (Medium &amp; Above)</option>
+                            <option value="BLOCK_NONE">ללא חסימה (None)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 text-xs font-bold mb-1 uppercase">מסנן שנאה (Hate Speech Block Level):</label>
+                        <select id="safetyHate" class="w-full bg-slate-50 border border-slate-300 rounded px-2 py-1.5 text-xs outline-none text-slate-700 font-bold" onchange="generateApiPayload()">
+                            <option value="BLOCK_LOW_AND_ABOVE">חסימה מחמירה (Low &amp; Above)</option>
+                            <option value="BLOCK_MEDIUM_AND_ABOVE" selected>חסימה בינונית (Medium &amp; Above)</option>
+                            <option value="BLOCK_NONE">ללא חסימה (None)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow" onclick="generateApiPayload()">
+                        ייצר חבילת נתונים (Generate API Payload) ⚙️
+                    </button>
+                    <button class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-6 rounded-xl text-xs transition" onclick="resetPromptSandbox()">
+                        איפוס
+                    </button>
+                </div>
+
+                <!-- Generated Payload -->
+                <div class="space-y-2">
+                    <span class="block text-slate-700 text-xs font-bold uppercase">חבילת ה-JSON שנשלחת ל-Gemini API:</span>
+                    <div class="visual-flow p-4 rounded-xl font-mono text-[11px] min-h-[120px] overflow-y-auto" id="payloadOutput">
+                        [מערכת] לחצו על ייצור חבילה למעלה כדי לראות את ה-API Payload שנוצר...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- שאלון מהיר -->
+        <div class="quiz-box rounded-2xl border border-indigo-300 p-6 bg-indigo-50/50 text-indigo-950">
+            <div class="quiz-title font-bold text-lg mb-2 flex items-center gap-2">💡 בחנו את עצמכם!</div>
+            <p class="mb-4">אם אנחנו רוצים שהבוט שלנו יספק רק עובדות יבשות ומדויקות מתוך הדאטה-בייס (ללא "הזיות" יצירתיות), לאיזה ערך כדאי לכוון את הטמפרטורה?</p>
+            <div class="quiz-option p-4 rounded-xl border bg-white cursor-pointer hover:bg-slate-50 mb-2 transition text-sm" onclick="selectQuizAnswer(this, true, 'מדויק! טמפרטורה 0.0 אומרת שהבוט יתנהג בצורה דטרמיניסטית — הוא יבחר תמיד בתשובה הבטוחה והעובדתית ביותר, ללא אלמנטים של דמיון.')">
+                א) נכוון את הטמפרטורה ל-0.0 (קר ומדויק).
+            </div>
+            <div class="quiz-option p-4 rounded-xl border bg-white cursor-pointer hover:bg-slate-50 transition text-sm" onclick="selectQuizAnswer(this, false, 'לא נכון! טמפרטורה גבוהה (כמו 1.0) גורמת למודל לבחור במילים מפתיעות ומעלה את הסיכוי להזיות מילוליות.')">
+                ב) נכוון את הטמפרטורה ל-1.0 (חם ויצירתי מאוד).
+            </div>
+            <div class="quiz-feedback mt-4 font-bold text-indigo-800 hidden" id="quiz-feedback-1">משוב טוען...</div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 4 · WHAT IS MCP?                       -->
+    <!-- ============================================== -->
+    <section id="mcp-concept" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-indigo-600 text-white"><span class="dot"></span> חלק 4 · פרוטוקול מתאם</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">מה זה בכלל MCP?</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            הסבר לילדים: כבל ה-USB האוניברסלי שמחבר בין כל אפליקציה לכל מודל בינה מלאכותית!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            בעבר, אם רציתם לחבר את הצ'אטבוט שלכם לדאטה-בייס של פוסטגרס (PostgreSQL), הייתם צריכים לכתוב קוד מיוחד ומורכב מאוד. ואם מחר הייתם רוצים להחליף את הבוט לבוט אחר — הייתם צריכים לכתוב את הכל מהתחלה!
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            כדי לפתור את זה, חברות הטכנולוגיה המציאו את ה-<strong>MCP</strong> — ראשי תיבות של <strong>Model Context Protocol</strong> (פרוטוקול הקשר של המודל).
+        </p>
+
+        <div class="important-note border-l-4 border-indigo-500 bg-indigo-50 p-6 rounded-r-xl my-6 text-indigo-950">
+            <strong>מתאם ה-USB האוניברסלי:</strong>
+            <p class="mt-2 text-sm">חשבו על טלפון נייד. פעם, לכל חברה (נוקיה, מוטורולה, אפל) היה מטען מיוחד משלה. היום, לכולם יש כבל <strong>USB-C</strong> אחד שמטעין הכל. <strong>MCP הוא ה-USB-C של עולם הבינה המלאכותית!</strong> הוא מאפשר לכל בוט לדבר עם כל דאטה-בייס בצורה אחידה ובטוחה.</p>
+        </div>
+
+        <div class="simple-card-grid my-8">
+            <div class="simple-card border border-slate-200">
+                <h4 class="font-bold text-indigo-800 text-lg mb-2">חיבור מאובטח 🔒</h4>
+                <p class="text-slate-500 text-sm">הבוט לעולם לא מקבל את סיסמת המנהל של הדאטה-בייס שלכם. הוא רק מבקש בקשות דרך מתאם ה-MCP, שבודק שאין כאן פירצת אבטחה.</p>
+            </div>
+            <div class="simple-card border border-slate-200">
+                <h4 class="font-bold text-indigo-800 text-lg mb-2">חיסכון אדיר בקוד ⚡</h4>
+                <p class="text-slate-500 text-sm">לא צריך לכתוב קוד חיבור מותאם אישית. השרת של MCP מגיע עם חיבור מובנה לפוסטגרס, קבצים מקומיים ושרתי ענן חיצוניים!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 5 · MCP PLUG PLAYGROUND                -->
+    <!-- ============================================== -->
+    <section id="mcp-playground" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-indigo-600 text-white"><span class="dot"></span> חלק 5 · משחק חיבורים</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">פאזל כבלי ה-MCP הווירטואליים</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: חברו את כבלי ה-MCP הווירטואליים למקורות הנתונים הנכונים וראו איך הבוט נטען בכוח!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            לפניכם שלושה כבלי MCP ושלושה שקעי מידע. התאימו את המקורות כדי לאפשר לבוט הגישה לנתוני המערכת.
+        </p>
+
+        <!-- משחק חיבור כבלים אינטראקטיבי -->
+        <div class="interactive-container p-6 rounded-2xl mb-8 bg-indigo-50/30 border-indigo-300">
+            <h3 class="serif-font font-bold text-slate-800 text-sm mb-4">🔌 גררו או לחצו על כבלי המידע כדי לחבר אותם לשקע ה-MCP:</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <!-- כבל 1 -->
+                <div class="p-4 bg-white border border-slate-200 rounded-xl flex flex-col items-center">
+                    <span class="text-4xl mb-2">🗄️</span>
+                    <strong class="text-xs text-slate-700 block mb-2">PostgreSQL Database</strong>
+                    <button id="btn-cable-db" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg" onclick="connectCable('db')">
+                        חבר כבל 🔌
+                    </button>
+                </div>
+
+                <!-- כבל 2 -->
+                <div class="p-4 bg-white border border-slate-200 rounded-xl flex flex-col items-center">
+                    <span class="text-4xl mb-2">📂</span>
+                    <strong class="text-xs text-slate-700 block mb-2">Local Files (PDF/TXT)</strong>
+                    <button id="btn-cable-files" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg" onclick="connectCable('files')">
+                        חבר כבל 🔌
+                    </button>
+                </div>
+
+                <!-- כבל 3 -->
+                <div class="p-4 bg-white border border-slate-200 rounded-xl flex flex-col items-center">
+                    <span class="text-4xl mb-2">☁️</span>
+                    <strong class="text-xs text-slate-700 block mb-2">Google Maps API</strong>
+                    <button id="btn-cable-maps" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg" onclick="connectCable('maps')">
+                        חבר כבל 🔌
+                    </button>
+                </div>
+            </div>
+
+            <!-- שקע ה-MCP המרכזי -->
+            <div class="mt-8 p-6 border-2 border-dashed border-indigo-400 bg-white rounded-xl text-center" id="mcp-hub-socket">
+                <span class="text-5xl block mb-2" id="socket-emoji">🔌</span>
+                <strong class="text-slate-800 text-sm block" id="socket-title">ממתין לחיבור כבלים...</strong>
+                <p class="text-slate-400 text-xs mt-1" id="socket-desc">לחצו על כבל למעלה כדי לחבר אותו לפרוטוקול MCP המרכזי.</p>
+            </div>
+
+            <button class="sim-btn mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl hidden transition" id="mcp-approve-btn" onclick="approveMcpSync()">
+                אשר סינכרון וירטואלי מול סוכני ה-MCP 🚀
+            </button>
+        </div>
+
+        <div class="quiz-box rounded-2xl border border-indigo-300 p-6 bg-indigo-50/50 text-indigo-950">
+            <div class="quiz-title font-bold text-lg mb-2 flex items-center gap-2">💡 בחנו את עצמכם!</div>
+            <p class="mb-4">מה קורה אם אנחנו רוצים להחליף את מודל הבינה המלאכותית שלנו מ-Gemini ל-Claude, כאשר האפליקציה משתמשת ב-MCP?</p>
+            <div class="quiz-option p-4 rounded-xl border bg-white cursor-pointer hover:bg-slate-50 mb-2 transition text-sm" onclick="selectQuizAnswer2(this, false, 'לא נכון! זה היתרון הגדול של MCP — אין צורך לכתוב מחדש את החיבורים.')">
+                א) נצטרך לכתוב מחדש את כל שאילתות החיבור לקבצים ולדאטה-בייס.
+            </div>
+            <div class="quiz-option p-4 rounded-xl border bg-white cursor-pointer hover:bg-slate-50 transition text-sm" onclick="selectQuizAnswer2(this, true, 'מדויק! מאחר ושני המודלים תומכים בפרוטוקול MCP האוניברסלי, החלפת המודל נעשית בשורת הגדרה פשוטה אחת, ללא שינוי בקוד הדאטה-בייס!')">
+                ב) החלפת המודל תתבצע בצורה חלקה ומיידית כי שניהם תומכים באותו כבל USB וירטואלי (MCP).
+            </div>
+            <div class="quiz-feedback mt-4 font-bold text-indigo-800 hidden" id="quiz-feedback-2">משוב טוען...</div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 6 · CODE HACK CHALLENGE                -->
+    <!-- ============================================== -->
+    <section id="code-challenge" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-indigo-600 text-white"><span class="dot"></span> חלק 6 · אתגר הקוד</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">אשף השלמת הקוד: חיבור ה-SDK של גוגל</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: השלימו את הפרמטרים החסרים בקוד ה-SDK של גוגל כדי להפעיל את הבוט!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            כשאנחנו רוצים לכתוב קוד אמיתי ב-Node.js/JavaScript כדי לחבר את הבוט שלנו, אנחנו משתמשים בחבילת ה-<strong>SDK של גוגל</strong>. ישנם 3 משתנים קריטיים שאנחנו חייבים להגדיר:
+        </p>
+        <ul class="list-disc list-inside mb-6 text-slate-600 text-sm space-y-2">
+            <li><code>apiKey</code>: מפתח הגישה הסודי שקיבלנו מ-AI Studio.</li>
+            <li><code>model</code>: שם המוח שבו נרצה להשתמש (למשל: <code>gemini-2.5-flash</code>).</li>
+            <li><code>systemInstruction</code>: ההנחיות והחוקים של הבוט שלנו.</li>
+        </ul>
+
+        <!-- אתגר כתיבת קוד מובנה -->
+        <div class="interactive-container p-6 rounded-2xl mb-8 bg-slate-900 border-slate-700 text-slate-200">
+            <h4 class="font-mono text-xs text-indigo-400 mb-3">// השלימו את המילה החסרה להגדרת המודל:</h4>
+            <div class="visual-flow p-4 rounded-xl font-mono text-xs bg-slate-950 border border-slate-800 space-y-2">
+                <div><span class="text-pink-500">const</span> { GoogleGenAI } = require(<span class="text-emerald-400">"@google/genai"</span>);</div>
+                <div><span class="text-pink-500">const</span> ai = <span class="text-pink-500">new</span> GoogleGenAI({ apiKey: process.env.API_KEY });</div>
+                <br>
+                <div><span class="text-pink-500">const</span> response = await ai.models.generateContent({</div>
+                <div class="pl-4">model: <input type="text" id="codeChallengeInput" class="bg-slate-800 border-2 border-slate-700 rounded px-2 py-0.5 text-emerald-400 outline-none w-48 text-center font-mono" placeholder="שם מודל ה-Gemini..." oninput="checkCodeChallenge()">,</div>
+                <div class="pl-4">contents: <span class="text-emerald-400">"היי, כמה Matches פעילים יש היום?"</span>,</div>
+                <div class="pl-4">config: { systemInstruction: <span class="text-emerald-400">"You are Cobra Chadstone..."</span> }</div>
+                <div>});</div>
+            </div>
+
+            <div class="mt-4 flex justify-between items-center text-xs">
+                <span id="codeChallengeFeedback" class="font-bold text-rose-400">הקוד לא שלם. השלימו את שם המודל: gemini-2.5-flash</span>
+                <span id="codeSuccessBadge" class="hidden bg-emerald-500 text-white font-bold px-2.5 py-1 rounded">הקוד תקין! 🟢</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 7 · SQL TO UI LIVE MAPPER              -->
+    <!-- ============================================== -->
+    <section id="sql-flow" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-indigo-600 text-white"><span class="dot"></span> חלק 7 · זרימת נתונים</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">מריץ ה-SQL לתוך ממשק טלפון חי (SQL to UI Live Mapper)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: הריצו שאילתות SQL אמיתיות, צפו בפורמט ה-JSON שנוצר, וראו אותו מתרנדר ישירות על מסך הטלפון!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            הרבה סטודנטים שואלים: *"רגע, כשאני כותב קוד SQL, איך המידע הזה בכלל מגיע למסך של המשתמש בטלפון?"*. הרי המשתמש לא רואה טבלאות של פוסטגרס מול העיניים!
+        </p>
+        <p class="mb-6 text-slate-600 leading-relaxed text-base font-bold text-indigo-800">
+            בסימולטור המקיף שלפניכם, תוכלו לראות את כל מחזור החיים של המידע: **משאילתת ה-SQL**, דרך **נתוני ה-JSON הארוזים בשרת**, ועד ל**עיצוב המונפש בטלפון של המשתמש**!
+        </p>
+
+        <!-- סימולטור SQL to UI מטורף -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 my-8">
+            
+            <!-- צד שמאל: בחירת שאילתות ופלט JSON -->
+            <div class="flex flex-col space-y-4">
+                <span class="font-bold text-slate-700 text-xs uppercase tracking-wider block">1. בחרו שאילתת SQL להרצה:</span>
+                
+                <div class="flex flex-col gap-2">
+                    <button id="sql-btn-1" class="border-2 border-slate-200 bg-white hover:bg-indigo-50/50 p-3 rounded-xl text-right text-xs font-mono transition" onclick="runSqlToUiSim(1)">
+                        <span class="text-pink-600">SELECT</span> * <span class="text-pink-600">FROM</span> profiles <span class="text-pink-600">WHERE</span> city = <span class="text-emerald-600">'Tel Aviv'</span>;
+                    </button>
+                    <button id="sql-btn-2" class="border-2 border-slate-200 bg-white hover:bg-indigo-50/50 p-3 rounded-xl text-right text-xs font-mono transition" onclick="runSqlToUiSim(2)">
+                        <span class="text-pink-600">SELECT</span> * <span class="text-pink-600">FROM</span> matches <span class="text-pink-600">WHERE</span> is_active = <span class="text-indigo-600">true</span>;
+                    </button>
+                    <button id="sql-btn-3" class="border-2 border-slate-200 bg-white hover:bg-indigo-50/50 p-3 rounded-xl text-right text-xs font-mono transition" onclick="runSqlToUiSim(3)">
+                        <span class="text-pink-600">SELECT</span> * <span class="text-pink-600">FROM</span> profile_media <span class="text-pink-600">WHERE</span> is_primary = <span class="text-indigo-600">true</span>;
+                    </button>
+                    <button id="sql-btn-4" class="border-2 border-slate-200 bg-white hover:bg-indigo-50/50 p-3 rounded-xl text-right text-xs font-mono transition" onclick="runSqlToUiSim(4)">
+                        <span class="text-pink-600">SELECT</span> COUNT(*) <span class="text-pink-600">FROM</span> profiles <span class="text-pink-600">WHERE</span> is_premium = <span class="text-indigo-600">true</span>;
+                    </button>
+                    <button id="sql-btn-5" class="border-2 border-slate-200 bg-white hover:bg-indigo-50/50 p-3 rounded-xl text-right text-xs font-mono transition" onclick="runSqlToUiSim(5)">
+                        <span class="text-pink-600">SELECT</span> * <span class="text-pink-600">FROM</span> messages <span class="text-pink-600">ORDER BY</span> created_at <span class="text-pink-600">DESC LIMIT</span> 2;
+                    </button>
+                </div>
+
+                <span class="font-bold text-slate-700 text-xs uppercase tracking-wider block mt-4">2. המידע שארוז בשרת (JSON Format):</span>
+                <div class="visual-flow p-4 rounded-xl font-mono text-[11px] flex-1 min-h-[180px] overflow-y-auto" id="sqlJsonOutput">
+                    [דאטה] בחרו שאילתה למעלה כדי לראות את ה-JSON שמוחזר מהדאטה-בייס...
+                </div>
+            </div>
+
+            <!-- צד ימין: הטלפון הווירטואלי המונפש -->
+            <div class="flex flex-col items-center">
+                <span class="font-bold text-slate-700 text-xs uppercase tracking-wider block mb-4">3. ממשק האפליקציה בטלפון של המשתמש:</span>
+                
+                <div class="phone-mockup w-[310px] h-[550px] relative p-4 flex flex-col justify-between">
+                    <div class="phone-notch"></div>
+                    
+                    <!-- כותרת פלאפון פנימית -->
+                    <div class="text-center font-bold text-sm text-indigo-700 pt-5 border-b pb-2">
+                        Cobra Academy Mobile App 📱
+                    </div>
+
+                    <!-- אזור תוכן דינמי שמתעדכן מה-SQL -->
+                    <div id="phoneDynamicContent" class="flex-1 flex flex-col items-center justify-center p-3 text-center space-y-3">
+                        <span class="text-4xl">😴</span>
+                        <strong class="text-slate-800 text-sm">האפליקציה במצב שינה</strong>
+                        <p class="text-slate-400 text-xs leading-relaxed max-w-[200px]">הריצו שאילתת SQL מצד שמאל כדי לראות את המידע מעוצב ומונפש ברגע!</p>
+                    </div>
+
+                    <!-- כפתורי פלאפון דמויים בתחתית -->
+                    <div class="flex justify-around border-t pt-3 text-slate-400 text-xs">
+                        <span>🔍 גלה</span>
+                        <span class="text-indigo-600 font-bold">💬 צ'אט</span>
+                        <span>👤 פרופיל</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 8 · DEBUGGER CHALLENGE                 -->
+    <!-- ============================================== -->
+    <section id="debugger-playground" class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative">
+        <span class="step-badge bg-indigo-600 text-white"><span class="dot"></span> חלק 8 · ניפוי שגיאות</span>
+        <h2 class="serif-font text-slate-950 font-extrabold text-3xl mb-2">מעבדת איתור התקלות (The Sentry Debugger Challenge)</h2>
+        <p class="text-slate-500 border-b border-slate-200 pb-6 mb-8 text-base">
+            סביבה יישומית: שרת הבוט קרס! קראו את הודעת השגיאה ביומן, בחרו את התיקון הראוי והצילו את המצב!
+        </p>
+
+        <p class="mb-6 text-slate-600 leading-relaxed text-base">
+            כמפתחי מערכות, חצי מהזמן שלכם יוקדש לפתרון בעיות (Debugging). בסימולטור הבא, נדמה שלוש תקלות אמיתיות שקורות כשמנסים לחבר בינה מלאכותית לדאטה-בייס.
+        </p>
+
+        <div class="interactive-container p-6 rounded-2xl mb-8 bg-slate-900 border-slate-700 text-slate-200">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+                <span class="text-xs font-bold font-mono text-rose-500">🔴 SYSTEM STATUS: CRITICAL ERROR</span>
+                <span class="text-xs text-slate-400" id="debuggerTurnLabel">שגיאה 1 מתוך 3</span>
+            </div>
+
+            <!-- יומן השגיאה הווירטואלי -->
+            <div id="errorLogCard" class="bg-black/60 p-5 rounded-xl border border-slate-800 font-mono text-xs text-rose-400 leading-relaxed mb-6">
+                <!-- השגיאה תיטען דינמית באמצעות JS -->
+                FATAL EXCEPTION: API Key verification failed. Connection to Google AI Studio closed.
+            </div>
+
+            <!-- כפתורי פתרונות אפשריים -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <button class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition" onclick="solveDebuggerTurn('key')">
+                    🔑 תקן מפתח API בקובץ .env
+                </button>
+                <button class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition" onclick="solveDebuggerTurn('db')">
+                    🔌 בדוק כתובת חיבור לדאטה-בייס
+                </button>
+                <button class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition" onclick="solveDebuggerTurn('mcp')">
+                    ⚡ הפעל שרת MCP מחדש
+                </button>
+            </div>
+
+            <div id="debuggerFeedbackText" class="mt-4 text-center font-bold text-sm h-6"></div>
+        </div>
+
+        <div class="success-box">כל הכבוד! השלמתם את פרק 7.4 בהצלחה יתירה. כעת אתם מבינים לא רק איך לעצב דאטה-בייס מאובטח ומתוחכם, אלא גם איך לחבר אותו לענני הבינה המלאכותית של גוגל באמצעות MCP ושאילתות SQL חיות!</div>
+    </section>
+
+    </main>
+</div>
+
+<!-- ===================== כותרת תחתונה (FOOTER) ===================== -->
+<footer class="page-footer">
+    <p><strong>המדריך המלא למפתח מערכות ובסיסי נתונים מודרניים</strong></p>
+    <p>פרק 7.4 — חיבור סוכנים חכמים, פרוטוקולי MCP וזרימת מידע באפליקציות</p>
+    <div class="hearts">♥ ♥ ♥</div>
+    <p style="font-size:0.85rem;opacity:0.7;">כל הזכויות שמורות לקורס מפתחי מערכות מתקדמים, 2026.</p>
+</footer>
+
+<!-- ========== אפקטים קוליים וקוד דינמי ========== -->
+<script>
+    // ----------------------------------------------------
+    // מחולל קולות סינתטיים (Web Audio API Synthesizer)
+    // ----------------------------------------------------
+    let audioCtx = null;
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+
+    function playSynthSound(frequency, type = 'sine', duration = 0.1, sweepFreq = 0) {
+        initAudio();
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+
+        try {
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+
+            if (sweepFreq > 0) {
+                osc.frequency.exponentialRampToValueAtTime(sweepFreq, audioCtx.currentTime + duration);
+            }
+
+            gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        } catch (e) {
+            console.log("Audio failed to play", e);
+        }
+    }
+
+    function playBeep(presetName) {
+        if (presetName === 'connect') {
+            playSynthSound(587.33, 'sine', 0.12, 880); // D5 to A5
+        } else if (presetName === 'click') {
+            playSynthSound(600, 'sine', 0.04);
+        } else if (presetName === 'success') {
+            playSynthSound(523.25, 'sine', 0.15, 659.25); // C5 to E5
+        } else if (presetName === 'failure') {
+            playSynthSound(180, 'triangle', 0.3, 100);
+        } else if (presetName === 'flow') {
+            playSynthSound(440, 'triangle', 0.15, 660);
+        }
+    }
+
+    // ----------------------------------------------------
+    // חלק 2: כספת מפתחות ה-API
+    // ----------------------------------------------------
+    let generatedKey = "";
+    let envLocked = false;
+
+    function generateApiKey() {
+        if (envLocked) return;
+        playBeep('click');
+        
+        // Generate a random string that looks like Gemini API key
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let mockKey = "AIzaSy";
+        for (let i = 0; i < 28; i++) {
+            mockKey += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        
+        generatedKey = mockKey;
+        document.getElementById('generatedApiKeyInput').value = generatedKey;
+        document.getElementById('envKeyValue').innerText = `"${generatedKey}"`;
+        document.getElementById('lockEnvBtn').classList.remove('hidden');
+        document.getElementById('envStatusText').innerText = "מפתח מוכן אך קובץ ה-.env חשוף וגלוי!";
+        document.getElementById('envStatusText').className = "font-bold text-amber-500";
+    }
+
+    function lockEnvFile() {
+        if (!generatedKey || envLocked) return;
+        playBeep('success');
+        envLocked = true;
+        
+        document.getElementById('envKeyValue').innerText = '"[חבוי - המפתח מאובטח בשרת] 🔐"';
+        document.getElementById('lockEnvBtn').classList.add('hidden');
+        document.getElementById('envStatusText').innerText = "הקובץ ננעל בבטחה בכספת השרת! 🟢";
+        document.getElementById('envStatusText').className = "font-bold text-emerald-600";
+        document.getElementById('generatedApiKeyInput').value = "••••••••••••••••••••••••••••••••••••";
+    }
+
+    // ----------------------------------------------------
+    // חלק 3: סימולטור AI Studio
+    // ----------------------------------------------------
+    function setPromptExample(text) {
+        playBeep('click');
+        document.getElementById('aiStudioPromptInput').value = text;
+    }
+
+    function updateTempLabel(val) {
+        const label = document.getElementById('tempValueLabel');
+        if (val == 0) {
+            label.innerText = "0.0 (בוט קר ומדויק - עובדתי לחלוטין)";
+        } else if (val < 0.5) {
+            label.innerText = `${val} (ממוקד ועקבי)`;
+        } else if (val < 0.8) {
+            label.innerText = `${val} (מאוזן ויצירתי)`;
+        } else {
+            label.innerText = `${val} (בוט חם ויצירתי מאוד - סכנת הזיות)`;
+        }
+    }
+
+    function generateApiPayload() {
+        const prompt = document.getElementById('systemPromptInput').value.trim();
+        const temp = document.getElementById('tempRangeInput').value;
+        const hFilter = document.getElementById('safetyHarassment').value;
+        const hSpeech = document.getElementById('safetyHate').value;
+        const output = document.getElementById('payloadOutput');
+
+        playBeep('connect');
+
+        const jsonPayload = {
+            contents: [{ parts: [{ text: "Hello Gemini! Retrieve user records." }] }],
+            generationConfig: {
+                temperature: parseFloat(temp),
+                maxOutputTokens: 2048,
+                responseMimeType: "application/json"
+            },
+            safetySettings: [
+                { category: "HARM_CATEGORY_HARASSMENT", threshold: hFilter },
+                { category: "HARM_CATEGORY_HATE_SPEECH", threshold: hSpeech }
+            ],
+            systemInstruction: {
+                parts: [{ text: prompt }]
+            }
+        };
+
+        output.innerHTML = `<span class="text-emerald-400">// API Request Payload successfully compiled with Safety Gates!</span><br><pre>${JSON.stringify(jsonPayload, null, 2)}</pre>`;
+    }
+
+    function resetPromptSandbox() {
+        playBeep('click');
+        document.getElementById('systemPromptInput').value = "You are Cobra Chadstone, an aggressive Top G dating coach. Speak with direct, blunt advice and use emojis like 🦅, 🔥, 👑!";
+        document.getElementById('tempRangeInput').value = 0.7;
+        document.getElementById('safetyHarassment').value = "BLOCK_MEDIUM_AND_ABOVE";
+        document.getElementById('safetyHate').value = "BLOCK_MEDIUM_AND_ABOVE";
+        updateTempLabel(0.7);
+        document.getElementById('payloadOutput').innerText = `[מערכת] לחצו על ייצור חבילה למעלה כדי לראות את ה-API Payload שנוצר...`;
+    }
+
+    function selectQuizAnswer(element, isCorrect, feedback) {
+        const feedbackEl = document.getElementById('quiz-feedback-1');
+        feedbackEl.style.display = 'block';
+        feedbackEl.innerText = feedback;
+        
+        if (isCorrect) {
+            playBeep('success');
+            feedbackEl.className = "quiz-feedback mt-4 font-bold text-emerald-800 block";
+            element.style.borderColor = '#16a34a';
+            element.style.backgroundColor = '#f0fdf4';
+        } else {
+            playBeep('failure');
+            feedbackEl.className = "quiz-feedback mt-4 font-bold text-rose-800 block";
+            element.style.borderColor = '#ef4444';
+            element.style.backgroundColor = '#fef2f2';
+        }
+    }
+
+    // ----------------------------------------------------
+    // חלק 5: משחק כבלי MCP
+    // ----------------------------------------------------
+    let connectedCablesCount = 0;
+    let connectedList = [];
+
+    function connectCable(cableId) {
+        if (connectedList.includes(cableId)) return;
+        
+        playBeep('connect');
+        connectedCablesCount++;
+        connectedList.push(cableId);
+
+        // Disable button
+        const btn = document.getElementById(`btn-cable-${cableId}`);
+        btn.setAttribute('disabled', 'true');
+        btn.style.opacity = '0.4';
+        btn.innerText = "מחובר ✓";
+
+        // Update central hub socket status
+        const hub = document.getElementById('mcp-hub-socket');
+        const emoji = document.getElementById('socket-emoji');
+        const title = document.getElementById('socket-title');
+        const desc = document.getElementById('socket-desc');
+
+        if (connectedCablesCount === 1) {
+            emoji.innerText = "⚡";
+            title.innerText = "מקור נתונים ראשון חובר!";
+            desc.innerText = `חובר בהצלחה: ${cableId.toUpperCase()}. שרתי ה-MCP מתחילים לקשר נתונים...`;
+        } else if (connectedCablesCount === 2) {
+            emoji.innerText = "🔄";
+            title.innerText = "שני מקורות נתונים חוברו!";
+            desc.innerText = "הערוצים מסונכרנים במקביל. כמעט מוכן לטעינת המודל!";
+        } else if (connectedCablesCount === 3) {
+            emoji.innerText = "👑";
+            title.innerText = "כל המקורות חוברו בהצלחה!";
+            desc.innerText = "פרוטוקול MCP מוכן לביצוע סינכרון קולקטיבי מול סוכני הבינה המלאכותית.";
+            document.getElementById('mcp-approve-btn').classList.remove('hidden');
+        }
+    }
+
+    function approveMcpSync() {
+        playBeep('success');
+        const hub = document.getElementById('mcp-hub-socket');
+        hub.style.backgroundColor = '#dcfce7';
+        hub.style.borderColor = '#10b981';
+        hub.innerHTML = `
+            <span class="text-5xl block mb-2">🟢</span>
+            <strong class="text-emerald-800 text-sm block">סינכרון ה-MCP הושלם בהצלחה!</strong>
+            <p class="text-emerald-600 text-xs mt-1">הבוט בעל גישה מאובטחת ועקיפה לדאטה-בייס, קבצים ומפות ללא חשיפת סיסמאות מנהל!</p>
+        `;
+        document.getElementById('mcp-approve-btn').classList.add('hidden');
+    }
+
+    function selectQuizAnswer2(element, isCorrect, feedback) {
+        const feedbackEl = document.getElementById('quiz-feedback-2');
+        feedbackEl.style.display = 'block';
+        feedbackEl.innerText = feedback;
+        
+        if (isCorrect) {
+            playBeep('success');
+            feedbackEl.className = "quiz-feedback mt-4 font-bold text-indigo-800 block";
+            element.style.borderColor = '#4f46e5';
+            element.style.backgroundColor = '#f5f3ff';
+        } else {
+            playBeep('failure');
+            feedbackEl.className = "quiz-feedback mt-4 font-bold text-rose-800 block";
+            element.style.borderColor = '#ef4444';
+            element.style.backgroundColor = '#fef2f2';
+        }
+    }
+
+    // ----------------------------------------------------
+    // חלק 6: אתגר מילוי הקוד
+    // ----------------------------------------------------
+    function checkCodeChallenge() {
+        const input = document.getElementById('codeChallengeInput').value.trim();
+        const feedback = document.getElementById('codeChallengeFeedback');
+        const badge = document.getElementById('codeSuccessBadge');
+
+        if (input === 'gemini-2.5-flash' || input === '"gemini-2.5-flash"' || input === "'gemini-2.5-flash'") {
+            playBeep('success');
+            feedback.classList.add('hidden');
+            badge.classList.remove('hidden');
+            document.getElementById('codeChallengeInput').classList.add('border-emerald-500', 'bg-emerald-950');
+        } else {
+            feedback.classList.remove('hidden');
+            badge.classList.add('hidden');
+            document.getElementById('codeChallengeInput').classList.remove('border-emerald-500', 'bg-emerald-950');
+        }
+    }
+
+    // ----------------------------------------------------
+    // חלק 7: מריץ SQL ל-UI
+    // ----------------------------------------------------
+    function runSqlToUiSim(sqlId) {
+        playBeep('flow');
+        
+        const jsonBox = document.getElementById('sqlJsonOutput');
+        const phoneBox = document.getElementById('phoneDynamicContent');
+
+        // Reset borders
+        for (let i = 1; i <= 5; i++) {
+            document.getElementById(`sql-btn-${i}`).className = "border-2 border-slate-200 bg-white hover:bg-indigo-50/50 p-3 rounded-xl text-right text-xs font-mono transition";
+        }
+
+        // Highlight selected
+        document.getElementById(`sql-btn-${sqlId}`).className = "border-2 border-indigo-500 bg-indigo-50/30 p-3 rounded-xl text-right text-xs font-mono transition font-bold";
+
+        // Show loading in phone
+        phoneBox.innerHTML = `
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
+            <p class="text-slate-500 text-xs">שולף ומעבד נתונים מהשרת...</p>
+        `;
+
+        if (sqlId === 1) {
+            const data = [
+                { id: "aaaa-1111", first_name: "Alice", age: 31, city: "Tel Aviv" },
+                { id: "bbbb-2222", first_name: "Bob", age: 34, city: "Tel Aviv" }
+            ];
+            
+            setTimeout(() => {
+                playBeep('success');
+                jsonBox.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                
+                phoneBox.innerHTML = `
+                    <div class="w-full space-y-3 bg-white p-3 rounded-xl border shadow-sm">
+                        <span class="text-4xl block">✨</span>
+                        <strong class="text-slate-800 text-sm block">נמצאו 2 פרופילים בתל אביב!</strong>
+                        <div class="flex justify-around text-xs border-t pt-2 mt-2">
+                            <span>👩 Alice, 31</span>
+                            <span>👨 Bob, 34</span>
+                        </div>
+                    </div>
+                `;
+            }, 800);
+        } else if (sqlId === 2) {
+            const data = [
+                { match_id: "match-999", user_id_1: "Alice", user_id_2: "Bob", is_active: true }
+            ];
+
+            setTimeout(() => {
+                playBeep('success');
+                jsonBox.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                
+                phoneBox.innerHTML = `
+                    <div class="w-full space-y-3 bg-white p-3 rounded-xl border border-rose-300 bg-rose-50/30 shadow-sm animate-bounce">
+                        <span class="text-4xl block">💖</span>
+                        <strong class="text-rose-800 text-sm block">יש התאמה פעילה! (Match)</strong>
+                        <p class="text-slate-500 text-xs font-semibold">אליס ↔ בוב מחוברים כעת!</p>
+                        <button class="bg-rose-500 text-white font-bold py-1 px-3 rounded-lg text-[10px] uppercase w-full">שלח הודעת צ'אט</button>
+                    </div>
+                `;
+            }, 800);
+        } else if (sqlId === 3) {
+            const data = [
+                { media_id: "img-001", user_id: "Alice", url: "https://cdn.com/alice_primary.jpg", is_primary: true }
+            ];
+
+            setTimeout(() => {
+                playBeep('success');
+                jsonBox.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                
+                phoneBox.innerHTML = `
+                    <div class="w-full space-y-2 bg-white p-2 rounded-xl border shadow-sm flex flex-col items-center">
+                        <div class="w-24 h-24 bg-indigo-100 rounded-full overflow-hidden flex items-center justify-center border-2 border-indigo-500 animate-pulse">
+                            <span class="text-4xl">👱‍♀️</span>
+                        </div>
+                        <strong class="text-slate-800 text-sm block">תמונת פרופיל ראשית</strong>
+                        <span class="text-[10px] text-slate-400 font-mono">alice_primary.jpg</span>
+                    </div>
+                `;
+            }, 800);
+        } else if (sqlId === 4) {
+            const data = { count: "36" };
+
+            setTimeout(() => {
+                playBeep('success');
+                jsonBox.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                
+                phoneBox.innerHTML = `
+                    <div class="w-full space-y-3 bg-white p-3 rounded-xl border border-amber-300 bg-amber-50/20 shadow-sm">
+                        <span class="text-4xl block">👑</span>
+                        <strong class="text-amber-800 text-sm block">סטטיסטיקת פרימיום</strong>
+                        <p class="text-slate-700 text-xs font-bold">סך הכל מנויים פעילים: <span class="text-lg text-indigo-600">36</span></p>
+                    </div>
+                `;
+            }, 800);
+        } else if (sqlId === 5) {
+            const data = [
+                { sender: "Alice", content: "Hey! Coffee soon?", created_at: "2026-05-25T19:25:00Z" },
+                { sender: "Bob", content: "Totally down!", created_at: "2026-05-25T19:26:12Z" }
+            ];
+
+            setTimeout(() => {
+                playBeep('success');
+                jsonBox.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                
+                phoneBox.innerHTML = `
+                    <div class="w-full space-y-2 bg-white p-3 rounded-xl border shadow-sm text-right">
+                        <span class="text-xs font-bold text-slate-400">הודעות אחרונות:</span>
+                        <div class="p-2 bg-slate-50 rounded text-xs mb-1">
+                            <strong class="text-indigo-600">אליס:</strong> Hey! Coffee soon?
+                        </div>
+                        <div class="p-2 bg-indigo-50 rounded text-xs">
+                            <strong class="text-indigo-600">בוב:</strong> Totally down!
+                        </div>
+                    </div>
+                `;
+            }, 800);
+        }
+    }
+
+    // ----------------------------------------------------
+    // חלק 8: מעבדת איתור התקלות
+    // ----------------------------------------------------
+    let debugTurn = 0;
+    let debugCorrectCount = 0;
+    const debugRequests = [
+        {
+            error: "FATAL ERROR: API Key verification failed. Connection to Google AI Studio closed. (Error Code: 403_UNAUTHORIZED)",
+            correct: "key",
+            feedbackCorrect: "כל הכבוד! שגיאת API Key נפתרת על ידי סידור מפתח תקין בקובץ ה-.env של השרת! 🟢",
+            feedbackIncorrect: "לא מדויק! שימו לב לשגיאת ה-Unauthorized. המפתח לא תקין."
+        },
+        {
+            error: "CRITICAL FAILURE: Database connection timed out. IP: 127.0.0.1:5432 unreachable. Check postgres status.",
+            correct: "db",
+            feedbackCorrect: "מצוין! השגיאה מעידה על ניסיון חיבור כושל לפורט 5432 (Postgres Database). הכתובת לא תקינה או חסומה! 🟢",
+            feedbackIncorrect: "לא נכון! הכתובת 127.0.0.1:5432 קשורה ישירות לחיבור הדאטה-בייס."
+        },
+        {
+            error: "WARNING: Context synchronization failed. MCP Server is offline or connection timed out.",
+            correct: "mcp",
+            feedbackCorrect: "מעולה! שרת ה-MCP המקומי שלכם כבה, ולכן המודל של גוגל לא מצליח לקבל את ההקשר של הנתונים! 🟢",
+            feedbackIncorrect: "טעות! היומן מצהיר בפירוש ששרת ה-MCP המתווך לא זמין."
+        }
+    ];
+
+    function loadDebuggerTurn() {
+        if (debugTurn >= debugRequests.length) {
+            document.getElementById('debuggerTurnLabel').innerText = "ניפוי השגיאות הושלם!";
+            document.getElementById('errorLogCard').innerHTML = `
+                <span class="text-4xl block text-center mb-2">🎉🏆</span>
+                <h4 class="font-bold text-center text-emerald-400">הצלתם את שרת הבוט!</h4>
+                <p class="text-slate-400 text-xs text-center leading-relaxed mt-2">פתרתם את כל השגיאות בהצלחה. כעת שרתי ה-MCP והבינה המלאכותית פועלים בסינכרון מושלם!</p>
+            `;
+            return;
+        }
+
+        const data = debugRequests[debugTurn];
+        document.getElementById('debuggerTurnLabel').innerText = `שגיאה ${debugTurn + 1} מתוך ${debugRequests.length}`;
+        document.getElementById('errorLogCard').innerText = data.error;
+    }
+
+    function solveDebuggerTurn(studentChoice) {
+        const data = debugRequests[debugTurn];
+        const feedbackEl = document.getElementById('debuggerFeedbackText');
+
+        if (studentChoice === data.correct) {
+            playBeep('success');
+            debugCorrectCount++;
+            feedbackEl.innerText = data.feedbackCorrect;
+            feedbackEl.className = "mt-4 text-center font-bold text-sm text-emerald-400 h-6";
+        } else {
+            playBeep('failure');
+            feedbackEl.innerText = data.feedbackIncorrect;
+            feedbackEl.className = "mt-4 text-center font-bold text-sm text-rose-400 h-6";
+        }
+
+        debugTurn++;
+        
+        setTimeout(() => {
+            feedbackEl.innerText = "";
+            loadDebuggerTurn();
+        }, 2200);
+    }
+
+    // Init debugger
+    loadDebuggerTurn();
+</script>
+
+</body>
+</html>
