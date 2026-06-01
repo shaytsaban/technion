@@ -346,6 +346,97 @@ table.matrix td{padding:6px 8px;min-width:128px}
 .dod.unlocked h4{color:var(--teal)}
 @keyframes pop{0%{transform:scale(.98)}55%{transform:scale(1.015)}100%{transform:scale(1)}}
 
+/* ============== חוויה: צליל, קונפטי, מעבדה, איורים ============== */
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+.snd-toggle{flex-shrink:0;background:var(--card);border:1px solid var(--line);border-radius:100px;width:38px;height:38px;display:grid;place-items:center;cursor:pointer;font-size:1.05rem;box-shadow:var(--shadow-sm);transition:all .15s;line-height:1}
+.snd-toggle:hover{background:var(--ochre-wash);border-color:#f3dcb8}
+.snd-toggle.off{opacity:.55}
+
+/* איור SVG */
+.illo{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,#fffdf8,#f6f1e6);padding:18px;box-shadow:var(--shadow-sm)}
+.illo svg{display:block;width:100%;height:auto;max-height:280px}
+.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:none}
+html.js .illo.in .draw{animation:draw-line 1.4s ease forwards}
+@keyframes draw-line{to{stroke-dashoffset:0}}
+.flow-dot{opacity:0}
+html.js .illo.in .flow-dot{animation:dot-move 2.6s linear infinite}
+@keyframes dot-move{0%{opacity:0}10%{opacity:1}90%{opacity:1}100%{opacity:0}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.float{animation:floaty 4s ease-in-out infinite}
+@keyframes spin-soft{to{transform:rotate(360deg)}}
+
+/* מעבדה — מעטפת ווידג'ט */
+.lab-grid{display:grid;gap:18px}
+.widget{border:1px solid var(--line);border-right:5px solid var(--ochre);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow-sm);padding:20px 22px}
+.widget .w-head{display:flex;align-items:center;gap:11px;margin-bottom:6px}
+.widget .w-head .w-tag{flex-shrink:0;background:var(--ochre);color:#fff;font-size:.68rem;font-weight:800;border-radius:100px;padding:4px 12px;letter-spacing:.02em}
+.widget .w-head h4{margin:0;color:var(--ink);font-size:1.1rem}
+.widget .w-sub{font-size:.92rem;color:var(--muted);margin-bottom:14px}
+.w-feedback{margin-top:13px;border-radius:10px;padding:11px 14px;font-size:.92rem;font-weight:600;display:none}
+.w-feedback.show{display:block;animation:pop .4s ease}
+.w-feedback.good{background:var(--teal-wash);border:1px solid #bfe3da;color:var(--teal)}
+.w-feedback.bad{background:var(--rose-wash);border:1px solid #f3c9d1;color:var(--rose)}
+
+/* מזהה ישויות */
+.spot{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:15px 17px;line-height:2.1;font-size:1.02rem;color:var(--ink-soft)}
+.spot .w{cursor:pointer;border-radius:6px;padding:1px 4px;transition:all .12s;border:1px solid transparent}
+.spot .w:hover{background:#fff;border-color:var(--line-strong)}
+.spot .w.sel{background:var(--indigo-wash);border-color:#c7c3e6;color:var(--indigo);font-weight:700}
+.spot.checked .w.hit{background:var(--teal-wash);border-color:var(--teal);color:var(--teal);font-weight:700}
+.spot.checked .w.hit::after{content:" ✓";font-weight:900}
+.spot.checked .w.miss{background:var(--rose-wash);border-color:var(--rose);color:var(--rose)}
+.spot.checked .w.missed{outline:2px dashed var(--ochre-2);outline-offset:1px}
+
+/* דריל קשרים */
+.drill-item{padding:14px 0;border-bottom:1px dashed var(--line-strong)}
+.drill-item:last-child{border-bottom:none}
+.drill-q{font-weight:700;color:var(--ink);margin-bottom:9px}
+.drill-q .e{background:var(--indigo-wash);color:var(--indigo);border-radius:6px;padding:1px 8px;font-weight:800;font-family:'IBM Plex Mono',monospace;font-size:.9rem}
+.drill-opts{display:flex;gap:8px;flex-wrap:wrap}
+.drill-opt{background:var(--paper);border:1.5px solid var(--line);border-radius:9px;padding:7px 16px;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:.92rem;color:var(--ink-soft);cursor:pointer;transition:all .15s}
+.drill-opt:hover{border-color:var(--indigo);background:var(--indigo-wash)}
+.drill-opt.correct{background:var(--teal-wash);border-color:var(--teal);color:var(--teal)}
+.drill-opt.wrong{background:var(--rose-wash);border-color:var(--rose);color:var(--rose)}
+.drill-opt.locked{cursor:default}
+.drill-exp{font-size:.86rem;color:var(--muted);margin-top:8px;display:none}
+.drill-exp.show{display:block}
+
+/* ממיין MVP */
+.sorter{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px}
+@media(max-width:560px){.sorter{grid-template-columns:1fr}}
+.sorter .col{border:1.5px dashed var(--line-strong);border-radius:12px;padding:13px;min-height:90px;background:var(--paper)}
+.sorter .col.mvp{border-color:#bfe3da;background:var(--teal-wash)}
+.sorter .col.v2{border-color:#d9d6ee;background:var(--indigo-wash)}
+.sorter .col h5{margin:0 0 9px;font-size:.92rem;font-weight:800;display:flex;justify-content:space-between}
+.sorter .col.mvp h5{color:var(--teal)} .sorter .col.v2 h5{color:var(--indigo)}
+.feat-pool{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.feat{background:var(--card);border:1px solid var(--line-strong);border-radius:100px;padding:7px 14px;font-size:.86rem;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:all .15s;user-select:none}
+.feat:hover{border-color:var(--ochre);transform:translateY(-1px)}
+.feat.in-mvp{background:var(--teal);color:#fff;border-color:var(--teal)}
+.feat.in-v2{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+
+/* מחשבון סיכון */
+.riskcalc .rc-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.riskcalc .rc-row label{font-weight:700;color:var(--ink);min-width:72px}
+.rc-btns{display:flex;gap:6px}
+.rc-btns button{width:38px;height:38px;border-radius:9px;border:1.5px solid var(--line);background:var(--paper);font-family:'IBM Plex Mono',monospace;font-weight:600;cursor:pointer;transition:all .12s;color:var(--ink-soft)}
+.rc-btns button:hover{border-color:var(--ochre)}
+.rc-btns button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.rc-result{margin-top:6px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.rc-score{font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:2rem;border-radius:12px;padding:8px 20px;min-width:74px;text-align:center}
+.rc-verdict{font-weight:700}
+
+/* בונה פרומפט */
+.pbuild .pb-field{margin-bottom:11px}
+.pbuild label{display:block;font-weight:800;font-size:.82rem;color:var(--ochre);margin-bottom:4px}
+.pbuild input,.pbuild textarea{width:100%;border:1.5px solid var(--line);border-radius:9px;padding:9px 12px;font-family:'Assistant';font-size:.92rem;background:#fff;color:var(--ink);direction:rtl;resize:vertical}
+.pbuild input:focus,.pbuild textarea:focus{outline:none;border-color:var(--ochre);box-shadow:0 0 0 3px var(--ochre-wash)}
+.pb-out{background:#201d2e;color:#e9e6f5;border-radius:12px;padding:15px 17px;margin-top:14px;direction:rtl;font-size:.92rem;line-height:1.6;min-height:60px;position:relative}
+.pb-out .pb-line{margin-bottom:7px;padding-right:12px;border-right:2px solid #3d3753}
+.pb-out .pb-line b{color:var(--ochre-2);display:block;font-size:.78rem}
+.pb-out .pb-empty{color:#6f6987;font-style:italic}
+.pb-copy{margin-top:12px}
+
 /* ---------- אנימציות חשיפה ---------- */
 html.js .reveal-on-scroll{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1)}
 html.js .reveal-on-scroll.in{opacity:1;transform:none}
@@ -385,9 +476,13 @@ html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
       <span class="mark">מ</span>
       <span>תדריך הפרויקט המלווה<small>ניתוח מערכות וניהול פרויקטים בעידן ה-AI</small></span>
     </div>
-    <span class="stage-pill">מהדורת הקאתון · 6 שעות</span>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="snd-toggle" id="soundToggle" type="button" title="צליל" aria-label="הפעל/השתק צליל">🔊</button>
+      <span class="stage-pill">מהדורת הקאתון · 6 שעות</span>
+    </div>
   </div>
 </header>
+<canvas id="confetti"></canvas>
 
 <div class="layout">
   <main>
@@ -411,6 +506,42 @@ html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
         <span class="t">אב-טיפוס End-to-End</span>
         <span>עמוד שדרה: עקיבות</span>
         <span>AI ככלי, שיקול דעת כמנצח</span>
+      </div>
+
+      <div class="illo reveal-on-scroll" aria-hidden="true">
+        <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" role="img">
+          <!-- connectors (right to left) -->
+          <path class="draw" d="M600 95 L470 95" pathLength="1" fill="none" stroke="#d8cbb0" stroke-width="3" stroke-linecap="round"/>
+          <path class="draw" d="M330 95 L200 95" pathLength="1" fill="none" stroke="#d8cbb0" stroke-width="3" stroke-linecap="round"/>
+          <polygon points="470,95 482,89 482,101" fill="#b45309"/>
+          <polygon points="200,95 212,89 212,101" fill="#b45309"/>
+          <!-- flowing dots -->
+          <circle class="flow-dot" r="4" fill="#b45309"><animateMotion dur="2.4s" repeatCount="indefinite" path="M600 95 L470 95"/></circle>
+          <circle class="flow-dot" r="4" fill="#0f766e"><animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite" path="M330 95 L200 95"/></circle>
+          <!-- node 1: idea (right) -->
+          <g class="float" style="transform-origin:660px 95px">
+            <circle cx="660" cy="80" r="40" fill="#fdf0dd" stroke="#b45309" stroke-width="2.5"/>
+            <path class="draw" d="M660 60 a17 17 0 1 0 0.1 0 M652 96 h16 M654 102 h12" pathLength="1" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+          <text x="660" y="150" text-anchor="middle" font-family="Assistant,sans-serif" font-weight="800" font-size="16" fill="#1c1917">רעיון ואפיון</text>
+          <text x="660" y="170" text-anchor="middle" font-family="Assistant,sans-serif" font-size="12.5" fill="#78716c">סעיפים 1–4</text>
+          <!-- node 2: document (middle) -->
+          <g class="float" style="animation-delay:.6s">
+            <rect x="368" y="48" width="64" height="78" rx="7" fill="#eceaf6" stroke="#2a2a6b" stroke-width="2.5"/>
+            <path class="draw" d="M380 68 h40 M380 82 h40 M380 96 h28" pathLength="1" fill="none" stroke="#2a2a6b" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+          <text x="400" y="150" text-anchor="middle" font-family="Assistant,sans-serif" font-weight="800" font-size="16" fill="#1c1917">מסמך מלווה</text>
+          <text x="400" y="170" text-anchor="middle" font-family="Assistant,sans-serif" font-size="12.5" fill="#78716c">14 סעיפים</text>
+          <!-- node 3: live system (left) -->
+          <g class="float" style="animation-delay:1.2s">
+            <rect x="68" y="50" width="84" height="60" rx="7" fill="#e7f6f2" stroke="#0f766e" stroke-width="2.5"/>
+            <rect x="68" y="50" width="84" height="16" rx="7" fill="#0f766e"/>
+            <circle cx="78" cy="58" r="2.4" fill="#fff"/><circle cx="87" cy="58" r="2.4" fill="#fff"/>
+            <path class="draw" d="M82 84 l10 10 l18 -20" pathLength="1" fill="none" stroke="#0f766e" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="110" y="150" text-anchor="middle" font-family="Assistant,sans-serif" font-weight="800" font-size="16" fill="#1c1917">מערכת חיה + AI</text>
+          <text x="110" y="170" text-anchor="middle" font-family="Assistant,sans-serif" font-size="12.5" fill="#78716c">אב-טיפוס + בדיקה</text>
+        </svg>
       </div>
     </div>
 
@@ -1309,6 +1440,41 @@ html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
         <span class="node">בסיס נתונים (Neon/Supabase)</span><span class="arrow">←</span>
         <span class="node">סוכן AI</span>
       </div>
+      <div class="illo reveal-on-scroll" aria-hidden="true">
+        <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" role="img">
+          <!-- boxes right to left: browser, API, DB; AI below API -->
+          <g>
+            <rect x="600" y="66" width="120" height="68" rx="9" fill="#e7f6f2" stroke="#0f766e" stroke-width="2.5"/>
+            <rect x="600" y="66" width="120" height="17" rx="9" fill="#0f766e"/>
+            <circle cx="612" cy="74.5" r="2.6" fill="#fff"/><circle cx="622" cy="74.5" r="2.6" fill="#fff"/>
+            <text x="660" y="108" text-anchor="middle" font-family="Assistant,sans-serif" font-weight="800" font-size="14" fill="#0f766e">דפדפן · מסך</text>
+            <text x="660" y="152" text-anchor="middle" font-family="Assistant,sans-serif" font-size="12" fill="#78716c">Frontend</text>
+          </g>
+          <g>
+            <rect x="320" y="66" width="120" height="68" rx="9" fill="#fdf0dd" stroke="#b45309" stroke-width="2.5"/>
+            <text x="380" y="96" text-anchor="middle" font-family="Assistant,sans-serif" font-weight="800" font-size="14" fill="#b45309">GAS Web App</text>
+            <text x="380" y="116" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#b45309">API</text>
+            <text x="380" y="152" text-anchor="middle" font-family="Assistant,sans-serif" font-size="12" fill="#78716c">Backend</text>
+          </g>
+          <g>
+            <ellipse cx="100" cy="72" rx="56" ry="13" fill="#eceaf6" stroke="#2a2a6b" stroke-width="2.5"/>
+            <path d="M44 72 V128 a56 13 0 0 0 112 0 V72" fill="#eceaf6" stroke="#2a2a6b" stroke-width="2.5"/>
+            <path d="M44 100 a56 13 0 0 0 112 0" fill="none" stroke="#2a2a6b" stroke-width="1.6" opacity=".6"/>
+            <text x="100" y="160" text-anchor="middle" font-family="Assistant,sans-serif" font-weight="800" font-size="14" fill="#2a2a6b">בסיס נתונים</text>
+          </g>
+          <!-- AI agent below center -->
+          <rect x="330" y="158" width="100" height="34" rx="8" fill="#fff" stroke="#be123c" stroke-width="2" stroke-dasharray="5 4"/>
+          <text x="380" y="180" text-anchor="middle" font-family="Assistant,sans-serif" font-weight="700" font-size="12.5" fill="#be123c">סוכן AI</text>
+          <!-- connectors -->
+          <path class="draw" d="M600 100 H440" pathLength="1" fill="none" stroke="#d8cbb0" stroke-width="3"/>
+          <path class="draw" d="M320 100 H156" pathLength="1" fill="none" stroke="#d8cbb0" stroke-width="3"/>
+          <path class="draw" d="M380 134 V158" pathLength="1" fill="none" stroke="#d8cbb0" stroke-width="2.5" stroke-dasharray="5 4"/>
+          <!-- request dots (right->left) and response (left->right) -->
+          <circle class="flow-dot" r="4.5" fill="#0f766e"><animateMotion dur="2.2s" repeatCount="indefinite" path="M600 100 H440"/></circle>
+          <circle class="flow-dot" r="4.5" fill="#b45309"><animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite" path="M320 100 H156"/></circle>
+          <circle class="flow-dot" r="4" fill="#2a2a6b"><animateMotion dur="2.2s" begin="1.6s" repeatCount="indefinite" path="M156 112 H320"/></circle>
+        </svg>
+      </div>
       <p style="font-size:.92rem;color:var(--muted)"><strong>הערה ריאלית:</strong> ב-40 דקות לא תקימו צבר AWS מלא עם Docker ו-CI/CD.
         זה בסדר: ב<em>מסמך</em> תארו את הארכיטקטורה ואת שירותי הענן ותפקידם; ב<em>אב-הטיפוס</em> הוכיחו פרוסה אנכית אחת חיה + בדיקה אחת.</p>
 
@@ -1430,6 +1596,120 @@ html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
       <div class="deliverable reveal-on-scroll">
         <div class="d-head"><span class="d-ico">✓</span>תוצר התחנה</div>
         <ul><li>טבלת סיכונים (חומרה × סבירות, מניעה ותגובה נפרדות, דגש AI/פרטיות/אבטחה)</li><li>MVP + Roadmap ל-2 גרסאות + כלי ניהול מנומק</li><li>מסמך מורכב: שער, תקציר, מספור, קישורים</li><li>טבלת עקיבות מלאה מקצה לקצה</li></ul>
+      </div>
+    </section>
+
+    <!-- ===================== מעבדת אימון ===================== -->
+    <section class="block" id="lab">
+      <div class="sec-head reveal-on-scroll">
+        <div class="sec-num" style="background:linear-gradient(150deg,var(--teal),var(--teal-2))">✦</div>
+        <h2><span class="kicker">מעבדת אימון אינטראקטיבית</span>תרגלו את המיומנויות — לא רק תקראו</h2>
+      </div>
+      <p>חמש הפעלות מעשיות שמאמנות בדיוק את הצעדים שתעשו בהקאתון. שחקו, טעו, ותקבלו משוב מיידי. <strong>הכי טוב ללמוד דרך הידיים.</strong></p>
+
+      <div class="lab-grid">
+
+        <!-- 1 · מזהה ישויות -->
+        <div class="widget reveal-on-scroll">
+          <div class="w-head"><span class="w-tag">הפעלה 1</span><h4>מזהה הישויות</h4></div>
+          <p class="w-sub">לחצו על המילים שלדעתכם הן <strong>ישויות</strong> (דברים שצריך לשמור עליהם מידע במסד). אחר כך לחצו "בדוק".</p>
+          <div class="spot" id="spot1">
+            ב<span class="w">אפליקציה</span> לטיפול בחיות מחמד, כל <span class="w" data-entity="1">בעלים</span> רושם את ה<span class="w" data-entity="1">חיה</span> שלו, קובע <span class="w" data-entity="1">תור</span> אצל <span class="w" data-entity="1">וטרינר</span>, ומקבל <span class="w">תזכורת</span> לפני כל <span class="w" data-entity="1">חיסון</span>.
+          </div>
+          <button class="tbtn primary" data-spot-check="spot1" data-spot-fb="spot1fb" type="button" style="margin-top:13px">בדוק</button>
+          <div class="w-feedback" id="spot1fb"></div>
+        </div>
+
+        <!-- 2 · דריל קשרים -->
+        <div class="widget reveal-on-scroll">
+          <div class="w-head"><span class="w-tag">הפעלה 2</span><h4>דריל סוגי הקשרים</h4></div>
+          <p class="w-sub">לכל זוג ישויות — מהו סוג הקשר? לחצו על התשובה וקבלו הסבר. תזכורת ויזואלית:</p>
+          <div class="illo reveal-on-scroll" aria-hidden="true" style="margin-top:0">
+            <svg viewBox="0 0 760 130" xmlns="http://www.w3.org/2000/svg" role="img">
+              <!-- 1:1 -->
+              <text x="650" y="22" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-weight="700" font-size="15" fill="#0f766e">1 : 1</text>
+              <rect x="600" y="40" width="44" height="34" rx="6" fill="#e7f6f2" stroke="#0f766e" stroke-width="2"/>
+              <rect x="676" y="40" width="44" height="34" rx="6" fill="#e7f6f2" stroke="#0f766e" stroke-width="2"/>
+              <path class="draw" d="M644 57 H676" pathLength="1" fill="none" stroke="#0f766e" stroke-width="2.5"/>
+              <text x="660" y="98" text-anchor="middle" font-family="Assistant,sans-serif" font-size="12.5" fill="#78716c">משתמש ↔ פרופיל</text>
+              <!-- 1:N -->
+              <text x="400" y="22" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-weight="700" font-size="15" fill="#b45309">1 : N</text>
+              <rect x="350" y="40" width="44" height="34" rx="6" fill="#fdf0dd" stroke="#b45309" stroke-width="2"/>
+              <rect x="430" y="26" width="36" height="22" rx="5" fill="#fdf0dd" stroke="#b45309" stroke-width="1.8"/>
+              <rect x="430" y="52" width="36" height="22" rx="5" fill="#fdf0dd" stroke="#b45309" stroke-width="1.8"/>
+              <rect x="430" y="78" width="36" height="22" rx="5" fill="#fdf0dd" stroke="#b45309" stroke-width="1.8"/>
+              <path class="draw" d="M394 57 L430 37 M394 57 L430 63 M394 57 L430 89" pathLength="1" fill="none" stroke="#b45309" stroke-width="2"/>
+              <text x="408" y="118" text-anchor="middle" font-family="Assistant,sans-serif" font-size="12.5" fill="#78716c">בעלים ↔ חיות</text>
+              <!-- N:M -->
+              <text x="140" y="22" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-weight="700" font-size="15" fill="#2a2a6b">N : M</text>
+              <rect x="44" y="30" width="38" height="22" rx="5" fill="#eceaf6" stroke="#2a2a6b" stroke-width="1.8"/>
+              <rect x="44" y="62" width="38" height="22" rx="5" fill="#eceaf6" stroke="#2a2a6b" stroke-width="1.8"/>
+              <rect x="198" y="30" width="38" height="22" rx="5" fill="#eceaf6" stroke="#2a2a6b" stroke-width="1.8"/>
+              <rect x="198" y="62" width="38" height="22" rx="5" fill="#eceaf6" stroke="#2a2a6b" stroke-width="1.8"/>
+              <rect x="121" y="46" width="38" height="22" rx="5" fill="#2a2a6b"/>
+              <path class="draw" d="M82 41 L121 55 M82 73 L121 60 M159 57 L198 41 M159 57 L198 73" pathLength="1" fill="none" stroke="#2a2a6b" stroke-width="2"/>
+              <text x="140" y="118" text-anchor="middle" font-family="Assistant,sans-serif" font-size="12.5" fill="#78716c">סטודנט ↔ קורס (טבלת קישור)</text>
+            </svg>
+          </div>
+          <div class="drill-item">
+            <div class="drill-q">מהו הקשר בין <span class="e">בעלים</span> ל-<span class="e">חיות מחמד</span>?</div>
+            <div class="drill-opts"><button class="drill-opt" type="button">1:1</button><button class="drill-opt" type="button" data-correct="1">1:N</button><button class="drill-opt" type="button">N:M</button></div>
+            <div class="drill-exp">לבעל אחד יכולות להיות כמה חיות, אבל כל חיה שייכת לבעל אחד → 1:N. המפתח הזר יושב בטבלת החיות.</div>
+          </div>
+          <div class="drill-item">
+            <div class="drill-q">מהו הקשר בין <span class="e">סטודנט</span> ל-<span class="e">קורס</span>?</div>
+            <div class="drill-opts"><button class="drill-opt" type="button">1:1</button><button class="drill-opt" type="button">1:N</button><button class="drill-opt" type="button" data-correct="1">N:M</button></div>
+            <div class="drill-exp">סטודנט לומד כמה קורסים, וקורס מכיל כמה סטודנטים → N:M, שמחייב טבלת קישור (enrollments).</div>
+          </div>
+          <div class="drill-item">
+            <div class="drill-q">מהו הקשר בין <span class="e">משתמש</span> ל-<span class="e">פרופיל</span> (פרופיל אחד למשתמש)?</div>
+            <div class="drill-opts"><button class="drill-opt" type="button" data-correct="1">1:1</button><button class="drill-opt" type="button">1:N</button><button class="drill-opt" type="button">N:M</button></div>
+            <div class="drill-exp">לכל משתמש בדיוק פרופיל אחד, ולהפך → 1:1. לעיתים מאחדים לטבלה אחת.</div>
+          </div>
+        </div>
+
+        <!-- 3 · ממיין MVP -->
+        <div class="widget reveal-on-scroll">
+          <div class="w-head"><span class="w-tag">הפעלה 3</span><h4>ממיין ה-MVP</h4></div>
+          <p class="w-sub">לחצו על פיצ'ר כדי להזיז אותו: מאגר → <strong style="color:var(--teal)">MVP</strong> → <strong style="color:var(--indigo)">גרסה הבאה</strong> → בחזרה. שאפו ל-MVP קטן וריאלי.</p>
+          <div class="sorter">
+            <div class="col mvp" id="colMvp"><h5><span>גרסת MVP</span><span id="cntMvp">0</span></h5></div>
+            <div class="col v2" id="colV2"><h5><span>גרסה הבאה (v2)</span><span id="cntV2">0</span></h5></div>
+          </div>
+          <div class="feat-pool" id="featPool">
+            <span class="feat">הרשמה ופרופיל</span>
+            <span class="feat">הלולאה המרכזית</span>
+            <span class="feat">נגיעת AI אחת</span>
+            <span class="feat">דשבורד מנהל</span>
+            <span class="feat">צ'אט בזמן אמת</span>
+            <span class="feat">התראות Push</span>
+            <span class="feat">מערכת דירוגים</span>
+            <span class="feat">אימות זהות בסלפי</span>
+          </div>
+          <div class="w-feedback" id="sortFb"></div>
+        </div>
+
+        <!-- 4 · מחשבון סיכון -->
+        <div class="widget reveal-on-scroll" id="riskcalc">
+          <div class="w-head"><span class="w-tag">הפעלה 4</span><h4>מחשבון הסיכון</h4></div>
+          <p class="w-sub">בחרו חומרה וסבירות (1–5). המכפלה היא ציון הסיכון — וכך מתעדפים מה לטפל קודם.</p>
+          <div class="rc-row"><label>חומרה</label><div class="rc-btns"><button data-sev="1" type="button">1</button><button data-sev="2" type="button">2</button><button data-sev="3" type="button">3</button><button data-sev="4" type="button">4</button><button data-sev="5" type="button">5</button></div></div>
+          <div class="rc-row"><label>סבירות</label><div class="rc-btns"><button data-prob="1" type="button">1</button><button data-prob="2" type="button">2</button><button data-prob="3" type="button">3</button><button data-prob="4" type="button">4</button><button data-prob="5" type="button">5</button></div></div>
+          <div class="rc-result"><div class="rc-score" id="rcScore">—</div><div class="rc-verdict" id="rcVerdict">בחרו חומרה וסבירות</div></div>
+        </div>
+
+        <!-- 5 · בונה פרומפט -->
+        <div class="widget reveal-on-scroll" id="pbuild">
+          <div class="w-head"><span class="w-tag">הפעלה 5</span><h4>בונה הפרומפט (4 חלקים)</h4></div>
+          <p class="w-sub">מלאו את ארבעת החלקים — והפרומפט המלא יורכב למטה בזמן אמת, מוכן להעתקה ל-AI.</p>
+          <div class="pb-field"><label>הקשר — מי אתם ומה הרקע</label><input id="pb_ctx" type="text" placeholder="אני בונה מערכת לניהול אירועים, והנה האפיון…"></div>
+          <div class="pb-field"><label>משימה — מה אתם רוצים שה-AI יעשה</label><input id="pb_task" type="text" placeholder="זהה ישויות והצע CREATE TABLE לטבלה המרכזית"></div>
+          <div class="pb-field"><label>אילוצים — מה מותר ומה אסור</label><input id="pb_cons" type="text" placeholder="PostgreSQL בלבד; אל תמציא עמודות; ציין מפתחות זרים"></div>
+          <div class="pb-field"><label>פורמט — איך שתחזור התשובה</label><input id="pb_fmt" type="text" placeholder="בלוק SQL אחד + רשימת קשרים, בעברית"></div>
+          <div class="pb-out" id="pbOut"><span class="pb-empty">מלאו את השדות והפרומפט המלא יורכב כאן…</span></div>
+          <button class="tbtn primary pb-copy" id="pbCopy" type="button">העתק פרומפט</button>
+        </div>
+
       </div>
     </section>
 
@@ -1652,8 +1932,9 @@ html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
         <li><a href="#st5">ת5 · אב-טיפוס ובדיקות</a></li>
         <li><a href="#st6">ת6 · סיכונים והרכבה</a></li>
       </ol>
-      <div class="grp">סגירה</div>
+      <div class="grp">תרגול וסגירה</div>
       <ol>
+        <li><a href="#lab"><span class="num">✦</span>מעבדת אימון</a></li>
         <li><a href="#closing"><span class="num">5</span>ערכת הסגירה</a></li>
       </ol>
     </nav>
@@ -1732,6 +2013,58 @@ html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
 })();
 </script>
 <script>
+/* ===== מנוע צליל + קונפטי ===== */
+window.GX=(function(){
+  var enabled=true, AC=window.AudioContext||window.webkitAudioContext, ctx=null;
+  function ac(){ try{ if(!ctx&&AC)ctx=new AC(); if(ctx&&ctx.state==='suspended')ctx.resume(); }catch(e){} return ctx; }
+  function tone(freq,dur,type,vol,off){ if(!enabled)return; var c=ac(); if(!c)return;
+    var t=c.currentTime+(off||0), o=c.createOscillator(), g=c.createGain();
+    o.type=type||'sine'; o.frequency.value=freq;
+    g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(vol||0.16,t+0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+dur+0.03);
+  }
+  function tick(){ tone(440,0.05,'square',0.06); }
+  function flip(){ tone(520,0.06,'triangle',0.06); }
+  function correct(){ tone(660,0.12,'sine',0.15,0); tone(880,0.16,'sine',0.15,0.10); }
+  function wrong(){ tone(196,0.18,'sawtooth',0.09,0); tone(146,0.22,'sawtooth',0.08,0.05); }
+  function chime(){ tone(784,0.22,'sine',0.13,0); tone(1047,0.26,'sine',0.13,0.09); }
+  function applause(){ if(!enabled)return; var c=ac(); if(!c)return;
+    var dur=1.5, buf=c.createBuffer(1,Math.floor(c.sampleRate*dur),c.sampleRate), d=buf.getChannelData(0);
+    for(var i=0;i<d.length;i++){ var env=Math.pow(1-i/d.length,1.4); d[i]=(Math.random()*2-1)*env*0.55; }
+    var s=c.createBufferSource(); s.buffer=buf;
+    var bp=c.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1900; bp.Q.value=0.6;
+    var g=c.createGain(); g.gain.value=0.5; s.connect(bp); bp.connect(g); g.connect(c.destination); s.start();
+  }
+  function fanfare(){ [523,659,784,1047].forEach(function(f,i){tone(f,0.32,'triangle',0.15,i*0.11);}); applause(); }
+  /* confetti */
+  var cv,cx,parts=[],raf=null;
+  function init(){ if(cv)return; cv=document.getElementById('confetti'); if(!cv)return; cx=cv.getContext('2d'); rs(); window.addEventListener('resize',rs); }
+  function rs(){ if(cv){cv.width=window.innerWidth; cv.height=window.innerHeight;} }
+  function confetti(n){ init(); if(!cv)return; n=n||140;
+    var cols=['#b45309','#d97706','#2a2a6b','#0f766e','#be123c','#1d4ed8','#eab308'];
+    for(var i=0;i<n;i++)parts.push({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*0.25,
+      vx:(Math.random()-0.5)*7,vy:3+Math.random()*5,r:4+Math.random()*7,rot:Math.random()*6.3,
+      vr:(Math.random()-0.5)*0.35,c:cols[(Math.random()*cols.length)|0],life:1});
+    if(!raf)loop();
+  }
+  function loop(){ if(!cx){raf=null;return;} cx.clearRect(0,0,cv.width,cv.height);
+    for(var i=parts.length-1;i>=0;i--){ var p=parts[i]; p.x+=p.vx; p.y+=p.vy; p.vy+=0.13; p.vx*=0.99; p.rot+=p.vr; p.life-=0.0055;
+      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.rot); cx.globalAlpha=Math.max(0,p.life); cx.fillStyle=p.c;
+      cx.fillRect(-p.r/2,-p.r/2,p.r,p.r*0.62); cx.restore();
+      if(p.y>cv.height+40||p.life<=0)parts.splice(i,1);
+    }
+    if(parts.length)raf=requestAnimationFrame(loop); else {cx.clearRect(0,0,cv.width,cv.height);raf=null;}
+  }
+  function celebrate(){ confetti(170); fanfare(); }
+  /* toggle */
+  var btn=document.getElementById('soundToggle');
+  if(btn)btn.addEventListener('click',function(){ enabled=!enabled; btn.textContent=enabled?'🔊':'🔇'; btn.classList.toggle('off',!enabled); if(enabled){tick();} });
+  return {tick:tick,flip:flip,correct:correct,wrong:wrong,chime:chime,fanfare:fanfare,confetti:confetti,celebrate:celebrate,
+    enabled:function(){return enabled;}};
+})();
+</script>
+<script>
 /* ===== ערכת הסגירה — אינטראקטיביות ===== */
 (function(){
   var items=[].slice.call(document.querySelectorAll('.ck-item'));
@@ -1739,6 +2072,7 @@ html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
   var audits=[].slice.call(document.querySelectorAll('.audit-check'));
   var dod=document.getElementById('dod'), dodIco=document.getElementById('dodIco'), dodTitle=document.getElementById('dodTitle'), dodSub=document.getElementById('dodSub');
   if(!items.length) return;
+  var _hit100=false,_unlocked=false;
 
   function update(){
     var done=items.filter(function(i){return i.classList.contains('done');}).length;
@@ -1751,12 +2085,17 @@ html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
       : p<100?'כמעט שם — נשארו '+(items.length-done)+' סעיפים'
       : 'כל 14 הסעיפים הושלמו!';
     var auditsDone=audits.filter(function(a){return a.classList.contains('on');}).length;
-    if(p===100 && auditsDone===audits.length && audits.length){
+    if(p===100 && !_hit100){ _hit100=true; if(window.GX){GX.confetti(120);GX.chime();} }
+    if(p<100) _hit100=false;
+    var ready=(p===100 && auditsDone===audits.length && audits.length);
+    if(ready){
       dod.classList.add('unlocked');
       if(dodIco)dodIco.textContent='✓';
       if(dodTitle)dodTitle.textContent='מוכנים להגשה!';
       if(dodSub)dodSub.textContent='עברתם את כל הבקרות. ודאו רק ששורת העקיבות מלאה ושהפרוסה האנכית חיה — וצאו לדרך.';
+      if(!_unlocked){ _unlocked=true; if(window.GX)GX.celebrate(); }
     } else {
+      _unlocked=false;
       dod.classList.remove('unlocked');
       if(dodIco)dodIco.textContent='🔒';
       if(dodTitle)dodTitle.textContent='עדיין לא מוכן להגשה';
@@ -1766,12 +2105,12 @@ html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
 
   items.forEach(function(it){
     var main=it.querySelector('.ck-main');
-    main.addEventListener('click',function(){it.classList.toggle('done');update();});
+    main.addEventListener('click',function(){it.classList.toggle('done');if(window.GX)GX.tick();update();});
     var ex=it.querySelector('.ck-exp-btn');
     if(ex)ex.addEventListener('click',function(e){e.stopPropagation();it.classList.toggle('open');
       ex.textContent=it.classList.contains('open')?'הסתר':'מה זה אומר';});
   });
-  audits.forEach(function(a){a.addEventListener('click',function(){a.classList.toggle('on');update();});});
+  audits.forEach(function(a){a.addEventListener('click',function(){a.classList.toggle('on');if(window.GX)GX.tick();update();});});
   document.querySelectorAll('.audit-exp-btn').forEach(function(b){
     b.addEventListener('click',function(){var c=b.closest('.audit-card');c.classList.toggle('open');
       b.textContent=c.classList.contains('open')?'סגור':'איך בודקים?';});
@@ -1794,7 +2133,7 @@ html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
   });
 
   /* חידון */
-  var quizScore=0, totalQ=document.querySelectorAll('.quiz-q').length;
+  var quizScore=0, _ans=0, totalQ=document.querySelectorAll('.quiz-q').length;
   var scoreEl=document.getElementById('quizScore');
   function setScore(){if(scoreEl)scoreEl.textContent=quizScore+' / '+totalQ;}
   document.querySelectorAll('.quiz-q').forEach(function(q){
@@ -1807,7 +2146,10 @@ html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
         opts.forEach(function(x){x.classList.add('locked');
           if(!correct && x.getAttribute('data-correct')==='1')x.classList.add('correct');});
         if(exp)exp.classList.add('show');
+        if(window.GX){correct?GX.correct():GX.wrong();}
         if(correct){quizScore++;setScore();}
+        _ans++;
+        if(_ans===totalQ && quizScore===totalQ && window.GX){GX.celebrate();}
       });
     });
   });
@@ -1815,8 +2157,118 @@ html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
 
   /* כרטיסיות */
   document.querySelectorAll('.fcard').forEach(function(c){
-    c.addEventListener('click',function(){c.classList.toggle('flip');});
+    c.addEventListener('click',function(){c.classList.toggle('flip');if(window.GX)GX.flip();});
   });
+})();
+</script>
+<script>
+/* ===== מעבדת אימון — הפעלות ===== */
+(function(){
+  var GX=window.GX||{tick:function(){},correct:function(){},wrong:function(){},celebrate:function(){},flip:function(){},chime:function(){},confetti:function(){}};
+
+  /* 1 · מזהה ישויות */
+  document.querySelectorAll('.spot').forEach(function(sp){
+    sp.querySelectorAll('.w').forEach(function(w){
+      w.addEventListener('click',function(){ if(sp.classList.contains('checked'))return; w.classList.toggle('sel'); GX.tick(); });
+    });
+  });
+  document.querySelectorAll('[data-spot-check]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var sp=document.getElementById(btn.getAttribute('data-spot-check'));
+      var fb=document.getElementById(btn.getAttribute('data-spot-fb'));
+      if(sp.classList.contains('checked'))return;
+      sp.classList.add('checked');
+      var hit=0,total=0,miss=0;
+      sp.querySelectorAll('.w').forEach(function(w){
+        var isE=w.getAttribute('data-entity')==='1', sel=w.classList.contains('sel');
+        if(isE)total++;
+        if(sel&&isE){w.classList.add('hit');hit++;}
+        else if(sel&&!isE){w.classList.add('miss');miss++;}
+        else if(!sel&&isE){w.classList.add('missed');}
+      });
+      var ok=(hit===total&&miss===0);
+      fb.className='w-feedback show '+(ok?'good':'bad');
+      fb.textContent= ok ? ('מצוין! זיהיתם את כל '+total+' הישויות, בלי טעויות.')
+        : ('זיהיתם '+hit+' מתוך '+total+' ישויות'+(miss?(' (ועוד '+miss+' סימונים שאינם ישויות)'):'')+'. ישות = שם עצם שצריך לשמור עליו מידע במסד.');
+      ok?GX.celebrate():GX.wrong();
+    });
+  });
+
+  /* 2 · דריל קשרים */
+  document.querySelectorAll('.drill-item').forEach(function(it){
+    var opts=[].slice.call(it.querySelectorAll('.drill-opt')), exp=it.querySelector('.drill-exp'), done=false;
+    opts.forEach(function(o){ o.addEventListener('click',function(){
+      if(done)return; done=true;
+      var ok=o.getAttribute('data-correct')==='1';
+      o.classList.add(ok?'correct':'wrong');
+      opts.forEach(function(x){ x.classList.add('locked'); if(!ok&&x.getAttribute('data-correct')==='1')x.classList.add('correct'); });
+      if(exp)exp.classList.add('show');
+      ok?GX.correct():GX.wrong();
+    }); });
+  });
+
+  /* 3 · ממיין MVP */
+  (function(){
+    var pool=document.getElementById('featPool'), mvp=document.getElementById('colMvp'), v2=document.getElementById('colV2');
+    if(!pool)return;
+    var cM=document.getElementById('cntMvp'), cV=document.getElementById('cntV2'), fb=document.getElementById('sortFb');
+    function counts(){
+      var m=mvp.querySelectorAll('.feat').length, v=v2.querySelectorAll('.feat').length;
+      cM.textContent=m; cV.textContent=v;
+      fb.className='w-feedback show '+((m>=1&&m<=4)?'good':'bad');
+      fb.textContent = m===0 ? 'התחילו לשבץ — מה חייב להיות כבר בגרסה הראשונה?'
+        : (m<=4 ? 'היקף ריאלי ל-6 שעות — בדיוק ככה. פרוסה אחת שעובדת.'
+        : 'שאפתני מדי ל-6 שעות. שקלו לדחות חלק מהפיצ\u05F3רים ל-v2.');
+    }
+    [].slice.call(pool.querySelectorAll('.feat')).forEach(function(f){
+      f.addEventListener('click',function(){
+        if(f.parentElement===pool){ f.className='feat in-mvp'; mvp.appendChild(f); }
+        else if(f.parentElement===mvp){ f.className='feat in-v2'; v2.appendChild(f); }
+        else { f.className='feat'; pool.appendChild(f); }
+        GX.tick(); counts();
+      });
+    });
+  })();
+
+  /* 4 · מחשבון סיכון */
+  (function(){
+    var rc=document.getElementById('riskcalc'); if(!rc)return;
+    var sev=0, prob=0;
+    var sB=[].slice.call(rc.querySelectorAll('[data-sev]')), pB=[].slice.call(rc.querySelectorAll('[data-prob]'));
+    var sc=document.getElementById('rcScore'), vd=document.getElementById('rcVerdict');
+    function upd(){
+      if(!sev||!prob){ sc.textContent='—'; sc.style.background='var(--paper-2)'; sc.style.color='var(--muted)'; vd.textContent='בחרו חומרה וסבירות'; vd.style.color='var(--muted)'; return; }
+      var v=sev*prob; sc.textContent=v;
+      var t = v>=15 ? ['#fde2e2','#b91c1c','סיכון גבוה — לטפל ראשון, עם מניעה ותגובה ברורות']
+            : v>=8  ? ['#fdebcf','#b45309','סיכון בינוני — הגדירו פעולת מניעה ותגובה']
+            :         ['#dcf3e8','#0f766e','סיכון נמוך — מספיק לנטר ולתעד'];
+      sc.style.background=t[0]; sc.style.color=t[1]; vd.textContent=t[2]; vd.style.color=t[1]; GX.tick();
+    }
+    sB.forEach(function(b){ b.addEventListener('click',function(){ sev=+b.getAttribute('data-sev'); sB.forEach(function(x){x.classList.remove('on');}); b.classList.add('on'); upd(); }); });
+    pB.forEach(function(b){ b.addEventListener('click',function(){ prob=+b.getAttribute('data-prob'); pB.forEach(function(x){x.classList.remove('on');}); b.classList.add('on'); upd(); }); });
+  })();
+
+  /* 5 · בונה פרומפט */
+  (function(){
+    var pb=document.getElementById('pbuild'); if(!pb)return;
+    var fields=['ctx','task','cons','fmt'], labels={ctx:'הקשר',task:'משימה',cons:'אילוצים',fmt:'פורמט'};
+    var out=document.getElementById('pbOut');
+    function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function render(){
+      var any=false, html='';
+      fields.forEach(function(k){ var v=document.getElementById('pb_'+k).value.trim();
+        if(v){ any=true; html+='<div class="pb-line"><b>'+labels[k]+'</b>'+esc(v)+'</div>'; } });
+      out.innerHTML = any ? html : '<span class="pb-empty">מלאו את השדות והפרומפט המלא יורכב כאן…</span>';
+    }
+    fields.forEach(function(k){ document.getElementById('pb_'+k).addEventListener('input',render); });
+    render();
+    var cp=document.getElementById('pbCopy');
+    cp.addEventListener('click',function(){
+      var txt=fields.map(function(k){ var v=document.getElementById('pb_'+k).value.trim(); return v?labels[k]+': '+v:''; }).filter(Boolean).join('\n');
+      if(!txt){ GX.wrong(); return; }
+      navigator.clipboard.writeText(txt).then(function(){ var o=cp.textContent; cp.textContent='הועתק ✓'; GX.chime(); GX.confetti(70); setTimeout(function(){cp.textContent=o;},1500); }).catch(function(){ cp.textContent='העתיקו ידנית'; });
+    });
+  })();
 })();
 </script>
 </body>
