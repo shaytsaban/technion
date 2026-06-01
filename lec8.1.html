@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תדריך הפרויקט המלווה · ניתוח מערכות וניהול פרויקטים בעידן ה-AI</title>
+<script>document.documentElement.className+=' js';</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Assistant:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   מערכת עיצוב — "מחברת הנדסית" אקדמית · RTL
+   ============================================================ */
+:root{
+  --ink:#1c1917;--ink-soft:#44403c;--muted:#78716c;
+  --paper:#faf7f0;--paper-2:#f3eee3;--card:#fffdf8;
+  --line:#e7ddca;--line-strong:#d8cbb0;
+  --indigo:#2a2a6b;--indigo-2:#3b3b86;--indigo-wash:#eceaf6;
+  --ochre:#b45309;--ochre-2:#d97706;--ochre-wash:#fdf0dd;
+  --teal:#0f766e;--teal-2:#10897e;--teal-wash:#e7f6f2;
+  --rose:#be123c;--rose-wash:#fdeef1;
+  --blue:#1d4ed8;--blue-wash:#eaf1fe;
+  --radius:16px;--radius-sm:10px;
+  --shadow-sm:0 1px 2px rgba(28,25,23,.05),0 2px 8px rgba(28,25,23,.04);
+  --shadow:0 6px 22px -8px rgba(28,25,23,.18),0 2px 8px rgba(28,25,23,.06);
+  --maxw:1180px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:'Assistant',system-ui,sans-serif;color:var(--ink);background-color:var(--paper);
+  background-image:
+    radial-gradient(at 88% -4%, rgba(180,83,9,.06) 0, transparent 42%),
+    radial-gradient(at 4% 0%, rgba(42,42,107,.05) 0, transparent 40%),
+    radial-gradient(circle at center, rgba(120,113,108,.04) 1px, transparent 1px);
+  background-size:auto,auto,26px 26px;line-height:1.75;font-size:17.5px;-webkit-font-smoothing:antialiased}
+
+#progress{position:fixed;top:0;right:0;height:3px;width:0%;background:linear-gradient(90deg,var(--ochre),var(--ochre-2));z-index:120;transition:width .12s ease-out}
+
+header.topbar{position:sticky;top:0;z-index:100;background:rgba(250,247,240,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:var(--maxw);margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;color:var(--indigo);font-size:.98rem}
+.brand .mark{width:30px;height:30px;border-radius:8px;flex-shrink:0;background:linear-gradient(135deg,var(--indigo),var(--ochre));display:grid;place-items:center;color:#fff;font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:1.05rem;box-shadow:var(--shadow-sm)}
+.brand small{display:block;font-weight:600;color:var(--muted);font-size:.74rem;margin-top:-3px}
+.topbar .stage-pill{font-size:.72rem;font-weight:700;color:var(--ochre);background:var(--ochre-wash);border:1px solid #f3dcb8;padding:5px 12px;border-radius:100px;white-space:nowrap}
+
+.layout{max-width:var(--maxw);margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 248px;gap:48px;align-items:start}
+main{min-width:0;padding-bottom:80px}
+@media(max-width:980px){.layout{grid-template-columns:1fr;gap:0}aside.toc{display:none}}
+
+aside.toc{position:sticky;top:78px;padding-top:40px;max-height:calc(100vh - 90px);overflow-y:auto}
+.toc h4{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:12px;padding-right:12px}
+.toc ol{list-style:none}
+.toc a{display:block;text-decoration:none;color:var(--ink-soft);font-size:.92rem;font-weight:600;padding:7px 12px;border-radius:8px;border-right:2px solid transparent;line-height:1.35;transition:all .15s}
+.toc a:hover{background:var(--paper-2);color:var(--ink)}
+.toc a.active{background:var(--ochre-wash);color:var(--ochre);border-right-color:var(--ochre);font-weight:700}
+.toc .num{display:inline-block;width:1.4em;color:var(--ochre);font-weight:800;font-family:'IBM Plex Mono',monospace;font-size:.85em}
+.toc .future a{color:var(--muted);opacity:.72}
+.toc .grp{font-size:.7rem;font-weight:800;color:var(--muted);letter-spacing:.03em;margin:18px 0 6px;padding-right:12px;text-transform:uppercase}
+
+/* ---------- HERO ---------- */
+.hero{padding:64px 0 26px;position:relative}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:.82rem;color:var(--ochre);background:var(--card);border:1px solid var(--line);border-radius:100px;padding:7px 16px;box-shadow:var(--shadow-sm);margin-bottom:24px}
+.hero .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--ochre);box-shadow:0 0 0 4px var(--ochre-wash);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4px var(--ochre-wash)}50%{box-shadow:0 0 0 7px rgba(180,83,9,.06)}}
+.hero h1{font-family:'Frank Ruhl Libre',serif;font-weight:900;color:var(--ink);font-size:clamp(2.4rem,6vw,4rem);line-height:1.08;letter-spacing:-.01em;margin-bottom:8px}
+.hero h1 .pen{color:var(--ochre);position:relative;white-space:nowrap}
+.hero h1 .pen::after{content:"";position:absolute;right:0;left:0;bottom:.06em;height:.18em;background:linear-gradient(90deg,var(--ochre-2),transparent);opacity:.32;border-radius:3px;transform-origin:right;animation:draw 1.1s .5s ease both}
+@keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.hero .lead{font-size:1.22rem;color:var(--ink-soft);max-width:64ch;margin-top:18px;font-weight:500}
+/* stats strip */
+.stats{display:flex;flex-wrap:wrap;gap:0;margin:30px 0 4px;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow-sm);overflow:hidden}
+.stat{flex:1 1 120px;padding:16px 18px;text-align:center;border-left:1px solid var(--line)}
+.stat:first-child{border-left:none}
+.stat .num{font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:2.2rem;line-height:1;color:var(--ochre);display:block}
+.stat .lbl{font-size:.82rem;font-weight:700;color:var(--muted);margin-top:4px;display:block}
+.hero .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.hero .meta span{font-size:.85rem;font-weight:700;color:var(--indigo);background:var(--indigo-wash);border:1px solid #d9d6ee;padding:6px 14px;border-radius:8px}
+.hero .meta span.t{color:var(--teal);background:var(--teal-wash);border-color:#c2e9e1}
+
+/* ---------- אזורי תוכן ---------- */
+section.block{scroll-margin-top:84px;padding:40px 0;border-top:1px solid var(--line)}
+section.block:first-of-type{border-top:none}
+.sec-head{display:flex;align-items:flex-start;gap:18px;margin-bottom:8px}
+.sec-num{flex-shrink:0;width:54px;height:54px;border-radius:14px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:1.7rem;box-shadow:var(--shadow)}
+.sec-num.o{background:linear-gradient(150deg,var(--ochre),var(--ochre-2))}
+.sec-num.i{background:linear-gradient(150deg,var(--indigo),var(--indigo-2))}
+.sec-head h2{font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:2.05rem;line-height:1.15;color:var(--ink);padding-top:3px}
+.sec-head .kicker{display:block;font-size:.8rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ochre);margin-bottom:3px}
+h3{font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:1.42rem;color:var(--ink);margin:34px 0 12px;line-height:1.25}
+h4{font-weight:800;font-size:1.08rem;color:var(--indigo);margin:22px 0 8px}
+p{margin:0 0 15px;color:var(--ink-soft)}
+strong{color:var(--ink);font-weight:700}
+em{font-style:normal;background:linear-gradient(transparent 62%,var(--ochre-wash) 62%);font-weight:600;padding:0 2px}
+a.inline{color:var(--ochre);font-weight:700;text-decoration:none;border-bottom:1.5px solid #f0d4a6}
+a.inline:hover{border-bottom-color:var(--ochre)}
+ul,ol.steps{margin:0 0 16px;padding-right:4px}
+ul li{list-style:none;position:relative;padding-right:26px;margin-bottom:9px;color:var(--ink-soft)}
+ul li::before{content:"";position:absolute;right:6px;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--ochre);transform:rotate(45deg)}
+ul.check li::before{content:"✓";background:none;color:var(--teal);font-weight:900;font-size:1.05em;top:0;right:2px;transform:none;width:auto;height:auto}
+ul.q li::before{content:"?";background:none;color:var(--indigo);font-weight:900;font-size:1.05em;top:0;right:0;transform:none;width:auto;height:auto}
+
+/* ---------- קולאאוטים ---------- */
+.callout{border-radius:var(--radius);padding:18px 20px;margin:22px 0;border:1px solid var(--line);border-right:5px solid var(--muted);background:var(--card);box-shadow:var(--shadow-sm);position:relative}
+.callout .c-label{display:flex;align-items:center;gap:9px;font-weight:800;font-size:.96rem;margin-bottom:6px}
+.callout .c-ico{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.callout p:last-child,.callout ul:last-child{margin-bottom:0}
+.callout.tip{border-right-color:var(--blue);background:var(--blue-wash)}.callout.tip .c-label{color:var(--blue)}.callout.tip .c-ico{background:var(--blue)}
+.callout.warn{border-right-color:var(--ochre-2);background:var(--ochre-wash)}.callout.warn .c-label{color:var(--ochre)}.callout.warn .c-ico{background:var(--ochre-2)}
+.callout.insight{border-right-color:var(--indigo);background:var(--indigo-wash)}.callout.insight .c-label{color:var(--indigo)}.callout.insight .c-ico{background:var(--indigo)}
+.callout.pitfall{border-right-color:var(--rose);background:var(--rose-wash)}.callout.pitfall .c-label{color:var(--rose)}.callout.pitfall .c-ico{background:var(--rose)}
+.callout.build{border-right-color:var(--teal);background:var(--teal-wash)}.callout.build .c-label{color:var(--teal)}.callout.build .c-ico{background:var(--teal)}
+
+/* ---------- פרומפט ---------- */
+.prompt{background:#201d2e;color:#e9e6f5;border-radius:var(--radius);margin:22px 0;border:1px solid #322d44;overflow:hidden;box-shadow:var(--shadow)}
+.prompt .p-top{display:flex;align-items:center;justify-content:space-between;background:#16131f;padding:9px 16px;border-bottom:1px solid #322d44}
+.prompt .p-top .ttl{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.85rem;color:#cbb892}
+.prompt .p-top .ttl .ico{color:var(--ochre-2)}
+.prompt .copy{background:#2c2740;color:#cbc6da;border:1px solid #3d3753;border-radius:7px;font-family:'Assistant';font-size:.76rem;font-weight:700;padding:4px 12px;cursor:pointer;transition:all .15s}
+.prompt .copy:hover{background:var(--ochre);color:#1a1717;border-color:var(--ochre)}
+.prompt .p-body{padding:16px 18px;font-size:.96rem;line-height:1.65;direction:rtl}
+.prompt .p-body .seg{margin-bottom:11px;padding-right:14px;border-right:2px solid #3d3753}
+.prompt .p-body .seg:last-child{margin-bottom:0}
+.prompt .p-body .seg b{color:var(--ochre-2);font-weight:700;display:block;font-size:.82rem;margin-bottom:1px}
+.prompt .p-body .seg span{color:#d7d3e6}
+
+/* ---------- שאלה↔תשובה (Q&A demo) ---------- */
+.qa{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);margin:22px 0;box-shadow:var(--shadow-sm);overflow:hidden}
+.qa .qa-top{background:var(--paper-2);border-bottom:1px solid var(--line);padding:9px 16px;font-weight:800;font-size:.82rem;color:var(--ink-soft);display:flex;align-items:center;gap:8px}
+.qa .qa-top .badge{font-size:.68rem;background:var(--ochre);color:#fff;border-radius:6px;padding:2px 8px;font-weight:800}
+.bubble{display:flex;gap:12px;padding:15px 16px;align-items:flex-start}
+.bubble+.bubble{border-top:1px solid var(--line)}
+.bubble .av{width:32px;height:32px;border-radius:9px;flex-shrink:0;display:grid;place-items:center;font-weight:800;font-size:.72rem;color:#fff}
+.bubble.u .av{background:var(--indigo)}
+.bubble.a{background:#fbf8f1}.bubble.a .av{background:linear-gradient(135deg,var(--ochre),var(--ochre-2))}
+.bubble .who{font-weight:800;font-size:.78rem;color:var(--muted);margin-bottom:3px}
+.bubble .msg{font-size:.95rem;color:var(--ink-soft)}
+.bubble .msg code{font-family:'IBM Plex Mono',monospace;font-size:.86em;background:var(--paper-2);border:1px solid var(--line);border-radius:5px;padding:0 5px;color:var(--ochre);direction:ltr;display:inline-block}
+.qa .qa-foot{border-top:1px dashed var(--line-strong);background:var(--indigo-wash);padding:11px 16px;font-size:.88rem;color:var(--indigo);display:flex;gap:9px;align-items:flex-start}
+.qa .qa-foot b{font-weight:800}
+.qa .qa-foot .f-ico{flex-shrink:0;font-weight:900}
+
+/* ---------- משימת "עכשיו אתם" ---------- */
+.task{border:1px solid var(--line);border-right:5px solid var(--teal);background:linear-gradient(180deg,#effaf6,#e7f6f2);border-radius:var(--radius);padding:20px 22px;margin:24px 0;box-shadow:var(--shadow-sm)}
+.task .t-head{display:flex;align-items:center;gap:11px;margin-bottom:8px}
+.task .t-head .tag{background:var(--teal);color:#fff;font-size:.72rem;font-weight:800;border-radius:100px;padding:4px 13px;letter-spacing:.02em;flex-shrink:0;box-shadow:var(--shadow-sm)}
+.task .t-head h4{margin:0;color:var(--teal);font-size:1.06rem}
+.task .t-task{color:var(--ink-soft);font-weight:600;margin-bottom:12px}
+.task textarea{width:100%;min-height:80px;border:1.5px dashed var(--line-strong);border-radius:10px;padding:11px 14px;font-family:'Assistant';font-size:.95rem;background:#fff;color:var(--ink);resize:vertical;direction:rtl;line-height:1.6}
+.task textarea::placeholder{color:#a8a097}
+.task textarea:focus{outline:none;border-color:var(--teal);border-style:solid;box-shadow:0 0 0 3px rgba(15,118,110,.1)}
+.reveal-btn{margin-top:12px;background:var(--teal);color:#fff;border:none;border-radius:9px;font-family:'Assistant';font-weight:700;font-size:.9rem;padding:9px 18px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:7px}
+.reveal-btn:hover{background:var(--teal-2);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.reveal-btn .chev{transition:transform .3s}
+.reveal-btn.open .chev{transform:rotate(180deg)}
+.model{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.3,.8,.3,1);margin-top:0}
+.model.open{max-height:900px}
+.model-in{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px 16px}
+.model-in .m-label{font-weight:800;color:var(--teal);font-size:.82rem;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.model-in p:last-child{margin-bottom:0}
+.model-in code{font-family:'IBM Plex Mono',monospace;font-size:.84em;background:var(--paper-2);border:1px solid var(--line);border-radius:5px;padding:0 5px;color:var(--ochre);direction:ltr;display:inline-block}
+
+/* ---------- קוד / kbd ---------- */
+code.kbd{font-family:'IBM Plex Mono',monospace;font-size:.86em;background:var(--paper-2);border:1px solid var(--line);border-radius:6px;padding:1px 7px;color:var(--ochre);direction:ltr;display:inline-block}
+
+/* ---------- טבלאות ---------- */
+.tbl-wrap{overflow-x:auto;margin:20px 0;border-radius:var(--radius-sm);border:1px solid var(--line);box-shadow:var(--shadow-sm)}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:.94rem;min-width:480px}
+th{background:var(--ink);color:var(--paper);font-weight:700;text-align:right;padding:11px 14px;font-size:.88rem}
+td{padding:10px 14px;border-bottom:1px solid var(--line);color:var(--ink-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even) td{background:#fbf8f1}
+td strong{color:var(--ink)}
+
+/* ---------- twin / flow / panel ---------- */
+.twin{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
+@media(max-width:620px){.twin{grid-template-columns:1fr}.flow{flex-direction:column}.flow .arrow{transform:rotate(90deg)}}
+.twin .t-card{border:1px solid var(--line);border-radius:var(--radius);padding:20px;background:var(--card);box-shadow:var(--shadow-sm)}
+.twin .t-card .badge{display:inline-block;font-size:.74rem;font-weight:800;padding:4px 11px;border-radius:7px;margin-bottom:9px}
+.twin .t-card.doc .badge{background:var(--indigo-wash);color:var(--indigo)}
+.twin .t-card.proto .badge{background:var(--teal-wash);color:var(--teal)}
+.twin .t-card h4{margin:0 0 6px;color:var(--ink)}
+.twin .t-card p{font-size:.92rem;margin:0}
+.flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;margin:22px 0;background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius);padding:18px 14px}
+.flow .node{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:.82rem;background:var(--card);border:1px solid var(--line-strong);border-radius:9px;padding:7px 13px;color:var(--ink);white-space:nowrap;box-shadow:var(--shadow-sm)}
+.flow .node.hl{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.flow .arrow{color:var(--ochre);font-weight:800;font-size:1.1rem}
+
+.next-panel{margin:40px 0 10px;border:2px dashed var(--line-strong);border-radius:var(--radius);background:linear-gradient(180deg,#fffdf8,#f6f1e6);padding:28px 26px}
+.next-panel .np-label{display:inline-flex;align-items:center;gap:8px;font-weight:800;color:var(--ochre);font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px}
+.next-panel h3{margin-top:0}
+.np-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+@media(max-width:620px){.np-grid{grid-template-columns:1fr}}
+.np-item{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:15px 16px}
+.np-item .s{font-family:'IBM Plex Mono',monospace;font-size:.74rem;font-weight:600;color:var(--teal)}
+.np-item h5{font-weight:800;color:var(--ink);font-size:1.02rem;margin:3px 0 4px}
+.np-item p{font-size:.88rem;margin:0;color:var(--muted)}
+
+footer{border-top:1px solid var(--line);background:var(--card);padding:30px 24px;margin-top:30px}
+.footer-in{max-width:var(--maxw);margin:0 auto;color:var(--muted);font-size:.86rem;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center}
+.footer-in b{color:var(--indigo)}
+
+/* ---------- אנימציות חשיפה ---------- */
+html.js .reveal-on-scroll{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1)}
+html.js .reveal-on-scroll.in{opacity:1;transform:none}
+html.js .stagger>*{opacity:0;transform:translateY(14px);transition:opacity .5s cubic-bezier(.2,.7,.2,1),transform .5s cubic-bezier(.2,.7,.2,1)}
+html.js .stagger.in>*{opacity:1;transform:none}
+html.js .stagger.in>*:nth-child(1){transition-delay:.04s}
+html.js .stagger.in>*:nth-child(2){transition-delay:.10s}
+html.js .stagger.in>*:nth-child(3){transition-delay:.16s}
+html.js .stagger.in>*:nth-child(4){transition-delay:.22s}
+html.js .stagger.in>*:nth-child(5){transition-delay:.28s}
+html.js .stagger.in>*:nth-child(6){transition-delay:.34s}
+html.js .stagger.in>*:nth-child(7){transition-delay:.40s}
+html.js .stagger.in>*:nth-child(8){transition-delay:.46s}
+html.js .stagger.in>*:nth-child(9){transition-delay:.52s}
+html.js .stagger.in>*:nth-child(10){transition-delay:.58s}
+html.js .stagger.in>*:nth-child(11){transition-delay:.64s}
+html.js .stagger.in>*:nth-child(12){transition-delay:.70s}
+@media(prefers-reduced-motion:reduce){
+  html.js .reveal-on-scroll,html.js .stagger>*{opacity:1!important;transform:none!important;transition:none!important}
+  .hero h1 .pen::after{animation:none;transform:none}.hero .eyebrow .dot{animation:none}
+}
+@media print{
+  header.topbar,aside.toc,#progress,.prompt .copy,.reveal-btn{display:none}
+  body{background:#fff;font-size:12pt}.layout{grid-template-columns:1fr;display:block}
+  .callout,.code,.prompt,.tbl-wrap,.qa,.task{break-inside:avoid}
+  html.js .reveal-on-scroll,html.js .stagger>*{opacity:1!important;transform:none!important}
+  .model{max-height:none!important}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <span class="mark">מ</span>
+      <span>תדריך הפרויקט המלווה<small>ניתוח מערכות וניהול פרויקטים בעידן ה-AI</small></span>
+    </div>
+    <span class="stage-pill">מהדורת הקאתון · 6 שעות</span>
+  </div>
+</header>
+
+<div class="layout">
+  <main>
+
+    <!-- ===================== HERO ===================== -->
+    <div class="hero">
+      <span class="eyebrow"><span class="dot"></span>תדריך הכנה · להקאתון בן 6 השעות</span>
+      <h1>מהאפיון העסקי<br>אל <span class="pen">מערכת חיה</span>.</h1>
+      <p class="lead">זהו תדריך הפעולה שלכם לפרויקט המלווה. הוא מלווה אתכם צעד-אחר-צעד — מרעיון גולמי, דרך אפיון,
+        נתונים ו-Use Cases, ועד אב-טיפוס Full-Stack פעיל עם שילוב AI. בכל תחנה תעצרו <strong>לחשוב ולהחליט בעצמכם</strong>,
+        ולא רק לקרוא. כל מה שכאן נשען <strong>אך ורק על מה שלמדנו בקורס</strong>.</p>
+
+      <div class="stats reveal-on-scroll">
+        <div class="stat"><span class="num" data-count="6">6</span><span class="lbl">שעות עבודה</span></div>
+        <div class="stat"><span class="num" data-count="14">14</span><span class="lbl">סעיפים במסמך</span></div>
+        <div class="stat"><span class="num" data-count="7">7</span><span class="lbl">תחנות ביצוע</span></div>
+        <div class="stat"><span class="num" data-count="1">1</span><span class="lbl">לולאה מרכזית</span></div>
+      </div>
+
+      <div class="meta">
+        <span class="t">אב-טיפוס End-to-End</span>
+        <span>עמוד שדרה: עקיבות</span>
+        <span>AI ככלי, שיקול דעת כמנצח</span>
+      </div>
+    </div>
+
+    <!-- ===================== 0 · המפה הגדולה ===================== -->
+    <section class="block" id="map">
+      <div class="sec-head reveal-on-scroll">
+        <div class="sec-num o">0</div>
+        <h2><span class="kicker">לפני שמתחילים</span>המפה הגדולה — ואיך לקרוא את התדריך</h2>
+      </div>
+
+      <p>בסוף ההקאתון תניחו על השולחן <strong>שני תוצרים שמדברים זה עם זה</strong>. כל מה שתעשו בשש השעות
+        מזין את אחד מהם — ולרוב את שניהם בו-זמנית. שמרו את התמונה הזו לנגד עיניכם:</p>
+
+      <div class="twin stagger reveal-on-scroll">
+        <div class="t-card doc">
+          <span class="badge">תוצר א׳</span>
+          <h4>המסמך המלווה</h4>
+          <p>טיוטה הנדסית בת 14 סעיפים — מהרקע והחזון, דרך הפרסונות, הדרישות, מודל הנתונים וה-BI,
+            ועד הסיכונים, שילוב ה-AI ואב-הטיפוס. זה ה"מה" וה"איך" של המערכת.</p>
+        </div>
+        <div class="t-card proto">
+          <span class="badge">תוצר ב׳</span>
+          <h4>אב-הטיפוס החי</h4>
+          <p>פרוסה דקה אך פעילה מקצה-לקצה: מסך → קריאת API → לוגיקה בבסיס הנתונים → תשובה,
+            עם נגיעת AI אחת אמיתית. לא הכול — אבל מה שיש, עובד.</p>
+        </div>
+      </div>
+
+      <h3>עמוד השדרה של הכול: עקיבות (Traceability)</h3>
+      <p>אם תזכרו דבר אחד מהתדריך — שיהיה זה. כל רכיב במערכת חייב להיות ניתן למעקב לאחור עד הצורך העסקי
+        שהוליד אותו. זו בדיוק הדרישה המרכזית של המסמך, וזה גם הקו שמחבר את כל מה שלמדנו השנה:</p>
+
+      <div class="flow stagger reveal-on-scroll">
+        <span class="node">User Story</span><span class="arrow">←</span>
+        <span class="node">Use Case</span><span class="arrow">←</span>
+        <span class="node hl">Schema / ERD</span><span class="arrow">←</span>
+        <span class="node">SQL</span><span class="arrow">←</span>
+        <span class="node">Feature</span><span class="arrow">←</span>
+        <span class="node">בדיקה</span>
+      </div>
+
+      <div class="callout insight reveal-on-scroll">
+        <div class="c-label"><span class="c-ico">✦</span>תפיסת הארכיטקט בעידן ה-AI</div>
+        <p>למדנו שכשה-AI כותב SQL מושלם — <strong>שיקול הדעת שלכם הוא זה שמנצח</strong>. ה-AI לא יודע מהו
+          ה-Use Case, מהם תנאי הקדם, ומהו הכלל העסקי ("לא יוצגו פרופילים שהמשתמש חסם"). זה מה שאתם יודעים.
+          <strong>אתם הגשר בין הצורך העסקי לכלי הטכני.</strong> ההקאתון הזה הוא ההזדמנות שלכם להוכיח את זה.</p>
+      </div>
+
+      <!-- משימת ביניים ראשונה -->
+      <div class="task reveal-on-scroll">
+        <div class="t-head"><span class="tag">עכשיו אתם</span><h4>נסחו את העיקרון במילים שלכם</h4></div>
+        <p class="t-task">בלי להציץ למטה — כתבו במשפט או שניים: מהי "עקיבות", ולמה היא עמוד השדרה של הפרויקט?
+          (אם אתם לא מצליחים לנסח — זה סימן לחזור ולקרוא את התרשים למעלה.)</p>
+        <textarea placeholder="כתבו כאן את ההגדרה שלכם…"></textarea>
+        <button class="reveal-btn" type="button">הצג תשובה לדוגמה <span class="chev">▾</span></button>
+        <div class="model">
+          <div class="model-in">
+            <div class="m-label">✓ תשובה לדוגמה</div>
+            <p>עקיבות היא היכולת לעקוב אחרי כל רכיב במערכת <em>לאחור</em>, עד הצורך העסקי שהוליד אותו: כל טבלה נולדה
+              מ-Use Case, כל Use Case מ-User Story, וכל פיצ'ר מאומת בבדיקה. זה עמוד השדרה כי המסמך נמדד על
+              <strong>החיבורים</strong> — לא על סעיפים יפים ומבודדים. סעיף שלא מתחבר לשום דבר לפניו או אחריו, שווה פחות
+              מסעיף פשוט שמחובר היטב.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>איך התדריך בנוי</h3>
+      <p>שלושת השלבים הראשונים הם <strong>חשיבה</strong> — לפני שנכתבת שורת קוד אחת. לאחריהם מגיעה
+        <strong>תוכנית הביצוע ל-6 שעות</strong>, ולבסוף <strong>צ'קליסט סופי</strong>. לאורך הדרך תפגשו ארבעה סוגי רכיבים:</p>
+      <ul>
+        <li><strong>שאלות מנחות</strong> — שמכריחות אתכם להחליט, לא לרחף.</li>
+        <li><strong style="color:var(--teal)">משימות "עכשיו אתם"</strong> — עוצרים, כותבים תשובה משלכם, ורק אז חושפים תשובה לדוגמה.</li>
+        <li><strong>הדגמות שאלה↔תשובה</strong> — רואים דיאלוג אמיתי מול ה-AI, כולל מה לבקר בו.</li>
+        <li><strong>פרומפטים מוכנים</strong> — בתבנית בת 4 החלקים, מוכנים להעתקה.</li>
+      </ul>
+
+      <div class="callout tip reveal-on-scroll">
+        <div class="c-label"><span class="c-ico">i</span>מקרא צבעי התיבות</div>
+        <ul>
+          <li><strong style="color:var(--blue)">כחול — טיפ:</strong> עצה מעשית שתחסוך זמן.</li>
+          <li><strong style="color:var(--ochre)">חום — שימו לב:</strong> נקודת החלטה או דרישה מהמסמך.</li>
+          <li><strong style="color:var(--indigo)">סגול — תובנת ארכיטקט:</strong> חיבור לעיקרון מהקורס.</li>
+          <li><strong style="color:var(--rose)">ורוד — פח נפוץ:</strong> טעות שכבר ראינו, אל תיפלו בה.</li>
+          <li><strong style="color:var(--teal)">טורקיז — לעשות עכשיו:</strong> פעולה קונקרטית בכלים.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== 1 · מבוא ומטרה ===================== -->
+    <section class="block" id="intro">
+      <div class="sec-head reveal-on-scroll">
+        <div class="sec-num i">1</div>
+        <h2><span class="kicker">פתח דבר</span>מבוא ומטרת הפרויקט</h2>
+      </div>
+
+      <p>הפרויקט המלווה הוא הרבה יותר ממסמך דרישות מוצר (PRD) רגיל. PRD קלאסי מתמקד ב<strong>"מה"</strong>
+        המערכת צריכה לעשות. המסמך שלכם דורש להעמיק גם ב<strong>"איך"</strong> — ובקשרים שבין השכבות: ממשק, שרת,
+        נתונים ו-AI. לכן התיעוד מאגד ארבעה עמודי תווך משלימים:</p>
+
+      <div class="tbl-wrap reveal-on-scroll">
+        <table>
+          <thead><tr><th>עמוד תווך</th><th>מה הוא דורש</th><th>על איזה חומר מהקורס הוא נשען</th></tr></thead>
+          <tbody class="stagger">
+            <tr><td><strong>ניהול פרויקט ומפת דרכים</strong></td><td>תכנון שלבי מימוש, Backlog, MVP וגרסאות עתידיות.</td><td>חשיבת MVP, ה-Backlog וה-Tickets (Frontend/Backend/NFR).</td></tr>
+            <tr><td><strong>מודל נתונים</strong></td><td>מבנה הישויות (ERD), הקשרים, וה-SQL שמאחורי הכול.</td><td>ישויות, קשרים, ERD, <code class="kbd">CREATE TABLE</code>, מפתחות, JOINs.</td></tr>
+            <tr><td><strong>מערך BI וניתוח נתונים</strong></td><td>דשבורדים למנהל המוצר ולמשתמשי הקצה.</td><td>אגרגציות (<code class="kbd">GROUP BY</code>, <code class="kbd">HAVING</code>), דוחות ניהוליים.</td></tr>
+            <tr><td><strong>ארכיטקטורת ענן ואב-טיפוס</strong></td><td>מערכת Full-Stack פעילה בענן, עם בדיקות אוטומטיות.</td><td>בסיסי נתונים בענן, GAS כשרת-גשר, API, שילוב AI.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warn reveal-on-scroll">
+        <div class="c-label"><span class="c-ico">!</span>הדגש המרכזי שלפיו ייבחן המסמך</div>
+        <p>המסמך נמדד על <strong>עקיבות</strong>: עליכם להראות כיצד חזון המוצר והפרסונות שהגדרתם בראשית הדרך
+          מתורגמים לדרישות פונקציונליות — וכיצד אלו מקבלים ביטוי במימוש הטכנולוגי ובבדיקות האוטומטיות בסוף.</p>
+      </div>
+
+      <h3>כל דרישה אמיתית נוגעת ביותר מעמוד תווך אחד</h3>
+      <p>זו נקודה שקל לפספס. בואו נתרגל אותה מיד — כי היא הלב של העקיבות.</p>
+
+      <!-- משימת ביניים -->
+      <div class="task reveal-on-scroll">
+        <div class="t-head"><span class="tag">עכשיו אתם</span><h4>מפו דרישה לעמודי התווך</h4></div>
+        <p class="t-task">נתונה הדרישה: <em>"המערכת ממליצה למשתמש על פרופילים מתאימים"</em>.
+          באילו מארבעת עמודי התווך היא נוגעת? כתבו את כל אלה שעולים בדעתכם, ולמה.</p>
+        <textarea placeholder="לדעתי הדרישה נוגעת ב…"></textarea>
+        <button class="reveal-btn" type="button">הצג תשובה לדוגמה <span class="chev">▾</span></button>
+        <div class="model">
+          <div class="model-in">
+            <div class="m-label">✓ תשובה לדוגמה</div>
+            <p>הדרישה נוגעת בלפחות שלושה עמודים: <strong>מודל נתונים</strong> (צריך טבלאות <code>users</code>,
+              <code>preferences</code>, <code>likes</code> כדי לדעת למי להמליץ), <strong>שילוב AI</strong> (מנוע ההמלצה
+              עצמו), ו<strong>מערך BI</strong> (נמדוד אם ההמלצות מצליחות — שיעור התאמות מתוך המלצות).
+              <strong>ניהול הפרויקט</strong> יחליט אם זה ב-MVP או ב-v2. זו בדיוק העקיבות: דרישה אחת — חוט שעובר בכל השכבות.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>מהי מטרת ההקאתון עצמו?</h3>
+      <p>בשש שעות לא תסיימו מערכת מסחרית. המטרה ריאלית וחדה: <strong>להגדיר את הפרויקט באופן קוהרנטי וניתן-למעקב,
+        ולהעמיד פרוסה דקה אחת שעובדת מקצה לקצה.</strong> שלד חזק שתבשרו עליו בהמשך — תוכנית אדריכלית מצוינת עם חדר
+        אחד בנוי ומרוהט.</p>
+
+      <div class="callout insight reveal-on-scroll">
+        <div class="c-label"><span class="c-ico">✦</span>למה מגדירים היקף מראש?</div>
+        <p>כמו שלמדנו ב-Use Case — חלק מהניתוח הוא <em>הגדרת גבולות</em>: מה בפנים (scope) ומה בחוץ. הגדרה מוקדמת
+          מונעת <strong>זליגת דרישות</strong> ומבטיחה שבסוף היום יהיה תוצר שלם וקטן — ולא חצי-תוצר גדול.</p>
+      </div>
+    </section>
+
+    <!-- ===================== 2 · סיעור מוחות ===================== -->
+    <section class="block" id="brainstorm">
+      <div class="sec-head reveal-on-scroll">
+        <div class="sec-num o">2</div>
+        <h2><span class="kicker">ליבון הרעיון</span>סיעור מוחות וגיבוש הקונספט</h2>
+      </div>
+
+      <p>לפני שבוחרים נושא — צריך לדעת איך מזהים <strong>נושא טוב</strong>. הקורס נתן לנו מבחן פשוט וחד-משמעי.</p>
+
+      <div class="callout insight reveal-on-scroll">
+        <div class="c-label"><span class="c-ico">✦</span>מבחן "מוצר הנתונים"</div>
+        <p>למדנו ש<strong>כל פעולה של משתמש היא בעצם שינוי בנתונים</strong>. נרשם → שומרים אימייל וסיסמה. עושה Like →
+          זוכרים מי אהב את מי. אם אתם <em>לא</em> מצליחים להצביע על הנתון שמשתנה בכל פעולה מרכזית — הרעיון עדיין לא בשל.</p>
+      </div>
+
+      <h3>שלוש הדוגמאות שליוו אותנו — כתבנית השראה</h3>
+      <p>אל תעתיקו אותן — אבל <strong>הבינו מה הופך כל אחת ל"מוצר נתונים" טוב</strong>, וחפשו את אותו DNA אצלכם:</p>
+
+      <div class="tbl-wrap reveal-on-scroll">
+        <table>
+          <thead><tr><th>מערכת</th><th>הלב שלה</th><th>למה זה מוצר נתונים מצוין</th></tr></thead>
+          <tbody class="stagger">
+            <tr><td><strong>MatchMe</strong> (דייטינג)</td><td>משתמשים, פרופילים, לייקים, התאמות, דיווחים, חסימות.</td><td>לולאה ברורה (דפדוף→לייק→התאמה), קשרי N:M טבעיים, ומקום מובהק ל-AI.</td></tr>
+            <tr><td><strong>EHI</strong> (השקעה באושר עובדים)</td><td>מחלקות, עובדים, התערבויות, ציוני אושר.</td><td>עשיר באגרגציות וב-BI: "סך השקעה לפי מחלקה", "ממוצע אושר", "מתחת לסף".</td></tr>
+            <tr><td><strong>CarePlus / TechCorp</strong></td><td>מחלקות, התערבויות, עובדים, שכר.</td><td>נתונים ניהוליים שמולידים דוחות ושאילתות שמישהו בישיבה ביקש.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>שיטת הליבון — בדיוק כפי שלמדנו: מתחילים מהאפיון העסקי</h3>
+      <p>אל תתחילו מטבלאות. תתחילו <strong>מטקסט בעברית</strong> שמתאר: מי המשתמשים, מה הם יכולים לעשות, ואילו חוקים יש
+        במערכת. מתוכו מזהים <strong>ישויות</strong> — שמות העצם שחוזרים. הכלל שלמדנו: אם אפשר לשאול "<em>כמה יש?</em>"
+        או "<em>מה הפרטים של...?</em>" — זו כנראה ישות (וכנראה גם טבלה).</p>
+
+      <!-- הדגמת Q&A ראשונה -->
+      <div class="qa reveal-on-scroll">
+        <div class="qa-top"><span class="badge">הדגמה</span> שאלה לארכיטקט ↔ תשובת ה-AI · זיהוי ישויות מתוך אפיון</div>
+        <div class="bubble u">
+          <div class="av">אתם</div>
+          <div><div class="who">הפרומפט שלכם (תבנית 4 חלקים)</div>
+            <div class="msg"><b>הקשר:</b> אני בונה את MatchMe. אפיון: "משתמש נרשם, יוצר פרופיל עם ביו ותמונה, מדפדף
+              בפרופילים באותה עיר, עושה Like או דילוג. שני Likes הדדיים = Match ואז אפשר לשלוח הודעות."
+              <b>משימה:</b> זהה ישויות, 3–5 שדות לכל אחת, וסוג הקשר בין כל זוג. <b>אילוצים:</b> רק מה שנרמז באפיון; ציין קשר N:M אם קיים. <b>פורמט:</b> טבלה + רשימת קשרים, בעברית.</div></div>
+        </div>
+        <div class="bubble a">
+          <div class="av">AI</div>
+          <div><div class="who">תשובת ה-AI</div>
+            <div class="msg"><strong>ישויות:</strong> <code>users</code> (id, name, email, city, age) ·
+              <code>profiles</code> (id, user_id, bio, photo_url) · <code>likes</code> (id, from_user_id, to_user_id, liked_at) ·
+              <code>matches</code> (id, user1_id, user2_id, matched_at).<br>
+              <strong>קשרים:</strong> user–profile = 1:1 · user–likes = 1:N · user ↔ user דרך likes = <strong>N:M</strong>
+              (טבלת קישור) · match נגזר משני Likes הדדיים.</div></div>
+        </div>
+        <div class="qa-foot"><span class="f-ico">✦</span><span><b>ביקורת הארכיטקט:</b> ה-AI הציע גם את <code>matches</code>,
+          אף ש"התאמה" נרמזה רק בעקיפין — והוא צדק. אבל זה בדיוק המקום לעצור ולוודא: האם כל ישות שהוא הציע באמת נובעת
+          מהאפיון <em>שלכם</em>? אתם מאשרים, לא הוא.</span></div>
+      </div>
+
+      <p>עכשיו תורכם — על תחום חדש לגמרי, כדי שתתרגלו את החשיבה ולא רק תעתיקו את MatchMe.</p>
+
+      <!-- משימת ביניים: תחום חדש -->
+      <div class="task reveal-on-scroll">
+        <div class="t-head"><span class="tag">עכשיו אתם</span><h4>זהו ישויות באפליקציה חדשה</h4></div>
+        <p class="t-task">נתון אפיון של <strong>אפליקציה לחילופי ספרים יד-שנייה בין סטודנטים</strong>:
+          <em>"סטודנט נרשם ומעלה ספרים שברשותו, כולל מצב הספר והקורס הרלוונטי. סטודנטים אחרים מחפשים ספר לפי קורס,
+          שולחים בקשת השאלה, והמעלה מאשר או דוחה. לאחר אישור נקבע מפגש למסירה."</em><br>
+          זהו את הישויות ואת <strong>סוג הקשר המרכזי</strong>. כתבו לפני שאתם חושפים.</p>
+        <textarea placeholder="ישויות שזיהיתי: … ; הקשר המרכזי: …"></textarea>
+        <button class="reveal-btn" type="button">הצג תשובה לדוגמה <span class="chev">▾</span></button>
+        <div class="model">
+          <div class="model-in">
+            <div class="m-label">✓ תשובה לדוגמה</div>
+            <p><strong>ישויות:</strong> <code>students</code> (id, name, email) · <code>books</code> (id, owner_id→students,
+              title, course, condition) · <code>requests</code> (id, book_id→books, requester_id→students, status, created_at).<br>
+              <strong>הקשר המרכזי:</strong> student–books = 1:N (סטודנט מעלה הרבה ספרים), ו-student ↔ books דרך
+              <code>requests</code> = <strong>N:M</strong> (סטודנט מבקש הרבה ספרים, וספר מתבקש ע"י רבים) — כלומר
+              <code>requests</code> היא <strong>טבלת הקישור</strong>. שימו לב שזו אותה תבנית בדיוק כמו <code>likes</code> ב-MatchMe.</p>
+          </div>
+        </div>
+      </div>
+
+      <h4>שאלות מנחות לבחירת התחום שלכם</h4>
+      <ul class="q">
+        <li>מי שלושת סוגי המשתמשים המרכזיים, ומה כל אחד <em>עושה</em> במערכת?</li>
+        <li>אילו 4–6 ישויות חוזרות באפיון? האם ביניהן יש לפחות קשר אחד של רבים-לרבים?</li>
+        <li>היכן באופן טבעי "יושב" צעד שבו AI יכול לחסוך עבודה או לשפר חוויה?</li>
+        <li>האם המערכת תייצר מספיק נתונים כדי שיהיה מה להציג בדשבורד?</li>
+      </ul>
+
+      <!-- משימת ביניים: הלולאה -->
+      <div class="task reveal-on-scroll">
+        <div class="t-head"><span class="tag">עכשיו אתם</span><h4>הגדירו את הלולאה המרכזית שלכם</h4></div>
+        <p class="t-task">בחרו <strong>Use Case מרכזי אחד</strong> שמגדיר את המוצר, וכתבו אותו כשרשרת קצרה
+          (כמו: דפדוף→לייק→התאמה). זו הלולאה שתעבוד מקצה-לקצה.</p>
+        <textarea placeholder="הלולאה המרכזית שלי: … → … → …"></textarea>
+        <button class="reveal-btn" type="button">הצג תשובה לדוגמה <span class="chev">▾</span></button>
+        <div class="model">
+          <div class="model-in">
+            <div class="m-label">✓ תשובה לדוגמה (לאפליקציית הספרים)</div>
+            <p>חיפוש ספר לפי קורס ← שליחת בקשת השאלה ← אישור המעלה ← קביעת מפגש למסירה. רעיון שמנסה לעשות עשרה דברים
+              יישאר תקוע בעשרה חצאי-דברים; לולאה אחת חדה — מגיעה לקו הסיום.</p>
+          </div>
+        </div>
+      </div>
+
+      <p>וכעת — שותף הצוות החדש. למדנו ש-AI אינו קסם: הוא חבר צוות שכותב SQL מצוין, חושב איתנו ומתעד.
+        נשתמש בו כדי להאיץ — תמיד תחת בקרת ארכיטקט. הנה הפרומפט שראיתם בהדגמה, מוכן להעתקה:</p>
+
+      <div class="prompt reveal-on-scroll">
+        <div class="p-top"><span class="ttl"><span class="ico">❯</span> פרומפט · זיהוי ישויות מתוך אפיון</span><button class="copy" type="button">העתק</button></div>
+        <div class="p-body">
+          <div class="seg"><b>הקשר</b><span>אני סטודנט/ית בקורס ניתוח מערכות. אני בונה מערכת בשם [שם], והנה האפיון העסקי שלה בעברית: [הדביקו את פסקת האפיון].</span></div>
+          <div class="seg"><b>משימה</b><span>זהה את הישויות (שמות עצם שצריך לשמור עליהם מידע), הצע לכל אחת 3–5 שדות, וסמן לכל זוג ישויות את סוג הקשר (1:1, 1:N, N:M).</span></div>
+          <div class="seg"><b>אילוצים</b><span>הישאר נאמן לאפיון בלבד — אל תמציא ישויות. שאף ל-4–6 ישויות. ציין במפורש קשר רבים-לרבים שדורש טבלת קישור.</span></div>
+          <div class="seg"><b>פורמט</b><span>טבלת ישויות ושדות, ואז רשימת קשרים. בעברית, קצר.</span></div>
+        </div>
+      </div>
+
+      <div class="callout pitfall reveal-on-scroll">
+        <div class="c-label"><span class="c-ico">⚠</span>פח נפוץ: לקבל את תשובת ה-AI כפשוטה</div>
+        <p>ה-AI עלול <strong>להמציא ישויות בביטחון מלא</strong> (הזיה), או להציע מבנה שלא תואם את האפיון כי חסר לו קונטקסט.
+          עברו על כל ישות ושאלו: "האם נרמזה באפיון <em>שכתבתי</em>?" — אתם הארכיטקטים, לא הוא.</p>
+      </div>
+    </section>
+
+    <!-- ===================== 3 · הגדרת היקף ===================== -->
+    <section class="block" id="scope">
+      <div class="sec-head reveal-on-scroll">
+        <div class="sec-num o">3</div>
+        <h2><span class="kicker">תיחום</span>הגדרת היקף הפרויקט (Scope)</h2>
+      </div>
+
+      <p>עכשיו, כשיש רעיון ולולאה מרכזית — צריך לתחום. ההיקף הוא ההבדל בין צוות שמסיים ביום אחד לצוות שנשאר עם ערימת
+        התחלות. שתי החלטות עיקריות.</p>
+
+      <h3>החלטה 1 · מה ב-MVP ומה נדחה לעתיד</h3>
+      <p>גרסת ה-MVP היא הסט המינימלי של פיצ'רים שמוכיח את הלולאה המרכזית. כל השאר — חשוב ככל שיהיה — נכנס ל-Roadmap.
+        זו דוגמה; מלאו טבלה כזו לרעיון שלכם:</p>
+
+      <div class="tbl-wrap reveal-on-scroll">
+        <table>
+          <thead><tr><th>פיצ'ר / יכולת</th><th>ב-MVP?</th><th>גרסה</th><th>נימוק קצר</th></tr></thead>
+          <tbody class="stagger">
+            <tr><td>הרשמה + יצירת פרופיל</td><td><strong style="color:var(--teal)">כן</strong></td><td>v1</td><td>בלי משתמשים אין לולאה.</td></tr>
+            <tr><td>הלולאה המרכזית (למשל בקשת השאלה→אישור)</td><td><strong style="color:var(--teal)">כן</strong></td><td>v1</td><td>זה הלב — חייב לעבוד End-to-End.</td></tr>
+            <tr><td>נגיעת AI אחת</td><td><strong style="color:var(--teal)">כן</strong></td><td>v1</td><td>דרישת המסמך: סוכן AI לתהליך נבחר.</td></tr>
+            <tr><td>צ'אט בזמן אמת / התראות Push</td><td><strong style="color:var(--rose)">לא</strong></td><td>v2</td><td>מורכב, לא חיוני להוכחת הלולאה.</td></tr>
+            <tr><td>[הוסיפו את הפיצ'רים שלכם…]</td><td>—</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>החלטה 2 · "הפרוסה האנכית הדקה" לאב-הטיפוס</h3>
+      <p>אב-הטיפוס לא צריך לממש את כל המערכת — אלא <strong>דרישה פונקציונלית אחת שעוברת את כל השכבות</strong>. זו בדיוק
+        מפת העקיבות שהמסמך דורש:</p>
+
+      <div class="flow stagger reveal-on-scroll">
+        <span class="node">דרישה פונקציונלית</span><span class="arrow">←</span>
+        <span class="node">מסך ב-UX</span><span class="arrow">←</span>
+        <span class="node hl">נתיב ב-API</span><span class="arrow">←</span>
+        <span class="node">פרוצדורה / לוגיקה ב-DB</span><span class="arrow">←</span>
+        <span class="node">בדיקה אוטומטית</span>
+      </div>
+
+      <div class="callout tip reveal-on-scroll">
+        <div class="c-label"><span class="c-ico">i</span>כמה ישויות, וכמה רשומות?</div>
+        <p>שאפו ל-<strong>4–6 טבלאות</strong> — מספיק ל-JOINs ו-<code class="kbd">GROUP BY</code> בעלי משמעות, אך לא יותר מדי.
+          ולגבי נתוני הסימולציה: הקפידו על <strong>מספר משמעותי של רשומות בכל טבלה</strong> — בלי זה, דוחות ה-BI יהיו ריקים.
+          (ה-AI מצוין ביצירת נתוני דמה — נשתמש בו לכך בשלב הבנייה.)</p>
+      </div>
+
+      <!-- הדגמת Q&A: מבחן לחץ -->
+      <div class="qa reveal-on-scroll">
+        <div class="qa-top"><span class="badge">הדגמה</span> שאלה לארכיטקט ↔ תשובת ה-AI · מבחן לחץ להיקף</div>
+        <div class="bubble u">
+          <div class="av">אתם</div>
+          <div><div class="who">הפרומפט שלכם</div>
+            <div class="msg"><b>הקשר:</b> אני בונה את אפליקציית הספרים בהקאתון של 6 שעות, בצוות של 3. ההיקף שלי: בפנים —
+              הרשמה, העלאת ספר, חיפוש, בקשת השאלה, צ'אט בזמן אמת בין הצדדים, ואימות זהות בסלפי. <b>משימה:</b> שחק פרקליט
+              השטן — היכן אני שאפתן מדי? <b>אילוצים:</b> היה ביקורתי וישיר, אל תסכים רק כדי לרצות. <b>פורמט:</b> 3 סיכונים + צמצום לכל אחד.</div></div>
+        </div>
+        <div class="bubble a">
+          <div class="av">AI</div>
+          <div><div class="who">תשובת ה-AI</div>
+            <div class="msg"><strong>1.</strong> צ'אט בזמן אמת שאפתני מדי ל-6 שעות — דחו ל-v2, והציגו הודעות כרשומות סטטיות בלבד.
+              <strong>2.</strong> "אימות זהות בסלפי" דורש מנוע AI + מצלמה — החליפו בתג ידני ל-MVP.
+              <strong>3.</strong> שימו לב: לא הגדרתם <em>פרוסה אנכית</em>. בחרו פעולה אחת שמשנה נתון — למשל "שליחת בקשת השאלה" —
+              שתעבור מסך → API → <code>INSERT</code> ל-DB → בדיקה.</div></div>
+        </div>
+        <div class="qa-foot"><span class="f-ico">✦</span><span><b>ביקורת הארכיטקט:</b> זו תשובה <em>טובה</em> — ה-AI חלק עליכם והוסיף
+          נקודה שלא ביקשתם. אם הוא רק היה מהלל את ההיקף שלכם, סימן שלא ביקשתם נכון. תמיד תנו לו רשות לא להסכים.</span></div>
+      </div>
+
+      <!-- משימת ביניים: הצהרת היקף -->
+      <div class="task reveal-on-scroll">
+        <div class="t-head"><span class="tag">עכשיו אתם</span><h4>נסחו את הצהרת ההיקף שלכם</h4></div>
+        <p class="t-task">בשלוש שורות: <strong>מה בפנים</strong> (3–4 פיצ'רי MVP), <strong>מה בחוץ</strong> (מה דחיתם ולמה),
+          ו<strong>מהי הפרוסה האנכית</strong> שתעבור End-to-End. זו ההגנה הכי טובה מפני זליגת דרישות במהלך היום.</p>
+        <textarea placeholder="בפנים: …  |  בחוץ: …  |  פרוסה אנכית: …"></textarea>
+        <button class="reveal-btn" type="button">הצג תשובה לדוגמה <span class="chev">▾</span></button>
+        <div class="model">
+          <div class="model-in">
+            <div class="m-label">✓ תשובה לדוגמה (לאפליקציית הספרים)</div>
+            <p><strong>בפנים:</strong> הרשמה + העלאת ספר, חיפוש לפי קורס, בקשת השאלה ואישור, ונגיעת AI אחת (סיכום אוטומטי
+              של מצב הספר מטקסט חופשי). <strong>בחוץ:</strong> צ'אט בזמן אמת, דירוגים, התראות Push — נדחים ל-v2.
+              <strong>פרוסה אנכית:</strong> "שליחת בקשת השאלה" — מסך הספר → קריאת API → <code>INSERT</code> לטבלת
+              <code>requests</code> → בדיקת Playwright שמוודאת שהבקשה נשמרה במצב "ממתינה".</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout pitfall reveal-on-scroll">
+        <div class="c-label"><span class="c-ico">⚠</span>פח נפוץ: ה-AI ש"מסכים יותר מדי"</div>
+        <p>אם תגידו "ההיקף שלי מושלם, נכון?" — הוא יסכים. אם תגידו "זה לא טוב" — הוא יתנצל וישנה הכול, גם אם צדקתם.
+          בקשו ממנו <strong>במפורש</strong> לחלוק עליכם. הביקורת בעלת הערך מגיעה כשנותנים לו רשות לא להסכים.</p>
+      </div>
+    </section>
+
+    <!-- ===================== פאנל המשך ===================== -->
+    <div class="next-panel reveal-on-scroll">
+      <span class="np-label">▤ ממשיך בשלבים הבאים</span>
+      <h3>סיימנו את החשיבה. עכשיו — לבנייה.</h3>
+      <p>הנחנו את התשתית: הבנו את התמונה, גיבשנו רעיון ותיחמנו אותו — תוך כדי עצירות לחשוב בעצמנו. החלקים הבאים,
+        שאבנה לאחר אישורך, הם הלב הפרקטי של ההקאתון, באותו סגנון אינטראקטיבי:</p>
+      <div class="np-grid stagger">
+        <div class="np-item"><span class="s">שלב 2</span><h5>תוכנית ביצוע ל-6 שעות</h5>
+          <p>7 תחנות מתוזמנות. כל תחנה: נושא מהקורס → סעיף במסמך, עם פרומפט מוכן, הדגמת שאלה↔תשובה, ומשימת "עכשיו אתם" שמייצרת תוצר.</p></div>
+        <div class="np-item"><span class="s">שלב 3</span><h5>צ'קליסט סופי + טבלת עקיבות</h5>
+          <p>בקרה לפי 14 הסעיפים, תבנית טבלת עקיבות מלאה (דרישה→מסך→API→DB→בדיקה), והגדרת "בוצע" להגשה.</p></div>
+      </div>
+    </div>
+
+  </main>
+
+  <aside class="toc">
+    <h4>תוכן התדריך</h4>
+    <nav>
+      <ol>
+        <li><a href="#map"><span class="num">0</span>המפה הגדולה</a></li>
+        <li><a href="#intro"><span class="num">1</span>מבוא ומטרה</a></li>
+        <li><a href="#brainstorm"><span class="num">2</span>סיעור מוחות וגיבוש</a></li>
+        <li><a href="#scope"><span class="num">3</span>הגדרת היקף</a></li>
+      </ol>
+      <div class="grp">ממשיך בשלב הבא</div>
+      <ol class="future">
+        <li><a href="#"><span class="num">4</span>תוכנית ביצוע ל-6 שעות</a></li>
+        <li><a href="#"><span class="num">5</span>צ'קליסט סופי</a></li>
+      </ol>
+    </nav>
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-in">
+    <span>תדריך הפרויקט המלווה · <b>ניתוח מערכות וניהול פרויקטים בעידן ה-AI</b></span>
+    <span>מהדורת הקאתון · שלב 1 (מתוקן) מתוך 3</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var bar=document.getElementById('progress');
+  var links=[].slice.call(document.querySelectorAll('.toc a[href^="#"]'));
+  var secs=links.map(function(a){var id=a.getAttribute('href');return id&&id.length>1?document.querySelector(id):null;});
+  function onScroll(){
+    var h=document.documentElement;
+    var sc=(h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+    bar.style.width=Math.min(100,Math.max(0,sc))+'%';
+    var idx=-1,top=h.scrollTop+120;
+    secs.forEach(function(s,i){if(s&&s.offsetTop<=top)idx=i;});
+    links.forEach(function(a,i){a.classList.toggle('active',i===idx);});
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  /* count-up */
+  function countUp(el){
+    el.querySelectorAll('[data-count]').forEach(function(n){
+      var target=parseInt(n.getAttribute('data-count'),10)||0,start=null,dur=1100;
+      function step(ts){if(!start)start=ts;var p=Math.min((ts-start)/dur,1);
+        n.textContent=Math.round(p*target);if(p<1)requestAnimationFrame(step);}
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* reveal on scroll — with fallback for engines without IntersectionObserver */
+  var targets=[].slice.call(document.querySelectorAll('.reveal-on-scroll,.stagger'));
+  if(!('IntersectionObserver' in window)){
+    targets.forEach(function(el){el.classList.add('in');if(el.classList.contains('stats'))countUp(el);});
+  } else {
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.classList.add('in');
+          if(e.target.classList.contains('stats'))countUp(e.target);
+          io.unobserve(e.target);
+        }
+      });
+    },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){io.observe(el);});
+  }
+
+  /* reveal-answer buttons */
+  document.querySelectorAll('.reveal-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var m=btn.parentElement.querySelector('.model');
+      var open=m.classList.toggle('open');btn.classList.toggle('open',open);
+      btn.firstChild.textContent=open?'הסתר תשובה ':'הצג תשובה לדוגמה ';
+    });
+  });
+
+  /* copy prompt */
+  document.querySelectorAll('.prompt .copy').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var body=btn.closest('.prompt').querySelector('.p-body');
+      var txt=[].slice.call(body.querySelectorAll('.seg')).map(function(s){
+        return s.querySelector('b').innerText+': '+s.querySelector('span').innerText;}).join('\n');
+      navigator.clipboard.writeText(txt).then(function(){
+        var o=btn.innerText;btn.innerText='הועתק ✓';setTimeout(function(){btn.innerText=o;},1600);
+      }).catch(function(){btn.innerText='העתיקו ידנית';});
+    });
+  });
+})();
+</script>
+</body>
+</html>
