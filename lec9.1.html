@@ -1,0 +1,3337 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>חלק 2: כלים וארכיטקטורה | קורס ארכיטקטורת מוצרי AI · מהדורת 2026</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/assistant@5.0.0/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/index.css">
+<style>
+:root {
+    --bg-base: #f0f4ff;
+    --bg-soft: #f8faff;
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #475569;
+    --text-soft: #64748b;
+    --accent-blue: #4f6ef7;
+    --accent-purple: #8b5cf6;
+    --accent-indigo: #6366f1;
+    --accent-pink: #ec4899;
+    --accent-cyan: #06b6d4;
+    --accent-teal: #14b8a6;
+    --accent-amber: #f59e0b;
+    --gradient-primary: linear-gradient(135deg, #4f6ef7 0%, #8b5cf6 100%);
+    --gradient-soft: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
+    --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-sunset: linear-gradient(135deg, #fbcfe8 0%, #c7d2fe 100%);
+    --gradient-mint: linear-gradient(135deg, #a7f3d0 0%, #bfdbfe 100%);
+    --success: #10b981;
+    --success-light: #d1fae5;
+    --danger: #ef4444;
+    --danger-light: #fee2e2;
+    --warning: #f59e0b;
+    --warning-light: #fef3c7;
+    --info: #3b82f6;
+    --info-light: #dbeafe;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --code-bg: #1e1e2e;
+    --shadow-sm: 0 2px 8px rgba(79, 110, 247, 0.06);
+    --shadow-md: 0 8px 24px rgba(79, 110, 247, 0.10);
+    --shadow-lg: 0 20px 40px rgba(79, 110, 247, 0.14);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Assistant', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(180deg, #eef2ff 0%, #faf5ff 50%, #ecfeff 100%);
+    background-attachment: fixed;
+    color: var(--text-main);
+    font-size: 18px;
+    line-height: 1.85;
+    overflow-x: hidden;
+}
+
+.top-nav {
+    position: fixed; top: 0; right: 0; left: 0;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
+    padding: 12px 0;
+}
+.nav-inner {
+    max-width: 1400px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+    font-weight: 800; font-size: 1.1rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.nav-links { display: flex; gap: 6px; list-style: none; flex-wrap: wrap; }
+.nav-links a {
+    text-decoration: none; color: var(--text-muted);
+    padding: 6px 12px; border-radius: 8px;
+    font-size: 0.88rem; font-weight: 600;
+    transition: all 0.2s;
+}
+.nav-links a:hover { background: var(--gradient-soft); color: var(--accent-purple); }
+.nav-progress {
+    position: absolute; bottom: 0; right: 0;
+    height: 3px; background: var(--gradient-primary);
+    width: 0%; transition: width 0.1s;
+}
+
+.hero {
+    margin-top: 60px;
+    background: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 50%, #f0abfc 100%);
+    color: white;
+    padding: 100px 20px 120px;
+    position: relative;
+    overflow: hidden;
+}
+.hero::before {
+    content: ''; position: absolute; top: -50%; left: -20%;
+    width: 60%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    pointer-events: none;
+    animation: floatBlob 18s infinite ease-in-out;
+}
+.hero::after {
+    content: ''; position: absolute; bottom: -30%; right: -10%;
+    width: 50%; height: 150%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+    pointer-events: none;
+    animation: floatBlob 22s infinite ease-in-out reverse;
+}
+@keyframes floatBlob {
+    0%, 100% { transform: translate(0,0); }
+    50% { transform: translate(30px, -20px); }
+}
+.hero-inner {
+    max-width: 1100px; margin: 0 auto;
+    position: relative; z-index: 2; text-align: center;
+}
+.hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+    padding: 8px 20px; border-radius: 999px;
+    font-size: 0.95rem; font-weight: 600;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255,255,255,0.35);
+}
+.hero h1 {
+    font-size: 3.6rem; font-weight: 800;
+    line-height: 1.2; margin-bottom: 20px;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.15);
+}
+.hero-sub {
+    font-size: 1.3rem; opacity: 0.97;
+    max-width: 850px; margin: 0 auto 32px;
+    line-height: 1.65;
+}
+.hero-image {
+    max-width: 640px; margin: 40px auto 0;
+    border-radius: 24px; overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+    transform: perspective(1000px) rotateX(4deg);
+}
+.hero-image img { width: 100%; display: block; }
+.hero-stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 18px; max-width: 900px; margin: 50px auto 0;
+}
+.hero-stat {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    padding: 20px; border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.25);
+    transition: transform 0.3s;
+}
+.hero-stat:hover { transform: translateY(-5px); }
+.hero-stat-num {
+    font-size: 2.2rem; font-weight: 800; display: block;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+.hero-stat-label { font-size: 0.9rem; opacity: 0.95; }
+
+.container { max-width: 1150px; margin: 0 auto; padding: 60px 24px; }
+
+.chapter { margin-bottom: 80px; }
+.chapter-header {
+    display: flex; align-items: center; gap: 20px;
+    margin-bottom: 30px; padding-bottom: 20px;
+    border-bottom: 3px solid transparent;
+    border-image: var(--gradient-primary) 1;
+}
+.chapter-number {
+    width: 62px; height: 62px;
+    background: var(--gradient-primary);
+    color: white; border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; font-weight: 800;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-md);
+    transform: rotate(-3deg);
+}
+.chapter-title {
+    font-size: 2.3rem; font-weight: 800;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.3;
+}
+.chapter-subtitle {
+    color: var(--text-muted);
+    font-size: 1.05rem; margin-top: 4px;
+}
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 38px;
+    margin-bottom: 26px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+.card::before {
+    content: ''; position: absolute;
+    top: 0; right: 0; width: 150px; height: 150px;
+    background: var(--gradient-soft);
+    opacity: 0.4; border-radius: 50%;
+    transform: translate(60px, -60px);
+    pointer-events: none;
+    z-index: 0;
+}
+.card > * { position: relative; z-index: 1; }
+.card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    border-color: #c7d2fe;
+}
+.card h3 {
+    font-size: 1.55rem;
+    color: var(--accent-indigo);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+}
+.card h3 .icon {
+    width: 44px; height: 44px;
+    background: var(--gradient-soft);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+}
+.card h4 {
+    font-size: 1.2rem;
+    color: var(--text-main);
+    margin-top: 26px; margin-bottom: 12px;
+    font-weight: 700;
+    padding-right: 14px;
+    border-right: 4px solid var(--accent-purple);
+}
+.card p { margin-bottom: 16px; text-align: justify; }
+.card ul, .card ol { padding-right: 26px; margin-bottom: 16px; }
+.card li { margin-bottom: 10px; }
+
+.box {
+    padding: 22px 26px; border-radius: 16px;
+    margin: 22px 0;
+    border-right: 5px solid;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+}
+.box-title {
+    font-weight: 800; font-size: 1.1rem;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+}
+.box-info { background: var(--info-light); border-color: var(--info); color: #1e3a8a; }
+.box-success { background: var(--success-light); border-color: var(--success); color: #065f46; }
+.box-warning { background: var(--warning-light); border-color: var(--warning); color: #78350f; }
+.box-danger { background: var(--danger-light); border-color: var(--danger); color: #7f1d1d; }
+.box-purple { background: #f3f0ff; border-color: var(--accent-purple); color: #4c1d95; }
+.box-blue { background: #eff6ff; border-color: var(--accent-blue); color: #1e3a8a; }
+.box-gradient { background: var(--gradient-soft); border-color: var(--accent-indigo); color: #3730a3; }
+.box-pink { background: #fdf2f8; border-color: var(--accent-pink); color: #831843; }
+.box-cyan { background: #ecfeff; border-color: var(--accent-cyan); color: #155e75; }
+
+pre {
+    background: var(--code-bg);
+    color: #e4e4e7;
+    padding: 24px;
+    border-radius: 14px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    direction: ltr; text-align: left;
+    position: relative;
+    border: 1px solid #2a2a3e;
+}
+pre .comment { color: #6b7280; font-style: italic; }
+pre .keyword { color: #c792ea; font-weight: 600; }
+pre .string { color: #c3e88d; }
+pre .number { color: #f78c6c; }
+pre .function { color: #82aaff; }
+pre .decorator { color: #ffcb6b; }
+pre .builtin { color: #89ddff; }
+.code-label {
+    position: absolute;
+    top: 10px; left: 14px;
+    background: rgba(139,92,246,0.35);
+    color: #e4e4e7;
+    padding: 3px 12px; border-radius: 6px;
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    direction: ltr;
+}
+code {
+    background: #f1f5f9;
+    color: var(--accent-purple);
+    padding: 2px 8px; border-radius: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+    direction: ltr; display: inline-block;
+}
+
+.terminal {
+    background: #0d1117;
+    border-radius: 14px; margin: 24px 0;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid #30363d;
+}
+.terminal-header {
+    background: #161b22;
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid #30363d;
+}
+.terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #27c93f; }
+.terminal-title {
+    color: #8b949e;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    margin-right: auto; margin-left: auto;
+    direction: ltr;
+}
+.terminal-body {
+    padding: 20px 24px;
+    color: #c9d1d9;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    direction: ltr; text-align: left;
+    min-height: 100px;
+}
+.terminal-body .prompt { color: #58a6ff; }
+.terminal-body .output { color: #8b949e; }
+.terminal-body .success { color: #3fb950; }
+.terminal-body .warning { color: #d29922; }
+
+.gui-mockup {
+    background: #f8fafc;
+    border: 1px solid var(--border-strong);
+    border-radius: 14px; margin: 24px 0;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+.gui-titlebar {
+    background: linear-gradient(180deg, #e9edf5 0%, #dfe4ee 100%);
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid #cbd5e1;
+}
+.gui-dot { width: 12px; height: 12px; border-radius: 50%; }
+.gui-title {
+    font-size: 0.9rem; font-weight: 600;
+    color: var(--text-muted);
+    margin-right: 12px;
+}
+.gui-body { padding: 22px; background: white; }
+
+.flowchart {
+    background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 50%, #fdf2f8 100%);
+    padding: 36px 26px;
+    border-radius: 20px; margin: 30px 0;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 14px;
+    border: 2px dashed #c7d2fe;
+    box-shadow: var(--shadow-sm);
+}
+.flow-step {
+    background: white;
+    border: 3px solid var(--accent-blue);
+    padding: 16px 26px;
+    border-radius: 14px;
+    font-weight: 700;
+    text-align: center;
+    min-width: 280px;
+    max-width: 460px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s;
+}
+.flow-step:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.flow-step.purple { border-color: var(--accent-purple); }
+.flow-step.indigo { border-color: var(--accent-indigo); }
+.flow-step.pink { border-color: var(--accent-pink); }
+.flow-step.cyan { border-color: var(--accent-cyan); }
+.flow-step.success { border-color: var(--success); }
+.flow-step.teal { border-color: var(--accent-teal); }
+.flow-step-desc {
+    display: block;
+    font-size: 0.85rem; font-weight: 500;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+.flow-arrow {
+    font-size: 2rem;
+    color: var(--accent-purple);
+    font-weight: 800;
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+.comparison-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 22px; margin: 28px 0;
+}
+.comparison-card {
+    background: white; border-radius: 18px;
+    padding: 26px; border: 2px solid var(--border);
+    transition: all 0.3s;
+    box-shadow: var(--shadow-sm);
+}
+.comparison-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.comparison-card.cloud { border-color: var(--accent-blue); background: linear-gradient(135deg, #eff6ff 0%, white 100%); }
+.comparison-card.local { border-color: var(--accent-purple); background: linear-gradient(135deg, #f3f0ff 0%, white 100%); }
+.comparison-card.pink { border-color: var(--accent-pink); background: linear-gradient(135deg, #fdf2f8 0%, white 100%); }
+.comparison-card.teal { border-color: var(--accent-teal); background: linear-gradient(135deg, #ecfdf5 0%, white 100%); }
+.comparison-title {
+    font-size: 1.35rem; font-weight: 800;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+}
+.comparison-list { list-style: none; padding: 0; }
+.comparison-list li {
+    padding: 9px 0; padding-right: 26px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+}
+.comparison-list li:last-child { border-bottom: none; }
+.comparison-list li::before {
+    content: '✓'; position: absolute; right: 0;
+    color: var(--success); font-weight: bold;
+}
+.comparison-list.x li::before { content: '✗'; color: var(--danger); }
+
+.quiz {
+    background: linear-gradient(135deg, #faf5ff 0%, #eff6ff 100%);
+    border: 2px solid var(--accent-purple);
+    border-radius: 22px; padding: 36px;
+    margin: 36px 0; position: relative;
+    box-shadow: var(--shadow-md);
+}
+.quiz::before {
+    content: '🧠';
+    position: absolute; top: -22px; right: 30px;
+    background: white;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: var(--shadow-md);
+    border: 2px solid var(--accent-purple);
+}
+.quiz-title {
+    font-size: 1.25rem; font-weight: 800;
+    color: var(--accent-purple);
+    margin-bottom: 16px; padding-top: 10px;
+}
+.quiz-question {
+    font-size: 1.1rem; font-weight: 600;
+    margin-bottom: 20px;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 12px; }
+.quiz-option {
+    background: white;
+    border: 2px solid var(--border-strong);
+    padding: 16px 20px; border-radius: 12px;
+    cursor: pointer; transition: all 0.2s;
+    font-size: 1rem; font-weight: 500;
+    display: flex; align-items: center; gap: 12px;
+}
+.quiz-option:hover:not(.disabled) {
+    border-color: var(--accent-purple);
+    background: #faf5ff;
+    transform: translateX(-4px);
+}
+.quiz-option .letter {
+    width: 34px; height: 34px;
+    background: var(--gradient-soft);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; color: var(--accent-indigo);
+    flex-shrink: 0;
+}
+.quiz-option.correct { background: var(--success-light); border-color: var(--success); color: #065f46; }
+.quiz-option.correct .letter { background: var(--success); color: white; }
+.quiz-option.wrong { background: var(--danger-light); border-color: var(--danger); color: #7f1d1d; }
+.quiz-option.wrong .letter { background: var(--danger); color: white; }
+.quiz-option.disabled { cursor: not-allowed; opacity: 0.75; }
+.quiz-feedback {
+    margin-top: 20px; padding: 18px 22px;
+    border-radius: 12px; font-weight: 600;
+    display: none; line-height: 1.7;
+}
+.quiz-feedback.show { display: block; animation: slideIn 0.3s; }
+.quiz-feedback.success { background: var(--success-light); color: #065f46; border: 1px solid var(--success); }
+.quiz-feedback.error { background: var(--danger-light); color: #7f1d1d; border: 1px solid var(--danger); }
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.sandbox {
+    background: white;
+    border: 3px solid var(--accent-indigo);
+    border-radius: 22px; padding: 32px;
+    margin: 36px 0;
+    box-shadow: var(--shadow-md);
+}
+.sandbox-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 22px; padding-bottom: 18px;
+    border-bottom: 2px dashed var(--accent-indigo);
+}
+.sandbox-icon {
+    width: 50px; height: 50px;
+    background: var(--gradient-primary);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; color: white;
+    box-shadow: var(--shadow-sm);
+}
+.sandbox-title { font-size: 1.35rem; font-weight: 800; color: var(--accent-indigo); }
+.sandbox-subtitle { font-size: 0.9rem; color: var(--text-muted); }
+.control-group { margin-bottom: 18px; }
+.control-label {
+    font-weight: 700; color: var(--text-main);
+    margin-bottom: 8px; display: block;
+    font-size: 0.95rem;
+}
+.control-input, .control-select, .control-textarea {
+    width: 100%; padding: 12px 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit; font-size: 1rem;
+    background: white; transition: all 0.2s;
+}
+.control-input:focus, .control-select:focus, .control-textarea:focus {
+    outline: none; border-color: var(--accent-indigo);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+.control-textarea {
+    min-height: 100px; resize: vertical;
+    font-family: 'JetBrains Mono', monospace;
+    direction: ltr; text-align: left;
+}
+.control-slider {
+    width: 100%; height: 8px;
+    border-radius: 5px; background: var(--border);
+    outline: none;
+    -webkit-appearance: none; appearance: none;
+}
+.control-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+}
+.slider-value {
+    display: inline-block;
+    background: var(--accent-indigo);
+    color: white;
+    padding: 3px 10px; border-radius: 6px;
+    font-weight: 700; font-size: 0.85rem;
+    margin-right: 8px;
+}
+.control-btn {
+    background: var(--gradient-primary);
+    color: white; border: none;
+    padding: 14px 28px; border-radius: 12px;
+    font-family: inherit; font-size: 1rem;
+    font-weight: 700; cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+}
+.control-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.control-btn:active { transform: translateY(0); }
+.control-btn.secondary {
+    background: white; color: var(--accent-indigo);
+    border: 2px solid var(--accent-indigo);
+}
+.sandbox-output {
+    background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%);
+    border: 2px dashed var(--accent-indigo);
+    border-radius: 12px; padding: 20px;
+    margin-top: 20px; min-height: 80px;
+    color: var(--text-main); font-weight: 600;
+}
+
+.glossary {
+    background: white; border-radius: 16px;
+    padding: 26px; border: 1px solid var(--border);
+    margin: 22px 0;
+}
+.glossary-item { padding: 14px 0; border-bottom: 1px solid var(--border); }
+.glossary-item:last-child { border-bottom: none; }
+.glossary-term {
+    font-weight: 800; color: var(--accent-indigo);
+    font-size: 1.08rem; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 8px;
+}
+.glossary-def { color: var(--text-main); line-height: 1.7; }
+
+.table-wrapper {
+    overflow-x: auto; margin: 22px 0;
+    border-radius: 14px;
+    box-shadow: var(--shadow-sm);
+}
+table { width: 100%; border-collapse: collapse; background: white; }
+th {
+    background: var(--gradient-primary);
+    color: white; padding: 15px;
+    text-align: right; font-weight: 700;
+    font-size: 0.95rem;
+}
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+}
+tr:nth-child(even) td { background: #f8fafc; }
+tr:hover td { background: #eef2ff; }
+
+.image-showcase {
+    border-radius: 18px; overflow: hidden;
+    margin: 24px 0;
+    box-shadow: var(--shadow-md);
+    background: white;
+    border: 1px solid var(--border);
+}
+.image-showcase img { width: 100%; display: block; }
+.image-caption {
+    padding: 14px 20px; background: white;
+    font-size: 0.95rem; color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+
+.tabs {
+    background: white; border-radius: 14px;
+    padding: 8px; margin: 22px 0;
+    border: 1px solid var(--border);
+    display: flex; gap: 4px; flex-wrap: wrap;
+}
+.tab {
+    padding: 10px 18px;
+    background: transparent; border: none;
+    border-radius: 9px;
+    font-family: inherit; font-size: 0.92rem;
+    font-weight: 600; color: var(--text-muted);
+    cursor: pointer; transition: all 0.2s;
+    flex: 1; min-width: 110px;
+}
+.tab:hover { background: var(--gradient-soft); color: var(--accent-purple); }
+.tab.active { background: var(--gradient-primary); color: white; }
+.tab-content { display: none; padding: 22px 0; }
+.tab-content.active { display: block; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.accordion {
+    background: white; border-radius: 14px;
+    overflow: hidden; margin: 12px 0;
+    border: 1px solid var(--border);
+}
+.accordion-header {
+    padding: 17px 22px;
+    background: white; cursor: pointer;
+    display: flex; justify-content: space-between;
+    align-items: center;
+    font-weight: 700; color: var(--text-main);
+    transition: all 0.2s;
+}
+.accordion-header:hover { background: var(--gradient-soft); }
+.accordion-header.open { background: var(--gradient-soft); color: var(--accent-indigo); }
+.accordion-icon { transition: transform 0.3s; font-size: 1.2rem; }
+.accordion-header.open .accordion-icon { transform: rotate(180deg); }
+.accordion-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease;
+    padding: 0 22px;
+}
+.accordion-body.open { max-height: 3000px; padding: 18px 22px; border-top: 1px solid var(--border); }
+
+.progress-container {
+    background: var(--border);
+    border-radius: 10px; overflow: hidden;
+    height: 28px; margin: 12px 0;
+}
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 10px;
+    transition: width 0.6s ease;
+    display: flex; align-items: center;
+    justify-content: center;
+    color: white; font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.checklist {
+    background: white; border-radius: 14px;
+    padding: 22px; margin: 18px 0;
+    border: 1px solid var(--border);
+}
+.checklist-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+}
+.checklist-item:last-child { border-bottom: none; }
+.checkbox {
+    width: 24px; height: 24px;
+    border: 2px solid var(--accent-indigo);
+    border-radius: 6px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; margin-top: 3px;
+}
+.checklist-item.checked .checkbox {
+    background: var(--success);
+    border-color: var(--success); color: white;
+}
+.checklist-item.checked .checkbox::after { content: '✓'; font-weight: bold; }
+.checklist-text { flex: 1; color: var(--text-main); line-height: 1.6; }
+.checklist-item.checked .checklist-text {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px; margin: 22px 0;
+}
+.feature-card {
+    background: white;
+    border-radius: 16px; padding: 22px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+    box-shadow: var(--shadow-sm);
+}
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-indigo);
+}
+.feature-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 14px;
+}
+.feature-card.blue .feature-icon { background: #dbeafe; color: var(--accent-blue); }
+.feature-card.purple .feature-icon { background: #f3f0ff; color: var(--accent-purple); }
+.feature-card.pink .feature-icon { background: #fce7f3; color: var(--accent-pink); }
+.feature-card.cyan .feature-icon { background: #cffafe; color: var(--accent-cyan); }
+.feature-card.teal .feature-icon { background: #ccfbf1; color: var(--accent-teal); }
+.feature-card.amber .feature-icon { background: #fef3c7; color: var(--accent-amber); }
+.feature-title {
+    font-size: 1.1rem; font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+.feature-desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+
+.platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px; margin: 24px 0;
+}
+.platform-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s;
+}
+.platform-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+.platform-header {
+    padding: 18px 22px;
+    background: var(--gradient-soft);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+}
+.platform-logo {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: var(--shadow-sm);
+}
+.platform-name { font-size: 1.15rem; font-weight: 800; color: var(--accent-indigo); }
+.platform-type { font-size: 0.8rem; color: var(--text-muted); }
+.platform-body { padding: 18px 22px; }
+.platform-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    background: var(--gradient-soft);
+    color: var(--accent-indigo);
+    border-radius: 6px;
+    font-size: 0.78rem; font-weight: 700;
+    margin: 2px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--gradient-soft);
+    color: var(--accent-indigo);
+    border-radius: 6px;
+    font-size: 0.8rem; font-weight: 700;
+    margin-right: 6px;
+}
+.badge.purple { background: #f3f0ff; color: var(--accent-purple); }
+.badge.pink { background: #fdf2f8; color: var(--accent-pink); }
+.badge.cyan { background: #ecfeff; color: var(--accent-cyan); }
+.badge.success { background: var(--success-light); color: #065f46; }
+.badge.warning { background: var(--warning-light); color: #78350f; }
+
+footer {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    color: white;
+    padding: 60px 24px 30px;
+    text-align: center;
+    margin-top: 80px;
+}
+footer h3 { font-size: 1.8rem; margin-bottom: 14px; }
+footer p { opacity: 0.85; max-width: 620px; margin: 0 auto 18px; }
+
+.reading-progress {
+    position: fixed; bottom: 28px; left: 28px;
+    background: white; border-radius: 18px;
+    padding: 12px 18px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    z-index: 999;
+    display: flex; align-items: center; gap: 12px;
+    font-weight: 700; font-size: 0.88rem;
+}
+.progress-circle {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent-indigo) 0%, var(--border) 0%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+}
+.progress-circle::before {
+    content: ''; position: absolute; inset: 5px;
+    background: white; border-radius: 50%;
+}
+.progress-percent {
+    position: relative; z-index: 2;
+    font-weight: 800; color: var(--accent-indigo);
+    font-size: 0.85rem;
+}
+
+.divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-indigo), transparent);
+    margin: 40px 0; border: none;
+}
+
+@media (max-width: 900px) {
+    .hero h1 { font-size: 2.4rem; }
+    .hero-sub { font-size: 1.1rem; }
+    .chapter-title { font-size: 1.7rem; }
+    .chapter-number { width: 48px; height: 48px; font-size: 1.4rem; }
+    .card { padding: 24px; }
+    .comparison-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .reading-progress { display: none; }
+    body { font-size: 16px; }
+    .hero { padding: 60px 16px 80px; }
+    .container { padding: 30px 16px; }
+}
+
+@media print {
+    .top-nav, .reading-progress { display: none; }
+    .card, .quiz, .sandbox { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+    <div class="nav-inner">
+        <div class="nav-logo">🎓 קורס Local AI · מהדורת 2026 · חלק 2</div>
+        <ul class="nav-links">
+            <li><a href="#chapter5">פייתון</a></li>
+            <li><a href="#chapter6">Streamlit</a></li>
+            <li><a href="#chapter7">Ollama</a></li>
+            <li><a href="#chapter8">פלטפורמות</a></li>
+            <li><a href="#chapter9">Agents</a></li>
+            <li><a href="#chapter10">זיכרון ו-RAG</a></li>
+            <li><a href="#chapter11">כלי פיתוח</a></li>
+            <li><a href="#chapter12">חומרה 2026</a></li>
+        </ul>
+    </div>
+    <div class="nav-progress" id="navProgress"></div>
+</nav>
+
+<section class="hero">
+    <div class="hero-inner">
+        <span class="hero-badge">📘 מהדורת 2026 · חלק 2 מתוך 2 · כלים וארכיטקטורה</span>
+        <h1>כלים וארכיטקטורה מתקדמת</h1>
+        <p class="hero-sub">המדריך המלא לבניית מוצרי AI: מפייתון וספריות, דרך Streamlit ו-Ollama, ועד סוכנים חכמים, מערכות זיכרון לומדות, כלי פיתוח AI, וחומרה ייעודית של 2026</p>
+        
+        <div class="hero-image">
+            <img src="https://image.qwenlm.ai/public_source/1447963f-2528-4fd2-9955-23fca127d94a/19e4e822e-7a5c-4a12-b01b-a98fcc9cfd11.png" alt="RAG Architecture">
+        </div>
+        
+        <div class="hero-stats">
+            <div class="hero-stat"><span class="hero-stat-num">8</span><span class="hero-stat-label">פרקים מעמיקים</span></div>
+            <div class="hero-stat"><span class="hero-stat-num">15+</span><span class="hero-stat-label">קוויזים אינטראקטיביים</span></div>
+            <div class="hero-stat"><span class="hero-stat-num">6</span><span class="hero-stat-label">Playgrounds חיים</span></div>
+            <div class="hero-stat"><span class="hero-stat-num">40+</span><span class="hero-stat-label">דוגמאות קוד</span></div>
+            <div class="hero-stat"><span class="hero-stat-num">∞</span><span class="hero-stat-label">תרגול מעשי</span></div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+
+<div class="card" style="background: linear-gradient(135deg, #e0e7ff 0%, #fce7f3 100%); border: 2px solid var(--accent-indigo);">
+    <h3 style="color: var(--accent-indigo);"><span class="icon">🗺️</span> מפת הדרכים של חלק 2</h3>
+    <p style="color: var(--text-muted);">חלק זה ממשיך הייכן עצרנו בחלק 1. כאן נלמד איך לחבר את התיאוריה לקוד אמיתי, לבנות ממשקים, לנהל זיכרון, ולהשתמש בכלים המתקדמים ביותר של 2026.</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 20px;">
+        <a href="#chapter5" style="text-decoration: none; background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border);">
+            <div style="font-weight: 800; color: var(--accent-indigo); margin-bottom: 4px;">פרק 5 · פייתון ו-LLM</div>
+            <div style="color: var(--text-muted); font-size: 0.93rem;">ספריות מפתח: ollama, transformers, LangChain, Pydantic AI</div>
+        </a>
+        <a href="#chapter6" style="text-decoration: none; background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border);">
+            <div style="font-weight: 800; color: var(--accent-indigo); margin-bottom: 4px;">פרק 6 · Streamlit</div>
+            <div style="color: var(--text-muted); font-size: 0.93rem;">מקוד לאפליקציית ווב מלאה ב-5 דקות</div>
+        </a>
+        <a href="#chapter7" style="text-decoration: none; background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border);">
+            <div style="font-weight: 800; color: var(--accent-indigo); margin-bottom: 4px;">פרק 7 · Ollama</div>
+            <div style="color: var(--text-muted); font-size: 0.93rem;">מנוע ההרצה שמאחורי הקלעים</div>
+        </a>
+        <a href="#chapter8" style="text-decoration: none; background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border);">
+            <div style="font-weight: 800; color: var(--accent-indigo); margin-bottom: 4px;">פרק 8 · פלטפורמות</div>
+            <div style="color: var(--text-muted); font-size: 0.93rem;">AnythingLLM, LM Studio, Jan, GPT4All, Open WebUI</div>
+        </a>
+        <a href="#chapter9" style="text-decoration: none; background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border);">
+            <div style="font-weight: 800; color: var(--accent-indigo); margin-bottom: 4px;">פרק 9 · סוכני AI</div>
+            <div style="color: var(--text-muted); font-size: 0.93rem;">OpenClaw, Hermes, Claude Code, Codex</div>
+        </a>
+        <a href="#chapter10" style="text-decoration: none; background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border);">
+            <div style="font-weight: 800; color: var(--accent-indigo); margin-bottom: 4px;">פרק 10 · זיכרון ו-RAG</div>
+            <div style="color: var(--text-muted); font-size: 0.93rem;">ChromaDB, Qdrant, Embeddings, זיכרון לומד</div>
+        </a>
+        <a href="#chapter11" style="text-decoration: none; background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border);">
+            <div style="font-weight: 800; color: var(--accent-indigo); margin-bottom: 4px;">פרק 11 · כלי פיתוח AI</div>
+            <div style="color: var(--text-muted); font-size: 0.93rem;">Antigravity, Codex, Claude Code, Cursor, OpenRouter</div>
+        </a>
+        <a href="#chapter12" style="text-decoration: none; background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border);">
+            <div style="font-weight: 800; color: var(--accent-indigo); margin-bottom: 4px;">פרק 12 · חומרה 2026</div>
+            <div style="color: var(--text-muted); font-size: 0.93rem;">DGX Spark, M5 Max, RTX 5090, בנצ'מרקים</div>
+        </a>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 5: PYTHON + LLM -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter5">
+    <div class="chapter-header">
+        <div class="chapter-number">5</div>
+        <div>
+            <div class="chapter-title">פייתון ו-LLM: הגשר בין הקוד למודל</div>
+            <div class="chapter-subtitle">הספריות שמחברות את שפת התכנות לעולם ה-AI</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🐍</span> למה דווקא פייתון?</h3>
+        <p>בעולם ה-AI, <strong>פייתון (Python)</strong> היא השפה השלטת. כמעט כל כלי, ספרייה, ופלטפורמה בתחום מציעים ממשק (SDK) לפייתון. הסיבות:</p>
+        <ul>
+            <li>📚 <strong>ספריות עשירות</strong> – NumPy, Pandas, TensorFlow, PyTorch, ועוד</li>
+            <li> <strong>ממשקים פשוטים</strong> – קל לחבר בין כלים שונים</li>
+            <li>👥 <strong>קהילה ענקית</strong> – תמיכה, מדריכים, ופתרונות זמינים</li>
+            <li> <strong>פיתוח מהיר</strong> – קוד קצר וקריא יחסית לשפות אחרות</li>
+            <li>🤖 <strong>תמיכה רשמית</strong> – כל חברות ה-AI מספקות SDK לפייתון ראשון</li>
+        </ul>
+
+        <div class="image-showcase">
+            <img src="https://image.qwenlm.ai/public_source/1447963f-2528-4fd2-9955-23fca127d94a/18065e887-73a4-4378-9297-0873eed2d89c.png" alt="Python and AI">
+            <div class="image-caption">פייתון משמשת כגשר בין הקוד שלך למודלי ה-AI השונים</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">📦</span> ספריות מפתח שחובה להכיר</h3>
+        <p>כשמחברים פייתון ל-LLM, יש כמה ספריות שחוזרות שוב ושוב. בואו נכיר את החשובות ביותר:</p>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ספרייה</th>
+                        <th>מה היא עושה</th>
+                        <th>מתי להשתמש</th>
+                        <th>קושי</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ollama-python</strong></td>
+                        <td>ממשק ל-Ollama המקומי</td>
+                        <td>LLM מקומי פשוט</td>
+                        <td>⭐ קל</td>
+                    </tr>
+                    <tr>
+                        <td><strong>transformers</strong></td>
+                        <td>טעינת מודלים ישירות</td>
+                        <td>מחקר, ניסויים</td>
+                        <td>⭐⭐ בינוני</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LangChain</strong></td>
+                        <td>בניית שרשראות וסוכנים</td>
+                        <td>אפליקציות מורכבות</td>
+                        <td>⭐⭐⭐ מתקדם</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LlamaIndex</strong></td>
+                        <td>עבודה עם מסמכים ו-RAG</td>
+                        <td>שאלות על נתונים שלך</td>
+                        <td>⭐⭐⭐ מתקדם</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenAI SDK</strong></td>
+                        <td>ממשק ל-API של OpenAI</td>
+                        <td>מודלי ענן (GPT)</td>
+                        <td>⭐ קל</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Streamlit</strong></td>
+                        <td>ממשק ווב מהיר</td>
+                        <td>אבות-טיפוס ודמו</td>
+                        <td>⭐ קל</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gradio</strong></td>
+                        <td>ממשק ווב אינטראקטיבי</td>
+                        <td>הדגמות מודלים</td>
+                        <td>⭐ קל</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FastAPI</strong></td>
+                        <td>בניית API מקצועי</td>
+                        <td>שירותי backend</td>
+                        <td>⭐⭐ בינוני</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pydantic AI</strong></td>
+                        <td>בניית סוכנים מודרניים</td>
+                        <td>Agents עם טיפוסים חזקים</td>
+                        <td>⭐⭐ בינוני</td>
+                    </tr>
+                    <tr>
+                        <td><strong>mlx-lm</strong></td>
+                        <td>הרצת מודלי MLX</td>
+                        <td>מק עם Apple Silicon</td>
+                        <td>⭐⭐ בינוני</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🔌</span> דוגמה 1: חיבור פשוט ל-Ollama</h3>
+        <p>הדרך הפשוטה ביותר לדבר עם LLM מקומי מפייתון היא דרך ספריית <code>ollama</code>. הנה דוגמה מלאה:</p>
+        
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <div class="terminal-title">Terminal - התקנה</div>
+            </div>
+            <div class="terminal-body">
+                <span class="prompt">$</span> pip install ollama<br>
+                <span class="output">Collecting ollama...</span><br>
+                <span class="success">Successfully installed ollama-0.4.0</span><br><br>
+                <span class="prompt">$</span> ollama pull gemma4:12b<br>
+                <span class="output">Pulling model... 100%</span><br>
+                <span class="success">Model downloaded successfully</span>
+            </div>
+        </div>
+        
+        <pre><span class="code-label">simple_chat.py</span><span class="keyword">import</span> ollama
+
+<span class="comment"># הגדרת System Prompt</span>
+system_prompt = <span class="string">"""You are a helpful Python programming tutor.
+Explain concepts clearly with examples.
+Respond in Hebrew (עברית)."""</span>
+
+<span class="comment"># שליחת הודעה למודל</span>
+response = ollama.chat(
+    model=<span class="string">'gemma4:12b'</span>,
+    messages=[
+        {<span class="string">'role'</span>: <span class="string">'system'</span>, <span class="string">'content'</span>: system_prompt},
+        {<span class="string">'role'</span>: <span class="string">'user'</span>, <span class="string">'content'</span>: <span class="string">'מה זה רשימה בפייתון?'</span>}
+    ]
+)
+
+<span class="comment"># הדפסת התשובה</span>
+<span class="builtin">print</span>(response[<span class="string">'message'</span>][<span class="string">'content'</span>])</pre>
+        
+        <div class="box box-info">
+            <div class="box-title">🔍 מה קורה כאן?</div>
+            <p style="margin: 0;">הקוד מתחבר לשרת ה-Ollama המקומי (שרץ ברקע), שולח לו הודעה עם System Prompt והודעת משתמש, ומקבל תשובה. פשוט מאוד!</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🔄</span> דוגמה 2: שיחה מתמשכת (Multi-turn)</h3>
+        <p>LLM הוא <strong>חסר מצב</strong> (stateless) – הוא לא זוכר שיחות קודמות. כדי ליצור שיחה מתמשכת, אנחנו צריכים לשלוח את כל היסטוריית ההודעות בכל בקשה:</p>
+        
+        <pre><span class="code-label">conversation.py</span><span class="keyword">import</span> ollama
+
+<span class="comment"># אתחול היסטוריית השיחה</span>
+conversation_history = [
+    {<span class="string">'role'</span>: <span class="string">'system'</span>, <span class="string">'content'</span>: <span class="string">'You are a helpful assistant.'</span>}
+]
+
+<span class="keyword">def</span> <span class="function">chat</span>(user_message):
+    <span class="comment"># הוספת הודעת המשתמש להיסטוריה</span>
+    conversation_history.append({
+        <span class="string">'role'</span>: <span class="string">'user'</span>,
+        <span class="string">'content'</span>: user_message
+    })
+    
+    <span class="comment"># שליחת כל ההיסטוריה למודל</span>
+    response = ollama.chat(
+        model=<span class="string">'gemma4:12b'</span>,
+        messages=conversation_history
+    )
+    
+    <span class="comment"># קבלת תשובת המודל</span>
+    assistant_message = response[<span class="string">'message'</span>][<span class="string">'content'</span>]
+    
+    <span class="comment"># הוספת התשובה להיסטוריה</span>
+    conversation_history.append({
+        <span class="string">'role'</span>: <span class="string">'assistant'</span>,
+        <span class="string">'content'</span>: assistant_message
+    })
+    
+    <span class="keyword">return</span> assistant_message
+
+<span class="comment"># שימוש</span>
+<span class="builtin">print</span>(chat(<span class="string">"שמי אלכס"</span>))  <span class="comment"># "נעים להכיר, אלכס!"</span>
+<span class="builtin">print</span>(chat(<span class="string">"איך קוראים לי?"</span>))  <span class="comment"># "קוראים לך אלכס" ✓ זוכר!</span></pre>
+        
+        <div class="box box-warning">
+            <div class="box-title">⚠️ אזהרה: זיכרון הוא לא אינסופי!</div>
+            <p style="margin: 0;">ככל שהשיחה מתארכת, <code>conversation_history</code> גדל. ברגע שהוא חורג מ<strong>חלון ההקשר</strong> של המודל, תתחיל לאבד את ההתחלה של השיחה. בפרק 10 נלמד טכניקות לניהול זיכרון חכם.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🌊</span> דוגמה 3: Streaming – תשובה מייצור בזמן אמת</h3>
+        <p>כשמשתמשים ב-LLM, התשובה לא מגיעה בבת אחת – היא <strong>נוצרת טוקן-אחרי-טוקן</strong>. בשיטת Streaming, אנחנו מציגים כל טוקן ברגע שהוא נוצר – כמו ש-ChatGPT עושה:</p>
+        
+        <pre><span class="code-label">streaming.py</span><span class="keyword">import</span> ollama
+
+<span class="keyword">def</span> <span class="function">stream_response</span>(prompt):
+    <span class="comment"># stream=True מאפשר קבלת טוקנים אחד-אחד</span>
+    stream = ollama.chat(
+        model=<span class="string">'gemma4:12b'</span>,
+        messages=[{<span class="string">'role'</span>: <span class="string">'user'</span>, <span class="string">'content'</span>: prompt}],
+        stream=<span class="keyword">True</span>
+    )
+    
+    <span class="comment"># מעבר על כל טוקן בנפרד</span>
+    <span class="keyword">for</span> chunk <span class="keyword">in</span> stream:
+        token = chunk[<span class="string">'message'</span>][<span class="string">'content'</span>]
+        <span class="builtin">print</span>(token, end=<span class="string">''</span>, flush=<span class="keyword">True</span>)
+    
+    <span class="builtin">print</span>()  <span class="comment"># שורה חדשה בסוף</span>
+
+stream_response(<span class="string">"כתוב שיר קצר על ים"</span>)</pre>
+        
+        <div class="box box-success">
+            <div class="box-title">✨ למה Streaming חשוב?</div>
+            <ul style="margin: 0; padding-right: 20px;">
+                <li><strong>חוויית משתמש</strong> – המשתמש רואה תשובה תוך שנייה, לא מחכה 10 שניות</li>
+                <li><strong>ביטול</strong> – המשתמש יכול לעצור את התשובה באמצע</li>
+                <li><strong>זיכרון</strong> – לא צריך לשמור את כל התשובה בזיכרון</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🔗</span> דוגמה 4: LangChain – ספרייה מתקדמת</h3>
+        <p><strong>LangChain</strong> היא ספרייה פופולרית שמפשטת בניית אפליקציות LLM מורכבות. היא מספקת כלים לשרשראות (chains), סוכנים (agents), זיכרון (memory), ועוד.</p>
+        
+        <pre><span class="code-label">langchain_example.py</span><span class="keyword">from</span> langchain_community.llms <span class="keyword">import</span> Ollama
+<span class="keyword">from</span> langchain.prompts <span class="keyword">import</span> ChatPromptTemplate
+<span class="keyword">from</span> langchain.chains <span class="keyword">import</span> LLMChain
+
+<span class="comment"># יצירת אובייקט המודל</span>
+llm = Ollama(
+    model=<span class="string">"gemma4:12b"</span>,
+    temperature=<span class="number">0.3</span>,
+    num_ctx=<span class="number">4096</span>  <span class="comment"># גודל חלון ההקשר</span>
+)
+
+<span class="comment"># הגדרת תבנית Prompt</span>
+prompt_template = ChatPromptTemplate.from_messages([
+    (<span class="string">"system"</span>, <span class="string">"You are a {role} expert. Respond in {language}."</span>),
+    (<span class="string">"user"</span>, <span class="string">"{question}"</span>)
+])
+
+<span class="comment"># יצירת שרשרת (Chain)</span>
+chain = LLMChain(llm=llm, prompt=prompt_template)
+
+<span class="comment"># הפעלת השרשרת</span>
+result = chain.invoke({
+    <span class="string">"role"</span>: <span class="string">"data scientist"</span>,
+    <span class="string">"language"</span>: <span class="string">"Hebrew"</span>,
+    <span class="string">"question"</span>: <span class="string">"מה ההבדל בין supervised ל-unsupervised learning?"</span>
+})
+
+<span class="builtin">print</span>(result[<span class="string">"text"</span>])</pre>
+        
+        <div class="box box-purple">
+            <div class="box-title">🎯 מתי LangChain שימושי?</div>
+            <ul style="margin: 0; padding-right: 20px;">
+                <li><strong>RAG</strong> – שאלות על המסמכים שלך</li>
+                <li><strong>Agents</strong> – מודל שמשתמש בכלים (חיפוש, חישוב)</li>
+                <li><strong>Memory</strong> – ניהול זיכרון חכם אוטומטי</li>
+                <li><strong>Complex Chains</strong> – שרשראות של פעולות</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🤖</span> דוגמה 5: Pydantic AI – סוכן מודרני</h3>
+        <p><strong>Pydantic AI</strong> היא ספרייה חדשה (2025-2026) לבניית סוכני AI עם <strong>טיפוסים חזקים</strong>. היא מאפשרת להגדיר Tools בצורה מסודרת ולקבל תוצאות מובנות:</p>
+        
+        <pre><span class="code-label">pydantic_agent.py</span><span class="keyword">from</span> pydantic_ai <span class="keyword">import</span> Agent, RunContext
+<span class="keyword">from</span> pydantic_ai.models.ollama <span class="keyword">import</span> OllamaModel
+
+<span class="comment"># הגדרת המודל</span>
+model = OllamaModel(<span class="string">'gemma4:12b'</span>)
+
+<span class="comment"># יצירת סוכן</span>
+agent = Agent(
+    model,
+    system_prompt=<span class="string">"You are a research assistant."</span>,
+    result_type=<span class="builtin">str</span>
+)
+
+<span class="comment"># הוספת כלי (Tool)</span>
+<span class="decorator">@agent.tool</span>
+<span class="keyword">def</span> <span class="function">search_web</span>(ctx: RunContext, query: <span class="builtin">str</span>) -> <span class="builtin">str</span>:
+    <span class="string">"""Search the web for information."""</span>
+    <span class="comment"># לוגיקה אמיתית של חיפוש כאן</span>
+    <span class="keyword">return</span> <span class="string">f"Results for: {query}"</span>
+
+<span class="comment"># הרצת הסוכן</span>
+<span class="keyword">import</span> asyncio
+result = asyncio.run(agent.run(<span class="string">"חקור את מגמות ה-AI ב-2026"</span>))
+<span class="builtin">print</span>(result.data)</pre>
+    </div>
+
+    <!-- SANDBOX: Python Library Explorer -->
+    <div class="sandbox">
+        <div class="sandbox-header">
+            <div class="sandbox-icon"></div>
+            <div>
+                <div class="sandbox-title">סייר ספריות פייתון אינטראקטיבי</div>
+                <div class="sandbox-subtitle">בחר ספרייה וראה דוגמת קוד ושימושים</div>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">בחר ספרייה:</label>
+            <select class="control-select" id="lib-select" onchange="showLibrary()">
+                <option value="">-- בחר --</option>
+                <option value="ollama">ollama-python</option>
+                <option value="transformers">transformers</option>
+                <option value="langchain">LangChain</option>
+                <option value="llamaindex">LlamaIndex</option>
+                <option value="streamlit">Streamlit</option>
+                <option value="fastapi">FastAPI</option>
+                <option value="pydantic">Pydantic AI</option>
+            </select>
+        </div>
+        
+        <div class="sandbox-output" id="lib-output">
+            בחר ספרייה כדי לראות מידע ודוגמת קוד.
+        </div>
+    </div>
+
+    <!-- QUIZ 1 -->
+    <div class="quiz" id="quiz1">
+        <div class="quiz-title">בדיקת הבנה 5.1: שיחה מתמשכת</div>
+        <div class="quiz-question">למה צריך לשלוח את כל היסטוריית השיחה בכל בקשה ל-LLM?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback1', 'לא נכון. המודל לא \"מתעייף\" – הוא פשוט לא שומר מצב בין בקשות.')">
+                <span class="letter">א</span>
+                <span>כדי שהמודל יתחמם ויתן תשובות טובות יותר.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'correct', 'feedback1', 'מדויק! LLM הוא stateless – אין לו זיכרון בין בקשות. כל שיחה חדשה מתחילה מאפס.')">
+                <span class="letter">ב</span>
+                <span>כי LLM הוא חסר מצב (stateless) – הוא לא זוכר שיחות קודמות, וחייב לקבל את כל ההקשר מחדש.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback1', 'לא קשור. אורך הבקשה לא משפיע על \"איכות\" המודל, רק על הזיכרון הנדרש.')">
+                <span class="letter">ג</span>
+                <span>כדי שהמודל ילמד מהשיחות וישתפר עם הזמן.</span>
+            </div>
+        </div>
+        <div class="quiz-feedback" id="feedback1"></div>
+    </div>
+
+    <!-- QUIZ 2 -->
+    <div class="quiz" id="quiz2">
+        <div class="quiz-title">בדיקת הבנה 5.2: בחירת ספרייה</div>
+        <div class="quiz-question">אתה בונה אפליקציה שאוספת PDF-ים של חוזים ומאפשרת למשתמשים לשאול שאלות עליהם. איזו ספרייה הכי מתאימה?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback2', 'ollama בסיסי מדי למשימה הזו. אתה צריך כלי שעובד עם מסמכים, לא רק צ\'אט פשוט.')">
+                <span class="letter">א</span>
+                <span>ollama-python – הכי פשוט וקל.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'correct', 'feedback2', 'נכון! LlamaIndex (או LangChain עם RAG) נועדו בדיוק לזה – הן מטפלות ב: פיצול מסמכים, יצירת embeddings, אחסון ב-vector DB, ושליפת ההקשר הרלוונטי לשאלה.')">
+                <span class="letter">ב</span>
+                <span>LlamaIndex – מתמחה בעבודה עם מסמכים ו-RAG (Retrieval Augmented Generation).</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback2', 'Streamlit הוא ספריית UI, לא ספריית LLM. הוא לא יודע לעבוד עם PDF-ים או RAG.')">
+                <span class="letter">ג</span>
+                <span>Streamlit – היא מציגה ממשק יפה למשתמשים.</span>
+            </div>
+        </div>
+        <div class="quiz-feedback" id="feedback2"></div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 6: STREAMLIT -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter6">
+    <div class="chapter-header">
+        <div class="chapter-number">6</div>
+        <div>
+            <div class="chapter-title">Streamlit: מקוד לאפליקציה ב-5 דקות</div>
+            <div class="chapter-subtitle">הספרייה שהופכת כל סקריפט פייתון לאפליקציית ווב אינטראקטיבית</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">⚡</span> מה זה Streamlit?</h3>
+        <p><strong>Streamlit</strong> (<a href="https://streamlit.io" target="_blank" style="color: var(--accent-indigo); font-weight: 700;">streamlit.io</a>) היא ספריית פייתון שמאפשרת לבנות <strong>אפליקציות ווב אינטראקטיביות</strong> בלי לדעת HTML, CSS, או JavaScript. פשוט כותבים קוד פייתון רגיל, ו-Streamlit הופך אותו אוטומטית לאתר.</p>
+        
+        <div class="image-showcase">
+            <img src="https://image.qwenlm.ai/public_source/1447963f-2528-4fd2-9955-23fca127d94a/1ef3a9c8d-4d4e-4501-9d2a-aa76330593e2.png" alt="Streamlit Interface">
+            <div class="image-caption">אפליקציית Streamlit טיפוסית: sidebar עם פרמטרים, אזור צ'אט ראשי, ותצוגת תוצאות</div>
+        </div>
+        
+        <h4>למה Streamlit מושלם ל-LLM?</h4>
+        <ul>
+            <li>🎨 <strong>UI מוכן</strong> – רכיבי צ'אט, סליידרים, כפתורים, טפסים – הכל מובנה</li>
+            <li>🔄 <strong>ריאקטיביות</strong> – כל שינוי בפרמטר מריץ מחדש את הקוד אוטומטית</li>
+            <li>💾 <strong>State management</strong> – מנגנון מובנה לזכירת מצב בין אינטראקציות</li>
+            <li>🚀 <strong>פריסה קלה</strong> – אפשר להעלות ל-Streamlit Cloud בחינם</li>
+            <li> <strong>ויזואליזציות</strong> – תמיכה מובנית ב-Matplotlib, Plotly, ועוד</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🚀</span> התקנה והרצה ראשונה</h3>
+        
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <div class="terminal-title">Terminal</div>
+            </div>
+            <div class="terminal-body">
+                <span class="prompt">$</span> pip install streamlit ollama<br>
+                <span class="success">Successfully installed streamlit-1.45.0 ollama-0.4.0</span><br><br>
+                <span class="prompt">$</span> streamlit hello<br>
+                <span class="output">You can now view your Streamlit app in your browser.</span><br>
+                <span class="success">Local URL: http://localhost:8501</span>
+            </div>
+        </div>
+        
+        <p>הפקודה <code>streamlit hello</code> מריצה אפליקציית דמו שמדגימה את היכולות. עכשיו בואו נבנה אפליקציה אמיתית!</p>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">💬</span> פרויקט: צ'אטבוט AI מלא ב-Streamlit</h3>
+        <p>בואו נבנה אפליקציית צ'אט מלאה עם LLM מקומי. זהו הקוד המלא של <code>app.py</code>:</p>
+        
+        <pre><span class="code-label">app.py - קוד מלא</span><span class="keyword">import</span> streamlit <span class="keyword">as</span> st
+<span class="keyword">import</span> ollama
+
+<span class="comment"># ============ הגדרות העמוד ============</span>
+st.set_page_config(
+    page_title=<span class="string">"צ'אט AI מקומי"</span>,
+    page_icon=<span class="string">"🤖"</span>,
+    layout=<span class="string">"wide"</span>
+)
+
+<span class="comment"># ============ אתחול מצב השיחה ============</span>
+<span class="keyword">if</span> <span class="string">"messages"</span> <span class="keyword">not</span> <span class="keyword">in</span> st.session_state:
+    st.session_state.messages = [
+        {<span class="string">"role"</span>: <span class="string">"system"</span>, <span class="string">"content"</span>: <span class="string">"You are a helpful assistant."</span>}
+    ]
+
+<span class="comment"># ============ Sidebar עם הגדרות ============</span>
+<span class="keyword">with</span> st.sidebar:
+    st.title(<span class="string">"⚙️ הגדרות"</span>)
+    
+    model_name = st.selectbox(
+        <span class="string">"בחר מודל:"</span>,
+        [<span class="string">"gemma4:12b"</span>, <span class="string">"qwen3.6:14b"</span>, <span class="string">"llama4:scout"</span>]
+    )
+    
+    temperature = st.slider(
+        <span class="string">"יצירתיות (Temperature):"</span>,
+        min_value=<span class="number">0.0</span>, max_value=<span class="number">2.0</span>, value=<span class="number">0.7</span>, step=<span class="number">0.1</span>
+    )
+    
+    system_prompt = st.text_area(
+        <span class="string">"System Prompt:"</span>,
+        value=<span class="string">"You are a helpful assistant. Respond in Hebrew."</span>,
+        height=<span class="number">100</span>
+    )
+    
+    <span class="keyword">if</span> st.button(<span class="string">"🗑️ נקה שיחה"</span>):
+        st.session_state.messages = [
+            {<span class="string">"role"</span>: <span class="string">"system"</span>, <span class="string">"content"</span>: system_prompt}
+        ]
+        st.rerun()
+
+<span class="comment"># ============ כותרת ראשית ============</span>
+st.title(<span class="string">"🤖 צ'אט AI מקומי"</span>)
+st.caption(<span class="string">f"מודל פעיל: {model_name} | Temperature: {temperature}"</span>)
+
+<span class="comment"># ============ הצגת היסטוריית הודעות ============</span>
+<span class="keyword">for</span> msg <span class="keyword">in</span> st.session_state.messages:
+    <span class="keyword">if</span> msg[<span class="string">"role"</span>] == <span class="string">"system"</span>:
+        <span class="keyword">continue</span>  <span class="comment"># לא מציגים את ה-system</span>
+    
+    <span class="keyword">with</span> st.chat_message(msg[<span class="string">"role"</span>]):
+        st.markdown(msg[<span class="string">"content"</span>])
+
+<span class="comment"># ============ קלט מהמשתמש + Streaming ============</span>
+<span class="keyword">if</span> user_input := st.chat_input(<span class="string">"כתוב הודעה..."</span>):
+    st.session_state.messages.append({
+        <span class="string">"role"</span>: <span class="string">"user"</span>,
+        <span class="string">"content"</span>: user_input
+    })
+    <span class="keyword">with</span> st.chat_message(<span class="string">"user"</span>):
+        st.markdown(user_input)
+    
+    <span class="keyword">with</span> st.chat_message(<span class="string">"assistant"</span>):
+        response_placeholder = st.empty()
+        full_response = <span class="string">""</span>
+        
+        <span class="keyword">try</span>:
+            stream = ollama.chat(
+                model=model_name,
+                messages=st.session_state.messages,
+                options={<span class="string">"temperature"</span>: temperature},
+                stream=<span class="keyword">True</span>
+            )
+            
+            <span class="keyword">for</span> chunk <span class="keyword">in</span> stream:
+                token = chunk[<span class="string">"message"</span>][<span class="string">"content"</span>]
+                full_response += token
+                response_placeholder.markdown(full_response + <span class="string">"▌"</span>)
+            
+            response_placeholder.markdown(full_response)
+            st.session_state.messages.append({
+                <span class="string">"role"</span>: <span class="string">"assistant"</span>,
+                <span class="string">"content"</span>: full_response
+            })
+        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
+            st.error(<span class="string">f"שגיאה: {e}"</span>)</pre>
+        
+        <div class="box box-info">
+            <div class="box-title">🎮 הפעלת האפליקציה</div>
+            <p style="margin: 0;">שמור את הקוד כ-<code>app.py</code> והרץ בטרמינל:</p>
+            <pre style="margin-top: 8px;"><span class="prompt">$</span> streamlit run app.py</pre>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🎨</span> רכיבי UI נפוצים ב-Streamlit</h3>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>רכיב</th>
+                        <th>קוד</th>
+                        <th>שימוש</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>כותרת</strong></td><td><code>st.title("טקסט")</code></td><td>כותרת ראשית</td></tr>
+                    <tr><td><strong>טקסט</strong></td><td><code>st.markdown("**מודגש**")</code></td><td>כל טקסט עם Markdown</td></tr>
+                    <tr><td><strong>כפתור</strong></td><td><code>st.button("לחץ")</code></td><td>פעולה בלחיצה</td></tr>
+                    <tr><td><strong>קלט טקסט</strong></td><td><code>st.text_input("שם:")</code></td><td>שדה טקסט</td></tr>
+                    <tr><td><strong>סליידר</strong></td><td><code>st.slider("גיל", 0, 100)</code></td><td>בחירת מספר</td></tr>
+                    <tr><td><strong>תיבת בחירה</strong></td><td><code>st.selectbox("בחר:", ["א","ב"])</code></td><td>רשימה נגללת</td></tr>
+                    <tr><td><strong>צ'אט</strong></td><td><code>st.chat_input("הודעה")</code></td><td>שורת קלט לצ'אט</td></tr>
+                    <tr><td><strong>הודעת צ'אט</strong></td><td><code>st.chat_message("user")</code></td><td>בועת דיבור</td></tr>
+                    <tr><td><strong>Sidebar</strong></td><td><code>with st.sidebar:</code></td><td>תפריט צדדי</td></tr>
+                    <tr><td><strong>עמודות</strong></td><td><code>col1, col2 = st.columns(2)</code></td><td>פריסה בעמודות</td></tr>
+                    <tr><td><strong>טבלה</strong></td><td><code>st.dataframe(df)</code></td><td>טבלה אינטראקטיבית</td></tr>
+                    <tr><td><strong>גרף</strong></td><td><code>st.line_chart(data)</code></td><td>גרף קווי</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🔄</span> ניהול מצב עם Session State</h3>
+        <p>בניגוד לסקריפט רגיל, אפליקציית Streamlit <strong>מריצה מחדש את כל הקוד</strong> בכל אינטראקציה. כדי לשמור נתונים בין ריצות, משתמשים ב-<code>st.session_state</code>:</p>
+        
+        <pre><span class="code-label">session_state.py</span><span class="keyword">import</span> streamlit <span class="keyword">as</span> st
+
+<span class="comment"># אתחול ערכים התחלתיים (רק בפעם הראשונה)</span>
+<span class="keyword">if</span> <span class="string">"counter"</span> <span class="keyword">not</span> <span class="keyword">in</span> st.session_state:
+    st.session_state.counter = <span class="number">0</span>
+    
+<span class="keyword">if</span> <span class="string">"history"</span> <span class="keyword">not</span> <span class="keyword">in</span> st.session_state:
+    st.session_state.history = []
+
+<span class="comment"># הצגת הערכים</span>
+st.write(<span class="string">f"מונה: {st.session_state.counter}"</span>)
+st.write(<span class="string">f"היסטוריה: {st.session_state.history}"</span>)
+
+<span class="comment"># כפתור שמגדיל את המונה</span>
+<span class="keyword">if</span> st.button(<span class="string">"הגדל מונה"</span>):
+    st.session_state.counter += <span class="number">1</span>
+    st.session_state.history.append(st.session_state.counter)
+    st.rerun()  <span class="comment"># רענון העמוד</span></pre>
+    </div>
+
+    <!-- SANDBOX: Streamlit Component Tester -->
+    <div class="sandbox">
+        <div class="sandbox-header">
+            <div class="sandbox-icon">🎨</div>
+            <div>
+                <div class="sandbox-title">Playground: בדיקת רכיבי Streamlit</div>
+                <div class="sandbox-subtitle">ראה איך כל רכיב נראה בקוד ובפועל</div>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">בחר רכיב:</label>
+            <select class="control-select" id="st-component" onchange="showStreamlitComponent()">
+                <option value="title">st.title - כותרת</option>
+                <option value="button">st.button - כפתור</option>
+                <option value="slider">st.slider - סליידר</option>
+                <option value="selectbox">st.selectbox - תיבת בחירה</option>
+                <option value="chat">st.chat_input - צ'אט</option>
+                <option value="columns">st.columns - עמודות</option>
+                <option value="tabs">st.tabs - לשוניות</option>
+            </select>
+        </div>
+        
+        <div class="sandbox-output" id="st-output">
+            בחר רכיב כדי לראות דוגמה.
+        </div>
+    </div>
+
+    <!-- QUIZ 3 -->
+    <div class="quiz" id="quiz3">
+        <div class="quiz-title">בדיקת הבנה 6.1: Streamlit</div>
+        <div class="quiz-question">למה צריך <code>st.session_state</code> ב-Streamlit?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback3', 'לא קשור. session_state הוא מנגנון מקומי, לא קשור לאינטרנט.')">
+                <span class="letter">א</span>
+                <span>כדי לשמור נתונים בשרת מרוחק.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'correct', 'feedback3', 'מדויק! Streamlit מריץ את כל הסקריפט מחדש בכל אינטראקציה. ללא session_state, כל המשתנים היו מתאפסים.')">
+                <span class="letter">ב</span>
+                <span>כי Streamlit מריץ את כל הקוד מחדש בכל אינטראקציה, ו-session_state שומר נתונים בין הריצות.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback3', 'לא נכון. session_state נועד בדיוק למנוע איבוד נתונים.')">
+                <span class="letter">ג</span>
+                <span>כדי להאיץ את ביצועי האפליקציה.</span>
+            </div>
+        </div>
+        <div class="quiz-feedback" id="feedback3"></div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 7: OLLAMA -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter7">
+    <div class="chapter-header">
+        <div class="chapter-number">7</div>
+        <div>
+            <div class="chapter-title">Ollama: מנוע ההרצה שמאחורי הקלעים</div>
+            <div class="chapter-subtitle">הכלי שהופך כל מודל לשרת API מקומי</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🦙</span> מה זה Ollama?</h3>
+        <p><strong>Ollama</strong> (<a href="https://ollama.com" target="_blank" style="color: var(--accent-indigo); font-weight: 700;">ollama.com</a>) הוא כלי שמאפשר להריץ מודלי LLM מקומיים בקלות. הוא:</p>
+        <ul>
+            <li>📦 <strong>מנהל מודלים</strong> – מוריד, מאחסן ומעדכן מודלים</li>
+            <li>⚙️ <strong>מנוע הרצה</strong> – מפעיל את המודל ביעילות על החומרה שלך</li>
+            <li>🌐 <strong>שרת API</strong> – חושף API REST שכל תוכנית יכולה לפנות אליו</li>
+            <li>🔧 <strong>מותאם לחומרה</strong> – מנצל GPU, CPU, וזיכרון בצורה אופטימלית</li>
+        </ul>
+
+        <div class="image-showcase">
+            <img src="https://image.qwenlm.ai/public_source/1447963f-2528-4fd2-9955-23fca127d94a/1a4afb835-d857-4fee-b3b2-1e2176aab1cc.png" alt="Ollama Terminal">
+            <div class="image-caption">Ollama רץ בטרמינל ומוריד ומפעיל מודלים מקומיים</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">⬇️</span> התקנה והתחלה מהירה</h3>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab(event, 'install-mac')">🍎 macOS</button>
+            <button class="tab" onclick="switchTab(event, 'install-win')">🪟 Windows</button>
+            <button class="tab" onclick="switchTab(event, 'install-linux')">🐧 Linux</button>
+        </div>
+        
+        <div id="install-mac" class="tab-content active">
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-dot red"></div>
+                    <div class="terminal-dot yellow"></div>
+                    <div class="terminal-dot green"></div>
+                    <div class="terminal-title">Terminal - macOS</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="comment"># הורדה והתקנה (דורש Homebrew)</span><br>
+                    <span class="prompt">$</span> brew install ollama<br><br>
+                    <span class="comment"># או: הורד את האפליקציה מ-ollama.com</span><br><br>
+                    <span class="comment"># הפעלת השרת</span><br>
+                    <span class="prompt">$</span> ollama serve<br>
+                    <span class="output">Ollama is running on http://localhost:11434</span><br><br>
+                    <span class="comment"># הורדת מודל</span><br>
+                    <span class="prompt">$</span> ollama pull gemma4:12b<br>
+                    <span class="success">pulling manifest... 100%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="install-win" class="tab-content">
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-dot red"></div>
+                    <div class="terminal-dot yellow"></div>
+                    <div class="terminal-dot green"></div>
+                    <div class="terminal-title">PowerShell - Windows</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="comment"># הורד את המתקין מ-ollama.com/download</span><br>
+                    <span class="comment"># הפעל את OllamaSetup.exe</span><br><br>
+                    <span class="comment"># Ollama ירוץ אוטומטית כשירות רקע</span><br>
+                    <span class="comment"># פתח PowerShell:</span><br>
+                    <span class="prompt">PS&gt;</span> ollama pull gemma4:12b<br>
+                    <span class="success">pulling manifest... 100%</span><br><br>
+                    <span class="prompt">PS&gt;</span> ollama run gemma4:12b<br>
+                    <span class="output">&gt;&gt;&gt; שלום! איך אפשר לעזור?</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="install-linux" class="tab-content">
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-dot red"></div>
+                    <div class="terminal-dot yellow"></div>
+                    <div class="terminal-dot green"></div>
+                    <div class="terminal-title">Terminal - Linux</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="comment"># התקנה אוטומטית</span><br>
+                    <span class="prompt">$</span> curl -fsSL https://ollama.com/install.sh | sh<br><br>
+                    <span class="comment"># Ollama ירוץ כשירות systemd</span><br>
+                    <span class="prompt">$</span> systemctl status ollama<br>
+                    <span class="success">● ollama.service - Ollama Service</span><br><br>
+                    <span class="comment"># הורדת מודל</span><br>
+                    <span class="prompt">$</span> ollama pull gemma4:12b
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">📡</span> ה-API של Ollama</h3>
+        <p>Ollama חושף API REST בכתובת <code>http://localhost:11434</code>. כל תוכנית שיודעת לשלוח בקשות HTTP יכולה לדבר איתו. הנה הבקשות הנפוצות:</p>
+        
+        <h4>1. צ'אט (Chat Completion)</h4>
+        <pre><span class="code-label">HTTP Request</span><span class="builtin">POST</span> http://localhost:11434/api/chat
+
+{
+  <span class="string">"model"</span>: <span class="string">"gemma4:12b"</span>,
+  <span class="string">"messages"</span>: [
+    {<span class="string">"role"</span>: <span class="string">"system"</span>, <span class="string">"content"</span>: <span class="string">"You are helpful."</span>},
+    {<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: <span class="string">"Hello!"</span>}
+  ],
+  <span class="string">"stream"</span>: <span class="keyword">false</span>
+}</pre>
+
+        <h4>2. יצירה (Generate)</h4>
+        <pre><span class="code-label">HTTP Request</span><span class="builtin">POST</span> http://localhost:11434/api/generate
+
+{
+  <span class="string">"model"</span>: <span class="string">"gemma4:12b"</span>,
+  <span class="string">"prompt"</span>: <span class="string">"Why is the sky blue?"</span>,
+  <span class="string">"stream"</span>: <span class="keyword">false</span>
+}</pre>
+
+        <h4>3. רשימת מודלים</h4>
+        <pre><span class="code-label">HTTP Request</span><span class="builtin">GET</span> http://localhost:11434/api/tags
+
+<span class="comment"># תשובה:</span>
+{
+  <span class="string">"models"</span>: [
+    {<span class="string">"name"</span>: <span class="string">"gemma4:12b"</span>, <span class="string">"size"</span>: <span class="number">8988109982</span>},
+    {<span class="string">"name"</span>: <span class="string">"qwen3.6:14b"</span>, <span class="string">"size"</span>: <span class="number">9500000000</span>}
+  ]
+}</pre>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon"></span> יצירת מודל מותאם אישית (Modelfile)</h3>
+        <p>Ollama מאפשר ליצור "גרסה מותאמת" של מודל עם System Prompt ופרמטרים קבועים מראש:</p>
+        
+        <pre><span class="code-label">Modelfile</span><span class="comment"># Modelfile - קובץ הגדרות למודל מותאם</span>
+FROM gemma4:12b
+
+<span class="comment"># הגדרת פרמטרים</span>
+PARAMETER temperature 0.3
+PARAMETER num_ctx 8192
+PARAMETER top_p 0.9
+
+<span class="comment"># System Prompt מובנה</span>
+SYSTEM """You are a senior software architect specializing in 
+distributed systems. You explain complex concepts clearly 
+with practical examples. Always respond in Hebrew (עברית)."""
+
+<span class="comment"># תבנית שיחה</span>
+TEMPLATE """{{ if .System }}&lt;|system|&gt;
+{{ .System }}&lt;|end|&gt;{{ end }}
+{{ if .Prompt }}&lt;|user|&gt;
+{{ .Prompt }}&lt;|end|&gt;{{ end }}
+&lt;|assistant|&gt;
+{{ .Response }}&lt;|end|&gt;"""</pre>
+
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <div class="terminal-title">Terminal</div>
+            </div>
+            <div class="terminal-body">
+                <span class="comment"># יצירת המודל המותאם</span><br>
+                <span class="prompt">$</span> ollama create my-architect -f Modelfile<br>
+                <span class="success">transferring model data... success</span><br><br>
+                <span class="comment"># שימוש במודל המותאם</span><br>
+                <span class="prompt">$</span> ollama run my-architect<br>
+                <span class="output">&gt;&gt;&gt; הסבר על Microservices</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🎯</span> מודלים מומלצים לפי שימוש</h3>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>שימוש</th>
+                        <th>מודל מומלץ</th>
+                        <th>פקודת Ollama</th>
+                        <th>RAM נדרש</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>💬 צ'אט כללי</td>
+                        <td>Gemma 4 12B</td>
+                        <td><code>ollama pull gemma4:12b</code></td>
+                        <td>10GB</td>
+                    </tr>
+                    <tr>
+                        <td>💻 קוד</td>
+                        <td>Qwen 3.6 Coder 32B</td>
+                        <td><code>ollama pull qwen3.6-coder:32b</code></td>
+                        <td>24GB</td>
+                    </tr>
+                    <tr>
+                        <td>🌍 רב-לשוני (עברית)</td>
+                        <td>Qwen 3.6 14B</td>
+                        <td><code>ollama pull qwen3.6:14b</code></td>
+                        <td>12GB</td>
+                    </tr>
+                    <tr>
+                        <td>🤔 חשיבה מורכבת</td>
+                        <td>DeepSeek R1 14B</td>
+                        <td><code>ollama pull deepseek-r1:14b</code></td>
+                        <td>12GB</td>
+                    </tr>
+                    <tr>
+                        <td>⚡ מהיר וקל</td>
+                        <td>Gemma 3 4B</td>
+                        <td><code>ollama pull gemma3:4b</code></td>
+                        <td>4GB</td>
+                    </tr>
+                    <tr>
+                        <td>📚 חלון ענק</td>
+                        <td>Llama 4 Scout</td>
+                        <td><code>ollama pull llama4:scout</code></td>
+                        <td>32GB</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- SANDBOX: Ollama Model Selector -->
+    <div class="sandbox">
+        <div class="sandbox-header">
+            <div class="sandbox-icon">🦙</div>
+            <div>
+                <div class="sandbox-title">סימולטור בחירת מודל Ollama</div>
+                <div class="sandbox-subtitle">בחר מודל וראה את הפקודה והדרישות</div>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">בחר מודל:</label>
+            <select class="control-select" id="ollama-model" onchange="showOllamaModel()">
+                <option value="gemma4:12b">Gemma 4 12B - כללי</option>
+                <option value="qwen3.6:14b">Qwen 3.6 14B - רב-לשוני</option>
+                <option value="qwen3.6-coder:32b">Qwen 3.6 Coder 32B - קוד</option>
+                <option value="deepseek-r1:14b">DeepSeek R1 14B - חשיבה</option>
+                <option value="llama4:scout">Llama 4 Scout - חלון ענק</option>
+            </select>
+        </div>
+        
+        <div class="sandbox-output" id="ollama-output">
+            בחר מודל כדי לראות פרטים.
+        </div>
+    </div>
+
+    <!-- QUIZ 4 -->
+    <div class="quiz" id="quiz4">
+        <div class="quiz-title">בדיקת הבנה 7.1: Ollama</div>
+        <div class="quiz-question">מה התפקיד העיקרי של Ollama?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback4', 'לא נכון. Ollama לא מאמן מודלים – הוא רק מריץ מודלים קיימים.')">
+                <span class="letter">א</span>
+                <span>אימון מודלי AI חדשים מאפס.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'correct', 'feedback4', 'נכון! Ollama הוא מנוע הרצה – הוא מוריד, מאחסן ומפעיל מודלים קיימים, וחושף אותם כ-API מקומי.')">
+                <span class="letter">ב</span>
+                <span>הפעלת מודלי LLM מקומיים וחשיפתם כשרת API.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback4', 'לא מדויק. Ollama לא מייצר מודלים, רק מריץ אותם.')">
+                <span class="letter">ג</span>
+                <span>יצירת מודלי AI חדשים על בסיס טקסטים.</span>
+            </div>
+        </div>
+        <div class="quiz-feedback" id="feedback4"></div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 8: PLATFORMS -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter8">
+    <div class="chapter-header">
+        <div class="chapter-number">8</div>
+        <div>
+            <div class="chapter-title">פלטפורמות LLM מקומיות: מדריך מלא</div>
+            <div class="chapter-subtitle">AnythingLLM, LM Studio, Jan, GPT4All, ועוד – כל מה שצריך לדעת</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🗺️</span> מפת הפלטפורמות</h3>
+        <p>מעבר ל-Ollama, קיים עולם עשיר של פלטפורמות שמנגישות LLM מקומי למשתמשים שאינם מתכנתים. בואו נכיר את החשובות ביותר:</p>
+        
+        <div class="image-showcase">
+            <img src="https://image.qwenlm.ai/public_source/1447963f-2528-4fd2-9955-23fca127d94a/1e3f40136-e196-4e78-8191-f248fa6b4483.png" alt="Local AI Platforms">
+            <div class="image-caption">אקו-סיסטם של פלטפורמות LLM מקומיות – כל אחת עם ייעוד שונה</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🌟</span> השוואה בין פלטפורמות</h3>
+        
+        <div class="platform-grid">
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo">🦙</div>
+                    <div>
+                        <div class="platform-name">Ollama</div>
+                        <div class="platform-type">CLI + API Server</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p><strong>הכי טוב ל:</strong> מפתחים, אוטומציה, שרתים</p>
+                    <p><strong>יתרונות:</strong> קליל, מהיר, API REST מובנה</p>
+                    <p><strong>חסרונות:</strong> אין GUI, דורש ידע טכני</p>
+                    <div>
+                        <span class="platform-tag">CLI</span>
+                        <span class="platform-tag">API</span>
+                        <span class="platform-tag">Linux/Mac/Win</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo">🎨</div>
+                    <div>
+                        <div class="platform-name">LM Studio</div>
+                        <div class="platform-type">GUI Desktop App</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p><strong>הכי טוב ל:</strong> אנשי מוצר, התנסות, דמו</p>
+                    <p><strong>יתרונות:</strong> GUI יפה, הורדת מודלים בלחיצה</p>
+                    <p><strong>חסרונות:</strong> כבד, פחות לאוטומציה</p>
+                    <div>
+                        <span class="platform-tag">GUI</span>
+                        <span class="platform-tag">Search Models</span>
+                        <span class="platform-tag">Visual Chat</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo">🚀</div>
+                    <div>
+                        <div class="platform-name">AnythingLLM</div>
+                        <div class="platform-type">RAG + Agent Platform</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p><strong>הכי טוב ל:</strong> RAG, מסמכים, צוותים</p>
+                    <p><strong>יתרונות:</strong> RAG מובנה, Vector DB, Agents</p>
+                    <p><strong>חסרונות:</strong> מורכב יותר, דורש הבנה ב-RAG</p>
+                    <div>
+                        <span class="platform-tag">RAG</span>
+                        <span class="platform-tag">Vector DB</span>
+                        <span class="platform-tag">Agents</span>
+                        <span class="platform-tag">Self-host</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo">🌱</div>
+                    <div>
+                        <div class="platform-name">Jan</div>
+                        <div class="platform-type">Desktop Chat App</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p><strong>הכי טוב ל:</strong> משתמשי קצה, פרטיות</p>
+                    <p><strong>יתרונות:</strong> קוד פתוח, Offline-first</p>
+                    <p><strong>חסרונות:</strong> פחות מתקדם מ-AnythingLLM</p>
+                    <div>
+                        <span class="platform-tag">Open Source</span>
+                        <span class="platform-tag">Privacy</span>
+                        <span class="platform-tag">ChatGPT-like</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo">🦖</div>
+                    <div>
+                        <div class="platform-name">GPT4All</div>
+                        <div class="platform-type">Desktop + Python SDK</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p><strong>הכי טוב ל:</strong> מחשבים חלשים, מחקר</p>
+                    <p><strong>יתרונות:</strong> אופטימיזציה ל-CPU, SDK לפייתון</p>
+                    <p><strong>חסרונות:</strong> מודלים קטנים בלבד</p>
+                    <div>
+                        <span class="platform-tag">CPU-Optimized</span>
+                        <span class="platform-tag">Python SDK</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo">⚡</div>
+                    <div>
+                        <div class="platform-name">Open WebUI</div>
+                        <div class="platform-type">Web Interface</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p><strong>הכי טוב ל:</strong> צוותים, שרתים ארגוניים</p>
+                    <p><strong>יתרונות:</strong> ממשק ווב יפה, Multi-user</p>
+                    <p><strong>חסרונות:</strong> דורש Docker</p>
+                    <div>
+                        <span class="platform-tag">Web UI</span>
+                        <span class="platform-tag">Team</span>
+                        <span class="platform-tag">Docker</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🎯</span> AnythingLLM: הפלטפורמה ששווה Deep Dive</h3>
+        <p><a href="https://anythingllm.com" target="_blank" style="color: var(--accent-indigo); font-weight: 700;">AnythingLLM</a> (<code>anythingllm.com</code>) היא פלטפורמה מיוחדת במינה. היא לא רק "צ'אט עם מודל" – היא <strong>מערכת שלמה</strong> לבניית אפליקציות AI:</p>
+        
+        <div class="feature-grid">
+            <div class="feature-card blue">
+                <div class="feature-icon">📚</div>
+                <div class="feature-title">RAG מובנה</div>
+                <div class="feature-desc">העלה PDF, DOCX, URL – והמודל יענה על שאלות עליהם.</div>
+            </div>
+            <div class="feature-card purple">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">Agents מובנים</div>
+                <div class="feature-desc">בנה סוכנים שיכולים לקרוא לקוד, לחפש באינטרנט.</div>
+            </div>
+            <div class="feature-card pink">
+                <div class="feature-icon">👥</div>
+                <div class="feature-title">Multi-User</div>
+                <div class="feature-desc">מערכת הרשאות מלאה – מתאים לצוותים ארגוניים.</div>
+            </div>
+            <div class="feature-card cyan">
+                <div class="feature-icon">🔌</div>
+                <div class="feature-title">מתחבר לכל מודל</div>
+                <div class="feature-desc">Ollama, LM Studio, OpenAI, Anthropic – הכל עובד.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUIZ 5 -->
+    <div class="quiz" id="quiz5">
+        <div class="quiz-title">בדיקת הבנה 8.1: בחירת פלטפורמה</div>
+        <div class="quiz-question">צוות של 20 עובדים בחברת עורכי דין רוצים כלי משותף שישאל שאלות על אלפי חוזים פנימיים. איזו פלטפורמה תבחר?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="checkQuiz(this, 'correct', 'feedback5', 'מצוין! AnythingLLM בנוי בדיוק לזה: RAG על מסמכים, Multi-user, Self-hosted לפרטיות מלאה.')">
+                <span class="letter">א</span>
+                <span>AnythingLLM – RAG מובנה, Multi-user, Self-hosted.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback5', 'Ollama מצוין למפתחים, אבל אין לו RAG מובנה או Multi-user.')">
+                <span class="letter">ב</span>
+                <span>Ollama CLI – הכי פשוט ומהיר.</span>
+            </div>
+        </div>
+        <div class="quiz-feedback" id="feedback5"></div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 9: AGENTS -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter9">
+    <div class="chapter-header">
+        <div class="chapter-number">9</div>
+        <div>
+            <div class="chapter-title">סוכני AI (Agents): הדור הבא של אוטומציה</div>
+            <div class="chapter-subtitle">OpenClaw, Hermes, Claude Code – ואיך החבילה שלנו שונה</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🤖</span> מה זה Agent?</h3>
+        <p><strong>Agent (סוכן)</strong> הוא LLM שיודע <strong>להשתמש בכלים</strong>. בניגוד ל-LLM רגיל שרק עונה על שאלות, סוכן יכול:</p>
+        <ul>
+            <li>🔍 <strong>לחפש באינטרנט</strong> – לקבל מידע עדכני</li>
+            <li>💻 <strong>להריץ קוד</strong> – Python, SQL, ועוד</li>
+            <li> <strong>לקרוא/לכתוב קבצים</strong> – לעבוד עם המערכת</li>
+            <li>🗄️ <strong>לשאול מסדי נתונים</strong> – SQL queries</li>
+            <li>🌐 <strong>לקרוא ל-APIs</strong> – Stripe, Gmail, Slack</li>
+            <li>🔄 <strong>לתכנן צעדים</strong> – ReAct: חשיבה-פעולה-תצפית</li>
+        </ul>
+
+        <div class="image-showcase">
+            <img src="https://image.qwenlm.ai/public_source/1447963f-2528-4fd2-9955-23fca127d94a/1f261b321-e2bb-4bca-9dee-db99b7b232af.png" alt="AI Agents">
+            <div class="image-caption">סוכני AI – מודלים שיודעים להשתמש בכלים ולבצע משימות מורכבות</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🏛️</span> סוכנים מוכנים מול החבילה שלנו</h3>
+        <p>יש הבדל מהותי בין <strong>סוכנים מוכנים</strong> (כמו OpenClaw, Hermes) לבין <strong>בניית סוכן משלך</strong> עם Ollama + פייתון + Streamlit:</p>
+        
+        <div class="comparison-grid">
+            <div class="comparison-card cloud">
+                <div class="comparison-title" style="color: var(--accent-blue);"> סוכנים מוכנים (OpenClaw, Hermes)</div>
+                <ul class="comparison-list">
+                    <li>מוצר מוגמר – מוכן לשימוש מיידית</li>
+                    <li>תכונות מובנות: חיפוש, קוד, API</li>
+                    <li>ממשק משתמש מעוצב</li>
+                    <li>מוגבל למה שהיצרן מאפשר</li>
+                    <li>לרוב דורש מודל ענן (עלות)</li>
+                </ul>
+            </div>
+            <div class="comparison-card local">
+                <div class="comparison-title" style="color: var(--accent-purple);">🛠️ החבילה שלנו (Ollama + Python + Streamlit)</div>
+                <ul class="comparison-list">
+                    <li>שליטה מלאה בכל היבט</li>
+                    <li>התאמה אינסופית לצרכים שלך</li>
+                    <li>מודל מקומי – פרטיות מלאה</li>
+                    <li>דורש ידע בפיתוח</li>
+                    <li>גמישות אינסופית</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon"></span> Deep Dive: סוכנים פופולריים</h3>
+        
+        <div class="platform-grid">
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo"></div>
+                    <div>
+                        <div class="platform-name">OpenClaw</div>
+                        <div class="platform-type">Open Source Agent</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p>סוכן קוד פתוח שמתמקד ב<strong>אוטומציית מחשב</strong>. יודע לשלוט בעכבר, לצלם מסך, לנווט בין אפליקציות.</p>
+                </div>
+            </div>
+
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo">⚡</div>
+                    <div>
+                        <div class="platform-name">Hermes (Nous Research)</div>
+                        <div class="platform-type">Function-Calling Model</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p>משפחת מודלים שמותאמת במיוחד ל<strong>Function Calling</strong> – המודל יודע לבקש להריץ פונקציות חיצוניות.</p>
+                </div>
+            </div>
+
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo"></div>
+                    <div>
+                        <div class="platform-name">Claude Code</div>
+                        <div class="platform-type">Coding Agent</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p>סוכן הקוד של Anthropic. יודע לקרוא את כל הריפו, לערוך קבצים, להריץ פקודות shell, ולנהל Git.</p>
+                </div>
+            </div>
+
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo">💻</div>
+                    <div>
+                        <div class="platform-name">Codex (OpenAI)</div>
+                        <div class="platform-type">Coding Agent</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p>סוכן הקוד של OpenAI. מריץ קוד בסנדבוקס מאובטח, מבצע משימות פיתוח אוטומטית.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🔧</span> דוגמה: בניית סוכן עם Pydantic AI</h3>
+        
+        <pre><span class="code-label">custom_agent.py</span><span class="keyword">from</span> pydantic_ai <span class="keyword">import</span> Agent, RunContext
+<span class="keyword">from</span> pydantic_ai.models.ollama <span class="keyword">import</span> OllamaModel
+
+model = OllamaModel(<span class="string">'hermes3:8b'</span>)
+
+agent = Agent(
+    model,
+    system_prompt=<span class="string">"""You are a customer support agent.
+You have access to:
+- Customer database (query_customer)
+- Order database (query_orders)
+Always respond in Hebrew."""</span>,
+)
+
+<span class="decorator">@agent.tool</span>
+<span class="keyword">def</span> <span class="function">query_customer</span>(ctx: RunContext, email: <span class="builtin">str</span>) -> <span class="builtin">dict</span>:
+    <span class="string">"""Query customer by email."""</span>
+    <span class="comment"># לוגיקה אמיתית כאן</span>
+    <span class="keyword">return</span> {<span class="string">"name"</span>: <span class="string">"אלכס"</span>, <span class="string">"tier"</span>: <span class="string">"premium"</span>}
+
+<span class="decorator">@agent.tool</span>
+<span class="keyword">def</span> <span class="function">query_orders</span>(ctx: RunContext, customer_id: <span class="builtin">int</span>) -> <span class="builtin">list</span>:
+    <span class="string">"""Get recent orders for customer."""</span>
+    <span class="keyword">return</span> [{<span class="string">"id"</span>: <span class="number">1</span>, <span class="string">"status"</span>: <span class="string">"shipped"</span>}]
+
+<span class="comment"># הרצה</span>
+<span class="keyword">import</span> asyncio
+result = asyncio.run(agent.run(
+    <span class="string">"הלקוח alex@example.com שואל איפה ההזמנה האחרונה שלו"</span>
+))
+<span class="builtin">print</span>(result.data)</pre>
+    </div>
+
+    <!-- QUIZ 6 -->
+    <div class="quiz" id="quiz6">
+        <div class="quiz-title">בדיקת הבנה 9.1: מתי לבנות סוכן משלך?</div>
+        <div class="quiz-question">חברת לוגיסטיקה רוצה סוכן שיקרא דוחות PDF, יתחבר ל-SAP הפנימי, ויעדכן את מערכת ה-WMS הישנה. מה תמליץ?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="checkQuiz(this, 'correct', 'feedback6', 'נכון! צרכים ייחודיים כאלה דורשים סוכן מותאם אישית.')">
+                <span class="letter">א</span>
+                <span>לבנות סוכן מותאם עם Ollama + פייתון + הכלים הספציפיים של החברה.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback6', 'OpenClaw לא יודע להתחבר ל-SAP ול-WMS ישן.')">
+                <span class="letter">ב</span>
+                <span>להשתמש ב-OpenClaw – הוא יודע לשלוט במחשב.</span>
+            </div>
+        </div>
+        <div class="quiz-feedback" id="feedback6"></div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 10: MEMORY & RAG -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter10">
+    <div class="chapter-header">
+        <div class="chapter-number">10</div>
+        <div>
+            <div class="chapter-title">זיכרון לומד ו-RAG: מערכות שזוכרות ומתפתחות</div>
+            <div class="chapter-subtitle">ChromaDB, Qdrant, Embeddings – איך הופכים LLM למערכת שלומדת את המשתמש</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon"></span> הבעיה: LLM שוכח הכל</h3>
+        <p>כמו שלמדנו בפרק 5, LLM הוא <strong>stateless</strong> – הוא שוכח כל שיחה. אבל משתמשים מצפים שהמערכת <strong>תלמד</strong> מהם:</p>
+        <ul>
+            <li> "הוא יודע שאני אוהב תשובות קצרות"</li>
+            <li>📚 "הוא זוכר את המסמכים שלי"</li>
+            <li>🎯 "הוא מכיר את הקוד שלנו"</li>
+            <li> "הוא יודע מה דיברנו לפני שבוע"</li>
+        </ul>
+        
+        <p>איך פותרים את זה? <strong>שלוש שכבות זיכרון</strong>:</p>
+        
+        <div class="flowchart">
+            <div class="flow-step indigo">
+                1️⃣ זיכרון קצר-טווח (Conversation Buffer)
+                <span class="flow-step-desc">היסטוריית השיחה הנוכחית ב-session_state</span>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step purple">
+                2️ זיכרון ארוך-טווח (User Profile DB)
+                <span class="flow-step-desc">SQLite / PostgreSQL – פרטי משתמש, העדפות</span>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step pink">
+                3️⃣ זיכרון סמנטי (Vector DB + RAG)
+                <span class="flow-step-desc">ChromaDB / Qdrant – מסמכים, ידע, embeddings</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🎯</span> מה זה Embeddings?</h3>
+        <p><strong>Embedding</strong> הוא וקטור (רשימת מספרים) שמייצג את המשמעות של טקסט. שני טקסטים דומים יקבלו וקטורים דומים.</p>
+        
+        <div class="box box-purple">
+            <div class="box-title">🔢 דוגמה</div>
+            <p style="margin-bottom: 8px;">הטקסט "מה מזג האוויר?" יהפוך לוקטור:</p>
+            <code style="display: block; padding: 10px; background: #f3f0ff; border-radius: 8px; margin-bottom: 10px;">[0.23, -0.45, 0.87, 0.12, -0.33, ..., 0.56]</code>
+            <p style="margin: 0;">וקטור באורך 768-4096 מספרים. שתי שאלות דומות יקבלו וקטורים קרובים!</p>
+        </div>
+        
+        <h4>מודלי Embedding מובילים ב-2026:</h4>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>מודל</th>
+                        <th>חברה</th>
+                        <th>ממדים</th>
+                        <th>שפות</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>nomic-embed-text</strong></td><td>Nomic</td><td>768</td><td>אנגלית</td></tr>
+                    <tr><td><strong>mxbai-embed-large</strong></td><td>MixedBread</td><td>1024</td><td>רב-לשוני</td></tr>
+                    <tr><td><strong>bge-m3</strong></td><td>BAAI</td><td>1024</td><td>100+ שפות, מצוין בעברית</td></tr>
+                    <tr><td><strong>gte-qwen2</strong></td><td>Alibaba</td><td>1536</td><td>רב-לשוני</td></tr>
+                    <tr><td><strong>text-embedding-3-large</strong></td><td>OpenAI</td><td>3072</td><td>רב-לשוני (ענן)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon"></span> Vector Databases: איפה מאחסנים?</h3>
+        
+        <div class="image-showcase">
+            <img src="https://image.qwenlm.ai/public_source/1447963f-2528-4fd2-9955-23fca127d94a/1a5a09dd1-8e2a-4a8b-8e13-29ce0c94cb2b.png" alt="Memory System">
+            <div class="image-caption">מערכת זיכרון לומדת: המוח מחובר למסדי נתונים מקומיים ובענן</div>
+        </div>
+        
+        <div class="platform-grid">
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo">🌈</div>
+                    <div>
+                        <div class="platform-name">ChromaDB</div>
+                        <div class="platform-type">Embedded Vector DB</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p><strong>הכי פשוט להתחלה.</strong> מותקן ב-<code>pip install chromadb</code>, שומר לקובץ מקומי.</p>
+                </div>
+            </div>
+
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo">🔷</div>
+                    <div>
+                        <div class="platform-name">Qdrant</div>
+                        <div class="platform-type">Production Vector DB</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p><strong>לשימוש ב-production.</strong> שרת עצמאי (Docker), מיליארדי embeddings.</p>
+                </div>
+            </div>
+
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo">🌲</div>
+                    <div>
+                        <div class="platform-name">Pinecone</div>
+                        <div class="platform-type">Cloud Vector DB</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p><strong>מנוהל בענן.</strong> אין תחזוקה, מדרג אוטומטית, SLA גבוה.</p>
+                </div>
+            </div>
+
+            <div class="platform-card">
+                <div class="platform-header">
+                    <div class="platform-logo"></div>
+                    <div>
+                        <div class="platform-name">LanceDB</div>
+                        <div class="platform-type">Embedded + Serverless</div>
+                    </div>
+                </div>
+                <div class="platform-body">
+                    <p><strong>חדש ומהיר.</strong> מבוסס Apache Arrow, שומר לדיסק ישירות.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🎨</span> RAG – Retrieval Augmented Generation</h3>
+        <p><strong>RAG</strong> הוא הטכניקה שמשלבת embeddings + LLM. במקום שהמודל יענה מהידע שלו בלבד, הוא מקבל <strong>הקשר רלוונטי</strong> מהמסמכים שלך.</p>
+        
+        <div class="flowchart">
+            <div class="flow-step">
+                1️ שאלת המשתמש: "מה סעיף 7 בחוזה?"
+                <span class="flow-step-desc">טקסט חופשי</span>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step purple">
+                2️⃣ המרה ל-Embedding
+                <span class="flow-step-desc">מודל embedding הופך את השאלה לוקטור</span>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step indigo">
+                3️⃣ חיפוש ב-Vector DB
+                <span class="flow-step-desc">מוצא 3-5 קטעים דומים מהמסמכים</span>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step pink">
+                4️⃣ הרכבת Prompt עם ההקשר
+                <span class="flow-step-desc">שאלה + קטעים רלוונטיים</span>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-step success">
+                5️⃣ LLM מייצר תשובה מבוססת-מקורות
+                <span class="flow-step-desc">"סעיף 7 אומר: ..." עם ציטוט מדויק</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">💾</span> דוגמה: מערכת זיכרון לומדת</h3>
+        
+        <pre><span class="code-label">memory_system.py</span><span class="keyword">import</span> sqlite3
+<span class="keyword">import</span> chromadb
+<span class="keyword">from</span> chromadb.utils <span class="keyword">import</span> embedding_functions
+<span class="keyword">import</span> ollama
+<span class="keyword">from</span> datetime <span class="keyword">import</span> datetime
+
+<span class="keyword">class</span> <span class="function">LearningMemory</span>:
+    <span class="string">"""מערכת זיכרון שלומדת את המשתמש לאורך זמן."""</span>
+    
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, user_id: <span class="builtin">str</span>):
+        self.user_id = user_id
+        
+        <span class="comment"># SQLite לפרטי משתמש</span>
+        self.conn = sqlite3.connect(<span class="string">'users.db'</span>)
+        
+        <span class="comment"># ChromaDB לזיכרון סמנטי</span>
+        self.chroma = chromadb.PersistentClient(path=<span class="string">"./chroma_db"</span>)
+        self.embed_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
+            model_name=<span class="string">"BAAI/bge-m3"</span>  <span class="comment"># מצוין בעברית</span>
+        )
+        self.collection = self.chroma.get_or_create_collection(
+            name=<span class="string">f"user_{user_id}"</span>,
+            embedding_function=self.embed_fn
+        )
+    
+    <span class="keyword">def</span> <span class="function">remember_fact</span>(self, fact: <span class="builtin">str</span>):
+        <span class="string">"""שמירת עובדה בזיכרון הסמנטי."""</span>
+        self.collection.add(
+            documents=[fact],
+            metadatas=[{<span class="string">"user"</span>: self.user_id}],
+            ids=[<span class="string">f"fact_{datetime.now().timestamp()}"</span>]
+        )
+    
+    <span class="keyword">def</span> <span class="function">recall</span>(self, query: <span class="builtin">str</span>, n: <span class="builtin">int</span> = <span class="number">3</span>) -> <span class="builtin">list</span>:
+        <span class="string">"""שליפת זיכרונות רלוונטיים."""</span>
+        results = self.collection.query(
+            query_texts=[query],
+            n_results=n
+        )
+        <span class="keyword">return</span> results[<span class="string">"documents"</span>][<span class="number">0</span>]
+    
+    <span class="keyword">def</span> <span class="function">ask_with_memory</span>(self, question: <span class="builtin">str</span>) -> <span class="builtin">str</span>:
+        <span class="string">"""שאלה עם זיכרון."""</span>
+        memories = self.recall(question)
+        context = <span class="string">"\n"</span>.join(memories)
+        
+        prompt = <span class="string">f"""Answer using context from memory.
+
+USER MEMORIES:
+{context}
+
+QUESTION: {question}
+
+Respond in Hebrew."""</span>
+        
+        response = ollama.chat(
+            model=<span class="string">'gemma4:12b'</span>,
+            messages=[{<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: prompt}]
+        )
+        
+        <span class="comment"># שמירת הזיכרון החדש</span>
+        self.remember_fact(<span class="string">f"Q: {question}\nA: {response['message']['content']}"</span>)
+        
+        <span class="keyword">return</span> response[<span class="string">"message"</span>][<span class="string">"content"</span>]
+
+<span class="comment"># שימוש</span>
+memory = LearningMemory(<span class="string">"alex"</span>)
+memory.remember_fact(<span class="string">"המשתמש הוא מפתח פייתון בכיר"</span>)
+<span class="builtin">print</span>(memory.ask_with_memory(<span class="string">"איך כדאי לי לכתוב פונקציה?"</span>))</pre>
+    </div>
+
+    <!-- SANDBOX: Memory System -->
+    <div class="sandbox">
+        <div class="sandbox-header">
+            <div class="sandbox-icon">🧠</div>
+            <div>
+                <div class="sandbox-title">Playground: מערכת זיכרון לומדת</div>
+                <div class="sandbox-subtitle">הזן עובדות על "משתמש וירטואלי" ושאל שאלות</div>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label"> הוסף עובדה לזיכרון:</label>
+            <input type="text" class="control-input" id="mem-fact" placeholder='לדוגמה: "המשתמש הוא רופא ילדים בבית חולים שיבא"'>
+            <button class="control-btn" style="margin-top: 8px;" onclick="addMemoryFact()">➕ הוסף לזיכרון</button>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">💭 הזיכרונות שנאספו:</label>
+            <div id="memory-list" style="background: #f8fafc; padding: 14px; border-radius: 10px; min-height: 60px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;"></div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">❓ שאל שאלה:</label>
+            <input type="text" class="control-input" id="mem-question" placeholder="לדוגמה: איפה המשתמש עובד?">
+            <button class="control-btn" style="margin-top: 8px;" onclick="askMemory()">🔍 שאל עם זיכרון</button>
+        </div>
+        
+        <div class="sandbox-output" id="mem-output">
+            הוסף עובדות ואז שאל שאלות כדי לראות איך הזיכרון עובד.
+        </div>
+    </div>
+
+    <!-- QUIZ 7 -->
+    <div class="quiz" id="quiz7">
+        <div class="quiz-title">בדיקת הבנה 10.1: RAG</div>
+        <div class="quiz-question">מה היתרון העיקרי של RAG על פני "סתם" LLM?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="checkQuiz(this, 'correct', 'feedback7', 'מצוין! RAG נותן למודל גישה לידע עדכני ופרטי שלך, בלי לאמן אותו מחדש.')">
+                <span class="letter">א</span>
+                <span>המודל יכול לענות על בסיס המסמכים והידע הפרטי שלך, גם על מידע שהוא לא ראה באימון.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback7', 'לא מדויק. RAG לא הופך את המודל למהיר יותר, רק מדויק יותר.')">
+                <span class="letter">ב</span>
+                <span>RAG הופך את המודל למהיר פי 10.</span>
+            </div>
+        </div>
+        <div class="quiz-feedback" id="feedback7"></div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 11: AI DEV TOOLS -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter11">
+    <div class="chapter-header">
+        <div class="chapter-number">11</div>
+        <div>
+            <div class="chapter-title">כלי פיתוח AI: איך מפתחים עם AI</div>
+            <div class="chapter-subtitle">Antigravity, Codex, Claude Code, Cursor, OpenRouter – איך לבנות ולבצע דיבאג עם AI</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🎯</span> פרדיגמה חדשה: לפתח עם AI, לא רק על AI</h3>
+        <p>ב-2026, <strong>כל מפתח רציני משתמש ב-AI כחלק מתהליך הפיתוח</strong>. זה לא "רמאות" – זה כמו להשתמש ב-GitHub Copilot או Stack Overflow.</p>
+        
+        <div class="image-showcase">
+            <img src="https://image.qwenlm.ai/public_source/1447963f-2528-4fd2-9955-23fca127d94a/1d3d343dd-3afc-48ff-9325-41ccdfcb76c0.png" alt="AI Dev Tools">
+            <div class="image-caption">סביבת פיתוח מודרנית: IDE, סוכני קוד, ו-LLM פרונטיר עובדים יחד</div>
+        </div>
+        
+        <div class="box box-warning">
+            <div class="box-title">⚠️ כלל ברזל</div>
+            <p style="margin: 0;"><strong>תמיד להריץ דיבאג על הסקריפט שלך דרך LLM פרונטיר חזק</strong> – Claude 4 Opus, GPT-5, Gemini 2.5 Pro. המודל המקומי שלך עלול לפספס באגים עדינים.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🏆</span> כלי AI לפיתוח – השוואה מקיפה</h3>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>כלי</th>
+                        <th>חברה</th>
+                        <th>סוג</th>
+                        <th>מודל</th>
+                        <th>עלות</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: #fef3c7;">
+                        <td><strong>Antigravity</strong> 🆕</td>
+                        <td>Google</td>
+                        <td>AI IDE</td>
+                        <td>Gemini 2.5 Pro</td>
+                        <td>חינם/Pro</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cursor</strong></td>
+                        <td>Anysphere</td>
+                        <td>AI IDE</td>
+                        <td>Claude, GPT, Gemini</td>
+                        <td>חינם/$20</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Claude Code</strong></td>
+                        <td>Anthropic</td>
+                        <td>CLI Agent</td>
+                        <td>Claude Sonnet 4</td>
+                        <td>Max plan</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Codex (OpenAI)</strong></td>
+                        <td>OpenAI</td>
+                        <td>Cloud Agent</td>
+                        <td>GPT-5, o3</td>
+                        <td>Pro plan</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenRouter</strong></td>
+                        <td>OpenRouter</td>
+                        <td>API Gateway</td>
+                        <td>100+ מודלים</td>
+                        <td>שלם לפי שימוש</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon"></span> Antigravity – ה-IDE החדש של גוגל</h3>
+        <p><strong>Antigravity</strong> הוא ה-IDE של גוגל, שהושק ב-2025-2026. הוא משלב את <strong>Gemini 2.5 Pro</strong> ישירות בתוך סביבת הפיתוח.</p>
+        
+        <h4>מה מיוחד ב-Antigravity?</h4>
+        <ul>
+            <li>🧠 <strong>Gemini 2.5 Pro מובנה</strong> – חלון הקשר ענק של 2M טוקנים</li>
+            <li>👁️ <strong>הבנת כל הריפו</strong> – רואה את כל הפרויקט בו-זמנית</li>
+            <li>🔧 <strong>Multi-file editing</strong> – עורך כמה קבצים בו-זמנית</li>
+            <li>🐛 <strong>דיבאג חכם</strong> – מזהה באגים ומציע תיקונים</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">💻</span> Claude Code – סוכן קוד אוטונומי</h3>
+        <p><strong>Claude Code</strong> הוא סוכן קוד של Anthropic שרץ בטרמינל. הוא יכול:</p>
+        <ul>
+            <li>📖 לקרוא את <strong>כל הריפו</strong> שלך</li>
+            <li>✏️ <strong>לערוך קבצים</strong> ישירות</li>
+            <li>🐚 <strong>להריץ פקודות shell</strong></li>
+            <li>🔀 <strong>לנהל Git</strong> – commits, branches, PRs</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🌐</span> OpenRouter – מרכזיית כל המודלים</h3>
+        <p><strong>OpenRouter</strong> (<a href="https://openrouter.ai" target="_blank" style="color: var(--accent-indigo);">openrouter.ai</a>) הוא שירות שמאפשר לגשת למאות מודלים דרך <strong>API אחיד</strong>.</p>
+        
+        <pre><span class="code-label">openrouter_debug.py</span><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI
+
+client = OpenAI(
+    base_url=<span class="string">"https://openrouter.ai/api/v1"</span>,
+    api_key=<span class="string">"sk-or-v1-..."</span>,
+)
+
+models = [
+    <span class="string">"anthropic/claude-sonnet-4"</span>,
+    <span class="string">"openai/gpt-5"</span>,
+    <span class="string">"google/gemini-2.5-pro"</span>
+]
+
+<span class="keyword">for</span> model <span class="keyword">in</span> models:
+    response = client.chat.completions.create(
+        model=model,
+        messages=[{<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: <span class="string">"Debug this code..."</span>}]
+    )
+    <span class="builtin">print</span>(response.choices[<span class="number">0</span>].message.content)</pre>
+    </div>
+
+    <!-- QUIZ 8 -->
+    <div class="quiz" id="quiz8">
+        <div class="quiz-title">בדיקת הבנה 11.1: דיבאג עם AI</div>
+        <div class="quiz-question">כתבת סקריפט פייתון מורכב לניתוח נתונים. מה הדרך הכי טובה לוודא שאין בו באגים?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="checkQuiz(this, 'correct', 'feedback8', 'מצוין! השילוב הכי חזק: דיבאג מקומי מהיר + ביקורת פרונטיר מעמיקה.')">
+                <span class="letter">א</span>
+                <span>להריץ דיבאג מקומי עם Gemma 4, ואז ביקורת עומק עם Claude 4 Opus / GPT-5 דרך OpenRouter.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback8', 'לא מספיק. גם המודלים החכמים ביותר עלולים לפספס באגים.')">
+                <span class="letter">ב</span>
+                <span>פשוט לסמוך על המודל המקומי – הוא מספיק חכם.</span>
+            </div>
+        </div>
+        <div class="quiz-feedback" id="feedback8"></div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 12: HARDWARE 2026 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter12">
+    <div class="chapter-header">
+        <div class="chapter-number">12</div>
+        <div>
+            <div class="chapter-title">חומרה ייעודית 2026: DGX Spark, M5 Max, RTX 5090</div>
+            <div class="chapter-subtitle">בנצ'מרקים עדכניים, צווארי בקבוק, ואיך לבחור חומרה למוצר</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon"></span> נוף החומרה ב-2026</h3>
+        <p>שנת 2026 הביאה איתה חומרה מהפכנית להרצת LLM מקומי. בואו נכיר את השחקנים המרכזיים:</p>
+        
+        <div class="image-showcase">
+            <img src="https://image.qwenlm.ai/public_source/1447963f-2528-4fd2-9955-23fca127d94a/18ded4949-e540-4c1d-8de2-9ea2c2993088.png" alt="AI Hardware 2026">
+            <div class="image-caption">DGX Spark של NVIDIA, MacBook Pro M5, ו-Dell XPS עם RTX 5090 – שלושת עמודי התווך של 2026</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🔥</span> DGX Spark – תחנת ה-AI האישית של NVIDIA</h3>
+        <p><strong>NVIDIA DGX Spark</strong> הוא מכשיר מהפכני שהושק ב-2025-2026: תחנת עבודה קטנה שמיועדת ספציפית ל-AI.</p>
+        
+        <h4>מפרט:</h4>
+        <ul>
+            <li> <strong>GPU:</strong> NVIDIA Grace Blackwell – 1000 TOPS ביצועי AI</li>
+            <li>💾 <strong>זיכרון מאוחד:</strong> 128GB LPDDR5X – משותף ל-CPU ו-GPU</li>
+            <li>⚡ <strong>רוחב פס זיכרון:</strong> 273 GB/s</li>
+            <li>💻 <strong>CPU:</strong> 20-core ARM Grace</li>
+            <li>🔌 <strong>צריכת חשמל:</strong> 150W (כמו מחשב רגיל)</li>
+        </ul>
+        
+        <div class="box box-gradient">
+            <div class="box-title">🎯 מה DGX Spark מאפשר?</div>
+            <p style="margin: 0;">הרצת מודלים של <strong>עד 200B פרמטרים</strong> מקומית! Llama 4 Maverick (400B) ירוץ בקצב סביר, וכל מודל מתחת ל-100B יטוס.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">🍎</span> משפחת Apple M5 (2026)</h3>
+        <p>אפל המשיכה לשפר את שבבי ה-Silicon שלה. ה-M5 הוא הדור החמישי, עם שיפורים משמעותיים בביצועי AI:</p>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>שבב</th>
+                        <th>זיכרון מקסימלי</th>
+                        <th>רוחב פס</th>
+                        <th>Neural Engine</th>
+                        <th>מודל מומלץ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>M5 Base</strong></td>
+                        <td>32GB</td>
+                        <td>153 GB/s</td>
+                        <td>38 TOPS</td>
+                        <td>Gemma 4 12B (4bit)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>M5 Pro</strong></td>
+                        <td>64GB</td>
+                        <td>273 GB/s</td>
+                        <td>45 TOPS</td>
+                        <td>Qwen 3.6 14B</td>
+                    </tr>
+                    <tr>
+                        <td><strong>M5 Max</strong></td>
+                        <td>128GB</td>
+                        <td>546 GB/s</td>
+                        <td>58 TOPS</td>
+                        <td>Llama 4 Scout (109B)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>M5 Ultra</strong></td>
+                        <td>256GB</td>
+                        <td>819 GB/s</td>
+                        <td>90 TOPS</td>
+                        <td>Llama 4 Maverick (400B)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon"></span> Dell XPS + RTX 5090</h3>
+        <p>למחשבי Windows עם כרטיסי מסך חזקים, ה-RTX 5090 של NVIDIA הוא הבחירה המובילה ב-2026:</p>
+        
+        <ul>
+            <li>🧠 <strong>VRAM:</strong> 32GB GDDR7</li>
+            <li>⚡ <strong>רוחב פס:</strong> 1,792 GB/s</li>
+            <li>💻 <strong>CUDA Cores:</strong> 21,760</li>
+            <li>🔥 <strong>ביצועים:</strong> 105 TFLOPS FP16</li>
+        </ul>
+        
+        <div class="box box-warning">
+            <div class="box-title">️ צוק ה-VRAM (VRAM Cliff)</div>
+            <p style="margin: 0;">אם המודל שלך קטן מ-32GB – הוא ירוץ על ה-GPU במהירות מטורפת (400+ T/s). אם הוא גדול מ-32GB ולו בטוקן אחד – המהירות <strong>צונחת פי 20</strong> כי המערכת עוברת ל-RAM הרגיל.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><span class="icon">📊</span> בנצ'מרקים: Tokens Per Second (2026)</h3>
+        <p>נתוני מעבדה מעודכנים לשנת 2026 עבור מודל <strong>Gemma 4 12B בקוונטיזציה 4-bit</strong>:</p>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>מערכת</th>
+                        <th>מהירות (T/s)</th>
+                        <th>הערות</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>MacBook Pro M5 Ultra</strong></td>
+                        <td>120 T/s</td>
+                        <td>זיכרון מאוחד 256GB, מהיר מאוד</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DGX Spark</strong></td>
+                        <td>110 T/s</td>
+                        <td>128GB זיכרון מאוחד, יציב</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dell XPS + RTX 5090</strong></td>
+                        <td>105 T/s</td>
+                        <td>כל עוד המודל ב-VRAM (32GB)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MacBook Pro M5 Max</strong></td>
+                        <td>90 T/s</td>
+                        <td>128GB זיכרון מאוחד</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MacBook Pro M5 Pro</strong></td>
+                        <td>60 T/s</td>
+                        <td>64GB זיכרון מאוחד</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MacBook Pro M5 Base</strong></td>
+                        <td>40 T/s</td>
+                        <td>32GB זיכרון מאוחד</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dell XPS + RTX 5090 (מודל גדול)</strong></td>
+                        <td>5 T/s</td>
+                        <td>⚠️ נפל מצוק ה-VRAM!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- SANDBOX: Hardware Benchmark Calculator -->
+    <div class="sandbox">
+        <div class="sandbox-header">
+            <div class="sandbox-icon">⚡</div>
+            <div>
+                <div class="sandbox-title">מחשבון ביצועי חומרה</div>
+                <div class="sandbox-subtitle">בחר חומרה ומודל וראה את התחזית</div>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">חומרת המשתמש:</label>
+            <select class="control-select" id="hw-select" onchange="calculateBenchmark()">
+                <option value="m5_base">MacBook Pro M5 Base (32GB)</option>
+                <option value="m5_max">MacBook Pro M5 Max (128GB)</option>
+                <option value="dgx">DGX Spark (128GB)</option>
+                <option value="rtx5090">Dell XPS + RTX 5090 (32GB VRAM)</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">גודל המודל (קוונטיזציה 4-bit):</label>
+            <select class="control-select" id="model-size" onchange="calculateBenchmark()">
+                <option value="12b">Gemma 4 12B (~8GB)</option>
+                <option value="14b">Qwen 3.6 14B (~9GB)</option>
+                <option value="32b">Qwen 3.6 Coder 32B (~20GB)</option>
+                <option value="109b">Llama 4 Scout (~70GB)</option>
+            </select>
+        </div>
+        
+        <div class="sandbox-output" id="hw-output">
+            בחר חומרה ומודל כדי לראות את התחזית.
+        </div>
+    </div>
+
+    <!-- QUIZ 9 -->
+    <div class="quiz" id="quiz9">
+        <div class="quiz-title">בדיקת הבנה 12.1: בחירת חומרה</div>
+        <div class="quiz-question">אתה צריך להריץ את Llama 4 Scout (109B) מקומית במשרד. איזו חומרה תבחר?</div>
+        <div class="quiz-options">
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback9', 'לא מספיק זיכרון. M5 Max עם 128GB יספיק, אבל M5 Base עם 32GB לא יוכל אפילו לטעון את המודל.')">
+                <span class="letter">א</span>
+                <span>MacBook Pro M5 Base עם 32GB זיכרון.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'correct', 'feedback9', 'מצוין! DGX Spark עם 128GB זיכרון מאוחד יוכל להריץ את Llama 4 Scout (70GB בקוונטיזציה 4-bit) בנוחות.')">
+                <span class="letter">ב</span>
+                <span>DGX Spark עם 128GB זיכרון מאוחד.</span>
+            </div>
+            <div class="quiz-option" onclick="checkQuiz(this, 'wrong', 'feedback9', 'RTX 5090 עם 32GB VRAM לא יספיק. המודל ייפול מצוק ה-VRAM והמהירות תתרסק.')">
+                <span class="letter">ג</span>
+                <span>Dell XPS עם RTX 5090 (32GB VRAM).</span>
+            </div>
+        </div>
+        <div class="quiz-feedback" id="feedback9"></div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FINAL SUMMARY -->
+<!-- ============================================================ -->
+<section class="chapter" id="summary">
+    <div class="chapter-header">
+        <div class="chapter-number"></div>
+        <div>
+            <div class="chapter-title">סיכום חלק 2: מה למדנו?</div>
+            <div class="chapter-subtitle">הכלים והידע שבניתם לאורך הקורס</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="checklist">
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="checklist-text"><strong>הבנתי איך לחבר פייתון ל-LLM</strong> – דרך ollama, transformers, LangChain, Pydantic AI</div>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="checklist-text"><strong>למדתי Streamlit</strong> – ספרייה שבונה UI לאפליקציות פייתון בקלות</div>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="checklist-text"><strong>הכרתי את Ollama</strong> – מנוע הרצה שמפעיל מודלים מקומיים וחושף API</div>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="checklist-text"><strong>הכרתי פלטפורמות</strong> – AnythingLLM, LM Studio, Jan, GPT4All, Open WebUI</div>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="checklist-text"><strong>הבנתי סוכני AI</strong> – ההבדל בין סוכנים מוכנים לבניית סוכן מותאם</div>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="checklist-text"><strong>למדתי RAG וזיכרון</strong> – ChromaDB, Qdrant, Embeddings, מערכות לומדות</div>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="checklist-text"><strong>הכרתי כלי פיתוח AI</strong> – Antigravity, Codex, Claude Code, Cursor, OpenRouter</div>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="checklist-text"><strong>הבנתי חומרה 2026</strong> – DGX Spark, M5 Max, RTX 5090, בנצ'מרקים</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="background: linear-gradient(135deg, #e0e7ff 0%, #fce7f3 100%); border: 2px solid var(--accent-indigo);">
+        <h3 style="color: var(--accent-indigo);"><span class="icon">🎓</span> סיום הקורס!</h3>
+        <p>כל הכבוד! סיימת את שני חלקי הקורס. כעת יש לך את הידע והכלים לבנות מוצרי AI מקומיים מתקדמים, מלאים, ומקצועיים.</p>
+        <p><strong>הצעד הבא:</strong> בחר פרויקט אמיתי מהחיים שלך, והתחל לבנות אותו עם הכלים שלמדת. הדרך הטובה ביותר ללמוד היא לעשות!</p>
+        <div style="text-align: center; margin-top: 24px;">
+            <span style="font-size: 3rem;">🚀</span>
+            <p style="font-size: 1.2rem; font-weight: 700; color: var(--accent-indigo); margin-top: 12px;">בהצלחה בבניית מוצרי ה-AI שלך!</p>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<footer>
+    <h3>🎓 סיום חלק 2</h3>
+    <p>כל הכבוד! סיימת את הכלים והארכיטקטורה המתקדמת של LLM מקומי. כעת אתה מוכן לבנות מוצרי AI אמיתיים.</p>
+    <div style="display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap;">
+        <a href="#chapter5" style="color: white; text-decoration: none; padding: 10px 20px; background: rgba(255,255,255,0.1); border-radius: 8px;">️ חזרה להתחלה</a>
+    </div>
+    <p style="margin-top: 40px; opacity: 0.5; font-size: 0.9rem;">© 2026 · קורס ארכיטקטורת מוצרי AI · חלק 2 מתוך 2</p>
+</footer>
+
+<div class="reading-progress">
+    <div class="progress-circle" id="progressCircle">
+        <span class="progress-percent" id="progressPercent">0%</span>
+    </div>
+    <span>קריאה</span>
+</div>
+
+<script>
+// ============ QUIZ LOGIC ============
+const quizState2 = {};
+
+function checkQuiz(element, type, feedbackId, message) {
+    const parent = element.parentElement;
+    const options = parent.querySelectorAll('.quiz-option');
+    const quiz = parent.closest('.quiz');
+    const quizId = quiz ? quiz.id : 'unknown';
+    
+    if (quizState2[quizId] && quizState2[quizId].answered) return;
+    
+    options.forEach(opt => {
+        opt.classList.add('disabled');
+        if (opt === element) {
+            if (type === 'correct') opt.classList.add('correct');
+            else opt.classList.add('wrong');
+        }
+    });
+    
+    const feedbackEl = document.getElementById(feedbackId);
+    feedbackEl.className = 'quiz-feedback show ' + (type === 'correct' ? 'success' : 'error');
+    feedbackEl.innerHTML = (type === 'correct' ? '✨ ' : '❌ ') + message;
+    
+    quizState2[quizId] = { answered: true, correct: type === 'correct' };
+    updateProgress2();
+}
+
+function updateProgress2() {
+    const answered = Object.values(quizState2).filter(s => s.answered).length;
+    const correct = Object.values(quizState2).filter(s => s.correct).length;
+    const percent = Math.round((answered / 9) * 100);
+    
+    const progressBar = document.getElementById('quizProgress2');
+    if (progressBar) {
+        progressBar.style.width = percent + '%';
+        progressBar.textContent = percent + '%';
+    }
+}
+
+function resetAllQuizzes2() {
+    if (!confirm('לאפס את כל הקוויזים?')) return;
+    document.querySelectorAll('.quiz-option').forEach(opt => {
+        opt.classList.remove('disabled', 'correct', 'wrong');
+    });
+    document.querySelectorAll('.quiz-feedback').forEach(fb => {
+        fb.className = 'quiz-feedback';
+        fb.innerHTML = '';
+    });
+    for (let key in quizState2) delete quizState2[key];
+    updateProgress2();
+}
+
+// ============ ACCORDION ============
+function toggleAccordion(header) {
+    const body = header.nextElementSibling;
+    const isOpen = header.classList.contains('open');
+    header.parentElement.querySelectorAll('.accordion-header').forEach(h => {
+        h.classList.remove('open');
+        h.nextElementSibling.classList.remove('open');
+    });
+    if (!isOpen) {
+        header.classList.add('open');
+        body.classList.add('open');
+    }
+}
+
+// ============ TABS ============
+function switchTab(event, tabId) {
+    const tabs = event.target.parentElement;
+    tabs.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    const parent = tabs.parentElement;
+    parent.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+}
+
+// ============ CHECKLIST ============
+function toggleCheck(item) {
+    item.classList.toggle('checked');
+}
+
+// ============ PYTHON LIBRARY EXPLORER ============
+function showLibrary() {
+    const lib = document.getElementById('lib-select').value;
+    const output = document.getElementById('lib-output');
+    
+    const libraries = {
+        'ollama': {
+            name: 'ollama-python',
+            desc: 'הספרייה הפשוטה ביותר לחיבור ל-Ollama המקומי.',
+            code: `import ollama\n\nresponse = ollama.chat(\n    model='gemma4:12b',\n    messages=[{'role': 'user', 'content': 'Hello!'}]\n)\nprint(response['message']['content'])`,
+            use: 'צ\'אט פשוט, אפליקציות קטנות, פרוטוטייפינג מהיר'
+        },
+        'transformers': {
+            name: 'transformers',
+            desc: 'ספריית Hugging Face לטעינת מודלים ישירות.',
+            code: `from transformers import pipeline\n\npipe = pipeline("text-generation", model="Qwen/Qwen2.5-14B-Instruct")\nresult = pipe("Hello, world!")\nprint(result[0]['generated_text'])`,
+            use: 'מחקר, ניסויים, טעינת מודלים ספציפיים'
+        },
+        'langchain': {
+            name: 'LangChain',
+            desc: 'ספרייה מתקדמת לבניית אפליקציות LLM מורכבות.',
+            code: `from langchain_community.llms import Ollama\nfrom langchain.chains import LLMChain\n\nllm = Ollama(model="gemma4:12b")\nchain = LLMChain(llm=llm, prompt=prompt)\nresult = chain.invoke({"question": "What is AI?"})`,
+            use: 'RAG, Agents, שרשראות מורכבות, זיכרון'
+        },
+        'llamaindex': {
+            name: 'LlamaIndex',
+            desc: 'ספרייה מתמחה בעבודה עם מסמכים ו-RAG.',
+            code: `from llama_index.core import VectorStoreIndex, SimpleDirectoryReader\n\ndocuments = SimpleDirectoryReader("./docs").load_data()\nindex = VectorStoreIndex.from_documents(documents)\nquery_engine = index.as_query_engine()\nresponse = query_engine.query("What is in the docs?")`,
+            use: 'שאלות על מסמכים, RAG, חיפוש סמנטי'
+        },
+        'streamlit': {
+            name: 'Streamlit',
+            desc: 'ספרייה לבניית אפליקציות ווב אינטראקטיביות.',
+            code: `import streamlit as st\n\nst.title("My App")\nuser_input = st.text_input("Enter text:")\nif st.button("Submit"):\n    st.write(f"You entered: {user_input}")`,
+            use: 'UI לאפליקציות AI, דמו, אבות-טיפוס'
+        },
+        'fastapi': {
+            name: 'FastAPI',
+            desc: 'ספרייה לבניית API מקצועי ומהיר.',
+            code: `from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.post("/chat")\nasync def chat(message: str):\n    response = ollama.chat(model="gemma4:12b", messages=[...])\n    return {"response": response['message']['content']}`,
+            use: 'Backend לאפליקציות, microservices, production'
+        },
+        'pydantic': {
+            name: 'Pydantic AI',
+            desc: 'ספרייה מודרנית לבניית סוכני AI עם טיפוסים חזקים.',
+            code: `from pydantic_ai import Agent\nfrom pydantic_ai.models.ollama import OllamaModel\n\nagent = Agent(OllamaModel('gemma4:12b'))\n\n@agent.tool\ndef search(query: str) -> str:\n    return f"Results for {query}"\n\nresult = agent.run("Search for AI trends")`,
+            use: 'Agents מודרניים, tool use, structured output'
+        }
+    };
+    
+    if (!lib) {
+        output.innerHTML = 'בחר ספרייה כדי לראות מידע ודוגמת קוד.';
+        return;
+    }
+    
+    const data = libraries[lib];
+    output.innerHTML = `
+        <div style="margin-bottom: 12px;">
+            <strong style="font-size: 1.2rem; color: var(--accent-indigo);">${data.name}</strong>
+        </div>
+        <p style="margin-bottom: 12px;">${data.desc}</p>
+        <div style="background: var(--code-bg); color: #e4e4e7; padding: 14px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; direction: ltr; text-align: left; margin-bottom: 12px; white-space: pre-wrap;">${data.code}</div>
+        <div style="background: var(--info-light); padding: 10px; border-radius: 8px; color: #1e3a8a;">
+            <strong>שימושים:</strong> ${data.use}
+        </div>
+    `;
+}
+
+// ============ STREAMLIT COMPONENT TESTER ============
+function showStreamlitComponent() {
+    const component = document.getElementById('st-component').value;
+    const output = document.getElementById('st-output');
+    
+    const components = {
+        'title': { code: 'st.title("כותרת ראשית")', desc: 'יוצר כותרת גדולה ומודגשת בראש העמוד.' },
+        'button': { code: 'if st.button("לחץ כאן"):\n    st.write("נלחץ!")', desc: 'כפתור שמפעיל קוד בלחיצה.' },
+        'slider': { code: 'value = st.slider("בחר מספר", 0, 100, 50)\nst.write(f"בחרת: {value}")', desc: 'סליידר לבחירת מספר בטווח.' },
+        'selectbox': { code: 'option = st.selectbox("בחר מודל", ["gemma4", "qwen3.6", "llama4"])\nst.write(f"בחרת: {option}")', desc: 'תיבת בחירה עם רשימת אפשרויות.' },
+        'chat': { code: 'user_input = st.chat_input("כתוב הודעה...")\nif user_input:\n    st.write(f"קיבלתי: {user_input}")', desc: 'שורת קלט לצ\'אט, כמו ב-ChatGPT.' },
+        'columns': { code: 'col1, col2 = st.columns(2)\nwith col1:\n    st.write("עמודה 1")\nwith col2:\n    st.write("עמודה 2")', desc: 'פריסה בעמודות לתצוגה מקבילית.' },
+        'tabs': { code: 'tab1, tab2 = st.tabs(["טאב 1", "טאב 2"])\nwith tab1:\n    st.write("תוכן טאב 1")\nwith tab2:\n    st.write("תוכן טאב 2")', desc: 'לשוניות לארגון תוכן.' }
+    };
+    
+    const data = components[component];
+    output.innerHTML = `
+        <div style="margin-bottom: 12px;">
+            <strong style="color: var(--accent-indigo);">קוד:</strong>
+        </div>
+        <div style="background: var(--code-bg); color: #e4e4e7; padding: 14px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; direction: ltr; text-align: left; margin-bottom: 12px; white-space: pre-wrap;">${data.code}</div>
+        <div style="background: var(--info-light); padding: 10px; border-radius: 8px; color: #1e3a8a;">
+            <strong>תיאור:</strong> ${data.desc}
+        </div>
+    `;
+}
+
+// ============ OLLAMA MODEL SELECTOR ============
+function showOllamaModel() {
+    const model = document.getElementById('ollama-model').value;
+    const output = document.getElementById('ollama-output');
+    
+    const models = {
+        'gemma4:12b': { name: 'Gemma 4 12B', ram: '10GB', speed: '40-60 T/s', use: 'צ\'אט כללי, הבנת טקסט, רב-לשוני', cmd: 'ollama pull gemma4:12b' },
+        'qwen3.6:14b': { name: 'Qwen 3.6 14B', ram: '12GB', speed: '35-50 T/s', use: 'רב-לשוני מצוין, עברית, חשיבה', cmd: 'ollama pull qwen3.6:14b' },
+        'qwen3.6-coder:32b': { name: 'Qwen 3.6 Coder 32B', ram: '24GB', speed: '20-35 T/s', use: 'כתיבת קוד, דיבאג, refactoring', cmd: 'ollama pull qwen3.6-coder:32b' },
+        'deepseek-r1:14b': { name: 'DeepSeek R1 14B', ram: '12GB', speed: '30-45 T/s', use: 'חשיבה מורכבת, Reasoning, מתמטיקה', cmd: 'ollama pull deepseek-r1:14b' },
+        'llama4:scout': { name: 'Llama 4 Scout', ram: '32GB', speed: '15-25 T/s', use: 'חלון הקשר ענק (10M טוקנים), מסמכים ארוכים', cmd: 'ollama pull llama4:scout' }
+    };
+    
+    const data = models[model];
+    output.innerHTML = `
+        <div style="margin-bottom: 12px;">
+            <strong style="font-size: 1.2rem; color: var(--accent-indigo);">${data.name}</strong>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 12px;">
+            <div style="background: var(--info-light); padding: 10px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 0.85rem; color: var(--text-muted);">זיכרון נדרש</div>
+                <div style="font-weight: 800; color: var(--accent-indigo);">${data.ram}</div>
+            </div>
+            <div style="background: var(--success-light); padding: 10px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 0.85rem; color: var(--text-muted);">מהירות</div>
+                <div style="font-weight: 800; color: var(--success);">${data.speed}</div>
+            </div>
+        </div>
+        <div style="background: var(--purple-light); padding: 10px; border-radius: 8px; margin-bottom: 12px; color: #4c1d95;">
+            <strong>שימוש מומלץ:</strong> ${data.use}
+        </div>
+        <div style="background: var(--code-bg); color: #e4e4e7; padding: 10px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; direction: ltr; text-align: left;">
+            $ ${data.cmd}
+        </div>
+    `;
+}
+
+// ============ MEMORY SYSTEM ============
+const memoryFacts = [];
+
+function addMemoryFact() {
+    const fact = document.getElementById('mem-fact').value.trim();
+    if (!fact) return;
+    
+    memoryFacts.push(fact);
+    document.getElementById('mem-fact').value = '';
+    
+    const list = document.getElementById('memory-list');
+    list.innerHTML = memoryFacts.map((f, i) => `<div style="margin-bottom: 6px;">${i + 1}. ${f}</div>`).join('');
+    
+    document.getElementById('mem-output').innerHTML = `✅ עובדה נוספה לזיכרון! יש לך ${memoryFacts.length} זיכרונות.`;
+}
+
+function askMemory() {
+    const question = document.getElementById('mem-question').value.trim();
+    if (!question) return;
+    
+    const output = document.getElementById('mem-output');
+    
+    if (memoryFacts.length === 0) {
+        output.innerHTML = '❌ אין זיכרונות. הוסף עובדות קודם!';
+        return;
+    }
+    
+    // Simple keyword matching simulation
+    const relevant = memoryFacts.filter(f => {
+        const words = question.toLowerCase().split(' ');
+        return words.some(w => f.toLowerCase().includes(w));
+    });
+    
+    const context = relevant.length > 0 ? relevant.join('\n') : memoryFacts.slice(-3).join('\n');
+    
+    output.innerHTML = `
+        <div style="margin-bottom: 12px;">
+            <strong>שאלה:</strong> ${question}
+        </div>
+        <div style="background: var(--info-light); padding: 12px; border-radius: 8px; margin-bottom: 12px; color: #1e3a8a;">
+            <strong>זיכרונות רלוונטיים:</strong><br>
+            ${context}
+        </div>
+        <div style="background: var(--success-light); padding: 12px; border-radius: 8px; color: #065f46;">
+            <strong>תשובה (סימולציה):</strong><br>
+            בהתבסס על הזיכרונות שלך, התשובה לשאלה "${question}" נמצאת בעובדות שאחסנת. במערכת אמיתית, ה-LLM ישתמש בהקשר הזה כדי לייצר תשובה מדויקת בעברית.
+        </div>
+    `;
+}
+
+// ============ HARDWARE BENCHMARK CALCULATOR ============
+function calculateBenchmark() {
+    const hw = document.getElementById('hw-select').value;
+    const model = document.getElementById('model-size').value;
+    const output = document.getElementById('hw-output');
+    
+    const benchmarks = {
+        'm5_base': { name: 'MacBook Pro M5 Base', ram: 32, speed: 40 },
+        'm5_max': { name: 'MacBook Pro M5 Max', ram: 128, speed: 90 },
+        'dgx': { name: 'DGX Spark', ram: 128, speed: 110 },
+        'rtx5090': { name: 'Dell XPS + RTX 5090', ram: 32, speed: 105, vram: true }
+    };
+    
+    const modelSizes = {
+        '12b': { name: 'Gemma 4 12B', size: 8 },
+        '14b': { name: 'Qwen 3.6 14B', size: 9 },
+        '32b': { name: 'Qwen 3.6 Coder 32B', size: 20 },
+        '109b': { name: 'Llama 4 Scout', size: 70 }
+    };
+    
+    const hwData = benchmarks[hw];
+    const modelData = modelSizes[model];
+    
+    let text = '';
+    
+    if (hwData.vram && modelData.size > hwData.ram) {
+        text = `⚠️ <strong>נפילה מצוק ה-VRAM!</strong><br><br>המודל ${modelData.name} דורש ${modelData.size}GB, אך ל-RTX 5090 יש רק ${hwData.ram}GB VRAM.<br><br>המהירות תתרסק מ-${hwData.speed} T/s ל-<strong>5 T/s</strong> כי המערכת תעבור ל-RAM הרגיל.`;
+    } else if (modelData.size > hwData.ram) {
+        text = `❌ <strong>לא מספיק זיכרון!</strong><br><br>המודל ${modelData.name} דורש ${modelData.size}GB, אך ל-${hwData.name} יש רק ${hwData.ram}GB.<br><br>המודל לא יוכל לרוץ על חומרה זו.`;
+    } else {
+        const speedRatio = modelData.size / 12;
+        const estimatedSpeed = Math.round(hwData.speed / speedRatio);
+        text = `✅ <strong>המודל ירוץ בהצלחה!</strong><br><br>המודל ${modelData.name} (${modelData.size}GB) נכנס לזיכרון של ${hwData.name} (${hwData.ram}GB).<br><br>מהירות צפויה: <strong>~${estimatedSpeed} T/s</strong><br>זיכרון פנוי: ${hwData.ram - modelData.size}GB ל-KV Cache ומערכת.`;
+    }
+    
+    output.innerHTML = text;
+}
+
+// ============ READING PROGRESS ============
+window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const percent = Math.round((scrollTop / docHeight) * 100);
+    
+    document.getElementById('navProgress').style.width = percent + '%';
+    
+    const circle = document.getElementById('progressCircle');
+    const percentEl = document.getElementById('progressPercent');
+    if (circle && percentEl) {
+        circle.style.background = `conic-gradient(var(--accent-indigo) ${percent * 3.6}deg, var(--border) ${percent * 3.6}deg)`;
+        percentEl.textContent = percent + '%';
+    }
+});
+
+// ============ SMOOTH SCROLL ============
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
+// ============ INITIAL ============
+updateProgress2();
+</script>
+</body>
+</html>
+
