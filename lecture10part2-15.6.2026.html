@@ -1,0 +1,2762 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ארכיטקטורת נתונים ו-BI — המשך מעשי</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --subtle: #f1f5f9;
+  --border: #e2e8f0;
+  --blue: #0284c7;
+  --blue-light: #e0f2fe;
+  --green: #059669;
+  --green-light: #d1fae5;
+  --red: #dc2626;
+  --red-light: #fee2e2;
+  --orange: #d97706;
+  --orange-light: #fef3c7;
+  --purple: #7c3aed;
+  --purple-light: #ede9fe;
+  --navy: #1e3a5f;
+  --teal: #0d9488;
+  --teal-light: #ccfbf1;
+  --rose: #e11d48;
+  --rose-light: #ffe4e6;
+  --amber: #b45309;
+  --amber-light: #fef3c7;
+  --text: #0f172a;
+  --text2: #334155;
+  --muted: #64748b;
+  --font: 'Heebo', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);direction:rtl;line-height:1.75;font-size:16px;overflow-x:hidden;}
+
+/* ===== LAYOUT ===== */
+.wrap{display:flex;min-height:100vh;}
+.sidebar{width:300px;background:var(--card);border-left:2px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column;}
+.sidebar-top{padding:24px 20px 16px;border-bottom:1px solid var(--border);}
+.sidebar-title{font-size:18px;font-weight:900;color:var(--navy);line-height:1.3;}
+.sidebar-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+.sidebar-part{font-size:11px;background:var(--blue-light);color:var(--blue);padding:4px 10px;border-radius:20px;display:inline-block;margin-top:6px;font-weight:700;}
+.nav-list{padding:12px 0;flex:1;}
+.nav-btn{display:flex;align-items:center;gap:10px;width:100%;padding:11px 20px;border:none;background:none;cursor:pointer;font-family:var(--font);font-size:13px;color:var(--text2);font-weight:500;text-align:right;transition:all .2s;border-right:3px solid transparent;}
+.nav-btn:hover{background:var(--subtle);color:var(--text);}
+.nav-btn.active{background:var(--blue-light);color:var(--blue);border-right-color:var(--blue);font-weight:700;}
+.nav-num{width:24px;height:24px;border-radius:50%;background:var(--subtle);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+.nav-btn.active .nav-num{background:var(--blue);color:#fff;}
+.nav-label{flex:1;text-align:right;}
+.nav-count{font-size:11px;color:var(--muted);flex-shrink:0;}
+
+.main{flex:1;padding:48px 72px;max-width:1060px;margin:0 auto;min-width:0;}
+.section{display:none;}
+.section.active{display:block;animation:fadeUp .35s ease-out;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ===== STATION HEADER ===== */
+.stn-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;font-size:12px;font-weight:800;letter-spacing:.5px;margin-bottom:12px;}
+.stn-title{font-size:36px;font-weight:900;color:var(--navy);line-height:1.15;margin-bottom:8px;}
+.stn-desc{font-size:17px;color:var(--muted);margin-bottom:40px;max-width:700px;}
+
+/* ===== CARDS ===== */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:28px;box-shadow:0 2px 12px rgba(0,0,0,.04);}
+.card-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px;}
+.card-title{font-size:21px;font-weight:800;color:var(--navy);margin-bottom:14px;line-height:1.3;}
+.card-text{font-size:15px;color:var(--text2);margin-bottom:14px;line-height:1.75;}
+.card-text:last-child{margin-bottom:0;}
+
+.card.world .card-badge{background:#dbeafe;color:#1d4ed8;}
+.card.question .card-badge{background:#ede9fe;color:#6d28d9;}
+.card.expose .card-badge{background:#d1fae5;color:#065f46;}
+.card.bi-link .card-badge{background:#f3e8ff;color:#6b21a8;}
+.card.failure .card-badge{background:#fee2e2;color:#991b1b;}
+.card.close .card-badge{background:#fef3c7;color:#92400e;}
+.card.streaming .card-badge{background:#ccfbf1;color:#0f766e;}
+.card.governance .card-badge{background:#fce7f3;color:#9d174d;}
+
+/* ===== KEY TAKEAWAY ===== */
+.key{font-size:19px;font-weight:900;color:var(--blue);background:var(--blue-light);border-right:5px solid var(--blue);padding:14px 18px;border-radius:8px;margin:16px 0;line-height:1.4;}
+.key.green{color:var(--green);background:var(--green-light);border-right-color:var(--green);}
+.key.red{color:var(--red);background:var(--red-light);border-right-color:var(--red);}
+.key.orange{color:var(--orange);background:var(--orange-light);border-right-color:var(--orange);}
+.key.teal{color:var(--teal);background:var(--teal-light);border-right-color:var(--teal);}
+.key.purple{color:var(--purple);background:var(--purple-light);border-right-color:var(--purple);}
+.key.rose{color:var(--rose);background:var(--rose-light);border-right-color:var(--rose);}
+
+/* ===== HIGHLIGHT BOX ===== */
+.hbox{background:var(--subtle);border-right:4px solid var(--blue);padding:14px 18px;border-radius:6px;margin:14px 0;font-weight:600;font-size:15px;}
+.hbox.orange{border-right-color:var(--orange);}
+.hbox.green{border-right-color:var(--green);}
+.hbox.red{border-right-color:var(--red);}
+.hbox.purple{border-right-color:var(--purple);}
+.hbox.teal{border-right-color:var(--teal);}
+.hbox.rose{border-right-color:var(--rose);}
+
+/* ===== BULLET LISTS ===== */
+.blist{margin-right:20px;margin-top:10px;margin-bottom:14px;}
+.blist li{margin-bottom:8px;font-size:15px;color:var(--text2);}
+.blist li strong{color:var(--text);}
+
+/* ===== STOP & THINK ===== */
+.think{background:linear-gradient(135deg,rgba(217,119,6,.06),rgba(217,119,6,.01));border:1px solid rgba(217,119,6,.25);border-right:5px solid var(--orange);padding:20px 24px;border-radius:10px;margin:28px 0;}
+.think-label{color:var(--orange);font-size:16px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.think p{font-size:15px;color:var(--text2);}
+
+/* ===== BOXES: CONNECT / BRIDGE / TOOL / FAILURE ===== */
+.connect-box{background:#eff6ff;border-right:4px solid #3b82f6;padding:16px 20px;border-radius:8px;margin:20px 0;}
+.connect-label{font-weight:800;color:#1d4ed8;font-size:14px;margin-bottom:6px;}
+.connect-box p{font-size:14px;color:var(--text2);margin:0;}
+
+.bridge-box{background:#faf5ff;border-right:4px solid var(--purple);padding:16px 20px;border-radius:8px;margin:20px 0;}
+.bridge-label{font-weight:800;color:var(--purple);font-size:14px;margin-bottom:6px;}
+.bridge-box p{font-size:14px;color:var(--text2);margin:0;}
+
+.tool-box{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:18px 22px;margin:20px 0;}
+.tool-label{font-weight:800;color:#15803d;font-size:15px;margin-bottom:8px;}
+.tool-box p{font-size:14px;color:var(--text2);margin:0;}
+
+.fail-card{background:#fff7f7;border:1px solid #fca5a5;border-right:5px solid var(--red);border-radius:10px;padding:22px 26px;margin:24px 0;}
+.fail-label{font-weight:800;color:var(--red);font-size:14px;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.fail-card p{font-size:14px;color:var(--text2);margin-bottom:6px;}
+.fail-card p:last-child{margin-bottom:0;}
+
+/* ===== TAKEAWAY BOX ===== */
+.takeaway{background:rgba(2,132,199,.05);border:2px solid var(--blue);border-radius:12px;padding:22px 28px;margin:32px 0 20px;}
+.takeaway-label{font-size:17px;font-weight:900;color:var(--blue);margin-bottom:12px;}
+.takeaway ul{margin-right:18px;}
+.takeaway li{font-size:15px;font-weight:600;margin-bottom:7px;color:var(--text);}
+
+/* ===== DISCUSSION BOX ===== */
+.discuss{background:#fafafa;border:1px solid var(--border);border-right:4px solid var(--blue);border-radius:10px;padding:18px 22px;margin:22px 0;}
+.discuss-label{font-weight:800;color:var(--blue);font-size:15px;margin-bottom:10px;}
+.discuss ol{margin-right:18px;}
+.discuss li{margin-bottom:8px;font-size:14px;color:var(--text2);line-height:1.6;}
+
+/* ===== CODE BLOCKS ===== */
+.code{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:18px 20px;font-family:'Courier New',monospace;direction:ltr;text-align:left;overflow-x:auto;margin:16px 0;}
+.code pre{margin:0;color:#e2e8f0;font-size:13px;line-height:1.6;}
+.ck{color:#f43f5e;font-weight:bold;}
+.cs{color:#10b981;}
+.cn{color:#fb923c;}
+.cc{color:#64748b;font-style:italic;}
+.cy{color:#fbbf24;}
+
+/* ===== SLIDE CONTEXT ===== */
+.slide-ctx{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:8px;}
+
+/* ===== DATA TABLES ===== */
+.dtable{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;}
+.dtable th,.dtable td{border:1px solid var(--border);padding:10px 14px;text-align:right;}
+.dtable th{background:var(--subtle);font-weight:800;color:var(--text);}
+.dtable tr:hover td{background:#f8fafc;}
+.dtable .err-row td{background:#fff5f5;color:var(--red);font-weight:600;}
+.dtable .good-row td{background:#f0fdf4;color:#065f46;font-weight:600;}
+.dtable caption{font-weight:700;color:var(--navy);padding:6px 0;text-align:right;font-size:13px;}
+
+/* ===== TWO-COL ===== */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0;}
+@media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+
+/* ===== THREE-COL ===== */
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:18px 0;}
+@media(max-width:800px){.three-col{grid-template-columns:1fr;}}
+
+/* ===== FLOW DIAGRAMS ===== */
+.flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;padding:24px;background:var(--subtle);border-radius:12px;margin:20px 0;}
+.fnode{background:var(--blue);color:#fff;padding:12px 18px;border-radius:10px;font-weight:800;font-size:14px;text-align:center;min-width:110px;}
+.fnode.green{background:var(--green);}
+.fnode.red{background:var(--red);}
+.fnode.orange{background:var(--orange);}
+.fnode.purple{background:var(--purple);}
+.fnode.navy{background:var(--navy);}
+.fnode.teal{background:var(--teal);}
+.fnode.rose{background:var(--rose);}
+.farrow{color:var(--muted);font-size:14px;font-weight:700;white-space:nowrap;flex-shrink:0;}
+.flow-caption{text-align:center;font-size:13px;color:var(--muted);margin-top:-10px;margin-bottom:20px;}
+
+/* ===== SVG CONTAINERS ===== */
+.svg-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin:20px 0;display:flex;justify-content:center;overflow-x:auto;}
+
+/* ===== NAV BOTTOM ===== */
+.nav-bottom{display:flex;justify-content:flex-start;margin-top:40px;}
+.abtn{background:var(--blue);color:#fff;font-weight:700;border:none;padding:12px 28px;border-radius:8px;cursor:pointer;font-family:var(--font);font-size:15px;transition:all .2s;}
+.abtn:hover{background:#0369a1;transform:translateY(-1px);}
+
+/* ===== SIDEBAR RESPONSIVE ===== */
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .main{padding:28px 20px;}
+  .stn-title{font-size:26px;}
+}
+
+/* ===== ANIMATIONS WRAPPER ===== */
+.anim-wrap{background:#0b0f19;border-radius:12px;height:200px;overflow:hidden;margin:20px 0;display:flex;align-items:center;justify-content:center;position:relative;}
+
+/* ===== STREAMING PULSE ===== */
+.stream-pipeline{display:flex;align-items:center;gap:0;width:90%;}
+.sp-src{width:60px;height:60px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;position:relative;}
+.sp-tube{flex:1;height:12px;background:rgba(13,148,136,.15);border:1px solid rgba(13,148,136,.3);border-radius:6px;position:relative;overflow:hidden;}
+.sp-packet{width:30px;height:10px;border-radius:3px;background:var(--teal);position:absolute;top:1px;animation:streamFlow 2.8s linear infinite;}
+.sp-packet:nth-child(2){animation-delay:0.9s;}
+.sp-packet:nth-child(3){animation-delay:1.8s;}
+@keyframes streamFlow{0%{right:0;opacity:0;}5%{opacity:1;}90%{opacity:1;}100%{right:100%;opacity:0;}}
+.sp-sink{width:60px;height:60px;border-radius:12px;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+
+/* ===== DATALAKE LAYERS ===== */
+.lake-layers{display:flex;flex-direction:column;gap:8px;width:85%;direction:ltr;}
+.lake-layer{height:44px;border-radius:8px;display:flex;align-items:center;padding:0 16px;font-size:13px;font-weight:700;color:#fff;position:relative;overflow:hidden;}
+.lake-layer.raw{background:linear-gradient(90deg,#475569,#64748b);}
+.lake-layer.cleaned{background:linear-gradient(90deg,#0369a1,#0284c7);}
+.lake-layer.curated{background:linear-gradient(90deg,#059669,#10b981);}
+.lake-layer::after{content:'';position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(90deg,transparent 60%,rgba(255,255,255,.08));animation:lakePulse 3s ease-in-out infinite;}
+@keyframes lakePulse{0%,100%{opacity:.3;}50%{opacity:1;}}
+
+/* ===== GOVERNANCE TRAFFIC LIGHT ===== */
+.tlight{display:flex;flex-direction:column;gap:8px;align-items:center;}
+.tlight-body{background:#1e293b;border-radius:12px;padding:14px 20px;display:flex;flex-direction:column;gap:10px;}
+.tlight-dot{width:32px;height:32px;border-radius:50%;opacity:.25;transition:all .5s;cursor:pointer;}
+.tlight-dot.on{opacity:1;box-shadow:0 0 16px currentColor;}
+.tlight-dot.red-d{background:#ef4444;color:#ef4444;}
+.tlight-dot.yellow-d{background:#f59e0b;color:#f59e0b;}
+.tlight-dot.green-d{background:#10b981;color:#10b981;}
+
+/* ===== SIMULATOR ===== */
+.sim-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-top:24px;}
+.sim-card h4{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:6px;}
+.sim-card p{font-size:14px;color:var(--text2);margin-bottom:14px;}
+.sim-btns{display:flex;gap:12px;margin-top:14px;}
+.sbtn{flex:1;padding:13px;border-radius:8px;border:none;font-weight:700;cursor:pointer;font-family:var(--font);font-size:14px;transition:all .2s;}
+.sbtn-blue{background:rgba(2,132,199,.12);border:1px solid var(--blue);color:var(--blue);}
+.sbtn-blue:hover{background:var(--blue);color:#fff;}
+.sbtn-teal{background:rgba(13,148,136,.12);border:1px solid var(--teal);color:var(--teal);}
+.sbtn-teal:hover{background:var(--teal);color:#fff;}
+.sbtn-red{background:rgba(220,38,38,.12);border:1px solid var(--red);color:var(--red);}
+.sbtn-red:hover{background:var(--red);color:#fff;}
+.sbtn-green{background:rgba(5,150,105,.12);border:1px solid var(--green);color:var(--green);}
+.sbtn-green:hover{background:var(--green);color:#fff;}
+
+/* ===== TERMINAL ===== */
+.terminal{background:#0b0f19;border-radius:12px;overflow:hidden;margin:20px 0;}
+.term-head{background:#1e293b;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);}
+.term-dots{display:flex;gap:6px;}
+.tdot{width:11px;height:11px;border-radius:50%;}
+.term-body{padding:20px 24px;}
+.term-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.term-prompt{color:var(--blue);font-weight:700;font-size:15px;}
+.term-select{background:#1e293b;border:1px solid #334155;color:#e2e8f0;padding:8px 12px;border-radius:6px;font-family:var(--font);font-size:14px;cursor:pointer;outline:none;flex:1;}
+.term-out{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:6px;padding:14px;min-height:120px;font-size:13px;white-space:pre-wrap;direction:ltr;text-align:left;color:#e2e8f0;font-family:monospace;}
+
+/* ===== SILO BOXES ===== */
+.silo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0;}
+.silo-box{background:var(--subtle);border:2px solid var(--border);border-radius:10px;padding:16px 12px;text-align:center;}
+.silo-box .silo-icon{font-size:28px;margin-bottom:8px;}
+.silo-box .silo-name{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.silo-box .silo-sys{font-size:11px;color:var(--muted);}
+.silo-box.isolated{border-color:var(--red);background:#fff7f7;}
+.silo-box.connected{border-color:var(--green);background:#f0fdf4;}
+
+/* ===== COMPARISON TABLE ===== */
+.cmp-table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;}
+.cmp-table th{padding:12px 16px;text-align:right;font-weight:800;}
+.cmp-table td{padding:11px 16px;border-bottom:1px solid var(--border);text-align:right;}
+.cmp-table tr:nth-child(even) td{background:#f8fafc;}
+.cmp-head-a{background:#dbeafe;color:#1e40af;}
+.cmp-head-b{background:#d1fae5;color:#065f46;}
+.cmp-head-c{background:#ede9fe;color:#5b21b6;}
+
+/* ===== ROLE CARDS ===== */
+.role-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:18px 0;}
+.role-card{border-radius:10px;padding:16px 18px;border:1px solid var(--border);}
+.role-icon{font-size:28px;margin-bottom:8px;}
+.role-title{font-size:15px;font-weight:800;margin-bottom:6px;}
+.role-card p{font-size:13px;color:var(--text2);}
+.role-card.eng{background:#eff6ff;}.role-card.eng .role-title{color:#1d4ed8;}
+.role-card.ana{background:#f0fdf4;}.role-card.ana .role-title{color:var(--green);}
+.role-card.gov{background:#faf5ff;}.role-card.gov .role-title{color:var(--purple);}
+.role-card.owner{background:#fff7ed;}.role-card.owner .role-title{color:var(--orange);}
+.role-card.sci{background:var(--teal-light);}.role-card.sci .role-title{color:var(--teal);}
+.role-card.exec{background:#fce7f3;}.role-card.exec .role-title{color:var(--rose);}
+
+/* ===== LATENCY SPECTRUM ===== */
+.latency-bar{position:relative;height:60px;background:linear-gradient(90deg,#ef4444,#f59e0b,#10b981);border-radius:10px;margin:16px 0;overflow:visible;}
+.lat-label{position:absolute;top:68px;font-size:11px;font-weight:700;transform:translateX(50%);color:var(--text2);}
+.lat-pin{position:absolute;top:-8px;bottom:-8px;width:2px;background:#1e293b;}
+.lat-name{position:absolute;bottom:100%;margin-bottom:4px;font-size:10px;font-weight:800;white-space:nowrap;transform:translateX(50%);}
+
+/* ===== DATA QUALITY METER ===== */
+.dq-bar{height:28px;border-radius:6px;background:var(--subtle);overflow:hidden;margin:8px 0;}
+.dq-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-right:10px;font-size:12px;font-weight:800;color:#fff;transition:width 1s ease;}
+
+/* ===== CLOUD ARCH CARDS ===== */
+.cloud-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.cloud-card{border-radius:10px;padding:18px 20px;border:1px solid var(--border);}
+.cloud-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;margin-bottom:8px;}
+.cloud-card h5{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cloud-card p{font-size:13px;color:var(--text2);}
+.cloud-card.onprem{background:#f8fafc;}.cloud-card.onprem .cloud-badge{background:#e2e8f0;color:#475569;}
+.cloud-card.hybrid{background:#fef3c7;}.cloud-card.hybrid .cloud-badge{background:var(--orange-light);color:var(--amber);}
+.cloud-card.cloud{background:#eff6ff;}.cloud-card.cloud .cloud-badge{background:#dbeafe;color:#1d4ed8;}
+.cloud-card.lakehouse{background:#f0fdf4;}.cloud-card.lakehouse .cloud-badge{background:#bbf7d0;color:#065f46;}
+
+/* ===== SECTION DIVIDER ===== */
+.divider{border:none;border-top:1px solid var(--border);margin:32px 0;}
+
+/* ===== METRIC CARDS ===== */
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0;}
+.metric-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;}
+.metric-num{font-size:32px;font-weight:900;margin-bottom:4px;}
+.metric-label{font-size:13px;color:var(--muted);font-weight:600;}
+.metric-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* ===== LINEAGE DIAGRAM ===== */
+.lineage-row{display:flex;align-items:center;gap:6px;margin:8px 0;flex-wrap:wrap;}
+.lin-node{padding:6px 12px;border-radius:6px;font-size:12px;font-weight:700;}
+.lin-node.src{background:#dbeafe;color:#1e40af;}
+.lin-node.stg{background:#e0f2fe;color:#0369a1;}
+.lin-node.dwh{background:#d1fae5;color:#065f46;}
+.lin-node.rpt{background:#ede9fe;color:#6d28d9;}
+.lin-node.dash{background:#fce7f3;color:#9d174d;}
+.lin-arrow{color:var(--muted);font-weight:700;font-size:12px;}
+
+/* ===== CHECKLIST ===== */
+.checklist{list-style:none;margin:12px 0;}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px;}
+.checklist li:last-child{border-bottom:none;}
+.chk-icon{flex-shrink:0;font-size:16px;margin-top:2px;}
+
+/* ===== PROGRESS BAR DISPLAY ===== */
+.prog-item{margin-bottom:14px;}
+.prog-label{font-size:13px;font-weight:700;margin-bottom:4px;display:flex;justify-content:space-between;}
+.prog-track{height:20px;background:var(--subtle);border-radius:10px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:10px;transition:width 1.2s ease;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <div class="sidebar-title">🗄️ BI & ארכיטקטורת נתונים</div>
+    <div class="sidebar-sub">שיעור 10 חלק ב׳ · ד״ר שי צבאן · 14.6.2026</div>
+    <div class="sidebar-part">תחנות 0–14</div>
+  </div>
+  <div class="nav-list">
+    <button class="nav-btn active" onclick="go(0)"><span class="nav-num">📖</span><span class="nav-label">מילון מושגי יסוד</span><span class="nav-count">חדש</span></button>
+    <button class="nav-btn" onclick="go(1)"><span class="nav-num">7</span><span class="nav-label">Data Lake ו-Lakehouse</span><span class="nav-count">8</span></button>
+    <button class="nav-btn" onclick="go(2)"><span class="nav-num">8</span><span class="nav-label">Real-Time Streaming</span><span class="nav-count">7</span></button>
+    <button class="nav-btn" onclick="go(3)"><span class="nav-num">9</span><span class="nav-label">ממשל נתונים</span><span class="nav-count">9</span></button>
+    <button class="nav-btn" onclick="go(4)"><span class="nav-num">10</span><span class="nav-label">ארכיטקטורת ענן BI</span><span class="nav-count">8</span></button>
+    <button class="nav-btn" onclick="go(5)"><span class="nav-num">11</span><span class="nav-label">Data Mesh ו-Silos</span><span class="nav-count">7</span></button>
+    <button class="nav-btn" onclick="go(6)"><span class="nav-num">12</span><span class="nav-label">מחזור חיי נתון ו-Lineage</span><span class="nav-count">8</span></button>
+    <button class="nav-btn" onclick="go(7)"><span class="nav-num">13</span><span class="nav-label">BI בארגון — תפקידים ועתיד</span><span class="nav-count">8</span></button>
+    <button class="nav-btn" onclick="go(8)"><span class="nav-num">14</span><span class="nav-label">Tableau — שלבי הבינה העסקית</span><span class="nav-count">10</span></button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ===== HEADER BANNER ===== -->
+<div style="background:linear-gradient(135deg,#1e3a5f 0%,#0284c7 100%);color:#fff;padding:18px 32px;border-radius:14px;margin-bottom:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+  <div>
+    <div style="font-size:13px;font-weight:600;opacity:.8;margin-bottom:4px;">אוניברסיטת בר-אילן · המחלקה לניהול</div>
+    <div style="font-size:22px;font-weight:900;">שיעור 10 — חלק ב׳ &nbsp;·&nbsp; BI &amp; ארכיטקטורת נתונים</div>
+  </div>
+  <div style="text-align:left;opacity:.9;">
+    <div style="font-size:14px;font-weight:700;">ד״ר שי צבאן</div>
+    <div style="font-size:13px;">14.6.2026</div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- STATION 0: GLOSSARY — SQL vs NoSQL + Core Concepts           -->
+<!-- ============================================================ -->
+<section id="s0" class="section active">
+  <div class="stn-badge">📖 מושגי יסוד</div>
+  <h1 class="stn-title">מילון המושגים — לפני שמתחילים</h1>
+  <p class="stn-desc">כל מונח שיופיע בהרצאה — עם הגדרה ברורה, דוגמה חזותית, ומה הוא אומר לאנליסט.</p>
+
+  <!-- CONCEPT 1: SQL vs NoSQL -->
+  <div class="card expose">
+    <div class="card-badge">🗂️ מושג 1 — SQL מול NoSQL</div>
+    <div class="card-title">שני עולמות של מסדי נתונים — מה ההבדל?</div>
+    <div class="card-text"><strong>SQL</strong> = Structured Query Language. מסד נתונים שבו <em>כל הנתונים מאורגנים בטבלאות</em>, ממש כמו Excel — שורות ועמודות. לכל עמודה יש שם ו<em>סוג נתון</em> קבוע מראש. זה נקרא <strong>Relational Database</strong>.</div>
+    <div class="card-text"><strong>NoSQL</strong> = "לא רק SQL". מסד שבו הנתונים לא חייבים להיות בטבלה — הם יכולים להיות בפורמטים גמישים: JSON, מסמכים, גרפים, Key-Value.</div>
+
+    <div class="two-col">
+      <div>
+        <div style="font-weight:800;font-size:14px;color:var(--blue);margin-bottom:8px;">🔵 SQL — דוגמה חיה: טבלת הזמנות</div>
+        <table class="dtable" style="font-size:13px;">
+          <thead><tr><th>order_id</th><th>customer</th><th>item</th><th>price</th></tr></thead>
+          <tbody>
+            <tr><td>1001</td><td>ישראל</td><td>המבורגר</td><td>52</td></tr>
+            <tr><td>1002</td><td>שרה</td><td>פיצה</td><td>78</td></tr>
+            <tr><td>1003</td><td>ישראל</td><td>סלט</td><td>38</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">✅ מבנה קבוע — כל הזמנה חייבת order_id, customer, item, price</div>
+      </div>
+      <div>
+        <div style="font-weight:800;font-size:14px;color:var(--teal);margin-bottom:8px;">🟢 NoSQL (MongoDB) — אותה הזמנה כ-JSON</div>
+        <div class="code" style="margin:0;"><pre style="font-size:11px;">{
+  "order_id": 1001,
+  "customer": "ישראל",
+  "items": [
+    {"name":"המבורגר","price":52},
+    {"extra":"ללא בצל"}
+  ],
+  "delivery": {
+    "lat": 32.08,
+    "lng": 34.78
+  }
+}</pre></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">✅ מבנה גמיש — כל הזמנה יכולה להכיל שדות שונים</div>
+      </div>
+    </div>
+
+    <div class="card-text" style="margin-top:16px;"><strong>מתי בוחרים SQL?</strong> כשיש מבנה קבוע וברור, נדרשות שאילתות מורכבות (JOIN בין טבלאות), ויש צורך בגיבוי עסקאות (ACID). <strong>מתי בוחרים NoSQL?</strong> כשהנתון משתנה לעיתים קרובות, כשנדרשת מדרגיות גבוהה מאוד, או כשהנתון "לא מרובע" (כמו פרופיל משתמש עם שדות שונים לכל אחד).</div>
+
+    <table class="cmp-table" style="margin-top:10px;">
+      <thead>
+        <tr><th>קריטריון</th><th class="cmp-head-a">SQL (Relational)</th><th class="cmp-head-b">NoSQL</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>מבנה נתונים</strong></td><td>טבלאות קבועות (Schema נוקשה)</td><td>מסמכים/JSON גמישים</td></tr>
+        <tr><td><strong>שאילתות</strong></td><td>SQL — שפה אחת לכולם</td><td>API שונה לכל מסד</td></tr>
+        <tr><td><strong>ACID</strong></td><td>✅ מלא — בנוי מהיסוד</td><td>⚠️ חלקי — תלוי במוצר</td></tr>
+        <tr><td><strong>JOIN בין טבלאות</strong></td><td>✅ קל ומהיר</td><td>❌ קשה — אין מנגנון JOIN מובנה</td></tr>
+        <tr><td><strong>מדרגיות (Scale)</strong></td><td>⚠️ קשה להרחיב אופקית</td><td>✅ מיועד להרחבה ל-millions</td></tr>
+        <tr><td><strong>דוגמאות נפוצות</strong></td><td>PostgreSQL, MySQL, SQL Server</td><td>MongoDB, Redis, Cassandra, DynamoDB</td></tr>
+        <tr><td><strong>שימוש ב-BI</strong></td><td>✅ ישיר — BI tools בנויים לSQL</td><td>⚠️ דרוש תרגום/ETL לפני BI</td></tr>
+      </tbody>
+    </table>
+
+    <div class="key teal">כלל אצבע: הזמנות, מכירות, לקוחות → SQL. פרופילי משתמשים, logs, תוכן גמיש → NoSQL. רוב הארגונים משתמשים בשניהם. 🔀</div>
+
+    <div class="bridge-box"><div class="bridge-label">🔗 איפה זה מופיע בהרצאה</div><p>ב-OLTP (תחנה 4 חלק א) — PostgreSQL = SQL. ב-Data Lake (תחנה 7) — JSON מ-MongoDB = NoSQL. ב-Kafka (תחנה 8) — events = JSON = NoSQL בתעבורה. ב-ETL (תחנה 5 חלק א) — Transform = המרת NoSQL ל-SQL לפני ה-DW.</p></div>
+  </div>
+
+  <!-- CONCEPT 2: METADATA -->
+  <div class="card expose">
+    <div class="card-badge">📋 מושג 2 — מטא-דאטה</div>
+    <div class="card-title">מטא-דאטה — "נתונים על נתונים"</div>
+    <div class="card-text"><strong>מטא-דאטה</strong> הוא מידע שמתאר נתון אחר — לא הנתון עצמו. אנלוגיה: ספר בספרייה. <em>הנתון</em> = תוכן הספר. <em>המטא-דאטה</em> = שם המחבר, מספר עמודים, תאריך הוצאה, ז'אנר, מיקום על המדף.</div>
+
+    <div class="two-col">
+      <div>
+        <div style="font-weight:800;font-size:14px;color:var(--blue);margin-bottom:8px;">הנתון עצמו (בטבלת הזמנות)</div>
+        <table class="dtable" style="font-size:12px;">
+          <thead><tr><th>order_id</th><th>amount</th><th>city</th></tr></thead>
+          <tbody>
+            <tr><td>1001</td><td>52</td><td>תל אביב</td></tr>
+            <tr><td>1002</td><td>78</td><td>חיפה</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div style="font-weight:800;font-size:14px;color:var(--purple);margin-bottom:8px;">המטא-דאטה של אותה טבלה</div>
+        <table class="dtable" style="font-size:12px;">
+          <thead><tr><th>שדה</th><th>סוג</th><th>הגדרה</th><th>בעלים</th></tr></thead>
+          <tbody>
+            <tr><td>order_id</td><td>INT</td><td>מזהה ייחודי</td><td>Dev</td></tr>
+            <tr><td>amount</td><td>DECIMAL</td><td>סכום בשקלים</td><td>כספים</td></tr>
+            <tr><td>city</td><td>VARCHAR</td><td>עיר המשלוח</td><td>תפעול</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card-text">ב-Data Catalog (תחנה 9) — <em>כל ה-Catalog הוא מטא-דאטה</em>. הוא לא מכיל שורת הזמנה אחת — הוא מכיל מידע <em>על</em> הטבלאות. ב-Lakehouse (תחנה 7) — Apache Iceberg ו-Delta Lake הם <strong>שכבות מטא-דאטה</strong>: הם לא מאחסנים את הנתונים, הם מנהלים את "ספר הטלפונים" שמסביר איפה הנתון יושב ב-S3.</div>
+    <div class="key purple">מטא-דאטה = "ספר הטלפונים של הנתונים". בלעדיו — יש לך 10TB של קבצים ב-S3 ואי-אפשר למצוא כלום. עמו — כל שאילתה יודעת בדיוק לאן ללכת. 📂</div>
+  </div>
+
+  <!-- CONCEPT 3: PARQUET vs SQL — progressive -->
+  <div class="card expose">
+    <div class="card-badge">🗜️ מושג 3 — Parquet (ולמה זה לא SQL)</div>
+    <div class="card-title">קודם כל: SQL ו-Parquet הם לא אותה קטגוריה</div>
+
+    <div class="card-text">זו הבלבול הכי נפוץ, אז נפרק אותו לאט. דמיין ארון מסמכים:</div>
+
+    <div class="two-col">
+      <div style="background:#eff6ff;border-radius:10px;padding:16px;border:1px solid var(--border);">
+        <div style="font-size:26px;margin-bottom:6px;">📁</div>
+        <div style="font-weight:800;color:var(--blue);margin-bottom:6px;">Parquet = הקובץ עצמו</div>
+        <p style="font-size:14px;color:var(--text2);">זה <em>איך</em> הנתונים שמורים על הדיסק. בדיוק כמו <code>.xlsx</code> או <code>.csv</code> — סוג קובץ. אתה לא "מדבר" עם קובץ, אתה רק שומר וקורא אותו.</p>
+      </div>
+      <div style="background:#f0fdf4;border-radius:10px;padding:16px;border:1px solid var(--border);">
+        <div style="font-size:26px;margin-bottom:6px;">🗣️</div>
+        <div style="font-weight:800;color:var(--green);margin-bottom:6px;">SQL = השפה לבקש נתונים</div>
+        <p style="font-size:14px;color:var(--text2);">זה <em>איך</em> אתה <strong>מבקש</strong> נתונים — "תן לי את כל ההזמנות מתל אביב". SQL לא קובץ, הוא משפט שאתה כותב.</p>
+      </div>
+    </div>
+
+    <div class="key">הם לא מתחרים — הם עובדים יחד: אתה כותב <strong>SQL</strong> (שאלה) כדי לקרוא נתונים שמאוחסנים בקובץ <strong>Parquet</strong>. כמו שאתה שואל שאלה בעברית על מסמך Word. 🔑</div>
+
+    <div class="hbox">📌 <strong>אנלוגיה מדויקת:</strong> Parquet = פורמט הקובץ (כמו mp3 לשיר). SQL = הבקשה ("נגן את השיר הזה"). XLSX, CSV, Parquet — כולם פורמטי קבצים. SQL, DAX — כולם שפות בקשה.</div>
+  </div>
+
+  <!-- CONCEPT 3b: WHY PARQUET — the row vs column story -->
+  <div class="card expose">
+    <div class="card-badge">🗜️ מושג 3 (המשך) — למה המציאו Parquet</div>
+    <div class="card-title">הבעיה ש-Parquet בא לפתור — בדוגמה אחת</div>
+
+    <div class="card-text">נניח שיש לך טבלת הזמנות עם מיליון שורות ו-5 עמודות. מנהל שואל: <strong>"מה הסכום הממוצע של כל ההזמנות?"</strong> — כלומר, צריך רק את עמודת <code>amount</code>. נראה מה קורה בשתי שיטות אחסון:</div>
+
+    <div style="font-weight:800;font-size:14px;color:var(--red);margin:16px 0 8px;">❌ שיטה 1 — אחסון שורתי (כמו Excel רגיל ו-CSV)</div>
+    <div class="card-text" style="font-size:14px;">המחשב שומר את הנתונים שורה-אחר-שורה, כל הערכים של כל שורה ביחד:</div>
+    <table class="dtable" style="font-size:13px;">
+      <thead><tr><th>מה המחשב קורא מהדיסק</th><th>מה באמת צריך</th></tr></thead>
+      <tbody>
+        <tr><td>1 · ישראל · ת"א · <strong style="color:var(--green);">52</strong> · 2024-01-01</td><td>רק ה-52</td></tr>
+        <tr><td>2 · שרה · חיפה · <strong style="color:var(--green);">78</strong> · 2024-01-02</td><td>רק ה-78</td></tr>
+        <tr><td>3 · דן · ירושלים · <strong style="color:var(--green);">43</strong> · 2024-01-03</td><td>רק ה-43</td></tr>
+      </tbody>
+    </table>
+    <div class="hbox red" style="font-size:14px;">כדי להגיע לעמודת <code>amount</code>, המחשב נאלץ לקרוא <strong>הכל</strong> — גם שמות, גם ערים, גם תאריכים. 80% מהעבודה מבוזבזת. במיליון שורות = זמן וכסף.</div>
+
+    <div style="font-weight:800;font-size:14px;color:var(--green);margin:20px 0 8px;">✅ שיטה 2 — אחסון עמודתי (זה מה ש-Parquet עושה)</div>
+    <div class="card-text" style="font-size:14px;">המחשב שומר כל עמודה <em>בנפרד</em> — כל ה-<code>amount</code> ביחד, כל ה-<code>name</code> ביחד:</div>
+    <table class="dtable" style="font-size:13px;">
+      <thead><tr><th>איך Parquet שומר</th><th>מה המחשב קורא</th></tr></thead>
+      <tbody>
+        <tr><td>חבילת order_id: [1, 2, 3, ...]</td><td>⏭️ מדלג</td></tr>
+        <tr><td>חבילת name: [ישראל, שרה, דן, ...]</td><td>⏭️ מדלג</td></tr>
+        <tr><td>חבילת city: [ת"א, חיפה, ירושלים, ...]</td><td>⏭️ מדלג</td></tr>
+        <tr style="background:#d1fae5;"><td><strong>חבילת amount: [52, 78, 43, ...]</strong></td><td><strong style="color:var(--green);">✅ קורא רק את זה!</strong></td></tr>
+        <tr><td>חבילת date: [2024-01-01, ...]</td><td>⏭️ מדלג</td></tr>
+      </tbody>
+    </table>
+    <div class="hbox green" style="font-size:14px;">המחשב ניגש ישר לחבילת <code>amount</code> ומדלג על השאר. קורא 20% מהנתונים → התשובה חוזרת פי 5 מהר יותר. <strong>זה כל הקסם של Parquet.</strong></div>
+
+    <div class="think"><div class="think-label">⏸️ עצור וחשוב</div><p>למה דווקא <em>שאילתות BI</em> מרוויחות מ-Parquet, אבל <em>אפליקציית Wolt</em> (OLTP) דווקא מעדיפה אחסון שורתי? רמז: כשלקוח פותח הזמנה, הוא צריך את <em>כל</em> השדות של שורה אחת — לא עמודה אחת ממיליון שורות.</p></div>
+  </div>
+
+  <!-- CONCEPT 3c: practical — what you actually DO -->
+  <div class="card expose">
+    <div class="card-badge">🛠️ מושג 3 (תכלס) — מה עושים עם Parquet בפועל</div>
+    <div class="card-title">3 דברים שצריך לזכור — וזהו</div>
+    <div class="three-col" style="grid-template-columns:1fr 1fr 1fr;">
+      <div style="background:#eff6ff;border-radius:10px;padding:16px;border:1px solid var(--border);">
+        <div style="font-size:24px;margin-bottom:8px;">📦</div>
+        <div style="font-weight:800;color:var(--blue);font-size:14px;margin-bottom:6px;">1. קטן פי 5</div>
+        <p style="font-size:13px;color:var(--text2);">CSV של 1GB = Parquet של ~200MB. Parquet דוחס כי כל עמודה מאותו סוג (כל ה-amount מספרים) → קל לדחוס. חוסך עלות אחסון בענן.</p>
+      </div>
+      <div style="background:#f0fdf4;border-radius:10px;padding:16px;border:1px solid var(--border);">
+        <div style="font-size:24px;margin-bottom:8px;">⚡</div>
+        <div style="font-weight:800;color:var(--green);font-size:14px;margin-bottom:6px;">2. מהיר ל-BI</div>
+        <p style="font-size:13px;color:var(--text2);">שאילתות שמסכמות עמודה (SUM, AVG, COUNT) רצות פי 5–100 מהר יותר. בדיוק מה ש-BI עושה כל היום.</p>
+      </div>
+      <div style="background:#fff7ed;border-radius:10px;padding:16px;border:1px solid var(--border);">
+        <div style="font-size:24px;margin-bottom:8px;">🚫</div>
+        <div style="font-weight:800;color:var(--orange);font-size:14px;margin-bottom:6px;">3. לא נפתח ב-Excel</div>
+        <p style="font-size:13px;color:var(--text2);">Parquet הוא "בינארי" — קוד מכונה, לא טקסט. תנסה לפתוח ב-Notepad → ג'יבריש. אבל Tableau, Power BI ו-Snowflake קוראים אותו ישירות.</p>
+      </div>
+    </div>
+
+    <div class="card-text" style="margin-top:14px;"><strong>בפועל, מתי אנליסט פוגש Parquet?</strong> כשה-Data Engineer אומר "הנתונים יושבים ב-S3 בפורמט Parquet". אתה לא יוצר אותו ידנית — הוא נוצר אוטומטית ב-ETL. אתה רק <em>קורא</em> ממנו דרך Tableau/Power BI, או דרך SQL במנוע כמו Athena.</p>
+
+    <div class="hbox teal">💡 <strong>המשפט שצריך לזכור:</strong> "כותבים שאלה ב-<strong>SQL</strong>, הנתונים שמורים בקובץ <strong>Parquet</strong>, מנוע כמו Athena/Spark קורא את ה-Parquet ומחזיר תשובה." זה הכל.</div>
+
+    <div class="key green">Parquet = סוג קובץ חכם לנתונים גדולים. עמודתי (קורא רק מה שצריך) + דחוס (פי 5 קטן). SQL = השפה שבה מבקשים. שניהם חברים, לא יריבים. ❄️</div>
+  </div>
+
+  <!-- CONCEPT 4: STORAGE LAYER -->
+  <div class="card expose">
+    <div class="card-badge">🏗️ מושג 4 — שכבת אחסון</div>
+    <div class="card-title">מה זה "שכבת אחסון" — ואיך קשור ל-S3</div>
+    <div class="card-text">ארכיטקטורת נתונים מורכבת מ<strong>שכבות</strong> — כל שכבה אחראית על דבר אחד. "שכבת אחסון" = <em>איפה הנתונים יושבים פיזית</em>.</div>
+    <div class="svg-wrap">
+      <svg width="560" height="230" viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg">
+        <!-- Layer 1: Storage -->
+        <rect x="10" y="170" width="540" height="50" rx="8" fill="#e2e8f0" stroke="#94a3b8"/>
+        <text x="280" y="202" fill="#475569" font-family="Heebo" font-size="14" font-weight="900" text-anchor="middle">🗄️ שכבת אחסון — AWS S3 / Azure Blob / דיסק מקומי</text>
+        <text x="280" y="218" fill="#64748b" font-family="Heebo" font-size="11" text-anchor="middle">קבצי Parquet / CSV / JSON — שמורים כ"קבצים רגילים" בענן</text>
+        <!-- Layer 2: Metadata -->
+        <rect x="10" y="110" width="540" height="50" rx="8" fill="#ddd6fe" stroke="#7c3aed"/>
+        <text x="280" y="140" fill="#5b21b6" font-family="Heebo" font-size="14" font-weight="900" text-anchor="middle">📋 שכבת מטא-דאטה — Apache Iceberg / Delta Lake</text>
+        <text x="280" y="156" fill="#64748b" font-family="Heebo" font-size="11" text-anchor="middle">מנהלת את ה"ספר" — איפה כל קובץ, מה Schema-ו, מתי עודכן</text>
+        <!-- Layer 3: Query -->
+        <rect x="10" y="50" width="540" height="50" rx="8" fill="#bbf7d0" stroke="#059669"/>
+        <text x="280" y="79" fill="#065f46" font-family="Heebo" font-size="14" font-weight="900" text-anchor="middle">⚡ שכבת שאילתה — Spark / Trino / Athena</text>
+        <text x="280" y="95" fill="#64748b" font-family="Heebo" font-size="11" text-anchor="middle">מריצה SQL על הקבצים — "שכנע" את S3 שהוא DW</text>
+        <!-- Layer 4: Presentation -->
+        <rect x="10" y="5" width="540" height="38" rx="8" fill="#fce7f3" stroke="#db2777"/>
+        <text x="280" y="28" fill="#9d174d" font-family="Heebo" font-size="14" font-weight="900" text-anchor="middle">📊 שכבת הצגה — Tableau / Power BI / Looker</text>
+        <!-- Arrows between layers -->
+        <text x="280" y="167" fill="#94a3b8" font-family="Heebo" font-size="11" text-anchor="middle">↕ שאילתת SQL יורדת — תוצאות עולות</text>
+        <text x="280" y="108" fill="#94a3b8" font-family="Heebo" font-size="11" text-anchor="middle">↕ Metadata מורה מה לקרוא</text>
+        <text x="280" y="48" fill="#94a3b8" font-family="Heebo" font-size="11" text-anchor="middle">↕ תוצאות עולות להצגה</text>
+      </svg>
+    </div>
+    <div class="key">כשאומרים "שכבת אחסון" — מתכוונים לשורה התחתונה: S3 / Blob / דיסק. הנתונים יושבים שם כקבצים. כל השכבות מעליה בונות על זה. 🏗️</div>
+  </div>
+
+  <!-- CONCEPT 5: APACHE ICEBERG -->
+  <div class="card expose">
+    <div class="card-badge">🧊 מושג 5 — Apache Iceberg</div>
+    <div class="card-title">Apache Iceberg — "תוכנת ניהול" לקבצים ב-S3</div>
+    <div class="card-text">דמיין שיש לך 50,000 קבצי Parquet ב-S3. בלי כלום נוסף — S3 הוא רק "תיקיית קבצים". אי-אפשר לשאול <code>SELECT</code>, אי-אפשר לעדכן, אי-אפשר לדעת מתי כל קובץ עודכן.</div>
+    <div class="card-text"><strong>Apache Iceberg</strong> = שכבת מטא-דאטה שיושבת <em>מעל</em> ה-S3 ומוסיפה לו "יכולות של מסד נתונים" — בלי לשנות את הקבצים עצמם.</div>
+
+    <div class="two-col">
+      <div>
+        <div class="hbox red">❌ <strong>S3 לבד:</strong><br>
+        <code>s3://bucket/orders/part-0001.parquet</code><br>
+        <code>s3://bucket/orders/part-0002.parquet</code><br>
+        <code>s3://bucket/orders/part-0003.parquet</code><br><br>
+        שאלה: "כמה הזמנות היו בינואר?" = קרא כל 3 קבצים. לא יודע מה בכל קובץ.</div>
+      </div>
+      <div>
+        <div class="hbox green">✅ <strong>Iceberg מעל S3:</strong><br>
+        Iceberg מנהל "קטלוג" פנימי:<br>
+        part-0001 = ינואר 2024 (min_date: 1/1, max_date: 31/1)<br>
+        part-0002 = פברואר 2024<br>
+        part-0003 = מרץ 2024<br><br>
+        שאלה: "כמה הזמנות היו בינואר?" = קרא רק part-0001. 🎯</div>
+      </div>
+    </div>
+
+    <div class="card-text" style="margin-top:14px;"><strong>מה Iceberg מוסיף מעבר לזה:</strong></div>
+    <ul class="blist">
+      <li><strong>ACID Transactions:</strong> שני תהליכי ETL לא יכתבו לאותו קובץ בו-זמנית</li>
+      <li><strong>Time Travel:</strong> <code>SELECT * FROM orders AS OF TIMESTAMP '2024-09-01'</code> — חזרה לנתון שהיה בתאריך הזה</li>
+      <li><strong>Schema Evolution:</strong> הוספת עמודה חדשה לא "שוברת" את כל הקבצים הישנים</li>
+      <li><strong>Partition Pruning:</strong> הנחיה לקריאת קבצים רלוונטיים בלבד</li>
+    </ul>
+    <div class="key teal">Apache Iceberg = ה"מנהל" של S3. S3 = ספרייה בלי כתובות. Iceberg = ה-Index של הספרייה. 🧊</div>
+  </div>
+
+  <!-- CONCEPT 6: DAX -->
+  <div class="card expose">
+    <div class="card-badge">📐 מושג 6 — DAX</div>
+    <div class="card-title">DAX — "הנוסחאות" של Power BI</div>
+    <div class="card-text"><strong>DAX</strong> = Data Analysis Expressions. שפת נוסחאות ייחודית ל-Power BI (ו-Excel Power Pivot). חשוב על DAX כמו <em>VLOOKUP על סטרואידים</em> — במקום לחשב ערך אחד בתא, DAX מחשב <em>מדדים שלמים</em> על מיליוני שורות.</div>
+
+    <div class="two-col">
+      <div>
+        <div style="font-weight:800;font-size:13px;color:var(--green);margin-bottom:8px;">✅ DAX — דוגמאות מהחיים</div>
+        <div class="code" style="margin:0;"><pre style="font-size:12px;"><span class="cc">-- מדד פשוט: סך מכירות</span>
+Total Revenue =
+  SUM(Orders[amount_ils])
+
+<span class="cc">-- מדד עם תנאי: מכירות ספטמבר בלבד</span>
+Sep Revenue =
+  CALCULATE(
+    SUM(Orders[amount]),
+    Orders[month] = 9
+  )
+
+<span class="cc">-- % שינוי מחודש קודם</span>
+MoM Change % =
+  DIVIDE(
+    [Total Revenue] - [Prev Month Rev],
+    [Prev Month Rev]
+  )</pre></div>
+      </div>
+      <div>
+        <div style="font-weight:800;font-size:13px;color:var(--orange);margin-bottom:8px;">⚠️ ההבדל בין DAX ל-SQL</div>
+        <table class="dtable" style="font-size:12px;">
+          <thead><tr><th>נושא</th><th>SQL</th><th>DAX</th></tr></thead>
+          <tbody>
+            <tr><td><strong>פועל על</strong></td><td>שרת DB</td><td>Power BI בלבד</td></tr>
+            <tr><td><strong>שפה</strong></td><td>סטנדרט עולמי</td><td>ייחודי ל-Microsoft</td></tr>
+            <tr><td><strong>מטרה</strong></td><td>שאיבת נתונים</td><td>חישוב KPIs</td></tr>
+            <tr><td><strong>תוצאה</strong></td><td>טבלה/שורות</td><td>מספר/מדד</td></tr>
+          </tbody>
+        </table>
+        <div class="hbox orange" style="font-size:12px;margin-top:8px;">⚠️ DAX שגוי = KPI שגוי בלי Error. Power BI לא מוציא שגיאה — הוא מציג מספר שגוי. תמיד תבדוק תוצאה ביד לפני שמציג.</div>
+      </div>
+    </div>
+    <div class="key orange">DAX = "Excel מתקדם בתוך Power BI". מחשב KPIs מורכבים על הנתונים שכבר טעונים. לא מחליף SQL — עובד <em>אחריו</em>. 📐</div>
+  </div>
+
+  <!-- CONCEPT 7: JSON vs XML -->
+  <div class="card expose">
+    <div class="card-badge">📦 מושג 7 — JSON מול XML</div>
+    <div class="card-title">שני פורמטי "הובלת נתונים" — מה ההבדל?</div>
+    <div class="card-text">שני הפורמטים משמשים להעברת נתונים בין מערכות (דרך API, Web Services). שניהם טקסט קריא. ההבדל — עיצוב, גודל, וקלות עיבוד.</div>
+
+    <div class="two-col">
+      <div>
+        <div style="font-weight:800;font-size:13px;color:var(--green);margin-bottom:6px;">🟢 JSON (הסטנדרט המודרני)</div>
+        <div class="code" style="margin:0;"><pre style="font-size:11px;">{
+  "order_id": 1001,
+  "customer": "ישראל",
+  "items": [
+    {"name":"המבורגר","qty":1},
+    {"name":"שתייה","qty":2}
+  ],
+  "total": 87
+}</pre></div>
+        <div style="font-size:12px;color:var(--green);margin-top:6px;">קצר, קריא, תומך ברשימות, קל לפרסור בכל שפת תכנות. משמש ב-99% מה-Web APIs כיום.</div>
+      </div>
+      <div>
+        <div style="font-weight:800;font-size:13px;color:var(--orange);margin-bottom:6px;">🟡 XML (הסטנדרט הישן — עדיין קיים)</div>
+        <div class="code" style="margin:0;"><pre style="font-size:11px;">&lt;Order&gt;
+  &lt;OrderId&gt;1001&lt;/OrderId&gt;
+  &lt;Customer&gt;ישראל&lt;/Customer&gt;
+  &lt;Items&gt;
+    &lt;Item&gt;
+      &lt;Name&gt;המבורגר&lt;/Name&gt;
+      &lt;Qty&gt;1&lt;/Qty&gt;
+    &lt;/Item&gt;
+  &lt;/Items&gt;
+  &lt;Total&gt;87&lt;/Total&gt;
+&lt;/Order&gt;</pre></div>
+        <div style="font-size:12px;color:var(--orange);margin-top:6px;">מפורט יותר, כבד יותר, עדיין נפוץ ב-ERP/SAP ישנים, ממשלות, בנקים, ממשקי SOAP.</div>
+      </div>
+    </div>
+
+    <table class="cmp-table" style="margin-top:14px;">
+      <thead>
+        <tr><th>קריטריון</th><th class="cmp-head-b">JSON</th><th style="background:#fef3c7;color:#92400e;">XML</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>גודל קובץ</strong></td><td>~קטן יותר ב-30-50%</td><td>גדול יותר (תגיות כפולות)</td></tr>
+        <tr><td><strong>קריאות אנושית</strong></td><td>✅ קל מאוד</td><td>⚠️ מסורבל, הרבה &lt;&gt;</td></tr>
+        <tr><td><strong>תמיכה ב-Tableau Public</strong></td><td>✅ קבצי .json</td><td>⚠️ דרך Web Data Connector</td></tr>
+        <tr><td><strong>איפה פוגשים</strong></td><td>REST APIs, Kafka, MongoDB</td><td>SAP, ממשלה, SOAP APIs, Word/Excel formats</td></tr>
+        <tr><td><strong>ETL</strong></td><td>קל לפרסר ולהכניס ל-DW</td><td>מורכב יותר — דורש XML parser</td></tr>
+      </tbody>
+    </table>
+    <div class="key">JSON = WhatsApp של נתונים (קצר ומהיר). XML = פקס של נתונים (פורמלי ומסורבל). שניהם עדיין בשימוש — XML בעיקר ב-Legacy systems. 📟</div>
+  </div>
+
+  <!-- CONCEPT 8: TRINO / SPARK (brief) -->
+  <div class="card expose">
+    <div class="card-badge">⚡ מושג 8 — Query Engine</div>
+    <div class="card-title">Spark, Trino, Athena — "המנועים" שמריצים SQL על קבצים</div>
+    <div class="card-text">SQL רגיל רץ על מסד נתונים (PostgreSQL, MySQL). אבל נתונים ב-Data Lake יושבים כקבצי Parquet ב-S3 — <em>אין שם מסד נתונים</em>. <strong>Query Engine</strong> הוא כלי שלוקח שאילתת SQL שלך ו"מתרגם" אותה לקריאת קבצים מ-S3.</div>
+    <div class="two-col">
+      <div style="background:#eff6ff;border-radius:10px;padding:14px;border:1px solid var(--border);">
+        <div style="font-weight:800;color:var(--blue);margin-bottom:6px;">⚡ Apache Spark</div>
+        <p style="font-size:13px;color:var(--text2);">מנוע עיבוד מבוזר. מחלק שאילתה ל-100 "עובדים" שרצים במקביל. משמש ב-ETL כבד (Transform מיליוני שורות). Databricks בנויה על Spark.</p>
+      </div>
+      <div style="background:#f0fdf4;border-radius:10px;padding:14px;border:1px solid var(--border);">
+        <div style="font-weight:800;color:var(--green);margin-bottom:6px;">🔍 Trino / AWS Athena</div>
+        <p style="font-size:13px;color:var(--text2);">Query Engine ל-ad-hoc queries. כותבים SQL רגיל → Athena מריץ על S3 ישירות. Pay-per-query (לפי כמות נתונים שנסרקו). מהיר ל-BI אנליסטים שרוצים לחקור נתונים.</p>
+      </div>
+    </div>
+    <div class="key teal">Query Engine = "מתרגם" שהופך SQL רגיל לקריאת קבצים ב-S3. בלעדיו — Data Lake הוא רק תיקייה. עמו — הוא DW לכל דבר. ⚡</div>
+  </div>
+
+  <div class="takeaway"><div class="takeaway-label">💡 מה לוקחים מהמילון הזה קדימה</div><ul>
+    <li>SQL = טבלאות קבועות + JOIN. NoSQL = מבנה גמיש (JSON/Document). ETL ממיר NoSQL → SQL לפני BI.</li>
+    <li>מטא-דאטה = "נתונים על נתונים". Data Catalog = מטא-דאטה מרכזי של כל ה-DW.</li>
+    <li>Parquet = <strong>סוג קובץ</strong> (כמו CSV/XLSX). SQL = <strong>שפה לבקש נתונים</strong>. לא מתחרים — כותבים SQL כדי לקרוא קובץ Parquet.</li>
+    <li>Iceberg = "מנהל" לקבצי Parquet ב-S3. מוסיף ACID, Time Travel, Schema Evolution.</li>
+    <li>DAX = שפת ה-KPI של Power BI. עובד אחרי SQL, לא במקומו.</li>
+    <li>JSON = הסטנדרט המודרני לתקשורת. XML = Legacy Systems. Tableau Public תומך בשניהם.</li>
+  </ul></div>
+
+  <div class="nav-bottom"><button class="abtn" onclick="go(1)">התחל את ההרצאה — תחנה 7 ←</button></div>
+</section>
+
+<!-- ============================================================ -->
+<!-- STATION 7: DATA LAKE & LAKEHOUSE -->
+<!-- ============================================================ -->
+<section id="s1" class="section">
+  <div class="stn-badge">🏞️ תחנה 7</div>
+  <h1 class="stn-title">Data Lake ו-Lakehouse — מעבר למחסן המסורתי</h1>
+  <p class="stn-desc">כשמחסן הנתונים הקלאסי אינו מספיק — ומה הארכיטקטורה שהחליפה אותו בחברות הגדולות.</p>
+
+  <!-- SLIDE 1: WORLD -->
+  <div class="card world">
+    <div class="slide-ctx">שקף 1 מתוך 8 · תחנה 7</div>
+    <div class="card-badge">🌍 עולם מוכר</div>
+    <div class="card-title">Netflix צולם בו-זמנית ב-190 מדינות 🎬</div>
+    <div class="card-text">Netflix אוספת נתונים מ-190 מדינות: קצב צפייה, איפה הפסקת, אילו כתוביות בחרת, מה גרם לך לעצור. חלק הם מספרים מובנים (אחוז צפייה), חלק הם תמונות, קבצי לוג, קטעי וידאו, ותוצאות מודלי AI.</div>
+    <div class="key red">Data Warehouse קלאסי מקבל רק טבלאות מובנות. Netflix זורקת פנימה כל דבר — גם תמונות, גם לוגים, גם JSON לא-מובנה. 🗂️</div>
+    <div class="card-text">הפתרון שפיתחו: לא מחסן — <strong>אגם נתונים</strong>. ואז הגיע הדור הבא — ה-<strong>Lakehouse</strong>.</div>
+  </div>
+
+  <!-- SLIDE 2: THE PROBLEM WITH DW -->
+  <div class="card question">
+    <div class="slide-ctx">שקף 2 מתוך 8 · תחנה 7</div>
+    <div class="card-badge">❓ מגבלת ה-DW הקלאסי</div>
+    <div class="card-title">Data Warehouse — מה הוא לא יכול לעשות?</div>
+    <div class="two-col">
+      <div>
+        <div class="hbox red">❌ <strong>לא מקבל נתונים לא-מובנים:</strong><br>תמונות? לוגים גולמיים? קבצי אודיו? JSON מורכב עם קינונים? DW קלאסי זורק שגיאה.</div>
+      </div>
+      <div>
+        <div class="hbox red">❌ <strong>Schema-on-Write בלבד:</strong><br>חייבים להגדיר את מבנה הטבלה לפני שנכתב נתון ראשון. שינוי Schema = ETL עצום.</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="hbox red">❌ <strong>יקר לאחסון:</strong><br>Snowflake / Redshift גובים per-byte. אחסון TB של נתונים גולמיים = עשרות אלפי דולרים לחודש.</div>
+      </div>
+      <div>
+        <div class="hbox red">❌ <strong>לא מתאים ל-ML:</strong><br>Data Scientists צריכים נתונים גולמיים לאימון מודלים — DW נותן רק נתונים מעובדים ומנורמלים.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: DATA LAKE CONCEPT -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 3 מתוך 8 · תחנה 7</div>
+    <div class="card-badge">🔬 Data Lake — השפיכה הגדולה</div>
+    <div class="card-title">עיקרון "הכנס הכל — תמיין מאוחר יותר"</div>
+    <div class="card-text">Data Lake = מאגר אחסון ענקי (S3/Azure Blob/GCS) שמקבל <strong>כל פורמט, ללא Schema מוקדם</strong>. הנתון נשאב ונשמר גולמי. הניתוח קורה בעת השאילתה (<strong>Schema-on-Read</strong>).</div>
+
+    <div class="anim-wrap" style="height:220px;">
+      <div class="lake-layers">
+        <div class="lake-layer raw">🥩 Raw Zone — כל דבר נשמר כמו שהוא: JSON, logs, images, CSV, Parquet</div>
+        <div class="lake-layer cleaned">🧹 Cleaned Zone — נוקה, אוחד, כפילויות הוסרו (Schema-on-Read)</div>
+        <div class="lake-layer curated">✨ Curated Zone — מוכן לניתוח: טבלאות מנורמלות, KPIs מחושבים</div>
+      </div>
+    </div>
+    <p class="flow-caption">שלוש אזורים ב-Data Lake — נתון זורם מלמטה לעד למעלה</p>
+
+    <div class="key teal">אנלוגיה: אגם שמקבל כל זרם — גשמים, נהרות, שלג נמס. לא בוחרים מה נכנס. בוחרים מה שואבים. 🏞️</div>
+
+    <div class="bridge-box"><div class="bridge-label">🔗 חיבור למושגי יסוד (תחנה 0)</div><p>ה-Raw Zone מלא ב-NoSQL: JSON מ-Kafka, logs, מסמכים ממונגו, תמונות. ה-Curated Zone = SQL: טבלאות מנורמלות שניתן לחבר לטבלו ו-Power BI. <strong>ה-ETL (Transform) הוא שממיר NoSQL → SQL בין שתי השכבות.</strong></p></div>
+  </div>
+
+  <!-- SLIDE 4: COMPARISON DW vs LAKE -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 4 מתוך 8 · תחנה 7</div>
+    <div class="card-badge">⚖️ השוואה מלאה</div>
+    <div class="card-title">Data Warehouse מול Data Lake — מבחן נוסחה</div>
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>קריטריון</th>
+          <th class="cmp-head-a">Data Warehouse (DW)</th>
+          <th class="cmp-head-b">Data Lake</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>פורמטים מקובלים</strong></td><td>טבלאות מובנות בלבד (SQL)</td><td>כל פורמט: JSON, Parquet, Avro, תמונות, לוגים</td></tr>
+        <tr><td><strong>Schema</strong></td><td>Schema-on-Write — מוגדר מראש</td><td>Schema-on-Read — נקבע בזמן שאילתה</td></tr>
+        <tr><td><strong>עלות אחסון</strong></td><td>יקר (Snowflake / Redshift)</td><td>זול מאוד (S3 ~$0.023/GB/חודש)</td></tr>
+        <tr><td><strong>מהירות שאילתה</strong></td><td>⚡ מהיר מאוד — Columnar מותאם</td><td>🐢 איטי ללא אופטימיזציה</td></tr>
+        <tr><td><strong>קהל יעד</strong></td><td>אנליסטי BI, מנהלים</td><td>Data Scientists, Engineers</td></tr>
+        <tr><td><strong>Data Quality</strong></td><td>גבוה — ETL מסנן</td><td>🦆 "Data Swamp" אם לא מנוהל</td></tr>
+        <tr><td><strong>ACID Transactions</strong></td><td>✅ מלא</td><td>❌ מסורתית לא — Lakehouse פותר זאת</td></tr>
+        <tr><td><strong>סוג נתון עיקרי</strong></td><td>SQL בלבד (טבלאות רלציוניות)</td><td>גם NoSQL: JSON, XML, logs, Avro</td></tr>
+      </tbody>
+    </table>
+    <div class="think"><div class="think-label">⏸️ עצור וחשוב</div><p>חברת ביטוח שמאחסנת תמונות של נזקי תאונה + נתוני פוליסה + לוגי שיחות — איזה מהפתרונות מתאים לה? האם DW, Lake, או שניהם?</p></div>
+  </div>
+
+  <!-- SLIDE 5: DATA SWAMP WARNING -->
+  <div class="fail-card">
+    <div class="fail-label">⚠️ סכנת "Data Swamp" — כשהאגם הופך לביצה</div>
+    <p>חברה שיצרה Data Lake ב-2018 שמרה הכל — ללא תיעוד, ללא מטא-דאטה, ללא בעלים. ב-2021 הייתה לה אגם של 50TB. כשביקשו "מצא את נתוני המכירות מ-2019" — לא אחד ידע איזה קובץ הוא מה. 8,000 קבצים ב-S3 ללא כל תיאור.</p>
+    <p><strong>ה-BI אנליסט עמד אל מול ממשק S3 עם שמות כמו:</strong> <code>data_final_v3_REAL_use_this.csv</code>, <code>backup_backup2.parquet</code>, <code>unknown_export_0312.json</code>.</p>
+    <div class="key red">Data Lake ללא Data Catalog = Data Swamp. אין כלי ETL שמציל אותך ממנו. 🦟</div>
+  </div>
+
+  <!-- SLIDE 6: LAKEHOUSE -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 6 מתוך 8 · תחנה 7</div>
+    <div class="card-badge">🏠 Lakehouse — הפתרון המאוחד</div>
+    <div class="card-title">כשמשלבים את הטוב משני העולמות</div>
+    <div class="card-text">Lakehouse = Data Lake (אחסון זול וגמיש) + Data Warehouse (שאילתות מהירות + ACID) עם שכבת מטא-דאטה (Delta Lake / Apache Iceberg) שמוסיפה ACID Transactions, Schema Evolution ו-Time Travel על גבי S3.</div>
+    <div class="flow">
+      <div class="fnode teal">📦 Raw Data<br><small style="font-weight:400;font-size:10px;">S3 / GCS / ADLS</small></div>
+      <div class="farrow">←</div>
+      <div class="fnode navy">🧱 Delta Lake<br><small style="font-weight:400;font-size:10px;">ACID + Schema</small></div>
+      <div class="farrow">←</div>
+      <div class="fnode green">⚡ Query Engine<br><small style="font-weight:400;font-size:10px;">Spark / Trino</small></div>
+      <div class="farrow">←</div>
+      <div class="fnode">📊 Power BI<br><small style="font-weight:400;font-size:10px;">Databricks connector</small></div>
+    </div>
+    <div class="key green">Lakehouse = אחסן כמו אגם, שאל כמו מחסן. ה-Tech Stack: Databricks / Delta Lake / Apache Iceberg. 🏅</div>
+    <div class="two-col">
+      <div class="hbox green">✅ <strong>Time Travel:</strong> <code>SELECT * FROM orders VERSION AS OF 5</code> — חזרה לגרסה קודמת של טבלה. BI אנליסט יכול לדבג "מה היה הנתון לפני 3 ימים"?</div>
+      <div class="hbox green">✅ <strong>Schema Evolution:</strong> הוספת עמודה חדשה לטבלה קיימת ללא שבירת כל ה-Pipeline. ETL ממשיך לרוץ.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: BI IMPLICATIONS -->
+  <div class="card bi-link">
+    <div class="slide-ctx">שקף 7 מתוך 8 · תחנה 7</div>
+    <div class="card-badge">📊 מה זה אומר לאנליסט BI</div>
+    <div class="card-title">Power BI + Lakehouse — חיבור חדש שדורש הבנה חדשה</div>
+    <div class="card-text">בחברות שעברו ל-Lakehouse, הדשבורד שלך מתחבר לטבלאות בפורמט <strong>Parquet</strong> על S3 — לא לטבלאות SQL קלאסיות. הנתונים שאתה רואה ב-Power BI הם לרוב תוצאות של Spark queries, לא PostgreSQL פשוט.</div>
+    <div class="two-col">
+      <div class="hbox orange">⚠️ <strong>Parquet מול CSV:</strong> Parquet = פורמט עמודתי בינארי. לא תוכל לפתוח אותו ב-Excel. כשה-ETL pipeline שולח לך "export", בקש CSV לבדיקה או Parquet ל-Power BI.</div>
+      <div class="hbox teal">🔵 <strong>Time Travel ל-BI:</strong> אם דוח BI מציג נתון שנראה שגוי — בקש מה-Engineer לבצע Time Travel לגרסה קודמת ולהשוות. זה כמו Ctrl+Z למחסן נתונים.</div>
+    </div>
+    <div class="card-text">הארכיטקטורה הזו מחייבת אותך להכיר מושגים כמו <code>partition</code> — חלוקת הנתונים לפי תאריך או מחלקה כדי לזרז שאילתות. שאילתה על <code>orders WHERE year=2024</code> לא קוראת את כל הנתונים — רק partition של 2024.</div>
+  </div>
+
+  <!-- SLIDE 8: CLOSE -->
+  <div class="card close">
+    <div class="slide-ctx">שקף 8 מתוך 8 · תחנה 7</div>
+    <div class="card-badge">🔁 סגירת לולאה</div>
+    <div class="card-title">חזרה ל-Netflix</div>
+    <div class="card-text">Netflix שומרת הכל ב-S3: כל לחיצה, כל pause, כל תמונה, כל קובץ לוג — בפורמט Parquet. מודלי ה-Recommendation רצים על הנתונים הגולמיים. מנהלים מקבלים דשבורד Power BI דרך שכבת Lakehouse נקייה.</div>
+    <div class="key teal">DW = לאנליסטים. Lake = לדאטה מדענים. Lakehouse = לשניהם. 🎯</div>
+  </div>
+
+  <div class="tool-box"><div class="tool-label">🛠️ הכלי האמיתי בתעשייה</div><p><strong>Databricks</strong> — פלטפורמת Lakehouse מובילה. <strong>Delta Lake</strong> — שכבת ACID על S3. <strong>Apache Iceberg</strong> — סטנדרט פתוח למטא-דאטה של Lakehouse (הגדרה מלאה בתחנה 0). <strong>Apache Parquet</strong> — פורמט אחסון עמודתי בינארי — <em>עמודתי = קריאת עמודות בנפרד, בינארי = קוד מכונה דחוס לא קריא לאדם</em> (הגדרה מלאה בתחנה 0). <strong>AWS S3 / Azure ADLS / GCS</strong> — שכבת האחסון — <em>איפה הקבצים שוכנים פיזית</em>.</p></div>
+
+  <div class="takeaway"><div class="takeaway-label">💡 מה לוקחים הביתה</div><ul>
+    <li>DW = מובנה, מהיר, יקר. Lake = גמיש, זול, מסוכן ללא ניהול. Lakehouse = שניהם.</li>
+    <li>Schema-on-Read = גמישות. Schema-on-Write = אכיפה. כל ארגון מחליט לפי צרכיו.</li>
+    <li>Data Swamp = Lake ללא Data Catalog. הנתון קיים — אבל אי-אפשר למצוא אותו.</li>
+    <li>BI אנליסט בחברת Lakehouse עובד מול Parquet + Spark — לא SQL רגיל בלבד.</li>
+  </ul></div>
+
+  <div class="discuss"><div class="discuss-label">💬 שאלות לדיון</div><ol>
+    <li>סטארטאפ עם 5 עובדים בונה Data Lake. מתי זה החלטה הגיונית ומתי זה over-engineering?</li>
+    <li>מה ההבדל בין "Schema-on-Write" ל-"Schema-on-Read"? לאיזה סוג ארגון כל אחד מתאים?</li>
+    <li>אנליסט מבקש "לבדוק מה היו נתוני המכירות לפני עדכון שגוי של ה-ETL". איך Time Travel עוזר? מה המגבלה שלו?</li>
+  </ol></div>
+
+  <div class="nav-bottom"><button class="abtn" onclick="go(2)">המשך לתחנה 8 ←</button></div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- STATION 8: REAL-TIME STREAMING -->
+<!-- ============================================================ -->
+<section id="s2" class="section">
+  <div class="stn-badge">⚡ תחנה 8</div>
+  <h1 class="stn-title">Real-Time Streaming — כשנתון מיושן הוא סכנה</h1>
+  <p class="stn-desc">מה ההבדל בין ETL לילי לעיבוד נתונים תוך מילישניות — ולמה זה משנה לרופא, לסוחר ולנהג.</p>
+
+  <!-- SLIDE 1 -->
+  <div class="card world">
+    <div class="slide-ctx">שקף 1 מתוך 7 · תחנה 8</div>
+    <div class="card-badge">🌍 עולם מוכר</div>
+    <div class="card-title">ניטור לב — כשנתון בן 5 דקות יכול להרוג 💓</div>
+    <div class="card-text">מוניטור לב בחדר מיון שולח נתוני דופק כל שנייה. אם מנוע ה-BI שלנו מעדכן נתונים פעם ביום (ETL לילי) — אף רופא לא יראה ירידת דופק קריטית בזמן אמת.</div>
+    <div class="key red">ETL + DW = נהדר לדוחות ניהוליים. מסוכן מחיים לניטור בזמן אמת. ⏱️</div>
+    <div class="card-text">הפתרון: ארכיטקטורת Streaming — נתון מעובד <strong>תוך מילישניות</strong> מרגע הגעתו, לא 8 שעות אחר כך.</div>
+  </div>
+
+  <!-- SLIDE 2: LATENCY SPECTRUM -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 2 מתוך 7 · תחנה 8</div>
+    <div class="card-badge">📏 ספקטרום השהיית נתונים</div>
+    <div class="card-title">מה "זמן אמת" אומר בפועל — 4 רמות שהות</div>
+    <div class="card-text">כשמנהל אומר "אני רוצה דשבורד בזמן אמת" — הוא לרוב לא יודע מה הוא מבקש. ישנן 4 רמות שונות של עדכניות נתונים, כל אחת עם מחיר טכנולוגי שונה:</div>
+
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>סוג</th>
+          <th>שהיית עדכון</th>
+          <th>טכנולוגיה</th>
+          <th>דוגמה</th>
+          <th>עלות</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Batch ETL</strong></td><td>שעות / לילה</td><td>Airflow + dbt</td><td>דוח BI ניהולי</td><td>💰 נמוכה</td></tr>
+        <tr><td><strong>Micro-Batch</strong></td><td>1–60 דקות</td><td>Spark Structured Streaming</td><td>עדכון מלאי</td><td>💰💰 בינונית</td></tr>
+        <tr><td><strong>Near Real-Time</strong></td><td>שניות</td><td>Kafka + Flink</td><td>ניטור הונאות</td><td>💰💰💰 גבוהה</td></tr>
+        <tr><td><strong>Real-Time</strong></td><td>&lt;100ms</td><td>Kafka + in-memory DB</td><td>Trading / ICU Monitor</td><td>💰💰💰💰 גבוהה מאוד</td></tr>
+      </tbody>
+    </table>
+    <div class="hbox orange">⚠️ <strong>טעות הכי נפוצה:</strong> מנהל מבקש "Real-Time" ומקבל Micro-Batch. הדשבורד "מתעדכן כל 5 דקות" — אבל מנהל חשב שהוא רואה ≤1 שנייה. אי-הבנה זו גורמת להחלטות שגויות.</div>
+  </div>
+
+  <!-- SLIDE 3: KAFKA CONCEPT -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 3 מתוך 7 · תחנה 8</div>
+    <div class="card-badge">🔬 Apache Kafka — הסטנדרט</div>
+    <div class="card-title">ה"אוטובוס" של הנתונים — כיצד Kafka עובד</div>
+    <div class="card-text"><strong>Kafka</strong> הוא Message Broker — מתווך בין מקורות נתונים לצרכניהם. הוא לא מעבד נתונים — הוא מנתב ושומר אותם בצינורות (<strong>Topics</strong>) בסדר מוגדר.</div>
+
+    <div class="svg-wrap">
+      <svg width="620" height="200" viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Producers -->
+        <rect x="10" y="30" width="110" height="40" rx="8" fill="#dbeafe"/>
+        <text x="65" y="55" fill="#1d4ed8" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">📱 Wolt App</text>
+        <rect x="10" y="82" width="110" height="40" rx="8" fill="#dbeafe"/>
+        <text x="65" y="107" fill="#1d4ed8" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">🌡️ IoT Sensors</text>
+        <rect x="10" y="134" width="110" height="40" rx="8" fill="#dbeafe"/>
+        <text x="65" y="159" fill="#1d4ed8" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">🌐 Web Clicks</text>
+
+        <!-- Arrows to Kafka -->
+        <line x1="120" y1="50" x2="200" y2="95" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr-g)"/>
+        <line x1="120" y1="102" x2="200" y2="102" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr-g)"/>
+        <line x1="120" y1="154" x2="200" y2="110" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr-g)"/>
+
+        <!-- Kafka Center -->
+        <rect x="195" y="55" width="230" height="90" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+        <text x="310" y="85" fill="#38bdf8" font-family="Heebo" font-size="15" font-weight="900" text-anchor="middle">🚌 Apache Kafka</text>
+        <text x="310" y="104" fill="#94a3b8" font-family="monospace" font-size="11" text-anchor="middle">Topic: orders | Topic: sensors</text>
+        <text x="310" y="120" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">מיליוני events/שנייה · שמירה 7 ימים</text>
+
+        <!-- Consumers -->
+        <line x1="425" y1="95" x2="500" y2="50" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr-g)"/>
+        <line x1="425" y1="102" x2="500" y2="102" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr-g)"/>
+        <line x1="425" y1="110" x2="500" y2="154" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr-g)"/>
+
+        <rect x="500" y="30" width="115" height="40" rx="8" fill="#d1fae5"/>
+        <text x="557" y="55" fill="#065f46" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">⚡ Fraud Detection</text>
+        <rect x="500" y="82" width="115" height="40" rx="8" fill="#d1fae5"/>
+        <text x="557" y="107" fill="#065f46" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">❄️ Snowflake DW</text>
+        <rect x="500" y="134" width="115" height="40" rx="8" fill="#d1fae5"/>
+        <text x="557" y="159" fill="#065f46" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">📊 Real-Time BI</text>
+
+        <defs>
+          <marker id="arr-g" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 10 0 L 0 5 L 10 10 z" fill="#94a3b8"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="key teal">Kafka = דואר אלקטרוני לנתונים. שולח (Producer) שם הודעה. מקבל (Consumer) קורא בזמנו. הנתון שמור 7 ימים — גם אם צרכן "פספס" את הרגע. 📬</div>
+
+    <div class="hbox teal"><strong>📦 פורמט ה-Event ב-Kafka: JSON ≠ XML</strong><br>
+    כמעט כל event ב-Kafka עובר כ-<strong>JSON</strong> (ראה תחנה 0). XML כמעט לא נראה ב-Streaming מודרני — הוא כבד מדי ל-throughput של מיליוני events/שנייה. אם מערכת Legacy (SAP, בנק ישן) שולחת XML — ה-ETL Transform ממיר לJSON לפני שמגיע ל-Kafka.</div>
+  </div>
+
+  <!-- ANIMATION -->
+  <div class="anim-wrap">
+    <div class="stream-pipeline">
+      <div class="sp-src">📱</div>
+      <div class="sp-tube">
+        <div class="sp-packet"></div>
+        <div class="sp-packet"></div>
+        <div class="sp-packet"></div>
+      </div>
+      <div class="sp-sink">🗄️</div>
+    </div>
+  </div>
+  <p class="flow-caption">הנפשה: packets זורמים ברציפות מ-Producer ל-Consumer — בלי עצירה, ללא מקבץ</p>
+
+  <!-- SLIDE 4: FRAUD EXAMPLE -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 4 מתוך 7 · תחנה 8</div>
+    <div class="card-badge">🔍 דוגמה מהעולם האמיתי — Fraud Detection</div>
+    <div class="card-title">כיצד Visa מזהה הונאה תוך 30 מילישניות</div>
+    <div class="card-text">כשמחייבת כרטיס אשראי ב-Amazon, Visa רצה מודל ML בזמן אמת שבודק: האם עסקה זו תואמת להתנהגות ההיסטורית שלך? במדינה הנכונה? בסכום הגיוני? בשעה הגיונית?</div>
+    <div class="code"><pre><span class="cc">// Kafka Consumer — מאזין לכל עסקה שנכנסת:</span>
+topic: <span class="cs">"transactions"</span>
+event: {
+  <span class="cy">"card_id"</span>: <span class="cs">"4580-xxxx"</span>,
+  <span class="cy">"amount"</span>: <span class="cn">4800</span>,
+  <span class="cy">"country"</span>: <span class="cs">"BR"</span>,      <span class="cc">// ברזיל</span>
+  <span class="cy">"timestamp"</span>: <span class="cn">1720000000</span>,
+  <span class="cy">"prev_country"</span>: <span class="cs">"IL"</span>  <span class="cc">// ישראל לפני 2 שעות?!</span>
+}
+
+<span class="cc">// Stream Processing — Apache Flink מחשב תוך 15ms:</span>
+<span class="ck">IF</span> country != prev_country
+   <span class="ck">AND</span> time_diff &lt; 120min
+   <span class="ck">AND</span> amount &gt; avg_transaction * <span class="cn">3</span>
+<span class="ck">THEN</span>: <span class="cs">"FRAUD_ALERT"</span> → חסום עסקה + SMS ל-לקוח</pre></div>
+    <div class="key orange">לא ETL. לא Batch. זה Stream Processing — כל event מחושב בזמן הגעתו. ב-Batch: היית מגלה את ההונאה מחר בבוקר. 💳</div>
+  </div>
+
+  <!-- SLIDE 5: LAMBDA ARCHITECTURE -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 5 מתוך 7 · תחנה 8</div>
+    <div class="card-badge">🏗️ Lambda Architecture</div>
+    <div class="card-title">כיצד מחברים Streaming + Batch — Lambda Architecture</div>
+    <div class="card-text">בארגונים גדולים, Streaming ו-Batch רצים <strong>במקביל</strong>. Streaming = מהיר אבל לפעמים לא מדויק. Batch = איטי אבל מדויק ומלא. Lambda מחבר ביניהם:</div>
+    <div class="flow">
+      <div class="fnode teal">🔴 Kafka<br><small style="font-weight:400;font-size:10px;">Real-Time Stream</small></div>
+      <div class="farrow">←</div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+        <div class="fnode" style="background:#0369a1;min-width:130px;">⚡ Speed Layer<br><small style="font-weight:400;font-size:10px;">Flink — שניות</small></div>
+        <div class="fnode green" style="min-width:130px;">🏋️ Batch Layer<br><small style="font-weight:400;font-size:10px;">Spark — שעות</small></div>
+      </div>
+      <div class="farrow">←</div>
+      <div class="fnode purple">🔀 Serving Layer<br><small style="font-weight:400;font-size:10px;">Merge + Serve</small></div>
+      <div class="farrow">←</div>
+      <div class="fnode">📊 Dashboard<br><small style="font-weight:400;font-size:10px;">Power BI</small></div>
+    </div>
+    <div class="card-text">הדשבורד מציג: <strong>Speed Layer</strong> = הנתון של 10 הדקות האחרונות (אולי לא שלם). <strong>Batch Layer</strong> = הנתון השלם עד אמש. Power BI ממזג את שניהם ל"עכשיו + היסטוריה".</div>
+  </div>
+
+  <!-- BI IMPLICATIONS -->
+  <div class="card bi-link">
+    <div class="slide-ctx">שקף 6 מתוך 7 · תחנה 8</div>
+    <div class="card-badge">📊 מה זה אומר לאנליסט BI</div>
+    <div class="card-title">כשהדשבורד מציג נתון שאינו ה"גמר"</div>
+    <div class="card-text">כשאתה בונה דשבורד "בזמן אמת" ב-Power BI — חשוב להבין: האם הנתון שאתה רואה הוא מה-Speed Layer (אפרוקסימציה) או מה-Batch Layer (גמר)?</div>
+    <div class="two-col">
+      <div class="hbox red">❌ <strong>שגיאה נפוצה:</strong> אנליסט מציג "מכירות יום" ב-Real-Time Dashboard שמציג ₪180,000. בכספים — הסכום הגמר הוא ₪167,000 (כמה הזמנות בוטלו). שניים מסכימים על מספרים שונים.</div>
+      <div class="hbox teal">✅ <strong>הנוהל הנכון:</strong> כל דשבורד Real-Time חייב להציג "נתוני שעה אחרונה — ייתכן ועדכון סופי שונה". הוסף הסבר למשתמש שרואה Streaming vs. Batch.</div>
+    </div>
+  </div>
+
+  <div class="card close">
+    <div class="slide-ctx">שקף 7 מתוך 7 · תחנה 8</div>
+    <div class="card-badge">🔁 סגירת לולאה</div>
+    <div class="card-title">חזרה לחדר המיון</div>
+    <div class="card-text">המוניטור בחדר המיון לא שולח נתונים ל-ETL לילי. הוא כותב ישירות ל-Kafka Topic בשם <code>"patient_vitals"</code>. Apache Flink קורא כל event ורץ מודל אבנורמליות — תוך 50ms.</div>
+    <div class="key teal">Streaming = ארכיטקטורת ETL של הזמן האמיתי. מקביל ל-DW, לא מחליף אותו. 🚀</div>
+  </div>
+
+  <div class="tool-box"><div class="tool-label">🛠️ הכלי האמיתי בתעשייה</div><p><strong>Apache Kafka</strong> — Message Broker מוביל. <strong>Apache Flink</strong> — Stream Processing Engine. <strong>Spark Structured Streaming</strong> — Micro-Batch על Spark. <strong>AWS Kinesis</strong> — Kafka מנוהל ב-AWS. <strong>Power BI Streaming Dataset</strong> — דשבורד Real-Time ב-Power BI (עד 1M rows/שעה).</p></div>
+
+  <div class="fail-card">
+    <div class="fail-label">💥 מה קורה כשזה נשבר — Robinhood, 2021</div>
+    <p>מערכת ה-Real-Time Risk Calculation של Robinhood הפסיקה לעבד events חדשים תחת עומס גבוה — ה-Kafka Consumer "פיגר" בשעות. המערכת המשיכה לאשר עסקאות על בסיס מצב ישן. לקוחות קיבלו אישורים שלא היו צריכים להתקבל. Robinhood שילמה קנס של $70M.</p>
+  </div>
+
+  <div class="takeaway"><div class="takeaway-label">💡 מה לוקחים הביתה</div><ul>
+    <li>Batch ETL = שעות. Micro-Batch = דקות. Streaming = שניות/ms. לכל use case הכלי שלו.</li>
+    <li>Kafka = message broker. Flink = stream processor. Power BI Streaming = צרכן של Real-Time data.</li>
+    <li>Lambda Architecture = Batch + Streaming במקביל. Speed Layer + Batch Layer = Serving Layer.</li>
+    <li>דשבורד "בזמן אמת" ב-Power BI לא אומר &lt;100ms. תמיד בדוק מה ה-latency האמיתי.</li>
+  </ul></div>
+
+  <div class="discuss"><div class="discuss-label">💬 שאלות לדיון</div><ol>
+    <li>מנהל מבקש "דשבורד מכירות בזמן אמת". אתה יודע שהנתון מתעדכן כל 15 דקות. מה תאמר לו?</li>
+    <li>מדוע Kafka שומר נתונים 7 ימים גם לאחר שצרכן קרא אותם? מה היתרון?</li>
+    <li>ניטור ICU שיגר 50,000 events לשנייה. Flink נקרס. מה קורה ל-100 המטופלים? איך מונעים?</li>
+  </ol></div>
+
+  <div class="nav-bottom"><button class="abtn" onclick="go(3)">המשך לתחנה 9 ←</button></div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- STATION 9: DATA GOVERNANCE -->
+<!-- ============================================================ -->
+<section id="s3" class="section">
+  <div class="stn-badge">🏛️ תחנה 9</div>
+  <h1 class="stn-title">ממשל נתונים — מי אחראי על מה</h1>
+  <p class="stn-desc">כשלא ברור מי הבעלים של הנתון, כל אחד בונה גרסה שונה — ואף אחד לא בוטח בדשבורד.</p>
+
+  <!-- SLIDE 1 -->
+  <div class="card world">
+    <div class="slide-ctx">שקף 1 מתוך 9 · תחנה 9</div>
+    <div class="card-badge">🌍 עולם מוכר</div>
+    <div class="card-title">חמישה KPI שונים לאותה שאלה 🤔</div>
+    <div class="card-text">ישיבת הנהלה ב-Wolt. מנהל הכספים מציג: "הכנסות החודש: ₪12.3M". מנהל השיווק מציג: "הכנסות: ₪11.8M". מנהל התפעול: "₪12.1M".</div>
+    <div class="key red">שלושה דוחות, שלושה מספרים שונים. שלושתם עשויים מאותם נתונים. הישיבה עצרה — 45 דקות של "למה יש לנו שלושה מספרים"? 🛑</div>
+    <div class="card-text">הסיבה: כל אחד הגדיר "הכנסות" אחרת. כספים: עסקאות שהושלמו בלבד. שיווק: כולל עסקאות שבוטלו (שנרשמו קודם). תפעול: ממוצע חמשת הימים האחרונים.</div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="card question">
+    <div class="slide-ctx">שקף 2 מתוך 9 · תחנה 9</div>
+    <div class="card-badge">❓ מה הפתרון</div>
+    <div class="card-title">Data Governance — "Single Source of Truth"</div>
+    <div class="hbox">ממשל נתונים (Data Governance) = <strong>מסגרת הכללים, התפקידים, והתהליכים</strong> שמבטיחים שנתון אחד = הגדרה אחת = מספר אחד בכל הארגון.</div>
+    <div class="card-text">לא מדובר בטכנולוגיה — מדובר בתהליך ארגוני. Governance כולל:</div>
+    <ul class="blist">
+      <li><strong>Data Catalog</strong> — אינדקס מה קיים, איפה, ומה המשמעות של כל שדה.</li>
+      <li><strong>Data Stewards</strong> — אנשים שאחראיים לאיכות ועדכניות הנתון בתחום שלהם.</li>
+      <li><strong>Business Glossary</strong> — הגדרה מוסכמת לכל מונח עסקי: מה זה "הכנסה"? מה זה "לקוח פעיל"?</li>
+      <li><strong>Data Lineage</strong> — מאין הגיע הנתון ודרך אילו טרנספורמציות עבר (תחנה 12).</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 3: DATA CATALOG -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 3 מתוך 9 · תחנה 9</div>
+    <div class="card-badge">📚 Data Catalog — "ויקיפדיה" של הנתונים</div>
+    <div class="card-title">כיצד Data Catalog נראה בפועל</div>
+    <div class="card-text">Data Catalog הוא מאגר <strong>מטא-דאטה</strong> — מידע <em>על</em> הנתונים, לא הנתונים עצמם (הגדרה מלאה בתחנה 0). כשאנליסט שואל "מהי עמודת <code>rev_adj</code>?" — הוא מחפש ב-Catalog, לא מתקשר ל-DBA. שים לב: ב-Catalog מתועדות גם טבלאות SQL (עמודות מובנות) וגם נתוני NoSQL (שדות JSON מ-MongoDB) — הכל ב-Catalog אחד.</div>
+
+    <table class="dtable">
+      <thead>
+        <tr>
+          <th>שם שדה</th>
+          <th>טבלה</th>
+          <th>הגדרה עסקית</th>
+          <th>בעלים</th>
+          <th>עדכניות</th>
+          <th>איכות</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="good-row"><td><code>revenue_net</code></td><td>fact_orders</td><td>הכנסה נטו לאחר ביטולים והנחות</td><td>צוות כספים</td><td>שעתי</td><td>98.5% ✅</td></tr>
+        <tr class="good-row"><td><code>customer_active</code></td><td>dim_customers</td><td>לקוח עם ≥1 הזמנה ב-90 יום אחרון</td><td>שיווק</td><td>יומי</td><td>97.2% ✅</td></tr>
+        <tr class="err-row"><td><code>rev_adj</code></td><td>staging_orders</td><td>❌ לא מתועד — אל תשתמש בייצור</td><td>?</td><td>לא ידוע</td><td>63% ⚠️</td></tr>
+        <tr><td><code>delivery_sla</code></td><td>fact_deliveries</td><td>מטרת זמן משלוח בדקות לפי עיר</td><td>תפעול</td><td>שבועי</td><td>100% ✅</td></tr>
+      </tbody>
+    </table>
+    <div class="hbox red">❌ <strong>אנליסט בנה KPI על <code>rev_adj</code> בלי לבדוק Catalog.</strong> השדה הוא שדה staging זמני עם 37% ערכי NULL. הדוח הציג 37% פחות הכנסות מהמציאות.</div>
+  </div>
+
+  <!-- SLIDE 4: ROLES -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 4 מתוך 9 · תחנה 9</div>
+    <div class="card-badge">👥 תפקידי Governance</div>
+    <div class="card-title">ארבעה תפקידים בממשל נתונים</div>
+    <div class="role-cards">
+      <div class="role-card eng">
+        <div class="role-icon">👨‍💻</div>
+        <div class="role-title">Data Engineer</div>
+        <p>אחראי על <strong>הפייפליין הטכני</strong>. כותב ETL, מנהל Airflow, מבטיח שנתון מגיע. לא אחראי על המשמעות העסקית.</p>
+      </div>
+      <div class="role-card gov">
+        <div class="role-icon">👩‍⚖️</div>
+        <div class="role-title">Data Steward</div>
+        <p>שומר הנתונים בתחום עסקי ספציפי (כספים/שיווק). מגדיר משמעויות, מאשר שינויי Schema, מוודא Data Quality.</p>
+      </div>
+      <div class="role-card owner">
+        <div class="role-icon">🏢</div>
+        <div class="role-title">Data Owner</div>
+        <p>מנהל בכיר שאחראי רשמית על domain נתונים. מאשר מי רשאי לגשת. קובע מדיניות שמירה. לא טכני — אסטרטגי.</p>
+      </div>
+      <div class="role-card ana">
+        <div class="role-icon">📊</div>
+        <div class="role-title">BI Analyst</div>
+        <p>צורך מהנתונים, בונה דוחות. <strong>חייב לעבוד לפי Data Catalog ולא להמציא מחדש הגדרות.</strong></p>
+      </div>
+    </div>
+    <div class="connect-box"><div class="connect-label">📌 חיבור לעולם המקצועי</div><p>כשאנליסט BI ניגש לטבלה חדשה לראשונה — הצעד הראשון: לחפש אותה ב-Data Catalog. לא לשאול את המפתח. לא להניח. לפתוח Catalog.</p></div>
+  </div>
+
+  <!-- SIMULATOR: BUSINESS GLOSSARY -->
+  <div class="sim-card">
+    <h4>🧪 סימולטור Business Glossary — הגדרת "לקוח פעיל"</h4>
+    <p>בחר הגדרה לבניית KPI ב-Power BI וראה את ההשפעה על מספר הלקוחות "הפעילים":</p>
+    <div class="sim-btns">
+      <button class="sbtn sbtn-blue" onclick="runGlossary('marketing')">📣 הגדרת שיווק: הזמנה אחת בשנה האחרונה</button>
+      <button class="sbtn sbtn-teal" onclick="runGlossary('finance')">💰 הגדרת כספים: הזמנה אחת ב-90 יום</button>
+      <button class="sbtn sbtn-red" onclick="runGlossary('product')">📱 הגדרת מוצר: פתיחת אפליקציה ב-30 יום</button>
+    </div>
+    <div id="glossary-out" style="margin-top:16px;padding:16px;background:var(--subtle);border-radius:8px;min-height:80px;font-size:14px;color:var(--text2);">
+      בחר הגדרה לראות את ההשפעה על ה-KPI...
+    </div>
+    <div id="glossary-bars" style="margin-top:12px;display:none;">
+      <div class="prog-item">
+        <div class="prog-label"><span>📣 שיווק — "פעילים"</span><span id="mkt-pct">0%</span></div>
+        <div class="prog-track"><div id="mkt-bar" class="prog-fill" style="width:0%;background:var(--blue);"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-label"><span>💰 כספים — "פעילים"</span><span id="fin-pct">0%</span></div>
+        <div class="prog-track"><div id="fin-bar" class="prog-fill" style="width:0%;background:var(--teal);"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-label"><span>📱 מוצר — "פעילים"</span><span id="prd-pct">0%</span></div>
+        <div class="prog-track"><div id="prd-bar" class="prog-fill" style="width:0%;background:var(--purple);"></div></div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px;">כל ה-% מחושבים מתוך 100,000 לקוחות רשומים</div>
+    </div>
+  </div>
+
+  <!-- DATA QUALITY -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 6 מתוך 9 · תחנה 9</div>
+    <div class="card-badge">🎯 Data Quality — 6 ממדים</div>
+    <div class="card-title">מה זה "נתון איכותי" בפועל?</div>
+    <div class="card-text">Data Quality לא בינארית — לא "טוב" ו"רע". ישנם 6 ממדים מדידים:</div>
+    <table class="cmp-table">
+      <thead>
+        <tr><th>ממד</th><th>הגדרה</th><th>דוגמה לכשל</th><th>כיצד מודדים</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Completeness</strong> — שלמות</td><td>אין ערכי NULL חסרים</td><td>20% מהזמנות ללא כתובת</td><td>COUNT(NULL) / COUNT(*)</td></tr>
+        <tr><td><strong>Accuracy</strong> — דיוק</td><td>הנתון נכון במציאות</td><td>מחיר ₪(-50) — שלילי</td><td>Rule validation</td></tr>
+        <tr><td><strong>Consistency</strong> — עקביות</td><td>אותו נתון = אותו ערך בכל מקום</td><td>לקוח עם 2 תאריכי לידה</td><td>Cross-table join check</td></tr>
+        <tr><td><strong>Timeliness</strong> — עדכניות</td><td>הנתון עדכני לצורך השימוש</td><td>שער מט"ח מלפני שבוע</td><td>MAX(updated_at) vs. NOW()</td></tr>
+        <tr><td><strong>Uniqueness</strong> — ייחודיות</td><td>אין כפילויות מיותרות</td><td>אותה הזמנה פעמיים ב-DB</td><td>ROW_NUMBER() Duplicates</td></tr>
+        <tr><td><strong>Validity</strong> — תקינות</td><td>הנתון בפורמט הנכון</td><td>תאריך: "30/02/2024" לא קיים</td><td>Regex / Range checks</td></tr>
+      </tbody>
+    </table>
+    <div class="key green">כלל BI: לפני בניית דשבורד, הרץ Data Quality check על כל עמודה קריטית. מדד DQ &lt;90% = דשבורד שישקר. 📊</div>
+  </div>
+
+  <!-- GDPR BOX -->
+  <div class="card governance">
+    <div class="slide-ctx">שקף 7 מתוך 9 · תחנה 9</div>
+    <div class="card-badge">🔒 GDPR ופרטיות</div>
+    <div class="card-title">Governance חוקי — כשממשל הנתונים הוא חובה משפטית</div>
+    <div class="card-text"><strong>GDPR</strong> (תקנת פרטיות נתונים האירופאית) ו-<strong>חוק הגנת הפרטיות הישראלי</strong> קובעים: כל ארגון שמחזיק נתוני אנשים <em>חייב</em> לדעת: איפה הנתון? מי גישה? כמה זמן ישמר? מה ה-legal basis?</div>
+    <div class="two-col">
+      <div class="hbox red">❌ <strong>BI אנליסט שפתח טבלת לקוחות ב-DW ועשה export ל-Excel לצרכי ניתוח</strong> — אם ה-Excel הזה נשמר ב-Desktop ללא הצפנה ואיבד גישה — זו פגיעת GDPR. קנס: עד €20M או 4% ממחזור.</div>
+      <div class="hbox green">✅ <strong>Data Masking</strong> — כשה-DW מציג <code>XXX-XXXX</code> במקום מספר טלפון אמיתי. BI רואה אגרגטים, לא אנשים ספציפיים. מותר לנתח, אסור לזהות.</div>
+    </div>
+    <div class="card-text">כלל הגנת פרטיות ב-BI: <strong>Anonymization לפני ניתוח.</strong> אם הדוח לא דורש שם — אל תכלול שם. אם הדוח לא דורש תאריך לידה מדויק — כלול רק עשור.</div>
+  </div>
+
+  <!-- BI IMPLICATIONS -->
+  <div class="card bi-link">
+    <div class="slide-ctx">שקף 8 מתוך 9 · תחנה 9</div>
+    <div class="card-badge">📊 מה זה אומר לאנליסט BI</div>
+    <div class="card-title">Governance הוא חלק מהעבודה שלך</div>
+    <div class="card-text">אנליסט BI שמתעלם מ-Governance סופו שבונה דוח על נתון שגוי, חושף מידע פרטי, או יוצר "גרסה" נוספת של "הכנסות" שמסבכת את הכל.</div>
+    <ul class="checklist">
+      <li><span class="chk-icon">✅</span><span><strong>לפני כל דוח:</strong> בדוק Data Catalog שה-field מוגדר ושיש בעלים.</span></li>
+      <li><span class="chk-icon">✅</span><span><strong>לפני JOIN:</strong> וודא ש-FK הוא תקין ושמוגדר ב-Catalog.</span></li>
+      <li><span class="chk-icon">✅</span><span><strong>לפני export:</strong> בדוק אם הנתון מכיל PII (Personally Identifiable Information).</span></li>
+      <li><span class="chk-icon">⛔</span><span><strong>אל תיצור שדות חדשים</strong> ב-DW ישירות. פנה ל-Data Steward לאישור.</span></li>
+      <li><span class="chk-icon">⛔</span><span><strong>אל תשנה הגדרת KPI</strong> קיים ללא עדכון Business Glossary. קנסרט KPI שנשבר בשקט.</span></li>
+    </ul>
+  </div>
+
+  <div class="card close">
+    <div class="slide-ctx">שקף 9 מתוך 9 · תחנה 9</div>
+    <div class="card-badge">🔁 סגירת לולאה</div>
+    <div class="card-title">חזרה לישיבת ההנהלה</div>
+    <div class="card-text">אם ב-Wolt היה Business Glossary מוסכם — "הכנסות = עסקאות שהושלמו בלבד, נוכח ביטולים, לפי תאריך חיוב" — שלושת המנהלים היו מגיעים עם אותו מספר.</div>
+    <div class="key purple">Governance = לא ממשל. ממשל = מי מחליט מה מדדים, לא מי בונה את הצינור. 🏛️</div>
+  </div>
+
+  <div class="tool-box"><div class="tool-label">🛠️ הכלי האמיתי בתעשייה</div><p><strong>Alation / Collibra</strong> — Data Catalog מוביל לארגונים גדולים. <strong>dbt Docs</strong> — Data Catalog אוטומטי מהקוד של ה-ETL. <strong>Microsoft Purview</strong> — Catalog + Lineage + GDPR ב-Azure. <strong>Great Expectations</strong> — Data Quality testing framework לפני Load ל-DW.</p></div>
+
+  <div class="fail-card">
+    <div class="fail-label">💥 מה קורה כשזה נשבר — Cambridge Analytica, 2018</div>
+    <p>87 מיליון פרופילי Facebook הוצאו ממחקר אקדמי ל-profiling פוליטי. לא הייתה פגיעת אבטחה טכנית — הייתה כשל של Governance: לא הייתה מדיניות ברורה לשימוש בנתוני מחקר לצרכים מסחריים. Governance הוא לא חומת אש — הוא כלל.</p>
+  </div>
+
+  <div class="takeaway"><div class="takeaway-label">💡 מה לוקחים הביתה</div><ul>
+    <li>Governance = כללים + תפקידים + תהליכים. לא טכנולוגיה — תרבות ארגונית.</li>
+    <li>Data Catalog = ויקיפדיה של הנתונים. כל שדה = הגדרה + בעלים + דירוג איכות.</li>
+    <li>GDPR = Governance חוקי. BI אנליסט עובד עם Data Masking ו-Anonymization.</li>
+    <li>Business Glossary = מניע "Single Source of Truth". בלעדיו — כל צוות מחשב "הכנסות" אחרת.</li>
+  </ul></div>
+
+  <div class="discuss"><div class="discuss-label">💬 שאלות לדיון</div><ol>
+    <li>שני אנליסטים מחשבים "Churn Rate" ומקבלים 5% ו-12% לאותו חודש. ספר שלוש סיבות אפשריות.</li>
+    <li>Data Steward מכספים אומר "אל תשנה את הגדרת revenue_net". אנליסט BI אומר "ה-ETL טועה". מי מכריע ואיך?</li>
+    <li>חברה מוחקת לקוח לפי בקשת GDPR. כיצד זה משפיע על ה-DW ועל כל הדוחות ההיסטוריים שהשתמשו בנתוני הלקוח הזה?</li>
+  </ol></div>
+
+  <div class="nav-bottom"><button class="abtn" onclick="go(4)">המשך לתחנה 10 ←</button></div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- STATION 10: CLOUD BI ARCHITECTURE -->
+<!-- ============================================================ -->
+<section id="s4" class="section">
+  <div class="stn-badge">☁️ תחנה 10</div>
+  <h1 class="stn-title">ארכיטקטורת BI בענן — AWS, Azure, GCP</h1>
+  <p class="stn-desc">למה ארגונים עוברים מ-Data Center פיזי לענן, ואיך BI נראה כשהכל ב-Cloud.</p>
+
+  <!-- SLIDE 1 -->
+  <div class="card world">
+    <div class="slide-ctx">שקף 1 מתוך 8 · תחנה 10</div>
+    <div class="card-badge">🌍 עולם מוכר</div>
+    <div class="card-title">Black Friday: 100× תנועה בחנות שישה שעות ⚫</div>
+    <div class="card-text">חנות און-ליין תכננה לקניות Black Friday. הכינה שרתים לפי ממוצע יומי. בשעה 00:00 — תנועה גדלה פי 100. השרתים קרסו. 3 שעות ה-downtime = ₪2M הפסד.</div>
+    <div class="card-text">חברה שכנה בחרה AWS. ב-Black Friday — Cloud <strong>Auto-Scaled</strong> מ-10 שרתים ל-1,000 שרתים אוטומטית. ב-12:00 — חזרה ל-10. שילמה רק על 12 שעות של 1,000 שרתים.</div>
+    <div class="key blue">Cloud = Pay-as-you-go. תשלם רק כשאתה צורך. לא תשלם על שרתים שעומדים ריקים. ☁️</div>
+  </div>
+
+  <!-- SLIDE 2: ON-PREM vs CLOUD -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 2 מתוך 8 · תחנה 10</div>
+    <div class="card-badge">⚖️ On-Premises מול Cloud</div>
+    <div class="card-title">ארבעה מודלים של פריסת BI</div>
+    <div class="cloud-cards">
+      <div class="cloud-card onprem">
+        <div class="cloud-badge">🏢 On-Premises</div>
+        <h5>שרתים פיזיים בארגון</h5>
+        <p>כל חומרה בבעלות הארגון. BI Analytics SQL Server + SSRS על שרת בחדר ה-IT. עלות קבועה גבוהה, אבל שליטה מלאה. מתאים: ארגונים עם רגולציה קשה (ביטחון, בנקים).</p>
+      </div>
+      <div class="cloud-card hybrid">
+        <div class="cloud-badge">🔀 Hybrid Cloud</div>
+        <h5>חלק On-Prem, חלק בענן</h5>
+        <p>נתוני לקוחות רגישים = שרת פנימי. Analytics ודוחות = Snowflake בענן. חיבור ביניהם: VPN / Direct Connect. מתאים: רוב הארגונים הגדולים בישראל כיום.</p>
+      </div>
+      <div class="cloud-card cloud">
+        <div class="cloud-badge">☁️ Cloud Native</div>
+        <h5>הכל בענן</h5>
+        <p>OLTP: AWS RDS. ETL: AWS Glue. DW: Redshift / Snowflake. BI: Power BI Premium. Kafka: AWS MSK. כל שכבה managed service. עלות: variable, ללא capex. מתאים: סטארטאפים, scale-ups.</p>
+      </div>
+      <div class="cloud-card lakehouse">
+        <div class="cloud-badge">🏞️ Lakehouse Cloud</div>
+        <h5>Data Lakehouse מנוהל</h5>
+        <p>Databricks על AWS/Azure. S3 כאחסון. Delta Lake לאכיפת Schema. Power BI מחובר ישירות. שרות אנליטיקה שחוסך כל תחזוקת תשתית. מתאים: חברות Data-First גדולות.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: AWS STACK -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 3 מתוך 8 · תחנה 10</div>
+    <div class="card-badge">🔶 AWS BI Stack</div>
+    <div class="card-title">הסטאק המלא של BI ב-AWS — מ-Source ל-Dashboard</div>
+    <div class="svg-wrap">
+      <svg width="620" height="280" viewBox="0 0 620 280" xmlns="http://www.w3.org/2000/svg">
+        <!-- Layer Labels -->
+        <text x="15" y="45" fill="#64748b" font-family="Heebo" font-size="11" font-weight="700">שכבת מקור</text>
+        <text x="15" y="115" fill="#64748b" font-family="Heebo" font-size="11" font-weight="700">שכבת עיבוד</text>
+        <text x="15" y="185" fill="#64748b" font-family="Heebo" font-size="11" font-weight="700">שכבת אחסון</text>
+        <text x="15" y="255" fill="#64748b" font-family="Heebo" font-size="11" font-weight="700">שכבת הצגה</text>
+
+        <!-- Layer 1: Sources -->
+        <rect x="130" y="22" width="100" height="35" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+        <text x="180" y="44" fill="#92400e" font-family="Heebo" font-size="11" font-weight="800" text-anchor="middle">🗄️ RDS (OLTP)</text>
+        <rect x="250" y="22" width="100" height="35" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+        <text x="300" y="44" fill="#92400e" font-family="Heebo" font-size="11" font-weight="800" text-anchor="middle">📱 DynamoDB</text>
+        <rect x="370" y="22" width="100" height="35" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+        <text x="420" y="44" fill="#92400e" font-family="Heebo" font-size="11" font-weight="800" text-anchor="middle">📡 Kinesis (Stream)</text>
+
+        <!-- Arrows down -->
+        <line x1="180" y1="57" x2="230" y2="95" stroke="#94a3b8" stroke-width="2"/>
+        <line x1="300" y1="57" x2="300" y2="95" stroke="#94a3b8" stroke-width="2"/>
+        <line x1="420" y1="57" x2="370" y2="95" stroke="#94a3b8" stroke-width="2"/>
+
+        <!-- Layer 2: Processing -->
+        <rect x="200" y="92" width="200" height="35" rx="6" fill="#dbeafe" stroke="#3b82f6"/>
+        <text x="300" y="114" fill="#1d4ed8" font-family="Heebo" font-size="11" font-weight="800" text-anchor="middle">⚙️ AWS Glue (ETL Managed)</text>
+
+        <!-- Arrow down -->
+        <line x1="300" y1="127" x2="300" y2="162" stroke="#94a3b8" stroke-width="2"/>
+
+        <!-- Layer 3: Storage -->
+        <rect x="130" y="162" width="120" height="35" rx="6" fill="#d1fae5" stroke="#059669"/>
+        <text x="190" y="184" fill="#065f46" font-family="Heebo" font-size="11" font-weight="800" text-anchor="middle">🪣 S3 (Data Lake)</text>
+        <rect x="270" y="162" width="120" height="35" rx="6" fill="#d1fae5" stroke="#059669"/>
+        <text x="330" y="184" fill="#065f46" font-family="Heebo" font-size="11" font-weight="800" text-anchor="middle">🏭 Redshift (DW)</text>
+        <rect x="410" y="162" width="100" height="35" rx="6" fill="#d1fae5" stroke="#059669"/>
+        <text x="460" y="184" fill="#065f46" font-family="Heebo" font-size="11" font-weight="800" text-anchor="middle">📐 Athena (SQL)</text>
+
+        <!-- Arrows down -->
+        <line x1="190" y1="197" x2="250" y2="235" stroke="#94a3b8" stroke-width="2"/>
+        <line x1="330" y1="197" x2="310" y2="235" stroke="#94a3b8" stroke-width="2"/>
+        <line x1="460" y1="197" x2="380" y2="235" stroke="#94a3b8" stroke-width="2"/>
+
+        <!-- Layer 4: Presentation -->
+        <rect x="200" y="232" width="200" height="35" rx="6" fill="#ede9fe" stroke="#7c3aed"/>
+        <text x="300" y="254" fill="#5b21b6" font-family="Heebo" font-size="11" font-weight="800" text-anchor="middle">📊 Power BI / QuickSight</text>
+      </svg>
+    </div>
+    <div class="key orange">כל שכבה ב-AWS Managed Service = אין תחזוקת שרתים. AWS אחראית על Uptime. אתה משלם לפי שימוש. ☁️</div>
+  </div>
+
+  <!-- SLIDE 4: AZURE vs AWS vs GCP -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 4 מתוך 8 · תחנה 10</div>
+    <div class="card-badge">🔬 AWS מול Azure מול GCP</div>
+    <div class="card-title">איזה ענן לבחור לפרויקט BI?</div>
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>שכבה</th>
+          <th class="cmp-head-a">AWS</th>
+          <th class="cmp-head-b">Azure (Microsoft)</th>
+          <th class="cmp-head-c">GCP (Google)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>OLTP Database</strong></td><td>RDS (PostgreSQL/MySQL)</td><td>Azure SQL Database</td><td>Cloud SQL</td></tr>
+        <tr><td><strong>ETL Managed</strong></td><td>AWS Glue</td><td>Azure Data Factory</td><td>Dataflow (Apache Beam)</td></tr>
+        <tr><td><strong>Data Warehouse</strong></td><td>Redshift</td><td>Azure Synapse</td><td>BigQuery ⭐</td></tr>
+        <tr><td><strong>Data Lake</strong></td><td>S3 + Athena</td><td>ADLS + Synapse</td><td>GCS + BigQuery</td></tr>
+        <tr><td><strong>Streaming</strong></td><td>Kinesis</td><td>Event Hubs (Kafka API)</td><td>Pub/Sub</td></tr>
+        <tr><td><strong>BI Tool Native</strong></td><td>QuickSight</td><td>Power BI ⭐</td><td>Looker Studio</td></tr>
+        <tr><td><strong>ML Platform</strong></td><td>SageMaker</td><td>Azure ML</td><td>Vertex AI</td></tr>
+      </tbody>
+    </table>
+    <div class="hbox purple">💡 <strong>כלל BI:</strong> אם הארגון כבר ב-Microsoft 365 — Azure + Power BI הוא הבחירה הטבעית (אינטגרציה עמוקה, Single Sign-On). אם Cloud-Native ממאפס — BigQuery + Looker Studio נחשב מהיר לפריסה.</div>
+  </div>
+
+  <!-- SLIDE 5: COST EXPLOSION WARNING -->
+  <div class="fail-card">
+    <div class="fail-label">💥 מה קורה כשזה נשבר — "Cloud Bill Shock" אמיתי</div>
+    <p>סטארטאפ בנה Data Pipeline על Snowflake. Developer הרץ שאילתת טסט על כל הנתונים ההיסטוריים (10 שנים, 50TB) במקום על Sample. הריצה לקחה 6 שעות. <strong>עלות: $14,000 לריצה אחת.</strong></p>
+    <p>ב-Snowflake — אתה משלם לפי <strong>Compute Units × שעות ריצה</strong>. שאילתה שרצה 6 שעות על cluster גדול = $14K בלי הרגשה. ה-Credit Card נגמר — ולמחרת גילו.</p>
+    <div class="key red">Cloud BI = Pay-per-use. כל שאילתת BI שאתה מריץ עולה כסף. לעולם אל תרוץ על full table ללא LIMIT / partition filter בסביבת ייצור. 💸</div>
+  </div>
+
+  <!-- SLIDE 6: COST OPTIMIZATION -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 6 מתוך 8 · תחנה 10</div>
+    <div class="card-badge">💰 אופטימיזציית עלויות BI Cloud</div>
+    <div class="card-title">כיצד אנליסט BI חוסך עשרות אלפי דולרים בענן</div>
+    <div class="card-text">ב-Cloud, כל שאילתת Power BI שמריצה GROUP BY על 50M שורות = עשרות דולרים. צוות אנליסטים שמרענן דוחות ידנית כל שעה = אלפי דולרים לחודש.</div>
+    <div class="code"><pre><span class="cc">-- ❌ מרוץ על כל הנתונים — Snowflake יגבה לפי scan size</span>
+<span class="ck">SELECT</span> * <span class="ck">FROM</span> fact_orders <span class="cc">-- 50M rows!</span>
+
+<span class="cc">-- ✅ פילטר partition מפחית scan ב-99%</span>
+<span class="ck">SELECT</span> * <span class="ck">FROM</span> fact_orders
+<span class="ck">WHERE</span> order_year = <span class="cn">2024</span> <span class="cc">-- רק Partition 2024</span>
+  <span class="ck">AND</span> order_month = <span class="cn">6</span>
+
+<span class="cc">-- ✅ LIMIT בשאילתות פיתוח — לעולם לא SELECT * בייצור</span>
+<span class="ck">SELECT</span> * <span class="ck">FROM</span> fact_orders <span class="ck">LIMIT</span> <span class="cn">1000</span> <span class="cc">-- טסט בלבד</span></pre></div>
+    <ul class="blist">
+      <li>🗜️ <strong>Materialized Views</strong> — חישוב מראש של KPI נפוצים. Power BI קורא View מחושב, לא scan מחדש.</li>
+      <li>⏰ <strong>Scheduled Refresh</strong> — ריענון אוטומטי פעם ב-24 שעות, לא כל כניסת משתמש.</li>
+      <li>🏷️ <strong>Resource Tags</strong> — כל query מתויג לצוות. חשבון מפולח לפי מחלקה.</li>
+    </ul>
+  </div>
+
+  <!-- BI IMPLICATIONS -->
+  <div class="card bi-link">
+    <div class="slide-ctx">שקף 7 מתוך 8 · תחנה 10</div>
+    <div class="card-badge">📊 מה זה אומר לאנליסט BI</div>
+    <div class="card-title">אנליסט BI בסביבת Cloud — מה צריך לדעת</div>
+    <div class="two-col">
+      <div class="hbox teal">✅ <strong>Power BI Direct Query מול Import:</strong> Import = מביא נתונים ל-Power BI (שאילתה חד-פעמית). Direct Query = כל refresh = שאילתה חדשה ל-DW. Direct Query עלול לגרום לחשבון גבוה.</div>
+      <div class="hbox orange">⚠️ <strong>Connection Pooling:</strong> Snowflake גובה לפי Virtual Warehouse. אם 50 משתמשים מרעננים בו-זמנית — ייתכן ש-DW יצטרך לעלות לרמת Compute גדולה יותר.</div>
+    </div>
+    <div class="card-text">כשה-IT שואל אותך "כמה פעמים ביום מרנרן הדוח?" — הם לא שואלים כי הם סקרנים. הם מחשבים עלות Cloud. <strong>דוח שמתרנרן 100× ביום על 50M שורות = ₪5,000 לחודש.</strong></div>
+  </div>
+
+  <div class="card close">
+    <div class="slide-ctx">שקף 8 מתוך 8 · תחנה 10</div>
+    <div class="card-badge">🔁 סגירת לולאה</div>
+    <div class="card-title">חזרה ל-Black Friday</div>
+    <div class="card-text">בגלל Auto-Scaling, החנות השכנה לא רק שרדה את ה-Black Friday — בסיום האירוע, ה-BI של ה-Cloud הפיק ניתוח מלא של 12 שעות תוך 90 שניות ב-BigQuery.</div>
+    <div class="key blue">Cloud BI = גמיש, מדרגי, וזול לשגרה — אבל מסוכן כלכלית בלי Cost Optimization. ☁️💰</div>
+  </div>
+
+  <div class="tool-box"><div class="tool-label">🛠️ הכלי האמיתי בתעשייה</div><p><strong>AWS Cost Explorer</strong> — ניתוח עלויות Cloud לפי שירות. <strong>Snowflake Query Profile</strong> — מראה כמה Bytes נסרקו בשאילתה. <strong>Power BI Premium Per User</strong> — Licensing שמאפשר שאילתות ישירות ל-Snowflake. <strong>Azure Cost Management</strong> — תקציב + התראות לפי מחלקה.</p></div>
+
+  <div class="takeaway"><div class="takeaway-label">💡 מה לוקחים הביתה</div><ul>
+    <li>Cloud BI = Pay-per-query. כל SELECT עולה כסף. תמיד partition filter + LIMIT בפיתוח.</li>
+    <li>AWS / Azure / GCP — כל ענן מציע stack BI שלם. הבחירה תלויה ב-existing stack ולא בהעדפה.</li>
+    <li>Auto-Scaling = חברה משלמת רק על שימוש בפועל. אבל גם מקבלת "Cloud Bill Shock" ללא Guardrails.</li>
+    <li>Direct Query vs. Import ב-Power BI = החלטה כלכלית, לא רק טכנית.</li>
+  </ul></div>
+
+  <div class="discuss"><div class="discuss-label">💬 שאלות לדיון</div><ol>
+    <li>חברה ישראלית עם 50 עובדים משתמשת ב-Microsoft 365. איזה Cloud BI Stack תמליץ ומדוע?</li>
+    <li>Power BI מחובר ב-Direct Query ל-BigQuery. 200 עובדים פותחים את הדשבורד ב-09:00. מה קורה לעלות ה-Cloud?</li>
+    <li>מנהל מבקש "חשב Cohort Analysis על כל ההיסטוריה של 7 שנים" בסביבת Snowflake. מה תאמר לפני שמריצים?</li>
+  </ol></div>
+
+  <div class="nav-bottom"><button class="abtn" onclick="go(5)">המשך לתחנה 11 ←</button></div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- STATION 11: DATA MESH & SILOS -->
+<!-- ============================================================ -->
+<section id="s5" class="section">
+  <div class="stn-badge">🕸️ תחנה 11</div>
+  <h1 class="stn-title">Data Silos ו-Data Mesh — מלחמת הנתונים הארגוניים</h1>
+  <p class="stn-desc">כשכל מחלקה בונה מחסן נתונים שלה — ומה הארכיטקטורה שמנסה לפתור את זה.</p>
+
+  <!-- SLIDE 1 -->
+  <div class="card world">
+    <div class="slide-ctx">שקף 1 מתוך 7 · תחנה 11</div>
+    <div class="card-badge">🌍 עולם מוכר</div>
+    <div class="card-title">ארגון ב-2015: "כל צוות בונה BI שלו" 🏗️</div>
+    <div class="card-text">ב-Wolt של 2015, כל מחלקה בנתה Data מחסן משלה:</div>
+    <div class="silo-grid">
+      <div class="silo-box isolated">
+        <div class="silo-icon">💰</div>
+        <div class="silo-name">כספים</div>
+        <div class="silo-sys">SAP + Excel</div>
+      </div>
+      <div class="silo-box isolated">
+        <div class="silo-icon">📣</div>
+        <div class="silo-name">שיווק</div>
+        <div class="silo-sys">Salesforce Reports</div>
+      </div>
+      <div class="silo-box isolated">
+        <div class="silo-icon">🚚</div>
+        <div class="silo-name">תפעול</div>
+        <div class="silo-sys">Google Sheets</div>
+      </div>
+      <div class="silo-box isolated">
+        <div class="silo-icon">📱</div>
+        <div class="silo-name">מוצר</div>
+        <div class="silo-sys">Mixpanel + Amplitude</div>
+      </div>
+    </div>
+    <div class="key red">ארבעה מחסנים נפרדים, ארבעה הגדרות של "לקוח", ארבעה מספרים לכל שאלה. Central BI Team מבלה 80% מהזמן ב"בניית גשרים" בין מחסנים — לא בניתוח. 🌉</div>
+  </div>
+
+  <!-- SLIDE 2: CENTRAL DW ATTEMPT -->
+  <div class="card question">
+    <div class="slide-ctx">שקף 2 מתוך 7 · תחנה 11</div>
+    <div class="card-badge">🏛️ הניסיון: Central Data Warehouse</div>
+    <div class="card-title">פתרון ה-Central DW — ולמה הוא נכשל בארגונים גדולים</div>
+    <div class="card-text">הפתרון הקלאסי: צוות Data Engineering מרכזי שאוסף <strong>הכל</strong> למחסן אחד. כל צוות עובד מול DW אחד.</div>
+    <div class="two-col">
+      <div>
+        <div class="hbox green">✅ <strong>יתרונות:</strong><br>Single Source of Truth. ממשל מרכזי. שאילתות Cross-Domain קלות.</div>
+      </div>
+      <div>
+        <div class="hbox red">❌ <strong>כשלים בפועל:</strong><br>צוות Engineering מרכזי = צוואר בקבוק. כל בקשה שדה חדש מחכה 6 שבועות. Scale בלתי אפשרי בארגון של 500+ צוותים.</div>
+      </div>
+    </div>
+    <div class="card-text"><strong>דוגמה:</strong> Uber ב-2017 — צוות Data Eng מרכזי קיבל 600 בקשות pipeline פתוחות. ממוצע המתנה: 11 שבועות. צוותי מוצר הפסיקו לבקש ובנו ETL שלהם בצד.</div>
+  </div>
+
+  <!-- SLIDE 3: DATA MESH -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 3 מתוך 7 · תחנה 11</div>
+    <div class="card-badge">🕸️ Data Mesh — הפרדיגמה החדשה</div>
+    <div class="card-title">Data Mesh: הפצה של אחריות לנתונים</div>
+    <div class="card-text"><strong>Data Mesh</strong> (Zhamak Dehghani, 2019) = ארכיטקטורה שמפזרת אחריות על נתונים לצוותים הקרובים ביותר אל הנתון — <strong>Data Products</strong>.</div>
+    <div class="card-text">במקום צוות Engineering מרכזי שאחראי על הכל — כל Domain (כספים, שיווק, תפעול) הוא בעלים של ה-Data Product שלו ומחויב לתקני איכות מוסכמים.</div>
+
+    <div class="svg-wrap">
+      <svg width="580" height="220" viewBox="0 0 580 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Central Platform -->
+        <rect x="205" y="80" width="170" height="60" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+        <text x="290" y="108" fill="#38bdf8" font-family="Heebo" font-size="13" font-weight="900" text-anchor="middle">🌐 Self-Serve Platform</text>
+        <text x="290" y="126" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">Infra + Standards + Discovery</text>
+
+        <!-- Domain Products around center -->
+        <rect x="20" y="20" width="130" height="50" rx="8" fill="#dbeafe" stroke="#3b82f6"/>
+        <text x="85" y="46" fill="#1d4ed8" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">💰 Finance Domain</text>
+        <text x="85" y="61" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">בעלים: צוות כספים</text>
+
+        <rect x="430" y="20" width="130" height="50" rx="8" fill="#d1fae5" stroke="#059669"/>
+        <text x="495" y="46" fill="#065f46" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">📣 Marketing Domain</text>
+        <text x="495" y="61" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">בעלים: צוות שיווק</text>
+
+        <rect x="20" y="150" width="130" height="50" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+        <text x="85" y="176" fill="#6d28d9" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">🚚 Ops Domain</text>
+        <text x="85" y="191" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">בעלים: תפעול</text>
+
+        <rect x="430" y="150" width="130" height="50" rx="8" fill="#fff7ed" stroke="#f59e0b"/>
+        <text x="495" y="176" fill="#92400e" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">📱 Product Domain</text>
+        <text x="495" y="191" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">בעלים: מוצר</text>
+
+        <!-- Connections to center -->
+        <line x1="150" y1="45" x2="205" y2="100" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="430" y1="45" x2="375" y2="100" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="150" y1="175" x2="205" y2="140" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="430" y1="175" x2="375" y2="140" stroke="#cbd5e1" stroke-width="2"/>
+      </svg>
+    </div>
+
+    <div class="key green">Data Mesh = כל Domain בעל ה-Data Product שלו + תשתית משותפת + תקנים מוסכמים. כמו Microservices — אבל לנתונים. 🕸️</div>
+  </div>
+
+  <!-- SLIDE 4: DATA MESH PRINCIPLES -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 4 מתוך 7 · תחנה 11</div>
+    <div class="card-badge">🧩 4 עקרונות Data Mesh</div>
+    <div class="card-title">מה צוות BI Domain מתחייב לתת</div>
+    <div class="three-col">
+      <div style="background:#eff6ff;border-radius:10px;padding:16px;border:1px solid var(--border);">
+        <div style="font-size:24px;margin-bottom:8px;">🎯</div>
+        <div style="font-size:13px;font-weight:800;color:#1d4ed8;margin-bottom:6px;">Domain Ownership</div>
+        <p style="font-size:12px;color:var(--text2);">צוות כספים אחראי לכל Data Product כספי — כולל Quality, Documentation, SLA זמינות.</p>
+      </div>
+      <div style="background:#f0fdf4;border-radius:10px;padding:16px;border:1px solid var(--border);">
+        <div style="font-size:24px;margin-bottom:8px;">📦</div>
+        <div style="font-size:13px;font-weight:800;color:var(--green);margin-bottom:6px;">Data as a Product</div>
+        <p style="font-size:12px;color:var(--text2);">כל dataset מתופעל כמוצר: תיעוד, SLA, Versioning, APIs. אנליסט אחר יכול "לצרוך" בלי לדבר עם הצוות.</p>
+      </div>
+      <div style="background:#faf5ff;border-radius:10px;padding:16px;border:1px solid var(--border);">
+        <div style="font-size:24px;margin-bottom:8px;">🌐</div>
+        <div style="font-size:13px;font-weight:800;color:var(--purple);margin-bottom:6px;">Self-Serve Platform</div>
+        <p style="font-size:12px;color:var(--text2);">תשתית מרכזית שמאפשרת לכל Domain לבנות Pipeline ללא תלות ב-Engineering מרכזי.</p>
+      </div>
+    </div>
+    <div style="background:#fff7ed;border-radius:10px;padding:16px;border:1px solid var(--border);margin-top:14px;">
+      <div style="font-size:24px;margin-bottom:8px;">🔗</div>
+      <div style="font-size:13px;font-weight:800;color:var(--orange);margin-bottom:6px;">Federated Governance — ממשל מבוזר</div>
+      <p style="font-size:12px;color:var(--text2);">תקנים גלובליים (GDPR, Data Quality scores, Schema standards) נאכפים מרכזית — אבל כל Domain מיישם. לא בוס מרכזי אחד שמאשר כל שדה.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: BI IN MESH -->
+  <div class="card bi-link">
+    <div class="slide-ctx">שקף 5 מתוך 7 · תחנה 11</div>
+    <div class="card-badge">📊 מה זה אומר לאנליסט BI</div>
+    <div class="card-title">BI אנליסט ב-Data Mesh — בעלים של Product</div>
+    <div class="card-text">בארגון שמאמץ Data Mesh — BI אנליסט בצוות שיווק הוא <strong>בעלים</strong> של ה-Data Product של שיווק. הוא לא רק "מוציא דוחות" — הוא מתחייב ל-SLA ואיכות של ה-dataset של הצוות שלו.</div>
+    <div class="two-col">
+      <div class="hbox teal">✅ <strong>יתרון BI:</strong> אנליסט שיווק יכול לגשת ל-Finance Domain Product ישירות דרך Catalog — ללא בקשה מ-Engineering. Self-Serve = עצמאות.</div>
+      <div class="hbox orange">⚠️ <strong>אתגר BI:</strong> אנליסט שיווק חייב לתעד כל שדה, לשמור SLA, לנהל Data Quality לבד. זה עבודה נוספת שהייתה בעבר של DBA.</div>
+    </div>
+  </div>
+
+  <div class="card close">
+    <div class="slide-ctx">שקף 7 מתוך 7 · תחנה 11</div>
+    <div class="card-badge">🔁 סגירת לולאה</div>
+    <div class="card-title">חזרה ל-Wolt</div>
+    <div class="card-text">Wolt של 2024 = Data Mesh. צוות כספים מחזיק Data Product "<code>finance.revenue_net</code>". צוות שיווק מחזיק "<code>marketing.customer_segments</code>". BI אנליסטים גולשים ב-Data Catalog ומחברים Data Products בלי לחכות שבועות.</div>
+    <div class="key teal">Data Mesh = Scale ארגוני. מתאים לארגון מעל 50 צוותי Engineering. מתחת לזה — Central DW מספיק ועדיף. 🕸️</div>
+  </div>
+
+  <div class="tool-box"><div class="tool-label">🛠️ הכלי האמיתי בתעשייה</div><p><strong>Atlan</strong> — Data Catalog שנועד ל-Data Mesh. <strong>DataHub (LinkedIn)</strong> — Open source Data Catalog עם lineage. <strong>Starburst / Trino</strong> — Query Federation על מרובי מחסנים. <strong>dbt Mesh</strong> — Multi-project dbt שמממש Data Products.</p></div>
+
+  <div class="fail-card">
+    <div class="fail-label">💥 מה קורה כשזה נשבר — Data Mesh בלי Governance</div>
+    <p>חברה אימצה Data Mesh אבל לא הגדירה תקנים גלובליים. צוות כספים הגדיר <code>customer_id</code> כ-INTEGER, צוות שיווק — כ-VARCHAR. כשניסו Cross-Domain JOIN — שגיאת type. 3 חודשי migration לאיחוד Schema. הפיתוח נעצר.</p>
+  </div>
+
+  <div class="takeaway"><div class="takeaway-label">💡 מה לוקחים הביתה</div><ul>
+    <li>Data Silos = כל מחלקה עם BI שלה = אין "Single Source of Truth".</li>
+    <li>Central DW = מרכזי ומסודר, אבל bottleneck בארגונים גדולים.</li>
+    <li>Data Mesh = כל Domain = Data Product עצמאי + תשתית משותפת + ממשל מבוזר.</li>
+    <li>BI אנליסט ב-Mesh = בעלים של Data Product, לא רק צרכן.</li>
+  </ul></div>
+
+  <div class="discuss"><div class="discuss-label">💬 שאלות לדיון</div><ol>
+    <li>חברה של 20 עובדים שוקלת Data Mesh. האם זה הגיוני? מה תמליץ?</li>
+    <li>ב-Data Mesh, מי אחראי כשה-Finance Data Product מכיל שגיאות? DBA מרכזי? מנהל כספים? המשתמש שגילה?</li>
+    <li>Cross-Domain Join בין Finance Domain לMarketing Domain — אילו שאלות BI ניתן לענות שלא היו אפשריות ב-Silo?</li>
+  </ol></div>
+
+  <div class="nav-bottom"><button class="abtn" onclick="go(6)">המשך לתחנה 12 ←</button></div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- STATION 12: DATA LINEAGE & LIFECYCLE -->
+<!-- ============================================================ -->
+<section id="s6" class="section">
+  <div class="stn-badge">🧬 תחנה 12</div>
+  <h1 class="stn-title">מחזור חיי הנתון ו-Data Lineage</h1>
+  <p class="stn-desc">מאיפה בא המספר בדשבורד שלך — ואיך מוצאים שגיאה כשמספר אחד שגוי בשרשרת ארוכה.</p>
+
+  <!-- SLIDE 1 -->
+  <div class="card world">
+    <div class="slide-ctx">שקף 1 מתוך 8 · תחנה 12</div>
+    <div class="card-badge">🌍 עולם מוכר</div>
+    <div class="card-title">KPI שגוי — ואיש לא יודע מאיפה הגיע 🔍</div>
+    <div class="card-text">BI אנליסט ב-Wolt בוחן דוח הכנסות ומגלה: <strong>הכנסות ספטמבר נמוכות ב-23% ביחס לתחזית</strong>. המנהל שואל: "מאיפה בא המספר הזה?" — ואין לאנליסט תשובה. השאילתה ב-Power BI מושכת מ-Snowflake. Snowflake מלא ב-dbt models. dbt ה-models מושכים מ-Kafka. ואיפה נוצרה השגיאה?</div>
+    <div class="key red">בלי Data Lineage — מעקב אחרי שגיאה בנתון הוא כמו לחפש עמוד ספציפי בספרייה ללא אינדקס. 🔎</div>
+  </div>
+
+  <!-- SLIDE 2: LINEAGE CONCEPT -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 2 מתוך 8 · תחנה 12</div>
+    <div class="card-badge">🧬 Data Lineage — "עץ היוחסין" של הנתון</div>
+    <div class="card-title">מה זה Data Lineage ואיך זה נראה בפועל</div>
+    <div class="card-text">Data Lineage = תיעוד מלא של נסיעת הנתון: ממקורו, דרך כל טרנספורמציה, עד לדשבורד. כמו "עץ משפחה" של המספר.</div>
+
+    <div class="lineage-row">
+      <div class="lin-node src">📱 Wolt App Events</div>
+      <div class="lin-arrow">→</div>
+      <div class="lin-node stg">🚌 Kafka Topic<br>wolt.orders</div>
+      <div class="lin-arrow">→</div>
+      <div class="lin-node stg">🪣 S3 Raw<br>orders/2024/09/</div>
+      <div class="lin-arrow">→</div>
+      <div class="lin-node dwh">⚙️ dbt Model<br>stg_orders</div>
+      <div class="lin-arrow">→</div>
+      <div class="lin-node dwh">⚙️ dbt Model<br>fact_orders</div>
+      <div class="lin-arrow">→</div>
+      <div class="lin-node rpt">❄️ Snowflake<br>Table</div>
+      <div class="lin-arrow">→</div>
+      <div class="lin-node dash">📊 Power BI<br>KPI Revenue</div>
+    </div>
+
+    <div class="card-text">אם <strong>Kafka Topic</strong> החסיר events בספטמבר (למשל — maintenance window) — כל שאר השרשרת תציג -23%. Lineage מאפשר לנו <strong>לדחוף את הבעיה לאחור</strong> לנקודת הכשל האמיתית.</div>
+  </div>
+
+  <!-- SLIDE 3: LIFECYCLE STAGES -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 3 מתוך 8 · תחנה 12</div>
+    <div class="card-badge">♻️ מחזור חיי נתון</div>
+    <div class="card-title">6 שלבים — מיצירה למחיקה</div>
+
+    <table class="dtable">
+      <thead>
+        <tr><th>שלב</th><th>תיאור</th><th>מי אחראי</th><th>GDPR רלוונטי</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1. יצירה</strong></td><td>נתון נכתב בפעם הראשונה — OLTP, API, Form</td><td>Application Dev</td><td>✅ חובה לרשום Legal Basis</td></tr>
+        <tr><td><strong>2. עיבוד</strong></td><td>ETL Transform, Cleaning, Enrichment</td><td>Data Engineer</td><td>⚠️ Anonymization אם רלוונטי</td></tr>
+        <tr><td><strong>3. אחסון</strong></td><td>DW, Lake, Lakehouse</td><td>Data Architect</td><td>✅ Encryption at Rest</td></tr>
+        <tr><td><strong>4. שימוש</strong></td><td>BI Analytics, ML, Reporting</td><td>BI Analyst / DS</td><td>⚠️ Role-Based Access Only</td></tr>
+        <tr><td><strong>5. ארכיב</strong></td><td>נתון ישן מועבר ל-Cold Storage (S3 Glacier)</td><td>Data Engineer</td><td>✅ Retention Policy</td></tr>
+        <tr class="err-row"><td><strong>6. מחיקה</strong></td><td>נתון נמחק לפי מדיניות שמירה / GDPR Request</td><td>Data Owner</td><td>✅ חובה לתעד מחיקה</td></tr>
+      </tbody>
+    </table>
+
+    <div class="hbox orange">⚠️ <strong>שלב 5 — Cold Storage:</strong> נתוני Wolt מ-2017 עדיין נשמרים ב-S3 Glacier ב-₪0.004/GB/חודש (במקום ₪0.023 ב-Standard). אם אנליסט צריך נתוני 2017 — הם קיימים, אבל בקשת retrieval עולה כסף ולוקחת שעות.</div>
+  </div>
+
+  <!-- SLIDE 4: LINEAGE DEBUGGING SIM -->
+  <div class="sim-card">
+    <h4>🧪 סימולטור Data Lineage Debug — "למה KPI Revenue נפל?"</h4>
+    <p>הרץ כל בדיקה לאורך שרשרת ה-Lineage כדי לאתר את נקודת הכשל:</p>
+    <div class="sim-btns">
+      <button class="sbtn sbtn-blue" onclick="debugLineage(1)">🔍 בדוק: Kafka — האם Events חסרים?</button>
+      <button class="sbtn sbtn-teal" onclick="debugLineage(2)">🔍 בדוק: S3 — האם Parquet Files קיימים?</button>
+      <button class="sbtn sbtn-green" onclick="debugLineage(3)">🔍 בדוק: dbt stg_orders — Data Quality?</button>
+    </div>
+    <div id="lineage-out" style="margin-top:16px;padding:16px;background:#0b0f19;border-radius:8px;min-height:90px;font-size:13px;color:#e2e8f0;font-family:monospace;white-space:pre-wrap;">
+בחר שלב לבדיקה...</div>
+  </div>
+
+  <!-- SLIDE 5: IMPACT ANALYSIS -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 5 מתוך 8 · תחנה 12</div>
+    <div class="card-badge">💥 Impact Analysis — מה נשבר אם X השתנה?</div>
+    <div class="card-title">Upstream vs. Downstream — שינוי שמרסק דשבורדים</div>
+    <div class="card-text">Data Lineage פועלת בשני כיוונים: <strong>Upstream</strong> (מאיפה הגיע?) ו-<strong>Downstream</strong> (מי תלוי בנתון הזה?).</div>
+    <div class="two-col">
+      <div>
+        <div class="hbox" style="margin-bottom:8px;"><strong>Upstream Analysis</strong> 🔺</div>
+        <p style="font-size:13px;color:var(--text2);">KPI נמוך → חפש Upstream → מצא שגיאה ב-ETL → מצא שגיאה ב-Source → תקן מקור.</p>
+        <p style="font-size:13px;color:var(--text2);margin-top:8px;">שאלה: "מאיפה המספר הזה?"</p>
+      </div>
+      <div>
+        <div class="hbox red" style="margin-bottom:8px;"><strong>Downstream Impact Analysis</strong> ⬇️</div>
+        <p style="font-size:13px;color:var(--text2);">שינוי Schema ב-orders table → מי נשבר Downstream? 5 dbt models? 3 Power BI datasets? 2 Airflow DAGs? <strong>Lineage מראה הכל לפני השינוי.</strong></p>
+        <p style="font-size:13px;color:var(--text2);margin-top:8px;">שאלה: "מה ייפגע אם אשנה זאת?"</p>
+      </div>
+    </div>
+    <div class="key green">Downstream Analysis = כלי להכרחי לפני כל שינוי Schema בייצור. בלעדיו — אתה עיוור לנזק שאתה עומד לגרום. 🎯</div>
+  </div>
+
+  <!-- CODE: LINEAGE IN DBT -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 6 מתוך 8 · תחנה 12</div>
+    <div class="card-badge">💻 Lineage בפועל — dbt</div>
+    <div class="card-title">כיצד dbt מייצר Lineage אוטומטי</div>
+    <div class="card-text">בכל model ב-dbt — מגדירים מאיפה מגיע הנתון ב-<code>ref()</code>. dbt בונה Graph אוטומטי.</div>
+    <div class="code"><pre><span class="cc">-- models/mart/finance/revenue_monthly.sql</span>
+<span class="cc">-- dbt יודע: model זה תלוי ב-fact_orders שתלוי ב-stg_orders שתלוי ב-raw_events</span>
+
+<span class="ck">SELECT</span>
+  DATE_TRUNC(<span class="cs">'month'</span>, order_date) <span class="ck">AS</span> month,
+  SUM(amount_usd) <span class="ck">AS</span> revenue_usd
+<span class="ck">FROM</span> {{ <span class="cy">ref</span>(<span class="cs">'fact_orders'</span>) }}  <span class="cc">-- ← dbt מקשר אוטומטית</span>
+<span class="ck">WHERE</span> status = <span class="cs">'completed'</span>
+<span class="ck">GROUP BY</span> <span class="cn">1</span>;
+
+<span class="cc">-- כשמריצים: dbt docs generate</span>
+<span class="cc">-- נוצר Graph ויזואלי מלא של כל התלויות</span>
+<span class="cc">-- ניתן לראות: raw → stg → fact → mart → Power BI</span></pre></div>
+    <div class="hbox teal">💡 <strong>dbt docs serve</strong> — פקודה שמרימה אתר Lineage Graph מקומי. כל Data Analyst יכול לגלוש ולראות בדיוק מה תלוי במה — בלי לדבר עם Engineering.</div>
+  </div>
+
+  <!-- BI IMPLICATIONS -->
+  <div class="card bi-link">
+    <div class="slide-ctx">שקף 7 מתוך 8 · תחנה 12</div>
+    <div class="card-badge">📊 מה זה אומר לאנליסט BI</div>
+    <div class="card-title">Lineage הוא כלי הדיבוג הראשי שלך</div>
+    <div class="card-text">כשמנהל אומר "המספר שגוי" — לפני שאתה בודק את ה-SQL של Power BI, בדוק את Lineage Graph. <strong>80% מהשגיאות קורות Upstream</strong> — ב-ETL, ב-dbt model, או ב-Source — לא ב-Power BI.</div>
+    <ul class="checklist">
+      <li><span class="chk-icon">🔍</span><span>פתח dbt Docs ובדוק מאיפה מגיעה הטבלה שנמשכת ב-Power BI.</span></li>
+      <li><span class="chk-icon">🔍</span><span>בדוק את ה-dbt test results של ה-model — האם עבר Data Quality checks?</span></li>
+      <li><span class="chk-icon">🔍</span><span>בדוק את Airflow DAG — האם ה-ETL רץ בהצלחה אמש?</span></li>
+      <li><span class="chk-icon">🔍</span><span>בדוק Source Freshness — מתי עודכן הנתון ב-OLTP לאחרונה?</span></li>
+      <li><span class="chk-icon">⛔</span><span>אל תתחיל מה-DAX של Power BI. זה הסוף של השרשרת — לא הסיבה.</span></li>
+    </ul>
+  </div>
+
+  <div class="card close">
+    <div class="slide-ctx">שקף 8 מתוך 8 · תחנה 12</div>
+    <div class="card-badge">🔁 סגירת לולאה</div>
+    <div class="card-title">חזרה ל-KPI שנפל</div>
+    <div class="card-text">אנליסט Wolt פתח dbt Docs, עקב Lineage אחורה, וגילה: Kafka maintenance window ב-3:00-5:00 לילה = 2 שעות events חסרים. הכנסות ספטמבר נמוכות ב-2 שעות של מכירות, לא ב-23% ממשי. לאחר תיקון ב-Source — הנתון תוקן.</div>
+    <div class="key teal">Data Lineage = GPS לדיבוג נתונים. בלעדיו אתה מנחש. עמו — אתה מוצא. 🗺️</div>
+  </div>
+
+  <div class="tool-box"><div class="tool-label">🛠️ הכלי האמיתי בתעשייה</div><p><strong>dbt Lineage Graph</strong> — Lineage אוטומטי מ-ref() בקוד. <strong>Microsoft Purview</strong> — Lineage מקצה לקצה על Azure. <strong>OpenLineage</strong> — סטנדרט פתוח ל-Lineage metadata. <strong>Marquez</strong> — Open source Lineage tracking. <strong>DataHub (LinkedIn)</strong> — Lineage + Catalog בקוד פתוח.</p></div>
+
+  <div class="fail-card">
+    <div class="fail-label">💥 מה קורה כשזה נשבר — Target vs. hackers, 2013 (Lineage וגישה)</div>
+    <p>בסיס הנתונים של Target נפרץ ב-2013. 40 מיליון כרטיסי אשראי נגנבו. הסיבה: Vendor HVAC קיבל גישה לרשת, ומשם — למערכת נתוני הלקוחות. לא הייתה מפת Lineage ברורה של מי גישה למה. Security team לא ידע שספק-צד-ג' מחובר ל-Production DB. <strong>גניבה נמשכה 17 ימים לפני שהתגלתה.</strong></p>
+  </div>
+
+  <div class="takeaway"><div class="takeaway-label">💡 מה לוקחים הביתה</div><ul>
+    <li>Data Lineage = מעקב מלא מ-Source ל-Dashboard. כמו GPS לדיבוג.</li>
+    <li>Upstream = מאיפה המספר הגיע. Downstream = מה ייפגע אם אשנה.</li>
+    <li>dbt ref() = Lineage אוטומטי. כל model מצהיר על התלויות שלו.</li>
+    <li>80% מהשגיאות ב-BI הן Upstream — לא ב-Power BI, אלא ב-ETL, dbt, או Source.</li>
+  </ul></div>
+
+  <div class="discuss"><div class="discuss-label">💬 שאלות לדיון</div><ol>
+    <li>DBA רוצה לשנות עמודה מ-INTEGER לBIGINT. איך Downstream Analysis עוזר לו לדעת מה ייפגע?</li>
+    <li>נתון שנוצר ב-2019 כבר ב-S3 Glacier. מנהל מבקש ניתוח רטרואקטיבי. מה תסביר לו על התהליך?</li>
+    <li>GDPR Right to Erasure — לקוח מבקש מחיקת נתוניו. נתוניו מופיעים ב-5 טבלאות שונות ב-DW. כיצד Lineage עוזר לאתר את כולן?</li>
+  </ol></div>
+
+  <div class="nav-bottom"><button class="abtn" onclick="go(7)">המשך לתחנה 13 ←</button></div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- STATION 13: BI IN THE ORGANIZATION -->
+<!-- ============================================================ -->
+<section id="s7" class="section">
+  <div class="stn-badge">🏢 תחנה 13</div>
+  <h1 class="stn-title">BI בארגון — תפקידים, נתיבי קריירה, ועתיד המקצוע</h1>
+  <p class="stn-desc">מי עושה מה בצוות נתונים מודרני, איך נראה יום עבודה אמיתי — ואיפה AI משנה את התמונה.</p>
+
+  <!-- SLIDE 1 -->
+  <div class="card world">
+    <div class="slide-ctx">שקף 1 מתוך 8 · תחנה 13</div>
+    <div class="card-badge">🌍 עולם מוכר</div>
+    <div class="card-title">יום ראשון בעבודה — "תהיה Analytics"  🤷</div>
+    <div class="card-text">ראיון עבודה: "אתה תהיה ה-BI שלנו". יום ראשון: בוס שואל "אפשר לקבל דוח מכירות השבוע?" — אתה מגלה שאין DW, יש Access של 2009, ואחד מקבצי ה-CSV נקרא <code>data_REAL_final_v3_USE_THIS.csv</code>.</div>
+    <div class="key orange">המציאות של BI בארגונים: לפעמים אתה Data Engineer, אנליסט, Governance officer ואפילו DBA — הכל ביחד. 🎭</div>
+  </div>
+
+  <!-- SLIDE 2: ROLES -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 2 מתוך 8 · תחנה 13</div>
+    <div class="card-badge">👥 6 תפקידי הנתונים המרכזיים</div>
+    <div class="card-title">מי עושה מה — ואיפה BI Analyst ממוקם</div>
+    <div class="role-cards">
+      <div class="role-card eng">
+        <div class="role-icon">🔧</div>
+        <div class="role-title">Data Engineer</div>
+        <p><strong>בונה את הצינור.</strong> כותב ETL, מנהל Kafka, מפעיל Airflow. SQL + Python + Spark. שפת: "הנתון <em>מגיע</em> אל".</p>
+      </div>
+      <div class="role-card ana">
+        <div class="role-icon">📊</div>
+        <div class="role-title">BI / Data Analyst</div>
+        <p><strong>בונה את ה-insights.</strong> SQL + Power BI/Tableau. מגשר בין הנתון לעסק. שפת: "הנתון <em>אומר</em> ש-".</p>
+      </div>
+      <div class="role-card sci">
+        <div class="role-icon">🤖</div>
+        <div class="role-title">Data Scientist</div>
+        <p><strong>בונה מודלים.</strong> Python + ML + Statistics. עובד עם נתונים גולמיים מה-Lake. שפת: "הנתון <em>מנבא</em>".</p>
+      </div>
+      <div class="role-card gov">
+        <div class="role-icon">🏛️</div>
+        <div class="role-title">Data Architect</div>
+        <p><strong>מתכנן את הארכיטקטורה.</strong> מחליט DW vs Lake vs Mesh. לא בונה — מוביל. שפת: "הנתון <em>יאוחסן</em> ב-".</p>
+      </div>
+      <div class="role-card owner">
+        <div class="role-icon">👔</div>
+        <div class="role-title">Analytics Engineer</div>
+        <p><strong>גשר בין Eng לAnalyst.</strong> כותב dbt, מנהל DW layer, מגדיר Business Logic. שפת: "הנתון <em>מחושב כ-</em>".</p>
+      </div>
+      <div class="role-card exec">
+        <div class="role-icon">🎯</div>
+        <div class="role-title">Chief Data Officer</div>
+        <p><strong>מוביל אסטרטגיה.</strong> Data Governance, Monetization, AI Strategy. שפת: "הנתון <em>שווה</em> ל-".</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: TYPICAL WORKDAY -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 3 מתוך 8 · תחנה 13</div>
+    <div class="card-badge">📅 יום עבודה טיפוסי</div>
+    <div class="card-title">BI Analyst ב-Wolt — יום שני, 09:00</div>
+    <table class="dtable">
+      <thead>
+        <tr><th>שעה</th><th>פעילות</th><th>כלי</th><th>מה לומדים כאן</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>09:00</td><td>בדיקת Airflow — האם ETL לילי רץ?</td><td>Apache Airflow</td><td>תחנה 5 (ETL)</td></tr>
+        <tr><td>09:30</td><td>דוח יומי: KPI Revenue, Orders, Churn</td><td>Power BI</td><td>תחנה 3 (Star Schema)</td></tr>
+        <tr><td>10:00</td><td>Slack: "הכנסות נמוכות ב-15% — מה קרה?"</td><td>dbt Lineage</td><td>תחנה 12 (Lineage)</td></tr>
+        <tr><td>11:00</td><td>Debug: גילה שנתוני Kafka חסרים 2 שעות</td><td>Kafka Monitoring</td><td>תחנה 8 (Streaming)</td></tr>
+        <tr><td>13:00</td><td>בניית דוח חדש: Cohort Analysis לשיווק</td><td>Snowflake + Power BI</td><td>תחנה 4 (OLAP)</td></tr>
+        <tr><td>15:00</td><td>עדכון Data Catalog — שדה חדש ב-DW</td><td>Collibra</td><td>תחנה 9 (Governance)</td></tr>
+        <tr><td>16:30</td><td>Copilot Draft SQL review — לפני שמציגים</td><td>Power BI Copilot</td><td>תחנה 6 (AI SQL)</td></tr>
+        <tr><td>17:30</td><td>Cost review — שאילתות יקרות ב-Snowflake</td><td>Snowflake Cost Monitor</td><td>תחנה 10 (Cloud Cost)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SLIDE 4: SENIORITY LEVELS -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 4 מתוך 8 · תחנה 13</div>
+    <div class="card-badge">📈 נתיבי קריירה BI</div>
+    <div class="card-title">מ-Junior ל-CDO — מה הציפיות בכל רמה</div>
+    <table class="dtable">
+      <thead>
+        <tr><th>רמה</th><th>ניסיון</th><th>כישורים נדרשים</th><th>אחריות עיקרית</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Junior BI Analyst</strong></td><td>0–2 שנים</td><td>SQL בסיסי, Excel, Power BI</td><td>דוחות Ad-Hoc, תחזוקת דשבורדים קיימים</td></tr>
+        <tr><td><strong>BI Analyst</strong></td><td>2–4 שנים</td><td>SQL מתקדם, Star Schema, ETL בסיסי</td><td>בניית מדדים, דשבורדים עצמאיים, Data Catalog</td></tr>
+        <tr><td><strong>Senior BI Analyst</strong></td><td>4–7 שנים</td><td>dbt, Snowflake, Governance, Python בסיסי</td><td>ארכיטקטורת DW domain, Lineage, Data Quality</td></tr>
+        <tr><td><strong>Analytics Engineer</strong></td><td>3–6 שנים</td><td>dbt מתקדם, Spark, Data Mesh</td><td>Business Logic Layer, Data Products, dbt Models</td></tr>
+        <tr><td><strong>Head of BI / BI Manager</strong></td><td>7+ שנים</td><td>ניהול, אסטרטגיה, Vendor Management</td><td>בניית צוות, RFP כלים, Governance Policy</td></tr>
+        <tr><td><strong>CDO</strong></td><td>12+ שנים</td><td>אסטרטגיה, GDPR, M&A Data Due Diligence</td><td>Data as Asset — איך הנתון מייצר ערך עסקי</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SLIDE 5: AI IMPACT ON BI -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 5 מתוך 8 · תחנה 13</div>
+    <div class="card-badge">🤖 AI ו-BI — מה באמת משתנה</div>
+    <div class="card-title">AI מחליף מה ב-BI — ומה הוא לא יכול לעשות</div>
+
+    <div class="two-col">
+      <div>
+        <div class="hbox red"><strong>🤖 AI כבר עושה (או יעשה תוך 2-3 שנים):</strong></div>
+        <ul class="blist">
+          <li>כתיבת SQL פשוט לפי שאלה בשפה חופשית</li>
+          <li>זיהוי אנומליות אוטומטי ב-KPI</li>
+          <li>יצירת דשבורד בסיסי מ-Schema בלבד</li>
+          <li>תיעוד אוטומטי של ETL code</li>
+          <li>תמצות דוחות ל-Executive Summary</li>
+        </ul>
+      </div>
+      <div>
+        <div class="hbox green"><strong>👨‍💼 מה BI אנליסט יעשה שAI לא יכול:</strong></div>
+        <ul class="blist">
+          <li>להבין ה-Context העסקי — "Revenue" = מה בחברה הספציפית?</li>
+          <li>לוודא שה-SQL שנוצר הגיוני עסקית, לא רק תקין</li>
+          <li>להחליט אילו מדדים <em>חשובים</em> לדשבורד המנהל</li>
+          <li>לנהל Governance ולשכנע בעלים לאמץ הגדרות</li>
+          <li>לבנות אמון של מנהלים בנתונים לאורך זמן</li>
+        </ul>
+      </div>
+    </div>
+    <div class="key green">BI + AI = BI אנליסט שיודע לנהל AI. לא BI אנליסט שנהנה מבטלה. המיומנות הנדרשת: <strong>Prompt Engineering + Validation + Business Context</strong>. 🎯</div>
+  </div>
+
+  <!-- MATURITY MODEL -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 6 מתוך 8 · תחנה 13</div>
+    <div class="card-badge">📊 מודל בשלות BI</div>
+    <div class="card-title">5 רמות בשלות נתונים — איפה הארגון שלך?</div>
+
+    <div id="maturity-bars">
+      <div class="prog-item">
+        <div class="prog-label"><span>📝 רמה 1 — Descriptive: "מה קרה?"</span><span style="color:var(--muted);font-size:12px;">דוחות בסיסיים</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:100%;background:#64748b;"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-label"><span>📐 רמה 2 — Diagnostic: "למה זה קרה?"</span><span style="color:var(--muted);font-size:12px;">Drill-Down, Lineage</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:75%;background:var(--blue);"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-label"><span>🔮 רמה 3 — Predictive: "מה יקרה?"</span><span style="color:var(--muted);font-size:12px;">ML, Forecasting</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:50%;background:var(--teal);"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-label"><span>🤖 רמה 4 — Prescriptive: "מה לעשות?"</span><span style="color:var(--muted);font-size:12px;">AI Recommendations</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:25%;background:var(--purple);"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-label"><span>⚡ רמה 5 — Autonomous: "BI פועל בעצמו"</span><span style="color:var(--muted);font-size:12px;">AI Agent + Agentic BI</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:8%;background:var(--rose);"></div></div>
+      </div>
+    </div>
+    <div class="hbox orange" style="margin-top:16px;">⚠️ <strong>רוב הארגונים ב-2025 נמצאים ברמה 1–2.</strong> "Agentic BI" (רמה 5) — AI שמקבל החלטות ומוציא לפועל ללא אנליסט — קיים רק כניסוי. BI אנליסט אנושי יישאר רלוונטי לפחות עשור.</div>
+  </div>
+
+  <!-- INTERVIEW SIMULATOR -->
+  <div class="sim-card">
+    <h4>🧪 סימולטור ראיון לתפקיד BI Analyst — Wolt</h4>
+    <p>בחר שאלת ראיון וראה מה תשובה טובה כוללת:</p>
+    <div class="terminal">
+      <div class="term-head">
+        <div class="term-dots"><div class="tdot" style="background:#ef4444;"></div><div class="tdot" style="background:#f59e0b;"></div><div class="tdot" style="background:#10b981;"></div></div>
+        <span>Wolt BI Interview Simulator</span>
+        <span style="color:#10b981;">● LIVE</span>
+      </div>
+      <div style="padding:20px 24px;">
+        <div class="term-row">
+          <span class="term-prompt">❯</span>
+          <select id="ivsel" class="term-select" onchange="runInterview()">
+            <option value="">— בחר שאלת ראיון —</option>
+            <option value="sql">הסבר את ההבדל בין OLTP ל-OLAP ומתי תשתמש בכל אחד</option>
+            <option value="bug">KPI ב-Power BI הראה ירידה של 30% — מה תעשה ראשון?</option>
+            <option value="arch">מתי תבחר Data Lake על פני Data Warehouse?</option>
+          </select>
+        </div>
+        <div id="ivout" class="term-out">בחר שאלה לראות תשובה מדגמית...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSE -->
+  <div class="card close">
+    <div class="slide-ctx">שקף 8 מתוך 8 · תחנה 13</div>
+    <div class="card-badge">🎓 סגירת הקורס</div>
+    <div class="card-title">המסע שעברנו — מ-JSON עד ארגון הנתונים</div>
+    <div class="card-text">מתחנה 7 עד 13 — עברנו את כל השכבות: Lakehouse, Streaming, Governance, Cloud, Mesh, Lineage, וקריירה. בשילוב עם חלק א׳ (JSON, ACID, Star Schema, ETL, Text-to-SQL) — יש לך את מפת הדרכים המלאה של עולם BI מודרני.</div>
+
+    <div class="svg-wrap">
+      <svg width="680" height="130" viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg">
+        <line x1="40" y1="55" x2="640" y2="55" stroke="#cbd5e1" stroke-width="4"/>
+        <polygon points="638,49 652,55 638,61" fill="#94a3b8"/>
+        <!-- Part 1 nodes -->
+        <circle cx="40" cy="55" r="14" fill="#94a3b8"/>
+        <text x="40" y="60" fill="#fff" font-family="Heebo" font-size="10" font-weight="900" text-anchor="middle">1</text>
+        <text x="40" y="84" fill="#64748b" font-family="Heebo" font-size="9" text-anchor="middle">JSON</text>
+        <circle cx="95" cy="55" r="14" fill="#94a3b8"/>
+        <text x="95" y="60" fill="#fff" font-family="Heebo" font-size="10" font-weight="900" text-anchor="middle">2</text>
+        <text x="95" y="84" fill="#64748b" font-family="Heebo" font-size="9" text-anchor="middle">ACID</text>
+        <circle cx="150" cy="55" r="14" fill="#94a3b8"/>
+        <text x="150" y="60" fill="#fff" font-family="Heebo" font-size="10" font-weight="900" text-anchor="middle">3</text>
+        <text x="150" y="84" fill="#64748b" font-family="Heebo" font-size="9" text-anchor="middle">נרמול</text>
+        <circle cx="205" cy="55" r="14" fill="#94a3b8"/>
+        <text x="205" y="60" fill="#fff" font-family="Heebo" font-size="10" font-weight="900" text-anchor="middle">4</text>
+        <text x="205" y="84" fill="#64748b" font-family="Heebo" font-size="9" text-anchor="middle">OLAP</text>
+        <circle cx="260" cy="55" r="14" fill="#94a3b8"/>
+        <text x="260" y="60" fill="#fff" font-family="Heebo" font-size="10" font-weight="900" text-anchor="middle">5</text>
+        <text x="260" y="84" fill="#64748b" font-family="Heebo" font-size="9" text-anchor="middle">ETL</text>
+        <circle cx="315" cy="55" r="14" fill="#94a3b8"/>
+        <text x="315" y="60" fill="#fff" font-family="Heebo" font-size="10" font-weight="900" text-anchor="middle">6</text>
+        <text x="315" y="84" fill="#64748b" font-family="Heebo" font-size="9" text-anchor="middle">AI SQL</text>
+        <!-- Part 2 nodes -->
+        <circle cx="375" cy="55" r="14" fill="#0d9488"/>
+        <text x="375" y="60" fill="#fff" font-family="Heebo" font-size="10" font-weight="900" text-anchor="middle">7</text>
+        <text x="375" y="84" fill="#0f172a" font-family="Heebo" font-size="9" font-weight="700" text-anchor="middle">Lakehouse</text>
+        <circle cx="430" cy="55" r="14" fill="#0d9488"/>
+        <text x="430" y="60" fill="#fff" font-family="Heebo" font-size="10" font-weight="900" text-anchor="middle">8</text>
+        <text x="430" y="84" fill="#0f172a" font-family="Heebo" font-size="9" font-weight="700" text-anchor="middle">Streaming</text>
+        <circle cx="485" cy="55" r="14" fill="#0d9488"/>
+        <text x="485" y="60" fill="#fff" font-family="Heebo" font-size="10" font-weight="900" text-anchor="middle">9</text>
+        <text x="485" y="84" fill="#0f172a" font-family="Heebo" font-size="9" font-weight="700" text-anchor="middle">Governance</text>
+        <circle cx="537" cy="55" r="14" fill="#0d9488"/>
+        <text x="537" y="60" fill="#fff" font-family="Heebo" font-size="10" font-weight="900" text-anchor="middle">10</text>
+        <text x="537" y="84" fill="#0f172a" font-family="Heebo" font-size="9" font-weight="700" text-anchor="middle">Cloud</text>
+        <circle cx="585" cy="55" r="14" fill="#0d9488"/>
+        <text x="585" y="60" fill="#fff" font-family="Heebo" font-size="10" font-weight="900" text-anchor="middle">11</text>
+        <text x="585" y="84" fill="#0f172a" font-family="Heebo" font-size="9" font-weight="700" text-anchor="middle">Mesh</text>
+        <circle cx="633" cy="55" r="14" fill="#7c3aed"/>
+        <text x="633" y="60" fill="#fff" font-family="Heebo" font-size="10" font-weight="900" text-anchor="middle">13</text>
+        <text x="633" y="84" fill="#0f172a" font-family="Heebo" font-size="9" font-weight="700" text-anchor="middle">קריירה</text>
+        <!-- Labels above -->
+        <text x="178" y="28" fill="#94a3b8" font-family="Heebo" font-size="9" text-anchor="middle">חלק א׳</text>
+        <text x="505" y="28" fill="#0d9488" font-family="Heebo" font-size="10" font-weight="800" text-anchor="middle">חלק ב׳ ✅</text>
+      </svg>
+    </div>
+    <div class="key teal">מ-JSON שנשלח מטלפון ועד ל-Data Mesh ארגוני — עכשיו יש לך את השפה, הכלים, ועמדת הרציפות של BI מקצועי. 🎓</div>
+  </div>
+
+  <div class="tool-box"><div class="tool-label">🛠️ הכלי האמיתי לקריירה</div><p><strong>dbt Learn</strong> — קורס Analytics Engineering בחינם. <strong>Snowflake University</strong> — הסמכה ל-Snowflake BI. <strong>Microsoft Learn — Power BI</strong> — קורסי PL-300 (Power BI Data Analyst). <strong>Databricks Academy</strong> — Lakehouse + Spark Certification. <strong>DataTalks.Club</strong> — קהילת Data Engineering / Analytics בחינם.</p></div>
+
+  <div class="takeaway"><div class="takeaway-label">💡 מה לוקחים הביתה מהקורס המלא</div><ul>
+    <li>הארכיטקטורה השלמה: Source → OLTP → ETL → DW/Lakehouse → BI → Dashboard.</li>
+    <li>כל שכבה יש לה סיבה: ACID, נרמול, Star Schema, ETL, Lineage, Governance.</li>
+    <li>BI אנליסט = לא "מוציא דוחות". הוא מנהל שרשרת נתונים מורכבת ומוודא אמינות.</li>
+    <li>AI משנה <em>כלים</em>, לא <em>שיקול הדעת</em>. Business Context + Validation = ה-added value שלך.</li>
+  </ul></div>
+
+  <div class="discuss"><div class="discuss-label">💬 שאלות סיכום — לקראת הבחינה</div><ol>
+    <li>תאר את מסלול נתון "הזמנת המבורגר" מ-Wolt App ועד לדשבורד של מנהל תפעול — כולל כל שכבה שלמדנו.</li>
+    <li>BI אנליסט מגלה שיש לו גישה ישירה ל-Production DB. מה הסיכונים הארכיטקטוניים, העסקיים, והמשפטיים? מה הנוהל הנכון?</li>
+    <li>ארגון מ-500 עובדים שוקל: Central DW, Data Lake, Data Mesh, או Lakehouse. אילו שאלות תשאל לפני שתמליץ? מה הגורמים המכריעים?</li>
+  </ol></div>
+
+  <div class="nav-bottom"><button class="abtn" onclick="go(8)">המשך לתחנה 14 ←</button></div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- STATION 14: TABLEAU — BI PROCESS & TABLEAU PUBLIC          -->
+<!-- ============================================================ -->
+<section id="s8" class="section">
+  <div class="stn-badge">📊 תחנה 14</div>
+  <h1 class="stn-title">Tableau — שלבי הבינה העסקית והכלי שמחבר הכל</h1>
+  <p class="stn-desc">מהו התהליך העקרוני של BI, איפה Tableau נכנס לשרשרת, ואיך עובדים עם Tableau Public — הגרסה החינמית — כולל ייצוא נתונים באמצעות AI.</p>
+
+  <!-- SLIDE 1: BI PROCESS OVERVIEW -->
+  <div class="card world">
+    <div class="slide-ctx">שקף 1 מתוך 10 · תחנה 14</div>
+    <div class="card-badge">🌍 5 שלבי הבינה העסקית</div>
+    <div class="card-title">מה זה בינה עסקית בפועל — התהליך השלם</div>
+    <div class="card-text">כל פרויקט BI — בין אם ב-Tableau, Power BI, Looker, או Excel — עובר אותם חמישה שלבים עקרוניים. הכלי משתנה; התהליך לא.</div>
+
+    <div class="svg-wrap">
+      <svg width="640" height="200" viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Step 1 -->
+        <rect x="10" y="60" width="108" height="70" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+        <text x="64" y="88" fill="#1d4ed8" font-family="Heebo" font-size="22" text-anchor="middle">🔌</text>
+        <text x="64" y="108" fill="#1d4ed8" font-family="Heebo" font-size="13" font-weight="900" text-anchor="middle">1. חיבור</text>
+        <text x="64" y="122" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">מקורות נתונים</text>
+        <!-- Arrow -->
+        <text x="127" y="100" fill="#94a3b8" font-family="Heebo" font-size="18" text-anchor="middle">→</text>
+        <!-- Step 2 -->
+        <rect x="138" y="60" width="108" height="70" rx="10" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+        <text x="192" y="88" fill="#065f46" font-family="Heebo" font-size="22" text-anchor="middle">🧹</text>
+        <text x="192" y="108" fill="#065f46" font-family="Heebo" font-size="13" font-weight="900" text-anchor="middle">2. הכנה</text>
+        <text x="192" y="122" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">ניקוי ועיצוב</text>
+        <!-- Arrow -->
+        <text x="255" y="100" fill="#94a3b8" font-family="Heebo" font-size="18" text-anchor="middle">→</text>
+        <!-- Step 3 -->
+        <rect x="266" y="60" width="108" height="70" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+        <text x="320" y="88" fill="#6d28d9" font-family="Heebo" font-size="22" text-anchor="middle">🔍</text>
+        <text x="320" y="108" fill="#6d28d9" font-family="Heebo" font-size="13" font-weight="900" text-anchor="middle">3. ניתוח</text>
+        <text x="320" y="122" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">חקירה וגילוי</text>
+        <!-- Arrow -->
+        <text x="383" y="100" fill="#94a3b8" font-family="Heebo" font-size="18" text-anchor="middle">→</text>
+        <!-- Step 4 -->
+        <rect x="394" y="60" width="108" height="70" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="448" y="88" fill="#92400e" font-family="Heebo" font-size="22" text-anchor="middle">📊</text>
+        <text x="448" y="108" fill="#92400e" font-family="Heebo" font-size="13" font-weight="900" text-anchor="middle">4. ויזואליזציה</text>
+        <text x="448" y="122" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">דשבורד / תרשים</text>
+        <!-- Arrow -->
+        <text x="511" y="100" fill="#94a3b8" font-family="Heebo" font-size="18" text-anchor="middle">→</text>
+        <!-- Step 5 -->
+        <rect x="522" y="60" width="108" height="70" rx="10" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
+        <text x="576" y="88" fill="#9d174d" font-family="Heebo" font-size="22" text-anchor="middle">🎯</text>
+        <text x="576" y="108" fill="#9d174d" font-family="Heebo" font-size="13" font-weight="900" text-anchor="middle">5. שיתוף</text>
+        <text x="576" y="122" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">הפצה והחלטות</text>
+        <!-- Where Tableau sits label -->
+        <text x="320" y="155" fill="#7c3aed" font-family="Heebo" font-size="11" font-weight="800" text-anchor="middle">← Tableau מכסה את כל 5 השלבים בממשק אחד →</text>
+        <text x="320" y="170" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">Power BI עושה זאת גם — ההבדל הוא בגישה, בחוזקות, ובאקוסיסטם</text>
+      </svg>
+    </div>
+
+    <div class="key">כל כלי BI — Tableau, Power BI, Looker, Qlik — מיישם את אותם 5 שלבים. ההבדל הוא <em>כיצד</em> כל שלב מתבצע ואיזו שכבה קיבלה דגש. 🎯</div>
+  </div>
+
+  <!-- SLIDE 2: WHERE TABLEAU SITS IN THE STACK -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 2 מתוך 10 · תחנה 14</div>
+    <div class="card-badge">🗺️ Tableau בשרשרת הארכיטקטורה</div>
+    <div class="card-title">איפה בדיוק Tableau נכנס — לפני ואחרי מה?</div>
+    <div class="card-text">לפי כל מה שלמדנו בקורס — Tableau יושב בסוף השרשרת: <strong>שלב הויזואליזציה והשיתוף</strong>. הוא <em>לא</em> מחסן נתונים, לא ETL ולא מסד OLAP — הוא כלי ה-Presentation Layer.</div>
+
+    <div class="flow">
+      <div class="fnode navy">🗄️ OLTP<br><small style="font-weight:400;font-size:10px;">PostgreSQL</small></div>
+      <div class="farrow">← ETL ←</div>
+      <div class="fnode green">❄️ DW<br><small style="font-weight:400;font-size:10px;">Snowflake</small></div>
+      <div class="farrow">← Semantic ←</div>
+      <div class="fnode purple">🧩 Data Source<br><small style="font-weight:400;font-size:10px;">Extract / Live</small></div>
+      <div class="farrow">←</div>
+      <div class="fnode" style="background:#e8762b;min-width:120px;">📊 Tableau<br><small style="font-weight:400;font-size:10px;">Viz + Dashboard</small></div>
+      <div class="farrow">←</div>
+      <div class="fnode rose">👔 קהל יעד<br><small style="font-weight:400;font-size:10px;">מנהלים / צוותים</small></div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="hbox" style="border-right-color:#e8762b;"><strong>Live Connection</strong> 🔴<br>Tableau שולח SQL ישירות ל-DW בכל אינטראקציה. נתון עדכני תמיד — אבל תלוי בביצועי ה-DW. לשימוש כש-latency נסבל.</div>
+      </div>
+      <div>
+        <div class="hbox green"><strong>Extract Mode</strong> 🟢<br>Tableau מושך עותק מקומי של הנתונים (.hyper file). מהיר מאוד — אבל נתון בן X שעות. כמו Import ב-Power BI.</div>
+      </div>
+    </div>
+
+    <div class="connect-box"><div class="connect-label">📌 חיבור לתחנות קודמות</div><p>Live Connection = OLAP query ל-Snowflake (תחנה 4). Extract = ETL מוקטן (תחנה 5). Tableau Public = Presentation Layer ללא חיבור ל-DW (שלב 5 בלבד — תחנה זו).</p></div>
+  </div>
+
+  <!-- SLIDE 3: TABLEAU vs POWER BI COMPARISON -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 3 מתוך 10 · תחנה 14</div>
+    <div class="card-badge">⚖️ Tableau מול Power BI — השוואה מקיפה</div>
+    <div class="card-title">שני כלים מובילים — מה ההבדל האמיתי?</div>
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>קריטריון</th>
+          <th class="cmp-head-a" style="background:#dbeafe;color:#1d4ed8;">📊 Tableau</th>
+          <th class="cmp-head-b" style="background:#fce7f3;color:#9d174d;">📈 Power BI</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>חוזק ויזואלי</strong></td><td>⭐⭐⭐⭐⭐ — הסטנדרט לאנליזה ויזואלית</td><td>⭐⭐⭐⭐ — שיפור מתמיד, עדיין פחות גמיש</td></tr>
+        <tr><td><strong>קלות לימוד</strong></td><td>Drag & Drop אינטואיטיבי מאוד; עקומת למידה עדינה</td><td>ממשק מוכר ל-Office, DAX מורכב יותר</td></tr>
+        <tr><td><strong>אקוסיסטם</strong></td><td>Tableau Public + Desktop + Server + Cloud</td><td>Microsoft 365, Teams, SharePoint — אינטגרציה עמוקה</td></tr>
+        <tr><td><strong>גרסה חינמית</strong></td><td>✅ Tableau Public — ויזואליזציות ציבוריות בחינם</td><td>✅ Power BI Desktop — מקומי בלבד, ללא שיתוף</td></tr>
+        <tr><td><strong>Cross-Platform</strong></td><td>✅ Windows, Mac — Desktop מלא בשניהם</td><td>⚠️ Desktop = Windows בלבד. Browser = כל פלטפורמה</td></tr>
+        <tr><td><strong>Mobile</strong></td><td>✅ אפליקציית iOS/Android מלאה</td><td>✅ אפליקציה, אבל פחות אינטואיטיבית</td></tr>
+        <tr><td><strong>Calculated Fields</strong></td><td>LOD Expressions — גמישות גבוהה</td><td>DAX — עוצמה גבוהה, מורכבות גבוהה<br><span style="font-size:11px;color:var(--muted);">(ראה הגדרת DAX בתחנה 0)</span></td></tr>
+        <tr><td><strong>מחיר Enterprise</strong></td><td>~$70–$75/משתמש/חודש (Tableau Creator)</td><td>~$10–$20/משתמש/חודש (Power BI Pro)</td></tr>
+        <tr><td><strong>שימוש בשוק ישראלי</strong></td><td>נפוץ בהייטק, חברות גדולות, דאטה פריסטייל</td><td>נפוץ יותר בארגונים שמשתמשים ב-Microsoft</td></tr>
+      </tbody>
+    </table>
+    <div class="key orange">כלל אצבע: Tableau = אנליסטים שצריכים גמישות ויזואלית מקסימלית. Power BI = ארגונים שכבר במערכת Microsoft. שניהם = כישורי שוק עבודה. 💼</div>
+  </div>
+
+  <!-- SLIDE 4: TABLEAU VERSIONS BREAKDOWN -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 4 מתוך 10 · תחנה 14</div>
+    <div class="card-badge">🗂️ גרסאות Tableau — מה מתאים למי</div>
+    <div class="card-title">ארבע גרסאות — Cross-Platform וגרסה חינמית</div>
+    <div class="three-col" style="grid-template-columns:1fr 1fr;">
+      <div style="background:#fff8f0;border:2px solid #e8762b;border-radius:12px;padding:20px;">
+        <div style="font-size:24px;margin-bottom:8px;">🖥️</div>
+        <div style="font-size:15px;font-weight:900;color:#c2531b;margin-bottom:6px;">Tableau Desktop</div>
+        <div style="font-size:12px;font-weight:700;background:#fde8d5;color:#c2531b;display:inline-block;padding:2px 8px;border-radius:20px;margin-bottom:8px;">בתשלום ~$70/חודש</div>
+        <ul class="blist" style="margin-right:16px;">
+          <li style="font-size:13px;">✅ <strong>Windows + Mac</strong> — Desktop מלא בשניהם</li>
+          <li style="font-size:13px;">חיבור ל-Snowflake, BigQuery, PostgreSQL, S3</li>
+          <li style="font-size:13px;">פרסום ל-Tableau Server/Cloud</li>
+          <li style="font-size:13px;">Export ל-PDF, Excel, Image</li>
+        </ul>
+      </div>
+      <div style="background:#f0fdf4;border:2px solid #059669;border-radius:12px;padding:20px;">
+        <div style="font-size:24px;margin-bottom:8px;">🌐</div>
+        <div style="font-size:15px;font-weight:900;color:#065f46;margin-bottom:6px;">Tableau Public</div>
+        <div style="font-size:12px;font-weight:700;background:#bbf7d0;color:#065f46;display:inline-block;padding:2px 8px;border-radius:20px;margin-bottom:8px;">חינמי לחלוטין</div>
+        <ul class="blist" style="margin-right:16px;">
+          <li style="font-size:13px;">✅ <strong>Windows + Mac</strong> — Desktop מלא</li>
+          <li style="font-size:13px;">✅ פרסום ל-Tableau Public Gallery (ציבורי)</li>
+          <li style="font-size:13px;">⚠️ <strong>ללא חיבור ל-DB חיצוני</strong> — רק קבצים מקומיים</li>
+          <li style="font-size:13px;">⚠️ הדשבורד גלוי לכולם — לא מתאים לנתונים רגישים</li>
+        </ul>
+      </div>
+      <div style="background:#eff6ff;border:2px solid #3b82f6;border-radius:12px;padding:20px;">
+        <div style="font-size:24px;margin-bottom:8px;">☁️</div>
+        <div style="font-size:15px;font-weight:900;color:#1d4ed8;margin-bottom:6px;">Tableau Cloud</div>
+        <div style="font-size:12px;font-weight:700;background:#dbeafe;color:#1d4ed8;display:inline-block;padding:2px 8px;border-radius:20px;margin-bottom:8px;">בתשלום — SaaS</div>
+        <ul class="blist" style="margin-right:16px;">
+          <li style="font-size:13px;">גישת Browser לדשבורדים</li>
+          <li style="font-size:13px;">שיתוף מאובטח בארגון</li>
+          <li style="font-size:13px;">Scheduled Extracts אוטומטי</li>
+          <li style="font-size:13px;">Ask Data (Text-to-Viz)</li>
+        </ul>
+      </div>
+      <div style="background:#faf5ff;border:2px solid #7c3aed;border-radius:12px;padding:20px;">
+        <div style="font-size:24px;margin-bottom:8px;">🏢</div>
+        <div style="font-size:15px;font-weight:900;color:#6d28d9;margin-bottom:6px;">Tableau Server</div>
+        <div style="font-size:12px;font-weight:700;background:#ddd6fe;color:#6d28d9;display:inline-block;padding:2px 8px;border-radius:20px;margin-bottom:8px;">Enterprise On-Prem</div>
+        <ul class="blist" style="margin-right:16px;">
+          <li style="font-size:13px;">שרת Tableau בתוך הארגון</li>
+          <li style="font-size:13px;">Row-Level Security מלא</li>
+          <li style="font-size:13px;">LDAP / Active Directory</li>
+          <li style="font-size:13px;">מתאים לארגוני ביטחון / פיננסים</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: TABLEAU PUBLIC DEEP DIVE -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 5 מתוך 10 · תחנה 14</div>
+    <div class="card-badge">🆓 Tableau Public — עומק</div>
+    <div class="card-title">Tableau Public — מה אפשרי ומה לא, ולמה</div>
+    <div class="card-text">Tableau Public הוא גרסה חינמית לחלוטין, ל-Windows וגם ל-Mac. היא מיועדת לעיתונאי נתונים, סטודנטים, ויוצרי תוכן שרוצים לפרסם ויזואליזציות פומביות. ה-limitation המרכזי: <strong>ניתן להתחבר רק לקבצים מקומיים, לא ל-DB חיצוניים.</strong></div>
+
+    <div class="two-col">
+      <div>
+        <div style="font-weight:800;font-size:14px;color:var(--green);margin-bottom:10px;">✅ מה Tableau Public תומך</div>
+        <table class="dtable" style="font-size:13px;">
+          <thead><tr><th>פורמט</th><th>הערה</th></tr></thead>
+          <tbody>
+            <tr class="good-row"><td>📄 Excel (.xlsx, .xls)</td><td>עמודות, גיליונות מרובים</td></tr>
+            <tr class="good-row"><td>📋 CSV / TSV</td><td>כל קובץ טקסט מפריד</td></tr>
+            <tr class="good-row"><td>🗂️ JSON</td><td>מבנה שטוח ומקונן</td></tr>
+            <tr class="good-row"><td>📑 PDF</td><td>מחלץ טבלאות מקובץ PDF</td></tr>
+            <tr class="good-row"><td>🗄️ Access (.mdb)</td><td>מסד Access מקומי</td></tr>
+            <tr class="good-row"><td>📊 Google Sheets</td><td>דרך חיבור Web (לא DB)</td></tr>
+            <tr class="good-row"><td>🌐 OData Feed</td><td>REST API בפרוטוקול OData</td></tr>
+            <tr class="good-row"><td>📦 Spatial Files</td><td>.shp, .kml לנתוני מפה</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div style="font-weight:800;font-size:14px;color:var(--red);margin-bottom:10px;">❌ מה Tableau Public לא תומך</div>
+        <table class="dtable" style="font-size:13px;">
+          <thead><tr><th>פורמט / חיבור</th><th>גרסה שתומכת</th></tr></thead>
+          <tbody>
+            <tr class="err-row"><td>🗄️ PostgreSQL / MySQL / SQL Server</td><td>Desktop בלבד</td></tr>
+            <tr class="err-row"><td>❄️ Snowflake / BigQuery / Redshift</td><td>Desktop בלבד</td></tr>
+            <tr class="err-row"><td>☁️ AWS S3 / Azure Blob</td><td>Desktop בלבד</td></tr>
+            <tr class="err-row"><td>🔒 Tableau Server / Cloud (פרטי)</td><td>Server/Cloud בלבד</td></tr>
+            <tr class="err-row"><td>📡 Live Connection ל-API אמיתי</td><td>Desktop + Connector</td></tr>
+            <tr class="err-row"><td>🔐 Row-Level Security</td><td>Server/Cloud בלבד</td></tr>
+          </tbody>
+        </table>
+        <div class="hbox red" style="margin-top:10px;font-size:13px;">⚠️ הדשבורד שתפרסם ב-Tableau Public גלוי לכל אדם ברשת. לעולם לא תעלה נתוני לקוחות, שכר, או כל מידע רגיש.</div>
+      </div>
+    </div>
+
+    <div class="key green">Tableau Public = כלי הלמידה המושלם. חינמי, Cross-Platform, מלמד את כל 5 שלבי BI — ומאפשר לבנות Portfolio ציבורי שמנהלי גיוס רואים. 🎓</div>
+  </div>
+
+  <!-- SLIDE 6: THE AI CONNECTION — GENERATING DATA -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 6 מתוך 10 · תחנה 14</div>
+    <div class="card-badge">🤖 AI + Tableau Public — שיטת העבודה</div>
+    <div class="card-title">כשאין גישה ל-DB — AI מייצר נתונים רלוונטיים לניתוח</div>
+    <div class="card-text">Tableau Public מקבל Excel/CSV/JSON — אבל מאיפה מגיעים הנתונים לניתוח? בסביבת לימוד וביצוא, <strong>AI הוא מחולל הנתונים המושלם</strong>: הוא מכיר מבני נתונים עסקיים, יכול לייצר Dataset מציאותי עם תבנית נכונה, ומגיש אותו מוכן לייבוא.</div>
+
+    <div class="hbox purple">💡 <strong>שיטת העבודה:</strong> (1) תאר ל-AI את הנתונים שאתה צריך לניתוח, (2) AI מייצר CSV/Excel מציאותי, (3) מייבא ל-Tableau Public, (4) מנתח ומפרסם. ללא גישה ל-DB, ללא תשלום, ללא VPN.</div>
+
+    <div class="card-text"><strong>דוגמה לבקשה יעילה מ-AI:</strong></div>
+    <div class="code"><pre><span class="cc">// ❌ בקשה עמומה — AI ייצר נתונים גנריים:</span>
+"תן לי נתוני מכירות"
+
+<span class="cc">// ✅ בקשה מפורטת — AI ייצר Dataset מציאותי:</span>
+<span class="cs">"צור עבורי Dataset ב-CSV עם 150 שורות של נתוני הזמנות</span>
+<span class="cs"> דלייברי לשנת 2024. כלול עמודות:</span>
+<span class="cs"> - order_id (מספרי ייחודי)</span>
+<span class="cs"> - order_date (ינואר–דצמבר 2024, תאריכים מציאותיים)</span>
+<span class="cs"> - city (תל אביב, ירושלים, חיפה, באר שבע, פתח תקווה)</span>
+<span class="cs"> - category (מסעדה, בית מרקחת, סופרמרקט, פרחים)</span>
+<span class="cs"> - amount_ils (סכום בשקלים — ריאלי לקטגוריה)</span>
+<span class="cs"> - delivery_time_min (זמן משלוח בדקות)</span>
+<span class="cs"> - status (completed, cancelled, refunded)</span>
+<span class="cs"> - driver_rating (1–5)</span>
+<span class="cs"> כלול עונתיות — יותר הזמנות בסופי שבוע ובחגים.</span>
+<span class="cs"> כלול שונות מציאותית — תל אביב = הכי הרבה הזמנות."</span></pre></div>
+
+    <div class="think"><div class="think-label">⏸️ עצור וחשוב</div><p>למה חשוב לציין "עונתיות" ו"שונות מציאותית" בבקשה? מה קורה ל-Tableau Dashboard שמנתח נתונים אקראיים לחלוטין בלי Pattern?</p></div>
+  </div>
+
+  <!-- SLIDE 7: LIVE AI DEMO -->
+  <div class="sim-card">
+    <h4>🧪 סימולטור AI → CSV → Tableau Public — Demo מלא</h4>
+    <p>בחר תרחיש עסקי, קבל prompt מוכן לשליחה ל-AI, ו-CSV לדוגמה שניתן לייבא ל-Tableau Public:</p>
+    <div class="sim-btns">
+      <button class="sbtn sbtn-blue" onclick="runTableauDemo('delivery')">🚗 דלייברי — נתוני הזמנות</button>
+      <button class="sbtn sbtn-green" onclick="runTableauDemo('hr')">👥 משאבי אנוש — ניתוח שכר ועזיבה</button>
+      <button class="sbtn sbtn-teal" onclick="runTableauDemo('retail')">🛒 קמעונאות — מכירות לפי סניף</button>
+    </div>
+    <div id="tableau-prompt-out" style="display:none;margin-top:18px;">
+      <div style="font-weight:800;font-size:14px;color:var(--navy);margin-bottom:8px;">📋 Prompt מוכן לשליחה ל-AI (Claude / ChatGPT):</div>
+      <div id="tableau-prompt-text" class="code" style="background:#0f172a;padding:16px;border-radius:8px;font-size:12px;color:#e2e8f0;white-space:pre-wrap;direction:ltr;text-align:left;max-height:200px;overflow-y:auto;"></div>
+      <div style="margin-top:14px;font-weight:800;font-size:14px;color:var(--navy);margin-bottom:8px;">📊 דוגמת שורות ראשונות ל-CSV (Tableau Public מייבא מזה ישירות):</div>
+      <div id="tableau-csv-out" class="code" style="background:#0f172a;padding:16px;border-radius:8px;font-size:12px;color:#10b981;white-space:pre;direction:ltr;text-align:left;"></div>
+      <div style="margin-top:14px;font-weight:800;font-size:14px;color:var(--navy);margin-bottom:8px;">💡 ניתוחים מומלצים ב-Tableau Public עם הנתונים האלה:</div>
+      <div id="tableau-analyses-out" style="background:var(--subtle);padding:14px;border-radius:8px;font-size:13px;color:var(--text2);"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: 5-STEP WORKFLOW IN TABLEAU PUBLIC -->
+  <div class="card expose">
+    <div class="slide-ctx">שקף 8 מתוך 10 · תחנה 14</div>
+    <div class="card-badge">🗺️ מדריך שלב-אחר-שלב</div>
+    <div class="card-title">מ-AI לדשבורד מפורסם — 5 שלבים בפועל</div>
+
+    <div class="card-text">זה מה שקורה בפועל כשאנליסט בונה דשבורד ב-Tableau Public:</div>
+
+    <table class="dtable">
+      <thead>
+        <tr><th>#</th><th>שלב</th><th>פעולה מעשית</th><th>כלי / טיפ</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1</strong></td><td>🤖 <strong>ייצוא נתונים</strong></td><td>שלח Prompt מפורט ל-AI. בקש פורמט CSV עם Header תקין. בדוק שיש שונות ועונתיות.</td><td>Claude / ChatGPT → "פלט כ-CSV בלבד"</td></tr>
+        <tr><td><strong>2</strong></td><td>🧹 <strong>חיבור והכנה</strong></td><td>File → Connect → Text File (CSV) / Excel. שלב Data Interpreter אם צריך. בדוק שסוגי נתונים נכונים (תאריך ≠ String).</td><td>Tableau Public — Data Source Tab</td></tr>
+        <tr><td><strong>3</strong></td><td>🔍 <strong>ניתוח ראשוני</strong></td><td>גרור Dimension ל-Rows, Measure ל-Columns. Show Me לבחירת תרשים. צור Calculated Field לKPI מחושב.</td><td>Sheet 1 → Drag & Drop</td></tr>
+        <tr><td><strong>4</strong></td><td>📊 <strong>בניית Dashboard</strong></td><td>Dashboard → New Dashboard. גרור Sheets לפאנל. הוסף Filter, Title, Caption. בחר Device (Desktop/Mobile).</td><td>Dashboard Tab → Layout</td></tr>
+        <tr><td><strong>5</strong></td><td>🌐 <strong>פרסום</strong></td><td>File → Save to Tableau Public → התחבר לחשבון. הדשבורד עולה ל-public.tableau.com. קבל URL לשיתוף.</td><td>Tableau Public Profile → Portfolio</td></tr>
+      </tbody>
+    </table>
+
+    <div class="hbox green">💼 <strong>טיפ קריירה:</strong> Tableau Public Profile = Portfolio חי לראיונות עבודה. מנהלי גיוס בהייטק מבקשים "שלח לי לינק ל-Tableau Public שלך" — כמו GitHub למפתחים. שמור לפחות 3 דשבורדים מגוונים.</div>
+  </div>
+
+  <!-- SLIDE 9: BI ANALYST PERSPECTIVE -->
+  <div class="card bi-link">
+    <div class="slide-ctx">שקף 9 מתוך 10 · תחנה 14</div>
+    <div class="card-badge">📊 מה זה אומר לאנליסט BI</div>
+    <div class="card-title">Tableau Public — כלי הפיתוח, הלמידה, והתיק המקצועי</div>
+    <div class="card-text">בשלבי הלמידה הראשונים — Tableau Public הוא הכלי המושלם. הוא חינמי לחלוטין, Cross-Platform (Windows ו-Mac — שלא כמו Power BI Desktop שהוא Windows בלבד), ומלמד את כל 5 שלבי BI אמיתי.</div>
+    <div class="two-col">
+      <div class="hbox teal">✅ <strong>שלב הלמידה:</strong> AI ייצר נתונים → Tableau Public ינתח → Portfolio מקצועי נבנה. ללא עלות, ללא גישה ל-DB, ללא IT Approval.</div>
+      <div class="hbox orange">⚠️ <strong>בארגון האמיתי:</strong> עובדים עם Tableau Desktop (חיבור ל-Snowflake/BigQuery) או Tableau Cloud (פרסום מאובטח). Public = רק לנתונים ציבוריים.</div>
+    </div>
+    <div class="card-text"><strong>הבדל קריטי בין הגרסאות:</strong> Tableau Desktop מאפשר Live Connection ל-OLAP (תחנה 4) — Tableau Public עובד רק עם Extract מקובץ מקומי. לכן ב-Public, ה-"ETL" שלך הוא: AI מייצר → קובץ CSV → Tableau טוען. הארכיטקטורה מצומצמת אבל ה-Logic זהה.</div>
+  </div>
+
+  <!-- SLIDE 10: CLOSE -->
+  <div class="card close">
+    <div class="slide-ctx">שקף 10 מתוך 10 · תחנה 14</div>
+    <div class="card-badge">🔁 סגירת לולאה — הקורס המלא</div>
+    <div class="card-title">מ-JSON שנשלח מ-Wolt ועד לדשבורד ב-Tableau Public</div>
+    <div class="card-text">עברנו את כל השרשרת: JSON → API → OLTP → ETL → DW → Lakehouse → Streaming → Governance → Cloud → Mesh → Lineage → קריירה → <strong>Tableau</strong>. כל אחד מהשלבים האלה קיים בדשבורד שאתה בונה — גם כשאתה עובד "רק" עם CSV.</div>
+
+    <div class="svg-wrap">
+      <svg width="660" height="160" viewBox="0 0 660 160" xmlns="http://www.w3.org/2000/svg">
+        <!-- 5 BI Steps with Tableau mapping -->
+        <rect x="10" y="20" width="118" height="80" rx="10" fill="#dbeafe" stroke="#3b82f6"/>
+        <text x="69" y="50" fill="#1d4ed8" font-family="Heebo" font-size="20" text-anchor="middle">🔌</text>
+        <text x="69" y="70" fill="#1d4ed8" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">חיבור נתונים</text>
+        <text x="69" y="87" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">CSV / JSON / Excel</text>
+        <text x="69" y="120" fill="#0d9488" font-family="Heebo" font-size="10" font-weight="700" text-anchor="middle">AI מייצר הנתונים</text>
+
+        <text x="136" y="64" fill="#94a3b8" font-size="16" text-anchor="middle">→</text>
+
+        <rect x="144" y="20" width="118" height="80" rx="10" fill="#d1fae5" stroke="#059669"/>
+        <text x="203" y="50" fill="#065f46" font-family="Heebo" font-size="20" text-anchor="middle">🧹</text>
+        <text x="203" y="70" fill="#065f46" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">הכנה וניקוי</text>
+        <text x="203" y="87" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">Data Interpreter</text>
+        <text x="203" y="120" fill="#0d9488" font-family="Heebo" font-size="10" font-weight="700" text-anchor="middle">Data Source Tab</text>
+
+        <text x="270" y="64" fill="#94a3b8" font-size="16" text-anchor="middle">→</text>
+
+        <rect x="278" y="20" width="118" height="80" rx="10" fill="#ede9fe" stroke="#7c3aed"/>
+        <text x="337" y="50" fill="#6d28d9" font-family="Heebo" font-size="20" text-anchor="middle">🔍</text>
+        <text x="337" y="70" fill="#6d28d9" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">ניתוח וגילוי</text>
+        <text x="337" y="87" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">Sheets + LOD</text>
+        <text x="337" y="120" fill="#0d9488" font-family="Heebo" font-size="10" font-weight="700" text-anchor="middle">Show Me + Calc Fields</text>
+
+        <text x="404" y="64" fill="#94a3b8" font-size="16" text-anchor="middle">→</text>
+
+        <rect x="412" y="20" width="118" height="80" rx="10" fill="#fff8f0" stroke="#e8762b" stroke-width="2"/>
+        <text x="471" y="50" fill="#c2531b" font-family="Heebo" font-size="20" text-anchor="middle">📊</text>
+        <text x="471" y="70" fill="#c2531b" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">ויזואליזציה</text>
+        <text x="471" y="87" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">Dashboard Tab</text>
+        <text x="471" y="120" fill="#0d9488" font-family="Heebo" font-size="10" font-weight="700" text-anchor="middle">Tableau Drag &amp; Drop</text>
+
+        <text x="538" y="64" fill="#94a3b8" font-size="16" text-anchor="middle">→</text>
+
+        <rect x="546" y="20" width="108" height="80" rx="10" fill="#fce7f3" stroke="#db2777"/>
+        <text x="600" y="50" fill="#9d174d" font-family="Heebo" font-size="20" text-anchor="middle">🌐</text>
+        <text x="600" y="70" fill="#9d174d" font-family="Heebo" font-size="12" font-weight="800" text-anchor="middle">פרסום</text>
+        <text x="600" y="87" fill="#64748b" font-family="Heebo" font-size="10" text-anchor="middle">Tableau Public</text>
+        <text x="600" y="120" fill="#0d9488" font-family="Heebo" font-size="10" font-weight="700" text-anchor="middle">Portfolio חי</text>
+      </svg>
+    </div>
+
+    <div class="key" style="color:#c2531b;background:#fff8f0;border-right-color:#e8762b;">Tableau Public + AI = BI לימוד שלם בחינם. אחד חינמי ב-Mac, אחד חינמי ב-Windows, ניתוח מקצועי, Portfolio פומבי. זה הכל מה שצריך כדי להתחיל. 🚀</div>
+  </div>
+
+  <div class="tool-box"><div class="tool-label">🛠️ הכלי האמיתי בתעשייה</div><p><strong>public.tableau.com</strong> — הורדת Tableau Public (חינמי, Windows + Mac). <strong>Tableau Public Gallery</strong> — אלפי דשבורדים ציבוריים ללמידה. <strong>Tableau Prep Builder</strong> — כלי נפרד לניקוי נתונים (בתשלום). <strong>"Tableau: Up and Running" (O'Reilly)</strong> — ספר הסטנדרט. <strong>Makeover Monday</strong> — קהילת Tableau שמפרסמת אתגר שבועי לנתונים ציבוריים — מושלם לבניית Portfolio.</p></div>
+
+  <div class="fail-card">
+    <div class="fail-label">⚠️ שגיאות נפוצות בעבודה עם Tableau Public + AI Data</div>
+    <p><strong>1. AI ייצר תאריכים כ-String:</strong> Tableau Public קורא <code>01/03/2024</code> כ-String, לא Date. תצטרך להמיר ידנית ב-Data Source Tab. <strong>פתרון:</strong> בקש ב-Prompt שהתאריך יהיה בפורמט <code>YYYY-MM-DD</code> בלבד.</p>
+    <p><strong>2. AI ייצר מספרים עם פסיק אלפים:</strong> <code>1,234</code> יקרא כ-String. <strong>פתרון:</strong> בקש "ללא פסיק אלפים, נקודה עשרונית בלבד".</p>
+    <p><strong>3. עמודות בעברית גורמות לבעיות Encoding:</strong> Tableau Public לא תמיד מטפל נכון ב-RTL. <strong>פתרון:</strong> שמות עמודות תמיד באנגלית, ערכים יכולים להיות בעברית.</p>
+    <p><strong>4. שמירה ל-Tableau Public = פומבי לתמיד:</strong> לאחר הפרסום, כל אדם ב-Google יכול למצוא את הדשבורד שלך. לעולם לא תעלה נתוני אנשים אמיתיים — גם לא "דוגמה מהעבודה".</p>
+  </div>
+
+  <div class="takeaway"><div class="takeaway-label">💡 מה לוקחים הביתה מתחנה 14</div><ul>
+    <li>5 שלבי BI: חיבור → הכנה → ניתוח → ויזואליזציה → שיתוף. Tableau מכסה את כולם.</li>
+    <li>Tableau Public = חינמי + Cross-Platform (Windows & Mac). מגבלה: קבצים מקומיים בלבד — ללא חיבור ל-DB חיצוני.</li>
+    <li>AI + CSV + Tableau Public = שרשרת BI שלמה ללא עלות ובלי גישה ל-DW.</li>
+    <li>Tableau Public Profile = Portfolio מקצועי שמנהלי גיוס רואים. שמור 3+ דשבורדים מגוונים.</li>
+    <li>Prompt טוב ל-AI = נתונים מציאותיים עם Pattern, עונתיות, ושונות — לא רנדום.</li>
+  </ul></div>
+
+  <div class="discuss"><div class="discuss-label">💬 שאלות לדיון</div><ol>
+    <li>אנליסט עובד ב-Mac וצריך להציג דשבורד BI במסגרת פרויקט לימוד. Power BI Desktop לא זמין ב-Mac. אילו אפשרויות יש לו? מה תמליץ?</li>
+    <li>מנהל ביקש "דשבורד בזמן אמת של מחירי מניות" ב-Tableau Public. מדוע זה בלתי אפשרי טכנית? מה האלטרנטיבה המעשית?</li>
+    <li>AI ייצר Dataset של 200 עובדים עם שמות, שכר, ומחלקה. האם מותר להעלות ל-Tableau Public? מדוע? מה צריך לשנות קודם?</li>
+  </ol></div>
+
+</section>
+
+</main>
+</main>
+</div>
+
+<script>
+// ===== NAVIGATION (9 sections: s0-s8) =====
+function go(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('s' + id).classList.add('active');
+  document.querySelectorAll('.nav-btn')[id].classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+// ===== NAVIGATION =====
+function go(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('s' + id).classList.add('active');
+  document.querySelectorAll('.nav-btn')[id].classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ===== BUSINESS GLOSSARY SIMULATOR =====
+function runGlossary(who) {
+  const out = document.getElementById('glossary-out');
+  const bars = document.getElementById('glossary-bars');
+  bars.style.display = 'block';
+
+  const data = {
+    marketing: {
+      text: '📣 הגדרת שיווק: "לקוח שביצע לפחות הזמנה אחת בשנה האחרונה (365 ימים)"\n→ מציאותית לדיון חדירת שוק אבל לא לחישוב "פעיל אמיתי" לצרכי CRM.\n\n⚠️ כולל לקוחות שהזמינו פעם ב-2023 ולא מאז — האם הם "פעילים"?',
+      mkt: 78, fin: 41, prd: 62
+    },
+    finance: {
+      text: '💰 הגדרת כספים: "לקוח שביצע לפחות הזמנה אחת ב-90 הימים האחרונים"\n→ מחמירה יותר, מבוססת על churning behavior אמיתי.\n\n✅ הגדרה מתאימה ל-CLV, Churn rate, Cohort analysis.',
+      mkt: 78, fin: 41, prd: 62
+    },
+    product: {
+      text: '📱 הגדרת מוצר: "משתמש שפתח את האפליקציה לפחות פעם ב-30 ימים האחרונים"\n→ הגדרה רחבה ביותר — כולל לקוחות שגלשו אבל לא הזמינו.\n\n⚠️ מנפח את מספר "הלקוחות הפעילים" בצורה משמעותית.',
+      mkt: 78, fin: 41, prd: 62
+    }
+  };
+
+  const d = data[who];
+  out.textContent = d.text;
+
+  setTimeout(() => {
+    document.getElementById('mkt-bar').style.width = d.mkt + '%';
+    document.getElementById('mkt-pct').textContent = d.mkt + '%  = ' + (d.mkt * 1000).toLocaleString() + ' לקוחות';
+    document.getElementById('fin-bar').style.width = d.fin + '%';
+    document.getElementById('fin-pct').textContent = d.fin + '%  = ' + (d.fin * 1000).toLocaleString() + ' לקוחות';
+    document.getElementById('prd-bar').style.width = d.prd + '%';
+    document.getElementById('prd-pct').textContent = d.prd + '%  = ' + (d.prd * 1000).toLocaleString() + ' לקוחות';
+  }, 100);
+}
+
+// ===== LINEAGE DEBUG SIMULATOR =====
+function debugLineage(step) {
+  const out = document.getElementById('lineage-out');
+  const results = {
+    1: `[09:47:03] Checking Kafka Topic: wolt.orders
+[09:47:04] Consumer Group: etl-pipeline → Status: ACTIVE
+[09:47:04] Checking offset lag...
+[09:47:05] Topic: wolt.orders | Partition 0 | Offset: 4,821,933
+[09:47:05] ⚠️  ALERT: Gap detected between offsets 4,793,100 → 4,802,200
+[09:47:05] Estimated missing events: ~9,100 (approx. 127 minutes of data)
+[09:47:06] Timestamp gap: 2024-09-18 02:53 → 05:00 UTC
+[09:47:06] ❌ KAFKA MAINTENANCE WINDOW CONFIRMED — events not delivered!
+[09:47:07] → Root cause identified. Upstream at Kafka layer.`,
+
+    2: `[09:48:11] Checking S3 path: s3://wolt-datalake/orders/2024/09/18/
+[09:48:13] Files found: 22 .parquet files
+[09:48:14] Expected: 24 files (one per hour)
+[09:48:14] ❌ Missing: hours 02:00 and 03:00 UTC
+[09:48:15] File size comparison: Sept 17 avg = 847MB/hour, Sept 18 = 0B for missing hours
+[09:48:16] → Consistent with Kafka gap found in previous check.
+[09:48:16] → S3 Raw layer reflects Kafka issue. Not a storage bug.`,
+
+    3: `[09:49:22] Running dbt test on: models/staging/stg_orders.sql
+[09:49:24] Test: not_null(order_id) → PASS (0 nulls)
+[09:49:25] Test: unique(order_id) → PASS
+[09:49:26] Test: accepted_values(status) → PASS
+[09:49:27] Test: row_count_check → ❌ FAIL
+[09:49:27]   Expected: ~310,000 rows for 2024-09-18
+[09:49:27]   Actual: 272,400 rows
+[09:49:27]   Delta: -37,600 rows (-12.1%)
+[09:49:28] → stg_orders reflects missing Kafka data correctly.
+[09:49:28] ✅ dbt model logic is correct — data gap is upstream.
+[09:49:29] → Fix: Kafka replay from offset 4,793,100 → rerun ETL for 2024-09-18`
+  };
+
+  out.textContent = results[step];
+}
+
+// ===== TABLEAU PUBLIC DEMO SIMULATOR =====
+function runTableauDemo(scenario) {
+  document.getElementById('tableau-prompt-out').style.display = 'block';
+
+  const data = {
+    delivery: {
+      prompt: `צור עבורי Dataset ב-CSV עם 180 שורות של נתוני הזמנות דלייברי לשנת 2024.
+כלול את העמודות הבאות בדיוק, עם שמות אנגלית:
+- order_id (מספר ייחודי: 1001 עד 1180)
+- order_date (תאריכים בפורמט YYYY-MM-DD, ינואר עד דצמבר 2024)
+- city (תל אביב, ירושלים, חיפה, באר שבע, פתח תקווה — תל אביב = 40% מההזמנות)
+- category (Restaurant, Pharmacy, Supermarket, Flowers)
+- amount_ils (מספר שלם; Restaurant=45-180, Pharmacy=30-250, Supermarket=80-400)
+- delivery_time_min (מספר שלם 15-75; פיזור מציאותי)
+- status (completed=85%, cancelled=10%, refunded=5%)
+- driver_rating (1-5; רוב ההזמנות 4-5)
+כלול עונתיות: יותר הזמנות בסופ"ש ובחגים (ספטמבר-אוקטובר).
+פלט: CSV בלבד. ראש שורה = שמות עמודות. ללא פסיק אלפים בסכומים.`,
+      csv: `order_id,order_date,city,category,amount_ils,delivery_time_min,status,driver_rating
+1001,2024-01-03,Tel Aviv,Restaurant,87,28,completed,5
+1002,2024-01-05,Jerusalem,Pharmacy,145,42,completed,4
+1003,2024-01-06,Tel Aviv,Supermarket,234,35,completed,5
+1004,2024-01-07,Haifa,Restaurant,63,31,cancelled,3
+1005,2024-01-12,Tel Aviv,Restaurant,112,25,completed,5
+1006,2024-01-13,Beer Sheva,Flowers,180,48,completed,4
+1007,2024-01-19,Petah Tikva,Pharmacy,67,38,completed,4
+1008,2024-01-20,Tel Aviv,Restaurant,95,22,completed,5
+... (180 שורות סה"כ — ה-AI ייצר את כולן)`,
+      analyses: `📈 <strong>ניתוחים מומלצים ב-Tableau Public עם Dataset זה:</strong><br><br>
+1. <strong>Bar Chart — הכנסות לפי עיר:</strong> גרור city ל-Columns, SUM(amount_ils) ל-Rows. Sort descending.<br>
+2. <strong>Line Chart — מגמת הזמנות לאורך זמן:</strong> גרור order_date (MONTH) ל-Columns, COUNT(order_id) ל-Rows.<br>
+3. <strong>Pie Chart — פילוח קטגוריות:</strong> גרור category ל-Color, COUNT ל-Size. Show Me → Pie.<br>
+4. <strong>Scatter Plot — זמן משלוח vs. דירוג:</strong> delivery_time_min ל-Columns, driver_rating ל-Rows.<br>
+5. <strong>KPI Summary:</strong> צור Calculated Field: [Cancellation Rate] = COUNTD(IF [status]="cancelled" THEN [order_id] END) / COUNTD([order_id])`
+    },
+
+    hr: {
+      prompt: `צור עבורי Dataset ב-CSV עם 120 שורות של נתוני עובדים לניתוח HR.
+כלול את העמודות הבאות בדיוק, עם שמות אנגלית:
+- employee_id (E001 עד E120)
+- hire_date (פורמט YYYY-MM-DD, שנים 2018-2023)
+- department (Engineering, Marketing, Finance, Operations, Sales)
+- seniority (Junior, Mid, Senior, Lead)
+- salary_ils (שכר חודשי בשקלים; ריאלי לתפקיד: Junior=8000-14000, Senior=22000-35000)
+- gender (Male, Female — 55% Male, 45% Female)
+- tenure_years (מחושב מ-hire_date — שנות ותק)
+- left_company (Yes/No — 20% עזבו; יותר נפוץ ב-Junior ותחת שנה)
+- satisfaction_score (1-5; קורלציה עם שכר)
+כלול שונות מציאותית: Engineering = שכר גבוה יותר. Sales = אחוז עזיבה גבוה יותר.
+פלט: CSV בלבד. ראש שורה = שמות עמודות.`,
+      csv: `employee_id,hire_date,department,seniority,salary_ils,gender,tenure_years,left_company,satisfaction_score
+E001,2021-03-15,Engineering,Senior,28500,Male,3,No,4
+E002,2022-07-01,Marketing,Junior,9800,Female,1,Yes,2
+E003,2019-11-20,Finance,Mid,17200,Female,4,No,4
+E004,2023-02-10,Sales,Junior,10500,Male,1,Yes,3
+E005,2018-06-05,Engineering,Lead,34000,Male,6,No,5
+E006,2020-09-14,Operations,Mid,15800,Female,3,No,3
+E007,2022-12-01,Marketing,Junior,9200,Female,1,Yes,2
+E008,2021-05-18,Finance,Senior,24000,Male,3,No,4
+... (120 שורות סה"כ — ה-AI ייצר את כולן)`,
+      analyses: `📈 <strong>ניתוחים מומלצים ב-Tableau Public עם Dataset זה:</strong><br><br>
+1. <strong>Box Plot — פיזור שכר לפי מחלקה:</strong> department ל-Columns, salary_ils ל-Rows. Show Me → Box-and-Whisker.<br>
+2. <strong>Stacked Bar — Turnover Rate לפי ותק:</strong> tenure_years (bins) ל-Columns, COUNT עם Color = left_company.<br>
+3. <strong>Heat Map — שביעות רצון לפי מחלקה ו-Seniority:</strong> department ל-Columns, seniority ל-Rows, AVG(satisfaction) ל-Color.<br>
+4. <strong>Scatter — שכר vs. שביעות רצון:</strong> salary_ils ל-Columns, satisfaction_score ל-Rows. Color = left_company.<br>
+5. <strong>Calculated Field: Gender Pay Gap:</strong> [Avg Male Salary] vs. [Avg Female Salary] לפי מחלקה.`
+    },
+
+    retail: {
+      prompt: `צור עבורי Dataset ב-CSV עם 200 שורות של נתוני מכירות קמעונאות ב-2024.
+כלול את העמודות הבאות בדיוק, עם שמות אנגלית:
+- sale_id (מספר ייחודי: 5001 עד 5200)
+- sale_date (פורמט YYYY-MM-DD, ינואר-דצמבר 2024)
+- branch (Herzliya, Rishon, Modi'in, Rehovot, Ashdod)
+- product_category (Electronics, Clothing, Food, Home, Sports)
+- units_sold (1-20 יחידות; Electronics=1-3, Food=5-20)
+- unit_price_ils (מחיר ליחידה; Electronics=200-2000, Food=15-80)
+- revenue_ils (units_sold × unit_price_ils — חשב את זה)
+- discount_pct (0-30 אחוז הנחה; בסופ"ש יותר הנחות)
+- customer_type (New, Returning, VIP — VIP=15%)
+כלול עונתיות: ינואר נמוך, יוני-יולי גבוה, ספטמבר ירידה, נובמבר-דצמבר שיא.
+פלט: CSV בלבד. ראש שורה = שמות עמודות. ללא פסיק אלפים.`,
+      csv: `sale_id,sale_date,branch,product_category,units_sold,unit_price_ils,revenue_ils,discount_pct,customer_type
+5001,2024-01-08,Herzliya,Electronics,1,1499,1499,5,Returning
+5002,2024-01-10,Rishon,Food,12,28,336,0,New
+5003,2024-01-14,Modi'in,Clothing,3,189,567,10,Returning
+5004,2024-01-20,Rehovot,Home,2,349,698,15,VIP
+5005,2024-02-03,Herzliya,Sports,4,220,880,0,New
+5006,2024-02-09,Ashdod,Electronics,1,2100,2100,0,VIP
+5007,2024-02-15,Rishon,Food,18,22,396,5,Returning
+5008,2024-02-22,Modi'in,Clothing,2,425,850,20,New
+... (200 שורות סה"כ — ה-AI ייצר את כולן)`,
+      analyses: `📈 <strong>ניתוחים מומלצים ב-Tableau Public עם Dataset זה:</strong><br><br>
+1. <strong>Map — הכנסות לפי סניף (אם יש קואורדינטות):</strong> או Bar Chart: branch ל-Columns, SUM(revenue_ils) ל-Rows.<br>
+2. <strong>Line Chart — מגמת הכנסות חודשית:</strong> MONTH(sale_date) ל-Columns, SUM(revenue_ils) ל-Rows. הצג עונתיות.<br>
+3. <strong>Treemap — הכנסות לפי קטגוריה:</strong> product_category ל-Color + Size. Show Me → Treemap.<br>
+4. <strong>Dual Axis — יחידות מכורות vs. הכנסה:</strong> שני Measures על אותו ציר X (תאריך).<br>
+5. <strong>Calculated Field: Revenue After Discount:</strong> [revenue_ils] × (1 - [discount_pct]/100). השווה לפני ואחרי.`
+    }
+  };
+
+  const d = data[scenario];
+  document.getElementById('tableau-prompt-text').textContent = d.prompt;
+  document.getElementById('tableau-csv-out').textContent = d.csv;
+  document.getElementById('tableau-analyses-out').innerHTML = d.analyses;
+}
+
+// ===== INTERVIEW SIMULATOR =====
+function runInterview() {
+  const v = document.getElementById('ivsel').value;
+  const out = document.getElementById('ivout');
+  if (!v) { out.textContent = 'בחר שאלה לראות תשובה מדגמית...'; return; }
+
+  const answers = {
+    sql: `תשובה טובה (Senior level):
+
+"OLTP = Online Transaction Processing. מסד שמנהל פעולות חיות בזמן אמת:
+INSERT, UPDATE, DELETE בתדירות גבוהה. PostgreSQL, MySQL.
+מותאם לשורות בודדות, ACID Transactions, אלפי משתמשים מקבילים.
+
+OLAP = Online Analytical Processing. מחסן לניתוחים:
+SELECT כבד על מיליוני שורות, GROUP BY, Aggregations.
+Snowflake, BigQuery, Redshift. Columnar Storage.
+
+⚠️ לעולם לא מריצים OLAP על OLTP — זה מוריד את האפליקציה.
+Power BI מתחבר תמיד ל-DW (OLAP) — לא לפרודקשן."`,
+
+    bug: `תשובה טובה (Mid-Senior level):
+
+"לפני שנוגע ב-Power BI — הדשבורד הוא סוף השרשרת.
+80% מהשגיאות הן Upstream.
+
+1. בדוק Airflow — האם ETL רץ הלילה? אולי כשל ב-pipeline.
+2. בדוק Source Freshness ב-dbt — מתי עודכנה הטבלה?
+3. פתח dbt Lineage Graph — בדוק על איזו טבלה Power BI יושב.
+4. הרץ dbt test על ה-model — האם יש Data Quality failures?
+5. בדוק Snowflake Query History — האם ה-Query מחזיר את מה שצריך.
+6. רק אם הכל תקין Upstream — אז בדוק את ה-DAX ב-Power BI.
+
+💡 תמיד תתחיל מה-Source ותעבוד Downstream."`,
+
+    arch: `תשובה טובה:
+
+"אבחר Data Lake כשיש לי:
+1. נתונים לא-מובנים: תמונות, לוגים, JSON מורכב, קבצי אודיו.
+2. Data Scientists שצריכים נתונים גולמיים לאימון מודלים.
+3. תקציב אחסון מוגבל — S3 זול פי 10-50 מ-Snowflake.
+4. Schema לא ברור מראש — Schema-on-Read.
+
+אבחר DW (Snowflake/BigQuery) כשיש לי:
+1. נתונים מובנים ומוגדרים — SQL tables.
+2. BI Analysts שצריכים שאילתות מהירות.
+3. ACID Transactions חשובות לי.
+4. Governance ו-Data Quality קריטיים.
+
+במציאות: Lakehouse = הטוב משניהם. Data Lake לאחסון + DW layer לשאילתות."
+`
+  };
+
+  out.textContent = answers[v];
+}
+</script>
+</body>
+</html>
