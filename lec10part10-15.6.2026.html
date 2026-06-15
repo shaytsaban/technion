@@ -1,1 +1,488 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>סוגי JOIN — והשורות שנעלמות בשקט</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbfcfe; --card:#fff; --subtle:#f2f5f9; --border:#e5ebf3;
+  --blue:#2563eb; --blue-l:#eef4ff; --green:#0b9d6e; --green-l:#e7faf3;
+  --red:#e0382c; --red-l:#fef1f0; --orange:#e3810c; --orange-l:#fff6ea;
+  --purple:#7c3aed; --purple-l:#f4f0ff; --navy:#15253e;
+  --text:#0f1b2d; --text2:#3c4c61; --muted:#7a899e;
+  --font:'Heebo',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);direction:rtl;line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(251,252,254,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:11px 0;}
+.topbar-in{max-width:720px;margin:0 auto;padding:0 22px;display:flex;align-items:center;gap:14px;}
+.tb-t{font-size:13px;font-weight:800;color:var(--navy);white-space:nowrap;}
+.tb-track{flex:1;height:7px;background:var(--subtle);border-radius:6px;overflow:hidden;}
+.tb-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .5s cubic-bezier(.4,0,.2,1);}
+.tb-c{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums;}
+.lesson{max-width:720px;margin:0 auto;padding:30px 22px 120px;}
+.hero{text-align:center;padding:18px 0 4px;}
+.hero .kick{display:inline-block;background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.5px;padding:6px 14px;border-radius:20px;margin-bottom:13px;}
+.hero h1{font-size:31px;font-weight:900;color:var(--navy);line-height:1.2;margin-bottom:10px;}
+.hero p{font-size:16px;color:var(--muted);max-width:540px;margin:0 auto;}
+.recap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 22px;margin-top:20px;box-shadow:0 4px 22px rgba(20,40,80,.04);}
+.recap h3{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.recap .sub{font-size:13px;color:var(--muted);margin-bottom:14px;}
+.chain{display:flex;align-items:stretch;gap:4px;flex-wrap:wrap;}
+.pill{flex:1;min-width:62px;background:var(--subtle);border:1px solid var(--border);border-radius:9px;padding:7px 3px;text-align:center;}
+.pill .pi{font-size:15px;}
+.pill .pt{font-size:9.5px;font-weight:800;color:var(--text2);margin-top:2px;line-height:1.1;}
+.pill .ps{font-size:8px;color:var(--muted);}
+.pill.now{background:linear-gradient(135deg,var(--blue-l),var(--purple-l));border-color:#c9b6f5;box-shadow:0 0 0 2px rgba(124,58,237,.25);}
+.pill.now .pt{color:var(--purple);}
+.step{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 30px;margin-top:20px;box-shadow:0 4px 22px rgba(20,40,80,.04);scroll-margin-top:84px;opacity:.4;filter:saturate(.55);transition:opacity .4s,filter .4s;}
+.step.unlocked{opacity:1;filter:none;}
+.step .tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--purple);background:var(--purple-l);padding:4px 12px;border-radius:8px;margin-bottom:13px;}
+.step .tag.bq{color:#1e40af;background:var(--blue-l);}
+.step h2{font-size:22px;font-weight:900;color:var(--navy);line-height:1.3;margin-bottom:10px;}
+.step .lede{font-size:16px;color:var(--text2);margin-bottom:8px;}
+.term{background:var(--subtle);border-radius:12px;padding:14px 18px;margin:14px 0;font-size:15px;color:var(--text2);}
+.term b{color:var(--navy);}
+.term .w{display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:1px 8px;font-weight:800;color:var(--blue);font-family:var(--mono);}
+.bi{font-size:13.5px;font-weight:700;color:var(--blue);background:var(--blue-l);border-radius:9px;padding:9px 14px;margin:12px 0;}
+.bi::before{content:"🔗 ";}
+.task{display:inline-flex;align-items:center;gap:8px;background:var(--orange-l);color:var(--orange);border:1px solid #f3d6a6;font-weight:800;font-size:13px;padding:8px 14px;border-radius:10px;margin:14px 0 12px;}
+.note{font-size:12.5px;color:var(--muted);margin-top:5px;}
+.key{font-size:15.5px;font-weight:700;border-radius:12px;padding:14px 18px;margin:14px 0;line-height:1.55;}
+.key.blue{background:var(--blue-l);color:#1e40af;border-right:5px solid var(--blue);}
+.key.green{background:var(--green-l);color:#065f46;border-right:5px solid var(--green);}
+.key.red{background:var(--red-l);color:#9a241b;border-right:5px solid var(--red);}
+.key.orange{background:var(--orange-l);color:#9a5a08;border-right:5px solid var(--orange);}
+.key b{font-weight:900;}
+.reveal{display:none;animation:fade .45s ease;}
+.reveal.show{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.dt,.res{border-collapse:collapse;width:100%;margin:8px 0;font-size:13.5px;}
+.dt th,.dt td,.res th,.res td{border:1px solid var(--border);padding:8px 11px;}
+.dt th,.res th{background:var(--subtle);font-weight:800;color:var(--navy);font-size:12.5px;}
+.dt caption,.res caption{caption-side:top;text-align:right;font-weight:800;color:var(--navy);font-size:12.5px;padding-bottom:5px;}
+.dt th,.dt td{text-align:right;}
+.res{direction:ltr;}.res th,.res td{text-align:left;font-family:var(--mono);}.res caption{direction:rtl;text-align:right;color:var(--muted);font-weight:700;}
+.dt td.clk{cursor:pointer;}.dt td.clk:hover{background:var(--orange-l);}
+.dt tr.flag td{background:var(--green-l);box-shadow:inset 0 0 0 2px var(--green);}
+.dt tr.gone td{background:var(--red-l);color:var(--red);text-decoration:line-through;}
+.dt td.nullv{color:var(--red);font-style:italic;font-weight:700;}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:560px){.two{grid-template-columns:1fr;}}
+.explore{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0;}
+.ebtn{flex:1;min-width:100px;font-family:var(--font);font-weight:700;font-size:13.5px;padding:12px 8px;border-radius:11px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:all .15s;}
+.ebtn:hover{border-color:var(--blue);background:var(--blue-l);}
+.ebtn.seen{border-color:var(--green);background:var(--green-l);color:var(--green);}
+.def{font-size:15px;font-weight:600;color:var(--text2);background:var(--blue-l);border-right:4px solid var(--blue);border-radius:8px;padding:12px 16px;margin-top:6px;min-height:48px;}
+.brow{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;}
+.bcard{flex:1;min-width:140px;font-family:var(--font);font-weight:700;font-size:14px;padding:13px;border-radius:11px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:all .15s;text-align:center;}
+.bcard:hover{border-color:var(--blue);}
+.bcard.sel{border-color:var(--blue);background:var(--blue-l);color:var(--blue);}
+.bcard:disabled{cursor:default;border-color:var(--green);background:var(--green-l);color:var(--green);}
+/* join type cards */
+.jtypes{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:10px 0;}
+@media(max-width:560px){.jtypes{grid-template-columns:1fr;}}
+.jt{border:1px solid var(--border);border-radius:12px;padding:14px;background:var(--subtle);}
+.jt .nm{font-family:var(--mono);font-weight:800;font-size:14px;color:var(--blue);direction:ltr;}
+.jt .vis{display:flex;gap:4px;margin:8px 0;}
+.jt .box{flex:1;border-radius:6px;padding:5px;text-align:center;font-size:10px;font-weight:800;border:2px solid var(--border);}
+.jt .box.keep{background:var(--green-l);border-color:#9be3c4;color:#065f46;}
+.jt .box.drop{background:#fff;color:var(--muted);}
+.jt p{font-size:12.5px;color:var(--text2);}
+.scn{padding:13px 0;border-bottom:1px dashed var(--border);}
+.scn:last-child{border-bottom:none;}
+.scn .q{font-weight:800;font-size:14.5px;margin-bottom:7px;color:var(--navy);}
+.opts{display:flex;flex-direction:column;gap:7px;}
+.sbtn{font-family:var(--font);font-weight:700;font-size:13.5px;padding:10px 13px;border-radius:9px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:all .15s;text-align:right;}
+.sbtn:hover{border-color:var(--blue);}
+.sbtn code{font-family:var(--mono);font-size:12px;direction:ltr;display:inline-block;background:var(--subtle);padding:0 5px;border-radius:4px;}
+.sbtn.ok{border-color:var(--green);background:var(--green-l);color:var(--green);}
+.sbtn.no{border-color:var(--red);background:var(--red-l);color:var(--red);}
+.sbtn:disabled{cursor:default;opacity:.65;}
+.sbtn.ok:disabled,.sbtn.no:disabled{opacity:1;}
+.sqlc{background:#0f1729;border-radius:13px;overflow:hidden;margin:11px 0;direction:ltr;}
+.sqlc.good{box-shadow:inset 0 0 0 2px rgba(11,157,110,.45);}
+.sqlc.bad{box-shadow:inset 0 0 0 2px rgba(224,56,44,.45);}
+.sqlh{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;background:#172033;direction:rtl;}
+.sqlh .l{font-size:12px;font-weight:800;}.sqlh .l.good{color:#6ee7b7;}.sqlh .l.bad{color:#fca5a5;}
+.cpy{font-family:var(--font);font-size:12px;font-weight:700;background:#334155;color:#e2e8f0;border:none;padding:5px 12px;border-radius:7px;cursor:pointer;transition:all .15s;}
+.cpy:hover{background:#475569;}.cpy.done{background:var(--green);color:#fff;}
+.sqlb{padding:14px 16px;overflow-x:auto;}
+.sqlb pre{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.65;color:#e2e8f0;}
+.sqlb .k{color:#f472b6;}.sqlb .s{color:#86efac;}.sqlb .n{color:#fbbf24;}.sqlb .c{color:#64748b;font-style:italic;}.sqlb .t{color:#7dd3fc;}
+.howto{counter-reset:s;margin:8px 0;}
+.howto li{list-style:none;position:relative;padding:10px 42px 10px 0;font-size:15px;color:var(--text2);border-bottom:1px dashed var(--border);}
+.howto li:last-child{border-bottom:none;}
+.howto li::before{counter-increment:s;content:counter(s);position:absolute;right:0;top:9px;width:27px;height:27px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;}
+.howto a{color:var(--blue);font-weight:700;border-bottom:1.5px solid var(--blue);text-decoration:none;}
+.howto code{background:var(--subtle);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:13px;direction:ltr;display:inline-block;}
+.mcq-opt{display:block;width:100%;text-align:right;font-family:var(--font);font-size:15px;font-weight:600;padding:14px 18px;border:2px solid var(--border);border-radius:12px;background:var(--card);cursor:pointer;margin-bottom:9px;transition:all .15s;color:var(--text2);}
+.mcq-opt:hover{border-color:var(--blue);}
+.mcq-opt.correct{border-color:var(--green);background:var(--green-l);color:#065f46;font-weight:800;}
+.mcq-opt.incorrect{border-color:var(--red);background:var(--red-l);color:#9a241b;}
+.mcq-opt:disabled{cursor:default;}
+.mcq-fb{font-size:14px;font-weight:700;padding:12px 16px;border-radius:10px;margin-top:4px;}
+.mcq-fb.ok{background:var(--green-l);color:#065f46;}.mcq-fb.no{background:var(--red-l);color:#9a241b;}
+.bridge{margin-top:22px;padding:16px 18px;background:linear-gradient(90deg,var(--purple-l),transparent);border-right:4px solid var(--purple);border-radius:10px;}
+.bridge .q{font-size:15px;font-weight:800;color:var(--purple);}
+.bridge .q::before{content:"⟶ ";}
+.cont{margin-top:18px;display:flex;align-items:center;gap:13px;flex-wrap:wrap;}
+.btn{font-family:var(--font);font-weight:800;border:none;border-radius:11px;cursor:pointer;transition:all .18s;font-size:15px;}
+.btn-p{background:var(--blue);color:#fff;padding:12px 28px;box-shadow:0 4px 13px rgba(37,99,235,.27);}
+.btn-p:hover{background:#1d4fd8;transform:translateY(-1px);}
+.btn-p:disabled{background:#cbd5e1;box-shadow:none;cursor:not-allowed;transform:none;}
+.hint{font-size:13px;color:var(--muted);font-weight:600;}.hint.done{color:var(--green);}
+.pulse{animation:pls 1.4s ease-in-out infinite;}
+@keyframes pls{0%,100%{box-shadow:0 4px 13px rgba(37,99,235,.27);}50%{box-shadow:0 4px 22px rgba(37,99,235,.55);}}
+.finish{text-align:center;background:linear-gradient(135deg,var(--blue-l),var(--purple-l));border:1px solid var(--border);border-radius:18px;padding:38px 30px;margin-top:22px;opacity:.4;filter:saturate(.55);transition:opacity .4s,filter .4s;}
+.finish.unlocked{opacity:1;filter:none;}
+.finish .big{font-size:44px;}
+.finish h2{font-size:25px;font-weight:900;color:var(--navy);margin:6px 0;}
+.finish ul{list-style:none;max-width:540px;margin:16px auto 0;text-align:right;}
+.finish ul li{padding:8px 0;font-size:15px;font-weight:700;color:var(--text2);border-bottom:1px solid rgba(0,0,0,.06);}
+.finish ul li::before{content:"✓ ";color:var(--green);font-weight:900;}
+</style>
+</head>
+<body>
 
+<div class="topbar"><div class="topbar-in">
+  <span class="tb-t">🔗 סוגי JOIN</span>
+  <div class="tb-track"><div class="tb-fill" id="fill"></div></div>
+  <span class="tb-c" id="cnt">0 / 8</span>
+</div></div>
+
+<div class="lesson">
+
+  <div class="hero">
+    <span class="kick">ארכיטקטורת נתונים · מודול 10</span>
+    <h1>סוגי JOIN — והשורות שנעלמות בשקט</h1>
+    <p>חיברנו טבלאות מאז מודול 1 — אבל תמיד בסוג אחד. יש כמה סוגי JOIN, והבחירה הלא-נכונה משמיטה או משכפלת שורות בלי שום שגיאה. זה גורם מוביל למספרים שגויים בדשבורד.</p>
+  </div>
+
+  <div class="recap">
+    <h3>📍 הסיפור עד כה</h3>
+    <div class="sub">המסע — ואיפה אנחנו עכשיו:</div>
+    <div class="chain">
+      <div class="pill"><div class="pi">📦</div><div class="pt">JSON</div></div>
+      <div class="pill"><div class="pi">🗂️</div><div class="pt">טבלאות</div></div>
+      <div class="pill"><div class="pi">🧹</div><div class="pt">ETL</div></div>
+      <div class="pill"><div class="pi">🏭</div><div class="pt">מחסן</div></div>
+      <div class="pill"><div class="pi">📊</div><div class="pt">אגרגציה</div></div>
+      <div class="pill"><div class="pi">🪟</div><div class="pt">חלון</div></div>
+      <div class="pill"><div class="pi">🧱</div><div class="pt">CTE</div></div>
+      <div class="pill"><div class="pi">📅</div><div class="pt">זמן</div></div>
+      <div class="pill now"><div class="pi">🔗</div><div class="pt">JOIN</div><div class="ps">כאן</div></div>
+    </div>
+  </div>
+
+  <!-- STEP 0 -->
+  <section class="step unlocked" id="step0">
+    <span class="tag">① לפני הכול</span>
+    <h2>מה קורה לשורה בלי התאמה?</h2>
+    <p class="lede">JOIN מחבר שתי טבלאות לפי מפתח משותף (זוכר ממודול 1). אבל מה קורה לשורה שאין לה <b>בכלל</b> התאמה בטבלה השנייה? כאן מתחיל ההבדל בין סוגי ה-JOIN. הנה לקוחות והזמנות:</p>
+    <div class="two">
+      <table class="dt"><caption>👤 לקוחות</caption>
+        <tr><th>id</th><th>שם</th></tr>
+        <tr><td>1</td><td>דנה</td></tr><tr><td>2</td><td>יוסי</td></tr>
+        <tr id="cust3"><td>3</td><td>מאיה</td></tr></table>
+      <table class="dt"><caption>🧾 הזמנות</caption>
+        <tr><th>#</th><th>customer_id</th></tr>
+        <tr><td>101</td><td>1</td></tr><tr><td>102</td><td>1</td></tr><tr><td>103</td><td>2</td></tr></table>
+    </div>
+    <div class="task">🔎 לחץ על הלקוח שאין לו אף הזמנה</div>
+    <div class="brow">
+      <button class="bcard" onclick="pick0(1)">דנה (1)</button>
+      <button class="bcard" onclick="pick0(2)">יוסי (2)</button>
+      <button class="bcard" onclick="pick0(3)">מאיה (3)</button>
+    </div>
+    <div class="def" id="d0" style="display:none;"></div>
+    <div class="bridge"><span class="q">מאיה (3) לא מופיעה באף הזמנה. מה יקרה לה כשנחבר את שתי הטבלאות? תלוי בסוג ה-JOIN.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c0" disabled onclick="next(0,1)">המשך ←</button><span class="hint" id="h0">מצא את הלקוח בלי הזמנה</span></div>
+  </section>
+
+  <!-- STEP 1 -->
+  <section class="step" id="step1">
+    <span class="tag">② המלכודת</span>
+    <h2>INNER JOIN — שורות בלי התאמה נעלמות</h2>
+    <p class="lede"><code style="font-family:var(--mono);direction:ltr;">INNER JOIN</code> (זה שהשתמשנו בו עד היום, וזו ברירת המחדל) שומר רק שורות שיש להן התאמה ב<b>שתי</b> הטבלאות. לחץ וחבר — וראה מה קורה למאיה:</p>
+    <div class="task">▶️ חבר את הטבלאות עם INNER JOIN</div>
+    <div class="brow"><button class="bcard" id="innerBtn" onclick="doInner()">INNER JOIN</button></div>
+    <div class="reveal" id="r1">
+      <table class="dt"><caption>תוצאת INNER JOIN — לקוח + הזמנה</caption>
+        <tr><th>שם</th><th>#הזמנה</th></tr>
+        <tr><td>דנה</td><td>101</td></tr><tr><td>דנה</td><td>102</td></tr><tr><td>יוסי</td><td>103</td></tr></table>
+      <div class="key red">💥 מאיה נעלמה — אין לה הזמנה, אז INNER השמיט אותה לגמרי, <b>בלי שום שגיאה</b>. אם תספור לקוחות דרך JOIN כזה, תקבל 2 במקום 3. בחנות אמיתית: אלפי לקוחות חדשים שעוד לא קנו פשוט "ייעלמו" מהדוח.</div>
+    </div>
+    <div class="bridge"><span class="q">איך שומרים את מאיה בכל זאת? עם סוג JOIN אחר — LEFT JOIN.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c1" disabled onclick="next(1,2)">המשך ←</button><span class="hint" id="h1">בצע INNER JOIN</span></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" id="step2">
+    <span class="tag">③ הפתרון</span>
+    <h2>LEFT JOIN — שומר את כל השמאלית</h2>
+    <p class="lede"><code style="font-family:var(--mono);direction:ltr;">LEFT JOIN</code> שומר את <b>כל</b> השורות מהטבלה השמאלית (לקוחות), וממלא <code style="font-family:var(--mono);direction:ltr;">NULL</code> איפה שאין התאמה. החלף בין שני הסוגים וראה את מאיה נעלמת וחוזרת:</p>
+    <div class="task">🔀 נסה את שני הסוגים</div>
+    <div class="brow">
+      <button class="bcard" id="bI" onclick="show2('inner')">INNER JOIN</button>
+      <button class="bcard" id="bL" onclick="show2('left')">LEFT JOIN</button>
+    </div>
+    <div class="reveal" id="r2i">
+      <table class="dt"><caption>INNER — מאיה חסרה</caption>
+        <tr><th>שם</th><th>#הזמנה</th></tr>
+        <tr><td>דנה</td><td>101</td></tr><tr><td>דנה</td><td>102</td></tr><tr><td>יוסי</td><td>103</td></tr></table>
+    </div>
+    <div class="reveal" id="r2l">
+      <table class="dt"><caption>LEFT — מאיה נשמרת, עם NULL</caption>
+        <tr><th>שם</th><th>#הזמנה</th></tr>
+        <tr><td>דנה</td><td>101</td></tr><tr><td>דנה</td><td>102</td></tr><tr><td>יוסי</td><td>103</td></tr>
+        <tr><td>מאיה</td><td class="nullv">NULL</td></tr></table>
+    </div>
+    <div class="term">ה-NULL הוא דווקא שימושי: הוא אומר "ללקוח הזה אין הזמנות". כך אפשר לספור את <b>כל</b> הלקוחות, או למצוא מי <b>לא</b> קנה.</div>
+    <div class="bridge"><span class="q">INNER ו-LEFT הם השניים העיקריים. יש עוד שניים. נסדר את כל הארבעה.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c2" disabled onclick="next(2,3)">המשך ←</button><span class="hint" id="h2">נסה את שני הסוגים</span></div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step" id="step3">
+    <span class="tag">④ ארבעת הסוגים</span>
+    <h2>איזה סוג שומר מה?</h2>
+    <p class="lede">דמיין שתי טבלאות, שמאל וימין. כל סוג שומר חלק אחר:</p>
+    <div class="jtypes">
+      <div class="jt"><div class="nm">INNER JOIN</div>
+        <div class="vis"><div class="box drop">שמאל</div><div class="box keep">התאמה</div><div class="box drop">ימין</div></div>
+        <p>רק שורות שיש להן התאמה בשתיהן</p></div>
+      <div class="jt"><div class="nm">LEFT JOIN</div>
+        <div class="vis"><div class="box keep">שמאל</div><div class="box keep">התאמה</div><div class="box drop">ימין</div></div>
+        <p>כל השמאלית + ההתאמות מימין (NULL היכן שאין)</p></div>
+      <div class="jt"><div class="nm">RIGHT JOIN</div>
+        <div class="vis"><div class="box drop">שמאל</div><div class="box keep">התאמה</div><div class="box keep">ימין</div></div>
+        <p>כל הימנית + ההתאמות משמאל</p></div>
+      <div class="jt"><div class="nm">FULL JOIN</div>
+        <div class="vis"><div class="box keep">שמאל</div><div class="box keep">התאמה</div><div class="box keep">ימין</div></div>
+        <p>הכול משתיהן, עם NULL בכל צד חסר</p></div>
+    </div>
+    <div class="task">🎯 התאם כל שאלה לסוג ה-JOIN הנכון</div>
+    <div id="scns">
+      <div class="scn" data-correct="inner"><div class="q">"רק לקוחות שכבר ביצעו הזמנה"</div>
+        <div class="opts"><button class="sbtn" onclick="match(this,'inner')">INNER</button><button class="sbtn" onclick="match(this,'left')">LEFT</button><button class="sbtn" onclick="match(this,'full')">FULL</button></div></div>
+      <div class="scn" data-correct="left"><div class="q">"כל הלקוחות, גם אלה שעדיין לא קנו"</div>
+        <div class="opts"><button class="sbtn" onclick="match(this,'inner')">INNER</button><button class="sbtn" onclick="match(this,'left')">LEFT</button><button class="sbtn" onclick="match(this,'full')">FULL</button></div></div>
+      <div class="scn" data-correct="full"><div class="q">"כל הלקוחות וכל ההזמנות, כולל יתומים בשני הצדדים"</div>
+        <div class="opts"><button class="sbtn" onclick="match(this,'inner')">INNER</button><button class="sbtn" onclick="match(this,'left')">LEFT</button><button class="sbtn" onclick="match(this,'full')">FULL</button></div></div>
+    </div>
+    <p class="note" id="matchNote">התאם בשלושת המקרים.</p>
+    <div class="bridge"><span class="q">מספיק טבלאות צעצוע — נראה את ההבדל בין INNER ל-LEFT על מסד אמיתי, במספרים.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c3" disabled onclick="next(3,4)">המשך ←</button><span class="hint" id="h3">התאם בשלושת המקרים</span></div>
+  </section>
+
+  <!-- STEP 4: BigQuery I INNER vs LEFT -->
+  <section class="step" id="step4">
+    <span class="tag bq">⑤ BigQuery · INNER מול LEFT ☁️</span>
+    <h2>כמה לקוחות "נעלמים" באמת?</h2>
+    <p class="lede">נספור כמה משתמשים מופיעים כשמחברים אותם להזמנות — פעם עם INNER, פעם עם LEFT. ההפרש = המשתמשים שמעולם לא הזמינו, ש-INNER השמיט בשקט.</p>
+    <ol class="howto">
+      <li>פתח את <a href="https://console.cloud.google.com/bigquery" target="_blank" rel="noopener">BigQuery Sandbox</a> והתחבר עם חשבון Google.</li>
+      <li>הרץ את שאילתה א' (INNER) ואת שאילתה ב' (LEFT). השווה את שני המספרים.</li>
+    </ol>
+    <div class="sqlc bad">
+      <div class="sqlh"><span class="l bad">א' · INNER — רק משתמשים עם הזמנות</span><button class="cpy" onclick="copy(this,'sql4A',4,'a')">העתק</button></div>
+      <div class="sqlb"><pre id="sql4A"><span class="k">SELECT</span> <span class="k">COUNT</span>(<span class="k">DISTINCT</span> u.id) <span class="k">AS</span> users_appearing
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.users`</span> u
+<span class="k">JOIN</span> <span class="t">`bigquery-public-data.thelook_ecommerce.orders`</span> o
+  <span class="k">ON</span> u.id = o.user_id;</pre></div>
+    </div>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l good">ב' · LEFT — כל המשתמשים</span><button class="cpy" onclick="copy(this,'sql4B',4,'b')">העתק</button></div>
+      <div class="sqlb"><pre id="sql4B"><span class="c">-- LEFT שומר גם את מי שאין לו הזמנה</span>
+<span class="k">SELECT</span> <span class="k">COUNT</span>(<span class="k">DISTINCT</span> u.id) <span class="k">AS</span> users_appearing
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.users`</span> u
+<span class="k">LEFT JOIN</span> <span class="t">`bigquery-public-data.thelook_ecommerce.orders`</span> o
+  <span class="k">ON</span> u.id = o.user_id;</pre></div>
+    </div>
+    <div class="key red">💥 המספר ב-ב' גדול יותר. ההפרש = משתמשים בלי הזמנה. אם דוח "סך לקוחות" מבוסס על INNER JOIN — הוא מדווח חסר, בלי אזהרה.</div>
+    <div class="task" id="t4chip">📋 העתק את שתי השאילתות כדי להמשיך</div>
+    <div class="bridge"><span class="q">ה-NULL של LEFT הוא לא רק טכני — הוא מאפשר לענות על שאלה שאי אפשר אחרת: מי לא קנה?</span></div>
+    <div class="cont"><button class="btn btn-p" id="c4" disabled onclick="next(4,5)">המשך ←</button><span class="hint" id="h4">העתק את שתי השאילתות</span></div>
+  </section>
+
+  <!-- STEP 5: BigQuery II anti-join + null -->
+  <section class="step" id="step5">
+    <span class="tag bq">⑥ BigQuery · מי חסר? ☁️</span>
+    <h2>Anti-join: למצוא שורות ללא התאמה</h2>
+    <p class="lede">הטריק: <code style="font-family:var(--mono);direction:ltr;">LEFT JOIN</code> ואז <code style="font-family:var(--mono);direction:ltr;">WHERE right IS NULL</code> — משאיר רק את מי שאין לו התאמה. זה הכלי ל"לקוחות שמעולם לא קנו".</p>
+    <ol class="howto">
+      <li>הרץ את שאילתה ג' — כמה משתמשים מעולם לא ביצעו הזמנה.</li>
+      <li>הרץ את שאילתה ד' — מספר ההזמנות לכל משתמש, כולל 0 למי שלא קנה.</li>
+    </ol>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l good">ג' · משתמשים שמעולם לא הזמינו (anti-join)</span><button class="cpy" onclick="copy(this,'sql5A',5,'a')">העתק</button></div>
+      <div class="sqlb"><pre id="sql5A"><span class="c">-- LEFT JOIN + WHERE על NULL = רק מי שאין לו התאמה</span>
+<span class="k">SELECT</span> <span class="k">COUNT</span>(*) <span class="k">AS</span> users_never_ordered
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.users`</span> u
+<span class="k">LEFT JOIN</span> <span class="t">`bigquery-public-data.thelook_ecommerce.orders`</span> o
+  <span class="k">ON</span> u.id = o.user_id
+<span class="k">WHERE</span> o.user_id <span class="k">IS NULL</span>;</pre></div>
+    </div>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l good">ד' · הזמנות לכל משתמש (כולל 0)</span><button class="cpy" onclick="copy(this,'sql5B',5,'b')">העתק</button></div>
+      <div class="sqlb"><pre id="sql5B"><span class="c">-- COUNT על העמודה מהצד הימני מתעלם מ-NULL, אז מי שלא הזמין מקבל 0</span>
+<span class="k">SELECT</span> u.id, <span class="k">COUNT</span>(o.order_id) <span class="k">AS</span> order_count
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.users`</span> u
+<span class="k">LEFT JOIN</span> <span class="t">`bigquery-public-data.thelook_ecommerce.orders`</span> o
+  <span class="k">ON</span> u.id = o.user_id
+<span class="k">GROUP BY</span> u.id
+<span class="k">ORDER BY</span> order_count <span class="k">ASC</span>
+<span class="k">LIMIT</span> <span class="n">10</span>;</pre></div>
+    </div>
+    <div class="key green">✅ "מי לא קנה" היא שאלה עסקית יקרת ערך (לקמפיין החזרה) — ואי אפשר לענות עליה עם INNER, כי הוא בדיוק משמיט את התשובה. LEFT + IS NULL הוא הכלי.</div>
+    <div class="task" id="t5chip">📋 העתק את שתי השאילתות כדי להמשיך</div>
+    <div class="bridge"><span class="q">עד כה חיברנו שתי טבלאות. בעולם האמיתי מחברים שלוש וארבע בשרשרת.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c5" disabled onclick="next(5,6)">המשך ←</button><span class="hint" id="h5">העתק את שתי השאילתות</span></div>
+  </section>
+
+  <!-- STEP 6: BigQuery III multi-table -->
+  <section class="step" id="step6">
+    <span class="tag bq">⑦ BigQuery · חיבור רב-טבלאות ☁️</span>
+    <h2>לחבר שלוש טבלאות בשרשרת</h2>
+    <p class="lede">שאלה אמיתית נוגעת בכמה טבלאות: פריטים → הזמנות → משתמשים. מחברים אותן בשרשרת, JOIN אחרי JOIN.</p>
+    <ol class="howto">
+      <li>הרץ את שאילתה ה' — הכנסה לפי מדינת הלקוח (פריטים → משתמשים).</li>
+      <li>הרץ את שאילתה ו' — שרשרת של 3 טבלאות: פריטים → הזמנות → משתמשים, פילוח לפי מדינה וסטטוס.</li>
+    </ol>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l good">ה' · הכנסה לפי מדינה</span><button class="cpy" onclick="copy(this,'sql6A',6,'a')">העתק</button></div>
+      <div class="sqlb"><pre id="sql6A"><span class="k">SELECT</span> u.country, <span class="k">ROUND</span>(<span class="k">SUM</span>(oi.sale_price)) <span class="k">AS</span> revenue
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span> oi
+<span class="k">JOIN</span> <span class="t">`bigquery-public-data.thelook_ecommerce.users`</span> u
+  <span class="k">ON</span> oi.user_id = u.id
+<span class="k">GROUP BY</span> u.country
+<span class="k">ORDER BY</span> revenue <span class="k">DESC</span>
+<span class="k">LIMIT</span> <span class="n">10</span>;</pre></div>
+    </div>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l good">ו' · שרשרת 3 טבלאות</span><button class="cpy" onclick="copy(this,'sql6B',6,'b')">העתק</button></div>
+      <div class="sqlb"><pre id="sql6B"><span class="c">-- כל JOIN מוסיף טבלה לשרשרת לפי המפתח שלה</span>
+<span class="k">SELECT</span> u.country, o.status, <span class="k">COUNT</span>(*) <span class="k">AS</span> items
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span> oi
+<span class="k">JOIN</span> <span class="t">`bigquery-public-data.thelook_ecommerce.orders`</span> o
+  <span class="k">ON</span> oi.order_id = o.order_id
+<span class="k">JOIN</span> <span class="t">`bigquery-public-data.thelook_ecommerce.users`</span> u
+  <span class="k">ON</span> o.user_id = u.id
+<span class="k">GROUP BY</span> u.country, o.status
+<span class="k">ORDER BY</span> items <span class="k">DESC</span>
+<span class="k">LIMIT</span> <span class="n">10</span>;</pre></div>
+    </div>
+    <div class="key orange">⚠️ תזכורת ממודול 1: JOIN על מפתח לא-ייחודי יכול גם <b>לשכפל</b> שורות (fan-out) ולנפח סכומים. תמיד ודא שאתה מחבר מפתח אל מפתח נכון.</div>
+    <div class="task" id="t6chip">📋 העתק את שתי השאילתות כדי להמשיך</div>
+    <div class="bridge"><span class="q">ראית את כל הסוגים והשילובים. נסכם מתי בוחרים כל אחד.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c6" disabled onclick="next(6,7)">המשך ←</button><span class="hint" id="h6">העתק את שתי השאילתות</span></div>
+  </section>
+
+  <!-- STEP 7: decision -->
+  <section class="step" id="step7">
+    <span class="tag">⑧ החלטה</span>
+    <h2>איזה JOIN לכל שאלה?</h2>
+    <p class="lede">הכלל: רוצה רק התאמות → INNER. רוצה לשמור את כל צד אחד → LEFT. רוצה למצוא את מי שאין לו התאמה → LEFT + IS NULL. החלט:</p>
+    <div id="scns2">
+      <div class="scn" data-correct="inner"><div class="q">"הכנסות לפי מוצר" — רק מוצרים שנמכרו מעניינים</div>
+        <div class="opts"><button class="sbtn" onclick="dec(this,'inner')">INNER</button><button class="sbtn" onclick="dec(this,'left')">LEFT</button><button class="sbtn" onclick="dec(this,'anti')">LEFT + IS NULL</button></div></div>
+      <div class="scn" data-correct="left"><div class="q">"כל המוצרים בקטלוג, עם כמות שנמכרה (0 אם לא נמכר)"</div>
+        <div class="opts"><button class="sbtn" onclick="dec(this,'inner')">INNER</button><button class="sbtn" onclick="dec(this,'left')">LEFT</button><button class="sbtn" onclick="dec(this,'anti')">LEFT + IS NULL</button></div></div>
+      <div class="scn" data-correct="anti"><div class="q">"מוצרים שמעולם לא נמכרו" (מלאי מת)</div>
+        <div class="opts"><button class="sbtn" onclick="dec(this,'inner')">INNER</button><button class="sbtn" onclick="dec(this,'left')">LEFT</button><button class="sbtn" onclick="dec(this,'anti')">LEFT + IS NULL</button></div></div>
+    </div>
+    <p class="note" id="decNote">החלט בשלושת המקרים.</p>
+    <div class="bridge"><span class="q">שאלה אחת אחרונה.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c7" disabled onclick="next(7,8)">לשאלת סיכום ←</button><span class="hint" id="h7">החלט בשלושת המקרים</span></div>
+  </section>
+
+  <!-- STEP 8: check -->
+  <section class="step" id="step8">
+    <span class="tag">⑨ בדיקה</span>
+    <h2>שאלה אחת שמסגירה אם הכול התחבר</h2>
+    <p class="lede">ספרת "סך לקוחות" דרך JOIN בין לקוחות להזמנות, וקיבלת מספר נמוך מהמספר האמיתי שאתה מכיר. מה הגורם הסביר?</p>
+    <div id="mcq">
+      <button class="mcq-opt" onclick="ans(this,false,'fan-out מנפח כלפי מעלה — לא גורם לחֶסֶר. נסה שוב.')">א) JOIN על מפתח שגוי ניפח את הספירה</button>
+      <button class="mcq-opt" onclick="ans(this,true,'בדיוק. INNER JOIN השמיט את הלקוחות שעדיין לא ביצעו הזמנה. LEFT JOIN ישמור את כולם ויחזיר את המספר הנכון.')">ב) INNER JOIN השמיט לקוחות בלי הזמנות — צריך LEFT JOIN</button>
+      <button class="mcq-opt" onclick="ans(this,false,'אחסון עמודתי משפיע על מהירות, לא על מי נכלל בספירה. נסה שוב.')">ג) המחסן עמודתי</button>
+      <button class="mcq-opt" onclick="ans(this,false,'DATE_TRUNC נוגע לזמן — לא קשור לספירת לקוחות חסרים. נסה שוב.')">ד) שכחת DATE_TRUNC</button>
+    </div>
+    <div id="mcqFb"></div>
+    <div class="cont"><button class="btn btn-p" id="c8" disabled onclick="finish()">סיים ←</button><span class="hint" id="h8">ענה נכון כדי לסיים</span></div>
+  </section>
+
+  <section class="finish" id="finish">
+    <div class="big">🎯</div>
+    <h2>סיימת — ואתה כבר לא מאבד שורות בשקט</h2>
+    <ul>
+      <li><b>INNER JOIN</b> = רק התאמות בשתי הטבלאות — שורות יתומות נעלמות</li>
+      <li><b>LEFT JOIN</b> = כל השמאלית + NULL היכן שאין התאמה</li>
+      <li>RIGHT / FULL = כל הימנית / הכול משתיהן</li>
+      <li><b>Anti-join</b> (LEFT + WHERE IS NULL) = למצוא את מי שאין לו התאמה</li>
+      <li>שרשרת JOIN-ים מחברת כמה טבלאות — ושים לב ל-fan-out על מפתח לא-ייחודי</li>
+    </ul>
+  </section>
+
+</div>
+
+<script>
+const TOTAL=8;let done=0;
+function bump(){document.getElementById('fill').style.width=(done/TOTAL*100)+'%';document.getElementById('cnt').textContent=done+' / '+TOTAL;}
+function unlock(id,hid,msg){const b=document.getElementById(id);b.disabled=false;b.classList.add('pulse');const h=document.getElementById(hid);if(h){h.textContent=msg||'אפשר להמשיך';h.classList.add('done');}}
+function next(from,to){done=Math.max(done,from+1);bump();const s=document.getElementById('step'+to);s.classList.add('unlocked');document.getElementById('c'+from).classList.remove('pulse');s.scrollIntoView({behavior:'smooth',block:'start'});}
+
+/* step0 pick */
+function pick0(n){const d=document.getElementById('d0');d.style.display='block';
+  if(n===3){d.style.background='var(--green-l)';d.style.borderRightColor='var(--green)';d.style.color='#065f46';
+    d.innerHTML='<b>נכון — מאיה (3)</b> לא מופיעה באף שורת הזמנה. אין לה התאמה.';
+    document.getElementById('cust3').classList.add('flag');unlock('c0','h0','מצאת את הלקוח היתום — המשך');}
+  else{d.style.background='var(--red-l)';d.style.borderRightColor='var(--red)';d.style.color='#9a241b';
+    d.innerHTML='לא — ללקוח הזה יש הזמנות בטבלה הימנית. נסה שוב.';}}
+
+/* step1 inner */
+function doInner(){const b=document.getElementById('innerBtn');b.disabled=true;b.textContent='✓ INNER';document.getElementById('r1').classList.add('show');unlock('c1','h1','ראית שמאיה נעלמה — המשך');}
+
+/* step2 toggle */
+let s2={i:0,l:0};
+function show2(t){if(t==='inner'){document.getElementById('r2i').classList.add('show');document.getElementById('bI').classList.add('sel');s2.i=1;}
+  else{document.getElementById('r2l').classList.add('show');document.getElementById('bL').classList.add('sel');s2.l=1;}
+  if(s2.i&&s2.l){document.getElementById('bI').classList.add('sel');unlock('c2','h2','ראית את ההבדל — המשך');}}
+
+/* step3 match */
+let matchDone=0;
+function match(btn,val){const row=btn.closest('.scn');if(row.dataset.done)return;
+  if(val===row.dataset.correct){btn.classList.add('ok');row.querySelectorAll('.sbtn').forEach(b=>b.disabled=true);row.dataset.done=1;matchDone++;
+    document.getElementById('matchNote').textContent='נכון '+matchDone+' מתוך 3.';
+    if(matchDone===3)unlock('c3','h3','התאמת את הסוגים — המשך');}
+  else{btn.classList.add('no');btn.disabled=true;}}
+
+/* steps 4,5,6 copy */
+const cpReq={4:2,5:2,6:2};
+const cpCnt={4:new Set(),5:new Set(),6:new Set()};
+function copy(btn,preId,grp,slot){const t=document.getElementById(preId).innerText;
+  navigator.clipboard.writeText(t).then(()=>{btn.textContent='הועתק ✓';btn.classList.add('done');cpCnt[grp].add(slot);
+    if(cpCnt[grp].size>=cpReq[grp]){const chip=document.getElementById('t'+grp+'chip');if(chip)chip.style.display='none';unlock('c'+grp,'h'+grp,'השאילתות מוכנות — המשך');}
+  }).catch(()=>{btn.textContent='בחר ידנית';});}
+
+/* step7 decision */
+let decDone=0;
+function dec(btn,val){const row=btn.closest('.scn');if(row.dataset.done)return;
+  if(val===row.dataset.correct){btn.classList.add('ok');row.querySelectorAll('.sbtn').forEach(b=>b.disabled=true);row.dataset.done=1;decDone++;
+    document.getElementById('decNote').textContent='נכון '+decDone+' מתוך 3.';
+    if(decDone===3)unlock('c7','h7','יודע מתי כל סוג — המשך');}
+  else{btn.classList.add('no');btn.disabled=true;}}
+
+/* step8 mcq */
+function ans(btn,ok,fb){const box=document.getElementById('mcqFb');
+  if(ok){document.querySelectorAll('#mcq .mcq-opt').forEach(o=>o.disabled=true);btn.classList.add('correct');
+    box.innerHTML='<div class="mcq-fb ok">✅ '+fb+'</div>';unlock('c8','h8','כל הכבוד — סיים');}
+  else{btn.classList.add('incorrect');btn.disabled=true;box.innerHTML='<div class="mcq-fb no">↩️ '+fb+'</div>';}}
+function finish(){done=TOTAL;bump();document.getElementById('c8').classList.remove('pulse');const f=document.getElementById('finish');f.classList.add('unlocked');f.scrollIntoView({behavior:'smooth',block:'center'});}
+
+bump();
+</script>
+</body>
+</html>
