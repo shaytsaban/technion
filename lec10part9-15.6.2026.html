@@ -1,1 +1,450 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>לנתח נתונים לאורך זמן — תאריכים ב-BigQuery</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbfcfe; --card:#fff; --subtle:#f2f5f9; --border:#e5ebf3;
+  --blue:#2563eb; --blue-l:#eef4ff; --green:#0b9d6e; --green-l:#e7faf3;
+  --red:#e0382c; --red-l:#fef1f0; --orange:#e3810c; --orange-l:#fff6ea;
+  --purple:#7c3aed; --purple-l:#f4f0ff; --navy:#15253e;
+  --text:#0f1b2d; --text2:#3c4c61; --muted:#7a899e;
+  --font:'Heebo',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);direction:rtl;line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(251,252,254,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:11px 0;}
+.topbar-in{max-width:720px;margin:0 auto;padding:0 22px;display:flex;align-items:center;gap:14px;}
+.tb-t{font-size:13px;font-weight:800;color:var(--navy);white-space:nowrap;}
+.tb-track{flex:1;height:7px;background:var(--subtle);border-radius:6px;overflow:hidden;}
+.tb-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .5s cubic-bezier(.4,0,.2,1);}
+.tb-c{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums;}
+.lesson{max-width:720px;margin:0 auto;padding:30px 22px 120px;}
+.hero{text-align:center;padding:18px 0 4px;}
+.hero .kick{display:inline-block;background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.5px;padding:6px 14px;border-radius:20px;margin-bottom:13px;}
+.hero h1{font-size:31px;font-weight:900;color:var(--navy);line-height:1.2;margin-bottom:10px;}
+.hero p{font-size:16px;color:var(--muted);max-width:540px;margin:0 auto;}
+.recap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 22px;margin-top:20px;box-shadow:0 4px 22px rgba(20,40,80,.04);}
+.recap h3{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.recap .sub{font-size:13px;color:var(--muted);margin-bottom:14px;}
+.chain{display:flex;align-items:stretch;gap:5px;flex-wrap:wrap;}
+.pill{flex:1;min-width:68px;background:var(--subtle);border:1px solid var(--border);border-radius:10px;padding:8px 4px;text-align:center;}
+.pill .pi{font-size:16px;}
+.pill .pt{font-size:10px;font-weight:800;color:var(--text2);margin-top:2px;line-height:1.15;}
+.pill .ps{font-size:8.5px;color:var(--muted);}
+.pill.now{background:linear-gradient(135deg,var(--blue-l),var(--purple-l));border-color:#c9b6f5;box-shadow:0 0 0 2px rgba(124,58,237,.25);}
+.pill.now .pt{color:var(--purple);}
+.step{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 30px;margin-top:20px;box-shadow:0 4px 22px rgba(20,40,80,.04);scroll-margin-top:84px;opacity:.4;filter:saturate(.55);transition:opacity .4s,filter .4s;}
+.step.unlocked{opacity:1;filter:none;}
+.step .tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--purple);background:var(--purple-l);padding:4px 12px;border-radius:8px;margin-bottom:13px;}
+.step .tag.bq{color:#1e40af;background:var(--blue-l);}
+.step h2{font-size:22px;font-weight:900;color:var(--navy);line-height:1.3;margin-bottom:10px;}
+.step .lede{font-size:16px;color:var(--text2);margin-bottom:8px;}
+.term{background:var(--subtle);border-radius:12px;padding:14px 18px;margin:14px 0;font-size:15px;color:var(--text2);}
+.term b{color:var(--navy);}
+.term .w{display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:1px 8px;font-weight:800;color:var(--blue);font-family:var(--mono);}
+.bi{font-size:13.5px;font-weight:700;color:var(--blue);background:var(--blue-l);border-radius:9px;padding:9px 14px;margin:12px 0;}
+.bi::before{content:"🔗 ";}
+.task{display:inline-flex;align-items:center;gap:8px;background:var(--orange-l);color:var(--orange);border:1px solid #f3d6a6;font-weight:800;font-size:13px;padding:8px 14px;border-radius:10px;margin:14px 0 12px;}
+.note{font-size:12.5px;color:var(--muted);margin-top:5px;}
+.key{font-size:15.5px;font-weight:700;border-radius:12px;padding:14px 18px;margin:14px 0;line-height:1.55;}
+.key.blue{background:var(--blue-l);color:#1e40af;border-right:5px solid var(--blue);}
+.key.green{background:var(--green-l);color:#065f46;border-right:5px solid var(--green);}
+.key.orange{background:var(--orange-l);color:#9a5a08;border-right:5px solid var(--orange);}
+.key b{font-weight:900;}
+.reveal{display:none;animation:fade .45s ease;}
+.reveal.show{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.datebox{text-align:center;font-family:var(--mono);font-size:22px;font-weight:700;color:var(--navy);background:var(--subtle);border-radius:12px;padding:18px;margin:10px 0;direction:ltr;}
+.datebox small{display:block;font-family:var(--font);font-size:12px;color:var(--muted);margin-top:4px;}
+.explore{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0;}
+.ebtn{flex:1;min-width:100px;font-family:var(--font);font-weight:700;font-size:13.5px;padding:12px 8px;border-radius:11px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:all .15s;}
+.ebtn:hover{border-color:var(--blue);background:var(--blue-l);}
+.ebtn.seen{border-color:var(--green);background:var(--green-l);color:var(--green);}
+.def{font-size:15px;font-weight:600;color:var(--text2);background:var(--blue-l);border-right:4px solid var(--blue);border-radius:8px;padding:12px 16px;margin-top:6px;min-height:48px;}
+.dt,.res{border-collapse:collapse;width:100%;margin:8px 0;font-size:13.5px;}
+.dt th,.dt td,.res th,.res td{border:1px solid var(--border);padding:8px 11px;}
+.dt th,.res th{background:var(--subtle);font-weight:800;color:var(--navy);font-size:12.5px;}
+.dt caption,.res caption{caption-side:top;text-align:right;font-weight:800;color:var(--navy);font-size:12.5px;padding-bottom:5px;}
+.dt th,.dt td{text-align:right;}
+.res{direction:ltr;}.res th,.res td{text-align:left;font-family:var(--mono);}.res caption{direction:rtl;text-align:right;color:var(--muted);font-weight:700;}
+.dt td.bk{background:var(--green-l);color:#065f46;font-weight:800;}
+.brow{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;}
+.bcard{flex:1;min-width:150px;font-family:var(--font);font-weight:700;font-size:14px;padding:13px;border-radius:11px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:all .15s;text-align:center;}
+.bcard:hover{border-color:var(--blue);}
+.bcard:disabled{cursor:default;border-color:var(--green);background:var(--green-l);color:var(--green);}
+.scn{padding:13px 0;border-bottom:1px dashed var(--border);}
+.scn:last-child{border-bottom:none;}
+.scn .q{font-weight:800;font-size:14.5px;margin-bottom:7px;color:var(--navy);}
+.opts{display:flex;flex-direction:column;gap:7px;}
+.sbtn{font-family:var(--font);font-weight:700;font-size:13.5px;padding:10px 13px;border-radius:9px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:all .15s;text-align:right;}
+.sbtn:hover{border-color:var(--blue);}
+.sbtn code{font-family:var(--mono);font-size:12.5px;direction:ltr;display:inline-block;background:var(--subtle);padding:0 5px;border-radius:4px;}
+.sbtn.ok{border-color:var(--green);background:var(--green-l);color:var(--green);}
+.sbtn.no{border-color:var(--red);background:var(--red-l);color:var(--red);}
+.sbtn:disabled{cursor:default;opacity:.65;}
+.sbtn.ok:disabled,.sbtn.no:disabled{opacity:1;}
+.sqlc{background:#0f1729;border-radius:13px;overflow:hidden;margin:11px 0;direction:ltr;}
+.sqlc.good{box-shadow:inset 0 0 0 2px rgba(11,157,110,.45);}
+.sqlh{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;background:#172033;direction:rtl;}
+.sqlh .l{font-size:12px;font-weight:800;color:#6ee7b7;}
+.cpy{font-family:var(--font);font-size:12px;font-weight:700;background:#334155;color:#e2e8f0;border:none;padding:5px 12px;border-radius:7px;cursor:pointer;transition:all .15s;}
+.cpy:hover{background:#475569;}.cpy.done{background:var(--green);color:#fff;}
+.sqlb{padding:14px 16px;overflow-x:auto;}
+.sqlb pre{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.65;color:#e2e8f0;}
+.sqlb .k{color:#f472b6;}.sqlb .s{color:#86efac;}.sqlb .n{color:#fbbf24;}.sqlb .c{color:#64748b;font-style:italic;}.sqlb .t{color:#7dd3fc;}
+.howto{counter-reset:s;margin:8px 0;}
+.howto li{list-style:none;position:relative;padding:10px 42px 10px 0;font-size:15px;color:var(--text2);border-bottom:1px dashed var(--border);}
+.howto li:last-child{border-bottom:none;}
+.howto li::before{counter-increment:s;content:counter(s);position:absolute;right:0;top:9px;width:27px;height:27px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;}
+.howto a{color:var(--blue);font-weight:700;border-bottom:1.5px solid var(--blue);text-decoration:none;}
+.howto code{background:var(--subtle);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:13px;direction:ltr;display:inline-block;}
+.mcq-opt{display:block;width:100%;text-align:right;font-family:var(--font);font-size:15px;font-weight:600;padding:14px 18px;border:2px solid var(--border);border-radius:12px;background:var(--card);cursor:pointer;margin-bottom:9px;transition:all .15s;color:var(--text2);}
+.mcq-opt:hover{border-color:var(--blue);}
+.mcq-opt.correct{border-color:var(--green);background:var(--green-l);color:#065f46;font-weight:800;}
+.mcq-opt.incorrect{border-color:var(--red);background:var(--red-l);color:#9a241b;}
+.mcq-opt:disabled{cursor:default;}
+.mcq-fb{font-size:14px;font-weight:700;padding:12px 16px;border-radius:10px;margin-top:4px;}
+.mcq-fb.ok{background:var(--green-l);color:#065f46;}.mcq-fb.no{background:var(--red-l);color:#9a241b;}
+.bridge{margin-top:22px;padding:16px 18px;background:linear-gradient(90deg,var(--purple-l),transparent);border-right:4px solid var(--purple);border-radius:10px;}
+.bridge .q{font-size:15px;font-weight:800;color:var(--purple);}
+.bridge .q::before{content:"⟶ ";}
+.cont{margin-top:18px;display:flex;align-items:center;gap:13px;flex-wrap:wrap;}
+.btn{font-family:var(--font);font-weight:800;border:none;border-radius:11px;cursor:pointer;transition:all .18s;font-size:15px;}
+.btn-p{background:var(--blue);color:#fff;padding:12px 28px;box-shadow:0 4px 13px rgba(37,99,235,.27);}
+.btn-p:hover{background:#1d4fd8;transform:translateY(-1px);}
+.btn-p:disabled{background:#cbd5e1;box-shadow:none;cursor:not-allowed;transform:none;}
+.hint{font-size:13px;color:var(--muted);font-weight:600;}.hint.done{color:var(--green);}
+.pulse{animation:pls 1.4s ease-in-out infinite;}
+@keyframes pls{0%,100%{box-shadow:0 4px 13px rgba(37,99,235,.27);}50%{box-shadow:0 4px 22px rgba(37,99,235,.55);}}
+.finish{text-align:center;background:linear-gradient(135deg,var(--blue-l),var(--purple-l));border:1px solid var(--border);border-radius:18px;padding:38px 30px;margin-top:22px;opacity:.4;filter:saturate(.55);transition:opacity .4s,filter .4s;}
+.finish.unlocked{opacity:1;filter:none;}
+.finish .big{font-size:44px;}
+.finish h2{font-size:25px;font-weight:900;color:var(--navy);margin:6px 0;}
+.finish ul{list-style:none;max-width:540px;margin:16px auto 0;text-align:right;}
+.finish ul li{padding:8px 0;font-size:15px;font-weight:700;color:var(--text2);border-bottom:1px solid rgba(0,0,0,.06);}
+.finish ul li::before{content:"✓ ";color:var(--green);font-weight:900;}
+</style>
+</head>
+<body>
 
+<div class="topbar"><div class="topbar-in">
+  <span class="tb-t">📅 ניתוח לפי זמן</span>
+  <div class="tb-track"><div class="tb-fill" id="fill"></div></div>
+  <span class="tb-c" id="cnt">0 / 7</span>
+</div></div>
+
+<div class="lesson">
+
+  <div class="hero">
+    <span class="kick">ארכיטקטורת נתונים · מודול 9</span>
+    <h1>לנתח נתונים לאורך זמן</h1>
+    <p>כמעט כל שאלה עסקית היא ביחס לזמן: החודש מול הקודם, צמיחה השנה, היום הכי עמוס. לתאריכים יש ארגז כלים משלהם — נלמד אותו.</p>
+  </div>
+
+  <div class="recap">
+    <h3>📍 הסיפור עד כה</h3>
+    <div class="sub">המסע — ואיפה אנחנו עכשיו:</div>
+    <div class="chain">
+      <div class="pill"><div class="pi">📦</div><div class="pt">JSON</div></div>
+      <div class="pill"><div class="pi">🗂️</div><div class="pt">טבלאות</div></div>
+      <div class="pill"><div class="pi">🧹</div><div class="pt">ETL</div></div>
+      <div class="pill"><div class="pi">🏭</div><div class="pt">מחסן</div></div>
+      <div class="pill"><div class="pi">📊</div><div class="pt">אגרגציה</div></div>
+      <div class="pill"><div class="pi">🪟</div><div class="pt">חלון</div></div>
+      <div class="pill"><div class="pi">🧱</div><div class="pt">CTE</div></div>
+      <div class="pill now"><div class="pi">📅</div><div class="pt">זמן</div><div class="ps">← אתה כאן</div></div>
+    </div>
+  </div>
+
+  <!-- STEP 0 -->
+  <section class="step unlocked" id="step0">
+    <span class="tag">① לפני הכול</span>
+    <h2>תאריך הוא לא סתם טקסט</h2>
+    <p class="lede">המסד מבין שתאריך הוא <b>סוג מיוחד</b> — ולכן אפשר להוציא ממנו חלקים (שנה, חודש, יום בשבוע) ולעשות בו חשבון (הפרש בין תאריכים, להוסיף ימים). קח את התאריך הזה:</p>
+    <div class="datebox">2024-03-15<small>15 במרץ 2024 (יום שישי)</small></div>
+    <div class="task">🔎 לחץ כדי להוציא חלק מהתאריך</div>
+    <div class="explore">
+      <button class="ebtn" id="eYear" onclick="dpart('year')">שנה?</button>
+      <button class="ebtn" id="eMonth" onclick="dpart('month')">חודש?</button>
+      <button class="ebtn" id="eDow" onclick="dpart('dow')">יום בשבוע?</button>
+    </div>
+    <div class="def" id="dDef">לחץ על כפתור כדי לראות איזה חלק נשלף ←</div>
+    <div class="note">הפעולה שמוציאה חלק מתאריך נקראת <code style="font-family:var(--mono);direction:ltr;">EXTRACT</code>.</div>
+
+    <div class="bridge"><span class="q">למה צריך את זה? כי בלי להוציא ולקבץ לפי זמן — אי אפשר לראות מגמה.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c0" disabled onclick="next(0,1)">המשך ←</button><span class="hint" id="h0">בדוק את שלושת החלקים</span></div>
+  </section>
+
+  <!-- STEP 1 -->
+  <section class="step" id="step1">
+    <span class="tag">② הבעיה</span>
+    <h2>זמן גולמי לא מספר סיפור</h2>
+    <p class="lede">לכל הזמנה יש חותמת זמן מדויקת עד השנייה. אם נקבץ לפי הזמן המדויק — כל הזמנה היא קבוצה משלה. חסר טעם. צריך לעגל את הזמן ל<b>דליים</b>: לפי חודש, לפי יום. לחץ וראה את ההבדל:</p>
+    <table class="dt" id="rawT">
+      <caption>חותמות זמן גולמיות</caption>
+      <tr><th>הזמנה</th><th>זמן</th><th>סכום</th></tr>
+      <tr><td>1</td><td>2024-03-03 09:14:22</td><td>50</td></tr>
+      <tr><td>2</td><td>2024-03-19 17:51:08</td><td>90</td></tr>
+      <tr><td>3</td><td>2024-03-28 12:03:47</td><td>120</td></tr>
+    </table>
+    <div class="task">🗓️ לחץ לעגל את הזמן לחודש ולקבץ</div>
+    <div class="brow"><button class="bcard" id="truncBtn" onclick="trunc()">קבץ לפי חודש (DATE_TRUNC)</button></div>
+    <div class="reveal" id="r1">
+      <table class="dt"><caption>אחרי עיגול לחודש — דלי אחד, סיפור ברור:</caption>
+        <tr><th>חודש</th><th>סך מכירות</th></tr>
+        <tr><td class="bk">2024-03</td><td>260</td></tr>
+      </table>
+      <div class="key blue">שלוש חותמות שונות בחודש מרץ → דלי אחד "2024-03". עכשיו אפשר להשוות חודש לחודש, לראות מגמה, לצייר גרף. <b>DATE_TRUNC הוא הצעד הראשון בכל ניתוח זמן.</b></div>
+    </div>
+    <div class="bridge"><span class="q">עיגול הוא כלי אחד. יש עוד כמה חיוניים — נכיר את ארגז הכלים המלא.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c1" disabled onclick="next(1,2)">המשך ←</button><span class="hint" id="h1">קבץ לפי חודש</span></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" id="step2">
+    <span class="tag">③ ארגז הכלים</span>
+    <h2>ארבעה כלי תאריך שתשתמש בהם תמיד</h2>
+    <p class="lede">התאם כל כלי לתפקידו:</p>
+    <div id="scns">
+      <div class="scn" data-correct="1"><div class="q"><code style="font-family:var(--mono);direction:ltr;">EXTRACT</code></div>
+        <div class="opts">
+          <button class="sbtn" onclick="match(this,1)">להוציא חלק מתאריך (שנה / חודש / יום בשבוע)</button>
+          <button class="sbtn" onclick="match(this,0)">לעגל לתחילת חודש</button>
+          <button class="sbtn" onclick="match(this,0)">להזיז תאריך אחורה</button>
+        </div></div>
+      <div class="scn" data-correct="2"><div class="q"><code style="font-family:var(--mono);direction:ltr;">DATE_TRUNC</code></div>
+        <div class="opts">
+          <button class="sbtn" onclick="match(this,0)">הפרש בין תאריכים</button>
+          <button class="sbtn" onclick="match(this,2)">לעגל לתחילת חודש/שבוע — כדי לקבץ לדליים</button>
+          <button class="sbtn" onclick="match(this,0)">להוציא חלק</button>
+        </div></div>
+      <div class="scn" data-correct="3"><div class="q"><code style="font-family:var(--mono);direction:ltr;">DATE_DIFF</code></div>
+        <div class="opts">
+          <button class="sbtn" onclick="match(this,0)">לעגל לחודש</button>
+          <button class="sbtn" onclick="match(this,3)">כמה ימים בין שני תאריכים (למשל זמן משלוח)</button>
+          <button class="sbtn" onclick="match(this,0)">להוציא שנה</button>
+        </div></div>
+      <div class="scn" data-correct="4"><div class="q"><code style="font-family:var(--mono);direction:ltr;">DATE_SUB</code> / <code style="font-family:var(--mono);direction:ltr;">DATE_ADD</code></div>
+        <div class="opts">
+          <button class="sbtn" onclick="match(this,0)">הפרש בין תאריכים</button>
+          <button class="sbtn" onclick="match(this,4)">להזיז תאריך (למשל "לפני 30 יום") — לסינון תקופה</button>
+          <button class="sbtn" onclick="match(this,0)">לעגל לחודש</button>
+        </div></div>
+    </div>
+    <p class="note" id="matchNote">התאם את ארבעת הכלים.</p>
+    <div class="bridge"><span class="q">מספיק תיאוריה — נפעיל את הכלים על מסד אמיתי ב-BigQuery.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c2" disabled onclick="next(2,3)">המשך ←</button><span class="hint" id="h2">התאם את ארבעת הכלים</span></div>
+  </section>
+
+  <!-- STEP 3: BigQuery I bucketing -->
+  <section class="step" id="step3">
+    <span class="tag bq">④ BigQuery · דליי זמן ☁️</span>
+    <h2>לקבץ לפי חודש ולפי יום בשבוע</h2>
+    <p class="lede">נבנה את שני הגרפים הנפוצים ביותר ב-BI: הכנסה לכל חודש, וכמה הזמנות בכל יום בשבוע.</p>
+    <ol class="howto">
+      <li>פתח את <a href="https://console.cloud.google.com/bigquery" target="_blank" rel="noopener">BigQuery Sandbox</a> והתחבר עם חשבון Google.</li>
+      <li>הרץ את שאילתה א' — הכנסה חודשית (DATE_TRUNC).</li>
+      <li>הרץ את שאילתה ב' — הזמנות לכל יום בשבוע (EXTRACT DAYOFWEEK; 1=ראשון … 7=שבת).</li>
+    </ol>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">א' · הכנסה חודשית</span><button class="cpy" onclick="copy(this,'sql3A',3,'a')">העתק</button></div>
+      <div class="sqlb"><pre id="sql3A"><span class="c">-- DATE() הופך חותמת-זמן לתאריך, DATE_TRUNC מעגל לתחילת החודש</span>
+<span class="k">SELECT</span>
+  <span class="k">DATE_TRUNC</span>(<span class="k">DATE</span>(created_at), <span class="t">MONTH</span>) <span class="k">AS</span> month,
+  <span class="k">ROUND</span>(<span class="k">SUM</span>(sale_price)) <span class="k">AS</span> revenue
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span>
+<span class="k">GROUP BY</span> month
+<span class="k">ORDER BY</span> month;</pre></div>
+    </div>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">ב' · הזמנות לפי יום בשבוע</span><button class="cpy" onclick="copy(this,'sql3B',3,'b')">העתק</button></div>
+      <div class="sqlb"><pre id="sql3B"><span class="k">SELECT</span>
+  <span class="k">EXTRACT</span>(<span class="t">DAYOFWEEK</span> <span class="k">FROM</span> created_at) <span class="k">AS</span> day_of_week,
+  <span class="k">COUNT</span>(*) <span class="k">AS</span> items
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span>
+<span class="k">GROUP BY</span> day_of_week
+<span class="k">ORDER BY</span> day_of_week;</pre></div>
+    </div>
+    <div class="task" id="t3chip">📋 העתק את שתי השאילתות כדי להמשיך</div>
+    <div class="bridge"><span class="q">קיבצנו לפי זמן. עכשיו נעשה חשבון על תאריכים — הפרשים ותקופות.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c3" disabled onclick="next(3,4)">המשך ←</button><span class="hint" id="h3">העתק את שתי השאילתות</span></div>
+  </section>
+
+  <!-- STEP 4: BigQuery II date math -->
+  <section class="step" id="step4">
+    <span class="tag bq">⑤ BigQuery · חשבון תאריכים ☁️</span>
+    <h2>הפרשי תאריכים וסינון תקופה</h2>
+    <p class="lede"><code style="font-family:var(--mono);direction:ltr;">DATE_DIFF</code> נותן הפרש בימים; <code style="font-family:var(--mono);direction:ltr;">DATE_SUB</code> מזיז תאריך אחורה — מושלם ל"30 הימים האחרונים".</p>
+    <ol class="howto">
+      <li>הרץ את שאילתה ג' — זמן המשלוח הממוצע (DATE_DIFF בין הזמנה למסירה).</li>
+      <li>הרץ את שאילתה ד' — כמה פריטים נמכרו ב-30 הימים האחרונים שבנתונים.</li>
+    </ol>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">ג' · זמן משלוח ממוצע (ימים)</span><button class="cpy" onclick="copy(this,'sql4A',4,'a')">העתק</button></div>
+      <div class="sqlb"><pre id="sql4A"><span class="c">-- הפרש הימים בין מסירה להזמנה, בממוצע</span>
+<span class="k">SELECT</span>
+  <span class="k">ROUND</span>(<span class="k">AVG</span>(<span class="k">DATE_DIFF</span>(<span class="k">DATE</span>(delivered_at), <span class="k">DATE</span>(created_at), <span class="t">DAY</span>)), <span class="n">1</span>) <span class="k">AS</span> avg_delivery_days
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span>
+<span class="k">WHERE</span> delivered_at <span class="k">IS NOT NULL</span>;</pre></div>
+    </div>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">ד' · מכירות ב-30 הימים האחרונים</span><button class="cpy" onclick="copy(this,'sql4B',4,'b')">העתק</button></div>
+      <div class="sqlb"><pre id="sql4B"><span class="c">-- מעגנים ל-30 יום לפני התאריך האחרון בנתונים (תת-שאילתה ממודול 8)</span>
+<span class="k">SELECT</span> <span class="k">COUNT</span>(*) <span class="k">AS</span> recent_items
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span>
+<span class="k">WHERE</span> <span class="k">DATE</span>(created_at) &gt;= <span class="k">DATE_SUB</span>(
+  (<span class="k">SELECT</span> <span class="k">MAX</span>(<span class="k">DATE</span>(created_at)) <span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span>),
+  <span class="k">INTERVAL</span> <span class="n">30</span> <span class="t">DAY</span>
+);</pre></div>
+    </div>
+    <div class="task" id="t4chip">📋 העתק את שתי השאילתות כדי להמשיך</div>
+    <div class="bridge"><span class="q">עכשיו נחבר זמן עם פונקציות החלון ממודול 7 — וניצור את מדד ה-BI הקלאסי: צמיחה חודש-מול-חודש.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c4" disabled onclick="next(4,5)">המשך ←</button><span class="hint" id="h4">העתק את שתי השאילתות</span></div>
+  </section>
+
+  <!-- STEP 5: BigQuery III trends -->
+  <section class="step" id="step5">
+    <span class="tag bq">⑥ BigQuery · מגמות ☁️</span>
+    <h2>צמיחה חודש-מול-חודש, ורבעונים</h2>
+    <p class="lede">החיבור של הכול: מקבצים לפי זמן (CTE ממודול 8), ומשתמשים ב-LAG (מודול 7) כדי להשוות כל חודש לקודם. זה בדיוק גרף הצמיחה בכל דשבורד.</p>
+    <ol class="howto">
+      <li>הרץ את שאילתה ה' — אחוז צמיחה חודש-מול-חודש.</li>
+      <li>הרץ את שאילתה ו' — הכנסה לכל רבעון (EXTRACT של שנה ורבעון).</li>
+    </ol>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">ה' · אחוז צמיחה חודש-מול-חודש</span><button class="cpy" onclick="copy(this,'sql5A',5,'a')">העתק</button></div>
+      <div class="sqlb"><pre id="sql5A"><span class="k">WITH</span> monthly <span class="k">AS</span> (
+  <span class="k">SELECT</span> <span class="k">DATE_TRUNC</span>(<span class="k">DATE</span>(created_at), <span class="t">MONTH</span>) <span class="k">AS</span> month,
+    <span class="k">SUM</span>(sale_price) <span class="k">AS</span> revenue
+  <span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span>
+  <span class="k">GROUP BY</span> month
+)
+<span class="k">SELECT</span>
+  month,
+  <span class="k">ROUND</span>(revenue) <span class="k">AS</span> revenue,
+  <span class="k">ROUND</span>(
+    (revenue - <span class="k">LAG</span>(revenue) <span class="k">OVER</span> (<span class="k">ORDER BY</span> month))
+    / <span class="k">LAG</span>(revenue) <span class="k">OVER</span> (<span class="k">ORDER BY</span> month) * <span class="n">100</span>, <span class="n">1</span>
+  ) <span class="k">AS</span> growth_pct
+<span class="k">FROM</span> monthly
+<span class="k">ORDER BY</span> month;</pre></div>
+    </div>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">ו' · הכנסה לכל רבעון</span><button class="cpy" onclick="copy(this,'sql5B',5,'b')">העתק</button></div>
+      <div class="sqlb"><pre id="sql5B"><span class="k">SELECT</span>
+  <span class="k">EXTRACT</span>(<span class="t">YEAR</span> <span class="k">FROM</span> created_at)    <span class="k">AS</span> year,
+  <span class="k">EXTRACT</span>(<span class="t">QUARTER</span> <span class="k">FROM</span> created_at) <span class="k">AS</span> quarter,
+  <span class="k">ROUND</span>(<span class="k">SUM</span>(sale_price)) <span class="k">AS</span> revenue
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span>
+<span class="k">GROUP BY</span> year, quarter
+<span class="k">ORDER BY</span> year, quarter;</pre></div>
+    </div>
+    <div class="key green">✅ שאילתה ה' מאחדת שלושה מודולים: דלי זמן (CTE), פונקציית חלון (LAG), וחישוב אחוז. זה בדיוק הקוד שמאחורי מדד ה-MoM בכל דשבורד ניהולי.</div>
+    <div class="task" id="t5chip">📋 העתק את שתי השאילתות כדי להמשיך</div>
+    <div class="bridge"><span class="q">ראית את כל ארגז הכלים. שאלה אחת תוודא שלא נופלים במלכודת הנפוצה.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c5" disabled onclick="next(5,6)">המשך ←</button><span class="hint" id="h5">העתק את שתי השאילתות</span></div>
+  </section>
+
+  <!-- STEP 6: decision -->
+  <section class="step" id="step6">
+    <span class="tag">⑦ החלטה</span>
+    <h2>איזה כלי לכל שאלת זמן?</h2>
+    <p class="lede">התאם כל שאלה ניהולית לכלי הנכון:</p>
+    <div id="scns2">
+      <div class="scn" data-correct="trunc"><div class="q">"הכנסה לכל חודש" (גרף קו)</div>
+        <div class="opts"><button class="sbtn" onclick="dec(this,'trunc')">DATE_TRUNC לחודש + GROUP BY</button><button class="sbtn" onclick="dec(this,'diff')">DATE_DIFF</button><button class="sbtn" onclick="dec(this,'sub')">DATE_SUB</button></div></div>
+      <div class="scn" data-correct="diff"><div class="q">"כמה ימים בממוצע לוקח משלוח?"</div>
+        <div class="opts"><button class="sbtn" onclick="dec(this,'trunc')">DATE_TRUNC</button><button class="sbtn" onclick="dec(this,'diff')">DATE_DIFF בין שני תאריכים</button><button class="sbtn" onclick="dec(this,'sub')">DATE_SUB</button></div></div>
+      <div class="scn" data-correct="sub"><div class="q">"רק ההזמנות מ-7 הימים האחרונים"</div>
+        <div class="opts"><button class="sbtn" onclick="dec(this,'trunc')">DATE_TRUNC</button><button class="sbtn" onclick="dec(this,'diff')">DATE_DIFF</button><button class="sbtn" onclick="dec(this,'sub')">DATE_SUB לסינון תקופה</button></div></div>
+    </div>
+    <p class="note" id="decNote">התאם בשלושת המקרים.</p>
+    <div class="bridge"><span class="q">שאלה אחת אחרונה.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c6" disabled onclick="next(6,7)">לשאלת סיכום ←</button><span class="hint" id="h6">התאם בשלושת המקרים</span></div>
+  </section>
+
+  <!-- STEP 7: check -->
+  <section class="step" id="step7">
+    <span class="tag">⑧ בדיקה</span>
+    <h2>שאלה אחת שמסגירה אם הכול התחבר</h2>
+    <p class="lede">המנהל ביקש "הכנסה חודשית". כתבת <code style="font-family:var(--mono);direction:ltr;">GROUP BY created_at</code> וקיבלת אלפי שורות — אחת כמעט לכל שנייה. מה חסר?</p>
+    <div id="mcq">
+      <button class="mcq-opt" onclick="ans(this,false,'JOIN מחבר טבלאות — לא קשור לקיבוץ זמן. נסה שוב.')">א) חסר JOIN</button>
+      <button class="mcq-opt" onclick="ans(this,true,'בדיוק. קיבצת לפי חותמת הזמן המדויקת, אז כל שנייה היא קבוצה. צריך DATE_TRUNC ל-MONTH כדי לעגל לדליים חודשיים.')">ב) קיבצת לפי הזמן המדויק — צריך DATE_TRUNC ל-MONTH כדי לעגל לחודשים</button>
+      <button class="mcq-opt" onclick="ans(this,false,'COUNT DISTINCT סופר ערכים ייחודיים — לא מעגל זמן לדליים. נסה שוב.')">ג) צריך COUNT(DISTINCT)</button>
+      <button class="mcq-opt" onclick="ans(this,false,'הנתונים נקיים — זו בעיית עיגול זמן, לא ETL. נסה שוב.')">ד) הנתונים לא נוקו</button>
+    </div>
+    <div id="mcqFb"></div>
+    <div class="cont"><button class="btn btn-p" id="c7" disabled onclick="finish()">סיים ←</button><span class="hint" id="h7">ענה נכון כדי לסיים</span></div>
+  </section>
+
+  <section class="finish" id="finish">
+    <div class="big">🎯</div>
+    <h2>סיימת — אתה מנתח לאורך זמן</h2>
+    <ul>
+      <li>תאריך = סוג מיוחד: אפשר להוציא ממנו חלקים ולעשות בו חשבון</li>
+      <li><b>EXTRACT</b> = חלק (שנה/חודש/יום) · <b>DATE_TRUNC</b> = עיגול לדליים (לקיבוץ)</li>
+      <li><b>DATE_DIFF</b> = הפרש ימים · <b>DATE_SUB/ADD</b> = הזזת תאריך (סינון תקופה)</li>
+      <li>צמיחה חודש-מול-חודש = DATE_TRUNC + CTE + LAG — חיבור של שלושה מודולים</li>
+      <li>תמיד לעגל זמן לדלי לפני GROUP BY — אחרת כל שנייה היא קבוצה</li>
+    </ul>
+  </section>
+
+</div>
+
+<script>
+const TOTAL=7;let done=0;
+function bump(){document.getElementById('fill').style.width=(done/TOTAL*100)+'%';document.getElementById('cnt').textContent=done+' / '+TOTAL;}
+function unlock(id,hid,msg){const b=document.getElementById(id);b.disabled=false;b.classList.add('pulse');const h=document.getElementById(hid);if(h){h.textContent=msg||'אפשר להמשיך';h.classList.add('done');}}
+function next(from,to){done=Math.max(done,from+1);bump();const s=document.getElementById('step'+to);s.classList.add('unlocked');document.getElementById('c'+from).classList.remove('pulse');s.scrollIntoView({behavior:'smooth',block:'start'});}
+
+/* step0 date parts */
+let dseen={year:0,month:0,dow:0};
+function dpart(p){
+  if(p==='year'){document.getElementById('dDef').innerHTML='<b>שנה</b>: <code style="font-family:var(--mono);direction:ltr;">EXTRACT(YEAR FROM date)</code> = <b>2024</b>.';document.getElementById('eYear').classList.add('seen');dseen.year=1;}
+  if(p==='month'){document.getElementById('dDef').innerHTML='<b>חודש</b>: <code style="font-family:var(--mono);direction:ltr;">EXTRACT(MONTH FROM date)</code> = <b>3</b> (מרץ).';document.getElementById('eMonth').classList.add('seen');dseen.month=1;}
+  if(p==='dow'){document.getElementById('dDef').innerHTML='<b>יום בשבוע</b>: <code style="font-family:var(--mono);direction:ltr;">EXTRACT(DAYOFWEEK FROM date)</code> = <b>6</b> (שישי). 1=ראשון … 7=שבת.';document.getElementById('eDow').classList.add('seen');dseen.dow=1;}
+  if(dseen.year&&dseen.month&&dseen.dow)unlock('c0','h0','הכרת את EXTRACT — המשך');}
+
+/* step1 trunc */
+function trunc(){const b=document.getElementById('truncBtn');b.disabled=true;b.textContent='✓ קובץ לחודש';document.getElementById('r1').classList.add('show');unlock('c1','h1','ראית למה צריך לעגל — המשך');}
+
+/* step2 match */
+let matchDone=0;
+function match(btn,val){const row=btn.closest('.scn');if(row.dataset.done)return;
+  if(val===parseInt(row.dataset.correct)){btn.classList.add('ok');row.querySelectorAll('.sbtn').forEach(b=>b.disabled=true);row.dataset.done=1;matchDone++;
+    document.getElementById('matchNote').textContent='נכון '+matchDone+' מתוך 4.';
+    if(matchDone===4)unlock('c2','h2','התאמת את ארגז הכלים — המשך');}
+  else{btn.classList.add('no');btn.disabled=true;}}
+
+/* steps 3,4,5 copy */
+const cpReq={3:2,4:2,5:2};
+const cpCnt={3:new Set(),4:new Set(),5:new Set()};
+function copy(btn,preId,grp,slot){const t=document.getElementById(preId).innerText;
+  navigator.clipboard.writeText(t).then(()=>{btn.textContent='הועתק ✓';btn.classList.add('done');cpCnt[grp].add(slot);
+    if(cpCnt[grp].size>=cpReq[grp]){const chip=document.getElementById('t'+grp+'chip');if(chip)chip.style.display='none';unlock('c'+grp,'h'+grp,'השאילתות מוכנות — המשך');}
+  }).catch(()=>{btn.textContent='בחר ידנית';});}
+
+/* step6 decision */
+let decDone=0;
+function dec(btn,val){const row=btn.closest('.scn');if(row.dataset.done)return;
+  if(val===row.dataset.correct){btn.classList.add('ok');row.querySelectorAll('.sbtn').forEach(b=>b.disabled=true);row.dataset.done=1;decDone++;
+    document.getElementById('decNote').textContent='נכון '+decDone+' מתוך 3.';
+    if(decDone===3)unlock('c6','h6','יודע מתי כל כלי — המשך');}
+  else{btn.classList.add('no');btn.disabled=true;}}
+
+/* step7 mcq */
+function ans(btn,ok,fb){const box=document.getElementById('mcqFb');
+  if(ok){document.querySelectorAll('#mcq .mcq-opt').forEach(o=>o.disabled=true);btn.classList.add('correct');
+    box.innerHTML='<div class="mcq-fb ok">✅ '+fb+'</div>';unlock('c7','h7','כל הכבוד — סיים');}
+  else{btn.classList.add('incorrect');btn.disabled=true;box.innerHTML='<div class="mcq-fb no">↩️ '+fb+'</div>';}}
+function finish(){done=TOTAL;bump();document.getElementById('c7').classList.remove('pulse');const f=document.getElementById('finish');f.classList.add('unlocked');f.scrollIntoView({behavior:'smooth',block:'center'});}
+
+bump();
+</script>
+</body>
+</html>
