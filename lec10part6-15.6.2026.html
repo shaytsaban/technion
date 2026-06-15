@@ -1,1 +1,485 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ממיליוני שורות לתובנה אחת — אגרגציה ו-GROUP BY</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbfcfe; --card:#fff; --subtle:#f2f5f9; --border:#e5ebf3;
+  --blue:#2563eb; --blue-l:#eef4ff; --green:#0b9d6e; --green-l:#e7faf3;
+  --red:#e0382c; --red-l:#fef1f0; --orange:#e3810c; --orange-l:#fff6ea;
+  --purple:#7c3aed; --purple-l:#f4f0ff; --navy:#15253e;
+  --text:#0f1b2d; --text2:#3c4c61; --muted:#7a899e;
+  --font:'Heebo',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);direction:rtl;line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(251,252,254,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:11px 0;}
+.topbar-in{max-width:720px;margin:0 auto;padding:0 22px;display:flex;align-items:center;gap:14px;}
+.tb-t{font-size:13px;font-weight:800;color:var(--navy);white-space:nowrap;}
+.tb-track{flex:1;height:7px;background:var(--subtle);border-radius:6px;overflow:hidden;}
+.tb-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .5s cubic-bezier(.4,0,.2,1);}
+.tb-c{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums;}
+.lesson{max-width:720px;margin:0 auto;padding:30px 22px 120px;}
+.hero{text-align:center;padding:18px 0 4px;}
+.hero .kick{display:inline-block;background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.5px;padding:6px 14px;border-radius:20px;margin-bottom:13px;}
+.hero h1{font-size:31px;font-weight:900;color:var(--navy);line-height:1.2;margin-bottom:10px;}
+.hero p{font-size:16px;color:var(--muted);max-width:540px;margin:0 auto;}
+/* recap */
+.recap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 22px;margin-top:20px;box-shadow:0 4px 22px rgba(20,40,80,.04);}
+.recap h3{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.recap .sub{font-size:13px;color:var(--muted);margin-bottom:14px;}
+.chain{display:flex;align-items:stretch;gap:7px;flex-wrap:wrap;}
+.pill{flex:1;min-width:96px;background:var(--subtle);border:1px solid var(--border);border-radius:11px;padding:10px 8px;text-align:center;}
+.pill .pi{font-size:19px;}
+.pill .pt{font-size:11.5px;font-weight:800;color:var(--text2);margin-top:3px;line-height:1.25;}
+.pill .ps{font-size:10px;color:var(--muted);}
+.pill.now{background:linear-gradient(135deg,var(--blue-l),var(--purple-l));border-color:#c9b6f5;box-shadow:0 0 0 2px rgba(124,58,237,.25);}
+.pill.now .pt{color:var(--purple);}
+.step{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 30px;margin-top:20px;box-shadow:0 4px 22px rgba(20,40,80,.04);scroll-margin-top:84px;opacity:.4;filter:saturate(.55);transition:opacity .4s,filter .4s;}
+.step.unlocked{opacity:1;filter:none;}
+.step .tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--purple);background:var(--purple-l);padding:4px 12px;border-radius:8px;margin-bottom:13px;}
+.step .tag.bq{color:#1e40af;background:var(--blue-l);}
+.step h2{font-size:22px;font-weight:900;color:var(--navy);line-height:1.3;margin-bottom:10px;}
+.step .lede{font-size:16px;color:var(--text2);margin-bottom:8px;}
+.term{background:var(--subtle);border-radius:12px;padding:14px 18px;margin:14px 0;font-size:15px;color:var(--text2);}
+.term b{color:var(--navy);}
+.term .w{display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:1px 8px;font-weight:800;color:var(--blue);font-family:var(--mono);}
+.bi{font-size:13.5px;font-weight:700;color:var(--blue);background:var(--blue-l);border-radius:9px;padding:9px 14px;margin:12px 0;}
+.bi::before{content:"🔗 ";}
+.task{display:inline-flex;align-items:center;gap:8px;background:var(--orange-l);color:var(--orange);border:1px solid #f3d6a6;font-weight:800;font-size:13px;padding:8px 14px;border-radius:10px;margin:14px 0 12px;}
+.note{font-size:12.5px;color:var(--muted);margin-top:5px;}
+.key{font-size:15.5px;font-weight:700;border-radius:12px;padding:14px 18px;margin:14px 0;line-height:1.55;}
+.key.blue{background:var(--blue-l);color:#1e40af;border-right:5px solid var(--blue);}
+.key.green{background:var(--green-l);color:#065f46;border-right:5px solid var(--green);}
+.key.red{background:var(--red-l);color:#9a241b;border-right:5px solid var(--red);}
+.key.orange{background:var(--orange-l);color:#9a5a08;border-right:5px solid var(--orange);}
+.key b{font-weight:900;}
+.reveal{display:none;animation:fade .45s ease;}
+.reveal.show{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.dt{border-collapse:collapse;width:100%;margin:6px 0;font-size:14px;}
+.dt th,.dt td{border:1px solid var(--border);padding:8px 11px;text-align:right;}
+.dt th{background:var(--subtle);font-weight:800;color:var(--navy);font-size:13px;}
+.dt caption{caption-side:top;text-align:right;font-weight:800;color:var(--navy);font-size:13px;padding-bottom:6px;}
+.dt td.city-a{background:var(--blue-l);}.dt td.city-b{background:var(--orange-l);}
+/* compute (foundation) */
+.explore{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0;}
+.ebtn{flex:1;min-width:100px;font-family:var(--font);font-weight:700;font-size:14px;padding:12px;border-radius:11px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:all .15s;}
+.ebtn:hover{border-color:var(--blue);background:var(--blue-l);}
+.ebtn.seen{border-color:var(--green);background:var(--green-l);color:var(--green);}
+.def{font-size:15px;font-weight:600;color:var(--text2);background:var(--blue-l);border-right:4px solid var(--blue);border-radius:8px;padding:12px 16px;margin-top:6px;min-height:48px;}
+/* collapse tile */
+.tilebig{border-radius:13px;padding:20px;text-align:center;border:2px solid #bcebd6;background:var(--green-l);margin:8px 0;}
+.tilebig .n{font-size:34px;font-weight:900;color:var(--green);line-height:1;}
+.tilebig .l{font-size:13px;color:var(--muted);font-weight:700;margin-top:8px;}
+/* scenarios */
+.scn{padding:13px 0;border-bottom:1px dashed var(--border);}
+.scn:last-child{border-bottom:none;}
+.scn .q{font-weight:800;font-size:14.5px;margin-bottom:7px;color:var(--navy);}
+.opts{display:flex;flex-direction:column;gap:7px;}
+.sbtn{font-family:var(--font);font-weight:700;font-size:13.5px;padding:10px 13px;border-radius:9px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:all .15s;text-align:right;}
+.sbtn:hover{border-color:var(--blue);}
+.sbtn code{font-family:var(--mono);font-size:12.5px;direction:ltr;display:inline-block;background:var(--subtle);padding:0 5px;border-radius:4px;}
+.sbtn.ok{border-color:var(--green);background:var(--green-l);color:var(--green);}
+.sbtn.no{border-color:var(--red);background:var(--red-l);color:var(--red);}
+.sbtn:disabled{cursor:default;opacity:.65;}
+.sbtn.ok:disabled,.sbtn.no:disabled{opacity:1;}
+/* buttons-row generic */
+.brow{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;}
+.bcard{flex:1;min-width:150px;font-family:var(--font);font-weight:700;font-size:14px;padding:13px;border-radius:11px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:all .15s;text-align:center;}
+.bcard:hover{border-color:var(--blue);}
+.bcard:disabled{cursor:default;border-color:var(--green);background:var(--green-l);color:var(--green);}
+/* sql */
+.sqlc{background:#0f1729;border-radius:13px;overflow:hidden;margin:11px 0;direction:ltr;}
+.sqlc.good{box-shadow:inset 0 0 0 2px rgba(11,157,110,.45);}
+.sqlh{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;background:#172033;direction:rtl;}
+.sqlh .l{font-size:12px;font-weight:800;color:#6ee7b7;}
+.cpy{font-family:var(--font);font-size:12px;font-weight:700;background:#334155;color:#e2e8f0;border:none;padding:5px 12px;border-radius:7px;cursor:pointer;transition:all .15s;}
+.cpy:hover{background:#475569;}.cpy.done{background:var(--green);color:#fff;}
+.sqlb{padding:14px 16px;overflow-x:auto;}
+.sqlb pre{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.65;color:#e2e8f0;}
+.sqlb .k{color:#f472b6;}.sqlb .s{color:#86efac;}.sqlb .n{color:#fbbf24;}.sqlb .c{color:#64748b;font-style:italic;}.sqlb .t{color:#7dd3fc;}
+.res{border-collapse:collapse;margin:8px 0;font-size:13px;direction:ltr;}
+.res th,.res td{border:1px solid var(--border);padding:6px 12px;text-align:left;}
+.res th{background:var(--subtle);font-weight:800;color:var(--navy);font-family:var(--mono);font-size:12px;}
+.res td{font-family:var(--mono);}
+.res caption{caption-side:top;text-align:right;direction:rtl;font-size:12px;color:var(--muted);font-weight:700;padding-bottom:4px;}
+.howto{counter-reset:s;margin:8px 0;}
+.howto li{list-style:none;position:relative;padding:10px 42px 10px 0;font-size:15px;color:var(--text2);border-bottom:1px dashed var(--border);}
+.howto li:last-child{border-bottom:none;}
+.howto li::before{counter-increment:s;content:counter(s);position:absolute;right:0;top:9px;width:27px;height:27px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;}
+.howto a{color:var(--blue);font-weight:700;border-bottom:1.5px solid var(--blue);text-decoration:none;}
+.howto code{background:var(--subtle);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:13px;direction:ltr;display:inline-block;}
+.mcq-opt{display:block;width:100%;text-align:right;font-family:var(--font);font-size:15px;font-weight:600;padding:14px 18px;border:2px solid var(--border);border-radius:12px;background:var(--card);cursor:pointer;margin-bottom:9px;transition:all .15s;color:var(--text2);}
+.mcq-opt:hover{border-color:var(--blue);}
+.mcq-opt.correct{border-color:var(--green);background:var(--green-l);color:#065f46;font-weight:800;}
+.mcq-opt.incorrect{border-color:var(--red);background:var(--red-l);color:#9a241b;}
+.mcq-opt:disabled{cursor:default;}
+.mcq-fb{font-size:14px;font-weight:700;padding:12px 16px;border-radius:10px;margin-top:4px;}
+.mcq-fb.ok{background:var(--green-l);color:#065f46;}.mcq-fb.no{background:var(--red-l);color:#9a241b;}
+.bridge{margin-top:22px;padding:16px 18px;background:linear-gradient(90deg,var(--purple-l),transparent);border-right:4px solid var(--purple);border-radius:10px;}
+.bridge .q{font-size:15px;font-weight:800;color:var(--purple);}
+.bridge .q::before{content:"⟶ ";}
+.cont{margin-top:18px;display:flex;align-items:center;gap:13px;flex-wrap:wrap;}
+.btn{font-family:var(--font);font-weight:800;border:none;border-radius:11px;cursor:pointer;transition:all .18s;font-size:15px;}
+.btn-p{background:var(--blue);color:#fff;padding:12px 28px;box-shadow:0 4px 13px rgba(37,99,235,.27);}
+.btn-p:hover{background:#1d4fd8;transform:translateY(-1px);}
+.btn-p:disabled{background:#cbd5e1;box-shadow:none;cursor:not-allowed;transform:none;}
+.hint{font-size:13px;color:var(--muted);font-weight:600;}.hint.done{color:var(--green);}
+.pulse{animation:pls 1.4s ease-in-out infinite;}
+@keyframes pls{0%,100%{box-shadow:0 4px 13px rgba(37,99,235,.27);}50%{box-shadow:0 4px 22px rgba(37,99,235,.55);}}
+.finish{text-align:center;background:linear-gradient(135deg,var(--blue-l),var(--purple-l));border:1px solid var(--border);border-radius:18px;padding:38px 30px;margin-top:22px;opacity:.4;filter:saturate(.55);transition:opacity .4s,filter .4s;}
+.finish.unlocked{opacity:1;filter:none;}
+.finish .big{font-size:44px;}
+.finish h2{font-size:25px;font-weight:900;color:var(--navy);margin:6px 0;}
+.finish ul{list-style:none;max-width:520px;margin:16px auto 0;text-align:right;}
+.finish ul li{padding:8px 0;font-size:15px;font-weight:700;color:var(--text2);border-bottom:1px solid rgba(0,0,0,.06);}
+.finish ul li::before{content:"✓ ";color:var(--green);font-weight:900;}
+</style>
+</head>
+<body>
 
+<div class="topbar"><div class="topbar-in">
+  <span class="tb-t">📊 אגרגציה · GROUP BY</span>
+  <div class="tb-track"><div class="tb-fill" id="fill"></div></div>
+  <span class="tb-c" id="cnt">0 / 7</span>
+</div></div>
+
+<div class="lesson">
+
+  <div class="hero">
+    <span class="kick">ארכיטקטורת נתונים · מודול 6</span>
+    <h1>ממיליוני שורות לתובנה אחת</h1>
+    <p>בנינו את כל התשתית. עכשיו השלב שבו סוף-סוף מפיקים מהנתונים משמעות — וזה הלב של כל דשבורד BI.</p>
+  </div>
+
+  <!-- RECAP -->
+  <div class="recap">
+    <h3>📍 הסיפור עד כה</h3>
+    <div class="sub">המסע של הנתון, ממודול למודול — ואיפה אנחנו עכשיו:</div>
+    <div class="chain">
+      <div class="pill"><div class="pi">📦</div><div class="pt">JSON</div><div class="ps">נכנס</div></div>
+      <div class="pill"><div class="pi">🗂️</div><div class="pt">טבלאות + JOIN</div><div class="ps">מאורגן</div></div>
+      <div class="pill"><div class="pi">🧹</div><div class="pt">ETL</div><div class="ps">נוקה</div></div>
+      <div class="pill"><div class="pi">🏭</div><div class="pt">מחסן OLAP</div><div class="ps">נשמר</div></div>
+      <div class="pill now"><div class="pi">📊</div><div class="pt">אגרגציה</div><div class="ps">← אתה כאן</div></div>
+    </div>
+  </div>
+
+  <!-- STEP 0 -->
+  <section class="step unlocked" id="step0">
+    <span class="tag">① לפני הכול</span>
+    <h2>מה זה "לסכם" נתונים?</h2>
+    <p class="lede">מנהל לא רוצה לראות 180,000 שורות הזמנה. הוא רוצה מספר אחד: "כמה מכרנו?". <b>אגרגציה</b> = לקחת הרבה שורות ולכווץ אותן למספר סיכום אחד. נכיר שלוש פעולות סיכום על טבלה קטנה:</p>
+
+    <table class="dt" id="aggT">
+      <caption>שלוש מכירות</caption>
+      <tr><th>#</th><th>מכירה</th><th>סכום</th></tr>
+      <tr><td>1</td><td>מקלדת</td><td>50</td></tr>
+      <tr><td>2</td><td>עכבר</td><td>90</td></tr>
+      <tr><td>3</td><td>מסך</td><td>120</td></tr>
+    </table>
+
+    <div class="task">🧮 לחץ כדי לחשב כל סיכום</div>
+    <div class="explore">
+      <button class="ebtn" id="eCount" onclick="agg('count')">COUNT — כמה?</button>
+      <button class="ebtn" id="eSum" onclick="agg('sum')">SUM — סך הכול?</button>
+      <button class="ebtn" id="eAvg" onclick="agg('avg')">AVG — ממוצע?</button>
+    </div>
+    <div class="def" id="aggDef">לחץ על כפתור כדי לראות את הסיכום ←</div>
+    <div class="note">יש עוד שתיים שימושיות: <b>MIN</b> (הקטן ביותר) ו-<b>MAX</b> (הגדול ביותר).</div>
+
+    <div class="bridge"><span class="q">חישבנו על 3 שורות. אבל חנות אמיתית = מיליוני שורות. למה בכלל צריך לכווץ אותן?</span></div>
+    <div class="cont"><button class="btn btn-p" id="c0" disabled onclick="next(0,1)">המשך ←</button><span class="hint" id="h0">נסה את שלושת הסיכומים</span></div>
+  </section>
+
+  <!-- STEP 1 -->
+  <section class="step" id="step1">
+    <span class="tag">② הבעיה</span>
+    <h2>שורות גולמיות חסרות ערך למנהל</h2>
+    <p class="lede">לפניך 6 הזמנות. המנהל שואל שאלה אחת: "כמה הכנסנו היום?". הוא לא רוצה לקרוא 6 שורות — וודאי לא מיליון. הוא רוצה מספר אחד. לחץ וכווץ אותן:</p>
+
+    <table class="dt" id="collapseT">
+      <tr><th>#</th><th>סכום</th></tr>
+      <tr><td>1</td><td>50</td></tr><tr><td>2</td><td>90</td></tr><tr><td>3</td><td>120</td></tr>
+      <tr><td>4</td><td>40</td></tr><tr><td>5</td><td>200</td></tr><tr><td>6</td><td>100</td></tr>
+    </table>
+
+    <div class="task">📉 כווץ 6 שורות למספר אחד</div>
+    <div class="brow"><button class="bcard" id="collapseBtn" onclick="collapse()">סכם את כל ההזמנות</button></div>
+
+    <div class="reveal" id="r1">
+      <div class="tilebig"><div class="n">₪600</div><div class="l">סך ההכנסות — מספר אחד שהמנהל יכול לפעול לפיו</div></div>
+      <div class="key blue">זו אגרגציה בפעולה: 6 שורות (או 6 מיליון) → ערך אחד. <b>כל מספר בדשבורד הוא תוצאה של כיווץ כזה.</b></div>
+    </div>
+
+    <div class="bridge"><span class="q">אבל בדרך כלל המנהל לא רוצה מספר אחד — אלא מספר אחד לכל עיר, לכל קטגוריה. איך עושים זאת?</span></div>
+    <div class="cont"><button class="btn btn-p" id="c1" disabled onclick="next(1,2)">המשך ←</button><span class="hint" id="h1">כווץ את השורות</span></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" id="step2">
+    <span class="tag">③ הרעיון המרכזי</span>
+    <h2>GROUP BY — מספר אחד לכל קבוצה</h2>
+    <p class="lede">בדרך כלל לא רוצים סכום אחד גלובלי, אלא סכום <b>לכל קבוצה</b>: לכל עיר, לכל קטגוריה. <b>GROUP BY</b> = למיין את השורות לערימות לפי ערך משותף, ולסכם כל ערימה בנפרד. כמו למיין קבלות לפי עיר, ואז לסכם כל ערימה.</p>
+
+    <table class="dt" id="grpT">
+      <caption>מכירות לפי עיר (לפני)</caption>
+      <tr><th>עיר</th><th>סכום</th></tr>
+      <tr><td class="city-a">חיפה</td><td>50</td></tr>
+      <tr><td class="city-b">תל אביב</td><td>90</td></tr>
+      <tr><td class="city-a">חיפה</td><td>120</td></tr>
+      <tr><td class="city-b">תל אביב</td><td>40</td></tr>
+      <tr><td class="city-a">חיפה</td><td>30</td></tr>
+    </table>
+
+    <div class="task">🗂️ לחץ לקבץ לפי עיר ולסכם כל קבוצה</div>
+    <div class="brow"><button class="bcard" id="grpBtn" onclick="groupCity()">GROUP BY עיר</button></div>
+
+    <div class="reveal" id="r2">
+      <table class="dt"><caption>תוצאה (אחרי GROUP BY)</caption>
+        <tr><th>עיר</th><th>סך מכירות</th></tr>
+        <tr><td class="city-a">חיפה</td><td>200</td></tr>
+        <tr><td class="city-b">תל אביב</td><td>130</td></tr>
+      </table>
+      <div class="key green">✅ 5 שורות → 2 שורות, אחת לכל עיר. <b>זו בדיוק הצורה של נתון בגרף עמודות</b>: כל עמודה = קבוצה אחת אחרי GROUP BY.</div>
+      <div class="bi">BI: כל גרף עמודות / עוגה בדשבורד הוא GROUP BY מאחורי הקלעים.</div>
+    </div>
+
+    <div class="bridge"><span class="q">מספיק על טבלאות צעצוע. נריץ סיכומים אמיתיים על מסד של מאות אלפי שורות ב-BigQuery.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c2" disabled onclick="next(2,3)">המשך ←</button><span class="hint" id="h2">קבץ לפי עיר</span></div>
+  </section>
+
+  <!-- STEP 3: BigQuery I -->
+  <section class="step" id="step3">
+    <span class="tag bq">④ BigQuery · סיכומים ☁️</span>
+    <h2>COUNT, SUM, AVG על מאות אלפי שורות</h2>
+    <p class="lede">נריץ סיכומים על טבלת ההזמנות האמיתית (<code style="font-family:var(--mono);direction:ltr;">order_items</code>, ~180 אלף שורות). שים לב: התוצאה היא <b>שורה אחת</b> — כל המסד התכווץ למספרים בודדים.</p>
+    <ol class="howto">
+      <li>פתח את <a href="https://console.cloud.google.com/bigquery" target="_blank" rel="noopener">BigQuery Sandbox</a> והתחבר עם חשבון Google.</li>
+      <li>הרץ את שאילתה א' — שלושת הסיכומים בבת אחת על כל הטבלה.</li>
+      <li>הרץ את שאילתה ב' — הזול והיקר ביותר (MIN / MAX).</li>
+    </ol>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">א' · COUNT · SUM · AVG</span><button class="cpy" onclick="copy(this,'sql3A',3,'a')">העתק</button></div>
+      <div class="sqlb"><pre id="sql3A"><span class="c">-- 180 אלף שורות מתכווצות לשלושה מספרים</span>
+<span class="k">SELECT</span>
+  <span class="k">COUNT</span>(*)                    <span class="k">AS</span> total_items,
+  <span class="k">ROUND</span>(<span class="k">SUM</span>(sale_price))      <span class="k">AS</span> total_revenue,
+  <span class="k">ROUND</span>(<span class="k">AVG</span>(sale_price), <span class="n">2</span>)   <span class="k">AS</span> avg_price
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span>;</pre></div>
+    </div>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">ב' · MIN · MAX</span><button class="cpy" onclick="copy(this,'sql3B',3,'b')">העתק</button></div>
+      <div class="sqlb"><pre id="sql3B"><span class="c">-- המכירה הזולה והיקרה ביותר</span>
+<span class="k">SELECT</span>
+  <span class="k">MIN</span>(sale_price) <span class="k">AS</span> cheapest,
+  <span class="k">MAX</span>(sale_price) <span class="k">AS</span> most_expensive
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span>;</pre></div>
+    </div>
+    <div class="task" id="t3chip">📋 העתק את שתי השאילתות כדי להמשיך</div>
+    <div class="bridge"><span class="q">קיבלנו מספר אחד לכל המסד. עכשיו נפצל אותו — מספר אחד לכל קבוצה.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c3" disabled onclick="next(3,4)">המשך ←</button><span class="hint" id="h3">העתק את שתי השאילתות</span></div>
+  </section>
+
+  <!-- STEP 4: BigQuery II GROUP BY -->
+  <section class="step" id="step4">
+    <span class="tag bq">⑤ BigQuery · GROUP BY ☁️</span>
+    <h2>מספר אחד לכל קבוצה — על נתונים אמיתיים</h2>
+    <p class="lede">עכשיו נוסיף <code style="font-family:var(--mono);direction:ltr;">GROUP BY</code>: במקום סכום אחד, סכום לכל קבוצה. נסכם לפי סטטוס ההזמנה, ולפי שנה.</p>
+    <ol class="howto">
+      <li>הרץ את שאילתה ג' — כמה פריטים בכל סטטוס (הושלם / בוטל / הוחזר…).</li>
+      <li>הרץ את שאילתה ד' — הכנסה לכל שנה. בדיוק הנתונים של גרף קו ב-BI.</li>
+    </ol>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">ג' · פריטים לפי סטטוס</span><button class="cpy" onclick="copy(this,'sql4A',4,'a')">העתק</button></div>
+      <div class="sqlb"><pre id="sql4A"><span class="k">SELECT</span>
+  status,
+  <span class="k">COUNT</span>(*) <span class="k">AS</span> items
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span>
+<span class="k">GROUP BY</span> status
+<span class="k">ORDER BY</span> items <span class="k">DESC</span>;</pre></div>
+    </div>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">ד' · הכנסה לכל שנה</span><button class="cpy" onclick="copy(this,'sql4B',4,'b')">העתק</button></div>
+      <div class="sqlb"><pre id="sql4B"><span class="c">-- EXTRACT מוציא את השנה מתוך התאריך</span>
+<span class="k">SELECT</span>
+  <span class="k">EXTRACT</span>(<span class="t">YEAR</span> <span class="k">FROM</span> created_at) <span class="k">AS</span> year,
+  <span class="k">ROUND</span>(<span class="k">SUM</span>(sale_price)) <span class="k">AS</span> revenue
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span>
+<span class="k">GROUP BY</span> year
+<span class="k">ORDER BY</span> year;</pre></div>
+    </div>
+    <div class="key green">✅ כל שורה בתוצאה = קבוצה אחת. זו בדיוק הטבלה שמזינה גרף ב-Power BI: ציר ה-X הוא ה-GROUP BY, והגובה הוא הסיכום.</div>
+    <div class="task" id="t4chip">📋 העתק את שתי השאילתות כדי להמשיך</div>
+    <div class="bridge"><span class="q">יש לנו סיכומים לפי קבוצה. אבל המנהל שואל שאלות חדות יותר: "רק ה-5 המובילים", "כמה לקוחות ייחודיים". נכיר שלושה כלים.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c4" disabled onclick="next(4,5)">המשך ←</button><span class="hint" id="h4">העתק את שתי השאילתות</span></div>
+  </section>
+
+  <!-- STEP 5: refine concepts -->
+  <section class="step" id="step5">
+    <span class="tag">⑥ חידוד</span>
+    <h2>שלושה כלים שמחדדים את התשובה</h2>
+    <p class="lede">אחרי שיש סיכום לכל קבוצה, לרוב צריך עוד שכבה. התאם כל מטרה לכלי הנכון:</p>
+    <div id="scns">
+      <div class="scn" data-correct="1">
+        <div class="q">"הצג רק את 3 הקטגוריות המובילות בהכנסה"</div>
+        <div class="opts">
+          <button class="sbtn" onclick="ref(this,1)">למיין יורד ולחתוך: <code>ORDER BY revenue DESC LIMIT 3</code></button>
+          <button class="sbtn" onclick="ref(this,0)">לסנן שורות: <code>WHERE</code></button>
+          <button class="sbtn" onclick="ref(this,0)">לקבץ שוב: <code>GROUP BY</code></button>
+        </div>
+      </div>
+      <div class="scn" data-correct="2">
+        <div class="q">"כמה לקוחות <b>ייחודיים</b> קנו?" (לקוח עם 5 הזמנות = פעם אחת)</div>
+        <div class="opts">
+          <button class="sbtn" onclick="ref(this,0)"><code>COUNT(*)</code> — סופר שורות</button>
+          <button class="sbtn" onclick="ref(this,2)"><code>COUNT(DISTINCT customer_id)</code> — סופר ערכים שונים</button>
+          <button class="sbtn" onclick="ref(this,0)"><code>SUM(customer_id)</code></button>
+        </div>
+      </div>
+      <div class="scn" data-correct="3">
+        <div class="q">"הצג רק קבוצות שההכנסה שלהן מעל 100,000" (סינון <b>אחרי</b> הסיכום)</div>
+        <div class="opts">
+          <button class="sbtn" onclick="ref(this,0)"><code>WHERE</code> — מסנן שורות לפני הקיבוץ</button>
+          <button class="sbtn" onclick="ref(this,3)"><code>HAVING</code> — מסנן קבוצות אחרי הסיכום</button>
+          <button class="sbtn" onclick="ref(this,0)"><code>ORDER BY</code></button>
+        </div>
+      </div>
+    </div>
+    <p class="note" id="refNote">התאם את שלושת הכלים.</p>
+    <div class="term"><b>ההבדל הקריטי:</b> <span class="w">WHERE</span> מסנן שורות <b>לפני</b> הקיבוץ. <span class="w">HAVING</span> מסנן קבוצות <b>אחרי</b> הסיכום. רוצים "קבוצות שסכומן מעל X" — זה תמיד HAVING.</div>
+
+    <div class="bridge"><span class="q">עכשיו נחבר הכול בשאילתות ניתוח אמיתיות — בדיוק מה שאנליסט BI כותב ביום-יום.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c5" disabled onclick="next(5,6)">המשך ל-BigQuery ←</button><span class="hint" id="h5">התאם את שלושת הכלים</span></div>
+  </section>
+
+  <!-- STEP 6: BigQuery III full analysis -->
+  <section class="step" id="step6">
+    <span class="tag bq">⑦ BigQuery · ניתוח אמיתי ☁️</span>
+    <h2>שאילתות הניתוח שאנליסט BI כותב באמת</h2>
+    <p class="lede">שלוש שאילתות שמחברות הכול — כולל JOIN ממודול 1. כל אחת עונה על שאלה ניהולית אמיתית.</p>
+    <ol class="howto">
+      <li>שאילתה ה' — 5 הקטגוריות המובילות בהכנסה (JOIN + GROUP BY + ORDER BY + LIMIT).</li>
+      <li>שאילתה ו' — הזמנות מול לקוחות ייחודיים (COUNT מול COUNT DISTINCT).</li>
+      <li>שאילתה ז' — רק קטגוריות עם הכנסה מעל 100K (HAVING).</li>
+    </ol>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">ה' · 5 הקטגוריות המובילות בהכנסה</span><button class="cpy" onclick="copy(this,'sql6A',6,'a')">העתק</button></div>
+      <div class="sqlb"><pre id="sql6A"><span class="c">-- מחברים פריטים למוצרים כדי לקבל קטגוריה, מסכמים, ולוקחים 5 מובילים</span>
+<span class="k">SELECT</span>
+  p.category,
+  <span class="k">ROUND</span>(<span class="k">SUM</span>(oi.sale_price)) <span class="k">AS</span> revenue
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span> oi
+<span class="k">JOIN</span> <span class="t">`bigquery-public-data.thelook_ecommerce.products`</span> p
+  <span class="k">ON</span> oi.product_id = p.id
+<span class="k">GROUP BY</span> p.category
+<span class="k">ORDER BY</span> revenue <span class="k">DESC</span>
+<span class="k">LIMIT</span> <span class="n">5</span>;</pre></div>
+    </div>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">ו' · הזמנות מול לקוחות ייחודיים</span><button class="cpy" onclick="copy(this,'sql6B',6,'b')">העתק</button></div>
+      <div class="sqlb"><pre id="sql6B"><span class="c">-- שים לב לפער: הזמנות הרבה יותר מלקוחות (קונים חוזרים)</span>
+<span class="k">SELECT</span>
+  <span class="k">COUNT</span>(*)                <span class="k">AS</span> total_orders,
+  <span class="k">COUNT</span>(<span class="k">DISTINCT</span> user_id) <span class="k">AS</span> unique_customers
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.orders`</span>;</pre></div>
+    </div>
+    <div class="sqlc good">
+      <div class="sqlh"><span class="l">ז' · רק קטגוריות עם הכנסה מעל 100K (HAVING)</span><button class="cpy" onclick="copy(this,'sql6C',6,'c')">העתק</button></div>
+      <div class="sqlb"><pre id="sql6C"><span class="c">-- HAVING מסנן את הקבוצות אחרי הסיכום</span>
+<span class="k">SELECT</span>
+  p.category,
+  <span class="k">ROUND</span>(<span class="k">SUM</span>(oi.sale_price)) <span class="k">AS</span> revenue
+<span class="k">FROM</span> <span class="t">`bigquery-public-data.thelook_ecommerce.order_items`</span> oi
+<span class="k">JOIN</span> <span class="t">`bigquery-public-data.thelook_ecommerce.products`</span> p
+  <span class="k">ON</span> oi.product_id = p.id
+<span class="k">GROUP BY</span> p.category
+<span class="k">HAVING</span> <span class="k">SUM</span>(oi.sale_price) &gt; <span class="n">100000</span>
+<span class="k">ORDER BY</span> revenue <span class="k">DESC</span>;</pre></div>
+    </div>
+    <div class="key green">✅ זה כל מה שצריך כדי להפיק כמעט כל מספר בדשבורד: COUNT/SUM/AVG, GROUP BY, ORDER BY+LIMIT, COUNT DISTINCT ו-HAVING — על נתונים נקיים במחסן.</div>
+    <div class="task" id="t6chip">📋 העתק את שלוש השאילתות כדי להמשיך</div>
+    <div class="bridge"><span class="q">סיכמנו את כל המסע — מהנתון שנכנס ועד התובנה. שאלה אחת אחרונה.</span></div>
+    <div class="cont"><button class="btn btn-p" id="c6" disabled onclick="next(6,7)">לשאלת סיכום ←</button><span class="hint" id="h6">העתק את שלוש השאילתות</span></div>
+  </section>
+
+  <!-- STEP 7: check -->
+  <section class="step" id="step7">
+    <span class="tag">⑧ בדיקה</span>
+    <h2>שאלה אחת שמסגירה אם הכול התחבר</h2>
+    <p class="lede">מנהל ביקש "כמה לקוחות קנו אצלנו החודש". בנית שאילתה עם <code style="font-family:var(--mono);direction:ltr;">COUNT(*)</code> וקיבלת מספר גדול בהרבה מהמציאות. מה הסיבה?</p>
+    <div id="mcq">
+      <button class="mcq-opt" onclick="ans(this,false,'GROUP BY מקבץ — הוא לא מנפח את הספירה כאן. נסה שוב.')">א) שכחת GROUP BY</button>
+      <button class="mcq-opt" onclick="ans(this,true,'בדיוק. COUNT(*) סופר שורות (הזמנות), ולקוח חוזר נספר כמה פעמים. צריך COUNT(DISTINCT customer_id) כדי לספור לקוחות ייחודיים.')">ב) COUNT(*) סופר הזמנות, לא לקוחות ייחודיים — צריך COUNT(DISTINCT)</button>
+      <button class="mcq-opt" onclick="ans(this,false,'HAVING מסנן קבוצות, הוא לא הגורם לספירה מנופחת של לקוחות. נסה שוב.')">ג) היה צריך HAVING</button>
+      <button class="mcq-opt" onclick="ans(this,false,'אחסון עמודתי משפיע על מהירות, לא על נכונות הספירה. נסה שוב.')">ד) המחסן עמודתי</button>
+    </div>
+    <div id="mcqFb"></div>
+    <div class="cont"><button class="btn btn-p" id="c7" disabled onclick="finish()">סיים ←</button><span class="hint" id="h7">ענה נכון כדי לסיים</span></div>
+  </section>
+
+  <section class="finish" id="finish">
+    <div class="big">🎯</div>
+    <h2>סיימת — והשלמת את המסע</h2>
+    <ul>
+      <li>אגרגציה = כיווץ הרבה שורות לסיכום: COUNT, SUM, AVG, MIN, MAX</li>
+      <li>GROUP BY = סיכום אחד לכל קבוצה — הצורה של כל גרף בדשבורד</li>
+      <li>ORDER BY + LIMIT = ה-Top N · COUNT(DISTINCT) = ערכים ייחודיים</li>
+      <li>WHERE מסנן שורות לפני הקיבוץ · HAVING מסנן קבוצות אחרי הסיכום</li>
+      <li>JSON נכנס → טבלאות → ETL → מחסן → <b>אגרגציה</b> → תובנה. המסע הושלם.</li>
+    </ul>
+  </section>
+
+</div>
+
+<script>
+const TOTAL=7;let done=0;
+function bump(){document.getElementById('fill').style.width=(done/TOTAL*100)+'%';document.getElementById('cnt').textContent=done+' / '+TOTAL;}
+function unlock(id,hid,msg){const b=document.getElementById(id);b.disabled=false;b.classList.add('pulse');const h=document.getElementById(hid);if(h){h.textContent=msg||'אפשר להמשיך';h.classList.add('done');}}
+function next(from,to){done=Math.max(done,from+1);bump();const s=document.getElementById('step'+to);s.classList.add('unlocked');document.getElementById('c'+from).classList.remove('pulse');s.scrollIntoView({behavior:'smooth',block:'start'});}
+
+/* step0 aggregates */
+let aseen={count:0,sum:0,avg:0};
+function agg(t){
+  if(t==='count'){document.getElementById('aggDef').innerHTML='<b>COUNT</b> = כמה שורות. כאן: <b>3</b> מכירות.';document.getElementById('eCount').classList.add('seen');aseen.count=1;}
+  if(t==='sum'){document.getElementById('aggDef').innerHTML='<b>SUM</b> = סך כל הערכים. כאן: 50+90+120 = <b>260</b>.';document.getElementById('eSum').classList.add('seen');aseen.sum=1;}
+  if(t==='avg'){document.getElementById('aggDef').innerHTML='<b>AVG</b> = ממוצע (SUM חלקי COUNT). כאן: 260 ÷ 3 = <b>86.67</b>.';document.getElementById('eAvg').classList.add('seen');aseen.avg=1;}
+  if(aseen.count&&aseen.sum&&aseen.avg)unlock('c0','h0','הכרת את פעולות הסיכום — המשך');}
+
+/* step1 collapse */
+function collapse(){const b=document.getElementById('collapseBtn');b.disabled=true;b.textContent='✓ סוכם';document.getElementById('r1').classList.add('show');unlock('c1','h1','ראית כיווץ לתובנה — המשך');}
+
+/* step2 group by */
+function groupCity(){const b=document.getElementById('grpBtn');b.disabled=true;b.textContent='✓ קובץ';document.getElementById('r2').classList.add('show');unlock('c2','h2','הבנת GROUP BY — המשך');}
+
+/* steps 3,4,6 copy */
+const cpReq={3:2,4:2,6:3};
+const cpCnt={3:new Set(),4:new Set(),6:new Set()};
+function copy(btn,preId,grp,slot){const t=document.getElementById(preId).innerText;
+  navigator.clipboard.writeText(t).then(()=>{btn.textContent='הועתק ✓';btn.classList.add('done');cpCnt[grp].add(slot);
+    if(cpCnt[grp].size>=cpReq[grp]){const chip=document.getElementById('t'+grp+'chip');if(chip)chip.style.display='none';unlock('c'+grp,'h'+grp,'השאילתות מוכנות — המשך');}
+  }).catch(()=>{btn.textContent='בחר ידנית';});}
+
+/* step5 refine */
+let refDone=0;
+function ref(btn,val){const row=btn.closest('.scn');if(row.dataset.done)return;
+  if(val===parseInt(row.dataset.correct)){btn.classList.add('ok');row.querySelectorAll('.sbtn').forEach(b=>b.disabled=true);row.dataset.done=1;refDone++;
+    document.getElementById('refNote').textContent='נכון '+refDone+' מתוך 3.';
+    if(refDone===3)unlock('c5','h5','התאמת את שלושת הכלים — המשך');}
+  else{btn.classList.add('no');btn.disabled=true;}}
+
+/* step7 mcq */
+function ans(btn,ok,fb){const box=document.getElementById('mcqFb');
+  if(ok){document.querySelectorAll('#mcq .mcq-opt').forEach(o=>o.disabled=true);btn.classList.add('correct');
+    box.innerHTML='<div class="mcq-fb ok">✅ '+fb+'</div>';unlock('c7','h7','כל הכבוד — סיים');}
+  else{btn.classList.add('incorrect');btn.disabled=true;box.innerHTML='<div class="mcq-fb no">↩️ '+fb+'</div>';}}
+function finish(){done=TOTAL;bump();document.getElementById('c7').classList.remove('pulse');const f=document.getElementById('finish');f.classList.add('unlocked');f.scrollIntoView({behavior:'smooth',block:'center'});}
+
+bump();
+</script>
+</body>
+</html>
