@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הרצאה 1 - חלק ב׳-1 | מ-OLTP ל-OLAP: למה להעתיק ואיך</title>
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/heebo@5.0.18/hebrew.css" rel="stylesheet">
+<style>
+  :root{
+    --primary:#4f46e5;--primary-dark:#3730a3;--primary-light:#eef2ff;
+    --accent:#14b8a6;--accent-dark:#0f766e;--accent-light:#ccfbf1;
+    --pink:#ec4899;--purple:#a855f7;--blue:#3b82f6;--amber:#f59e0b;
+    --red:#ef4444;--success:#10b981;
+    --ink:#0f172a;--ink-soft:#334155;--muted:#64748b;
+    --line:#e2e8f0;--bg:#f8fafc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Heebo',system-ui,sans-serif;background:#f8fafc;color:var(--ink);line-height:1.85;font-size:22px}
+  img{max-width:100%;display:block}
+  a{color:var(--primary);text-decoration:none;font-weight:600}
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+  code{background:var(--primary-light);padding:3px 10px;border-radius:6px;font-size:.95em;color:var(--primary-dark);font-family:'Courier New',monospace;font-weight:700}
+  section[id],header[id]{scroll-margin-top:110px}
+
+  .progress{position:fixed;top:0;right:0;height:6px;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;z-index:1000}
+  .topnav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:3px solid var(--line);box-shadow:0 2px 8px rgba(15,23,42,.06)}
+  .topnav-inner{max-width:1400px;margin:0 auto;padding:20px 32px;display:flex;align-items:center;gap:24px;justify-content:space-between;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px;font-weight:700}
+  .brand-badge{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--pink),var(--purple));display:grid;place-items:center;color:#fff;font-weight:900;font-size:24px}
+  .brand-title{font-size:19px;line-height:1.3}
+  .brand-title small{display:block;color:var(--muted);font-weight:500;font-size:15px;margin-top:2px}
+  .nav-blocks{display:flex;gap:10px;flex-wrap:wrap}
+  .nav-block{padding:10px 18px;border-radius:10px;font-size:16px;font-weight:700;color:var(--ink-soft);border:2px solid transparent;transition:all .2s}
+  .nav-block:hover{background:#fce7f3;color:#9d174d}
+  .nav-block.active{background:var(--pink);color:#fff;border-color:var(--pink)}
+  @media(max-width:1100px){.nav-blocks{display:none}}
+
+  .hero{background:radial-gradient(1400px 700px at 80% -10%,rgba(236,72,153,.18),transparent 60%),radial-gradient(1200px 600px at 0% 100%,rgba(168,85,247,.2),transparent 60%),linear-gradient(180deg,#fff 0%,#f1f5f9 100%);padding:100px 32px 120px;position:relative;overflow:hidden}
+  .hero-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:center}
+  @media(max-width:1000px){.hero-inner{grid-template-columns:1fr}}
+  .hero-badge{display:inline-flex;align-items:center;gap:10px;background:#fce7f3;color:#9d174d;padding:12px 22px;border-radius:100px;font-size:18px;font-weight:800;margin-bottom:28px;border:3px solid var(--pink)}
+  .hero-badge::before{content:"";width:12px;height:12px;background:var(--pink);border-radius:50%;box-shadow:0 0 0 6px rgba(236,72,153,.25)}
+  .hero h1{font-size:clamp(44px,6vw,72px);line-height:1.1;letter-spacing:-.02em;font-weight:900;margin-bottom:28px}
+  .hero h1 span{background:linear-gradient(120deg,var(--pink),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-sub{font-size:26px;color:var(--ink-soft);margin-bottom:40px;max-width:700px;line-height:1.7}
+  .hero-meta{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:40px}
+  .meta-chip{display:flex;align-items:center;gap:10px;font-size:19px;color:var(--ink-soft);background:#fff;padding:14px 22px;border-radius:14px;border:2px solid var(--line);font-weight:600}
+  .meta-chip strong{color:var(--ink);font-weight:800}
+  .hero-cta{display:flex;gap:18px;flex-wrap:wrap}
+  .btn{padding:20px 36px;border-radius:14px;font-weight:800;font-size:21px;display:inline-flex;align-items:center;gap:12px;transition:all .2s;cursor:pointer}
+  .btn-primary{background:var(--pink);color:#fff;box-shadow:0 10px 24px rgba(236,72,153,.3)}
+  .btn-primary:hover{background:#db2777;transform:translateY(-3px)}
+  .btn-ghost{background:#fff;color:var(--ink);border:3px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--pink);color:var(--pink)}
+
+  .hero-art{border-radius:26px;background:linear-gradient(135deg,#ec4899 0%,#a855f7 50%,#4f46e5 100%);aspect-ratio:4/3;display:grid;place-items:center;padding:40px;position:relative;box-shadow:0 24px 48px rgba(15,23,42,.2)}
+  .hero-art-label{position:absolute;top:24px;right:24px;background:rgba(255,255,255,.3);padding:10px 20px;border-radius:100px;font-size:17px;font-weight:800;color:#fff}
+  .hero-art-vertical{display:grid;gap:14px;width:100%;color:#fff}
+  .hero-art-row{background:rgba(255,255,255,.22);border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:14px;font-size:18px;font-weight:700}
+  .hero-art-row .emoji{font-size:30px;flex-shrink:0}
+
+  .section{padding:110px 32px;max-width:1400px;margin:0 auto}
+  .section-head{margin-bottom:60px;text-align:center}
+  .section-tag{display:inline-block;color:#9d174d;background:#fce7f3;padding:10px 20px;border-radius:100px;font-size:18px;font-weight:800;margin-bottom:20px;border:3px solid var(--pink)}
+  .section-head h2{font-size:clamp(40px,5vw,58px);font-weight:900;margin-bottom:20px;line-height:1.2}
+  .section-head p{color:var(--muted);font-size:24px;max-width:820px;margin:0 auto;line-height:1.7}
+
+  .deep-card{background:#fff;border-radius:28px;padding:48px;box-shadow:0 12px 32px rgba(15,23,42,.08);border:3px solid var(--line);margin-bottom:48px}
+  .deep-card h3{font-size:32px;font-weight:900;margin-bottom:24px;display:flex;align-items:center;gap:16px;line-height:1.3}
+  .deep-card h4{font-size:26px;font-weight:800;margin:36px 0 18px;line-height:1.4}
+  .deep-card h5{font-size:22px;font-weight:800;margin:24px 0 14px;line-height:1.4}
+  .deep-card p{color:var(--ink-soft);margin-bottom:22px;font-size:22px;line-height:1.85}
+  .deep-card ul{padding-right:32px;margin-bottom:24px}
+  .deep-card li{margin-bottom:14px;font-size:22px;line-height:1.75}
+
+  .info{background:#fff;border-radius:22px;padding:32px;border-right:8px solid;margin:32px 0;border:3px solid var(--line)}
+  .info.tip{border-right-color:var(--success);border-color:rgba(16,185,129,.4)}
+  .info.warn{border-right-color:var(--amber);border-color:rgba(245,158,11,.4)}
+  .info.important{border-right-color:var(--red);border-color:rgba(239,68,68,.4)}
+  .info.insight{border-right-color:var(--purple);border-color:rgba(168,85,247,.4)}
+  .info h4{font-size:24px;font-weight:900;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+  .info p{font-size:21px;color:var(--ink-soft);line-height:1.85}
+
+  /* Vertical journey - the key improvement */
+  .journey-vertical{display:grid;gap:24px;margin:32px 0}
+  .journey-step{display:grid;grid-template-columns:100px 1fr;gap:24px;align-items:start;background:#fff;padding:28px;border-radius:22px;border:3px solid var(--line);cursor:pointer;transition:all .3s}
+  .journey-step:hover{border-color:var(--pink);transform:translateX(8px);box-shadow:0 8px 24px rgba(236,72,153,.15)}
+  .journey-step.active{border-color:var(--pink);background:#fce7f3}
+  .journey-num{width:84px;height:84px;border-radius:20px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;display:grid;place-items:center;font-weight:900;font-size:36px;flex-shrink:0}
+  .journey-body h5{font-size:24px;font-weight:900;margin-bottom:8px;line-height:1.3}
+  .journey-body>p{font-size:20px;color:var(--muted);line-height:1.7;margin:0}
+  .journey-details{margin-top:18px;padding-top:18px;border-top:3px dashed var(--line);display:none;font-size:20px;line-height:1.85;color:var(--ink-soft)}
+  .journey-step.expanded .journey-details{display:block}
+
+  /* Vertical flow diagrams */
+  .vertical-flow{display:grid;gap:0;margin:32px 0;position:relative}
+  .vf-node{background:#fff;border:4px solid var(--line);border-radius:20px;padding:28px;position:relative;z-index:2}
+  .vf-node.green{border-color:var(--success);background:rgba(16,185,129,.05)}
+  .vf-node.amber{border-color:var(--amber);background:rgba(245,158,11,.05)}
+  .vf-node.pink{border-color:var(--pink);background:rgba(236,72,153,.05)}
+  .vf-node.purple{border-color:var(--purple);background:rgba(168,85,247,.05)}
+  .vf-node.blue{border-color:var(--blue);background:rgba(59,130,246,.05)}
+  .vf-title{font-size:24px;font-weight:900;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+  .vf-subtitle{font-size:18px;color:var(--muted);margin-bottom:16px;font-weight:600}
+  .vf-content{font-size:20px;color:var(--ink-soft);line-height:1.8}
+  .vf-vendors{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .vf-vendor{background:#fff;padding:8px 16px;border-radius:100px;font-size:15px;font-weight:700;border:2px solid var(--line);color:var(--ink-soft)}
+  .vf-vendor.primary{background:var(--primary-light);border-color:var(--primary);color:var(--primary-dark)}
+
+  .vf-arrow{display:flex;justify-content:center;align-items:center;height:60px;font-size:40px;color:var(--pink);font-weight:900;position:relative;z-index:1}
+
+  /* Tabs */
+  .tabs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px;padding:10px;background:var(--bg);border-radius:18px;border:3px solid var(--line)}
+  .tab{padding:16px 26px;border-radius:14px;font-weight:800;font-size:20px;color:var(--ink-soft);transition:all .2s;flex:1;min-width:180px;text-align:center;cursor:pointer;background:transparent}
+  .tab:hover{background:#fff;color:var(--pink)}
+  .tab.active{background:#fff;color:#9d174d;border:3px solid var(--pink)}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+
+  /* Compare cards */
+  .compare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin:32px 0}
+  .compare-card{background:#fff;border-radius:22px;padding:32px;border:3px solid var(--line);transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+  .compare-card:hover{transform:translateY(-8px);border-color:var(--pink);box-shadow:0 16px 40px rgba(236,72,153,.2)}
+  .compare-card.selected{border-color:var(--pink);background:#fce7f3}
+  .compare-card::before{content:"";position:absolute;top:0;right:0;width:100%;height:6px}
+  .compare-card.a::before{background:var(--success)}
+  .compare-card.b::before{background:var(--amber)}
+  .compare-card.c::before{background:var(--pink)}
+  .compare-card.d::before{background:var(--blue)}
+  .compare-icon{font-size:56px;margin-bottom:18px}
+  .compare-card h5{font-size:26px;font-weight:900;margin-bottom:12px}
+  .compare-card>p{font-size:20px;color:var(--muted);line-height:1.75}
+  .compare-details{margin-top:22px;padding-top:22px;border-top:3px solid var(--line);display:none}
+  .compare-card.selected .compare-details{display:block}
+  .compare-details ul{list-style:none;padding:0}
+  .compare-details li{padding:12px 0;font-size:20px;display:flex;gap:12px;line-height:1.7}
+  .compare-details li::before{content:"✓";color:var(--success);font-weight:900;font-size:24px;flex-shrink:0}
+
+  /* Tables */
+  .tbl{background:#fff;border-radius:20px;overflow:hidden;border:3px solid var(--line);margin:32px 0}
+  .tbl table{width:100%;border-collapse:collapse}
+  .tbl th{background:var(--pink);color:#fff;padding:22px 26px;text-align:right;font-weight:800;font-size:20px}
+  .tbl td{padding:22px 26px;border-top:2px solid var(--line);font-size:20px;vertical-align:top;line-height:1.75}
+  .tbl tr:hover td{background:var(--bg)}
+  .tbl td:first-child{font-weight:800;background:var(--bg)}
+
+  .db-table{background:#fff;border:3px solid var(--pink);border-radius:14px;overflow:hidden;margin:18px 0;font-family:'Courier New',monospace}
+  .db-table-head{background:var(--pink);color:#fff;padding:16px 20px;font-weight:800;font-size:19px;display:flex;justify-content:space-between;align-items:center;font-family:'Heebo'}
+  .db-table-head small{background:rgba(255,255,255,.2);padding:4px 12px;border-radius:100px;font-size:14px}
+  .db-table table{width:100%;border-collapse:collapse;direction:ltr}
+  .db-table th{background:#fce7f3;color:#9d174d;padding:14px 18px;text-align:left;font-size:17px;font-weight:800;border-bottom:2px solid var(--pink)}
+  .db-table td{padding:14px 18px;border-bottom:1px solid var(--line);font-size:17px;color:var(--ink)}
+  .db-table .pk{background:#fef3c7;font-weight:800}
+  .db-table .fk{background:#ddd6fe;font-weight:700}
+  .db-table tr:last-child td{border-bottom:none}
+
+  .code-block{background:#0f172a;color:#e2e8f0;padding:32px;border-radius:18px;font-family:'Courier New',monospace;direction:ltr;text-align:left;overflow-x:auto;margin:28px 0;position:relative;font-size:18px;line-height:1.85;border:4px solid #1e293b}
+  .code-block::before{content:attr(data-lang);position:absolute;top:14px;right:20px;font-size:14px;color:var(--accent);font-family:'Heebo',sans-serif;font-weight:900;letter-spacing:.14em}
+  .code-block .kw{color:#c084fc;font-weight:800}
+  .code-block .str{color:#86efac;font-weight:700}
+  .code-block .num{color:#fbbf24;font-weight:800}
+  .code-block .comment{color:#94a3b8;font-style:italic}
+  .code-block .fn{color:#67e8f9;font-weight:700}
+  .code-block .tbl{color:#f472b6;font-weight:700;background:transparent;border:none;margin:0;overflow:visible}
+
+  .real-world{background:linear-gradient(135deg,#fce7f3,#fbcfe8);border-radius:24px;padding:36px;margin:36px 0;border:3px solid var(--pink)}
+  .real-world h4{font-size:28px;font-weight:900;margin-bottom:22px;color:#9d174d;display:flex;align-items:center;gap:14px}
+  .example{background:#fff;padding:26px;border-radius:18px;margin-bottom:20px;border-right:6px solid var(--pink)}
+  .example:last-child{margin-bottom:0}
+  .example h5{font-size:22px;font-weight:800;margin-bottom:12px;color:#9d174d}
+  .example p{font-size:20px;color:#831843;margin:0;line-height:1.75}
+
+  .star-schema-interactive{display:grid;gap:20px;margin:32px 0}
+  .star-center{background:linear-gradient(135deg,var(--pink),#9d174d);color:#fff;border-radius:24px;padding:36px;text-align:center;cursor:pointer;transition:all .3s}
+  .star-center:hover{transform:scale(1.02)}
+  .star-center h4{font-size:28px;font-weight:900;margin-bottom:12px}
+  .star-center p{font-size:20px;opacity:.95;margin:0}
+  .star-dims{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .star-dim{background:#fff;border:3px solid var(--pink);border-radius:18px;padding:24px;cursor:pointer;transition:all .3s}
+  .star-dim:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(236,72,153,.2)}
+  .star-dim.selected{background:#fce7f3}
+  .star-dim h5{font-size:22px;font-weight:900;margin-bottom:10px;color:#9d174d;display:flex;align-items:center;gap:10px}
+  .star-dim>p{font-size:17px;color:var(--muted);margin-bottom:0}
+  .star-dim-details{margin-top:16px;padding-top:16px;border-top:2px dashed var(--line);display:none;font-size:17px;line-height:1.75;color:var(--ink-soft)}
+  .star-dim.selected .star-dim-details{display:block}
+
+  .takeaway{background:linear-gradient(135deg,var(--pink) 0%,#9d174d 100%);color:#fff;border-radius:32px;padding:64px 48px;text-align:center;position:relative;overflow:hidden;border:4px solid rgba(255,255,255,.25);margin-top:60px}
+  .takeaway::before{content:"✨";position:absolute;top:28px;left:44px;font-size:90px;opacity:.3}
+  .takeaway::after{content:"🎯";position:absolute;bottom:28px;right:44px;font-size:90px;opacity:.3}
+  .takeaway-label{display:inline-block;background:rgba(255,255,255,.28);padding:10px 24px;border-radius:100px;font-size:19px;font-weight:900;margin-bottom:24px;letter-spacing:.06em}
+  .takeaway h3{font-size:clamp(32px,4vw,46px);font-weight:900;line-height:1.45;max-width:1000px;margin:0 auto;position:relative}
+
+  .next{background:#fff;border-radius:26px;padding:40px;border:3px solid var(--line);display:flex;gap:32px;align-items:center;flex-wrap:wrap;margin-top:48px}
+  .next-num{width:90px;height:90px;border-radius:22px;flex-shrink:0;background:linear-gradient(135deg,var(--purple),#4f46e5);color:#fff;display:grid;place-items:center;font-size:36px;font-weight:900}
+  .next-body{flex:1;min-width:320px}
+  .next-body small{color:var(--muted);font-size:18px;font-weight:700}
+  .next-body h4{font-size:30px;font-weight:900;margin:8px 0 12px;line-height:1.4}
+  .next-body p{color:var(--ink-soft);font-size:21px;line-height:1.75}
+
+  .vendor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin:32px 0}
+  .vendor-card{background:#fff;border-radius:20px;padding:28px;border:3px solid var(--line);transition:all .3s;text-align:center}
+  .vendor-card:hover{transform:translateY(-6px);border-color:var(--pink);box-shadow:0 16px 40px rgba(236,72,153,.15)}
+  .vendor-logo{width:84px;height:84px;border-radius:18px;margin:0 auto 18px;display:grid;place-items:center;font-size:42px;color:#fff;font-weight:900}
+  .vendor-card h5{font-size:23px;font-weight:800;margin-bottom:10px}
+  .vendor-card p{font-size:18px;color:var(--muted);line-height:1.75;margin-bottom:10px}
+  .vendor-tag{display:inline-block;margin-top:14px;padding:8px 18px;border-radius:100px;font-size:16px;font-weight:800;color:#fff}
+  .vendor-meta{font-size:16px;color:var(--ink-soft);line-height:1.7;margin-top:12px;padding-top:12px;border-top:2px solid var(--line);text-align:right}
+
+  footer{background:#0f172a;color:#cbd5e1;padding:64px 32px;margin-top:90px}
+  .foot-inner{max-width:1400px;margin:0 auto;text-align:center}
+  .foot-inner h4{color:#fff;font-size:32px;font-weight:900;margin-bottom:16px}
+  .foot-inner>p{font-size:20px;opacity:.8;margin-bottom:32px}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">
+      <div class="brand-badge">BI</div>
+      <div class="brand-title">קורס BI וארכיטקטורת נתונים<small>הרצאה 1 · חלק ב׳-1 · מ-OLTP ל-OLAP</small></div>
+    </div>
+    <div class="nav-blocks" id="navBlocks">
+      <a href="#block1" class="nav-block active">1 · תזכורת</a>
+      <a href="#block2" class="nav-block">2 · OLTP לעומק</a>
+      <a href="#block3" class="nav-block">3 · 4 בעיות</a>
+      <a href="#block4" class="nav-block">4 · תרשים זרימה</a>
+      <a href="#block5" class="nav-block">5 · ETL שלב-שלב</a>
+      <a href="#block6" class="nav-block">6 · ETL vs ELT</a>
+      <a href="#block7" class="nav-block">7 · כלי ETL</a>
+      <a href="#block8" class="nav-block">8 · Star Schema</a>
+      <a href="#block9" class="nav-block">9 · סיכום</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-badge">📚 הרצאה 1 · חלק ב׳-1</span>
+      <h1>מ-OLTP ל-OLAP:<br><span>למה להעתיק ואיך</span></h1>
+      <p class="hero-sub">
+        בחלק א׳ ראינו איך הזמנה נשמרת במסד הנתונים התפעולי (OLTP).
+        בחלק הזה נבין <strong>למה אי אפשר לנתח שם</strong>, מה זה באמת OLTP, איך מעתיקים את הנתונים למחסן אנליטי (OLAP), ואיך הנתונים מסתדרים שם בצורת כוכב.
+      </p>
+      <div class="hero-meta">
+        <div class="meta-chip">⏱ <strong>כ-90 דקות</strong></div>
+        <div class="meta-chip">🎯 <strong>חלק ב׳-1</strong></div>
+        <div class="meta-chip">🗺️ <strong>מפות אינטראקטיביות</strong></div>
+      </div>
+      <div class="hero-cta">
+        <a href="#block1" class="btn btn-primary" onclick="smoothTo(event,'block1')">בואו נתחיל ←</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="hero-art-label">🗺️ המסלול בחלק ב׳-1</div>
+      <div class="hero-art-vertical">
+        <div class="hero-art-row"><span class="emoji">🏪</span>OLTP – מסד תפעולי</div>
+        <div class="hero-art-row" style="text-align:center;justify-content:center;background:rgba(255,255,255,.35)">⬇️</div>
+        <div class="hero-art-row"><span class="emoji">🔄</span>ETL / ELT – תהליך ההעתקה</div>
+        <div class="hero-art-row" style="text-align:center;justify-content:center;background:rgba(255,255,255,.35)">⬇️</div>
+        <div class="hero-art-row"><span class="emoji">🏛️</span>OLAP – מחסן אנליטי</div>
+        <div class="hero-art-row" style="text-align:center;justify-content:center;background:rgba(255,255,255,.35)">⬇️</div>
+        <div class="hero-art-row"><span class="emoji">⭐</span>Star Schema – סידור הנתונים</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- BLOCK 1: WHERE WE STOPPED -->
+<section class="section" id="block1">
+  <div class="section-head">
+    <span class="section-tag">בלוק 1 · תזכורת · 15 דקות</span>
+    <h2>איפה עצרנו? לחצו על כל שלב</h2>
+    <p>חמש התחנות שכבר כיסינו בחלק א׳ – לחיצה על כל שלב תחשוף את ההסבר המלא</p>
+  </div>
+
+  <div class="journey-vertical">
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">1</div>
+      <div class="journey-body">
+        <h5>🖱️ הקליק באפליקציה</h5>
+        <p>לקוח (או מערכת אחרת) מבצע פעולה</p>
+        <div class="journey-details">
+          <p><strong>איפה זה קורה?</strong> באתר בדפדפן, באפליקציית מובייל, באפליקציית דסקטופ, או במערכת אחרת שמדברת עם המערכת שלנו (API-to-API).</p>
+          <p><strong>חשוב לזכור:</strong> גם המשתמש הפרטי וגם מערכות פנימיות משתמשים באותו API. מבחינת השרת – אין הבדל.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">2</div>
+      <div class="journey-body">
+        <h5>📨 JSON נשלח לשרת</h5>
+        <p>הנתונים נארזים בפורמט JSON ונשלחים דרך HTTP</p>
+        <div class="journey-details">
+          <p><strong>מה זה JSON?</strong> פורמט טקסטואלי פשוט של מפתחות וערכים, שנראה כמו מילון. לדוגמה: <code>{"customer_id": 42, "total": 99.8}</code></p>
+          <p><strong>למה דווקא JSON?</strong> קריא לבני אדם, נתמך בכל שפת תכנות, קל משקל, וגמיש. 95% מה-APIs החדשים משתמשים בו.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">3</div>
+      <div class="journey-body">
+        <h5>⚙️ הבק-אנד מעבד</h5>
+        <p>Node.js / Python / Java / C# מקבלים את הבקשה ומבצעים לוגיקה עסקית</p>
+        <div class="journey-details">
+          <p><strong>מה זה בק-אנד?</strong> השרת שמקבל את הבקשות מהפרונט-אנד, מבצע בדיקות (מלאי, תשלום, חישובים), ושומר את הנתונים במסד הנתונים.</p>
+          <p><strong>שפות נפוצות:</strong> Node.js ו-Python בסטארטאפים. Java ו-C# בארגונים גדולים (בנקים, ביטוח, ממשל).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">4</div>
+      <div class="journey-body">
+        <h5>📝 INSERT INTO – כתיבה לטבלאות</h5>
+        <p>שאילתות SQL שמוסיפות שורות לטבלאות המקושרות</p>
+        <div class="journey-details">
+          <p><strong>איזה טבלאות?</strong> בדרך כלל לפחות 4: <code>customers</code>, <code>products</code>, <code>orders</code>, <code>order_items</code>. הנתונים מחולקים כדי למנוע כפילויות (נורמליזציה).</p>
+          <p><strong>איך הבק-אנד מדבר עם המסד?</strong> דרך דרייבר (כמו <code>pg</code> ל-PostgreSQL) או ORM (כמו Prisma, Hibernate).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">5</div>
+      <div class="journey-body">
+        <h5>💾 מסד נתונים תפעולי (OLTP)</h5>
+        <p>PostgreSQL / SQL Server / MySQL / Oracle – שומר בטרנזקציה (ACID)</p>
+        <div class="journey-details">
+          <p><strong>מה זה OLTP?</strong> Online Transaction Processing – מסד שנועד להרצת העסק בזמן אמת: קליטת הזמנות, עדכון מלאי, טיפול בתשלומים.</p>
+          <p><strong>איפה הוא יושב?</strong> או On-Premises (חדרי שרתים של החברה – נפוץ בבנקים וממשל) או בענן (AWS, Azure, GCP – נפוץ בסטארטאפים).</p>
+          <p><strong>מה זה טרנזקציה?</strong> קבוצת פעולות שמתבצעת "הכל או כלום" – אם אחת נכשלת, הכל מתבטל. זה מה שמבטיח שהנתונים תמיד עקביים.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info insight">
+    <h4>💡 אז מה הלאה? שלושה כיוונים שונים</h4>
+    <p>עכשיו, כשההזמנה שמורה במסד התפעולי, שלושה סוגי אנשים צריכים להשתמש בנתונים – וכל אחד בדרכו שלו:</p>
+    <ul style="padding-right:28px;margin-top:12px">
+      <li><strong>👤 המשתמש הפרטי</strong> – רוצה לראות את הנתונים <em>שלו</em>: "ההזמנות שלי", "ההיסטוריה שלי", "הסטטיסטיקות שלי" (כמו Spotify Wrapped או דשבורד הוצאות בבנק).</li>
+      <li><strong>👔 המנהל</strong> – רוצה דוח עסקי: "כמה מכרנו החודש?", "איזו קטגוריה צומחת?", "איפה אנחנו מפסידים כסף?".</li>
+      <li><strong>📊 האנליסט (אתם!)</strong> – רוצה לחקור שאלות חדשות שלא חשבנו עליהן מראש: "מה הקשר בין מזג אוויר למכירות?", "איזה לקוחות בסכנת נטישה?".</li>
+    </ul>
+    <p style="margin-top:16px">בשלושת המקרים – <strong>אי אפשר</strong> (או לא כדאי) לעשות את זה ישירות על המסד התפעולי. בואו נבין למה.</p>
+  </div>
+</section>
+
+<!-- BLOCK 2: OLTP DEEP DIVE -->
+<section class="section" id="block2">
+  <div class="section-head">
+    <span class="section-tag">בלוק 2 · OLTP לעומק · 30 דקות</span>
+    <h2>מה זה באמת OLTP ואיך הוא בנוי?</h2>
+    <p>לפני שמבינים למה לא לנתח עליו – צריך להבין למה הוא טוב</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🎯 OLTP – מה זה אומר?</h3>
+    <p><strong>OLTP</strong> הם ראשי תיבות של <strong>Online Transaction Processing</strong> – עיבוד טרנזקציות מקוון. זהו מסד נתונים שנועד <strong>להרצת העסק בזמן אמת</strong>: לקלוט הזמנות, לעדכן מלאי, לטפל בתשלומים, לנהל משתמשים.</p>
+
+    <h4>🔑 המאפיין המרכזי: כתיבה מהירה של שורות בודדות</h4>
+    <p>OLTP מתוכנן סביב פעולה אחת קטנה ומהירה: "לקוח X הוסיף מוצר Y לעגלה", "ההזמנה Z שונתה לסטטוס 'נשלח'", "המלאי של מוצר W ירד ב-2". כל פעולה נוגעת ב<strong>שורה אחת או כמה שורות</strong> – וחייבת להסתיים ב<strong>אלפיות שנייה</strong>.</p>
+
+    <div class="info tip">
+      <h4>💡 אנלוגיה: הקופה בסופרמרקט</h4>
+      <p>OLTP הוא כמו <strong>הקופה בסופרמרקט</strong>. הקופאית סורקת מוצר אחד, מחשבת מחיר, מקבלת תשלום, מדפיסה קבלה – ומיד עוברת ללקוח הבא. היא לא אמורה לחשב "כמה מוצרי חלב מכרנו השנה בכל הסניפים" – זה יאט את כל התור.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🏗️ איך OLTP בנוי? נורמליזציה</h3>
+    <p>כדי למנוע כפילויות ולשמור על עקביות, OLTP מפצל את הנתונים ל<strong>הרבה טבלאות קטנות ומקושרות</strong>. התהליך הזה נקרא <strong>נורמליזציה</strong> (normalization).</p>
+
+    <h4>📋 דוגמה: Mini-Shop – 4 טבלאות מקושרות</h4>
+
+    <div class="db-table">
+      <div class="db-table-head">👥 customers <small>טבלת לקוחות</small></div>
+      <table>
+        <tr><th>id (PK)</th><th>name</th><th>email</th><th>country</th><th>created_at</th></tr>
+        <tr><td class="pk">42</td><td>Yossi Cohen</td><td>yossi@mail.com</td><td>Israel</td><td>2024-01-15</td></tr>
+        <tr><td class="pk">43</td><td>Rina Levi</td><td>rina@mail.com</td><td>Israel</td><td>2024-02-03</td></tr>
+      </table>
+    </div>
+
+    <div class="db-table">
+      <div class="db-table-head">📦 products <small>טבלת מוצרים</small></div>
+      <table>
+        <tr><th>id (PK)</th><th>name</th><th>category</th><th>price</th><th>stock</th></tr>
+        <tr><td class="pk">7</td><td>Blue Shirt</td><td>clothing</td><td>49.9</td><td>15</td></tr>
+        <tr><td class="pk">8</td><td>Black Jeans</td><td>clothing</td><td>149.0</td><td>22</td></tr>
+      </table>
+    </div>
+
+    <div class="db-table">
+      <div class="db-table-head">🛒 orders <small>טבלת הזמנות</small></div>
+      <table>
+        <tr><th>id (PK)</th><th>customer_id (FK)</th><th>total</th><th>status</th><th>created_at</th></tr>
+        <tr><td class="pk">1234</td><td class="fk">42</td><td>99.8</td><td>pending</td><td>2026-06-20</td></tr>
+      </table>
+    </div>
+
+    <div class="db-table">
+      <div class="db-table-head">📋 order_items <small>פריטי הזמנה</small></div>
+      <table>
+        <tr><th>id (PK)</th><th>order_id (FK)</th><th>product_id (FK)</th><th>qty</th><th>price</th></tr>
+        <tr><td class="pk">5678</td><td class="fk">1234</td><td class="fk">7</td><td>2</td><td>49.9</td></tr>
+      </table>
+    </div>
+
+    <div class="info insight">
+      <h4>💡 למה דווקא 4 טבלאות?</h4>
+      <p><strong>PK</strong> = Primary Key (מזהה ייחודי). <strong>FK</strong> = Foreign Key (מצביע לטבלה אחרת).<br>
+      אם היינו שומרים הכל בטבלה אחת – שם הלקוח היה מופיע בכל הזמנה מחדש, שם המוצר בכל פריט. זה מבזבז מקום, ומסכן בעדכונים לא עקביים (מה אם הלקוח שינה כתובת?). הנורמליזציה פותרת את זה.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>⚡ למה OLTP כל כך מהיר לכתיבה?</h3>
+    <p>OLTP משתמש בשלושה מנגנונים שהופכים אותו למהיר מאוד לכתיבה – אבל <strong>פחות מתאימים לניתוח</strong>:</p>
+
+    <div class="compare-grid">
+      <div class="compare-card a" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">📑</div>
+        <h5>Row-Based Storage</h5>
+        <p>שומר נתונים לפי שורות – כל שורה ביחד</p>
+        <div class="compare-details">
+          <h5 style="font-size:20px;margin:12px 0">מה זה אומר?</h5>
+          <p style="font-size:18px">הדיסק מאחסן את <strong>כל השורה</strong> ברצף: <code>{id:42, name:"Yossi", email:"yossi@...", country:"Israel", created:"2024-01-15"}</code>, ואז את השורה הבאה.</p>
+          <h5 style="font-size:20px;margin:16px 0 8px">למה זה טוב?</h5>
+          <p style="font-size:18px">כשמביאים לקוח ספציפי (למשל: "תן לי את כל הנתונים של לקוח 42") – קוראים בבת אחת את כל השורה שלו. מהיר מאוד.</p>
+          <h5 style="font-size:20px;margin:16px 0 8px">למה זה לא טוב לניתוח?</h5>
+          <p style="font-size:18px">כשרוצים לחשב "ממוצע גילאים של כל הלקוחות" – צריך לקרוא <strong>את כל השורות</strong>, גם אם צריך רק עמודה אחת (age). זה איטי.</p>
+        </div>
+      </div>
+
+      <div class="compare-card b" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">📇</div>
+        <h5>Indexes (אינדקסים)</h5>
+        <p>כמו אינדקס בספר – מפתח שמאיץ מציאת שורות</p>
+        <div class="compare-details">
+          <h5 style="font-size:20px;margin:12px 0">מה זה?</h5>
+          <p style="font-size:18px">מבנה נתונים נפרד שממוין לפי עמודה מסוימת (למשל <code>email</code>). כשמחפשים לקוח לפי אימייל – המסד לא סורק את כל הטבלה, אלא קופץ ישר למקום הנכון.</p>
+          <h5 style="font-size:20px;margin:16px 0 8px">למה זה טוב?</h5>
+          <p style="font-size:18px">חיפוש של שורה ספציפית הופך מ-O(n) ל-O(log n). הבדל של פי אלף במהירות.</p>
+          <h5 style="font-size:20px;margin:16px 0 8px">המחיר:</h5>
+          <p style="font-size:18px">כל INSERT/UPDATE צריך לעדכן גם את האינדקסים. יותר מדי אינדקסים = כתיבה איטית. לכן OLTP שומר רק אינדקסים קריטיים.</p>
+        </div>
+      </div>
+
+      <div class="compare-card c" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🔒</div>
+        <h5>ACID Transactions</h5>
+        <p>טרנזקציות קצרות – הכל או כלום</p>
+        <div class="compare-details">
+          <h5 style="font-size:20px;margin:12px 0">מה זה?</h5>
+          <p style="font-size:18px">קבוצת פעולות שמתבצעת כיחידה אחת. אם פעולה אחת נכשלת – הכל מתבטל (ROLLBACK). אם הכל מצליח – נשמר לצמיתות (COMMIT).</p>
+          <h5 style="font-size:20px;margin:16px 0 8px">ארבעת עמודי התווך (ACID):</h5>
+          <ul style="padding-right:20px;font-size:17px">
+            <li><strong>Atomicity:</strong> הכל או כלום</li>
+            <li><strong>Consistency:</strong> הנתונים נשארים הגיוניים</li>
+            <li><strong>Isolation:</strong> טרנזקציות מקבילות לא מפריעות</li>
+            <li><strong>Durability:</strong> COMMIT = נשמר לצמיתות</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🏢 מי משתמש ב-OLTP?</h3>
+    <p><strong>כל אפליקציה</strong> שצריכה לשמור נתונים בזמן אמת משתמשת ב-OLTP. הנה דוגמאות נפוצות:</p>
+
+    <div class="real-world">
+      <h4>🏢 סוגי מערכות שנשענות על OLTP</h4>
+      <div class="example">
+        <h5>🛒 מערכות E-commerce</h5>
+        <p>החנות עצמה (Shopify, WooCommerce, Magento) – הזמנות, מלאי, לקוחות, תשלומים. רצות על PostgreSQL, MySQL, או SQL Server.</p>
+      </div>
+      <div class="example">
+        <h5>🏦 מערכות בנקאיות (Core Banking)</h5>
+        <p>המערכת שמנהלת חשבונות, העברות, הלוואות. בבנקים ישראליים: בעיקר <strong>Oracle Database</strong> על שרתי on-premises, עם מעבר הדרגתי ל-Azure.</p>
+      </div>
+      <div class="example">
+        <h5>🏭 ERP (Enterprise Resource Planning)</h5>
+        <p><strong>חשוב להבין:</strong> ERP היא <strong>מערכת עסקית שלמה</strong> (SAP, Oracle ERP, Priority) שמנהלת את כל הארגון: רכש, ייצור, מלאי, הנהלת חשבונות, HR. <strong>מתחתיה</strong> יושב OLTP – מסד הנתונים ששומר את כל הנתונים האלה.</p>
+        <p style="margin-top:10px"><strong>האם ERP שומר היסטוריה?</strong> כן! ERP שומר את כל הנתונים מאז שהותקן – לפעמים 20+ שנה. אבל הוא עדיין OLTP – כי הוא מתוכנן סביב פעולות קטנות ומהירות ("הוסף הזמנת רכש", "עדכן משכורת"). הוא לא בנוי לניתוחים מורכבים על פני כל הנתונים האלה.</p>
+      </div>
+      <div class="example">
+        <h5>📱 אפליקציות מובייל ווב</h5>
+        <p>Wolt, Gett, Spotify, Instagram – כל אפליקציה עם מיליוני משתמשים. PostgreSQL ו-MySQL הם הנפוצים ביותר.</p>
+      </div>
+    </div>
+
+    <div class="info important">
+      <h4>⚠️ הבהרה חשובה: OLTP ≠ זיכרון זמני</h4>
+      <p>OLTP שומר נתונים <strong>לצמיתות</strong> – לפעמים עשרות שנים. זו לא "מטמון" (cache) שנמחקת. ההבדל מ-OLAP הוא <strong>לא</strong> באורך החיים, אלא ב<strong>מטרה</strong> וב<strong>מבנה</strong>: OLTP בנוי לכתיבה מהירה של שורות בודדות; OLAP בנוי לקריאה מהירה של מיליוני שורות.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 3: 4 PROBLEMS -->
+<section class="section" id="block3">
+  <div class="section-head">
+    <span class="section-tag">בלוק 3 · 4 בעיות · 45 דקות</span>
+    <h2>למה אי אפשר לנתח על OLTP?</h2>
+    <p>ארבע בעיות שהופכות את זה למסוכן ויקר</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🐌 בעיה 1: פגיעה בביצועי המערכת</h3>
+    <p>שאילתות אנליטיות כבדות על OLTP עלולות להאט את המערכת <strong>ללקוחות אמיתיים</strong>. בואו נבין למה.</p>
+
+    <h4>🎬 מה קורה מאחורי הקלעים?</h4>
+
+    <div class="vertical-flow">
+      <div class="vf-node pink">
+        <div class="vf-title">👔 המנהל מריץ דוח</div>
+        <div class="vf-subtitle">"תן לי את סך המכירות לפי קטגוריה ב-5 השנים האחרונות"</div>
+        <div class="vf-content">
+          המנהל (או אנליסט) מריץ שאילתה שצריכה:
+          <ul style="padding-right:24px;margin-top:12px">
+            <li>לסרוק <strong>מיליוני שורות</strong> בטבלת <code>order_items</code></li>
+            <li>לעשות <strong>JOIN</strong> עם טבלת <code>products</code> (כדי לדעת את הקטגוריה)</li>
+            <li>לעשות <strong>JOIN</strong> עם טבלת <code>orders</code> (כדי לדעת את התאריך)</li>
+            <li>לחשב <strong>SUM</strong> ו-<strong>GROUP BY</strong> על כל הנתונים</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️</div>
+
+      <div class="vf-node amber">
+        <div class="vf-title">💻 השרת עמוס</div>
+        <div class="vf-subtitle">השאילתה תופסת CPU, זיכרון, ו-I/O של הדיסק</div>
+        <div class="vf-content">
+          <p><strong>CPU:</strong> השאילתה צריכה לחשב מיליוני פעולות חיבור ומיון – תופסת 60-80% מה-CPU של השרת לדקות.</p>
+          <p><strong>זיכרון (RAM):</strong> כדי למיין ולקבץ, המסד טוען כמויות נתונים לזיכרון. זה דוחק החוצה נתונים אחרים שהיו ב-cache.</p>
+          <p><strong>I/O (דיסק):</strong> קריאת מיליוני שורות מהדיסק = עומס על מערכת האחסון.</p>
+          <p><strong>נעילות (Locks):</strong> בזמן שהשאילתה רצה, חלק מהטבלאות "נעולות" לקריאה עקבית – מה שיכול להאט גם כתיבות.</p>
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️</div>
+
+      <div class="vf-node" style="border-color:var(--red);background:rgba(239,68,68,.05)">
+        <div class="vf-title" style="color:var(--red)">😰 הלקוחות האמיתיים סובלים</div>
+        <div class="vf-subtitle">המערכת מגיבה לאט יותר</div>
+        <div class="vf-content">
+          <p>בזמן שהשאילתה האנליטית רצה:</p>
+          <ul style="padding-right:24px;margin-top:12px">
+            <li>לקוח שמנסה לטעון את דף המוצר – ממתין 3 שניות במקום 200 אלפיות שנייה</li>
+            <li>לקוח שמנסה לבצע checkout – רואה "המערכת עמוסה, נסו שוב"</li>
+            <li>לקוחות שחווים חוויה איטית – נוטשים את העגלה</li>
+          </ul>
+          <p style="margin-top:16px"><strong>התרגום העסקי:</strong> בדקות שהשאילתה רצה, אנחנו עלולים לאבד עשרות או מאות הזמנות. הנזק הכספי יכול להיות גדול יותר מהתועלת שבדוח.</p>
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️</div>
+
+      <div class="vf-node green">
+        <div class="vf-title">✅ הפתרון: עותק נפרד</div>
+        <div class="vf-subtitle">מריצים את הדוח על המחסן האנליטי – לא על OLTP</div>
+        <div class="vf-content">
+          <p>המחסן האנליטי יושב על <strong>שרתים נפרדים</strong>. גם אם דוח כבד רץ שם 10 דקות – זה לא משפיע בכלל על הלקוחות שקונים בחנות.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info warn">
+      <h4>⚠️ למה OLTP לא מתוכנן לזה?</h4>
+      <p>OLTP בנוי סביב ההנחה שכל שאילתה נוגעת ב<strong>שורות בודדות</strong> ומסתיימת ב<strong>אלפיות שנייה</strong>. השרת מוקצה עם כמות מוגבלת של CPU וזיכרון – מספיק לאלפי טרנזקציות קטנות בשנייה, אבל לא למספר קטן של שאילתות ענק.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🔓 בעיה 2: סיכוני אבטחה והרשאות</h3>
+
+    <h4>🎭 שתי בעיות שונות</h4>
+
+    <div class="compare-grid">
+      <div class="compare-card b" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">💥</div>
+        <h5>א. טעויות הרסניות</h5>
+        <p>גישה ישירה ל-OLTP עלולה להוביל לפקודות UPDATE/DELETE בטעות</p>
+        <div class="compare-details">
+          <h5 style="font-size:20px;margin:12px 0">התרחיש:</h5>
+          <p style="font-size:18px">אנליסט מתחיל מקבל גישה למסד התפעולי "כדי לחקור". הוא מריץ SELECT – הכל בסדר. ואז הוא מנסה "לנקות נתונים" עם DELETE, או בטעות כותב UPDATE בלי WHERE – ומוחק/משנה עשרות אלפי הזמנות אמיתיות.</p>
+          <h5 style="font-size:20px;margin:16px 0 8px">ההגנה הטכנית:</h5>
+          <p style="font-size:18px">אפשר לתת רק הרשאות <code>SELECT</code> – אבל בפועל, הרבה ארגונים לא מנהלים את זה טוב, ובטעויות אנוש קשה להילחם.</p>
+        </div>
+      </div>
+
+      <div class="compare-card c" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🔐</div>
+        <h5>ב. חשיפת מידע רגיש</h5>
+        <p>OLTP מכיל מידע שאנליסט לא אמור לראות</p>
+        <div class="compare-details">
+          <h5 style="font-size:20px;margin:12px 0">מה יש ב-OLTP שאין ב-OLAP?</h5>
+          <ul style="padding-right:20px;font-size:18px">
+            <li><strong>סיסמאות ו-hash שלהן</strong></li>
+            <li><strong>מספרי כרטיסי אשראי</strong> (או tokens)</li>
+            <li><strong>תעודות זהות</strong>, מספרי דרכון</li>
+            <li><strong>פרטים רפואיים</strong> (במערכות בריאות)</li>
+            <li><strong>התכתבויות</strong>, לוגים רגישים</li>
+          </ul>
+          <h5 style="font-size:20px;margin:16px 0 8px">הפתרון:</h5>
+          <p style="font-size:18px">ב-ETL (שנלמד בבלוק הבא) אנחנו <strong>מסננים</strong> את המידע הרגיש לפני שהוא מגיע למחסן. האנליסט רואה רק מה שהוא צריך.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info important">
+      <h4>🇪🇺 הקשר לרגולציה: GDPR</h4>
+      <p>חוקי פרטיות כמו <strong>GDPR</strong> (אירופה), <strong>CCPA</strong> (קליפורניה), ו<strong>חוק הגנת הפרטיות</strong> הישראלי – דורשים שנדע בדיוק איפה נמצא כל פריט מידע רגיש. OLAP נפרד מאפשר לנו לשלוט טוב יותר במה האנליסטים רואים, ולתעד כל גישה.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🧩 בעיה 3: המבנה לא מותאם לניתוח</h3>
+
+    <h4>🎯 דוגמה: "כמה מכרנו בכל קטגוריה?"</h4>
+    <p>שאלה עסקית פשוטה. בואו נראה איך היא נראית ב-OLTP לעומת OLAP:</p>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="oltp">ב-OLTP (מסורבל)</button>
+      <button class="tab" data-tab="olap">ב-OLAP (פשוט)</button>
+    </div>
+
+    <div class="tab-panel active" data-panel="oltp">
+      <div class="code-block" data-lang="SQL">
+<span class="comment">-- ב-OLTP צריך 3 JOINs בין טבלאות שונות</span>
+<span class="kw">SELECT</span>
+  p.category,
+  <span class="fn">SUM</span>(oi.price * oi.qty) <span class="kw">AS</span> revenue
+<span class="kw">FROM</span> <span class="tbl">order_items</span> oi
+<span class="kw">JOIN</span> <span class="tbl">orders</span> o <span class="kw">ON</span> oi.order_id = o.id
+<span class="kw">JOIN</span> <span class="tbl">products</span> p <span class="kw">ON</span> oi.product_id = p.id
+<span class="kw">JOIN</span> <span class="tbl">customers</span> c <span class="kw">ON</span> o.customer_id = c.id
+<span class="kw">WHERE</span> o.status = <span class="str">'completed'</span>
+  <span class="kw">AND</span> o.created_at >= <span class="str">'2025-01-01'</span>
+<span class="kw">GROUP BY</span> p.category
+<span class="kw">ORDER BY</span> revenue <span class="kw">DESC</span>;
+      </div>
+      <div class="info warn">
+        <h4>😓 מה הבעיה?</h4>
+        <p><strong>4 טבלאות, 3 JOINs, מיליוני שורות.</strong> השאילתה צריכה "לקפוץ" בין 4 טבלאות שונות כדי לאסוף את כל המידע. על מיליוני שורות – זה לוקח דקות, ותוקע את השרת.</p>
+      </div>
+    </div>
+
+    <div class="tab-panel" data-panel="olap">
+      <div class="code-block" data-lang="SQL">
+<span class="comment">-- ב-OLAP – הכל כבר מוכן בטבלה אחת רחבה</span>
+<span class="kw">SELECT</span>
+  category,
+  <span class="fn">SUM</span>(revenue) <span class="kw">AS</span> total_revenue
+<span class="kw">FROM</span> <span class="tbl">fact_sales</span>
+<span class="kw">WHERE</span> sale_date >= <span class="str">'2025-01-01'</span>
+<span class="kw">GROUP BY</span> category
+<span class="kw">ORDER BY</span> total_revenue <span class="kw">DESC</span>;
+      </div>
+      <div class="info tip">
+        <h4>✨ מה ההבדל?</h4>
+        <p><strong>טבלה אחת!</strong> כל המידע (קטגוריה, תאריך, הכנסה, לקוח, מיקום) כבר נמצא יחד – ב<strong>Star Schema</strong> שנבנה מראש. השאילתה פשוטה, מהירה, ולא תוקעת אף אחד.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>📚 בעיה 4: OLTP שומר רק את המצב הנוכחי</h3>
+
+    <h4>🎬 דוגמה: שינוי מחיר</h4>
+    <p>נניח ששיניתם את המחיר של "חולצה כחולה" מ-49.9 ₪ ל-69.9 ₪ בתאריך 1 ביוני.</p>
+
+    <div class="db-table">
+      <div class="db-table-head">💾 ב-OLTP – רואים רק את המצב הנוכחי</div>
+      <table>
+        <tr><th>id</th><th>name</th><th>price</th></tr>
+        <tr><td class="pk">7</td><td>Blue Shirt</td><td>69.9 ← <strong>רק זה</strong></td></tr>
+      </table>
+    </div>
+
+    <p style="font-size:22px;line-height:1.85"><strong>מה קרה למחיר הישן?</strong> הוא נדרס. במסד התפעולי רואים רק 69.9. אי אפשר לדעת שהיה פעם 49.9.</p>
+
+    <div class="db-table">
+      <div class="db-table-head">🏛️ ב-OLAP – רואים את כל ההיסטוריה</div>
+      <table>
+        <tr><th>product_key</th><th>name</th><th>price</th><th>valid_from</th><th>valid_to</th></tr>
+        <tr><td class="pk">7-v1</td><td>Blue Shirt</td><td>49.9</td><td>2024-01-01</td><td>2026-05-31</td></tr>
+        <tr><td class="pk">7-v2</td><td>Blue Shirt</td><td>69.9</td><td>2026-06-01</td><td>9999-12-31</td></tr>
+      </table>
+    </div>
+
+    <h4>🎓 המושג המקצועי: Slowly Changing Dimensions (SCD)</h4>
+    <p>במחסן האנליטי משתמשים בטכניקה שנקראת <strong>SCD Type 2</strong>: כל שינוי יוצר <strong>שורה חדשה</strong> עם תאריכי תוקף. ככה אפשר לשאול שאלות כמו:</p>
+    <ul>
+      <li>"כמה מכרנו כשהמחיר היה 49.9?"</li>
+      <li>"איך העלאת המחיר השפיעה על הכמות?"</li>
+      <li>"מה היה המחיר הממוצע ב-2024 לעומת 2026?"</li>
+    </ul>
+
+    <div class="info insight">
+      <h4>💡 עוד דוגמאות לשינויים שנמחקים ב-OLTP</h4>
+      <ul style="padding-right:24px;margin-top:12px">
+        <li><strong>לקוח שעבר דירה:</strong> הכתובת הישנה נמחקת. ב-OLAP – שומרים גם אותה.</li>
+        <li><strong>מוצר ששינה קטגוריה:</strong> הקטגוריה הישנה אבודה. ב-OLAP – שתיהן נשמרות.</li>
+        <li><strong>לקוח ששינה סגמנט:</strong> מ"רגיל" ל"VIP". ב-OLAP – רואים מתי זה קרה.</li>
+        <li><strong>הזמנה שבוטלה:</strong> ב-OLTP לפעמים נמחקת. ב-OLAP – נשארת עם סטטוס "cancelled".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 4: OLTP -> ETL -> OLAP DIAGRAM -->
+<section class="section" id="block4">
+  <div class="section-head">
+    <span class="section-tag">בלוק 4 · תרשים הזרימה · 20 דקות</span>
+    <h2>איך זה נראה בפועל? תרשים אנכי</h2>
+    <p>מהמסד התפעולי, דרך ETL, למחסן האנליטי – עם פלטפורמות אמיתיות</p>
+  </div>
+
+  <div class="vertical-flow">
+    <!-- OLTP -->
+    <div class="vf-node green">
+      <div class="vf-title">🏪 OLTP – מסד נתונים תפעולי</div>
+      <div class="vf-subtitle">איפה שהעסק רץ בזמן אמת</div>
+      <div class="vf-content">
+        <p><strong>מה יש שם?</strong> טבלאות מנורמלות: <code>customers</code>, <code>products</code>, <code>orders</code>, <code>order_items</code>, <code>payments</code>, <code>inventory</code>, וכו׳.</p>
+        <p><strong>מי משתמש?</strong> האפליקציה עצמה (דרך הבק-אנד) – לקוחות שמזמינים, עובדים שמעדכנים מלאי, מערכות פנימיות.</p>
+        <p style="margin-top:16px"><strong>פלטפורמות נפוצות:</strong></p>
+        <div class="vf-vendors">
+          <div class="vf-vendor primary">PostgreSQL</div>
+          <div class="vf-vendor primary">SQL Server</div>
+          <div class="vf-vendor primary">MySQL</div>
+          <div class="vf-vendor primary">Oracle Database</div>
+          <div class="vf-vendor">Amazon RDS</div>
+          <div class="vf-vendor">Azure SQL</div>
+          <div class="vf-vendor">Google Cloud SQL</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vf-arrow">⬇️</div>
+
+    <!-- ETL -->
+    <div class="vf-node amber">
+      <div class="vf-title">🔄 ETL / ELT – תהליך ההעתקה</div>
+      <div class="vf-subtitle">Extract → Transform → Load (או Load → Transform)</div>
+      <div class="vf-content">
+        <p><strong>מה זה?</strong> תהליך אוטומטי שרץ בתדירות קבועה (לרוב בלילה, לפעמים כל שעה או כל דקה) ומעתיק נתונים מהמסד התפעולי למחסן האנליטי.</p>
+        <p><strong>שפה:</strong> רוב כלי ה-ETL כותבים <strong>SQL</strong> + <strong>Python</strong>. חלקם ויזואליים (drag & drop) וחלקם code-based.</p>
+        <p><strong>איך מריצים?</strong> מתזמן (scheduler) כמו <strong>Apache Airflow</strong>, <strong>Cloud Composer</strong>, <strong>Azure Data Factory</strong>, או cron פשוט.</p>
+        <p style="margin-top:16px"><strong>כלים נפוצים (נפרט בבלוק 7):</strong></p>
+        <div class="vf-vendors">
+          <div class="vf-vendor primary">Airbyte</div>
+          <div class="vf-vendor primary">Fivetran</div>
+          <div class="vf-vendor primary">dbt</div>
+          <div class="vf-vendor">Azure Data Factory</div>
+          <div class="vf-vendor">Apache Airflow</div>
+          <div class="vf-vendor">Informatica</div>
+          <div class="vf-vendor">Talend</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vf-arrow">⬇️</div>
+
+    <!-- OLAP -->
+    <div class="vf-node pink">
+      <div class="vf-title">🏛️ OLAP – מחסן נתונים אנליטי</div>
+      <div class="vf-subtitle">Data Warehouse – איפה שמנתחים</div>
+      <div class="vf-content">
+        <p><strong>מה יש שם?</strong> נתונים <strong>נקיים</strong>, <strong>מסודרים ב-Star Schema</strong>, עם <strong>היסטוריה מלאה</strong>. רק מה שהאנליסט צריך – בלי סיסמאות, בלי מידע רגיש.</p>
+        <p><strong>מי משתמש?</strong> אנליסטים (אתם!), Data Scientists, מנהלים דרך דשבורדים.</p>
+        <p><strong>מבנה:</strong> <strong>Columnar Storage</strong> (שומר לפי עמודות – מהיר מאוד לניתוח) + <strong>Massively Parallel Processing</strong> (מאות שרתים עובדים במקביל).</p>
+        <p style="margin-top:16px"><strong>פלטפורמות נפוצות:</strong></p>
+        <div class="vf-vendors">
+          <div class="vf-vendor primary">Google BigQuery</div>
+          <div class="vf-vendor primary">Snowflake</div>
+          <div class="vf-vendor primary">Amazon Redshift</div>
+          <div class="vf-vendor primary">Azure Synapse</div>
+          <div class="vf-vendor">Databricks</div>
+          <div class="vf-vendor">ClickHouse</div>
+          <div class="vf-vendor">Teradata</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vf-arrow">⬇️</div>
+
+    <!-- BI -->
+    <div class="vf-node purple">
+      <div class="vf-title">📊 BI Tools – דשבורדים ודוחות</div>
+      <div class="vf-subtitle">הכלים שמציגים את הנתונים למנהלים</div>
+      <div class="vf-content">
+        <p>האנליסט בונה דשבורדים ודוחות שמתחברים למחסן האנליטי. המנהלים והעובדים רואים גרפים, KPIs, וטבלאות.</p>
+        <p style="margin-top:16px"><strong>כלים נפוצים:</strong></p>
+        <div class="vf-vendors">
+          <div class="vf-vendor primary">Power BI</div>
+          <div class="vf-vendor primary">Looker Studio</div>
+          <div class="vf-vendor primary">Tableau</div>
+          <div class="vf-vendor">Looker</div>
+          <div class="vf-vendor">Qlik Sense</div>
+          <div class="vf-vendor">Metabase</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 5: ETL STEP BY STEP -->
+<section class="section" id="block5">
+  <div class="section-head">
+    <span class="section-tag">בלוק 5 · ETL שלב-שלב · 45 דקות</span>
+    <h2>ETL – שלושת השלבים בפירוט</h2>
+    <p>Extract, Transform, Load – מה קורה בכל שלב</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>📥 שלב 1: Extract (שליפה)</h3>
+    <p>מוציאים את הנתונים מהמקורות השונים. <strong>מאיפה?</strong> לא רק ממסד הנתונים!</p>
+
+    <div class="compare-grid">
+      <div class="compare-card a" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🗄️</div>
+        <h5>מסד הנתונים התפעולי</h5>
+        <p>המקור העיקרי – טבלאות של הזמנות, לקוחות, מוצרים</p>
+        <div class="compare-details">
+          <ul>
+            <li><strong>איך שולפים:</strong> שאילתות SELECT רגילות</li>
+            <li><strong>אתגר:</strong> לא להעמיס על OLTP בזמן עבודה</li>
+            <li><strong>פתרון:</strong> קוראים מ-replica (עותק קריאה) או בשעות הלילה</li>
+            <li><strong>דוגמה:</strong> כל לילה ב-3:00, Airbyte מתחבר ל-PostgreSQL ומושך את כל ההזמנות החדשות</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card b" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">📝</div>
+        <h5>קבצי לוג (Log Files)</h5>
+        <p>קבצים שהמערכת כותבת אוטומטית</p>
+        <div class="compare-details">
+          <ul>
+            <li><strong>מה זה לוג?</strong> קובץ טקסט שמתעד אירועים: "משתמש X נכנס", "שגיאה Y קרתה", "בקשה Z נשלחה"</li>
+            <li><strong>דוגמאות:</strong> <code>access.log</code> של nginx, <code>error.log</code>, <code>application.log</code></li>
+            <li><strong>למה צריך:</strong> ניתוח התנהגות משתמשים, זיהוי בעיות, מעקב ביצועים</li>
+            <li><strong>פורמט:</strong> JSON, CSV, או טקסט חופשי</li>
+            <li><strong>כלי:</strong> Fluentd, Logstash, CloudWatch Logs</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card c" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🔌</div>
+        <h5>APIs חיצוניים</h5>
+        <p>שירותים שהחברה משתמשת בהם</p>
+        <div class="compare-details">
+          <ul>
+            <li><strong>Stripe / PayPal:</strong> נתוני תשלומים, החזרות, עמלות</li>
+            <li><strong>Google Analytics:</strong> התנהגות גולשים באתר</li>
+            <li><strong>Facebook / Google Ads:</strong> ביצועי קמפיינים</li>
+            <li><strong>Zendesk / Intercom:</strong> פניות שירות לקוחות</li>
+            <li><strong>Salesforce / HubSpot:</strong> נתוני CRM</li>
+            <li><strong>איך:</strong> קריאות HTTP ל-API של כל שירות</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card d" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">📄</div>
+        <h5>קבצים ידניים</h5>
+        <p>CSV, Excel, Google Sheets</p>
+        <div class="compare-details">
+          <ul>
+            <li><strong>מתי:</strong> נתונים מספקים שלא מחוברים ב-API</li>
+            <li><strong>דוגמה:</strong> קובץ Excel חודשי מספק לוגיסטי עם עלויות משלוח</li>
+            <li><strong>אתגר:</strong> פורמטים משתנים, שגיאות ידניות, חוסר עקביות</li>
+            <li><strong>פתרון:</strong> אוטומציה ככל האפשר, validation, טמפלייטים קבועים</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h4>⏰ מתי מריצים Extract?</h4>
+
+    <div class="tbl">
+      <table>
+        <tr><th>תדירות</th><th>מתי משתמשים</th><th>דוגמה</th></tr>
+        <tr><td>🌙 Batch לילי</td><td>רוב הדוחות העסקיים</td><td>כל לילה ב-3:00 – ריצה חד-פעמית</td></tr>
+        <tr><td>⏱️ כל שעה/שעתיים</td><td>דוחות "די טריים"</td><td>דוח מלאי שמתעדכן כל שעתיים</td></tr>
+        <tr><td>⚡ Micro-batch</td><td>ניטור כמעט בזמן אמת</td><td>דוח הונאות בבנק – כל דקה</td></tr>
+        <tr><td>🚀 Streaming</td><td>Real-time אמיתי (יקר)</td><td>Uber: מיקום נהגים. בורסה: עסקאות</td></tr>
+      </table>
+    </div>
+
+    <div class="info insight">
+      <h4>💡 למה דווקא "בלילה"?</h4>
+      <p>זו <strong>מוסכמה מקובלת</strong> בחברות רבות – אבל לא חובה. הסיבה: בשעות 2-4 לפנות בוקר יש פחות עומס על המערכת, פחות לקוחות פעילים, ופחות סיכון לפגוע בביצועים. אבל חברות גלובליות (עם לקוחות בכל אזורי הזמן) מריצות בתדירות גבוהה יותר – או משתמשות ב-streaming.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🧹 שלב 2: Transform (ניקוי והמרה)</h3>
+    <p>הופכים את הנתונים הגולמיים ל<strong>נתונים נקיים, עקביים, ושימושיים</strong>. זה השלב הכי חשוב – וגם הכי ארוך (70-80% מזמן הפרויקט).</p>
+
+    <h4>🎬 דוגמה אמיתית: ניקוי טבלת לקוחות</h4>
+
+    <div class="db-table">
+      <div class="db-table-head">🗄️ לפני Transform – ב-OLTP <small>נתונים גולמיים</small></div>
+      <table>
+        <tr><th>id</th><th>name</th><th>email</th><th>country</th><th>signup_date</th><th>phone</th></tr>
+        <tr><td class="pk">1</td><td>Yossi Cohen</td><td>yossi@example.com</td><td>IL</td><td>2024/03/15</td><td>050-1234567</td></tr>
+        <tr><td class="pk">2</td><td style="background:#fee2e2;color:var(--red)">NULL</td><td>moshe@mail.com</td><td>israel</td><td>15-03-2024</td><td>+972501234567</td></tr>
+        <tr><td class="pk">3</td><td>Rina Levi</td><td style="background:#fee2e2;color:var(--red)">NULL</td><td>Israel</td><td>2024-03-16</td><td style="background:#fee2e2;color:var(--red)">NULL</td></tr>
+        <tr><td class="pk">4</td><td style="background:#fef3c7">  david azoulay  </td><td style="background:#fef3c7">DAVID@GMAIL.COM</td><td>IL</td><td style="background:#fef3c7">16/03/2024</td><td>050 9876543</td></tr>
+        <tr><td class="pk">5</td><td style="background:#fee2e2;color:var(--red)">test user</td><td>test@test.com</td><td>USA</td><td>2024-03-17</td><td>555-1234</td></tr>
+      </table>
+    </div>
+
+    <p><strong>מה לא בסדר?</strong></p>
+    <ul>
+      <li>שמות עם רווחים מיותרים (<code>"  david azoulay  "</code>)</li>
+      <li>אימיילים באותיות גדולות (לא עקבי)</li>
+      <li>מדינות בפורמטים שונים: <code>IL</code>, <code>israel</code>, <code>Israel</code></li>
+      <li>תאריכים ב-3 פורמטים שונים לגמרי!</li>
+      <li>טלפונים בפורמטים שונים</li>
+      <li>ערכי NULL במקומות שונים</li>
+      <li>משתמש "test" שלא צריך להיכנס לדוחות</li>
+    </ul>
+
+    <div class="db-table">
+      <div class="db-table-head">✨ אחרי Transform – ב-OLAP <small>נתונים נקיים</small></div>
+      <table>
+        <tr><th>customer_id</th><th>full_name</th><th>email</th><th>country_code</th><th>country_name</th><th>signup_date</th><th>phone_e164</th><th>is_valid</th></tr>
+        <tr><td class="pk">1</td><td>Yossi Cohen</td><td>yossi@example.com</td><td>IL</td><td>Israel</td><td>2024-03-15</td><td>+972501234567</td><td style="background:#d1fae5;font-weight:700">true</td></tr>
+        <tr><td class="pk">2</td><td style="background:#d1fae5">Unknown</td><td>moshe@mail.com</td><td style="background:#d1fae5">IL</td><td>Israel</td><td style="background:#d1fae5">2024-03-15</td><td>+972501234567</td><td style="background:#d1fae5;font-weight:700">true</td></tr>
+        <tr><td class="pk">3</td><td>Rina Levi</td><td style="background:#fee2e2">NULL</td><td style="background:#d1fae5">IL</td><td style="background:#d1fae5">Israel</td><td>2024-03-16</td><td style="background:#fee2e2">NULL</td><td style="background:#d1fae5;font-weight:700">true</td></tr>
+        <tr><td class="pk">4</td><td style="background:#d1fae5">David Azoulay</td><td style="background:#d1fae5">david@gmail.com</td><td>IL</td><td>Israel</td><td style="background:#d1fae5">2024-03-16</td><td style="background:#d1fae5">+972509876543</td><td style="background:#d1fae5;font-weight:700">true</td></tr>
+        <tr><td colspan="8" style="background:#fee2e2;color:var(--red);text-align:center;font-weight:800">❌ שורה 5 סוננה – משתמש test</td></tr>
+      </table>
+    </div>
+
+    <h4>🛠️ סוגי Transformations נפוצים</h4>
+
+    <div class="compare-grid">
+      <div class="compare-card a" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🧼</div>
+        <h5>ניקוי (Cleaning)</h5>
+        <p>הסרת רווחים, תיקון פורמטים, טיפול ב-NULL</p>
+        <div class="compare-details">
+          <ul>
+            <li><code>TRIM()</code> – הסרת רווחים מיותרים</li>
+            <li><code>LOWER()</code> – המרה לאותיות קטנות</li>
+            <li><code>COALESCE(a, b)</code> – אם a הוא NULL, החזר b</li>
+            <li><code>REPLACE()</code> – החלפת תווים</li>
+            <li><code>REGEXP_REPLACE()</code> – החלפה עם ביטויים רגולריים</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card b" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🔄</div>
+        <h5>המרה (Conversion)</h5>
+        <p>האחדת פורמטים, המרת יחידות</p>
+        <div class="compare-details">
+          <ul>
+            <li>תאריכים: מ-"15/03/2024" ל-"2024-03-15"</li>
+            <li>מטבעות: המרת $, €, ₪ למטבע אחיד (לפי שער)</li>
+            <li>טלפונים: לפורמט E.164 בינלאומי (<code>+972...</code>)</li>
+            <li>מדינות: מ-"israel", "IL" ל-"Israel" אחיד</li>
+            <li>ערכים בוליאניים: מ-"yes/no" ל-<code>true/false</code></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card c" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🧮</div>
+        <h5>חישוב (Calculation)</h5>
+        <p>יצירת שדות חדשים מנתונים קיימים</p>
+        <div class="compare-details">
+          <ul>
+            <li><code>age = CURRENT_DATE - birth_date</code></li>
+            <li><code>revenue = quantity × price</code></li>
+            <li><code>customer_lifetime_value</code> = סכום כל הקניות</li>
+            <li><code>days_since_signup</code> = היום - signup_date</li>
+            <li><code>profit_margin</code> = (price - cost) / price</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card d" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🎯</div>
+        <h5>סינון והעשרה</h5>
+        <p>הסרת רעש, הוספת מידע חיצוני</p>
+        <div class="compare-details">
+          <ul>
+            <li>סינון משתמשי test, בוטים, ספאם</li>
+            <li>העשרה: geo-data לפי IP (דרך MaxMind)</li>
+            <li>הוספת demographic data מ-API חיצוני</li>
+            <li>דגלול: סימון VIP, churn risk, fraud risk</li>
+            <li>הסרת PII (מידע אישי מזהה) ל-GDPR</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="info warn">
+      <h4>⚠️ כלל אצבע חשוב</h4>
+      <p><strong>70-80% מזמן הפרויקט</strong> של Data Engineer מוקדש לשלב ה-Transform. זה החלק הכי חשוב – כי "garbage in, garbage out". אם הנתונים לא נקיים – כל הדוחות, הדשבורדים, ומודלי ה-AI שבנויים עליהם יהיו שגויים.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>📤 שלב 3: Load (טעינה)</h3>
+    <p>כותבים את הנתונים הנקיים למחסן האנליטי. יש שתי גישות עיקריות – <strong>ושניהן כתובות ב-SQL</strong>:</p>
+
+    <div class="compare-grid">
+      <div class="compare-card a" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🆕</div>
+        <h5>Full Load (טעינה מלאה)</h5>
+        <p>מוחקים את כל הטבלה וטוענים מחדש</p>
+        <div class="compare-details">
+          <h5 style="font-size:20px;margin:12px 0">איך זה עובד?</h5>
+          <div class="code-block" data-lang="SQL" style="margin:12px 0">
+<span class="comment">-- שלב 1: מוחקים הכל</span>
+<span class="kw">TRUNCATE TABLE</span> <span class="tbl">dim_customers</span>;
+
+<span class="comment">-- שלב 2: טוענים מחדש</span>
+<span class="kw">INSERT INTO</span> <span class="tbl">dim_customers</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> staging_customers;
+          </div>
+          <h5 style="font-size:20px;margin:16px 0 8px">למה עושים את זה?</h5>
+          <ul style="padding-right:20px;font-size:18px">
+            <li>פשוט מאוד – אין צורך לעקוב אחרי שינויים</li>
+            <li>מבטיח עקביות מוחלטת</li>
+            <li>מתאים לטבלאות קטנות (lookup tables)</li>
+          </ul>
+          <h5 style="font-size:20px;margin:16px 0 8px">חיסרון:</h5>
+          <p style="font-size:18px">איטי מאוד על טבלאות גדולות. לא מתאים לטבלאות עם מיליוני שורות.</p>
+        </div>
+      </div>
+
+      <div class="compare-card b" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">📈</div>
+        <h5>Incremental Load (מצטבר)</h5>
+        <p>טוענים רק מה שהשתנה מאז הפעם האחרונה</p>
+        <div class="compare-details">
+          <h5 style="font-size:20px;margin:12px 0">איך זה עובד?</h5>
+          <div class="code-block" data-lang="SQL" style="margin:12px 0">
+<span class="comment">-- טוענים רק שורות שהשתנו מאז הריצה הקודמת</span>
+<span class="kw">INSERT INTO</span> <span class="tbl">fact_sales</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> staging_sales
+<span class="kw">WHERE</span> updated_at > <span class="str">'2026-06-19 03:00:00'</span>;
+          </div>
+          <h5 style="font-size:20px;margin:16px 0 8px">למה עושים את זה?</h5>
+          <ul style="padding-right:20px;font-size:18px">
+            <li>מהיר מאוד – רק השינויים</li>
+            <li>חוסך משאבים (CPU, רשת, כסף)</li>
+            <li>מתאים לטבלאות גדולות (orders, events)</li>
+          </ul>
+          <h5 style="font-size:20px;margin:16px 0 8px">אתגר:</h5>
+          <p style="font-size:18px">צריך לנהל state – לזכור מתי הייתה הריצה האחרונה. הכלי (Airbyte, Fivetran) עושה את זה אוטומטית.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info insight">
+      <h4>💡 איך זה נראה בפועל?</h4>
+      <p><strong>טבלאות dimensions קטנות</strong> (כמו <code>dim_products</code> עם 10,000 מוצרים) – בדרך כלל Full Load לילי.<br>
+      <strong>טבלאות facts גדולות</strong> (כמו <code>fact_sales</code> עם מיליארדי שורות) – Incremental Load, כל שעה או לילה.<br>
+      <strong>השפה:</strong> SQL רגיל. <strong>הפלטפורמה:</strong> תלוי במחסן – BigQuery, Snowflake, Redshift, וכו׳.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 6: ETL vs ELT -->
+<section class="section" id="block6">
+  <div class="section-head">
+    <span class="section-tag">בלוק 6 · ETL vs ELT · 30 דקות</span>
+    <h2>ETL מול ELT – שתי גישות שונות</h2>
+    <p>איפה קורה ה-Transform – בדרך או בתוך המחסן?</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🎬 השוואה ויזואלית – אנכית</h3>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:32px 0">
+      <!-- ETL -->
+      <div>
+        <h4 style="text-align:center;font-size:28px;margin-bottom:24px;color:#d97706">🏭 ETL מסורתי</h4>
+
+        <div class="vertical-flow">
+          <div class="vf-node green" style="padding:20px">
+            <div class="vf-title" style="font-size:20px">🗄️ Extract</div>
+            <div class="vf-content" style="font-size:17px">שליפה מהמקורות</div>
+          </div>
+          <div class="vf-arrow">⬇️</div>
+          <div class="vf-node amber" style="padding:20px;border-width:6px">
+            <div class="vf-title" style="font-size:20px">🧹 Transform</div>
+            <div class="vf-content" style="font-size:17px">
+              <strong>בשרת ETL נפרד</strong><br>
+              שפה: Python / Java / Scala<br>
+              כלי: Informatica, Talend
+            </div>
+          </div>
+          <div class="vf-arrow">⬇️</div>
+          <div class="vf-node pink" style="padding:20px">
+            <div class="vf-title" style="font-size:20px">📤 Load</div>
+            <div class="vf-content" style="font-size:17px">טעינה למחסן (נתונים נקיים)</div>
+          </div>
+        </div>
+
+        <div class="info" style="margin-top:24px">
+          <h4 style="font-size:20px">📌 מתי מתאים?</h4>
+          <ul style="padding-right:20px;font-size:17px">
+            <li>On-premises, מערכות ותיקות</li>
+            <li>כשהמחסן חלש ולא יכול לעבד</li>
+            <li>רגולציה שמחייבת ניקוי לפני הטעינה</li>
+            <li><strong>דוגמאות:</strong> בנקים, משרדי ממשלה, חברות ביטוח ותיקות</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ELT -->
+      <div>
+        <h4 style="text-align:center;font-size:28px;margin-bottom:24px;color:#9d174d">⚡ ELT מודרני (הסטנדרט)</h4>
+
+        <div class="vertical-flow">
+          <div class="vf-node green" style="padding:20px">
+            <div class="vf-title" style="font-size:20px">🗄️ Extract</div>
+            <div class="vf-content" style="font-size:17px">שליפה מהמקורות</div>
+          </div>
+          <div class="vf-arrow">⬇️</div>
+          <div class="vf-node pink" style="padding:20px;border-width:6px">
+            <div class="vf-title" style="font-size:20px">📤 Load (גולמי!)</div>
+            <div class="vf-content" style="font-size:17px">
+              <strong>טוענים כמו שהוא</strong><br>
+              לטבלאות staging<br>
+              כלי: Fivetran, Airbyte
+            </div>
+          </div>
+          <div class="vf-arrow">⬇️</div>
+          <div class="vf-node purple" style="padding:20px;border-width:6px">
+            <div class="vf-title" style="font-size:20px">🧹 Transform</div>
+            <div class="vf-content" style="font-size:17px">
+              <strong>בתוך המחסן עצמו!</strong><br>
+              שפה: SQL (בעיקר)<br>
+              כלי: dbt, Dataform
+            </div>
+          </div>
+        </div>
+
+        <div class="info" style="margin-top:24px">
+          <h4 style="font-size:20px">📌 מתי מתאים?</h4>
+          <ul style="padding-right:20px;font-size:17px">
+            <li>ענן – מחסנים חזקים (BigQuery, Snowflake)</li>
+            <li>סטארטאפים וחברות הייטק</li>
+            <li>גמישות – קל לשנות טרנספורמציות</li>
+            <li><strong>דוגמאות:</strong> Wix, Monday, Fiverr, חברות סייבר</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>📊 טבלת השוואה</h3>
+
+    <div class="tbl">
+      <table>
+        <tr><th>מאפיין</th><th>ETL מסורתי</th><th>ELT מודרני</th></tr>
+        <tr><td>סדר הפעולות</td><td>Extract → Transform → Load</td><td>Extract → Load → Transform</td></tr>
+        <tr><td>איפה ה-Transform</td><td>שרת ETL נפרד</td><td>בתוך המחסן עצמו</td></tr>
+        <tr><td>שפה עיקרית</td><td>Python / Java / Scala</td><td>SQL (+ Python לתרחישים מורכבים)</td></tr>
+        <tr><td>כלים נפוצים</td><td>Informatica, Talend, SSIS</td><td>Fivetran + dbt, Airbyte + dbt</td></tr>
+        <tr><td>מתי נולד?</td><td>שנות ה-90</td><td>שנות ה-2010 (עם הענן)</td></tr>
+        <tr><td>עלות</td><td>יקר (רישוי + שרתים)</td><td>זול יותר (משלמים לפי שימוש)</td></tr>
+        <tr><td>גמישות</td><td>מוגבלת</td><td>גבוהה מאוד</td></tr>
+        <tr><td>מי משתמש?</td><td>ארגונים ותיקים</td><td>סטארטאפים וחברות ענן</td></tr>
+      </table>
+    </div>
+
+    <div class="info insight">
+      <h4>💡 למה ELT ניצח?</h4>
+      <p>מחסני הענן המודרניים (BigQuery, Snowflake) הם <strong>חזקים מאוד</strong> – מאות שרתים שעובדים במקביל. אין סיבה להעביר נתונים לשרת נפרד רק כדי לנקות אותם. עדיף לטעון אותם גולמיים ולעשות את כל הניקוי <strong>בתוך המחסן</strong> – עם SQL פשוט.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 7: ETL TOOLS -->
+<section class="section" id="block7">
+  <div class="section-head">
+    <span class="section-tag">בלוק 7 · כלי ETL · 30 דקות</span>
+    <h2>כלי ETL נפוצים בשוק</h2>
+    <p>חשוב להבין: הכלים האלה <strong>לא כוללים את האחסון</strong> – הם רק מעבירים נתונים</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🎯 הבחנה חשובה</h3>
+    <div class="info important">
+      <h4>⚠️ כלי ETL ≠ מחסן נתונים</h4>
+      <p><strong>כלי ETL</strong> (Airbyte, Fivetran, dbt, Airflow) הם רק <strong>הצינור</strong> שמעביר נתונים. הם לא שומרים את הנתונים בעצמם.<br>
+      <strong>מחסן הנתונים</strong> (BigQuery, Snowflake, Redshift) הוא <strong>המקום</strong> שבו הנתונים מאוחסנים בסוף התהליך.</p>
+      <p style="margin-top:12px"><strong>אנלוגיה:</strong> כלי ETL הוא כמו <strong>משאית הובלה</strong>. המחסן הוא כמו <strong>המחסן עצמו</strong>. המשאית לא שומרת סחורה – היא רק מעבירה אותה.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🛠️ ארבע קטגוריות של כלים</h3>
+
+    <div class="vendor-grid">
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#ff6b6b">🔷</div>
+        <h5>Airbyte</h5>
+        <p>קוד פתוח. Extract + Load בלבד (EL).</p>
+        <span class="vendor-tag" style="background:#ff6b6b">Open Source · EL</span>
+        <div class="vendor-meta">
+          <strong>מה עושה:</strong> מושך נתונים מ-300+ מקורות וטוען למחסן.<br>
+          <strong>שפה:</strong> Connectors כתובים ב-Python / Java.<br>
+          <strong>עלות:</strong> חינמי (self-hosted) או $2.50/credit בענן.<br>
+          <strong>מי:</strong> סטארטאפים, חברות בינוניות.<br>
+          <strong>איפה מאחסן:</strong> במחסן שלך (BigQuery, Snowflake, PostgreSQL).
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#0052cc">🎯</div>
+        <h5>Fivetran</h5>
+        <p>SaaS מנוהל. Extract + Load אוטומטי.</p>
+        <span class="vendor-tag" style="background:#0052cc">Managed SaaS · EL</span>
+        <div class="vendor-meta">
+          <strong>מה עושה:</strong> EL אוטומטי לגמרי. 300+ connectors.<br>
+          <strong>שפה:</strong> לא כותבים קוד – הכל configuration.<br>
+          <strong>עלות:</strong> יקר – לפי שורות (MAR). אלפי $ לחודש.<br>
+          <strong>מי:</strong> חברות שמוכנות לשלם כדי לחסוף זמן הנדסי.<br>
+          <strong>איפה מאחסן:</strong> במחסן שלך.
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#ff69b4">🎵</div>
+        <h5>dbt (Data Build Tool)</h5>
+        <p>הסטנדרט ל-Transform בתוך המחסן.</p>
+        <span class="vendor-tag" style="background:#ff69b4">Transform · T</span>
+        <div class="vendor-meta">
+          <strong>מה עושה:</strong> רק את ה-T – טרנספורמציות בתוך המחסן.<br>
+          <strong>שפה:</strong> SQL + Jinja (templating).<br>
+          <strong>עלות:</strong> dbt Core חינמי (open-source). dbt Cloud בתשלום.<br>
+          <strong>מי:</strong> כמעט כל חברה מודרנית עם מחסן.<br>
+          <strong>איפה רץ:</strong> בתוך BigQuery / Snowflake / Redshift.
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#4285f4">☁️</div>
+        <h5>Apache Airflow</h5>
+        <p>מתזמן (orchestrator). מנהל מתי כל pipeline רץ.</p>
+        <span class="vendor-tag" style="background:#4285f4">Orchestration</span>
+        <div class="vendor-meta">
+          <strong>מה עושה:</strong> מתזמן ומנהל pipelines – "תריץ את Airbyte ב-2:00, את dbt ב-3:00".<br>
+          <strong>שפה:</strong> Python (כותבים DAGs).<br>
+          <strong>עלות:</strong> חינמי (open-source).<br>
+          <strong>ורסיה מנוהלת:</strong> Google Cloud Composer, Astronomer.<br>
+          <strong>מי:</strong> חברות עם pipelines מורכבים.
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#0078d4">🏗️</div>
+        <h5>Azure Data Factory</h5>
+        <p>של מיקרוסופט. ETL ויזואלי + orchestrator.</p>
+        <span class="vendor-tag" style="background:#0078d4">Microsoft · ETL מלא</span>
+        <div class="vendor-meta">
+          <strong>מה עושה:</strong> ETL/ELT מלא עם visual designer.<br>
+          <strong>שפה:</strong> GUI + SQL + Python (Data Flows).<br>
+          <strong>עלות:</strong> לפי שימוש – זול יחסית.<br>
+          <strong>אינטגרציה:</strong> מושלמת עם Azure, Synapse, Power BI.<br>
+          <strong>מי בישראל:</strong> בנקים, חברות ביטוח, משרדי ממשלה.
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#e25a2b">🔥</div>
+        <h5>Informatica / Talend</h5>
+        <p>כלי enterprise ותיקים. יקרים וחזקים.</p>
+        <span class="vendor-tag" style="background:#e25a2b">Enterprise · ETL מלא</span>
+        <div class="vendor-meta">
+          <strong>מה עושה:</strong> ETL מלא עם המון פיצ'רים – governance, lineage, quality.<br>
+          <strong>שפה:</strong> GUI + scripting.<br>
+          <strong>עלות:</strong> יקר מאוד (מאות אלפי $ לשנה).<br>
+          <strong>מי:</strong> בנקים גדולים, חברות Fortune 500 עם legacy.<br>
+          <strong>טרנד:</strong> רבים עוברים לכלים מודרניים (Fivetran + dbt).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🎬 Stack נפוץ בסטארטאפ ישראלי (2026)</h3>
+
+    <div class="vertical-flow">
+      <div class="vf-node green">
+        <div class="vf-title">🗄️ מקורות</div>
+        <div class="vf-content">
+          PostgreSQL (המסד התפעולי) + Google Analytics + Stripe + קבצי CSV מהספק
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️</div>
+
+      <div class="vf-node amber">
+        <div class="vf-title">🔷 Airbyte – Extract + Load</div>
+        <div class="vf-content">
+          מושך מכל המקורות כל שעה. טוען לטבלאות staging ב-BigQuery.
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️</div>
+
+      <div class="vf-node purple">
+        <div class="vf-title">🎵 dbt – Transform</div>
+        <div class="vf-content">
+          מריץ SQL שמנקה, ממיר, ומסדר את הנתונים ב-Star Schema.
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️</div>
+
+      <div class="vf-node pink">
+        <div class="vf-title">📊 BigQuery – המחסן</div>
+        <div class="vf-content">
+          שומר את הנתונים המוכנים לניתוח.
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️</div>
+
+      <div class="vf-node blue">
+        <div class="vf-title">📈 Looker Studio / Power BI</div>
+        <div class="vf-content">
+          מציג דשבורדים למנהלים.
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️</div>
+
+      <div class="vf-node" style="border-color:#64748b">
+        <div class="vf-title">⏰ Cloud Composer (Airflow)</div>
+        <div class="vf-content">
+          מתזמן את כל התהליך: Airbyte → dbt → בדיקות quality.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 8: STAR SCHEMA -->
+<section class="section" id="block8">
+  <div class="section-head">
+    <span class="section-tag">בלוק 8 · Star Schema · 30 דקות</span>
+    <h2>Star Schema – איך הנתונים מסודרים במחסן</h2>
+    <p>צורת הכוכב – לחצו על כל חלק להסבר מפורט</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>⭐ הרעיון המרכזי</h3>
+    <p>במחסן האנליטי, הנתונים מסודרים בצורת <strong>כוכב</strong>:</p>
+    <ul>
+      <li><strong>במרכז:</strong> טבלת <strong>facts</strong> – האירועים עם המספרים (מכירות, clicks, לוגים)</li>
+      <li><strong>מסביב:</strong> טבלאות <strong>dimensions</strong> – התיאורים (מוצר, לקוח, תאריך, מיקום)</li>
+    </ul>
+    <p>כל dimension מחוברת ל-fact דרך מפתח זר. התוצאה: JOIN פשוט ומהיר לכל שאלה עסקית.</p>
+  </div>
+
+  <div class="star-schema-interactive">
+    <!-- Center: Fact -->
+    <div class="star-center" onclick="this.nextElementSibling.querySelectorAll('.star-dim')[0]?.classList.toggle('selected')">
+      <h4>⭐ fact_sales – טבלת העובדות</h4>
+      <p>בלחיצה על כל dimension למטה תראו איך היא מתחברת לכאן</p>
+    </div>
+
+    <div class="db-table" style="margin-top:24px">
+      <div class="db-table-head">📊 fact_sales <small>טבלת facts – במרכז הכוכב</small></div>
+      <table>
+        <tr><th>sale_id</th><th>date_key (FK)</th><th>product_key (FK)</th><th>customer_key (FK)</th><th>geo_key (FK)</th><th>quantity</th><th>revenue</th></tr>
+        <tr><td class="pk">1001</td><td class="fk">20260620</td><td class="fk">P007</td><td class="fk">C042</td><td class="fk">G001</td><td>2</td><td>99.8</td></tr>
+        <tr><td class="pk">1002</td><td class="fk">20260620</td><td class="fk">P015</td><td class="fk">C043</td><td class="fk">G002</td><td>1</td><td>149.0</td></tr>
+        <tr><td class="pk">1003</td><td class="fk">20260621</td><td class="fk">P007</td><td class="fk">C042</td><td class="fk">G001</td><td>1</td><td>49.9</td></tr>
+      </table>
+    </div>
+
+    <h4 style="text-align:center;font-size:26px;margin:40px 0 24px">🔗 Dimensions – לחצו על כל אחת</h4>
+
+    <div class="star-dims">
+      <div class="star-dim" onclick="this.classList.toggle('selected')">
+        <h5>📅 dim_date</h5>
+        <p>טבלת תאריכים – כל יום עם כל המאפיינים שלו</p>
+        <div class="star-dim-details">
+          <p><strong>מה יש בה?</strong> שורה לכל יום, עם: <code>date_key</code>, <code>full_date</code>, <code>day_of_week</code>, <code>month</code>, <code>quarter</code>, <code>year</code>, <code>is_holiday</code>, <code>is_weekend</code>.</p>
+          <p style="margin-top:12px"><strong>למה נפרדת?</strong> כדי שלא נצטרך לחשב כל פעם "איזה יום בשבוע זה היה" – הכל מוכן מראש.</p>
+          <p style="margin-top:12px"><strong>שאלה שהיא מאפשרת:</strong> "האם יש הבדל במכירות בין סופ"ש לאמצע השבוע?"</p>
+        </div>
+      </div>
+
+      <div class="star-dim" onclick="this.classList.toggle('selected')">
+        <h5>📦 dim_product</h5>
+        <p>טבלת מוצרים – כל מוצר עם הפרטים שלו</p>
+        <div class="star-dim-details">
+          <p><strong>מה יש בה?</strong> <code>product_key</code>, <code>product_name</code>, <code>category</code>, <code>subcategory</code>, <code>brand</code>, <code>cost</code>, <code>current_price</code>.</p>
+          <p style="margin-top:12px"><strong>SCD Type 2:</strong> אם מוצר שינה קטגוריה – תהיה שורה חדשה עם תאריכי תוקף.</p>
+          <p style="margin-top:12px"><strong>שאלה שהיא מאפשרת:</strong> "איזו קטגוריה הכי רווחית?"</p>
+        </div>
+      </div>
+
+      <div class="star-dim" onclick="this.classList.toggle('selected')">
+        <h5>👤 dim_customer</h5>
+        <p>טבלת לקוחות – כל לקוח עם הפרטים שלו</p>
+        <div class="star-dim-details">
+          <p><strong>מה יש בה?</strong> <code>customer_key</code>, <code>full_name</code>, <code>email</code>, <code>age</code>, <code>gender</code>, <code>segment</code>, <code>signup_date</code>.</p>
+          <p style="margin-top:12px"><strong>חשוב:</strong> <strong>בלי</strong> סיסמאות, בלי כרטיסי אשראי – רק מה שהאנליסט צריך.</p>
+          <p style="margin-top:12px"><strong>שאלה שהיא מאפשרת:</strong> "איזה סגמנט לקוחות קונה הכי הרבה?"</p>
+        </div>
+      </div>
+
+      <div class="star-dim" onclick="this.classList.toggle('selected')">
+        <h5>🌍 dim_geography</h5>
+        <p>טבלת מיקומים – ערים, מדינות, אזורים</p>
+        <div class="star-dim-details">
+          <p><strong>מה יש בה?</strong> <code>geo_key</code>, <code>city</code>, <code>state</code>, <code>country</code>, <code>region</code>, <code>population</code>.</p>
+          <p style="margin-top:12px"><strong>למה נפרדת?</strong> כדי שנוכל לנתח לפי רמות שונות: עיר, מדינה, יבשת.</p>
+          <p style="margin-top:12px"><strong>שאלה שהיא מאפשרת:</strong> "באיזה אזורים המכירות צומחות?"</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🎯 דוגמה: שאילתה על Star Schema</h3>
+    <p>"מה סך המכירות בכל קטגוריה, לפי רבעון?"</p>
+
+    <div class="code-block" data-lang="SQL">
+<span class="kw">SELECT</span>
+  d.quarter,
+  p.category,
+  <span class="fn">SUM</span>(f.revenue) <span class="kw">AS</span> total_revenue,
+  <span class="fn">COUNT</span>(*) <span class="kw">AS</span> num_sales
+<span class="kw">FROM</span> <span class="tbl">fact_sales</span> f
+<span class="kw">JOIN</span> <span class="tbl">dim_date</span> d <span class="kw">ON</span> f.date_key = d.date_key
+<span class="kw">JOIN</span> <span class="tbl">dim_product</span> p <span class="kw">ON</span> f.product_key = p.product_key
+<span class="kw">WHERE</span> d.year = <span class="num">2026</span>
+<span class="kw">GROUP BY</span> d.quarter, p.category
+<span class="kw">ORDER BY</span> d.quarter, total_revenue <span class="kw">DESC</span>;
+    </div>
+
+    <div class="info tip">
+      <h4>✨ למה זה כל כך יעיל?</h4>
+      <p><strong>3 JOINs פשוטים</strong> בין טבלאות רחבות. אין צורך ב-JOINs מורכבים בין 10 טבלאות כמו ב-OLTP. המחסן האנליטי (BigQuery/Snowflake) גם שומר את הנתונים ב<strong>Columnar Storage</strong> – כל עמודה בנפרד – מה שמאפשר לו לסרוק רק את העמודות הרלוונטיות ולסיים את השאילתה בשניות, גם על מיליארדי שורות.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🆚 השוואה: OLTP מול Star Schema</h3>
+
+    <div class="tbl">
+      <table>
+        <tr><th>מאפיין</th><th>OLTP (תפעולי)</th><th>Star Schema (אנליטי)</th></tr>
+        <tr><td>מספר טבלאות</td><td>הרבה (עשרות-מאות)</td><td>מעט (fact אחת + 4-8 dims)</td></tr>
+        <tr><td>גודל טבלאות</td><td>קטנות וממוקדות</td><td>fact ענקית, dims בינוניות</td></tr>
+        <tr><td>נורמליזציה</td><td>גבוהה (3NF)</td><td>נמוכה (denormalized)</td></tr>
+        <tr><td>כיוונון</td><td>לכתיבה מהירה</td><td>לקריאה מהירה</td></tr>
+        <tr><td>Storage</td><td>Row-based</td><td>Columnar</td></tr>
+        <tr><td>JOINs טיפוסיים</td><td>5-10 טבלאות</td><td>1-3 טבלאות</td></tr>
+        <tr><td>מטרה</td><td>להריץ את העסק</td><td>לענות על שאלות עסקיות</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 9: SUMMARY -->
+<section class="section" id="block9">
+  <div class="section-head">
+    <span class="section-tag">בלוק 9 · סיכום · 15 דקות</span>
+    <h2>סיכום חלק ב׳-1</h2>
+    <p>ארבע התחנות שכיסו – לחצו על כל אחת לרענון</p>
+  </div>
+
+  <div class="journey-vertical">
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">1</div>
+      <div class="journey-body">
+        <h5>🏪 OLTP – מסד תפעולי</h5>
+        <p>PostgreSQL / SQL Server / MySQL / Oracle</p>
+        <div class="journey-details">
+          <p><strong>מטרה:</strong> להריץ את העסק בזמן אמת – לקלוט הזמנות, לעדכן מלאי, לטפל בתשלומים.</p>
+          <p><strong>מבנה:</strong> הרבה טבלאות קטנות (נורמליזציה), Row-Based Storage, אינדקסים, טרנזקציות ACID.</p>
+          <p><strong>למה לא לנתח שם:</strong> (1) שאילתות כבדות מאטות לקוחות אמיתיים, (2) סיכוני אבטחה, (3) מבנה לא מותאם לניתוח, (4) אין היסטוריה.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">2</div>
+      <div class="journey-body">
+        <h5>🔄 ETL / ELT – תהליך ההעתקה</h5>
+        <p>Airbyte, Fivetran, dbt, Airflow, Azure Data Factory</p>
+        <div class="journey-details">
+          <p><strong>ETL מסורתי:</strong> Extract → Transform (בשרת נפרד) → Load. לארגונים ותיקים.</p>
+          <p><strong>ELT מודרני:</strong> Extract → Load (גולמי!) → Transform (בתוך המחסן). הסטנדרט כיום.</p>
+          <p><strong>שפות:</strong> SQL ו-Python בעיקר.</p>
+          <p><strong>חשוב:</strong> הכלים האלה הם רק הצינור – לא האחסון עצמו.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">3</div>
+      <div class="journey-body">
+        <h5>🏛️ OLAP – מחסן נתונים אנליטי</h5>
+        <p>BigQuery / Snowflake / Redshift / Synapse / Databricks</p>
+        <div class="journey-details">
+          <p><strong>מטרה:</strong> לענות על שאלות עסקיות – דוחות, KPIs, מחקר.</p>
+          <p><strong>מבנה:</strong> Columnar Storage + Massively Parallel Processing (MPP).</p>
+          <p><strong>מי משתמש:</strong> אנליסטים (אתם!), Data Scientists, מנהלים דרך דשבורדים.</p>
+          <p><strong>איפה יושב:</strong> כמעט תמיד בענן.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">4</div>
+      <div class="journey-body">
+        <h5>⭐ Star Schema – סידור הנתונים</h5>
+        <p>Fact table במרכז, Dimensions מסביב</p>
+        <div class="journey-details">
+          <p><strong>Fact table:</strong> האירועים עם המספרים (מכירות, clicks, לוגים).</p>
+          <p><strong>Dimensions:</strong> התיאורים – תאריך, מוצר, לקוח, מיקום.</p>
+          <p><strong>למה זה טוב:</strong> JOIN פשוט ומהיר לכל שאלה עסקית.</p>
+          <p><strong>SCD Type 2:</strong> שומר היסטוריה של שינויים עם תאריכי תוקף.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <span class="takeaway-label">🎯 השורה התחתונה של חלק ב׳-1</span>
+    <h3>OLTP בנוי להרצת העסק – לא לניתוח. לכן מעתיקים את הנתונים דרך ETL/ELT למחסן אנליטי (OLAP), שם הם מסודרים ב-Star Schema ומוכנים לדשבורדים, מחקר, ו-AI.</h3>
+  </div>
+
+  <div class="next">
+    <div class="next-num">ב2</div>
+    <div class="next-body">
+      <small>בחלק הבא</small>
+      <h4>חלק ב׳-2: מי מריץ SQL, איך זה מתחבר לפרונט-אנד, ודשבורדים</h4>
+      <p>נבין את השרשרת המלאה: מי באמת מריץ SQL? איך הבק-אנד מגשר בין הפרונט-אנד למסד? למה לפרונט-אנד אסור לגעת ב-SQL ישירות? איך Tableau, Power BI (עם DAX), ו-Looker Studio מתחברים למחסן? ונריץ שאילתה אמיתית על BigQuery.</p>
+    </div>
+    <div style="font-size:48px">➡️</div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <h4>📚 סוף חלק ב׳-1 · ניפגש בחלק ב׳-2</h4>
+    <p>ההמשך: SQL, פרונט-אנד, דשבורדים, ו-Hands-on על BigQuery</p>
+    <div style="margin-top:40px;font-size:14px;opacity:.5">קורס BI וארכיטקטורת נתונים · הרצאה 1 · חלק ב׳-1 · 2026</div>
+  </div>
+</footer>
+
+<script>
+function smoothTo(e, id){
+  if (e) e.preventDefault();
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = document.querySelector('.topnav').offsetHeight || 90;
+  const y = el.getBoundingClientRect().top + window.pageYOffset - navH - 12;
+  window.scrollTo({top: y, behavior: 'smooth'});
+  history.replaceState(null, '', '#' + id);
+}
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e){
+    const id = this.getAttribute('href').substring(1);
+    if (id) smoothTo(e, id);
+  });
+});
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+});
+const sections = ['block1','block2','block3','block4','block5','block6','block7','block8','block9'];
+const navLinks = document.querySelectorAll('#navBlocks .nav-block');
+window.addEventListener('scroll', () => {
+  let current = 'block1';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 250) current = id;
+  });
+  navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
+});
+document.querySelectorAll('.tabs').forEach(group => {
+  group.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      const parent = group.parentElement;
+      group.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+      parent.querySelectorAll('.tab-panel').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const panel = parent.querySelector(`[data-panel="${t.dataset.tab}"]`);
+      if (panel) panel.classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
+
