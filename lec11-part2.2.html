@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הרצאה 1 - חלק ב׳-2 | מנתונים לתובנות: דשבורדים וכלי BI</title>
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/heebo@5.0.18/hebrew.css" rel="stylesheet">
+<style>
+  :root{
+    --primary:#4f46e5;--primary-dark:#3730a3;--primary-light:#eef2ff;
+    --accent:#14b8a6;--accent-dark:#0f766e;--accent-light:#ccfbf1;
+    --pink:#ec4899;--purple:#a855f7;--blue:#3b82f6;--amber:#f59e0b;
+    --red:#ef4444;--success:#10b981;
+    --ink:#0f172a;--ink-soft:#334155;--muted:#64748b;
+    --line:#e2e8f0;--bg:#f8fafc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Heebo',system-ui,sans-serif;background:#f8fafc;color:var(--ink);line-height:1.85;font-size:22px}
+  img{max-width:100%;display:block}
+  a{color:var(--primary);text-decoration:none;font-weight:600}
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+  code{background:var(--primary-light);padding:3px 10px;border-radius:6px;font-size:.95em;color:var(--primary-dark);font-family:'Courier New',monospace;font-weight:700}
+  section[id],header[id]{scroll-margin-top:110px}
+
+  .progress{position:fixed;top:0;right:0;height:6px;background:linear-gradient(90deg,var(--purple),var(--pink));width:0%;z-index:1000}
+  .topnav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:3px solid var(--line);box-shadow:0 2px 8px rgba(15,23,42,.06)}
+  .topnav-inner{max-width:1400px;margin:0 auto;padding:20px 32px;display:flex;align-items:center;gap:24px;justify-content:space-between;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px;font-weight:700}
+  .brand-badge{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--purple),var(--pink));display:grid;place-items:center;color:#fff;font-weight:900;font-size:24px}
+  .brand-title{font-size:19px;line-height:1.3}
+  .brand-title small{display:block;color:var(--muted);font-weight:500;font-size:15px;margin-top:2px}
+  .nav-blocks{display:flex;gap:10px;flex-wrap:wrap}
+  .nav-block{padding:10px 18px;border-radius:10px;font-size:16px;font-weight:700;color:var(--ink-soft);border:2px solid transparent;transition:all .2s}
+  .nav-block:hover{background:#f3e8ff;color:#7e22ce}
+  .nav-block.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+  @media(max-width:1100px){.nav-blocks{display:none}}
+
+  .hero{background:radial-gradient(1400px 700px at 80% -10%,rgba(168,85,247,.18),transparent 60%),radial-gradient(1200px 600px at 0% 100%,rgba(236,72,153,.2),transparent 60%),linear-gradient(180deg,#fff 0%,#f1f5f9 100%);padding:100px 32px 120px;position:relative;overflow:hidden}
+  .hero-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:center}
+  @media(max-width:1000px){.hero-inner{grid-template-columns:1fr}}
+  .hero-badge{display:inline-flex;align-items:center;gap:10px;background:#f3e8ff;color:#7e22ce;padding:12px 22px;border-radius:100px;font-size:18px;font-weight:800;margin-bottom:28px;border:3px solid var(--purple)}
+  .hero-badge::before{content:"";width:12px;height:12px;background:var(--purple);border-radius:50%;box-shadow:0 0 0 6px rgba(168,85,247,.25)}
+  .hero h1{font-size:clamp(44px,6vw,72px);line-height:1.1;letter-spacing:-.02em;font-weight:900;margin-bottom:28px}
+  .hero h1 span{background:linear-gradient(120deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-sub{font-size:26px;color:var(--ink-soft);margin-bottom:40px;max-width:700px;line-height:1.7}
+  .hero-meta{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:40px}
+  .meta-chip{display:flex;align-items:center;gap:10px;font-size:19px;color:var(--ink-soft);background:#fff;padding:14px 22px;border-radius:14px;border:2px solid var(--line);font-weight:600}
+  .meta-chip strong{color:var(--ink);font-weight:800}
+  .hero-cta{display:flex;gap:18px;flex-wrap:wrap}
+  .btn{padding:20px 36px;border-radius:14px;font-weight:800;font-size:21px;display:inline-flex;align-items:center;gap:12px;transition:all .2s;cursor:pointer}
+  .btn-primary{background:var(--purple);color:#fff;box-shadow:0 10px 24px rgba(168,85,247,.3)}
+  .btn-primary:hover{background:#7e22ce;transform:translateY(-3px)}
+  .btn-ghost{background:#fff;color:var(--ink);border:3px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--purple);color:var(--purple)}
+
+  .hero-art{border-radius:26px;background:linear-gradient(135deg,#a855f7 0%,#ec4899 50%,#f59e0b 100%);aspect-ratio:4/3;display:grid;place-items:center;padding:40px;position:relative;box-shadow:0 24px 48px rgba(15,23,42,.2)}
+  .hero-art-label{position:absolute;top:24px;right:24px;background:rgba(255,255,255,.3);padding:10px 20px;border-radius:100px;font-size:17px;font-weight:800;color:#fff}
+  .hero-art-vertical{display:grid;gap:14px;width:100%;color:#fff}
+  .hero-art-row{background:rgba(255,255,255,.22);border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:14px;font-size:18px;font-weight:700}
+  .hero-art-row .emoji{font-size:30px;flex-shrink:0}
+
+  .section{padding:110px 32px;max-width:1400px;margin:0 auto}
+  .section-head{margin-bottom:60px;text-align:center}
+  .section-tag{display:inline-block;color:#7e22ce;background:#f3e8ff;padding:10px 20px;border-radius:100px;font-size:18px;font-weight:800;margin-bottom:20px;border:3px solid var(--purple)}
+  .section-head h2{font-size:clamp(40px,5vw,58px);font-weight:900;margin-bottom:20px;line-height:1.2}
+  .section-head p{color:var(--muted);font-size:24px;max-width:820px;margin:0 auto;line-height:1.7}
+
+  .deep-card{background:#fff;border-radius:28px;padding:48px;box-shadow:0 12px 32px rgba(15,23,42,.08);border:3px solid var(--line);margin-bottom:48px}
+  .deep-card h3{font-size:32px;font-weight:900;margin-bottom:24px;display:flex;align-items:center;gap:16px;line-height:1.3}
+  .deep-card h4{font-size:26px;font-weight:800;margin:36px 0 18px;line-height:1.4}
+  .deep-card h5{font-size:22px;font-weight:800;margin:24px 0 14px;line-height:1.4}
+  .deep-card p{color:var(--ink-soft);margin-bottom:22px;font-size:22px;line-height:1.85}
+  .deep-card ul{padding-right:32px;margin-bottom:24px}
+  .deep-card li{margin-bottom:14px;font-size:22px;line-height:1.75}
+
+  .info{background:#fff;border-radius:22px;padding:32px;border-right:8px solid;margin:32px 0;border:3px solid var(--line)}
+  .info.tip{border-right-color:var(--success);border-color:rgba(16,185,129,.4)}
+  .info.warn{border-right-color:var(--amber);border-color:rgba(245,158,11,.4)}
+  .info.important{border-right-color:var(--red);border-color:rgba(239,68,68,.4)}
+  .info.insight{border-right-color:var(--purple);border-color:rgba(168,85,247,.4)}
+  .info h4{font-size:24px;font-weight:900;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+  .info p{font-size:21px;color:var(--ink-soft);line-height:1.85}
+
+  /* Vertical flow - the main pattern from previous lectures */
+  .vertical-flow{display:grid;gap:0;margin:32px 0}
+  .vf-node{background:#fff;border:4px solid var(--line);border-radius:20px;padding:28px;position:relative;z-index:2}
+  .vf-node.green{border-color:var(--success);background:rgba(16,185,129,.05)}
+  .vf-node.amber{border-color:var(--amber);background:rgba(245,158,11,.05)}
+  .vf-node.pink{border-color:var(--pink);background:rgba(236,72,153,.05)}
+  .vf-node.purple{border-color:var(--purple);background:rgba(168,85,247,.05)}
+  .vf-node.blue{border-color:var(--blue);background:rgba(59,130,246,.05)}
+  .vf-title{font-size:24px;font-weight:900;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+  .vf-subtitle{font-size:18px;color:var(--muted);margin-bottom:16px;font-weight:600}
+  .vf-content{font-size:20px;color:var(--ink-soft);line-height:1.8}
+  .vf-vendors{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .vf-vendor{background:#fff;padding:8px 16px;border-radius:100px;font-size:15px;font-weight:700;border:2px solid var(--line);color:var(--ink-soft)}
+  .vf-vendor.primary{background:var(--primary-light);border-color:var(--primary);color:var(--primary-dark)}
+  .vf-arrow{display:flex;justify-content:center;align-items:center;height:60px;font-size:40px;color:var(--purple);font-weight:900;position:relative;z-index:1}
+
+  /* Journey steps - clickable vertical */
+  .journey-vertical{display:grid;gap:24px;margin:32px 0}
+  .journey-step{display:grid;grid-template-columns:100px 1fr;gap:24px;align-items:start;background:#fff;padding:28px;border-radius:22px;border:3px solid var(--line);cursor:pointer;transition:all .3s}
+  .journey-step:hover{border-color:var(--purple);transform:translateX(8px);box-shadow:0 8px 24px rgba(168,85,247,.15)}
+  .journey-step.expanded{border-color:var(--purple);background:#f3e8ff}
+  .journey-num{width:84px;height:84px;border-radius:20px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;display:grid;place-items:center;font-weight:900;font-size:36px;flex-shrink:0}
+  .journey-body h5{font-size:24px;font-weight:900;margin-bottom:8px;line-height:1.3}
+  .journey-body>p{font-size:20px;color:var(--muted);line-height:1.7;margin:0}
+  .journey-details{margin-top:18px;padding-top:18px;border-top:3px dashed var(--line);display:none;font-size:20px;line-height:1.85;color:var(--ink-soft)}
+  .journey-step.expanded .journey-details{display:block}
+
+  /* Compare cards */
+  .compare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin:32px 0}
+  .compare-card{background:#fff;border-radius:22px;padding:32px;border:3px solid var(--line);transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+  .compare-card:hover{transform:translateY(-8px);border-color:var(--purple);box-shadow:0 16px 40px rgba(168,85,247,.2)}
+  .compare-card.selected{border-color:var(--purple);background:#f3e8ff}
+  .compare-card::before{content:"";position:absolute;top:0;right:0;width:100%;height:6px}
+  .compare-card.a::before{background:var(--success)}
+  .compare-card.b::before{background:var(--amber)}
+  .compare-card.c::before{background:var(--pink)}
+  .compare-card.d::before{background:var(--blue)}
+  .compare-icon{font-size:56px;margin-bottom:18px}
+  .compare-card h5{font-size:26px;font-weight:900;margin-bottom:12px}
+  .compare-card>p{font-size:20px;color:var(--muted);line-height:1.75}
+  .compare-details{margin-top:22px;padding-top:22px;border-top:3px solid var(--line);display:none}
+  .compare-card.selected .compare-details{display:block}
+  .compare-details ul{list-style:none;padding:0}
+  .compare-details li{padding:12px 0;font-size:20px;display:flex;gap:12px;line-height:1.7}
+  .compare-details li::before{content:"✓";color:var(--success);font-weight:900;font-size:24px;flex-shrink:0}
+
+  /* Tables */
+  .tbl{background:#fff;border-radius:20px;overflow:hidden;border:3px solid var(--line);margin:32px 0}
+  .tbl table{width:100%;border-collapse:collapse}
+  .tbl th{background:var(--purple);color:#fff;padding:22px 26px;text-align:right;font-weight:800;font-size:20px}
+  .tbl td{padding:22px 26px;border-top:2px solid var(--line);font-size:20px;vertical-align:top;line-height:1.75}
+  .tbl tr:hover td{background:var(--bg)}
+  .tbl td:first-child{font-weight:800;background:var(--bg)}
+
+  .code-block{background:#0f172a;color:#e2e8f0;padding:32px;border-radius:18px;font-family:'Courier New',monospace;direction:ltr;text-align:left;overflow-x:auto;margin:28px 0;position:relative;font-size:18px;line-height:1.85;border:4px solid #1e293b}
+  .code-block::before{content:attr(data-lang);position:absolute;top:14px;right:20px;font-size:14px;color:var(--accent);font-family:'Heebo',sans-serif;font-weight:900;letter-spacing:.14em}
+  .code-block .kw{color:#c084fc;font-weight:800}
+  .code-block .str{color:#86efac;font-weight:700}
+  .code-block .num{color:#fbbf24;font-weight:800}
+  .code-block .comment{color:#94a3b8;font-style:italic}
+  .code-block .fn{color:#67e8f9;font-weight:700}
+
+  .real-world{background:linear-gradient(135deg,#f3e8ff,#e9d5ff);border-radius:24px;padding:36px;margin:36px 0;border:3px solid var(--purple)}
+  .real-world h4{font-size:28px;font-weight:900;margin-bottom:22px;color:#7e22ce;display:flex;align-items:center;gap:14px}
+  .example{background:#fff;padding:26px;border-radius:18px;margin-bottom:20px;border-right:6px solid var(--purple)}
+  .example:last-child{margin-bottom:0}
+  .example h5{font-size:22px;font-weight:800;margin-bottom:12px;color:#7e22ce}
+  .example p{font-size:20px;color:#581c87;margin:0;line-height:1.75}
+
+  /* Live dashboard cards */
+  .dash-live{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin:32px 0}
+  .dash-card{background:#fff;border-radius:22px;overflow:hidden;border:3px solid var(--line);transition:all .3s;cursor:pointer}
+  .dash-card:hover{transform:translateY(-6px);border-color:var(--purple);box-shadow:0 16px 40px rgba(168,85,247,.15)}
+  .dash-card.expanded{border-color:var(--purple)}
+  .dash-preview{height:200px;display:grid;place-items:center;font-size:64px;position:relative;overflow:hidden}
+  .dash-preview.spotify{background:linear-gradient(135deg,#1DB954,#191414)}
+  .dash-preview.bank{background:linear-gradient(135deg,#0052cc,#003d99)}
+  .dash-preview.waze{background:linear-gradient(135deg,#33ccff,#0099cc)}
+  .dash-preview.strava{background:linear-gradient(135deg,#fc4c02,#cc3d02)}
+  .dash-preview.steam{background:linear-gradient(135deg,#1b2838,#2a475e)}
+  .dash-preview.screentime{background:linear-gradient(135deg,#a855f7,#6b21a8)}
+  .dash-company{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.95);padding:6px 14px;border-radius:100px;font-size:13px;font-weight:800;color:#1f2937}
+  .dash-info{padding:24px}
+  .dash-info h5{font-size:22px;font-weight:900;margin-bottom:8px}
+  .dash-info p{font-size:17px;color:var(--muted);line-height:1.65;margin:0}
+  .dash-details{padding:0 24px 24px;display:none;font-size:18px;line-height:1.75;color:var(--ink-soft)}
+  .dash-card.expanded .dash-details{display:block;border-top:2px dashed var(--line);padding-top:20px}
+
+  .bi-tool{background:#fff;border-radius:22px;padding:32px;border:3px solid var(--line);margin-bottom:28px;transition:all .3s;cursor:pointer}
+  .bi-tool:hover{border-color:var(--purple);box-shadow:0 12px 32px rgba(168,85,247,.15)}
+  .bi-tool.expanded{border-color:var(--purple);background:#f3e8ff}
+  .bi-tool-header{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+  .bi-tool-logo{width:80px;height:80px;border-radius:18px;display:grid;place-items:center;font-size:40px;color:#fff;font-weight:900;flex-shrink:0}
+  .bi-tool-title{flex:1;min-width:240px}
+  .bi-tool-title h4{font-size:26px;font-weight:900;margin-bottom:6px}
+  .bi-tool-title p{font-size:18px;color:var(--muted);margin:0}
+  .bi-tool-expand{color:var(--purple);font-weight:800;font-size:16px}
+  .bi-tool-details{margin-top:24px;padding-top:24px;border-top:3px dashed var(--line);display:none;font-size:20px;line-height:1.8}
+  .bi-tool.expanded .bi-tool-details{display:block}
+  .bi-tool-details h5{font-size:20px;font-weight:800;margin:18px 0 10px;color:var(--purple)}
+
+  .handson{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);color:#fff;border-radius:28px;padding:48px;position:relative;overflow:hidden;border:3px solid #334155}
+  .handson::before{content:"";position:absolute;top:-60px;left:-60px;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(168,85,247,.3),transparent 70%)}
+  .handson-head{display:flex;align-items:center;gap:18px;margin-bottom:32px;flex-wrap:wrap;position:relative}
+  .handson-badge{background:var(--purple);color:#fff;padding:10px 20px;border-radius:100px;font-size:16px;font-weight:900}
+  .handson h3{font-size:32px;font-weight:900}
+  .handson-intro{opacity:.95;margin-bottom:36px;font-size:20px;max-width:850px;line-height:1.8;position:relative}
+  .steps-list{display:grid;gap:16px;margin-bottom:36px;position:relative}
+  .step-item{display:flex;gap:18px;padding:20px;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);border-radius:14px}
+  .step-item-num{width:40px;height:40px;border-radius:10px;flex-shrink:0;background:var(--purple);color:#fff;display:grid;place-items:center;font-weight:900;font-size:18px}
+  .step-item-text{font-size:19px;padding-top:6px;line-height:1.7}
+  .expected{background:rgba(168,85,247,.18);border:2px solid rgba(168,85,247,.4);padding:24px;border-radius:16px;position:relative}
+  .expected strong{color:#d8b4fe;font-size:18px;font-weight:900}
+  .expected p{margin-top:10px;font-size:18px;opacity:.95;line-height:1.8}
+
+  .takeaway{background:linear-gradient(135deg,var(--purple) 0%,#581c87 100%);color:#fff;border-radius:32px;padding:64px 48px;text-align:center;position:relative;overflow:hidden;border:4px solid rgba(255,255,255,.25);margin-top:60px}
+  .takeaway::before{content:"✨";position:absolute;top:28px;left:44px;font-size:90px;opacity:.3}
+  .takeaway::after{content:"🎯";position:absolute;bottom:28px;right:44px;font-size:90px;opacity:.3}
+  .takeaway-label{display:inline-block;background:rgba(255,255,255,.28);padding:10px 24px;border-radius:100px;font-size:19px;font-weight:900;margin-bottom:24px;letter-spacing:.06em}
+  .takeaway h3{font-size:clamp(32px,4vw,46px);font-weight:900;line-height:1.45;max-width:1000px;margin:0 auto;position:relative}
+
+  .next{background:#fff;border-radius:26px;padding:40px;border:3px solid var(--line);display:flex;gap:32px;align-items:center;flex-wrap:wrap;margin-top:48px}
+  .next-num{width:90px;height:90px;border-radius:22px;flex-shrink:0;background:linear-gradient(135deg,var(--pink),#4f46e5);color:#fff;display:grid;place-items:center;font-size:36px;font-weight:900}
+  .next-body{flex:1;min-width:320px}
+  .next-body small{color:var(--muted);font-size:18px;font-weight:700}
+  .next-body h4{font-size:30px;font-weight:900;margin:8px 0 12px;line-height:1.4}
+  .next-body p{color:var(--ink-soft);font-size:21px;line-height:1.75}
+
+  .interview{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-radius:24px;padding:36px;border:3px solid var(--amber);margin-top:40px}
+  .interview-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#92400e;padding:8px 16px;border-radius:100px;font-size:15px;font-weight:800;margin-bottom:16px}
+  .interview h3{font-size:24px;font-weight:900;color:#78350f;margin-bottom:14px}
+  .interview .q{font-size:21px;font-weight:700;color:#451a03;padding:20px;background:#fff;border-radius:14px;border-right:6px solid var(--amber);margin-bottom:18px;line-height:1.6}
+  .interview .hint{font-size:18px;color:#78350f;line-height:1.85;padding:18px;background:rgba(255,255,255,.7);border-radius:12px}
+
+  footer{background:#0f172a;color:#cbd5e1;padding:64px 32px;margin-top:90px}
+  .foot-inner{max-width:1400px;margin:0 auto;text-align:center}
+  .foot-inner h4{color:#fff;font-size:32px;font-weight:900;margin-bottom:16px}
+  .foot-inner>p{font-size:20px;opacity:.8;margin-bottom:32px}
+  .course-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:32px}
+  .course-map div{padding:16px;background:rgba(255,255,255,.08);border-radius:12px;font-size:16px;border:2px solid rgba(255,255,255,.1);line-height:1.6}
+  .course-map div.current{background:rgba(168,85,247,.4);border-color:var(--purple)}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">
+      <div class="brand-badge">BI</div>
+      <div class="brand-title">קורס BI וארכיטקטורת נתונים<small>הרצאה 1 · חלק ב׳-2 · מנתונים לתובנות</small></div>
+    </div>
+    <div class="nav-blocks" id="navBlocks">
+      <a href="#block1" class="nav-block active">1 · איפה עצרנו</a>
+      <a href="#block2" class="nav-block">2 · הגשר</a>
+      <a href="#block3" class="nav-block">3 · מה זה דשבורד</a>
+      <a href="#block4" class="nav-block">4 · סוגי דשבורדים</a>
+      <a href="#block5" class="nav-block">5 · דשבורדים חיים</a>
+      <a href="#block6" class="nav-block">6 · כלי BI</a>
+      <a href="#block7" class="nav-block">7 · Hands-on</a>
+      <a href="#block8" class="nav-block">8 · סיכום ההרצאה</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-badge">📚 הרצאה 1 · חלק ב׳-2</span>
+      <h1>מנתונים לתובנות:<br><span>דשבורדים וכלי BI</span></h1>
+      <p class="hero-sub">
+        בחלקים הקודמים ראינו איך הנתונים עוברים מהקליק, דרך OLTP, דרך ETL, ומגיעים למחסן האנליטי (OLAP) בצורת Star Schema.
+        אבל <strong>נתונים במחסן הם לא תובנה</strong>. החלק הזה משלים את המסע: איך הנתונים הופכים למשהו שהמנהל – וגם המשתמש – יכולים להבין ולהשתמש בו כדי לקבל החלטות.
+      </p>
+      <div class="hero-meta">
+        <div class="meta-chip">⏱ <strong>כ-90 דקות</strong></div>
+        <div class="meta-chip">🎯 <strong>החלק האחרון של הרצאה 1</strong></div>
+        <div class="meta-chip">🔬 <strong>כולל Hands-on</strong></div>
+      </div>
+      <div class="hero-cta">
+        <a href="#block1" class="btn btn-primary" onclick="smoothTo(event,'block1')">בואו נתחיל ←</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="hero-art-label">🗺️ מה נשאר במסע?</div>
+      <div class="hero-art-vertical">
+        <div class="hero-art-row" style="background:rgba(255,255,255,.35)">🏛️ OLAP (כבר הגענו)</div>
+        <div class="hero-art-row" style="text-align:center;justify-content:center;background:rgba(255,255,255,.35)">⬇️</div>
+        <div class="hero-art-row"><span class="emoji">📊</span>דשבורד</div>
+        <div class="hero-art-row" style="text-align:center;justify-content:center;background:rgba(255,255,255,.35)">⬇️</div>
+        <div class="hero-art-row"><span class="emoji">👔</span>תובנה עסקית</div>
+        <div class="hero-art-row" style="text-align:center;justify-content:center;background:rgba(255,255,255,.35)">⬇️</div>
+        <div class="hero-art-row"><span class="emoji">✅</span>החלטה</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- BLOCK 1: WHERE WE STOPPED -->
+<section class="section" id="block1">
+  <div class="section-head">
+    <span class="section-tag">בלוק 1 · תזכורת · 10 דקות</span>
+    <h2>איפה עצרנו?</h2>
+    <p>לחצו על כל שלב לרענון קצר</p>
+  </div>
+
+  <div class="journey-vertical">
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">1</div>
+      <div class="journey-body">
+        <h5>🖱️ הקליק + JSON + בק-אנד + INSERT</h5>
+        <p>הזמנה נולדה באפליקציה ונשמרה במסד התפעולי</p>
+        <div class="journey-details">
+          <p><strong>מה ראינו בחלק א׳:</strong> לקוח לוחץ "הזמן" → האפליקציה שולחת JSON לשרת הבק-אנד (Node.js/Python/Java) → הבק-אנד מריץ INSERT INTO על טבלאות מקושרות (customers, orders, order_items, products) → הנתונים נשמרים ב-OLTP בטרנזקציה (ACID – הכל או כלום).</p>
+          <p><strong>איפה זה יושב:</strong> PostgreSQL, SQL Server, MySQL, Oracle – on-premises או בענן (AWS RDS, Azure SQL, Google Cloud SQL).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">2</div>
+      <div class="journey-body">
+        <h5>🏪 OLTP – למה לא לנתח כאן</h5>
+        <p>4 בעיות שהופכות את זה למסוכן ויקר</p>
+        <div class="journey-details">
+          <p><strong>מה ראינו בחלק ב׳-1:</strong> OLTP בנוי לכתיבה מהירה של שורות בודדות (Row-Based Storage, אינדקסים, ACID) – לא לניתוח של מיליוני שורות.</p>
+          <p><strong>4 הבעיות:</strong> (1) שאילתות כבדות מאטות לקוחות אמיתיים, (2) סיכוני אבטחה וגישה למידע רגיש, (3) מבנה מנורמל שלא מתאים לניתוח, (4) אין היסטוריה של שינויים.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">3</div>
+      <div class="journey-body">
+        <h5>🔄 ETL/ELT – ההעתקה למחסן</h5>
+        <p>Extract → Transform → Load (או Load → Transform)</p>
+        <div class="journey-details">
+          <p><strong>מה ראינו בחלק ב׳-1:</strong> תהליך אוטומטי שרץ בתדירות קבועה (לרוב בלילה) ומעתיק נתונים מ-OLTP ל-OLAP. בדרך מנקים, ממירים פורמטים, מסננים מידע רגיש, ומחשבים שדות נגזרים.</p>
+          <p><strong>ETL מסורתי:</strong> Transform בשרת נפרד (Informatica, Talend). <strong>ELT מודרני:</strong> טוענים גולמי ומנקים בתוך המחסן (Fivetran/Airbyte + dbt).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">4</div>
+      <div class="journey-body">
+        <h5>🏛️ OLAP + Star Schema</h5>
+        <p>המחסן האנליטי עם fact table ו-dimensions</p>
+        <div class="journey-details">
+          <p><strong>מה ראינו בחלק ב׳-1:</strong> הנתונים מסודרים ב-Star Schema: טבלת <code>fact_sales</code> במרכז (עם מספרים: revenue, quantity) וסביבה טבלאות dimensions (dim_date, dim_product, dim_customer, dim_geography).</p>
+          <p><strong>פלטפורמות:</strong> BigQuery (נלמד!), Snowflake, Redshift, Synapse, Databricks, ClickHouse.</p>
+          <p><strong>יתרון:</strong> JOIN פשוט ומהיר לכל שאלה עסקית. Columnar Storage סורק רק עמודות רלוונטיות.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info insight">
+    <h4>💡 אז איפה אנחנו עומדים?</h4>
+    <p>הגענו עם <strong>נתונים נקיים ומסודרים</strong> בתוך המחסן האנליטי. עכשיו נשאלת השאלה: <strong>מה עושים איתם?</strong> הנתונים יושבים שם – אבל אף אחד לא "רואה" אותם. המנהל לא הולך לכתוב SQL. המשתמש לא יודע מה זה Star Schema. אז איך הופכים את הנתונים האלה למשהו שאפשר <strong>להבין</strong> ולקבל איתו <strong>החלטות</strong>?</p>
+  </div>
+</section>
+
+<!-- BLOCK 2: THE BRIDGE -->
+<section class="section" id="block2">
+  <div class="section-head">
+    <span class="section-tag">בלוק 2 · הגשר · 15 דקות</span>
+    <h2>הגשר: מנתונים לתובנות</h2>
+    <p>איך טבלאות הופכות להחלטות?</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🌉 שלושת השלבים האחרונים</h3>
+    <p>בואו נבין מה חסר לנו במפה. יש שלושה שלבים אחרונים במסע הנתונים:</p>
+
+    <div class="vertical-flow">
+      <div class="vf-node purple">
+        <div class="vf-title">🏛️ שלב 1: הנתונים במחסן (כבר הגענו)</div>
+        <div class="vf-subtitle">Star Schema ב-BigQuery / Snowflake</div>
+        <div class="vf-content">
+          <p>יש לנו טבלאות נקיות, מסודרות, עם היסטוריה מלאה. אנליסט יכול לכתוב עליהן SQL ולקבל תשובות. אבל זה לא מספיק.</p>
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️</div>
+
+      <div class="vf-node pink">
+        <div class="vf-title">📊 שלב 2: ויזואליזציה</div>
+        <div class="vf-subtitle">הפיכת טבלאות לגרפים, כרטיסים, ומפות</div>
+        <div class="vf-content">
+          <p>בן אדם <strong>לא מסוגל לקרוא טבלה של 10,000 שורות</strong> ולהבין ממנה משהו. אבל אם אותם נתונים יוצגו כגרף עמודות, pie chart, או מפת חום – התובנה קופצת לעין תוך שניות.</p>
+          <p><strong>מי עושה את זה?</strong> כלי BI כמו Power BI, Tableau, Looker Studio. האנליסט (אתם!) בונה את הויזואליזציות האלה.</p>
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️</div>
+
+      <div class="vf-node amber">
+        <div class="vf-title">📋 שלב 3: דשבורד</div>
+        <div class="vf-subtitle">מסך אחד שמרכז את כל הויזואליזציות</div>
+        <div class="vf-content">
+          <p>דשבורד הוא <strong>מסך אחד</strong> שמכיל כמה גרפים, כרטיסי KPI, ופילטרים – שמספרים יחד <strong>סיפור אחד</strong>. המנהל פותח אותו בבוקר ותוך 30 שניות מבין: "איך העסק היום? מה דורש טיפול?"</p>
+          <p><strong>מי צורך את זה?</strong> המנהל, ה-CEO, מנהלי מחלקות – וגם <strong>המשתמשים הפרטיים</strong> בתוך אפליקציות (כמו שנראה בבלוק הבא).</p>
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️</div>
+
+      <div class="vf-node green">
+        <div class="vf-title">✅ שלב 4: החלטה</div>
+        <div class="vf-subtitle">המטרה הסופית של BI</div>
+        <div class="vf-content">
+          <p>BI לא נועד "להראות גרפים יפים". BI נועד <strong>לאפשר החלטות עסקיות מבוססות נתונים</strong>. אם הדשבורד מראה שהקטגוריה "Pants" צומחת ב-40% – המנהל מחליט להגדיל מלאי. אם מראה ש-Wolt מפסידה לקוחות בדרום – מחליטים על קמפיין ממוקד.</p>
+          <p><strong>הנוסחה:</strong> נתונים → ויזואליזציה → דשבורד → תובנה → <strong>החלטה</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🎯 ההבדל בין דוח לדשבורד</h3>
+    <p>הרבה אנשים מתבלבלים בין שני המושגים האלה. בואו נעשה סדר:</p>
+
+    <div class="tbl">
+      <table>
+        <tr><th>מאפיין</th><th>📄 דוח (Report)</th><th>📊 דשבורד (Dashboard)</th></tr>
+        <tr><td>מטרה</td><td>לענות על שאלה <strong>ספציפית</strong></td><td>לתת <strong>תמונת מצב</strong> כוללת</td></tr>
+        <tr><td>מבנה</td><td>טבלה או גרף אחד</td><td>מסך עם 5-15 ויזואליזציות</td></tr>
+        <tr><td>אינטראקטיביות</td><td>סטטי – כמו PDF</td><td>דינמי – פילטרים, drill-down</td></tr>
+        <tr><td>תדירות שימוש</td><td>אד-הוק, לפי צורך</td><td>יומית – פותחים כל בוקר</td></tr>
+        <tr><td>דוגמה</td><td>"רשימת 100 הלקוחות הגדולים של ינואר"</td><td>"איך העסק היום?" – הכנסות, הזמנות, KPIs</td></tr>
+        <tr><td>אנלוגיה</td><td>צילום רנטgen ספציפי</td><td>לוח המחוונים של הרכב</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info insight">
+      <h4>💡 אנלוגיה: לוח המחוונים של הרכב</h4>
+      <p>חשבו על לוח המחוונים של הרכב שלכם: <strong>מד מהירות, מד סל"ד, מד דלק, טמפרטורת מנוע, נורות אזהרה</strong>. כל אחד מהם הוא ויזואליזציה נפרדת. יחד – הם נותנים לכם תמונה שלמה של "איך הרכב עכשיו?". אתם לא צריכים לפתוח מכסה מנוע (לטבלאות). אתם מסתכלים על הלוח ומחליטים: "הכל בסדר, אפשר לנסוע" או "הדלק נגמר, צריך לעצור". <strong>דשבורד עסקי עושה בדיוק את זה – למנהל.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 3: WHAT IS A DASHBOARD -->
+<section class="section" id="block3">
+  <div class="section-head">
+    <span class="section-tag">בלוק 3 · מה זה דשבורד · 20 דקות</span>
+    <h2>מה זה באמת דשבורד?</h2>
+    <p>ההגדרה, המרכיבים, ולמה הוא כל כך חשוב</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>📖 ההגדרה</h3>
+    <p style="font-size:26px;font-weight:700;color:#7e22ce;border-right:8px solid var(--purple);padding-right:28px;line-height:1.6">
+      דשבורד הוא מסך אחד שמרכז מספר ויזואליזציות (גרפים, כרטיסי KPI, טבלאות) שמציגות יחד את המדדים החשובים ביותר של תחום עסקי מסוים – במבט חטוף.
+    </p>
+
+    <h4>🧩 חמשת המרכיבים של דשבורד טוב</h4>
+    <div class="compare-grid">
+      <div class="compare-card a" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🔢</div>
+        <h5>1. KPI Cards</h5>
+        <p>כרטיסי מספר בולטים – המספרים הכי חשובים</p>
+        <div class="compare-details">
+          <p style="font-size:18px"><strong>מה זה?</strong> כרטיסים עם מספר גדול ובולט שמציגים את המדדים הכי קריטיים.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>דוגמאות:</strong></p>
+          <ul style="padding-right:20px;font-size:18px">
+            <li>💰 "הכנסות החודש: ₪2.4M"</li>
+            <li>🛒 "הזמנות היום: 1,247"</li>
+            <li>📈 "צמיחה שנתית: +23%"</li>
+            <li>👥 "לקוחות חדשים: 389"</li>
+          </ul>
+          <p style="font-size:18px;margin-top:12px"><strong>למה זה חשוב?</strong> המנהל פותח את הדשבורד ותוך 2 שניות רואה את "המספרים הגדולים".</p>
+        </div>
+      </div>
+
+      <div class="compare-card b" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">📈</div>
+        <h5>2. גרפי מגמה</h5>
+        <p>Line charts שמראים איך דברים משתנים לאורך זמן</p>
+        <div class="compare-details">
+          <p style="font-size:18px"><strong>מה זה?</strong> גרפים שמראים התפתחות על ציר הזמן – יומי, שבועי, חודשי.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>דוגמאות:</strong></p>
+          <ul style="padding-right:20px;font-size:18px">
+            <li>📈 הכנסות יומיות ב-30 הימים האחרונים</li>
+            <li>👥 משתמשים פעילים לפי שבוע</li>
+            <li>🛒 המרות (conversions) לאורך הזמן</li>
+          </ul>
+          <p style="font-size:18px;margin-top:12px"><strong>למה?</strong> "האנחנו במגמת עלייה או ירידה?"</p>
+        </div>
+      </div>
+
+      <div class="compare-card c" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">📊</div>
+        <h5>3. גרפי השוואה</h5>
+        <p>Bar charts, Pie charts להשוואת קטגוריות</p>
+        <div class="compare-details">
+          <p style="font-size:18px"><strong>מה זה?</strong> גרפים שמשווים בין קבוצות – קטגוריות, מוצרים, אזורים, סניפים.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>דוגמאות:</strong></p>
+          <ul style="padding-right:20px;font-size:18px">
+            <li>📊 מכירות לפי קטגוריה (Pants vs Shirts)</li>
+            <li>🗺️ מכירות לפי מדינה</li>
+            <li>🍩 התפלגות סטטוס הזמנות (completed, cancelled, returned)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card d" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🎛️</div>
+        <h5>4. פילטרים</h5>
+        <p>כלים שמאפשרים למשתמש למקד את הנתונים</p>
+        <div class="compare-details">
+          <p style="font-size:18px"><strong>מה זה?</strong> כפתורים, תיבות בחירה, sliders שמאפשרים למשתמש "לחתוך" את הנתונים לפי מה שמעניין אותו.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>פילטרים נפוצים:</strong></p>
+          <ul style="padding-right:20px;font-size:18px">
+            <li>📅 טווח תאריכים (היום, השבוע, החודש, שנה אחרונה)</li>
+            <li>🌍 מדינה / אזור</li>
+            <li>📦 קטגוריית מוצר</li>
+            <li>👤 סגמנט לקוחות</li>
+          </ul>
+          <p style="font-size:18px;margin-top:12px"><strong>איך זה עובד?</strong> כשהמשתמש משנה פילטר – <strong>כל הדשבורד</strong> מתעדכן בהתאם. כלי ה-BI מריץ מחדש את ה-SQL על המחסן.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-card a" onclick="this.classList.toggle('selected')" style="margin-top:24px">
+      <div class="compare-icon">🔍</div>
+      <h5>5. Drill-Down (צילום עומק)</h5>
+      <p>יכולת "לצלול" מנתון כללי לפרטים</p>
+      <div class="compare-details">
+        <p style="font-size:18px"><strong>מה זה?</strong> לחיצה על נקודה בגרף פותחת פירוט. לדוגמה:</p>
+        <ul style="padding-right:20px;font-size:18px">
+          <li>לוחצים על "ינואר 2026" בגרף חודשי → רואים פירוט יומי</li>
+          <li>לוחצים על "קטגוריית Pants" → רואים את המוצרים הספציפיים</li>
+          <li>לוחצים על "ישראל" → רואים פירוט לפי עיר</li>
+        </ul>
+        <p style="font-size:18px;margin-top:12px"><strong>למה זה חשוב?</strong> מאפשר למנהל להתחיל מ"תמונה גדולה" ולצלול רק כשמשהו מעניין או מדאיג אותו.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🎯 למה דשבורדים כל כך חשובים?</h3>
+
+    <div class="compare-grid">
+      <div class="compare-card a" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">⚡</div>
+        <h5>מהירות קבלת החלטות</h5>
+        <p>מנהלים עסוקים – צריכים תשובות בשניות</p>
+        <div class="compare-details">
+          <p style="font-size:18px">מנכ"ל של חברה עם 500 עובדים לא יקרא 50 דוחות כל בוקר. הוא פותח דשבורד אחד, רואה 5-7 KPIs, ומחליט מה דורש תשומת לב. <strong>בלי דשבורד – ההחלטות איטיות יותר, ולפעמים לא מתקבלות בכלל.</strong></p>
+        </div>
+      </div>
+
+      <div class="compare-card b" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🔍</div>
+        <h5>זיהוי בעיות מוקדם</h5>
+        <p>לראות ירידות ובעיות לפני שהן מתנפצות</p>
+        <div class="compare-details">
+          <p style="font-size:18px">אם גרף המכירות מתחיל לרדת ב-3 ימים רצופים – דשבורד טוב יבליט את זה. בלי דשבורד, הבעיה תתגלה רק בסוף החודש – כשכבר מאוחר מדי.</p>
+        </div>
+      </div>
+
+      <div class="compare-card c" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🎯</div>
+        <h5>יישור קו ארגוני</h5>
+        <p>כולם מסתכלים על אותם מספרים</p>
+        <div class="compare-details">
+          <p style="font-size:18px">כשיש דשבורד מרכזי – כל המנהלים רואים <strong>את אותם מספרים</strong>. אין ויכוחים של "אצלי במחלקה זה נראה אחרת". זה "single source of truth" – מקור אמת אחד.</p>
+        </div>
+      </div>
+
+      <div class="compare-card d" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">💰</div>
+        <h5>חיסכון כסף וזמן</h5>
+        <p>פחות דוחות ידניים, פחות טעויות</p>
+        <div class="compare-details">
+          <p style="font-size:18px">לפני דשבורדים, אנליסטים היו מבלים שעות בייצוא מאקסלים ובניית מצגות. עם דשבורד מחובר למחסן – הכל <strong>אוטומטי ומתעדכן לבד</strong>. אנליסט משקיע פעם אחת בבנייה – וכולם נהנים לנצח.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 4: TYPES OF DASHBOARDS -->
+<section class="section" id="block4">
+  <div class="section-head">
+    <span class="section-tag">בלוק 4 · סוגי דשבורדים · 20 דקות</span>
+    <h2>ארבעה סוגים של דשבורדים</h2>
+    <p>לא כל הדשבורדים נוצרו שווים – בואו נכיר את הסוגים</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>📋 טבלת סוגים</h3>
+
+    <div class="tbl">
+      <table>
+        <tr><th>סוג</th><th>מי רואה?</th><th>מטרה</th><th>רעננות</th><th>דוגמה</th></tr>
+        <tr><td>👤 דשבורד למשתמש</td><td>המשתמש הפרטי</td><td>תובנות על השימוש שלו</td><td>Real-time</td><td>Spotify Wrapped, Screen Time</td></tr>
+        <tr><td>👔 דשבורד BI למנהל</td><td>מנהלים ועובדים פנימיים</td><td>ניהול העסק</td><td>יום-יום (ETL)</td><td>דשבורד מכירות, KPIs של CEO</td></tr>
+        <tr><td>⚡ דשבורד אופרציונלי</td><td>צוותי Ops, DevOps</td><td>ניטור מערכות</td><td>Real-time</td><td>Grafana, DataDog</td></tr>
+        <tr><td>🧩 דשבורד Embedded</td><td>לקוחות Business</td><td>תובנות בתוך מוצר SaaS</td><td>יום-יום</td><td>Shopify Analytics, Monday</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🔍 כל סוג לעומק</h3>
+
+    <div class="compare-grid">
+      <div class="compare-card a" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">👤</div>
+        <h5>1. דשבורד למשתמש</h5>
+        <p>בתוך האפליקציה – רק על הנתונים של המשתמש עצמו</p>
+        <div class="compare-details">
+          <p style="font-size:18px"><strong>מה זה?</strong> דשבורד <strong>בתוך האפליקציה</strong> שמראה למשתמש נתונים על עצמו – לא על כל העסק.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>מי בונה?</strong> מפתחי Frontend + Backend (לא אנליסט BI!).</p>
+          <p style="font-size:18px;margin-top:12px"><strong>איפה הנתונים?</strong> בדרך כלל ב-OLTP – כי צריך real-time ורק את הנתונים של המשתמש הספציפי.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>דוגמאות:</strong></p>
+          <ul style="padding-right:20px;font-size:18px">
+            <li>🎵 Spotify Wrapped – סיכום השנה</li>
+            <li>📱 Screen Time באייפון</li>
+            <li>💳 דשבורד הוצאות בבנק</li>
+            <li>🏃 Strava – סטטיסטיקות ריצה</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card b" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">👔</div>
+        <h5>2. דשבורד BI למנהל</h5>
+        <p>כלי BI נפרד – על כל נתוני העסק</p>
+        <div class="compare-details">
+          <p style="font-size:18px"><strong>מה זה?</strong> הדשבורד "הקלאסי" – מנהל פותח כלי BI נפרד (Power BI, Tableau) ורואה תמונה עסקית רחבה.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>מי בונה?</strong> <strong>אנליסט BI</strong> – <strong>זה התפקיד שלכם!</strong></p>
+          <p style="font-size:18px;margin-top:12px"><strong>איפה הנתונים?</strong> במחסן האנליטי (OLAP) – BigQuery, Snowflake.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>דוגמאות:</strong></p>
+          <ul style="padding-right:20px;font-size:18px">
+            <li>📈 דשבורד מכירות חודשי</li>
+            <li>🎯 KPIs של CEO</li>
+            <li>💼 דשבורד פיננסי ל-CFO</li>
+            <li>👥 דשבורד HR – גיוסים, תחלופה</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card c" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">⚡</div>
+        <h5>3. דשבורד אופרציונלי</h5>
+        <p>ניטור מערכות בזמן אמת – לצוותים טכניים</p>
+        <div class="compare-details">
+          <p style="font-size:18px"><strong>מה זה?</strong> דשבורד שנועד <strong>לזהות בעיות טכניות</strong> לפני שהלקוחות מרגישים אותן.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>מי רואה?</strong> DevOps, SRE, צוותי תמיכה – לא מנהלים עסקיים.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>כלים:</strong></p>
+          <div class="vf-vendors">
+            <div class="vf-vendor primary">Grafana</div>
+            <div class="vf-vendor primary">DataDog</div>
+            <div class="vf-vendor">New Relic</div>
+            <div class="vf-vendor">PagerDuty</div>
+          </div>
+          <p style="font-size:18px;margin-top:12px"><strong>דוגמאות:</strong> ניטור שרתים, ביצועי אפליקציה, התראות על שגיאות, SOC dashboard לאבטחה.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>חשוב:</strong> זה <strong>לא</strong> מה שאנליסט BI בונה – זה תפקיד אחר לגמרי.</p>
+        </div>
+      </div>
+
+      <div class="compare-card d" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🧩</div>
+        <h5>4. דשבורד Embedded</h5>
+        <p>BI מוטמע בתוך מוצר SaaS</p>
+        <div class="compare-details">
+          <p style="font-size:18px"><strong>מה זה?</strong> דשבורד BI <strong>בתוך אפליקציה עסקית</strong> – נותן ללקוחות ה-Business שלכם תובנות על השימוש שלהם במוצר.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>איך בנוי?</strong> כלי BI מוטמע דרך iframe או API. הכלי רץ בענן של הספק, אבל נראה חלק מהאפליקציה.</p>
+          <p style="font-size:18px;margin-top:12px"><strong>דוגמאות:</strong></p>
+          <ul style="padding-right:20px;font-size:18px">
+            <li>🛒 Shopify Analytics – לבעלי חנויות</li>
+            <li>💼 Salesforce dashboards</li>
+            <li>🎯 Monday.com – דשבורדים בתוך הפרויקטים</li>
+            <li>💳 Stripe Dashboard – למפתחים</li>
+          </ul>
+          <p style="font-size:18px;margin-top:12px"><strong>בישראל:</strong> חברות כמו Monday, Wix, Fiverr בונות דשבורדים embedded ללקוחות שלהן.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info important">
+    <h4>⚠️ הבחנה קריטית לראיונות</h4>
+    <p>כשמראיינים שואלים "בנית דשבורד?" – <strong>תמיד תבהירו איזה סוג</strong>. אנליסט BI בונה בעיקר <strong>דשבורדים למנהלים</strong> (#2). דשבורדים למשתמש (#1) נבנים ע"י מפתחים. דשבורדים אופרציונליים (#3) ע"י DevOps. להגיד "בניתי דשבורד ב-Power BI" זה טוב – אבל "בניתי דשבורד מכירות למנכ"ל שמחובר ל-Snowflake ומתעדכן כל בוקר ב-6:00" זה <strong>הרבה יותר חזק</strong>.</p>
+  </div>
+</section>
+
+<!-- BLOCK 5: LIVE DASHBOARDS -->
+<section class="section" id="block5">
+  <div class="section-head">
+    <span class="section-tag">בלוק 5 · דשבורדים חיים · 25 דקות</span>
+    <h2>דשבורדים שאתם מכירים מהחיים</h2>
+    <p>לחצו על כל דוגמה כדי לראות מה קורה מאחוריה</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🌟 דשבורדים למשתמש – מוכרים לכולנו</h3>
+    <p>אתם משתמשים בדשבורדים כל יום – גם אם לא קראתם להם ככה. הנה דוגמאות אמיתיות:</p>
+
+    <div class="dash-live">
+      <div class="dash-card" onclick="this.classList.toggle('expanded')">
+        <div class="dash-preview spotify">
+          <span class="dash-company">Spotify</span>
+          🎵
+        </div>
+        <div class="dash-info">
+          <h5>Spotify Wrapped</h5>
+          <p>סיכום השנה האישי שלכם</p>
+        </div>
+        <div class="dash-details">
+          <p><strong>סוג:</strong> דשבורד למשתמש (בתוך האפליקציה).</p>
+          <p><strong>איך בנוי:</strong> כל השנה Spotify אוספת events על כל שיר ששמעתם. בסוף השנה, <strong>data pipeline</strong> רץ על מיליארדי events ומחשב לכל משתמש: top artists, top genres, total minutes, "artist של השנה".</p>
+          <p><strong>המסד:</strong> כנראה BigQuery או Snowflake.</p>
+          <p><strong>למה מבריק:</strong> כל משתמש מקבל דשבורד <strong>אישי ושונה</strong> – וזה מה שגורם לו לשתף באינסטגרם. דוגמה מושלמת למוצר data-driven.</p>
+        </div>
+      </div>
+
+      <div class="dash-card" onclick="this.classList.toggle('expanded')">
+        <div class="dash-preview bank">
+          <span class="dash-company">בנק לאומי</span>
+          💳
+        </div>
+        <div class="dash-info">
+          <h5>דשבורד הוצאות בבנק</h5>
+          <p>הוצאות לפי קטגוריה החודש</p>
+        </div>
+        <div class="dash-details">
+          <p><strong>סוג:</strong> דשבורד למשתמש (בתוך אפליקציית הבנק).</p>
+          <p><strong>איך בנוי:</strong> כל עסקה מקוטלגת אוטומטית ל"סופר", "מסעדה", "דלק", "בידור" וכו' – בעזרת <strong>ML model</strong>. בסוף החודש: pie chart + השוואה לחודש קודם.</p>
+          <p><strong>המסד:</strong> Oracle/SQL Server on-prem (רגולציה), עותק אנליטי ב-Azure Synapse.</p>
+          <p><strong>למה חשוב:</strong> עוזר ללקוח להבין הרגלי הוצאה – ומגדיל engagement באפליקציה.</p>
+        </div>
+      </div>
+
+      <div class="dash-card" onclick="this.classList.toggle('expanded')">
+        <div class="dash-preview waze">
+          <span class="dash-company">Waze</span>
+          🚗
+        </div>
+        <div class="dash-info">
+          <h5>Waze Stats</h5>
+          <p>סטטיסטיקות נהיגה אישיות</p>
+        </div>
+        <div class="dash-details">
+          <p><strong>סוג:</strong> דשבורד למשתמש.</p>
+          <p><strong>איך בנוי:</strong> Waze אוספת נתוני GPS על כל נסיעה. מחשבת: weekly distance, זמן ממוצע, דלק שנחסך.</p>
+          <p><strong>המסד:</strong> Google Cloud (BigQuery).</p>
+          <p><strong>אתגר:</strong> 150M משתמשים, מיליארדי events ביום.</p>
+        </div>
+      </div>
+
+      <div class="dash-card" onclick="this.classList.toggle('expanded')">
+        <div class="dash-preview strava">
+          <span class="dash-company">Strava</span>
+          🏃
+        </div>
+        <div class="dash-info">
+          <h5>Strava Dashboard</h5>
+          <p>סטטיסטיקות ריצה ואופניים</p>
+        </div>
+        <div class="dash-details">
+          <p><strong>סוג:</strong> דשבורד למשתמש + חברתי.</p>
+          <p><strong>איך בנוי:</strong> כל פעילות נשמרת עם GPS, דופק, גובה. Strava מחשבת: weekly distance, personal records, segments.</p>
+          <p><strong>המסד:</strong> AWS Redshift + PostgreSQL.</p>
+          <p><strong>למה מבריק:</strong> משלב דשבורד אישי עם leaderboard חברתי – <strong>gamification מבוסס data</strong>.</p>
+        </div>
+      </div>
+
+      <div class="dash-card" onclick="this.classList.toggle('expanded')">
+        <div class="dash-preview steam">
+          <span class="dash-company">Steam</span>
+          🎮
+        </div>
+        <div class="dash-info">
+          <h5>Steam Year in Review</h5>
+          <p>סיכום שנת גיימינג</p>
+        </div>
+        <div class="dash-details">
+          <p><strong>סוג:</strong> דשבורד למשתמש.</p>
+          <p><strong>איך בנוי:</strong> Steam עוקבת אחרי כל שעת משחק. בסוף השנה: כמה שעות, top games, genres, השוואה לחברים.</p>
+          <p><strong>המסד:</strong> MySQL + ClickHouse (ללוגים).</p>
+        </div>
+      </div>
+
+      <div class="dash-card" onclick="this.classList.toggle('expanded')">
+        <div class="dash-preview screentime">
+          <span class="dash-company">Apple</span>
+          📱
+        </div>
+        <div class="dash-info">
+          <h5>Screen Time</h5>
+          <p>מעקב זמן מסך באייפון</p>
+        </div>
+        <div class="dash-details">
+          <p><strong>סוג:</strong> דשבורד למשתמש (פרטי לגמרי).</p>
+          <p><strong>איך בנוי:</strong> iOS עוקבת אחרי כל שימוש באפליקציה. מציגה: שעות יומיות, קטגוריות, pickups.</p>
+          <p><strong>המסד:</strong> <strong>מקומי על המכשיר</strong> (SQLite) – מטעמי פרטיות. לא נשלח לענן.</p>
+          <p><strong>למה מיוחד:</strong> דשבורד שלא דורש שרת בכלל.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info insight">
+    <h4>💡 התובנה החשובה</h4>
+    <p><strong>דשבורדים הם לא רק למנהלים.</strong> באפליקציות מודרניות, גם המשתמשים הרגילים רואים דשבורדים על השימוש שלהם. זה נקרא <strong>"Data as a feature"</strong> – הנתונים הופכים לחלק מהמוצר עצמו. Spotify, Waze, Strava, בנקים – כולם נותנים למשתמש תובנות על עצמו. זה <strong>מגדיל מעורבות</strong>, <strong>בונה אמון</strong>, ו<strong>יוצר ערך נוסף</strong> למוצר.</p>
+  </div>
+</section>
+
+<!-- BLOCK 6: BI TOOLS -->
+<section class="section" id="block6">
+  <div class="section-head">
+    <span class="section-tag">בלוק 6 · כלי BI · 30 דקות</span>
+    <h2>כלי BI: מי בונה את הדשבורדים?</h2>
+    <p>Power BI, Tableau, Looker Studio – לחצו על כל כלי להסבר מלא</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🔧 איך כלי BI עובד? (החיבור למחסן)</h3>
+    <p>לפני שנכיר את הכלים, חשוב להבין <strong>איך הם בכלל מתחברים למחסן האנליטי</strong>:</p>
+
+    <div class="vertical-flow">
+      <div class="vf-node purple">
+        <div class="vf-title">🏛️ המחסן האנליטי</div>
+        <div class="vf-subtitle">BigQuery / Snowflake / Redshift / Synapse</div>
+        <div class="vf-content">
+          <p>יושב בענן. יש לו API ופרוטוקול חיבור סטנדרטי (לרוב ODBC/JDBC).</p>
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️ <span style="font-size:18px;margin-right:10px">Connector מובנה</span></div>
+
+      <div class="vf-node blue">
+        <div class="vf-title">🔌 Connector של כלי ה-BI</div>
+        <div class="vf-subtitle">חיבור מוכן מראש – לא צריך לכתוב קוד</div>
+        <div class="vf-content">
+          <p><strong>מה זה Connector?</strong> תוסף מובנה בתוך כלי ה-BI שיודע "לדבר" עם מסד ספציפי. לדוגמה: ל-Power BI יש connector מובנה ל-Snowflake. אתם רק נותנים את ה-URL, username, password – וזהו. <strong>לא כותבים קוד חיבור.</strong></p>
+          <p><strong>איך זה שונה מ-ETL?</strong> ה-connector לא מעתיק נתונים. הוא שולח <strong>שאילתות SQL ישירות למחסן</strong> בכל פעם שהמשתמש פותח את הדשבורד או משנה פילטר.</p>
+        </div>
+      </div>
+
+      <div class="vf-arrow">⬇️ <span style="font-size:18px;margin-right:10px">SQL אוטומטי</span></div>
+
+      <div class="vf-node pink">
+        <div class="vf-title">📊 כלי ה-BI</div>
+        <div class="vf-subtitle">Power BI / Tableau / Looker Studio</div>
+        <div class="vf-content">
+          <p><strong>מה האנליסט עושה?</strong> גורר שדות (drag & drop) – "שם את category בציר X ואת revenue בציר Y". הכלי <strong>מייצר לבד</strong> את ה-SQL ושולח למחסן.</p>
+          <p><strong>מה המנהל רואה?</strong> רק גרפים יפים. הוא לא יודע שיש SQL, מחסן, או connector.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info tip">
+      <h4>💡 האנליסט כותב SQL רק לפעמים</h4>
+      <p><strong>שתי דרכים לעבוד:</strong></p>
+      <ul style="padding-right:24px;margin-top:12px">
+        <li><strong>דרך 1 (Drag & Drop):</strong> גוררים שדות, הכלי מייצר SQL. מהיר, נוח, מתאים לרוב המשימות.</li>
+        <li><strong>דרך 2 (Custom SQL):</strong> כותבים SQL ידנית ומחברים אותו כ"dataset" לכלי ה-BI. מתאים כשיש לוגיקה מורכבת שהכלי לא יודע לייצר לבד.</li>
+      </ul>
+      <p style="margin-top:12px">אנליסט טוב יודע את <strong>שתי הדרכים</strong>.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🛠️ ארבעת הכלים המרכזיים</h3>
+
+    <div class="bi-tool" onclick="this.classList.toggle('expanded')">
+      <div class="bi-tool-header">
+        <div class="bi-tool-logo" style="background:#f2c811;color:#000">⚡</div>
+        <div class="bi-tool-title">
+          <h4>Power BI (מיקרוסופט)</h4>
+          <p>מוביל השוק בישראל · דורש DAX</p>
+        </div>
+        <div class="bi-tool-expand">לחצו לפרטים ⬇️</div>
+      </div>
+      <div class="bi-tool-details">
+        <p><strong>מטעם:</strong> Microsoft. חלק ממשפחת Azure.</p>
+        <p><strong>פלטפורמות:</strong></p>
+        <div class="vf-vendors">
+          <div class="vf-vendor primary">Power BI Desktop (Windows בלבד)</div>
+          <div class="vf-vendor primary">Power BI Service (app.powerbi.com)</div>
+          <div class="vf-vendor">Power BI Mobile</div>
+          <div class="vf-vendor">Embedded (בתוך אפליקציות)</div>
+        </div>
+
+        <h5>🎯 למה הכי פופולרי בישראל?</h5>
+        <ul style="padding-right:24px;margin:12px 0">
+          <li><strong>אינטגרציה מושלמת</strong> עם Azure, Office 365, Teams, Active Directory</li>
+          <li><strong>הסכמי רישוי</strong> של מדינת ישראל עם מיקרוסופט – זול לארגונים</li>
+          <li><strong>95% מהבנקים וחברות הביטוח</strong> בישראל כבר בענן של מיקרוסופט</li>
+          <li><strong>כמעט כל משרת BI בישראל</strong> דורשת Power BI + DAX</li>
+        </ul>
+
+        <h5>🧮 מה זה DAX?</h5>
+        <p><strong>DAX</strong> = <strong>Data Analysis Expressions</strong>. שפת נוסחאות שמשמשת ליצירת <strong>measures</strong> (מדדים מחושבים) ו-<strong>calculated columns</strong> ב-Power BI.</p>
+        <p style="margin-top:12px"><strong>חשוב להבין:</strong> DAX היא <strong>לא SQL</strong>. זו שפה הצהרתית שמתבצעת על מודל הנתונים בזיכרון של Power BI. היא נועדה לחישובים עסקיים מורכבים – YoY growth, moving averages, וכו'.</p>
+
+        <div class="code-block" data-lang="DAX">
+<span class="comment">// דוגמה 1: סך מכירות (measure בסיסי)</span>
+Total Revenue = <span class="fn">SUM</span>(fact_sales[revenue])
+
+<span class="comment">// דוגמה 2: השוואה שנה נוכחית לעומת קודמת (YoY)</span>
+YoY Growth = 
+<span class="kw">VAR</span> ThisYear = <span class="fn">CALCULATE</span>([Total Revenue], <span class="fn">DATESYTD</span>(dim_date[date]))
+<span class="kw">VAR</span> LastYear = <span class="fn">CALCULATE</span>([Total Revenue], <span class="fn">SAMEPERIODLASTYEAR</span>(dim_date[date]))
+<span class="kw">RETURN</span> <span class="fn">DIVIDE</span>(ThisYear - LastYear, LastYear)
+
+<span class="comment">// דוגמה 3: ממוצע נע של 30 יום</span>
+Moving Avg 30D = 
+<span class="fn">AVERAGEX</span>(
+  <span class="fn">DATESINPERIOD</span>(dim_date[date], <span class="fn">LASTDATE</span>(dim_date[date]), -<span class="num">30</span>, DAY),
+  [Total Revenue]
+)
+        </div>
+
+        <h5>💼 למה כדאי ללמוד DAX?</h5>
+        <p>בישראל 2026, <strong>DAX היא כנראה המיומנות הכי נדרשת</strong> לתפקידי BI Analyst. משרות בבנקים (לאומי, הפועלים, דיסקונט), חברות ביטוח (הפניקס, כלל, מגדל), רשתות קמעונאיות (שופרסל, רמי לוי, פוקס), וחברות הייטק – כולן דורשות DAX.</p>
+
+        <h5>💰 עלות</h5>
+        <p><strong>Power BI Desktop:</strong> חינמי לגמרי (אבל רק ל-Windows).<br>
+        <strong>Power BI Pro:</strong> ~$14 למשתמש לחודש (נדרש לשיתוף דשבורדים עם אחרים).<br>
+        <strong>Power BI Premium:</strong> לארגונים גדולים – $5,000+ לחודש.</p>
+      </div>
+    </div>
+
+    <div class="bi-tool" onclick="this.classList.toggle('expanded')">
+      <div class="bi-tool-header">
+        <div class="bi-tool-logo" style="background:#e97627">📈</div>
+        <div class="bi-tool-title">
+          <h4>Tableau (Salesforce)</h4>
+          <p>ויזואליזציות יפות · קרוס-פלטפורמה · נלמד בקורס</p>
+        </div>
+        <div class="bi-tool-expand">לחצו לפרטים ⬇️</div>
+      </div>
+      <div class="bi-tool-details">
+        <p><strong>מטעם:</strong> Tableau Software, נרכשה ע"י Salesforce ב-2019 תמורת $15.7B.</p>
+        <p><strong>פלטפורמות (קרוס-פלטפורמה מלאה!):</strong></p>
+        <div class="vf-vendors">
+          <div class="vf-vendor primary">Tableau Desktop (Windows + Mac)</div>
+          <div class="vf-vendor primary">Tableau Cloud (SaaS)</div>
+          <div class="vf-vendor">Tableau Server (on-prem)</div>
+          <div class="vf-vendor">Tableau Public (חינמי, דשבורדים פומביים)</div>
+          <div class="vf-vendor">Tableau Mobile</div>
+        </div>
+
+        <h5>🎯 למה Tableau חשוב?</h5>
+        <ul style="padding-right:24px;margin:12px 0">
+          <li><strong>קרוס-פלטפורמה:</strong> עובד על Windows <strong>וגם</strong> Mac. בניגוד ל-Power BI Desktop שרץ רק על Windows. <strong>לכן נלמד אותו בקורס</strong> – כל סטודנט יכול להתקין.</li>
+          <li><strong>ויזואליזציות:</strong> נחשב לכלי עם הויזואליזציות היפות והגמישות ביותר בשוק</li>
+          <li><strong>מתאים לכל מחסן:</strong> BigQuery, Snowflake, Redshift, Synapse, PostgreSQL – כולם נתמכים</li>
+          <li><strong>קהילה:</strong> Tableau Public – מיליוני דשבורדים פומביים ללמידה והשראה</li>
+        </ul>
+
+        <h5>🧮 שפת הנוסחאות של Tableau</h5>
+        <p>Tableau משתמש בשפה משלו שנקראת <strong>Calculated Fields</strong>. דומה ל-DAX אבל שונה:</p>
+
+        <div class="code-block" data-lang="Tableau">
+<span class="comment">// סך מכירות</span>
+<span class="fn">SUM</span>([Revenue])
+
+<span class="comment">// ממוצע מכירות ללקוח</span>
+<span class="fn">SUM</span>([Revenue]) / <span class="fn">COUNTD</span>([Customer ID])
+
+<span class="comment">// דירוג לקוחות לפי הכנסות</span>
+<span class="kw">IF</span> <span class="fn">SUM</span>([Revenue]) > <span class="num">10000</span> <span class="kw">THEN</span> <span class="str">"VIP"</span>
+<span class="kw">ELSEIF</span> <span class="fn">SUM</span>([Revenue]) > <span class="num">1000</span> <span class="kw">THEN</span> <span class="str">"Regular"</span>
+<span class="kw">ELSE</span> <span class="str">"New"</span>
+<span class="kw">END</span>
+
+<span class="comment">// תאריך של תחילת החודש</span>
+<span class="fn">DATETRUNC</span>(<span class="str">'month'</span>, [Order Date])
+        </div>
+
+        <h5>💰 עלות</h5>
+        <p>Tableau יקר: <strong>$75-150 למשתמש לחודש</strong> (תלוי ברמת הרישיון: Creator, Explorer, Viewer). בגלל זה פחות נפוץ בארגונים גדולים בישראל, אבל <strong>נפוץ מאוד בסטארטאפים וחברות הייטק</strong>.</p>
+
+        <h5>🎓 למה נלמד Tableau בקורס?</h5>
+        <ul style="padding-right:24px;margin:12px 0">
+          <li><strong>קרוס-פלטפורמה:</strong> כל סטודנט יכול להתקין בלי קשר למערכת ההפעלה</li>
+          <li><strong>המיומנויות עוברות:</strong> מי שמבין Tableau מבין Power BI (ולהיפך) – הרעיונות דומים</li>
+          <li><strong>ויזואליזציות יפות:</strong> מלמד עיצוב נכון של דשבורדים</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bi-tool" onclick="this.classList.toggle('expanded')">
+      <div class="bi-tool-header">
+        <div class="bi-tool-logo" style="background:#f9ab00">📊</div>
+        <div class="bi-tool-title">
+          <h4>Looker Studio (גוגל)</h4>
+          <p>חינמי · רץ בדפדפן · מתחבר ל-BigQuery בקליק</p>
+        </div>
+        <div class="bi-tool-expand">לחצו לפרטים ⬇️</div>
+      </div>
+      <div class="bi-tool-details">
+        <p><strong>מטעם:</strong> Google. בעבר נקרא "Google Data Studio".</p>
+        <p><strong>פלטפורמה:</strong> 100% בדפדפן (lookerstudio.google.com) – <strong>אין מה להתקין</strong>.</p>
+
+        <h5>🎯 למה נלמד אותו בקורס?</h5>
+        <ul style="padding-right:24px;margin:12px 0">
+          <li><strong>חינמי לגמרי</strong> – אין צורך ברישיון או חשבון ארגוני</li>
+          <li><strong>רץ בדפדפן</strong> – אין בעיית התקנה למשתמשי Mac/Linux</li>
+          <li><strong>מתחבר ל-BigQuery בקליק</strong> – בגלל ששניהם של גוגל</li>
+          <li><strong>מושלם ללמידה:</strong> תוך שעה בונים דשבורד ראשון</li>
+        </ul>
+
+        <h5>⚠️ מה החסרונות?</h5>
+        <ul style="padding-right:24px;margin:12px 0">
+          <li>פחות חזק בפיצ'רים מתקדמים (אין DAX, פחות ויזואליזציות)</li>
+          <li>איטי על datasets גדולים</li>
+          <li>אין Row-Level Security מתקדם</li>
+          <li>פחות מקובל בארגונים גדולים</li>
+        </ul>
+
+        <h5>💡 אסטרטגיית הלמידה שלנו בקורס</h5>
+        <p><strong>Hands-on:</strong> נבנה דשבורדים ב-Looker Studio (כי חינמי ופשוט).<br>
+        <strong>ראיונות:</strong> נלמד מושגי Power BI ו-DAX (כי זה מה שמבקשים בשוק).<br>
+        <strong>הרחבה:</strong> נכיר גם Tableau (כי קרוס-פלטפורמה ויפה).</p>
+      </div>
+    </div>
+
+    <div class="bi-tool" onclick="this.classList.toggle('expanded')">
+      <div class="bi-tool-header">
+        <div class="bi-tool-logo" style="background:#4285f4">🔍</div>
+        <div class="bi-tool-title">
+          <h4>Looker (Enterprise)</h4>
+          <p>של גוגל · שונה מ-Looker Studio · יקר</p>
+        </div>
+        <div class="bi-tool-expand">לחצו לפרטים ⬇️</div>
+      </div>
+      <div class="bi-tool-details">
+        <p><strong>חשוב לא להתבלבל:</strong> Looker הוא כלי BI אחר לגמרי מ-Looker Studio. זה כלי Enterprise שנרכש ע"י גוגל ב-2020 תמורת $2.6B.</p>
+        <p><strong>שפה:</strong> LookML – שפת modeling ייחודית שמגדירה את ה-data layer.</p>
+        <p><strong>מי משתמש:</strong> Wix, Booking.com, Spotify, חברות הייטק גדולות עם תקציב.</p>
+        <p><strong>עלות:</strong> אלפי דולרים לחודש – לא מתאים ללמידה.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="info insight">
+    <h4>💡 סיכום: מה תלמדו בקורס</h4>
+    <div class="tbl" style="margin-top:16px">
+      <table>
+        <tr><th>כלי</th><th>מה נעשה איתו</th><th>למה</th></tr>
+        <tr><td>Looker Studio</td><td>Hands-on – בניית דשבורדים</td><td>חינמי, רץ בדפדפן, פשוט</td></tr>
+        <tr><td>Power BI + DAX</td><td>לימוד מושגים + דוגמאות</td><td>הכי נדרש בראיונות בישראל</td></tr>
+        <tr><td>Tableau</td><td>היכרות + בניית דשבורדים</td><td>קרוס-פלטפורמה, ויזואלי</td></tr>
+        <tr><td>Looker (Enterprise)</td><td>היכרות בלבד</td><td>ידע כללי על השוק</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 7: HANDS-ON -->
+<section class="section" id="block7">
+  <div class="section-head">
+    <span class="section-tag">בלוק 7 · Hands-on · 30 דקות</span>
+    <h2>Hands-on: אנליטיקה אמיתית על BigQuery</h2>
+    <p>שלוש שאילתות אנליטיות על dataset אמיתי</p>
+  </div>
+
+  <div class="handson">
+    <div class="handson-head">
+      <span class="handson-badge">🔬 HANDS-ON</span>
+      <h3>אנליסט בפעולה</h3>
+    </div>
+    <p class="handson-intro">
+      בחלק א׳ כבר פתחתם BigQuery והרצתם <code>SELECT * LIMIT 10</code>. עכשיו נענה על <strong>שלוש שאלות עסקיות אמיתיות</strong> שמנהל היה שואל אתכם – ונבנה מהתשובות <strong>דשבורד מלא</strong>.
+    </p>
+
+    <h4 style="color:#fff;font-size:24px;margin:32px 0 20px;position:relative">🎯 שאלה 1: "איזו קטגוריה הכי רווחית?"</h4>
+    <p style="opacity:.9;margin-bottom:16px;font-size:18px">המנהל רוצה לדעת איפה להתמקד. נריץ JOIN בין order_items ל-products:</p>
+
+    <div class="code-block" data-lang="SQL">
+<span class="kw">SELECT</span>
+  p.category,
+  <span class="fn">COUNT</span>(*) <span class="kw">AS</span> num_items_sold,
+  <span class="fn">ROUND</span>(<span class="fn">SUM</span>(oi.sale_price), <span class="num">2</span>) <span class="kw">AS</span> total_revenue
+<span class="kw">FROM</span> bigquery-public-data.thelook_ecommerce.order_items oi
+<span class="kw">JOIN</span> bigquery-public-data.thelook_ecommerce.products p
+  <span class="kw">ON</span> oi.product_id = p.id
+<span class="kw">WHERE</span> oi.status = <span class="str">'Complete'</span>
+<span class="kw">GROUP BY</span> p.category
+<span class="kw">ORDER BY</span> total_revenue <span class="kw">DESC</span>;
+    </div>
+
+    <p style="opacity:.9;margin:16px 0;font-size:18px">💡 <strong>איך נהפוך את זה לויזואליזציה?</strong> נטען את התוצאה ל-Looker Studio ונבנה <strong>bar chart</strong> של revenue לפי category. המנהל יראה מיד ש-Pants ו-Shorts הכי רווחיים.</p>
+
+    <h4 style="color:#fff;font-size:24px;margin:40px 0 20px;position:relative">🎯 שאלה 2: "מי הלקוחות הכי טובים שלנו?"</h4>
+    <p style="opacity:.9;margin-bottom:16px;font-size:18px">המנהל רוצה לזהות VIP customers לקמפיין ממוקד:</p>
+
+    <div class="code-block" data-lang="SQL">
+<span class="kw">SELECT</span>
+  u.id <span class="kw">AS</span> customer_id,
+  <span class="fn">CONCAT</span>(u.first_name, <span class="str">' '</span>, u.last_name) <span class="kw">AS</span> customer_name,
+  u.country,
+  <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> oi.order_id) <span class="kw">AS</span> num_orders,
+  <span class="fn">ROUND</span>(<span class="fn">SUM</span>(oi.sale_price), <span class="num">2</span>) <span class="kw">AS</span> lifetime_value
+<span class="kw">FROM</span> bigquery-public-data.thelook_ecommerce.order_items oi
+<span class="kw">JOIN</span> bigquery-public-data.thelook_ecommerce.users u
+  <span class="kw">ON</span> oi.user_id = u.id
+<span class="kw">WHERE</span> oi.status = <span class="str">'Complete'</span>
+<span class="kw">GROUP BY</span> u.id, u.first_name, u.last_name, u.country
+<span class="kw">ORDER BY</span> lifetime_value <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="num">10</span>;
+    </div>
+
+    <p style="opacity:.9;margin:16px 0;font-size:18px">💡 <strong>הויזואליזציה:</strong> טבלה של Top 10 לקוחות עם KPI card שמראה את ה-lifetime_value של הלקוח מספר 1.</p>
+
+    <h4 style="color:#fff;font-size:24px;margin:40px 0 20px;position:relative">🎯 שאלה 3: "מה המגמה? אנחנו צומחים?"</h4>
+    <p style="opacity:.9;margin-bottom:16px;font-size:18px">השאלה הכי חשובה למנהל – מגמה חודשית:</p>
+
+    <div class="code-block" data-lang="SQL">
+<span class="kw">SELECT</span>
+  <span class="fn">DATE_TRUNC</span>(<span class="fn">DATE</span>(oi.created_at), MONTH) <span class="kw">AS</span> month,
+  <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> oi.order_id) <span class="kw">AS</span> num_orders,
+  <span class="fn">ROUND</span>(<span class="fn">SUM</span>(oi.sale_price), <span class="num">2</span>) <span class="kw">AS</span> monthly_revenue
+<span class="kw">FROM</span> bigquery-public-data.thelook_ecommerce.order_items oi
+<span class="kw">WHERE</span> oi.status = <span class="str">'Complete'</span>
+  <span class="kw">AND</span> oi.created_at >= <span class="str">'2022-01-01'</span>
+<span class="kw">GROUP BY</span> month
+<span class="kw">ORDER BY</span> month;
+    </div>
+
+    <p style="opacity:.9;margin:16px 0;font-size:18px">💡 <strong>הויזואליזציה:</strong> <strong>Line chart</strong> של revenue לאורך זמן. המנהל רואה מיד אם יש צמיחה, יציבות, או ירידה.</p>
+
+    <div class="expected" style="margin-top:32px">
+      <strong>✨ מה קיבלנו?</strong>
+      <p>
+        שלוש שאילתות SQL + שלוש ויזואליזציות = <strong>דשבורד מלא</strong>.<br><br>
+        <strong>התהליך שעברנו:</strong><br>
+        1. מנהל שאל שאלה עסקית<br>
+        2. אנליסט (אתם) תרגם אותה ל-SQL<br>
+        3. BigQuery החזיר תוצאות<br>
+        4. חיברנו ל-Looker Studio<br>
+        5. בנינו ויזואליזציות<br>
+        6. המנהל קיבל דשבורד שמאפשר החלטות<br><br>
+        <strong>זה בדיוק</strong> מה שאנליסט BI עושה ביום-יום.
+      </p>
+    </div>
+  </div>
+
+  <div class="interview">
+    <span class="interview-badge">💼 שאלת ראיון קלאסית</span>
+    <h3>מה היו שואלים אתכם בראיון?</h3>
+    <div class="q">
+      "מנכ"ל מבקש דשבורד שמראה לו כל בוקר איך העסק. מה היית שם בו?"
+    </div>
+    <div class="hint">
+      <strong>איך לענות – מבנה מנצח:</strong><br>
+      1. <strong>KPI Cards למעלה:</strong> הכנסות החודש, מספר הזמנות, לקוחות חדשים, צמיחה YoY<br>
+      2. <strong>Line chart:</strong> מגמת הכנסות יומית ב-30 ימים אחרונים<br>
+      3. <strong>Bar chart:</strong> הכנסות לפי קטגוריה<br>
+      4. <strong>Map:</strong> מכירות לפי מדינה/אזור<br>
+      5. <strong>פילטרים:</strong> טווח תאריכים, קטגוריה, מדינה<br><br>
+      <strong>טיפ:</strong> תזכירו גם את <strong>המקור</strong> ("הייתי מחבר את זה ל-BigQuery דרך connector") ואת <strong>הכלי</strong> ("Power BI או Looker Studio, תלוי בארגון"). זה מראה שאתם מבינים את התמונה המלאה.
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 8: FULL SUMMARY -->
+<section class="section" id="block8">
+  <div class="section-head">
+    <span class="section-tag">בלוק 8 · סיכום ההרצאה · 20 דקות</span>
+    <h2>סיכום הרצאה 1: המסע המלא</h2>
+    <p>כל שמונת השלבים – לחצו על כל אחד לרענון</p>
+  </div>
+
+  <div class="journey-vertical">
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">1</div>
+      <div class="journey-body">
+        <h5>🖱️ הקליק</h5>
+        <p>משתמש (או מערכת) מבצע פעולה באפליקציה</p>
+        <div class="journey-details">
+          <p><strong>איפה:</strong> אתר (React/Vue), אפליקציית מובייל (Swift/Kotlin), דסקטופ, או API-to-API.</p>
+          <p><strong>חשוב:</strong> גם המשתמשים הפרטיים וגם מערכות פנימיות משתמשים באותו API.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">2</div>
+      <div class="journey-body">
+        <h5>📨 JSON + HTTP</h5>
+        <p>הנתונים נארזים ב-JSON ונשלחים לשרת</p>
+        <div class="journey-details">
+          <p><strong>JSON:</strong> פורמט טקסטואלי של מפתחות וערכים. 95% מה-APIs החדשים.</p>
+          <p><strong>אלטרנטיבות:</strong> XML (בנקים/ממשל), GraphQL (Wix, Monday), Protobuf (שירותים פנימיים).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">3</div>
+      <div class="journey-body">
+        <h5>⚙️ בק-אנד</h5>
+        <p>Node.js / Python / Java / C# · אימות + לוגיקה</p>
+        <div class="journey-details">
+          <p><strong>שכבות:</strong> Authentication (JWT) → Authorization (RBAC) → Validation → Business Logic → DB.</p>
+          <p><strong>למה הפרונט לא ישירות?</strong> אבטחה (SQL injection), לוגיקה עסקית, שפות שונות.</p>
+          <p><strong>שכיחות בישראל:</strong> Node.js/Python בסטארטאפים. Java/C# בארגונים.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">4</div>
+      <div class="journey-body">
+        <h5>🗄️ OLTP – מסד תפעולי</h5>
+        <p>PostgreSQL / SQL Server / MySQL / Oracle</p>
+        <div class="journey-details">
+          <p><strong>מטרה:</strong> להריץ את העסק בזמן אמת – INSERT, UPDATE, DELETE על שורות בודדות.</p>
+          <p><strong>מבנה:</strong> נורמליזציה – הרבה טבלאות קטנות מקושרות (customers, products, orders, order_items).</p>
+          <p><strong>טרנזקציות:</strong> ACID – הכל או כלום.</p>
+          <p><strong>איפה:</strong> on-premises (בנקים) או ענן (AWS RDS, Azure SQL, Cloud SQL).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">5</div>
+      <div class="journey-body">
+        <h5>🔄 ETL / ELT</h5>
+        <p>Extract → Transform → Load</p>
+        <div class="journey-details">
+          <p><strong>למה צריך?</strong> 4 בעיות ב-OLTP: ביצועים, אבטחה, מבנה, היסטוריה.</p>
+          <p><strong>ETL מסורתי:</strong> Transform בשרת נפרד (Informatica, Talend).</p>
+          <p><strong>ELT מודרני:</strong> Load גולמי → Transform בתוך המחסן (Fivetran/Airbyte + dbt). הסטנדרט היום.</p>
+          <p><strong>תדירות:</strong> לרוב לילי, לפעמים כל שעה או streaming.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">6</div>
+      <div class="journey-body">
+        <h5>🏛️ OLAP – מחסן אנליטי</h5>
+        <p>BigQuery / Snowflake / Redshift / Synapse / Databricks</p>
+        <div class="journey-details">
+          <p><strong>מבנה:</strong> Star Schema – fact_sales במרכז + dim_date, dim_product, dim_customer, dim_geography.</p>
+          <p><strong>Storage:</strong> Columnar – מהיר מאוד לניתוח.</p>
+          <p><strong>היסטוריה:</strong> SCD Type 2 – שומר שינויים עם תאריכי תוקף.</p>
+          <p><strong>איפה יושב:</strong> כמעט תמיד בענן.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">7</div>
+      <div class="journey-body">
+        <h5>📊 ויזואליזציה + דשבורד</h5>
+        <p>Power BI (DAX) · Tableau · Looker Studio</p>
+        <div class="journey-details">
+          <p><strong>דשבורד:</strong> מסך אחד עם KPIs + גרפים + פילטרים שמספר סיפור עסקי.</p>
+          <p><strong>4 סוגים:</strong> למשתמש (Spotify Wrapped), למנהל (BI קלאסי), אופרציונלי (Grafana), Embedded (Shopify).</p>
+          <p><strong>כלים בישראל:</strong> Power BI שולט בארגונים (DAX), Tableau בסטארטאפים, Looker Studio ללמידה.</p>
+          <p><strong>איך מתחבר?</strong> Connector מובנה שולח SQL ישירות למחסן.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step" onclick="this.classList.toggle('expanded')">
+      <div class="journey-num">8</div>
+      <div class="journey-body">
+        <h5>✅ תובנה → החלטה</h5>
+        <p>המטרה הסופית של BI</p>
+        <div class="journey-details">
+          <p><strong>BI לא נועד "להראות גרפים יפים".</strong> BI נועד <strong>לאפשר החלטות עסקיות מבוססות נתונים</strong>.</p>
+          <p><strong>הנוסחה:</strong> נתונים → ויזואליזציה → דשבורד → תובנה → <strong>החלטה</strong>.</p>
+          <p><strong>התפקיד שלכם:</strong> להיות הגשר בין הנתונים להחלטה.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <span class="takeaway-label">🎯 השורה התחתונה של הרצאה 1</span>
+    <h3>BI הוא מסע שלם: מקליק באפליקציה, דרך JSON לבק-אנד, דרך INSERT ל-OLTP, דרך ETL ל-OLAP (Star Schema), דרך SQL של אנליסט, דרך כלי BI – ועד דשבורד שמאפשר למנהל לקבל החלטות. בהרצאה 2 נצלול לעומק לתחנה הרביעית: מסד הנתונים התפעולי – טבלאות, מפתחות, ו-CRUD.</h3>
+  </div>
+
+  <div class="next">
+    <div class="next-num">2</div>
+    <div class="next-body">
+      <small>בהרצאה הבאה</small>
+      <h4>הרצאה 2: טבלאות, מפתחות, ו-CRUD</h4>
+      <p>נצלול לעומק למסד הנתונים התפעולי. נבין מה זה Primary Key ו-Foreign Key, למה הנתונים מחולקים לטבלאות (נורמליזציה), ואיך עושים את ארבע הפעולות הבסיסיות: Create, Read, Update, Delete. נכתוב SQL אמיתי על Azure SQL Database.</p>
+    </div>
+    <div style="font-size:48px">➡️</div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <h4>🎉 סיום הרצאה 1 · ניפגש בהרצאה 2</h4>
+    <p>ההרצאה הבאה: טבלאות, מפתחות, ו-CRUD במסד הנתונים התפעולי</p>
+    <div class="course-map">
+      <div class="current">1 · התמונה הגדולה ✅</div>
+      <div>2 · טבלאות, מפתחות, CRUD</div>
+      <div>3 · טרנזקציות ו-ACID</div>
+      <div>4 · Stored Proc, Triggers, Indexes</div>
+      <div>5 · NoSQL עם Firebase</div>
+      <div>6 · שרתים, ענן, Load Balancer</div>
+      <div>7 · OLTP vs OLAP ו-ETL</div>
+      <div>8 · Star Schema</div>
+      <div>9 · בדיקות איכות נתונים</div>
+      <div>10 · ניתוח שאלות עסקיות</div>
+      <div>11 · מה זה דשבורד</div>
+      <div>12 · Power Query מול מסד נתונים</div>
+      <div>13 · בניית דשבורד ב-Looker Studio</div>
+      <div>14 · Power BI ו-DAX</div>
+      <div>15 · עיצוב ו-Storytelling</div>
+      <div>16 · Capstone וסיכום קורס</div>
+    </div>
+    <div style="margin-top:40px;font-size:14px;opacity:.5">קורס BI וארכיטקטורת נתונים · הרצאה 1 (חלקים א׳ + ב׳-1 + ב׳-2) · 2026</div>
+  </div>
+</footer>
+
+<script>
+function smoothTo(e, id){
+  if (e) e.preventDefault();
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = document.querySelector('.topnav').offsetHeight || 90;
+  const y = el.getBoundingClientRect().top + window.pageYOffset - navH - 12;
+  window.scrollTo({top: y, behavior: 'smooth'});
+  history.replaceState(null, '', '#' + id);
+}
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e){
+    const id = this.getAttribute('href').substring(1);
+    if (id) smoothTo(e, id);
+  });
+});
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+});
+const sections = ['block1','block2','block3','block4','block5','block6','block7','block8'];
+const navLinks = document.querySelectorAll('#navBlocks .nav-block');
+window.addEventListener('scroll', () => {
+  let current = 'block1';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 250) current = id;
+  });
+  navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
+});
+</script>
+
+</body>
+</html>
+
