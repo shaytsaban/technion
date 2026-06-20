@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הרצאה 1 - חלק א׳ | מקליק עד מסד הנתונים התפעולי</title>
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/heebo@5.0.18/hebrew.css" rel="stylesheet">
+<style>
+  :root{
+    --primary:#4f46e5;--primary-dark:#3730a3;--primary-light:#eef2ff;
+    --accent:#14b8a6;--accent-dark:#0f766e;--accent-light:#ccfbf1;
+    --pink:#ec4899;--purple:#a855f7;--blue:#3b82f6;--amber:#f59e0b;
+    --red:#ef4444;--success:#10b981;
+    --ink:#0f172a;--ink-soft:#334155;--muted:#64748b;
+    --line:#e2e8f0;--bg:#f8fafc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Heebo',system-ui,sans-serif;
+    background:#f8fafc;color:var(--ink);
+    line-height:1.85;font-size:22px;
+  }
+  img{max-width:100%;display:block}
+  a{color:var(--primary);text-decoration:none;font-weight:600}
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+  code{background:var(--primary-light);padding:3px 10px;border-radius:6px;font-size:.95em;color:var(--primary-dark);font-family:'Courier New',monospace;font-weight:700}
+  section[id],header[id]{scroll-margin-top:110px}
+
+  .progress{position:fixed;top:0;right:0;height:6px;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;z-index:1000}
+  .topnav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:3px solid var(--line);box-shadow:0 2px 8px rgba(15,23,42,.06)}
+  .topnav-inner{max-width:1400px;margin:0 auto;padding:20px 32px;display:flex;align-items:center;gap:24px;justify-content:space-between;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px;font-weight:700}
+  .brand-badge{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;color:#fff;font-weight:900;font-size:24px}
+  .brand-title{font-size:19px;line-height:1.3}
+  .brand-title small{display:block;color:var(--muted);font-weight:500;font-size:15px;margin-top:2px}
+  .nav-blocks{display:flex;gap:10px;flex-wrap:wrap}
+  .nav-block{padding:10px 18px;border-radius:10px;font-size:16px;font-weight:700;color:var(--ink-soft);border:2px solid transparent;transition:all .2s}
+  .nav-block:hover{background:var(--primary-light);color:var(--primary-dark)}
+  .nav-block.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+  @media(max-width:900px){.nav-blocks{display:none}}
+
+  .hero{background:radial-gradient(1400px 700px at 80% -10%,rgba(20,184,166,.2),transparent 60%),radial-gradient(1200px 600px at 0% 100%,rgba(79,70,229,.2),transparent 60%),linear-gradient(180deg,#fff 0%,#f1f5f9 100%);padding:100px 32px 120px;position:relative;overflow:hidden}
+  .hero-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:center}
+  @media(max-width:1000px){.hero-inner{grid-template-columns:1fr}}
+  .hero-badge{display:inline-flex;align-items:center;gap:10px;background:var(--primary-light);color:var(--primary-dark);padding:12px 22px;border-radius:100px;font-size:18px;font-weight:800;margin-bottom:28px;border:3px solid var(--primary)}
+  .hero-badge::before{content:"";width:12px;height:12px;background:var(--primary);border-radius:50%;box-shadow:0 0 0 6px rgba(79,70,229,.25)}
+  .hero h1{font-size:clamp(44px,6vw,72px);line-height:1.1;letter-spacing:-.02em;font-weight:900;margin-bottom:28px}
+  .hero h1 span{background:linear-gradient(120deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-sub{font-size:26px;color:var(--ink-soft);margin-bottom:40px;max-width:700px;line-height:1.7}
+  .hero-meta{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:40px}
+  .meta-chip{display:flex;align-items:center;gap:10px;font-size:19px;color:var(--ink-soft);background:#fff;padding:14px 22px;border-radius:14px;border:2px solid var(--line);font-weight:600}
+  .meta-chip strong{color:var(--ink);font-weight:800}
+  .hero-cta{display:flex;gap:18px;flex-wrap:wrap}
+  .btn{padding:20px 36px;border-radius:14px;font-weight:800;font-size:21px;display:inline-flex;align-items:center;gap:12px;transition:all .2s;cursor:pointer}
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 10px 24px rgba(79,70,229,.3)}
+  .btn-primary:hover{background:var(--primary-dark);transform:translateY(-3px)}
+  .btn-ghost{background:#fff;color:var(--ink);border:3px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--primary);color:var(--primary)}
+
+  .hero-art{border-radius:26px;background:linear-gradient(135deg,#4f46e5 0%,#14b8a6 100%);aspect-ratio:4/3;display:grid;place-items:center;padding:40px;position:relative;box-shadow:0 24px 48px rgba(15,23,42,.2)}
+  .hero-art-label{position:absolute;top:24px;right:24px;background:rgba(255,255,255,.3);padding:10px 20px;border-radius:100px;font-size:17px;font-weight:800;color:#fff}
+  .hero-art-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;width:100%;color:#fff}
+  .hero-art-cell{background:rgba(255,255,255,.22);border-radius:16px;padding:24px 12px;text-align:center;font-size:17px;font-weight:700}
+  .hero-art-cell .emoji{font-size:36px;display:block;margin-bottom:10px}
+
+  .section{padding:110px 32px;max-width:1400px;margin:0 auto}
+  .section-head{margin-bottom:60px;text-align:center}
+  .section-tag{display:inline-block;color:var(--accent-dark);background:var(--accent-light);padding:10px 20px;border-radius:100px;font-size:18px;font-weight:800;margin-bottom:20px;border:3px solid var(--accent)}
+  .section-head h2{font-size:clamp(40px,5vw,58px);font-weight:900;margin-bottom:20px;line-height:1.2}
+  .section-head p{color:var(--muted);font-size:24px;max-width:820px;margin:0 auto;line-height:1.7}
+
+  .deep-card{background:#fff;border-radius:28px;padding:48px;box-shadow:0 12px 32px rgba(15,23,42,.08);border:3px solid var(--line);margin-bottom:48px}
+  .deep-card h3{font-size:32px;font-weight:900;margin-bottom:24px;display:flex;align-items:center;gap:16px;line-height:1.3}
+  .deep-card h4{font-size:26px;font-weight:800;margin:36px 0 18px;line-height:1.4}
+  .deep-card p{color:var(--ink-soft);margin-bottom:22px;font-size:22px;line-height:1.85}
+  .deep-card ul{padding-right:32px;margin-bottom:24px}
+  .deep-card li{margin-bottom:14px;font-size:22px;line-height:1.75}
+
+  .info{background:#fff;border-radius:22px;padding:32px;border-right:8px solid;margin:32px 0;border:3px solid var(--line)}
+  .info.tip{border-right-color:var(--success);border-color:rgba(16,185,129,.4)}
+  .info.warn{border-right-color:var(--amber);border-color:rgba(245,158,11,.4)}
+  .info.important{border-right-color:var(--red);border-color:rgba(239,68,68,.4)}
+  .info.insight{border-right-color:var(--purple);border-color:rgba(168,85,247,.4)}
+  .info h4{font-size:24px;font-weight:900;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+  .info p{font-size:21px;color:var(--ink-soft);line-height:1.85}
+
+  .diagram{background:#fff;border-radius:24px;padding:44px;box-shadow:0 12px 32px rgba(15,23,42,.08);border:3px solid var(--line);margin:40px 0;overflow-x:auto}
+  .diagram svg{width:100%;height:auto;max-height:700px}
+  .diagram h4{text-align:center;margin-bottom:28px;font-size:26px;font-weight:900}
+
+  .flow-steps{display:grid;gap:20px;margin:32px 0}
+  .flow-step{display:flex;gap:22px;padding:28px;background:#fff;border-radius:20px;border:3px solid var(--line);transition:all .3s;cursor:pointer}
+  .flow-step:hover{border-color:var(--primary);transform:translateX(8px);box-shadow:0 8px 24px rgba(79,70,229,.15)}
+  .flow-step-num{width:56px;height:56px;border-radius:14px;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:900;flex-shrink:0;font-size:24px}
+  .flow-step-content{flex:1}
+  .flow-step h5{font-size:23px;font-weight:800;margin-bottom:8px}
+  .flow-step>p{font-size:19px;color:var(--muted);line-height:1.7}
+  .flow-step-details{margin-top:18px;padding-top:18px;border-top:3px dashed var(--line);display:none;font-size:21px;line-height:1.85;color:var(--ink-soft)}
+  .flow-step.expanded .flow-step-details{display:block}
+
+  .code-block{background:#0f172a;color:#e2e8f0;padding:32px;border-radius:18px;font-family:'Courier New',monospace;direction:ltr;text-align:left;overflow-x:auto;margin:28px 0;position:relative;font-size:18px;line-height:1.85;border:4px solid #1e293b}
+  .code-block::before{content:attr(data-lang);position:absolute;top:14px;right:20px;font-size:14px;color:var(--accent);font-family:'Heebo',sans-serif;font-weight:900;letter-spacing:.14em}
+  .code-block .kw{color:#c084fc;font-weight:800}
+  .code-block .str{color:#86efac;font-weight:700}
+  .code-block .num{color:#fbbf24;font-weight:800}
+  .code-block .comment{color:#94a3b8;font-style:italic}
+  .code-block .fn{color:#67e8f9;font-weight:700}
+  .code-block .tbl{color:#f472b6;font-weight:700}
+
+  .compare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin:32px 0}
+  .compare-card{background:#fff;border-radius:22px;padding:32px;border:3px solid var(--line);transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+  .compare-card:hover{transform:translateY(-8px);border-color:var(--primary);box-shadow:0 16px 40px rgba(79,70,229,.2)}
+  .compare-card.selected{border-color:var(--primary);background:var(--primary-light)}
+  .compare-card::before{content:"";position:absolute;top:0;right:0;width:100%;height:6px}
+  .compare-card.a::before{background:var(--success)}
+  .compare-card.b::before{background:var(--amber)}
+  .compare-card.c::before{background:var(--pink)}
+  .compare-card.d::before{background:var(--blue)}
+  .compare-icon{font-size:56px;margin-bottom:18px}
+  .compare-card h5{font-size:26px;font-weight:900;margin-bottom:12px}
+  .compare-card>p{font-size:20px;color:var(--muted);line-height:1.75}
+  .compare-details{margin-top:22px;padding-top:22px;border-top:3px solid var(--line);display:none}
+  .compare-card.selected .compare-details{display:block}
+  .compare-details ul{list-style:none;padding:0}
+  .compare-details li{padding:12px 0;font-size:20px;display:flex;gap:12px;line-height:1.7}
+  .compare-details li::before{content:"✓";color:var(--success);font-weight:900;font-size:24px;flex-shrink:0}
+
+  .tbl{background:#fff;border-radius:20px;overflow:hidden;border:3px solid var(--line);margin:32px 0}
+  .tbl table{width:100%;border-collapse:collapse}
+  .tbl th{background:var(--primary);color:#fff;padding:22px 26px;text-align:right;font-weight:800;font-size:20px}
+  .tbl td{padding:22px 26px;border-top:2px solid var(--line);font-size:21px;vertical-align:top;line-height:1.75}
+  .tbl tr:hover td{background:var(--bg)}
+  .tbl td:first-child{font-weight:800;background:var(--bg)}
+
+  .real-world{background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:24px;padding:36px;margin:36px 0;border:3px solid var(--amber)}
+  .real-world h4{font-size:28px;font-weight:900;margin-bottom:22px;color:#78350f;display:flex;align-items:center;gap:14px}
+  .example{background:#fff;padding:26px;border-radius:18px;margin-bottom:20px;border-right:6px solid var(--amber)}
+  .example:last-child{margin-bottom:0}
+  .example h5{font-size:22px;font-weight:800;margin-bottom:12px;color:#92400e}
+  .example p{font-size:20px;color:#451a03;margin:0;line-height:1.75}
+
+  .vendor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin:32px 0}
+  .vendor-card{background:#fff;border-radius:20px;padding:28px;border:3px solid var(--line);transition:all .3s;text-align:center}
+  .vendor-card:hover{transform:translateY(-6px);border-color:var(--primary);box-shadow:0 16px 40px rgba(79,70,229,.15)}
+  .vendor-logo{width:84px;height:84px;border-radius:18px;margin:0 auto 18px;display:grid;place-items:center;font-size:42px;color:#fff;font-weight:900}
+  .vendor-card h5{font-size:23px;font-weight:800;margin-bottom:10px}
+  .vendor-card p{font-size:18px;color:var(--muted);line-height:1.75;margin-bottom:10px}
+  .vendor-tag{display:inline-block;margin-top:14px;padding:8px 18px;border-radius:100px;font-size:16px;font-weight:800;color:#fff}
+  .vendor-meta{font-size:16px;color:var(--ink-soft);line-height:1.7;margin-top:12px;padding-top:12px;border-top:2px solid var(--line);text-align:right}
+
+  .tabs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px;padding:10px;background:var(--bg);border-radius:18px;border:3px solid var(--line)}
+  .tab{padding:16px 26px;border-radius:14px;font-weight:800;font-size:20px;color:var(--ink-soft);transition:all .2s;flex:1;min-width:180px;text-align:center;cursor:pointer}
+  .tab:hover{background:#fff;color:var(--primary)}
+  .tab.active{background:#fff;color:var(--primary-dark);border:3px solid var(--primary)}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+
+  .takeaway{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;border-radius:32px;padding:64px 48px;text-align:center;position:relative;overflow:hidden;border:4px solid rgba(255,255,255,.25);margin-top:60px}
+  .takeaway::before{content:"✨";position:absolute;top:28px;left:44px;font-size:90px;opacity:.3}
+  .takeaway::after{content:"🎯";position:absolute;bottom:28px;right:44px;font-size:90px;opacity:.3}
+  .takeaway-label{display:inline-block;background:rgba(255,255,255,.28);padding:10px 24px;border-radius:100px;font-size:19px;font-weight:900;margin-bottom:24px;letter-spacing:.06em}
+  .takeaway h3{font-size:clamp(32px,4vw,46px);font-weight:900;line-height:1.45;max-width:1000px;margin:0 auto;position:relative}
+
+  .next{background:#fff;border-radius:26px;padding:40px;border:3px solid var(--line);display:flex;gap:32px;align-items:center;flex-wrap:wrap;margin-top:48px}
+  .next-num{width:90px;height:90px;border-radius:22px;flex-shrink:0;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:grid;place-items:center;font-size:36px;font-weight:900}
+  .next-body{flex:1;min-width:320px}
+  .next-body small{color:var(--muted);font-size:18px;font-weight:700}
+  .next-body h4{font-size:30px;font-weight:900;margin:8px 0 12px;line-height:1.4}
+  .next-body p{color:var(--ink-soft);font-size:21px;line-height:1.75}
+
+  footer{background:#0f172a;color:#cbd5e1;padding:64px 32px;margin-top:90px}
+  .foot-inner{max-width:1400px;margin:0 auto;text-align:center}
+  .foot-inner h4{color:#fff;font-size:32px;font-weight:900;margin-bottom:16px}
+  .foot-inner>p{font-size:20px;opacity:.8;margin-bottom:32px}
+
+  /* Table visualization */
+  .db-table{background:#fff;border:3px solid var(--primary);border-radius:14px;overflow:hidden;margin:18px 0;font-family:'Courier New',monospace}
+  .db-table-head{background:var(--primary);color:#fff;padding:14px 18px;font-weight:800;font-size:17px;display:flex;justify-content:space-between;align-items:center}
+  .db-table-head small{background:rgba(255,255,255,.2);padding:3px 10px;border-radius:100px;font-size:12px}
+  .db-table table{width:100%;border-collapse:collapse;direction:ltr}
+  .db-table th{background:var(--primary-light);color:var(--primary-dark);padding:12px 16px;text-align:left;font-size:15px;font-weight:800;border-bottom:2px solid var(--primary)}
+  .db-table td{padding:12px 16px;border-bottom:1px solid var(--line);font-size:15px;color:var(--ink)}
+  .db-table .pk{background:#fef3c7;font-weight:800}
+  .db-table .fk{background:#ddd6fe;font-weight:700}
+  .db-table tr:last-child td{border-bottom:none}
+
+  /* MiniShop order flow */
+  .order-flow{display:grid;gap:24px;margin:32px 0}
+  .order-row{display:grid;grid-template-columns:80px 1fr;gap:20px;align-items:start;background:#fff;padding:24px;border-radius:18px;border:3px solid var(--line)}
+  .order-num{width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:grid;place-items:center;font-weight:900;font-size:28px}
+  .order-body h5{font-size:22px;font-weight:800;margin-bottom:8px}
+  .order-body p{font-size:20px;color:var(--ink-soft);line-height:1.75;margin-bottom:12px}
+
+  /* Cloud providers */
+  .cloud-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin:32px 0}
+  .cloud-card{background:#fff;border-radius:22px;padding:32px;border:3px solid var(--line);position:relative;overflow:hidden}
+  .cloud-card::before{content:"";position:absolute;top:0;right:0;width:100%;height:8px}
+  .cloud-card.aws::before{background:#ff9900}
+  .cloud-card.azure::before{background:#0078d4}
+  .cloud-card.gcp::before{background:#4285f4}
+  .cloud-card h4{font-size:24px;font-weight:900;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+  .cloud-card .logo{font-size:48px}
+  .cloud-card .tagline{font-size:18px;color:var(--muted);margin-bottom:18px;line-height:1.7}
+  .cloud-card ul{list-style:none;padding:0;margin-bottom:16px}
+  .cloud-card li{padding:10px 0;font-size:18px;display:flex;gap:10px;border-bottom:1px solid var(--line);line-height:1.6}
+  .cloud-card li:last-child{border-bottom:none}
+  .cloud-card li::before{content:"•";color:var(--primary);font-weight:900;font-size:24px}
+  .cloud-users{background:var(--bg);padding:14px;border-radius:12px;font-size:16px;line-height:1.7}
+  .cloud-users strong{color:var(--ink);display:block;margin-bottom:4px;font-size:15px}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">
+      <div class="brand-badge">BI</div>
+      <div class="brand-title">קורס BI וארכיטקטורת נתונים<small>הרצאה 1 · חלק א׳ מתוך 2 · חלק א׳: מקליק עד מסד נתונים</small></div>
+    </div>
+    <div class="nav-blocks" id="navBlocks">
+      <a href="#block1" class="nav-block active">1 · פתיחה</a>
+      <a href="#block2" class="nav-block">2 · הקליק</a>
+      <a href="#block3" class="nav-block">3 · JSON</a>
+      <a href="#block4" class="nav-block">4 · הבק-אנד</a>
+      <a href="#block5" class="nav-block">5 · INSERT</a>
+      <a href="#block6" class="nav-block">6 · מסד תפעולי</a>
+      <a href="#block7" class="nav-block">7 · טרנזקציה</a>
+      <a href="#block8" class="nav-block">8 · איפה יושב</a>
+      <a href="#block9" class="nav-block">9 · סיכום</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-badge">📚 הרצאה 1 · חלק א׳</span>
+      <h1>מקליק אחד<br>ועד <span>מסד הנתונים התפעולי</span></h1>
+      <p class="hero-sub">
+        החלק הראשון של ההרצאה: נעקוב אחרי הזמנה אחת מהרגע שלחצתם "הזמן" ועד שהיא נשמרת בטבלה של מסד הנתונים.
+        נבין מה זה JSON, מה זה בק-אנד, מה זה INSERT, ומה קורה כשהטרנזקציה מצליחה – או נכשלת.
+      </p>
+      <div class="hero-meta">
+        <div class="meta-chip">⏱ <strong>כ-3 שעות</strong></div>
+        <div class="meta-chip">🎯 <strong>חלק 1 מתוך 2</strong></div>
+        <div class="meta-chip">🎓 <strong>מוקרן-פרנדלי</strong></div>
+      </div>
+      <div class="hero-cta">
+        <a href="#block1" class="btn btn-primary" onclick="smoothTo(event,'block1')">בואו נתחיל ←</a>
+        <a href="#block9" class="btn btn-ghost">⏭️ קפוץ לסיכום</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="hero-art-label">🗺️ המסע בחלק א׳</div>
+      <div class="hero-art-grid">
+        <div class="hero-art-cell"><span class="emoji">🖱️</span>קליק</div>
+        <div class="hero-art-cell"><span class="emoji">📨</span>JSON</div>
+        <div class="hero-art-cell"><span class="emoji">⚙️</span>בק-אנד</div>
+        <div class="hero-art-cell"><span class="emoji">📝</span>INSERT</div>
+        <div class="hero-art-cell"><span class="emoji">💾</span>מסד</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- BLOCK 1 -->
+<section class="section" id="block1">
+  <div class="section-head">
+    <span class="section-tag">בלוק 1 · פתיחה · 30 דקות</span>
+    <h2>השאלה שמניעה הכל</h2>
+    <p>לפני שנגעתם בכל מושג טכני – בואו נבין למה אנחנו כאן</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>❓ השאלה הגדולה של היום</h3>
+    <p style="font-size:28px;font-weight:800;color:var(--primary-dark);line-height:1.55;border-right:8px solid var(--accent);padding-right:28px">
+      כשלקוח לוחץ על כפתור "הזמן" בחנות אונליין – מה קורה לנתונים שלו? איפה הם יושבים? מי שומר אותם? ואיך מוודאים שלא נאבד כלום גם אם נופל החשמל?
+    </p>
+    <p>נשמע פשוט, אבל מאחורי הקליק הזה יש שרשרת שלמה של תהליכים – ואת רובם אתם הולכים להכיר היום.</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🗺️ מה נכסה בחלק א׳ (היום)</h3>
+    <div class="order-flow">
+      <div class="order-row">
+        <div class="order-num">1</div>
+        <div class="order-body">
+          <h5>הקליק</h5>
+          <p>איפה בדיוק קורה הקליק – באתר? באפליקציה? ואיך זה משפיע על מה שקורה אחר-כך.</p>
+        </div>
+      </div>
+      <div class="order-row">
+        <div class="order-num">2</div>
+        <div class="order-body">
+          <h5>הפרוטוקול: JSON</h5>
+          <p>מה זה ה-JSON הזה שכולם מדברים עליו? מאיפה הוא מגיע? למה דווקא הוא ולא משהו אחר?</p>
+        </div>
+      </div>
+      <div class="order-row">
+        <div class="order-num">3</div>
+        <div class="order-body">
+          <h5>הבק-אנד</h5>
+          <p>מה זה Node.js, Python, Java? ואיך זה קשור אליכם כמשתמשים?</p>
+        </div>
+      </div>
+      <div class="order-row">
+        <div class="order-num">4</div>
+        <div class="order-body">
+          <h5>השמירה: INSERT INTO</h5>
+          <p>מה זו הפקודה הזו? איך הנתונים באמת נכנסים לטבלה? מה קורה מאחורי הקלעים?</p>
+        </div>
+      </div>
+      <div class="order-row">
+        <div class="order-num">5</div>
+        <div class="order-body">
+          <h5>הטרנזקציה: הכל או כלום</h5>
+          <p>מה קורה אם חצי מהשמירה הצליחה וחצי נכשלה? איך מונעים מצב של "חצי הזמנה"?</p>
+        </div>
+      </div>
+      <div class="order-row">
+        <div class="order-num">6</div>
+        <div class="order-body">
+          <h5>איפה המסד יושב?</h5>
+          <p>AWS, Azure, Google Cloud, On-Premises – מה ההבדלים? מי משתמש במה בישראל?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info insight">
+    <h4>💡 מה נשאר לחלק ב׳?</h4>
+    <p>בחלק השני של ההרצאה נמשיך הלאה: <strong>למה להעתיק את הנתונים למחסן?</strong> מה זה ETL? מה זה מחסן אנליטי? איך האנליסט מריץ SQL? איך הדשבורד מציג את התוצאות? את כל זה נשמור לחלק הבא.</p>
+  </div>
+</section>
+
+<!-- BLOCK 2: THE CLICK -->
+<section class="section" id="block2">
+  <div class="section-head">
+    <span class="section-tag">בלוק 2 · הקליק · 45 דקות</span>
+    <h2>תחנה 1: איפה בדיוק קורה הקליק?</h2>
+    <p>"הלקוח לוחץ הזמן" – אבל איפה? באתר? באפליקציה? ומה אם אין לקוח אנושי בכלל?</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🌐 ארבעה מקומות שבהם "הקליק" יכול לקרות</h3>
+    <p>רוב האנשים מדמיינים אתר בדפדפן. אבל במציאות, "הקליק" יכול להגיע מארבעה מקורות שונים – <strong>וכולם מדברים עם השרת באותה צורה בדיוק</strong>. זה מה שחשוב להבין.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card a" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🌐</div>
+        <h5>אתר אינטרנט (Web App)</h5>
+        <p>רץ בדפדפן – Chrome, Safari, Firefox, Edge. לא צריך התקנה.</p>
+        <div class="compare-details">
+          <ul>
+            <li><strong>דוגמאות אמיתיות:</strong> Amazon.com, eBay, KSP.co.il, כל חנות Shopify</li>
+            <li><strong>טכנולוגיות נפוצות:</strong> React (של פייסבוק), Vue, Angular (של גוגל)</li>
+            <li><strong>איך זה עובד:</strong> קוד JavaScript בדפדפן שולח בקשות HTTP לשרת</li>
+            <li><strong>יתרון:</strong> נגיש מכל מכשיר עם דפדפן – מחשב, טאבלט, טלפון</li>
+            <li><strong>חיסרון:</strong> דורש חיבור אינטרנט; בלי חיבור – האתר לא עובד</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card b" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">📱</div>
+        <h5>אפליקציית מובייל</h5>
+        <p>מותקנת בטלפון – iOS (אייפון) או Android (סמסונג, שיאומי וכו').</p>
+        <div class="compare-details">
+          <ul>
+            <li><strong>דוגמאות:</strong> Wolt, Spotify, Instagram, WhatsApp, אפליקציית בנק לאומי</li>
+            <li><strong>טכנולוגיות:</strong> Swift (לאייפון), Kotlin (לאנדרואיד), React Native (לשניהם)</li>
+            <li><strong>יתרון:</strong> גישה למצלמה, GPS, חיישנים, התראות push</li>
+            <li><strong>יכולה לעבוד offline:</strong> שומרת בקשות ושולחת כשיש שוב חיבור</li>
+            <li><strong>מבחינת השרת:</strong> מקבל בדיוק את אותה בקשת HTTP – אין הבדל!</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card c" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🖥️</div>
+        <h5>אפליקציית דסקטופ</h5>
+        <p>מותקנת על המחשב – Windows, Mac, או Linux.</p>
+        <div class="compare-details">
+          <ul>
+            <li><strong>דוגמאות:</strong> Slack, Discord, Spotify Desktop, VS Code, Zoom</li>
+            <li><strong>טכנולוגיות:</strong> Electron (כמו אתר אבל במחשב), .NET (מיקרוסופט), Java</li>
+            <li><strong>יתרון:</strong> גישה למשאבי המחשב – קבצים, מערכת ההפעלה</li>
+            <li><strong>מתאים ל:</strong> כלים מקצועיים, תוכנות פיתוח, אפליקציות כבדות</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card d" onclick="this.classList.toggle('selected')">
+        <div class="compare-icon">🤖</div>
+        <h5>מערכת אחרת (API-to-API)</h5>
+        <p>אין בן אדם מאחורי הקליק! שרת אחד מדבר עם שרת אחר.</p>
+        <div class="compare-details">
+          <ul>
+            <li><strong>דוגמה 1:</strong> מערכת המלאי שולחת הזמנה אוטומטית לספק כשהמלאי נמוך</li>
+            <li><strong>דוגמה 2:</strong> Stripe (שירות תשלומים) שולח אישור תשלום לחנות שלכם</li>
+            <li><strong>דוגמה 3:</strong> סקריפט לילי שמעתיק נתונים מהמסד התפעולי למחסן האנליטי</li>
+            <li><strong>דוגמה 4:</strong> Google Analytics שולח דוח יומי למערכת הדיווח</li>
+            <li><strong>עובדה מעניינת:</strong> רוב התעבורה באינטרנט היא machine-to-machine – לא בני אדם!</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="info insight">
+      <h4>💡 התובנה הכי חשובה</h4>
+      <p><strong>מבחינת השרת – אין שום הבדל.</strong> הוא מקבל בקשת HTTP בין אם זה מדפדפן, מאפליקציה, או משרת אחר.
+      לכן צוותי Backend בונים API אחד שמשמש את כל הלקוחות. זה חוסך זמן פיתוח, תחזוקה, וכסף.</p>
+    </div>
+  </div>
+
+  <div class="diagram">
+    <h4>🗺️ תרשים: כל הלקוחות מדברים עם אותו שרת</h4>
+    <svg viewBox="0 0 1100 600" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
+          <polygon points="0 0, 12 4, 0 8" fill="#4f46e5"/>
+        </marker>
+      </defs>
+
+      <!-- Server (center) -->
+      <rect x="460" y="230" width="260" height="140" rx="18" fill="#4f46e5" opacity="0.18" stroke="#4f46e5" stroke-width="4"/>
+      <text x="590" y="280" text-anchor="middle" font-size="26" font-weight="900" fill="#4f46e5">🔧 השרת</text>
+      <text x="590" y="310" text-anchor="middle" font-size="17" fill="#334155" font-weight="700">(Backend API)</text>
+      <text x="590" y="335" text-anchor="middle" font-size="15" fill="#64748b">מקבל HTTP מכולם</text>
+      <text x="590" y="358" text-anchor="middle" font-size="15" fill="#64748b">מחזיר JSON לכולם</text>
+
+      <!-- Web (top-left) -->
+      <rect x="40" y="40" width="240" height="100" rx="14" fill="#ec4899" opacity="0.18" stroke="#ec4899" stroke-width="3"/>
+      <text x="160" y="85" text-anchor="middle" font-size="20" font-weight="800" fill="#ec4899">🌐 אתר</text>
+      <text x="160" y="115" text-anchor="middle" font-size="14" fill="#64748b">Chrome, Safari</text>
+      <path d="M 280 90 Q 400 150 460 260" stroke="#4f46e5" stroke-width="3" fill="none" marker-end="url(#arr)"/>
+      <text x="340" y="145" text-anchor="middle" font-size="14" fill="#4f46e5" font-weight="800">HTTP POST</text>
+      <text x="340" y="165" text-anchor="middle" font-size="13" fill="#64748b">JSON body</text>
+
+      <!-- Mobile (middle-left) -->
+      <rect x="40" y="200" width="240" height="100" rx="14" fill="#a855f7" opacity="0.18" stroke="#a855f7" stroke-width="3"/>
+      <text x="160" y="245" text-anchor="middle" font-size="20" font-weight="800" fill="#a855f7">📱 מובייל</text>
+      <text x="160" y="275" text-anchor="middle" font-size="14" fill="#64748b">iOS, Android</text>
+      <path d="M 280 250 L 460 290" stroke="#4f46e5" stroke-width="3" marker-end="url(#arr)"/>
+      <text x="360" y="255" text-anchor="middle" font-size="14" fill="#4f46e5" font-weight="800">HTTP POST</text>
+
+      <!-- Desktop (bottom-left) -->
+      <rect x="40" y="360" width="240" height="100" rx="14" fill="#3b82f6" opacity="0.18" stroke="#3b82f6" stroke-width="3"/>
+      <text x="160" y="405" text-anchor="middle" font-size="20" font-weight="800" fill="#3b82f6">🖥️ דסקטופ</text>
+      <text x="160" y="435" text-anchor="middle" font-size="14" fill="#64748b">Windows, Mac</text>
+      <path d="M 280 410 Q 400 380 460 340" stroke="#4f46e5" stroke-width="3" fill="none" marker-end="url(#arr)"/>
+      <text x="340" y="395" text-anchor="middle" font-size="14" fill="#4f46e5" font-weight="800">HTTP POST</text>
+
+      <!-- API (bottom) -->
+      <rect x="40" y="500" width="240" height="100" rx="14" fill="#f59e0b" opacity="0.18" stroke="#f59e0b" stroke-width="3"/>
+      <text x="160" y="545" text-anchor="middle" font-size="20" font-weight="800" fill="#f59e0b">🤖 מערכת</text>
+      <text x="160" y="575" text-anchor="middle" font-size="14" fill="#64748b">שרת אחר</text>
+      <path d="M 280 540 Q 420 480 480 370" stroke="#4f46e5" stroke-width="3" fill="none" marker-end="url(#arr)"/>
+      <text x="340" y="480" text-anchor="middle" font-size="14" fill="#4f46e5" font-weight="800">HTTP POST</text>
+
+      <!-- Database (right) -->
+      <ellipse cx="890" cy="300" rx="130" ry="100" fill="#10b981" opacity="0.18" stroke="#10b981" stroke-width="4"/>
+      <text x="890" y="285" text-anchor="middle" font-size="22" font-weight="900" fill="#10b981">🗄️ מסד</text>
+      <text x="890" y="315" text-anchor="middle" font-size="22" font-weight="900" fill="#10b981">נתונים</text>
+      <text x="890" y="345" text-anchor="middle" font-size="15" fill="#64748b">(OLTP)</text>
+      <path d="M 720 300 L 760 300" stroke="#10b981" stroke-width="4" marker-end="url(#arr)"/>
+      <text x="740" y="285" text-anchor="middle" font-size="15" fill="#10b981" font-weight="800">SQL</text>
+    </svg>
+  </div>
+
+  <div class="real-world">
+    <h4>🏪 דוגמאות מהחיים האמיתיים</h4>
+    <div class="example">
+      <h5>🛒 Wolt – אפליקציית מובייל</h5>
+      <p>אתם פותחים את האפליקציה, בוחרים מנה, לוחצים "הזמן". האפליקציה שולחת JSON לשרת של Wolt. השרת שומר את ההזמנה במסד הנתונים, ושולח במקביל הודעה למסעדה.</p>
+    </div>
+    <div class="example">
+      <h5>🏦 בנק לאומי – גם אתר וגם אפליקציה</h5>
+      <p>אותה העברה בנקאית יכולה להיעשות מהדפדפן בבית או מהאפליקציה בטלפון. הבק-אנד של הבנק מקבל בדיוק את אותה בקשת HTTP, ושומר באותו מסד נתונים. לכן היתרה מתעדכנת בשני המקומות.</p>
+    </div>
+    <div class="example">
+      <h5>🤖 הזמנה אוטומטית מספק</h5>
+      <p>כשהמלאי של מוצר מסוים יורד מתחת לסף שהוגדר מראש, <strong>המערכת עצמה</strong> שולחת הזמנה לספק דרך API. אין כאן בן אדם שלוחץ – זה machine-to-machine. זה קורה אלפי פעמים ביום בחברות קמעונאיות.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 3: PROTOCOL / JSON -->
+<section class="section" id="block3">
+  <div class="section-head">
+    <span class="section-tag">בלוק 3 · הפרוטוקול · 45 דקות</span>
+    <h2>תחנה 2: באיזו שפה הנתונים נשלחים?</h2>
+    <p>מה זה ה-JSON הזה? מאיפה הוא בא? ולמה דווקא הוא?</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>📦 נתחיל מהשאלה: למה בכלל צריך "שפה"?</h3>
+    <p>כשהלקוח לוחץ "הזמן", האפליקציה צריכה לשלוח לשרת את כל הפרטים: מי הלקוח, מה הוא קונה, כמה, לאן לשלוח. אבל איך היא "אורזת" את זה?</p>
+    <p>אי אפשר לשלוח סתם טקסט חופשי – השרת לא יבין. צריך <strong>פורמט מסודר</strong> שגם האפליקציה וגם השרת יודעים לקרוא ולכתוב. הפורמט הזה נקרא <strong>פרוטוקול</strong>.</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>📦 JSON – הפורמט השולט כיום</h3>
+    <p><strong>JSON</strong> (ראשי תיבות: <strong>JavaScript Object Notation</strong>) הוא פורמט טקסטואלי פשוט להעברת נתונים. הוא נראה כמו מילון – עם מפתחות (keys) וערכים (values).</p>
+
+    <h4>🔍 בואו נראה דוגמה אמיתית</h4>
+    <p>כשאתם לוחצים "הזמן" בחנות Mini-Shop, האפליקציה אורזת את כל ההזמנה ב-JSON שנראה בערך ככה:</p>
+
+    <div class="code-block" data-lang="JSON">
+{
+  <span class="str">"customer_id"</span>: <span class="num">42</span>,
+  <span class="str">"customer_name"</span>: <span class="str">"יוסי כהן"</span>,
+  <span class="str">"email"</span>: <span class="str">"yossi@example.com"</span>,
+
+  <span class="str">"items"</span>: [
+    {
+      <span class="str">"product_id"</span>: <span class="num">7</span>,
+      <span class="str">"product_name"</span>: <span class="str">"חולצה כחולה"</span>,
+      <span class="str">"quantity"</span>: <span class="num">2</span>,
+      <span class="str">"price"</span>: <span class="num">49.9</span>
+    },
+    {
+      <span class="str">"product_id"</span>: <span class="num">15</span>,
+      <span class="str">"product_name"</span>: <span class="str">"ג'ינס שחור"</span>,
+      <span class="str">"quantity"</span>: <span class="num">1</span>,
+      <span class="str">"price"</span>: <span class="num">149.0</span>
+    }
+  ],
+
+  <span class="str">"shipping_address"</span>: <span class="str">"הרצל 1, תל אביב"</span>,
+  <span class="str">"total"</span>: <span class="num">248.8</span>,
+  <span class="str">"order_date"</span>: <span class="str">"2026-06-20T14:30:00Z"</span>
+}
+    </div>
+
+    <h4>📖 איך קוראים את זה?</h4>
+    <ul>
+      <li><strong>סוגריים מסולסלים <code>{ }</code></strong> – זה "אובייקט" (מילון של מפתחות וערכים)</li>
+      <li><strong>סוגריים מרובעים <code>[ ]</code></strong> – זו רשימה (array) של פריטים</li>
+      <li><strong>"מפתח": ערך</strong> – כל שדה עם השם שלו. המפתח תמיד במרכאות</li>
+      <li><strong>סוגי ערכים:</strong> מספר (<code>42</code>), מחרוזת (<code>"יוסי"</code>), רשימה, או אובייקט מקונן</li>
+    </ul>
+
+    <div class="info tip">
+      <h4>💡 למה קוראים לזה "JavaScript Object Notation"?</h4>
+      <p>JSON נולד במקור בתוך JavaScript – שפת התכנות של הדפדפן. אבל היום הוא <strong>עצמאי לחלוטין</strong>. כל שפת תכנות בעולם (Python, Java, C#, PHP, Go) יודעת לקרוא ולכתוב JSON. השם נשאר מסיבות היסטוריות, אבל JSON שייך לכולם.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🤔 מאיפה ה-JSON מגיע?</h3>
+    <p>ה-JSON <strong>לא קיים לפני הלחיצה</strong>. הוא נוצר ברגע הלחיצה עצמה. בואו נראה איך:</p>
+
+    <div class="flow-steps">
+      <div class="flow-step" onclick="this.classList.toggle('expanded')">
+        <div class="flow-step-num">1</div>
+        <div class="flow-step-content">
+          <h5>🖱️ המשתמש לוחץ "הזמן"</h5>
+          <p>הכפתור מפעיל פונקציית JavaScript בדפדפן</p>
+          <div class="flow-step-details">
+            <p>הפונקציה אוספת את כל הנתונים מהמסך: מה בעגלה, מי הלקוח (מה-cookie או מה-login), מה הכתובת למשלוח, איזה אמצעי תשלום נבחר.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-step" onclick="this.classList.toggle('expanded')">
+        <div class="flow-step-num">2</div>
+        <div class="flow-step-content">
+          <h5>📦 הקוד בונה אובייקט JavaScript</h5>
+          <p>הנתונים מאורגנים במבנה היררכי בזיכרון הדפדפן</p>
+          <div class="flow-step-details">
+            <p>מפתח האתר כתב מראש קוד שאוסף את הנתונים למבנה מסודר. זה לא JSON עדיין – זה אובייקט JavaScript בזיכרון.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-step" onclick="this.classList.toggle('expanded')">
+        <div class="flow-step-num">3</div>
+        <div class="flow-step-content">
+          <h5>🔄 המרה לטקסט: JSON.stringify()</h5>
+          <p>האובייקט הופך לטקסט שאפשר לשלוח באינטרנט</p>
+          <div class="flow-step-details">
+            <p>פונקציה מובנית ב-JavaScript בשם <code>JSON.stringify()</code> לוקחת את האובייקט והופכת אותו לטקסט JSON. עכשיו זה מוכן לשליחה.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-step" onclick="this.classList.toggle('expanded')">
+        <div class="flow-step-num">4</div>
+        <div class="flow-step-content">
+          <h5>📡 שליחה דרך HTTP לשרת</h5>
+          <p>ה-JSON נשלח כ"גוף" של בקשת HTTP POST</p>
+          <div class="flow-step-details">
+            <p>הדפדפן שולח את הטקסט דרך האינטרנט לכתובת השרת. ה-JSON הוא ה"body" של הבקשה – התוכן עצמו.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-step" onclick="this.classList.toggle('expanded')">
+        <div class="flow-step-num">5</div>
+        <div class="flow-step-content">
+          <h5>📨 השרת מקבל ומפענח</h5>
+          <p>השרת הופך את ה-JSON חזרה לאובייקט בזיכרון שלו</p>
+          <div class="flow-step-details">
+            <p>בצד של השרת, פונקציה כמו <code>JSON.parse()</code> (ב-JavaScript) או המקבילה שלה בשפת השרת, הופכת את הטקסט חזרה לאובייקט שאפשר לעבוד איתו.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>⚖️ למה דווקא JSON? מה האלטרנטיבות?</h3>
+
+    <div class="tbl">
+      <table>
+        <tr>
+          <th>פורמט</th>
+          <th>איך נראה</th>
+          <th>יתרונות</th>
+          <th>חסרונות</th>
+          <th>מתי משתמשים</th>
+        </tr>
+        <tr>
+          <td>JSON</td>
+          <td><code>{"name":"יוסי"}</code></td>
+          <td>קריא, קל, גמיש, נתמך בכל שפה</td>
+          <td>אין validation מובנה</td>
+          <td><strong>95% מה-APIs החדשים</strong></td>
+        </tr>
+        <tr>
+          <td>XML</td>
+          <td><code>&lt;name&gt;יוסי&lt;/name&gt;</code></td>
+          <td>מובנה, תומך ב-validation</td>
+          <td>גדול, מסורבל, קשה לקריאה</td>
+          <td>בנקים, ממשל, legacy</td>
+        </tr>
+        <tr>
+          <td>GraphQL</td>
+          <td>שאילתה מובנית</td>
+          <td>הלקוח בוחר מה לקבל</td>
+          <td>מורכב יותר</td>
+          <td>פייסבוק, GitHub</td>
+        </tr>
+        <tr>
+          <td>Protobuf</td>
+          <td>בינארי (לא קריא)</td>
+          <td>הכי קטן ומהיר</td>
+          <td>לא קריא לבני אדם</td>
+          <td>שירותים פנימיים של גוגל</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info insight">
+      <h4>🇮🇱 מה קורה בישראל?</h4>
+      <p><strong>90%+ מהחברות</strong> משתמשות ב-JSON כברירת מחדל – סטארטאפים, חברות הייטק, e-commerce.<br>
+      <strong>XML עדיין נפוץ</strong> בבנקים (לאומי, הפועלים, דיסקונט), משרדי ממשלה, ומערכות בריאות (קופ"ח) – בעיקר בגלל מערכות legacy בנות 20+ שנה ודרישות רגולציה.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🤔 מי מחליט באיזה פורמט להשתמש?</h3>
+    <p>ההחלטה מתקבלת בדרך כלל על ידי:</p>
+    <ul>
+      <li><strong>ארכיטקט התוכנה</strong> (Software Architect) – האדם שמחליט על המבנה הטכני של המערכת</li>
+      <li><strong>ראש צוות Backend</strong> (Tech Lead) – מוביל הפיתוח של השרת</li>
+      <li><strong>בסטארטאפים קטנים:</strong> המפתחים עצמם, לפעמים בהתייעצות עם CTO</li>
+    </ul>
+    <p>ההחלטה מתקבלת <strong>בתחילת הפרויקט</strong>, ולרוב לא משתנה אחר-כך – כי להחליף פורמט בדיעבד אומר לשנות גם את השרת וגם את כל הלקוחות (האתר, האפליקציה, המערכות שמדברות איתו). זה יקר ומסוכן.</p>
+  </div>
+</section>
+
+<!-- BLOCK 4: BACKEND -->
+<section class="section" id="block4">
+  <div class="section-head">
+    <span class="section-tag">בלוק 4 · הבק-אנד · 60 דקות</span>
+    <h2>תחנה 3: השרת שמקבל את הבקשה</h2>
+    <p>מה זה Node.js? Python? Java? איך זה קשור למשתמש? ולמה זה חשוב לי כאנליסט?</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>⚙️ מה זה "בק-אנד" בכלל?</h3>
+    <p><strong>בק-אנד (Backend)</strong> הוא השרת שמקבל את הבקשות מהפרונט-אנד (האתר/אפליקציה), מבצע את הלוגיקה העסקית, ושומר את הנתונים במסד הנתונים.</p>
+
+    <h4>🎭 אנלוגיה: המסעדה</h4>
+    <div class="diagram">
+      <h4>איך המסעדה עובדת – ואיך זה מקביל למערכת שלנו</h4>
+      <svg viewBox="0 0 1100 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr2" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
+            <polygon points="0 0, 12 4, 0 8" fill="#4f46e5"/>
+          </marker>
+        </defs>
+
+        <!-- Customer -->
+        <rect x="40" y="140" width="220" height="120" rx="18" fill="#ec4899" opacity="0.2" stroke="#ec4899" stroke-width="3"/>
+        <text x="150" y="185" text-anchor="middle" font-size="22" font-weight="900" fill="#ec4899">👤 לקוח</text>
+        <text x="150" y="215" text-anchor="middle" font-size="15" fill="#334155">(יושב בשולחן)</text>
+        <text x="150" y="240" text-anchor="middle" font-size="14" fill="#64748b">מזמין מנה</text>
+
+        <!-- Waiter -->
+        <rect x="300" y="140" width="220" height="120" rx="18" fill="#a855f7" opacity="0.2" stroke="#a855f7" stroke-width="3"/>
+        <text x="410" y="185" text-anchor="middle" font-size="22" font-weight="900" fill="#a855f7">🤵 מלצר</text>
+        <text x="410" y="215" text-anchor="middle" font-size="15" fill="#334155">(פרונט-אנד)</text>
+        <text x="410" y="240" text-anchor="middle" font-size="14" fill="#64748b">מעביר הזמנה למטבח</text>
+
+        <!-- Kitchen -->
+        <rect x="560" y="140" width="220" height="120" rx="18" fill="#4f46e5" opacity="0.2" stroke="#4f46e5" stroke-width="3"/>
+        <text x="670" y="185" text-anchor="middle" font-size="22" font-weight="900" fill="#4f46e5">👨‍🍳 מטבח</text>
+        <text x="670" y="215" text-anchor="middle" font-size="15" fill="#334155">(בק-אנד)</text>
+        <text x="670" y="240" text-anchor="middle" font-size="14" fill="#64748b">מבשל את המנה</text>
+
+        <!-- Storage -->
+        <ellipse cx="930" cy="200" rx="120" ry="80" fill="#10b981" opacity="0.2" stroke="#10b981" stroke-width="3"/>
+        <text x="930" y="190" text-anchor="middle" font-size="22" font-weight="900" fill="#10b981">🗄️ מחסן</text>
+        <text x="930" y="220" text-anchor="middle" font-size="15" fill="#334155">(מסד נתונים)</text>
+        <text x="930" y="245" text-anchor="middle" font-size="14" fill="#64748b">חומרי גלם</text>
+
+        <path d="M 260 200 L 300 200" stroke="#4f46e5" stroke-width="3" marker-end="url(#arr2)"/>
+        <path d="M 520 200 L 560 200" stroke="#4f46e5" stroke-width="3" marker-end="url(#arr2)"/>
+        <path d="M 780 200 L 810 200" stroke="#4f46e5" stroke-width="3" marker-end="url(#arr2)"/>
+      </svg>
+    </div>
+
+    <ul>
+      <li><strong>הלקוח</strong> (יושב בשולחן) לא נכנס למטבח. הוא לא יודע איך מבשלים, ולא צריך לדעת.</li>
+      <li><strong>המלצר</strong> (פרונט-אנד) לוקח את ההזמנה, מעביר אותה למטבח, ומחזיר את המנה המוכנה.</li>
+      <li><strong>המטבח</strong> (בק-אנד) מבשל את המנה לפי המתכון. הוא זה שמחליט מה ואיך.</li>
+      <li><strong>המחסן</strong> (מסד נתונים) שומר את כל חומרי הגלם – בשר, ירקות, תבלינים.</li>
+    </ul>
+  </div>
+
+  <div class="deep-card">
+    <h3>💻 באילו שפות כותבים בק-אנד?</h3>
+    <p>השרת יכול להיכתב בכל שפת תכנות שתומכת ב-HTTP. אבל בפועל, ארבע שפות שולטות בשוק:</p>
+
+    <div class="vendor-grid">
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#68a063">🟢</div>
+        <h5>Node.js</h5>
+        <p><strong>JavaScript על השרת.</strong> מאותה שפה של הדפדפן.</p>
+        <span class="vendor-tag" style="background:#68a063">סטארטאפים</span>
+        <div class="vendor-meta">
+          <strong>מי משתמש:</strong> Netflix, Uber, PayPal, LinkedIn, הרבה סטארטאפים ישראליים.<br>
+          <strong>למה פופולרי:</strong> מפתח פרונט-אנד יכול לכתוב גם בק-אנד – אותה שפה. פיתוח מהיר.<br>
+          <strong>מסגרות:</strong> Express.js, NestJS
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#3776ab">🐍</div>
+        <h5>Python</h5>
+        <p><strong>שפה פשוטה וקריאה.</strong> פופולרית גם ב-Web וגם ב-Data/AI.</p>
+        <span class="vendor-tag" style="background:#3776ab">Data + Web</span>
+        <div class="vendor-meta">
+          <strong>מי משתמש:</strong> Instagram, Spotify, Dropbox, Pinterest, חברות AI.<br>
+          <strong>למה פופולרי:</strong> תחביר נקי, המון ספריות מוכנות, השפה המובילה ב-Data Science.<br>
+          <strong>מסגרות:</strong> Django, FastAPI, Flask
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#f89820">☕</div>
+        <h5>Java</h5>
+        <p><strong>ותיקה, יציבה, מהירה.</strong> שולטת בארגונים גדולים.</p>
+        <span class="vendor-tag" style="background:#f89820">ארגונים</span>
+        <div class="vendor-meta">
+          <strong>מי משתמש:</strong> בנקים (לאומי, הפועלים), חברות ביטוח, Amazon, LinkedIn, Airbnb.<br>
+          <strong>למה פופולרי:</strong> יציבות של עשרות שנים, ביצועים גבוהים, תמיכה ארוכת טווח.<br>
+          <strong>מסגרות:</strong> Spring Boot (הסטנדרט)
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#512bd4">🟣</div>
+        <h5>C# (.NET)</h5>
+        <p><strong>של מיקרוסופט.</strong> אינטגרציה מלאה עם Azure ו-Office.</p>
+        <span class="vendor-tag" style="background:#512bd4">Microsoft Stack</span>
+        <div class="vendor-meta">
+          <strong>מי משתמש:</strong> 95% מ-Fortune 500, ארגונים ישראליים רבים, Stack Overflow.<br>
+          <strong>למה פופולרי:</strong> אינטגרציה מושלמת עם Azure, Active Directory, Office 365.<br>
+          <strong>מסגרות:</strong> ASP.NET Core
+        </div>
+      </div>
+    </div>
+
+    <div class="info insight">
+      <h4>🇮🇱 מה קורה בישראל?</h4>
+      <p><strong>סטארטאפים וחברות הייטק:</strong> Node.js ו-Python שולטים. למה? פיתוח מהיר, קהילה חזקה, קל לגייס מפתחים.<br>
+      <strong>ארגונים גדולים (בנקים, ביטוח, ממשל):</strong> Java ו-C# שולטים. למה? יציבות, תמיכה ארוכת טווח, צוותים גדולים שעובדים על אותה קוד במשך עשרות שנים.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🔄 מה קורה כשהבק-אנד מקבל JSON?</h3>
+    <p>כשהבק-אנד מקבל את ה-JSON, הוא צריך להפוך אותו למשהו שהוא יכול לעבוד איתו. בואו נראה את זה צעד-צעד.</p>
+
+    <h4>🎬 שלב 1: פענוח JSON ל"אובייקטים פנימיים"</h4>
+    <p><strong>מה זה "אובייקט פנימי"?</strong> זה מבנה נתונים בזיכרון של התוכנית, שמאפשר לגשת לשדות בקלות. במקום לחפש בתוך טקסט איפה כתוב "customer_id", התוכנית פשוט כותבת <code>order.customer_id</code> ומקבלת 42.</p>
+
+    <div class="diagram">
+      <h4>📦 JSON (טקסט) → אובייקט בזיכרון</h4>
+      <svg viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+        <!-- JSON side -->
+        <rect x="40" y="40" width="480" height="520" rx="18" fill="#0f172a" stroke="#334155" stroke-width="4"/>
+        <text x="280" y="85" text-anchor="middle" font-size="20" font-weight="900" fill="#14b8a6">📨 JSON (טקסט שנשלח)</text>
+        <text x="70" y="130" font-size="16" fill="#e2e8f0" font-family="monospace">{</text>
+        <text x="90" y="160" font-size="16" fill="#86efac" font-family="monospace">"customer_id": 42,</text>
+        <text x="90" y="190" font-size="16" fill="#86efac" font-family="monospace">"customer_name": "יוסי",</text>
+        <text x="90" y="220" font-size="16" fill="#86efac" font-family="monospace">"items": [</text>
+        <text x="120" y="250" font-size="16" fill="#86efac" font-family="monospace">{</text>
+        <text x="150" y="280" font-size="16" fill="#86efac" font-family="monospace">"product_id": 7,</text>
+        <text x="150" y="310" font-size="16" fill="#86efac" font-family="monospace">"qty": 2,</text>
+        <text x="150" y="340" font-size="16" fill="#86efac" font-family="monospace">"price": 49.9</text>
+        <text x="120" y="370" font-size="16" fill="#86efac" font-family="monospace">}</text>
+        <text x="90" y="400" font-size="16" fill="#86efac" font-family="monospace">],</text>
+        <text x="90" y="430" font-size="16" fill="#86efac" font-family="monospace">"total": 99.8,</text>
+        <text x="90" y="460" font-size="16" fill="#86efac" font-family="monospace">"status": "pending"</text>
+        <text x="70" y="490" font-size="16" fill="#e2e8f0" font-family="monospace">}</text>
+        <text x="280" y="530" text-anchor="middle" font-size="14" fill="#94a3b8" font-style="italic">זה רק רצף תווים</text>
+
+        <!-- Arrow -->
+        <defs>
+          <marker id="arr3" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
+            <polygon points="0 0, 12 4, 0 8" fill="#4f46e5"/>
+          </marker>
+        </defs>
+        <path d="M 540 300 L 660 300" stroke="#4f46e5" stroke-width="5" marker-end="url(#arr3)"/>
+        <text x="600" y="275" text-anchor="middle" font-size="18" font-weight="900" fill="#4f46e5">JSON.parse()</text>
+        <text x="600" y="330" text-anchor="middle" font-size="14" fill="#64748b">הופך טקסט → מבנה</text>
+
+        <!-- Object side -->
+        <rect x="680" y="40" width="480" height="520" rx="18" fill="#eef2ff" stroke="#4f46e5" stroke-width="4"/>
+        <text x="920" y="85" text-anchor="middle" font-size="20" font-weight="900" fill="#4f46e5">🧠 אובייקט בזיכרון</text>
+
+        <rect x="710" y="110" width="420" height="70" rx="10" fill="#fff" stroke="#4f46e5" stroke-width="2"/>
+        <text x="730" y="140" font-size="17" fill="#0f172a" font-weight="800">customer_id:</text>
+        <text x="920" y="140" font-size="17" fill="#4f46e5" font-weight="900">42</text>
+        <text x="730" y="165" font-size="17" fill="#0f172a" font-weight="800">customer_name:</text>
+        <text x="920" y="165" font-size="17" fill="#4f46e5" font-weight="900">"יוסי"</text>
+
+        <rect x="710" y="195" width="420" height="150" rx="10" fill="#fff" stroke="#4f46e5" stroke-width="2"/>
+        <text x="730" y="225" font-size="17" fill="#0f172a" font-weight="800">items:</text>
+        <rect x="740" y="240" width="380" height="90" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1"/>
+        <text x="760" y="270" font-size="15" fill="#0f172a" font-weight="700">items[0].product_id = 7</text>
+        <text x="760" y="295" font-size="15" fill="#0f172a" font-weight="700">items[0].qty = 2</text>
+        <text x="760" y="320" font-size="15" fill="#0f172a" font-weight="700">items[0].price = 49.9</text>
+
+        <rect x="710" y="360" width="420" height="50" rx="10" fill="#fff" stroke="#4f46e5" stroke-width="2"/>
+        <text x="730" y="390" font-size="17" fill="#0f172a" font-weight="800">total:</text>
+        <text x="920" y="390" font-size="17" fill="#4f46e5" font-weight="900">99.8</text>
+
+        <rect x="710" y="425" width="420" height="50" rx="10" fill="#fff" stroke="#4f46e5" stroke-width="2"/>
+        <text x="730" y="455" font-size="17" fill="#0f172a" font-weight="800">status:</text>
+        <text x="920" y="455" font-size="17" fill="#4f46e5" font-weight="900">"pending"</text>
+
+        <text x="920" y="520" text-anchor="middle" font-size="15" fill="#4f46e5" font-weight="700">אפשר לגשת ישירות לכל שדה!</text>
+      </svg>
+    </div>
+
+    <div class="info tip">
+      <h4>💡 למה זה חשוב?</h4>
+      <p>טקסט הוא רק רצף תווים – אי אפשר "לחשב" איתו. כדי שהתוכנית תוכל לעשות משהו שימושי (למשל: לחשב סך הכל, לבדוק מלאי, להוסיף מס), היא חייבת להפוך את הטקסט למבנה שהיא מבינה. זה בדיוק מה ש-<code>JSON.parse()</code> עושה.</p>
+    </div>
+
+    <h4>🎬 שלב 2: לוגיקה עסקית</h4>
+    <p>עכשיו, כשהנתונים בזיכרון, הבק-אנד מבצע את כל הבדיקות והחישובים:</p>
+    <ul>
+      <li>✓ האם הלקוח קיים במערכת?</li>
+      <li>✓ האם כל המוצרים במלאי?</li>
+      <li>✓ האם המחירים נכונים? (לפעמים יש הנחות מיוחדות)</li>
+      <li>✓ חישוב סך הכל + מס + משלוח</li>
+      <li>✓ אישור תשלום מחברת האשראי</li>
+      <li>✓ שמירת ההזמנה במסד הנתונים</li>
+    </ul>
+  </div>
+</section>
+
+<!-- BLOCK 5: INSERT INTO -->
+<section class="section" id="block5">
+  <div class="section-head">
+    <span class="section-tag">בלוק 5 · השמירה · 45 דקות</span>
+    <h2>תחנה 4: השמירה במסד הנתונים</h2>
+    <p>מה זה INSERT INTO? איך הנתונים באמת נכנסים לטבלה?</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🗺️ הסיפור המלא: מהבקשה לטבלאות</h3>
+    <p>נחזור ל-Mini-Shop. יוסי הזמין 2 חולצות כחולות. הבק-אנד קיבל את ה-JSON, פענח אותו, בדק מלאי – ועכשיו הוא צריך לשמור את ההזמנה. אבל <strong>איפה</strong> בדיוק הוא שומר אותה?</p>
+    <p>התשובה: <strong>בכמה טבלאות מקושרות</strong>. בואו נכיר אותן:</p>
+
+    <div class="db-table">
+      <div class="db-table-head">👥 טבלת customers <small>לקוחות</small></div>
+      <table>
+        <tr><th>id (PK)</th><th>name</th><th>email</th><th>country</th></tr>
+        <tr><td class="pk">42</td><td>יוסי כהן</td><td>yossi@example.com</td><td>Israel</td></tr>
+      </table>
+    </div>
+
+    <div class="db-table">
+      <div class="db-table-head">📦 טבלת products <small>מוצרים</small></div>
+      <table>
+        <tr><th>id (PK)</th><th>name</th><th>category</th><th>price</th><th>stock</th></tr>
+        <tr><td class="pk">7</td><td>חולצה כחולה</td><td>clothing</td><td>49.9</td><td>15</td></tr>
+      </table>
+    </div>
+
+    <div class="db-table">
+      <div class="db-table-head">🛒 טבלת orders <small>הזמנות</small></div>
+      <table>
+        <tr><th>id (PK)</th><th>customer_id (FK)</th><th>total</th><th>status</th><th>created_at</th></tr>
+        <tr><td class="pk">1234</td><td class="fk">42</td><td>99.8</td><td>pending</td><td>2026-06-20</td></tr>
+      </table>
+    </div>
+
+    <div class="db-table">
+      <div class="db-table-head">📋 טבלת order_items <small>פריטי הזמנה</small></div>
+      <table>
+        <tr><th>id (PK)</th><th>order_id (FK)</th><th>product_id (FK)</th><th>qty</th><th>price</th></tr>
+        <tr><td class="pk">5678</td><td class="fk">1234</td><td class="fk">7</td><td>2</td><td>49.9</td></tr>
+      </table>
+    </div>
+
+    <div class="info insight">
+      <h4>💡 למה 4 טבלאות ולא אחת?</h4>
+      <p><strong>PK</strong> = Primary Key (מפתח ראשי, מזהה ייחודי). <strong>FK</strong> = Foreign Key (מפתח זר, מצביע לטבלה אחרת).<br>
+      הנתונים מחולקים לטבלאות כדי <strong>לא לחזור על עצמם</strong> (נורמליזציה). שם הלקוח שמור פעם אחת ב-customers, לא בכל הזמנה. שם המוצר שמור פעם אחת ב-products. זה חוסך מקום ומונע טעויות.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>📝 שלב 3: הבק-אנד בונה שאילתות SQL</h3>
+    <p>עכשיו הבק-אנד צריך לכתוב את הנתונים לטבלאות. הוא משתמש בשפה שנקראת <strong>SQL</strong> (Structured Query Language). בואו נראה איך זה נראה עבור ההזמנה של יוסי:</p>
+
+    <h4>🎯 שאילתה 1: יצירת ההזמנה עצמה</h4>
+    <div class="code-block" data-lang="SQL">
+<span class="comment">-- הוספת שורה חדשה לטבלת orders</span>
+<span class="kw">INSERT INTO</span> <span class="tbl">orders</span> (customer_id, total, status, created_at)
+<span class="kw">VALUES</span> (<span class="num">42</span>, <span class="num">99.8</span>, <span class="str">'pending'</span>, <span class="str">'2026-06-20 14:30:00'</span>);
+
+<span class="comment">-- קבלת המזהה של ההזמנה החדשה (auto-generated)</span>
+<span class="kw">SELECT</span> <span class="fn">LAST_INSERT_ID</span>();  <span class="comment">-- מחזיר: 1234</span>
+    </div>
+
+    <h4>🎯 שאילתה 2: הוספת הפריטים להזמנה</h4>
+    <div class="code-block" data-lang="SQL">
+<span class="comment">-- הוספת פריט לטבלת order_items</span>
+<span class="kw">INSERT INTO</span> <span class="tbl">order_items</span> (order_id, product_id, qty, price)
+<span class="kw">VALUES</span> (<span class="num">1234</span>, <span class="num">7</span>, <span class="num">2</span>, <span class="num">49.9</span>);
+    </div>
+
+    <h4>🎯 שאילתה 3: עדכון המלאי</h4>
+    <div class="code-block" data-lang="SQL">
+<span class="comment">-- הפחתת הכמות מהמלאי</span>
+<span class="kw">UPDATE</span> <span class="tbl">products</span>
+<span class="kw">SET</span> stock = stock - <span class="num">2</span>
+<span class="kw">WHERE</span> id = <span class="num">7</span>;
+    </div>
+
+    <div class="info warn">
+      <h4>⚠️ שימו לב – זה לא פשוט!</h4>
+      <p>צריך לבצע <strong>3 פעולות נפרדות</strong> על 2 טבלאות שונות. מה קורה אם הפעולה הראשונה הצליחה (ההזמנה נשמרה), אבל השלישית נכשלה (המלאי לא עודכן)? המערכת במצב לא עקבי – יש הזמנה אבל המלאי לא ירד. על זה בדיוק פותרת <strong>הטרנזקציה</strong>, שנכיר בבלוק הבא.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🔌 שלב 4: איך הבק-אנד "מדבר" עם מסד הנתונים?</h3>
+    <p>הבק-אנד (שכתוב ב-Python/Java/Node.js) לא יכול פשוט "לדבר" ישירות עם מסד הנתונים. הוא צריך <strong>מתרגם</strong>. יש שתי דרכים עיקריות:</p>
+
+    <h4>🛠️ דרך 1: Driver (דרייבר)</h4>
+    <p><strong>דרייבר</strong> הוא ספריית תוכנה קטנה שיודעת "לדבר" עם מסד נתונים ספציפי. לדוגמה:</p>
+    <ul>
+      <li><code>pg</code> – דרייבר ל-PostgreSQL ב-Node.js</li>
+      <li><code>psycopg2</code> – דרייבר ל-PostgreSQL ב-Python</li>
+      <li><code>mysql2</code> – דרייבר ל-MySQL ב-Node.js</li>
+      <li><code>JDBC</code> – דרייבר כללי ל-Java שעובד עם כל מסד</li>
+    </ul>
+    <p>הדרייבר פותח <strong>חיבור רשת</strong> למסד הנתונים (בדרך כלל בפרוטוקול TCP), שולח את ה-SQL, ומחזיר את התוצאה.</p>
+
+    <div class="code-block" data-lang="JavaScript (Node.js + pg)">
+<span class="comment">// דוגמה: שמירת הזמנה עם דרייבר pg</span>
+<span class="kw">const</span> { Pool } = <span class="fn">require</span>(<span class="str">'pg'</span>);
+<span class="kw">const</span> pool = <span class="kw">new</span> <span class="fn">Pool</span>({ connectionString: process.env.DATABASE_URL });
+
+<span class="comment">// שליחת פקודת SQL למסד הנתונים</span>
+<span class="kw">const</span> result = <span class="kw">await</span> pool.<span class="fn">query</span>(
+  <span class="str">"INSERT INTO orders (customer_id, total) VALUES ($1, $2) RETURNING id"</span>,
+  [order.customer_id, order.total]
+);
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"נוצרה הזמנה מספר:"</span>, result.rows[<span class="num">0</span>].id);
+    </div>
+
+    <h4>🛠️ דרך 2: ORM (Object-Relational Mapping)</h4>
+    <p><strong>ORM</strong> הוא שכבה נוספת מעל הדרייבר. הוא מאפשר לעבוד עם טבלאות <strong>כאילו הן אובייקטים</strong> בשפת התכנות – בלי לכתוב SQL ידנית.</p>
+
+    <div class="code-block" data-lang="JavaScript (Node.js + Prisma ORM)">
+<span class="comment">// אותה פעולה, אבל עם ORM – בלי SQL!</span>
+<span class="kw">const</span> newOrder = <span class="kw">await</span> prisma.order.<span class="fn">create</span>({
+  data: {
+    customer_id: order.customer_id,
+    total: order.total,
+    status: <span class="str">'pending'</span>
+  }
+});
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"נוצרה הזמנה מספר:"</span>, newOrder.id);
+    </div>
+
+    <div class="tbl">
+      <table>
+        <tr>
+          <th>גישת השוואה</th>
+          <th>Driver (דרייבר)</th>
+          <th>ORM</th>
+        </tr>
+        <tr>
+          <td>כתיבת SQL</td>
+          <td>ידנית – אתה כותב את ה-SQL</td>
+          <td>אוטומטית – ה-ORM מייצר SQL</td>
+        </tr>
+        <tr>
+          <td>שליטה</td>
+          <td>מלאה – אפשר לכתוב כל שאילתה</td>
+          <td>מוגבלת – ה-ORM מחליט</td>
+        </tr>
+        <tr>
+          <td>ביצועים</td>
+          <td>מהירים יותר (SQL מותאם)</td>
+          <td>קצת יותר איטיים</td>
+        </tr>
+        <tr>
+          <td>נוחות</td>
+          <td>דורש ידע ב-SQL</td>
+          <td>נוח מאוד למפתחים</td>
+        </tr>
+        <tr>
+          <th>דוגמאות</th>
+          <td>pg, psycopg2, mysql2</td>
+          <td>Prisma, Sequelize, TypeORM, SQLAlchemy</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info insight">
+      <h4>🇮🇱 מה נפוץ בישראל?</h4>
+      <p><strong>סטארטאפים:</strong> בדרך כלל ORM (Prisma, Sequelize) – פיתוח מהיר.<br>
+      <strong>ארגונים גדולים:</strong> לרוב דרייבר ישיר או ORM כבד (Hibernate ב-Java) – שליטה מלאה וביצועים.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 6: OPERATIONAL DB -->
+<section class="section" id="block6">
+  <div class="section-head">
+    <span class="section-tag">בלוק 6 · מסד תפעולי · 60 דקות</span>
+    <h2>מה זה "מסד נתונים תפעולי"?</h2>
+    <p>איפה הנתונים באמת יושבים? אילו מסדים קיימים? מי משתמש במה?</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🗄️ הגדרה: מה זה מסד נתונים תפעולי?</h3>
+    <p><strong>מסד נתונים תפעולי</strong> (נקרא גם <strong>OLTP</strong> – Online Transaction Processing) הוא המקום שבו <strong>העסק חי ונושם בזמן אמת</strong>. כל הזמנה, כל לקוח, כל מוצר – הכל שמור כאן.</p>
+
+    <h4>🎯 מה התפקיד שלו?</h4>
+    <ul>
+      <li>לקבל הזמנות מלקוחות <strong>עכשיו</strong></li>
+      <li>לעדכן מלאי <strong>בזמן אמת</strong></li>
+      <li>לשמור כל פעולה <strong>באופן אמין</strong> – גם אם נופל החשמל</li>
+      <li>לאפשר לאלפי משתמשים לעבוד <strong>בו-זמנית</strong> בלי להפריע אחד לשני</li>
+    </ul>
+
+    <div class="info important">
+      <h4>⚡ שלוש דרישות קריטיות</h4>
+      <p><strong>1. מהירות:</strong> כל פעולה חייבת להסתיים באלפיות שנייה – כי הלקוח ממתין לתשובה.<br>
+      <strong>2. אמינות:</strong> אסור לאבד אף הזמנה – גם אם יש הפסקת חשמל או תקלה בשרת.<br>
+      <strong>3. מקביליות:</strong> אלפי לקוחות קונים בו-זמנית, והמערכת חייבת להתמודד בלי "לדרוס" נתונים של אחרים.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>📊 אילו מסדי נתונים תפעוליים קיימים?</h3>
+    <p>המסדים מתחלקים לשתי משפחות עיקריות: <strong>SQL</strong> (טבלאות) ו-<strong>NoSQL</strong> (גמישים). בואו נכיר את הנפוצים:</p>
+
+    <h4>🗃️ משפחת SQL (Relational Databases)</h4>
+
+    <div class="vendor-grid">
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#cc2927">🟥</div>
+        <h5>SQL Server</h5>
+        <p>של מיקרוסופט. הנפוץ ביותר בארגונים ישראליים.</p>
+        <span class="vendor-tag" style="background:#cc2927">Microsoft</span>
+        <div class="vendor-meta">
+          <strong>למה נפוץ בישראל:</strong> מדינת ישראל חתומה על הסכם רישוי רחב עם מיקרוסופט – לכן הרבה ארגונים משתמשים במוצריה. אינטגרציה מושלמת עם Active Directory ו-Office 365.<br>
+          <strong>מי משתמש:</strong> בנקים, חברות ביטוח, משרדי ממשלה, צה"ל, חברות גדולות.<br>
+          <strong>שפת שאילתות:</strong> T-SQL (הניב של מיקרוסופט ל-SQL).<br>
+          <strong>ענן:</strong> Azure SQL Database.
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#336791">🐘</div>
+        <h5>PostgreSQL</h5>
+        <p>קוד פתוח. <strong>הסטנדרט בסטארטאפים מודרניים.</strong></p>
+        <span class="vendor-tag" style="background:#336791">Open Source</span>
+        <div class="vendor-meta">
+          <strong>למה הסטנדרט בסטארטאפים:</strong> חינמי לגמרי, קוד פתוח, תכונות מתקדמות (JSON, GIS, Full-Text Search), קהילה ענקית, וקל למצוא מפתחים שמכירים אותו.<br>
+          <strong>מי משתמש:</strong> Wix, Monday, Fiverr, Instagram, Apple, Spotify.<br>
+          <strong>שפת שאילתות:</strong> SQL סטנדרטי + הרחבות.<br>
+          <strong>ענן:</strong> AWS RDS for PostgreSQL, Google Cloud SQL, Azure Database for PostgreSQL.
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#00758f">🐬</div>
+        <h5>MySQL</h5>
+        <p>הכי פופולרי בעולם מבחינת מספר התקנות.</p>
+        <span class="vendor-tag" style="background:#00758f">Oracle</span>
+        <div class="vendor-meta">
+          <strong>הקשר ל-WordPress:</strong> WordPress (מערכת ניהול התוכן הנפוצה בעולם – 43% מהאינטרנט!) משתמשת ב-MySQL כברירת מחדל. לכן המון אתרי תוכן ובלוגים רצים על MySQL.<br>
+          <strong>מי משתמש:</strong> WordPress, Facebook (בהתחלה), YouTube, Airbnb.<br>
+          <strong>ההבדל מ-PostgreSQL:</strong> MySQL פשוט יותר ומהיר יותר לקריאות פשוטות. PostgreSQL מתקדם יותר וגמיש יותר.<br>
+          <strong>ענן:</strong> AWS RDS for MySQL, Google Cloud SQL.
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#f89820">🔶</div>
+        <h5>Oracle Database</h5>
+        <p>הכי יקר והכי חזק – לארגוני ענק.</p>
+        <span class="vendor-tag" style="background:#f89820">Enterprise</span>
+        <div class="vendor-meta">
+          <strong>למה "הכי חזק":</strong> תומך במאות טריליוני שורות, אלפי טרנזקציות בשנייה, ופיצ'רים מתקדמים כמו Real Application Clusters (RAC) שמאפשרים למסד לרוץ על כמה שרתים במקביל.<br>
+          <strong>מי משתמש:</strong> בנקים גדולים (בנק ישראל, בנק לאומי), חברות תקשורת (פרטנר, סלקום), משרדי ממשלה.<br>
+          <strong>חיסרון:</strong> רישוי יקר מאוד (מאות אלפי דולרים לשנה).<br>
+          <strong>ענן:</strong> Oracle Cloud (OCI).
+        </div>
+      </div>
+    </div>
+
+    <h4>🎯 משפחת NoSQL (Non-Relational)</h4>
+    <p>מסדים שלא משתמשים בטבלאות, אלא במבנים גמישים יותר. עליהם נרחיב בהרצאה 5, אבל חשוב להכיר את השמות:</p>
+
+    <div class="vendor-grid">
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#47a248">🍃</div>
+        <h5>MongoDB</h5>
+        <p>שומר נתונים כמסמכי JSON גמישים.</p>
+        <span class="vendor-tag" style="background:#47a248">Document DB</span>
+        <div class="vendor-meta">
+          <strong>מתי משתמשים:</strong> כשהמבנה של הנתונים משתנה תדיר, או כשרוצים פיתוח מהיר מאוד.<br>
+          <strong>מי:</strong> eBay, Cisco, Forbes.
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#ffca28;color:#000">🔥</div>
+        <h5>Firebase</h5>
+        <p>של גוגל. מעולה לאפליקציות מובייל עם סנכרון בזמן אמת.</p>
+        <span class="vendor-tag" style="background:#ffca28;color:#000">Google</span>
+        <div class="vendor-meta">
+          <strong>מתי:</strong> אפליקציות שצריכות סנכרון מיידי בין מכשירים (צ'אט, משחקים).<br>
+          <strong>מי:</strong> הרבה אפליקציות מובייל קטנות ובינוניות.
+        </div>
+      </div>
+
+      <div class="vendor-card">
+        <div class="vendor-logo" style="background:#dc382d">⚡</div>
+        <h5>Redis</h5>
+        <p>מסד נתונים <strong>בזיכרון</strong> – הכי מהיר שיש.</p>
+        <span class="vendor-tag" style="background:#dc382d">In-Memory</span>
+        <div class="vendor-meta">
+          <strong>מתי:</strong> ל-cache (שמירת תוצאות לחישוב מהיר), session של משתמשים, תורים.<br>
+          <strong>מי:</strong> Twitter, GitHub, Stack Overflow.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🎯 איך בוחרים מסד נתונים?</h3>
+    <p>הבחירה תלויה במספר שיקולים:</p>
+
+    <div class="tbl">
+      <table>
+        <tr>
+          <th>שיקול</th>
+          <th>מה שואלים</th>
+          <th>איך זה משפיע</th>
+        </tr>
+        <tr>
+          <td>📊 מבנה הנתונים</td>
+          <td>הנתונים מובנים (טבלאות) או גמישים?</td>
+          <td>מובנים → SQL. גמישים → NoSQL</td>
+        </tr>
+        <tr>
+          <td>💰 תקציב</td>
+          <td>כמה אפשר להשקיע ברישוי?</td>
+          <td>מוגבל → PostgreSQL (חינמי). גדול → Oracle</td>
+        </tr>
+        <tr>
+          <td>👥 מומחיות הצוות</td>
+          <td>איזה מסד הצוות כבר מכיר?</td>
+          <td>ללכת עם מה שהצוות מכיר – חוסך חודשי למידה</td>
+        </tr>
+        <tr>
+          <td>📏 גודל וצמיחה</td>
+          <td>כמה נתונים יהיו בעוד שנה?</td>
+          <td>צמיחה מהירה → ענן עם auto-scaling</td>
+        </tr>
+        <tr>
+          <td>🔒 רגולציה</td>
+          <td>GDPR? רגולציה של בנק ישראל?</td>
+          <td>מחמיר → on-premises או private cloud</td>
+        </tr>
+        <tr>
+          <td>☁️ באיזה ענן?</td>
+          <td>החברה כבר ב-AWS? Azure? GCP?</td>
+          <td>להישאר באותו ענן – זול ופשוט יותר</td>
+        </tr>
+        <tr>
+          <td>🤝 אינטגרציה</td>
+          <td>Office 365? Google Workspace?</td>
+          <td>עולם מיקרוסופט → SQL Server/Azure</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info warn">
+      <h4>⚠️ טעות נפוצה של מתחילים</h4>
+      <p>לחשוב ש"מסד נתונים אחד יספיק לכל דבר". במציאות, חברות משתמשות ב-<strong>5-10 מסדי נתונים שונים</strong> בו-זמנית:<br>
+      • PostgreSQL להזמנות<br>
+      • Redis ל-cache<br>
+      • Elasticsearch לחיפוש<br>
+      • MongoDB ללוגים<br>
+      • Kafka לתורים<br>
+      לכל אחד המטרה שלו.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 7: TRANSACTION -->
+<section class="section" id="block7">
+  <div class="section-head">
+    <span class="section-tag">בלוק 7 · טרנזקציה · 45 דקות</span>
+    <h2>תחנה 5: טרנזקציה – הכל או כלום</h2>
+    <p>מה קורה אם חצי מהשמירה הצליחה וחצי נכשלה?</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🔥 הבעיה: "חצי הזמנה"</h3>
+    <p>נחזור לדוגמה של יוסי. כדי להשלים את ההזמנה שלו, הבק-אנד צריך לבצע <strong>3 פעולות נפרדות</strong>:</p>
+
+    <div class="order-flow">
+      <div class="order-row">
+        <div class="order-num">1</div>
+        <div class="order-body">
+          <h5>יצירת ההזמנה ב-orders</h5>
+          <p>INSERT לטבלת ההזמנות</p>
+        </div>
+      </div>
+      <div class="order-row">
+        <div class="order-num">2</div>
+        <div class="order-body">
+          <h5>הוספת הפריטים ב-order_items</h5>
+          <p>INSERT לטבלת פריטי הזמנה</p>
+        </div>
+      </div>
+      <div class="order-row">
+        <div class="order-num">3</div>
+        <div class="order-body">
+          <h5>עדכון המלאי ב-products</h5>
+          <p>UPDATE שמפחית את הכמות מהמלאי</p>
+        </div>
+      </div>
+    </div>
+
+    <h4>😱 מה קורה אם פעולה 1 הצליחה אבל 3 נכשלה?</h4>
+    <p>התוצאה: <strong>יש הזמנה במערכת, אבל המלאי לא ירד.</strong> זה אומר:</p>
+    <ul>
+      <li>הלקוח חויב על מוצר שאולי אין במלאי</li>
+      <li>לקוח אחר עלול להזמין את אותו מוצר במקביל – ואז שניהם יתאכזבו</li>
+      <li>הדוחות של המנהל יהיו שגויים</li>
+    </ul>
+
+    <div class="info important">
+      <h4>💡 הפתרון: טרנזקציה</h4>
+      <p><strong>טרנזקציה</strong> היא קבוצה של פעולות שמתבצעות <strong>כיחידה אחת</strong>. או שהכל מצליח – או שהכל מתבטל. אין אמצע.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🔄 איך טרנזקציה עובדת?</h3>
+    <p>שלוש פקודות SQL מיוחדות שולטות בטרנזקציה:</p>
+
+    <div class="code-block" data-lang="SQL">
+<span class="comment">-- שלב 1: מתחילים טרנזקציה</span>
+<span class="kw">BEGIN TRANSACTION</span>;
+
+<span class="comment">-- שלב 2: מבצעים את כל הפעולות</span>
+<span class="kw">INSERT INTO</span> <span class="tbl">orders</span> (customer_id, total, status)
+<span class="kw">VALUES</span> (<span class="num">42</span>, <span class="num">99.8</span>, <span class="str">'pending'</span>);
+
+<span class="kw">INSERT INTO</span> <span class="tbl">order_items</span> (order_id, product_id, qty, price)
+<span class="kw">VALUES</span> (<span class="num">1234</span>, <span class="num">7</span>, <span class="num">2</span>, <span class="num">49.9</span>);
+
+<span class="kw">UPDATE</span> <span class="tbl">products</span> <span class="kw">SET</span> stock = stock - <span class="num">2</span> <span class="kw">WHERE</span> id = <span class="num">7</span>;
+
+<span class="comment">-- שלב 3: אם הכל הצליח – COMMIT (שמור לצמיתות)</span>
+<span class="comment">-- אם משהו נכשל – ROLLBACK (בטל הכל)</span>
+<span class="kw">COMMIT</span>;  <span class="comment">-- או ROLLBACK</span>
+    </div>
+
+    <h4>📋 תרחישים אפשריים</h4>
+
+    <div class="compare-grid">
+      <div class="compare-card a">
+        <div class="compare-icon">✅</div>
+        <h5>תרחיש 1: הכל מצליח</h5>
+        <p>כל 3 הפעולות בוצעו בהצלחה → <strong>COMMIT</strong></p>
+        <div class="compare-details" style="display:block;margin-top:16px;padding-top:16px">
+          <ul>
+            <li>ההזמנה נשמרה</li>
+            <li>הפריטים נשמרו</li>
+            <li>המלאי עודכן</li>
+            <li>הלקוח מקבל אישור</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card b">
+        <div class="compare-icon">❌</div>
+        <h5>תרחיש 2: משהו נכשל</h5>
+        <p>למשל: המלאי אזל → <strong>ROLLBACK</strong></p>
+        <div class="compare-details" style="display:block;margin-top:16px;padding-top:16px">
+          <ul>
+            <li>ההזמנה <strong>מתבטלת</strong></li>
+            <li>הפריטים <strong>מתבטלים</strong></li>
+            <li>המלאי <strong>חוזר לקדמותו</strong></li>
+            <li>הלקוח מקבל "אזל מהמלאי"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🛡️ מי מגדיר את הטרנזקציה?</h3>
+
+    <div class="info insight">
+      <h4>💡 המפתח מגדיר – לא המשתמש</h4>
+      <p>המשתמש (יוסי) לא יודע ולא צריך לדעת שיש טרנזקציה. <strong>מפתח הבק-אנד</strong> הוא זה שמגדיר בקוד: "כל הפעולות האלה הן טרנזקציה אחת".</p>
+      <p>ברגע שהמפתח הגדיר את זה – מסד הנתונים עצמו אחראי לוודא שהכל או כלום. זה מנגנון מובנה במסד, לא משהו שהמפתח צריך לממש בעצמו.</p>
+    </div>
+
+    <h4>🎬 דוגמה בקוד אמיתי (Node.js)</h4>
+    <div class="code-block" data-lang="JavaScript">
+<span class="kw">const</span> client = <span class="kw">await</span> pool.<span class="fn">connect</span>();
+
+<span class="kw">try</span> {
+  <span class="comment">// מתחילים טרנזקציה</span>
+  <span class="kw">await</span> client.<span class="fn">query</span>(<span class="str">'BEGIN'</span>);
+
+  <span class="comment">// פעולה 1: יצירת הזמנה</span>
+  <span class="kw">const</span> orderResult = <span class="kw">await</span> client.<span class="fn">query</span>(
+    <span class="str">"INSERT INTO orders (customer_id, total) VALUES ($1, $2) RETURNING id"</span>,
+    [<span class="num">42</span>, <span class="num">99.8</span>]
+  );
+  <span class="kw">const</span> orderId = orderResult.rows[<span class="num">0</span>].id;
+
+  <span class="comment">// פעולה 2: הוספת פריטים</span>
+  <span class="kw">await</span> client.<span class="fn">query</span>(
+    <span class="str">"INSERT INTO order_items (order_id, product_id, qty) VALUES ($1, $2, $3)"</span>,
+    [orderId, <span class="num">7</span>, <span class="num">2</span>]
+  );
+
+  <span class="comment">// פעולה 3: עדכון מלאי</span>
+  <span class="kw">await</span> client.<span class="fn">query</span>(
+    <span class="str">"UPDATE products SET stock = stock - $1 WHERE id = $2 AND stock >= $1"</span>,
+    [<span class="num">2</span>, <span class="num">7</span>]
+  );
+
+  <span class="comment">// אם הגענו לכאן – הכל הצליח!</span>
+  <span class="kw">await</span> client.<span class="fn">query</span>(<span class="str">'COMMIT'</span>);
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'✅ ההזמנה נשמרה בהצלחה'</span>);
+
+} <span class="kw">catch</span> (error) {
+  <span class="comment">// משהו נכשל – מבטלים הכל!</span>
+  <span class="kw">await</span> client.<span class="fn">query</span>(<span class="str">'ROLLBACK'</span>);
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'❌ ההזמנה בוטלה:'</span>, error.message);
+} <span class="kw">finally</span> {
+  client.<span class="fn">release</span>();
+}
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🎓 ACID – ארבעת עמודי התווך של טרנזקציות</h3>
+    <p>טרנזקציה תקפה חייבת לעמוד בארבע דרישות, שמכונות <strong>ACID</strong>:</p>
+
+    <div class="compare-grid">
+      <div class="compare-card a">
+        <div class="compare-icon">🎯</div>
+        <h5>A – Atomicity (אטומיות)</h5>
+        <p>"הכל או כלום" – אין מצב של חצי הצלחה.</p>
+        <div class="compare-details" style="display:block;margin-top:16px;padding-top:16px">
+          <ul>
+            <li>או שכל הפעולות בטרנזקציה מצליחות</li>
+            <li>או שאף אחת מהן לא קורית</li>
+            <li>כמו אטום – לא ניתן לחלק</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card b">
+        <div class="compare-icon">⚖️</div>
+        <h5>C – Consistency (עקביות)</h5>
+        <p>הנתונים נשארים הגיוניים אחרי הטרנזקציה.</p>
+        <div class="compare-details" style="display:block;margin-top:16px;padding-top:16px">
+          <ul>
+            <li>המלאי לא יורד מתחת לאפס</li>
+            <li>סכומי כסף תואמים בין טבלאות</li>
+            <li>כל החוקים העסקיים נשמרים</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card c">
+        <div class="compare-icon">🔒</div>
+        <h5>I – Isolation (בידוד)</h5>
+        <p>טרנזקציות מקבילות לא מפריעות זו לזו.</p>
+        <div class="compare-details" style="display:block;margin-top:16px;padding-top:16px">
+          <ul>
+            <li>שני לקוחות שקונים בו-זמנית – כל אחד רואה מלאי "נכון"</li>
+            <li>אין "קריאות מלוכלכות" של נתונים לא גמורים</li>
+            <li>נשמר סדר הגיוני</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card d">
+        <div class="compare-icon">💾</div>
+        <h5>D – Durability (עמידות)</h5>
+        <p>אחרי COMMIT – הנתונים נשמרים לצמיתות.</p>
+        <div class="compare-details" style="display:block;margin-top:16px;padding-top:16px">
+          <ul>
+            <li>גם אם נופל החשמל מיד אחרי</li>
+            <li>גם אם השרת קורס</li>
+            <li>הנתונים נשמרים בדיסק</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="info tip">
+      <h4>💡 למה זה חשוב לאנליסט?</h4>
+      <p>כשתנתחו נתונים במחסן האנליטי (בהמשך הקורס), אתם יכולים <strong> לסמוך</strong> שהנתונים שאתם רואים הם עקביים ואמיתיים. זאת בגלל שמסד הנתונים התפעולי הקפיד על ACID כשהנתונים נשמרו. בלי ACID – הנתונים היו מלאי סתירות.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 8: WHERE IS IT -->
+<section class="section" id="block8">
+  <div class="section-head">
+    <span class="section-tag">בלוק 8 · מיקום · 60 דקות</span>
+    <h2>איפה מסד הנתונים פיזית נמצא?</h2>
+    <p>On-Premises מול Cloud – AWS, Azure, GCP – מה ההבדלים?</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🏠 מול ☁️ – שתי אפשרויות עיקריות</h3>
+
+    <div class="compare-grid">
+      <div class="compare-card b">
+        <div class="compare-icon">🏠</div>
+        <h5>On-Premises (בבית)</h5>
+        <p>החברה קונה שרתים פיזיים ומציבה אותם אצלה.</p>
+        <div class="compare-details">
+          <ul>
+            <li><strong>שליטה מלאה</strong> בחומרה וברשת</li>
+            <li><strong>מתאים לרגולציה מחמירה</strong> – הנתונים לא יוצאים מהחברה</li>
+            <li><strong>יקר מאוד:</strong> מאות אלפי ₪ לשרתים, חדר מאובטח, מיזוג, UPS</li>
+            <li><strong>דורש צוות:</strong> DBA, אנשי IT, אנשי רשת</li>
+            <li><strong>קשה לגדול:</strong> צריך לקנות עוד שרתים פיזית</li>
+            <li><strong>מי משתמש:</strong> בנקים (בגלל רגולציית בנק ישראל), משרדי ממשלה, צה"ל, חברות ביטוח ותיקות</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-card a">
+        <div class="compare-icon">☁️</div>
+        <h5>Cloud (בענן)</h5>
+        <p>שוכרים מסד נתונים מנוהל מספק ענן.</p>
+        <div class="compare-details">
+          <ul>
+            <li><strong>זול להתחלה:</strong> משלמים לפי שימוש</li>
+            <li><strong>אין צוות DBA:</strong> הספק מתחזק הכל</li>
+            <li><strong>Auto-scaling:</strong> המסד גדל אוטומטית עם העומס</li>
+            <li><strong>גיבויים מובנים:</strong> snapshots, disaster recovery</li>
+            <li><strong>חיסרון:</strong> עלויות יכולות לצמוח, תלויים בספק</li>
+            <li><strong>מי משתמש:</strong> 80%+ מהחברות החדשות</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="info insight">
+      <h4>🔀 גישה שלישית: היברידית</h4>
+      <p>הרבה ארגונים גדולים עובדים <strong>גם וגם</strong>: נתונים רגישים (תעודות זהות, יתרות בנק) נשארים on-premises, בעוד אפליקציות חדשות וניתוחים עוברים לענן.</p>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>☁️ שלושת ספקי הענן הגדולים</h3>
+    <p>שלוש חברות שולטות בשוק הענן העולמי – AWS, Azure, ו-Google Cloud. בואו נכיר אותן לעומק:</p>
+
+    <div class="cloud-grid">
+      <div class="cloud-card aws">
+        <h4><span class="logo">🟧</span> AWS (Amazon Web Services)</h4>
+        <p class="tagline">מוביל השוק העולמי. של אמזון. הוותיק והגדול ביותר.</p>
+        <ul>
+          <li><strong>נתח שוק עולמי:</strong> כ-32% (הכי גדול)</li>
+          <li><strong>מסד נתונים SQL עיקרי:</strong> Amazon RDS (PostgreSQL, MySQL, SQL Server, Oracle)</li>
+          <li><strong>מסד מתקדם:</strong> Amazon Aurora – מהיר פי 5 מ-PostgreSQL רגיל</li>
+          <li><strong>מחסן אנליטי:</strong> Amazon Redshift</li>
+          <li><strong>NoSQL:</strong> DynamoDB</li>
+          <li><strong>יתרון:</strong> הכי הרבה שירותים (200+), הכי הרבה דוקומנטציה</li>
+          <li><strong>חיסרון:</strong> מורכב ללמידה, ממשק ניהול מיושן</li>
+        </ul>
+        <div class="cloud-users">
+          <strong>בעולם:</strong> Netflix, Airbnb, Lyft, NASA, Samsung, McDonald's<br>
+          <strong>בישראל:</strong> סטארטאפים רבים (Wix חלקית, Monday, Fiverr), חברות סייבר, e-commerce
+        </div>
+      </div>
+
+      <div class="cloud-card azure">
+        <h4><span class="logo">🔹</span> Microsoft Azure</h4>
+        <p class="tagline">של מיקרוסופט. דומיננטי בארגונים. אינטגרציה מלאה עם Office ו-Active Directory.</p>
+        <ul>
+          <li><strong>נתח שוק עולמי:</strong> כ-23% (שני)</li>
+          <li><strong>מסד SQL עיקרי:</strong> Azure SQL Database (SQL Server מנוהל)</li>
+          <li><strong>מסד מתקדם:</strong> Azure SQL Managed Instance</li>
+          <li><strong>מחסן אנליטי:</strong> Azure Synapse Analytics</li>
+          <li><strong>NoSQL:</strong> Cosmos DB</li>
+          <li><strong>יתרון:</strong> 95% מ-Fortune 500 כבר לקוחות מיקרוסופט – מעבר קל</li>
+          <li><strong>יתרון:</strong> אינטגרציה מושלמת עם Power BI, Office 365, Teams</li>
+          <li><strong>חיסרון:</strong> פחות מתאים לסטארטאפים שמעדיפים כלים open-source</li>
+        </ul>
+        <div class="cloud-users">
+          <strong>בעולם:</strong> 95% מ-Fortune 500, BMW, Boeing, Pfizer<br>
+          <strong>בישראל:</strong> בנקים (לאומי, הפועלים, דיסקונט), חברות ביטוח (הפניקס, כלל), משרדי ממשלה, צה"ל
+        </div>
+      </div>
+
+      <div class="cloud-card gcp">
+        <h4><span class="logo">🔷</span> Google Cloud (GCP)</h4>
+        <p class="tagline">של גוגל. חזק ב-Data, AI ו-Kubernetes. הכי חדשני.</p>
+        <ul>
+          <li><strong>נתח שוק עולמי:</strong> כ-11% (שלישי, אבל צומח מהר)</li>
+          <li><strong>מסד SQL עיקרי:</strong> Cloud SQL (PostgreSQL, MySQL)</li>
+          <li><strong>מסד מתקדם:</strong> Cloud Spanner – מסד גלובלי מבוזר</li>
+          <li><strong>מחסן אנליטי:</strong> <strong>BigQuery</strong> – הכוכב של הקורס שלנו!</li>
+          <li><strong>NoSQL:</strong> Firestore (לאפליקציות מובייל)</li>
+          <li><strong>יתרון:</strong> BigQuery הוא כנראה מחסן הנתונים הטוב בעולם כיום</li>
+          <li><strong>יתרון:</strong> הכי חזק ב-AI/ML (Vertex AI), Kubernetes (הומצא בגוגל)</li>
+          <li><strong>חיסרון:</strong> פחות שירותים מ-AWS, פחות דומיננטי בארגונים</li>
+        </ul>
+        <div class="cloud-users">
+          <strong>בעולם:</strong> Spotify, PayPal, HSBC, Shopify, Twitter<br>
+          <strong>בישראל:</strong> חברות הייטק שמתמקדות ב-Data (Wix, Taboola), סטארטאפים של AI
+        </div>
+      </div>
+    </div>
+
+    <div class="info insight">
+      <h4>🇮🇱 מה קורה בישראל?</h4>
+      <p><strong>Azure מוביל בארגונים הגדולים</strong> – בנקים, חברות ביטוח, ממשל. הסיבה: הקשר ההיסטורי עם מיקרוסופט, Active Directory, Office 365, Power BI.<br>
+      <strong>AWS מוביל בסטארטאפים ובחברות הייטק</strong> – הכי הרבה שירותים, הכי הרבה קהילה.<br>
+      <strong>Google Cloud צומח מהר</strong> – בעיקר בחברות שמתמקדות ב-Data ו-AI, בזכות BigQuery.</p>
+      <p>כל שלושת הספקים פתחו <strong>חוות שרתים פיזיות בישראל</strong> בשנים האחרונות (2021-2023), מה שמאפשר לחברות ישראליות לאחסן נתונים בתוך הארץ – חשוב לרגולציה.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 9: SUMMARY -->
+<section class="section" id="block9">
+  <div class="section-head">
+    <span class="section-tag">בלוק 9 · סיכום חלק א׳</span>
+    <h2>מה למדנו עד כאן?</h2>
+    <p>סיכום חמש התחנות הראשונות במסע הנתונים</p>
+  </div>
+
+  <div class="deep-card">
+    <h3>🗺️ חמש התחנות של חלק א׳</h3>
+
+    <div class="order-flow">
+      <div class="order-row">
+        <div class="order-num">1</div>
+        <div class="order-body">
+          <h5>🖱️ הקליק</h5>
+          <p>קורה באתר, אפליקציה, דסקטופ, או API-to-API. מבחינת השרת – אין הבדל. כולם שולחים HTTP.</p>
+        </div>
+      </div>
+      <div class="order-row">
+        <div class="order-num">2</div>
+        <div class="order-body">
+          <h5>📨 JSON</h5>
+          <p>הפורמט שבו הנתונים נארזים. טקסט פשוט של מפתחות וערכים. נוצר ברגע הלחיצה, נשלח לשרת.</p>
+        </div>
+      </div>
+      <div class="order-row">
+        <div class="order-num">3</div>
+        <div class="order-body">
+          <h5>⚙️ הבק-אנד</h5>
+          <p>השרת שמקבל את הבקשה. כתוב ב-Node.js, Python, Java, או C#. מבצע לוגיקה עסקית ושומר במסד.</p>
+        </div>
+      </div>
+      <div class="order-row">
+        <div class="order-num">4</div>
+        <div class="order-body">
+          <h5>📝 INSERT INTO</h5>
+          <p>שאילתת SQL שמוסיפה שורה לטבלה. הנתונים מחולקים לכמה טבלאות מקושרות (orders, order_items, ...).</p>
+        </div>
+      </div>
+      <div class="order-row">
+        <div class="order-num">5</div>
+        <div class="order-body">
+          <h5>💾 מסד הנתונים התפעולי</h5>
+          <p>PostgreSQL, SQL Server, MySQL, Oracle. יושב on-premises או בענן (AWS, Azure, GCP). שומר בטרנזקציה (ACID).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <span class="takeaway-label">🎯 השורה התחתונה של חלק א׳</span>
+    <h3>כשלקוח לוחץ "הזמן", הנתונים עוברים מסע של חמש תחנות: מהקליק באפליקציה, דרך JSON לשרת הבק-אנד, דרך INSERT INTO לטבלאות, ולבסוף נשמרים במסד הנתונים התפעולי – בטרנזקציה שמבטיחה הכל או כלום.</h3>
+  </div>
+
+  <div class="next">
+    <div class="next-num">ב׳</div>
+    <div class="next-body">
+      <small>בחלק הבא</small>
+      <h4>חלק ב׳: ממסד הנתונים עד הדשבורד</h4>
+      <p>בחלק השני נמשיך במסע: <strong>למה להעתיק את הנתונים למחסן?</strong> מה זה ETL? מה זה מחסן אנליטי (OLAP)? איך האנליסט מריץ SQL? איך הדשבורד מציג את התוצאות למנהל? ניפגש בחלק הבא!</p>
+    </div>
+    <div style="font-size:48px">➡️</div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <h4>📚 סוף חלק א׳ · ניפגש בחלק ב׳</h4>
+    <p>המשך ההרצאה יכסה: ETL, מחסן אנליטי, BigQuery, SQL של אנליסט, דשבורדים</p>
+    <div style="margin-top:40px;font-size:14px;opacity:.5">קורס BI וארכיטקטורת נתונים · הרצאה 1 · חלק א׳ מתוך 2 · 2026</div>
+  </div>
+</footer>
+
+<script>
+function smoothTo(e, id){
+  if (e) e.preventDefault();
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = document.querySelector('.topnav').offsetHeight || 90;
+  const y = el.getBoundingClientRect().top + window.pageYOffset - navH - 12;
+  window.scrollTo({top: y, behavior: 'smooth'});
+  history.replaceState(null, '', '#' + id);
+}
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e){
+    const id = this.getAttribute('href').substring(1);
+    if (id) smoothTo(e, id);
+  });
+});
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+});
+const sections = ['block1','block2','block3','block4','block5','block6','block7','block8','block9'];
+const navLinks = document.querySelectorAll('#navBlocks .nav-block');
+window.addEventListener('scroll', () => {
+  let current = 'block1';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 250) current = id;
+  });
+  navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
+});
+</script>
+
+</body>
+</html>
+
