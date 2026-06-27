@@ -1,0 +1,2277 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הרצאה 12 · 29.6.2026 | מסד הנתונים בפעולה — ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#4f46e5; --primary-dark:#3730a3; --primary-light:#eef2ff;
+  --accent:#14b8a6; --accent-dark:#0f766e; --accent-light:#ccfbf1;
+  --pink:#ec4899; --purple:#a855f7; --blue:#3b82f6; --amber:#f59e0b; --red:#ef4444; --green:#10b981;
+  --ink:#0f172a; --ink-soft:#334155; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; --white:#fff;
+  --shadow:0 10px 30px rgba(15,23,42,.08); --shadow-lg:0 20px 50px rgba(15,23,42,.14);
+  --radius:28px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Heebo',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:21px;line-height:1.8;direction:rtl;-webkit-font-smoothing:antialiased}
+b,strong{font-weight:800}
+a{color:var(--primary)}
+
+/* progress bar */
+.progress{position:fixed;top:0;right:0;left:0;height:5px;background:transparent;z-index:1000}
+.progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .1s linear}
+
+/* top nav */
+.topnav{position:sticky;top:0;z-index:900;background:rgba(255,255,255,.86);backdrop-filter:blur(12px);border-bottom:3px solid var(--line)}
+.nav-inner{max-width:1240px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:16px;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.badge-bi{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:900;font-size:19px;display:grid;place-items:center;box-shadow:var(--shadow)}
+.brand .t{font-weight:800;font-size:15px;line-height:1.25}
+.brand .s{font-weight:500;font-size:11.5px;color:var(--muted)}
+.nav-links{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.nav-block{font-size:12.5px;font-weight:700;color:var(--ink-soft);text-decoration:none;padding:7px 12px;border-radius:999px;background:#fff;border:2px solid var(--line);white-space:nowrap;transition:.15s}
+.nav-block:hover{border-color:var(--primary);color:var(--primary)}
+.nav-block.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+@media(max-width:1040px){.nav-links{display:none}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:radial-gradient(1100px 480px at 82% -12%, #e8ecff 0%, #f8fafc 62%)}
+.hero-inner{max-width:1240px;margin:0 auto;padding:64px 22px 56px;display:grid;grid-template-columns:1.35fr .85fr;gap:42px;align-items:center}
+@media(max-width:1000px){.hero-inner{grid-template-columns:1fr;gap:30px}}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--line);color:var(--primary-dark);font-weight:800;font-size:14.5px;padding:8px 16px;border-radius:999px}
+.hero h1{font-size:clamp(38px,5.4vw,66px);font-weight:900;line-height:1.08;margin:20px 0 16px}
+.hero h1 .grad{background:linear-gradient(120deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-sub{font-size:clamp(17px,2.1vw,23px);color:var(--ink-soft);max-width:680px;line-height:1.7}
+.meta-chips{display:flex;gap:11px;flex-wrap:wrap;margin:26px 0 24px}
+.chip{background:#fff;border:2px solid var(--line);border-radius:14px;padding:9px 15px;font-weight:700;font-size:14.5px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:16.5px;padding:14px 26px;border-radius:14px;text-decoration:none;transition:.18s}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;box-shadow:var(--shadow)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.btn-ghost{background:#fff;border:2px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--primary);color:var(--primary)}
+.hero-art{border-radius:24px;background:linear-gradient(135deg,var(--primary),var(--accent-dark));padding:16px;box-shadow:var(--shadow-lg);display:grid;grid-template-columns:1fr 1fr 1fr;grid-auto-rows:minmax(150px,1fr);gap:12px}
+.art-tile{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;text-align:center;padding:8px}
+.art-tile .e{font-size:30px;line-height:1}
+.art-tile .l{font-size:12px;font-weight:700;opacity:.95}
+
+/* sections */
+main{display:block}
+.section{max-width:1080px;margin:0 auto;padding:84px 22px;scroll-margin-top:84px;border-top:1px solid var(--line)}
+.section:first-child{border-top:none}
+.block-tag{display:inline-block;background:var(--primary-light);color:var(--primary-dark);font-weight:800;font-size:13.5px;padding:7px 15px;border-radius:999px;letter-spacing:.2px}
+.section>h2{font-size:clamp(30px,4.3vw,50px);font-weight:900;margin:16px 0 6px;line-height:1.12}
+.section-sub{font-size:clamp(16px,2vw,22px);color:var(--muted);margin-bottom:14px}
+
+/* cards */
+.deep-card{background:#fff;border:3px solid var(--line);border-radius:var(--radius);padding:clamp(22px,3.6vw,44px);box-shadow:var(--shadow);margin:22px 0}
+.deep-card h3{font-size:clamp(21px,2.6vw,29px);font-weight:900;margin:6px 0 12px}
+.deep-card h4{font-size:19px;font-weight:800;margin:20px 0 8px}
+.deep-card p{margin:12px 0}
+.deep-card ul,.deep-card ol{margin:12px 0;padding-right:24px}
+.deep-card li{margin:7px 0}
+.lead{font-size:clamp(18px,2.1vw,22px);color:var(--ink-soft)}
+
+/* callout boxes (RTL: colored right border) */
+.info{border-radius:16px;padding:18px 22px;margin:18px 0;border-right:7px solid var(--primary);background:var(--primary-light)}
+.info .hd{font-weight:800;font-size:18.5px;margin-bottom:4px;display:flex;gap:8px;align-items:center}
+.info p{margin:8px 0}
+.info.tip{border-right-color:var(--green);background:#ecfdf5}
+.info.warn{border-right-color:var(--amber);background:#fffbeb}
+.info.important{border-right-color:var(--red);background:#fef2f2}
+.info.insight{border-right-color:var(--purple);background:#faf5ff}
+.info.term{border-right-color:var(--blue);background:#eff6ff}
+.soft-note{background:#fff;border:2px dashed var(--line);border-radius:14px;padding:14px 18px;color:var(--ink-soft);font-size:17px;margin:14px 0}
+
+/* "what software" tag */
+.sw{display:inline-flex;align-items:center;gap:7px;background:#0f172a;color:#fff;font-weight:700;font-size:14px;padding:6px 13px;border-radius:999px;margin-top:6px}
+.sw .d{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+
+/* diagram */
+.diagram{background:#fff;border:3px solid var(--line);border-radius:22px;padding:18px;margin:22px 0;overflow-x:auto}
+.diagram svg{width:100%;height:auto;display:block;min-width:520px}
+.diagram .cap{text-align:center;color:var(--muted);font-size:14.5px;margin-top:10px}
+
+/* expandable flow steps */
+.flow-steps{display:flex;flex-direction:column;gap:13px;margin:20px 0}
+.flow-step{display:grid;grid-template-columns:54px 1fr;gap:16px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:17px 19px;cursor:pointer;transition:.18s}
+.flow-step:hover{transform:translateX(-6px);border-color:var(--primary);box-shadow:var(--shadow)}
+.flow-step.expanded{border-color:var(--primary)}
+.flow-step .num{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:900;font-size:23px;display:grid;place-items:center}
+.flow-step .fs-title{font-weight:800;font-size:19.5px}
+.flow-step .fs-sub{color:var(--muted);font-size:15.5px;margin-top:1px}
+.flow-step .fs-details{max-height:0;overflow:hidden;transition:max-height .35s ease;color:var(--ink-soft);font-size:17px}
+.flow-step.expanded .fs-details{max-height:900px;margin-top:11px}
+.flow-step .tap{font-size:13px;color:var(--primary);font-weight:700;margin-top:6px}
+
+/* hands-on lab steps (always open) */
+.lab{background:linear-gradient(180deg,#fff, #fbfdff);border:3px solid var(--accent);border-radius:24px;padding:clamp(20px,3.4vw,40px);margin:24px 0;box-shadow:var(--shadow)}
+.lab-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.lab-pill{background:var(--accent);color:#fff;font-weight:900;font-size:14px;padding:6px 14px;border-radius:999px;letter-spacing:.4px}
+.lab h3{font-size:clamp(20px,2.5vw,28px);font-weight:900}
+.lab-steps{counter-reset:lab;display:flex;flex-direction:column;gap:14px;margin-top:16px}
+.lab-step{position:relative;background:#fff;border:2px solid var(--line);border-radius:16px;padding:18px 20px 18px 20px}
+.lab-step::before{counter-increment:lab;content:counter(lab);position:absolute;top:-13px;inset-inline-start:18px;width:30px;height:30px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:900;font-size:15px;border-radius:9px;display:grid;place-items:center;box-shadow:var(--shadow)}
+.lab-step .st{font-weight:800;font-size:18px;margin-bottom:4px}
+
+/* compare grid */
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:20px 0}
+.compare-card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px;border-top:6px solid var(--primary)}
+.compare-card.a{border-top-color:var(--green)} .compare-card.b{border-top-color:var(--amber)}
+.compare-card.c{border-top-color:var(--pink)} .compare-card.d{border-top-color:var(--blue)}
+.compare-card h4{margin-top:0;font-size:19px}
+
+/* vendor grid */
+.vendor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px 0}
+.vendor-card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px;text-align:center}
+.vendor-card .logo{width:62px;height:62px;border-radius:16px;display:grid;place-items:center;font-size:30px;margin:0 auto 12px;background:var(--primary-light)}
+.vendor-card .vtag{display:inline-block;font-size:13px;font-weight:700;color:var(--primary-dark);background:var(--primary-light);padding:4px 11px;border-radius:999px;margin-bottom:8px}
+.vendor-card .vmeta{font-size:15.5px;color:var(--ink-soft);text-align:right;margin-top:8px}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:16.5px;background:#fff;border-radius:14px;overflow:hidden;border:2px solid var(--line)}
+.tbl th{background:var(--primary);color:#fff;padding:12px 14px;text-align:right;font-weight:800;font-size:15.5px}
+.tbl td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:hover td{background:var(--primary-light)}
+.tbl td:first-child{font-weight:700}
+.tbl-wrap{overflow-x:auto}
+
+/* db tables (LTR monospace) */
+.db-wrap{overflow-x:auto;margin:18px 0}
+.db-table{border-collapse:collapse;direction:ltr;text-align:left;font-family:'Courier New',monospace;font-size:14.5px;min-width:440px;border:2px solid var(--line);border-radius:10px;overflow:hidden}
+.db-table caption{caption-side:top;text-align:left;font-family:'Heebo',sans-serif;font-weight:800;color:var(--ink);padding:0 0 8px 2px;font-size:15px}
+.db-table th{background:var(--primary);color:#fff;padding:8px 13px;font-weight:700}
+.db-table td{padding:7px 13px;border:1px solid var(--line)}
+.db-table .pk{background:#fef3c7;font-weight:700}
+.db-table .fk{background:#ddd6fe}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;color:var(--ink-soft);margin-top:6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend .sw-pk{width:14px;height:14px;border-radius:3px;background:#fef3c7;border:1px solid #eab308}
+.legend .sw-fk{width:14px;height:14px;border-radius:3px;background:#ddd6fe;border:1px solid #a855f7}
+
+/* code blocks (LTR) */
+.code-block{position:relative;background:#0f172a;color:#e2e8f0;border:4px solid #1e293b;border-radius:18px;padding:30px 20px 20px;margin:18px 0;direction:ltr;text-align:left;overflow-x:auto}
+.code-block .lang{position:absolute;top:0;left:0;background:#1e293b;color:#94a3b8;font-size:11.5px;font-weight:700;padding:4px 13px;border-radius:0 0 10px 0;letter-spacing:1px}
+.code-block pre{margin:0;white-space:pre;font-family:'Courier New',monospace;font-size:16.5px;line-height:1.75;tab-size:2}
+.code-block .comment{color:#a9c2e6;font-style:normal;font-weight:600}
+.code-block .kw{color:#c4b5fd;font-weight:700}
+.code-block .str{color:#86efac}
+.code-block .num{color:#fcd34d}
+.code-block .comment{color:#64748b;font-style:italic}
+.code-block .fn{color:#67e8f9}
+.code-block .tb{color:#f9a8d4}
+
+/* real-world (amber) */
+.real-world{background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:20px;padding:24px 26px;margin:22px 0;border:2px solid #fcd34d}
+.real-world .hd{font-weight:900;font-size:20px;margin-bottom:8px;display:flex;align-items:center;gap:9px}
+.real-world ul{padding-right:22px}
+
+/* takeaway (teal banner) */
+.takeaway{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:24px;padding:34px 32px;margin:26px 0;box-shadow:var(--shadow-lg)}
+.takeaway .big-emoji{position:absolute;left:18px;top:-10px;font-size:120px;opacity:.16}
+.takeaway .hd{font-weight:900;font-size:16px;letter-spacing:.6px;opacity:.95;margin-bottom:8px}
+.takeaway .tx{font-weight:800;font-size:clamp(20px,2.6vw,28px);line-height:1.45;position:relative;z-index:2}
+
+/* israel callout */
+.israel{background:#fff;border:2px solid var(--line);border-right:7px solid var(--blue);border-radius:16px;padding:18px 22px;margin:18px 0}
+.israel .hd{font-weight:800;font-size:18px;margin-bottom:4px}
+
+/* next card */
+.next{display:grid;grid-template-columns:60px 1fr;gap:16px;background:linear-gradient(135deg,var(--primary-light),#fff);border:2px solid var(--line);border-radius:18px;padding:20px;margin:14px 0}
+.next .n{width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-size:28px;display:grid;place-items:center}
+
+/* tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 0}
+.tab{font-family:inherit;font-weight:700;font-size:15.5px;padding:10px 18px;border-radius:12px 12px 0 0;border:2px solid var(--line);border-bottom:none;background:#f1f5f9;color:var(--ink-soft);cursor:pointer}
+.tab.active{background:#fff;color:var(--primary);border-color:var(--primary);border-bottom:2px solid #fff;position:relative;top:2px}
+.tab-panel{display:none;border:2px solid var(--primary);border-radius:0 14px 14px 14px;padding:20px;background:#fff}
+.tab-panel.active{display:block}
+
+/* two columns */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}
+@media(max-width:760px){.two-col{grid-template-columns:1fr}}
+
+/* chips row */
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.pill{background:#fff;border:2px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700;font-size:14.5px;color:var(--ink-soft)}
+
+/* arrow flow */
+.vflow{display:flex;flex-direction:column;align-items:stretch;gap:6px;margin:18px 0}
+.vflow .node{background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px 20px;text-align:center}
+.vflow .node b{font-size:18px}
+.vflow .node .sub{color:var(--muted);font-size:15px}
+.vflow .arrow{text-align:center;font-size:24px;color:var(--accent)}
+
+/* ===== Load balancer interactive demo ===== */
+.lbsim{background:#0f172a;border-radius:24px;padding:22px;margin:22px 0;color:#e2e8f0}
+.lbsim .ctrl{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.lbsim button{font-family:inherit;font-weight:800;font-size:15px;border:none;cursor:pointer;padding:11px 18px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
+.lbsim button.sec{background:#1e293b;color:#cbd5e1;border:2px solid #334155}
+.lbsim button:active{transform:translateY(1px)}
+.lbsim select{font-family:inherit;font-weight:700;font-size:14px;padding:9px 12px;border-radius:10px;border:2px solid #334155;background:#1e293b;color:#e2e8f0}
+.lbsim .stage{display:grid;grid-template-columns:130px 70px 1fr;align-items:center;gap:10px}
+@media(max-width:720px){.lbsim .stage{grid-template-columns:1fr;gap:14px;text-align:center}}
+.lbsim .users{background:#1e293b;border:2px solid #334155;border-radius:16px;padding:18px 10px;text-align:center;font-weight:800}
+.lbsim .users .e{font-size:34px}
+.lbsim .lbbox{background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:16px;padding:14px 6px;text-align:center;font-weight:900;font-size:13px;box-shadow:0 0 0 0 rgba(20,184,166,.6)}
+.lbsim .lbbox.ping{animation:lbping .4s ease}
+@keyframes lbping{0%{box-shadow:0 0 0 0 rgba(20,184,166,.6)}100%{box-shadow:0 0 0 22px rgba(20,184,166,0)}}
+.lbsim .servers{display:flex;flex-direction:column;gap:10px}
+.lbsim .srv{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;background:#1e293b;border:2px solid #334155;border-radius:14px;padding:12px 16px;transition:.18s}
+.lbsim .srv .nm{font-weight:800}
+.lbsim .srv .bar{height:14px;border-radius:8px;background:#334155;overflow:hidden;min-width:60px}
+.lbsim .srv .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--primary));transition:width .25s}
+.lbsim .srv .cnt{font-weight:900;font-variant-numeric:tabular-nums;min-width:34px;text-align:center}
+.lbsim .srv .kill{background:#334155;color:#fca5a5;border:none;border-radius:9px;padding:6px 10px;font-size:13px;font-weight:800;cursor:pointer}
+.lbsim .srv.hit{border-color:var(--accent);transform:scale(1.02)}
+.lbsim .srv.down{opacity:.45;filter:grayscale(.7)}
+.lbsim .srv.down .nm::after{content:" ⛔ DOWN";color:#fca5a5;font-size:12px}
+.lbsim .log{margin-top:16px;background:#020617;border-radius:12px;padding:12px 14px;font-family:'Courier New',monospace;font-size:13.5px;direction:ltr;text-align:left;height:108px;overflow-y:auto;color:#94a3b8}
+.lbsim .log b{color:#86efac}
+
+/* footer */
+footer{background:#0f172a;color:#cbd5e1;padding:46px 22px;text-align:center;margin-top:40px}
+footer .big{font-weight:800;color:#fff;font-size:19px;margin-bottom:8px}
+footer .small{font-size:14px;color:#64748b;margin-top:14px}
+
+/* misc */
+.kbd{font-family:'Courier New',monospace;background:#1e293b;color:#e2e8f0;padding:2px 8px;border-radius:6px;font-size:.92em;direction:ltr;display:inline-block}
+.inline-code{font-family:'Courier New',monospace;background:var(--primary-light);color:var(--primary-dark);padding:2px 7px;border-radius:6px;font-size:.92em;direction:ltr;display:inline-block;font-weight:700}
+.checklist{list-style:none;padding:0!important}
+.checklist li{padding-right:34px;position:relative;margin:10px 0}
+.checklist li::before{content:"✓";position:absolute;right:0;top:0;width:24px;height:24px;background:var(--green);color:#fff;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:900}
+
+/* ===================== REVISION 2 ADD-ONS ===================== */
+
+/* scroll-reveal animations */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease, transform .7s ease}
+.reveal.show{opacity:1;transform:none}
+.stagger>*{opacity:0;transform:translateY(24px);transition:opacity .55s ease, transform .55s ease}
+.stagger.show>*{opacity:1;transform:none}
+.stagger.show>*:nth-child(1){transition-delay:.04s}
+.stagger.show>*:nth-child(2){transition-delay:.18s}
+.stagger.show>*:nth-child(3){transition-delay:.32s}
+.stagger.show>*:nth-child(4){transition-delay:.46s}
+.stagger.show>*:nth-child(5){transition-delay:.60s}
+.stagger.show>*:nth-child(6){transition-delay:.74s}
+.stagger.show>*:nth-child(7){transition-delay:.88s}
+.stagger.show>*:nth-child(8){transition-delay:1.02s}
+.stagger.show>*:nth-child(9){transition-delay:1.16s}
+.stagger.show>*:nth-child(10){transition-delay:1.30s}
+.stagger.show>*:nth-child(11){transition-delay:1.44s}
+@media(prefers-reduced-motion:reduce){.reveal,.stagger>*{opacity:1!important;transform:none!important}}
+
+/* big projector-friendly vertical flow */
+.vflow-big{display:flex;flex-direction:column;align-items:center;margin:28px 0}
+.vflow-big .vnode{width:min(720px,100%);background:#fff;border:3px solid var(--line);border-radius:24px;padding:22px 28px;display:flex;align-items:center;gap:24px;box-shadow:var(--shadow)}
+.vflow-big .vnode .ic{font-size:62px;line-height:1;flex-shrink:0;width:78px;text-align:center}
+.vflow-big .vnode .bd{flex:1}
+.vflow-big .vnode .bd b{font-size:25px;font-weight:900;display:block;line-height:1.2}
+.vflow-big .vnode .bd .sub{font-size:18px;color:var(--ink-soft);margin-top:4px}
+.vflow-big .vdown{font-size:48px;line-height:1;color:var(--accent);margin:2px 0}
+.vflow-big .vnode.c-indigo{border-color:var(--primary);background:linear-gradient(160deg,#fff,#eef2ff)}
+.vflow-big .vnode.c-teal{border-color:var(--accent-dark);background:linear-gradient(160deg,#fff,#ecfeff)}
+.vflow-big .vnode.c-amber{border-color:var(--amber);background:linear-gradient(160deg,#fff,#fffbeb)}
+.vflow-big .vnode.c-purple{border-color:var(--purple);background:linear-gradient(160deg,#fff,#faf5ff)}
+@media(max-width:620px){.vflow-big .vnode{flex-direction:column;text-align:center;gap:10px}.vflow-big .vnode .ic{font-size:54px}}
+
+/* flip cards (click to rotate) */
+.flip-grid{display:grid;gap:20px;margin:26px 0}
+.flip-grid.cols6{grid-template-columns:repeat(3,1fr)}
+.flip-grid.cols4{grid-template-columns:repeat(2,1fr)}
+.flip-grid.cols3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:980px){.flip-grid.cols6{grid-template-columns:repeat(2,1fr)}.flip-grid.cols3{grid-template-columns:1fr}.flip-grid.cols4{grid-template-columns:1fr}}
+@media(max-width:620px){.flip-grid.cols6{grid-template-columns:1fr}}
+.flip{perspective:1600px;cursor:pointer}
+.flip-inner{position:relative;display:grid;height:100%;min-height:270px;transition:transform .6s cubic-bezier(.4,.15,.2,1);transform-style:preserve-3d}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-face{position:relative;grid-area:1/1;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:24px;padding:30px 26px 36px;display:flex;flex-direction:column;justify-content:center;border:3px solid var(--line);background:#fff;box-shadow:var(--shadow)}
+.flip-front{align-items:center;text-align:center}
+.flip-front .ic{font-size:74px;line-height:1;margin-bottom:14px}
+.flip-front .ttl{font-size:25px;font-weight:900;line-height:1.25}
+.flip-front .ttl .en{display:block;font-size:16.5px;color:var(--muted);font-weight:700;margin-top:5px}
+.flip-front .hint{position:absolute;bottom:14px;left:0;right:0;font-size:14px;color:var(--primary);font-weight:800}
+.flip-num{position:absolute;top:14px;right:16px;width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:900;font-size:21px;display:grid;place-items:center;z-index:2}
+.flip-back{transform:rotateY(180deg);background:linear-gradient(155deg,#ffffff,#eef2ff);text-align:right}
+.flip-back .flip-num{display:none}
+.flip-back .bk-ttl{font-size:22px;font-weight:900;color:var(--primary-dark);margin-bottom:10px}
+.flip-back p{font-size:17.5px;margin:7px 0;line-height:1.55;color:var(--ink)}
+.flip-back .sw{margin-top:10px;font-size:13.5px}
+.flip-back .tool-note{font-size:16px;color:var(--ink-soft);background:#fff;border:1.5px dashed var(--primary);border-radius:12px;padding:11px 14px;margin-top:11px;line-height:1.55}
+.flip-back .tool-note b{color:var(--primary-dark)}
+
+/* "why" badge */
+.why{background:#ecfeff;border:2px solid var(--accent);border-right:7px solid var(--accent-dark);border-radius:14px;padding:15px 20px;margin:16px 0;font-size:18px}
+.why b{color:var(--accent-dark)}
+.mini-ex{background:#0f172a;color:#e2e8f0;border-radius:14px;padding:14px 18px;margin:14px 0;direction:ltr;text-align:left;font-family:'Courier New',monospace;font-size:14.5px;line-height:1.6}
+.mini-ex .c{color:#64748b}
+
+/* Yevgeni — inline callout */
+.yev-callout{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:center;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px solid #c7d2fe;border-right:7px solid var(--primary);border-radius:18px;padding:16px 22px;margin:20px 0}
+.yev-callout .face{width:64px;height:64px;flex-shrink:0}
+.yev-callout .tx{font-size:17.5px;line-height:1.6}
+.yev-callout .tx b{color:var(--primary-dark)}
+.yev-callout .kondila{display:inline-block;background:#fff;border:2px solid var(--purple);color:#7e22ce;font-weight:800;font-size:14px;padding:3px 10px;border-radius:999px;margin-top:4px}
+
+/* Yevgeni — floating draggable */
+.yevgeni{position:fixed;z-index:1200;bottom:20px;left:20px;display:flex;align-items:flex-end;gap:10px;max-width:330px;user-select:none;touch-action:none}
+.yev-avatar{width:76px;height:76px;flex-shrink:0;cursor:grab;filter:drop-shadow(0 6px 14px rgba(15,23,42,.28))}
+.yev-avatar:active{cursor:grabbing}
+.yev-bubble{background:#fff;border:3px solid var(--primary);border-radius:18px 18px 4px 18px;padding:11px 15px;box-shadow:var(--shadow-lg)}
+.yev-head{font-weight:900;color:var(--primary-dark);font-size:15px;margin-bottom:3px;display:flex;gap:8px;align-items:center;justify-content:space-between}
+.yev-head button{background:none;border:none;cursor:pointer;font-size:16px;color:var(--muted);font-weight:900;line-height:1}
+.yev-tip{font-size:14.5px;line-height:1.5;color:var(--ink)}
+.yevgeni.min .yev-bubble{display:none}
+.yev-reopen{display:none}
+.yevgeni.min .yev-reopen{display:grid;place-items:center;position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:900}
+@media(max-width:600px){.yevgeni{max-width:220px;bottom:12px;left:12px}.yev-avatar{width:60px;height:60px}.yev-tip{font-size:13.5px}}
+.yevgeni.pulse .yev-bubble{animation:yevpulse .9s ease}
+@keyframes yevpulse{0%{transform:scale(1)}18%{transform:scale(1.13) rotate(-1deg);box-shadow:0 0 0 9px rgba(20,184,166,.35);border-color:var(--accent)}45%{transform:scale(1.02)}65%{transform:scale(1.06)}100%{transform:scale(1)}}
+.yevgeni.pulse .yev-avatar{animation:yevnudge .85s ease}
+@keyframes yevnudge{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-13px) rotate(-9deg)}50%{transform:translateY(0) rotate(0)}72%{transform:translateY(-7px) rotate(6deg)}}
+.yev-newbadge{display:none;background:var(--accent);color:#fff;font-size:11px;font-weight:900;padding:2px 9px;border-radius:999px;margin-inline-start:6px;white-space:nowrap}
+.yevgeni.pulse .yev-newbadge{display:inline-block;animation:yevbadge 1.3s ease}
+@keyframes yevbadge{0%{transform:scale(.4);opacity:0}25%{transform:scale(1.1);opacity:1}80%{opacity:1}100%{opacity:0}}
+
+/* Quiz */
+.quiz{background:linear-gradient(160deg,#0f172a,#1e293b);color:#e2e8f0;border-radius:24px;padding:30px;margin:28px 0;box-shadow:var(--shadow-lg)}
+.quiz .q-tag{display:inline-block;background:var(--amber);color:#0f172a;font-weight:900;font-size:14px;padding:6px 15px;border-radius:999px;margin-bottom:12px}
+.quiz .q-txt{font-size:23px;font-weight:800;margin-bottom:8px;line-height:1.5}
+.quiz .q-note{font-size:15px;color:#94a3b8;margin-bottom:14px}
+.quiz-opt{display:block;width:100%;text-align:right;font-family:inherit;font-size:18px;font-weight:700;color:#e2e8f0;background:#0b1220;border:2px solid #334155;border-radius:14px;padding:15px 20px;margin:11px 0;cursor:pointer;transition:.15s}
+.quiz-opt:hover{border-color:var(--accent);transform:translateX(-4px)}
+.quiz-opt .k{display:inline-block;width:30px;height:30px;line-height:30px;text-align:center;background:#334155;border-radius:8px;margin-left:10px;font-weight:900}
+.quiz-opt.correct{background:#064e3b;border-color:#10b981;color:#d1fae5}
+.quiz-opt.correct .k{background:#10b981;color:#04231a}
+.quiz-opt.wrong{background:#4c0519;border-color:#ef4444;color:#fecaca}
+.quiz-opt.wrong .k{background:#ef4444;color:#3f0710}
+.quiz-opt.dim{opacity:.5}
+.quiz-fb{margin-top:16px;background:#020617;border-radius:14px;padding:18px 20px;font-size:17px;line-height:1.65;display:none}
+.quiz-fb.show{display:block}
+.quiz-fb .verdict{font-weight:900;font-size:19px;margin-bottom:6px}
+.quiz-fb .yv{display:flex;gap:12px;align-items:flex-start;margin-top:12px;border-top:1px solid #1e293b;padding-top:12px}
+.quiz-fb .yv .f{font-size:34px;flex-shrink:0}
+.quiz-fb .yv b{color:#a5b4fc}
+
+/* lesson progress pill */
+.lesson-prog{position:fixed;top:64px;left:50%;transform:translateX(-50%);z-index:850;background:rgba(15,23,42,.9);color:#fff;font-weight:800;font-size:13px;padding:6px 16px;border-radius:999px;backdrop-filter:blur(8px);box-shadow:var(--shadow);transition:opacity .3s}
+@media(max-width:600px){.lesson-prog{font-size:11px;top:60px}}
+
+/* bigger section sub for projector */
+.section>.section-sub{font-weight:600}
+
+/* ===================== MOCK DASHBOARD + BUILDER SIMULATOR ===================== */
+.dash{background:#fff;border:3px solid var(--line);border-radius:20px;padding:22px;margin:20px 0;box-shadow:var(--shadow)}
+.dash-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.dash-top .title{font-weight:900;font-size:20px}
+.dash-filter{background:var(--primary-light);border:2px solid var(--primary);color:var(--primary-dark);border-radius:10px;padding:6px 14px;font-weight:800;font-size:14px}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:680px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+.kpi{border-radius:14px;padding:16px;color:#fff}
+.kpi .v{font-size:30px;font-weight:900;line-height:1}
+.kpi .l{font-size:13.5px;opacity:.95;margin-top:6px;font-weight:700}
+.kpi.k1{background:linear-gradient(135deg,#4f46e5,#6366f1)}
+.kpi.k2{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+.kpi.k3{background:linear-gradient(135deg,#b45309,#f59e0b)}
+.kpi.k4{background:linear-gradient(135deg,#be185d,#ec4899)}
+.dash-charts{display:grid;grid-template-columns:1.15fr 1fr;gap:16px}
+@media(max-width:680px){.dash-charts{grid-template-columns:1fr}}
+.chart-card{border:2px solid var(--line);border-radius:14px;padding:14px}
+.chart-card h5{margin:0 0 10px;font-size:15.5px;font-weight:800;color:var(--ink-soft)}
+.bar-row{display:grid;grid-template-columns:110px 1fr 66px;align-items:center;gap:10px;margin:10px 0;font-size:15px}
+.bar-row .bar{height:24px;border-radius:7px;background:linear-gradient(90deg,var(--primary),var(--accent));min-width:4px;transition:width .4s}
+.bar-row .val{font-weight:800;text-align:left;direction:ltr}
+.builder{background:linear-gradient(160deg,#0f172a,#1e293b);color:#e2e8f0;border-radius:20px;padding:22px;margin:20px 0}
+.builder .ctrls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:680px){.builder .ctrls{grid-template-columns:1fr}}
+.builder label{font-size:13.5px;font-weight:800;color:#93c5fd;display:block;margin-bottom:6px}
+.builder select{width:100%;font-family:inherit;font-weight:700;font-size:16px;padding:11px 12px;border-radius:10px;border:2px solid #334155;background:#0b1220;color:#e2e8f0}
+.builder .canvas{background:#fff;border-radius:14px;padding:18px;min-height:210px}
+.builder .canvas h5{margin:0 0 14px;color:var(--ink);font-size:17px;font-weight:800}
+.builder .canvas .bar-row{color:var(--ink)}
+.builder .hint{font-size:14px;color:#94a3b8;margin-top:12px;line-height:1.5}
+
+/* ===================== APPLE-STYLE KEYNOTE INTRO ===================== */
+body.pre-start .topnav,
+body.pre-start .progress,
+body.pre-start .lesson-prog{display:none}
+.yevgeni{display:none}
+body.lesson-started .yevgeni{display:flex}
+body.lesson-started .yevgeni.min .yev-bubble{display:none}
+.kn{background:#000;color:#fff;font-family:'Heebo',system-ui,sans-serif;overflow:hidden}
+.kn-slide{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;position:relative}
+.kn-slide.short{min-height:82vh}
+.kn-eyebrow{font-size:clamp(14px,2vw,19px);font-weight:800;letter-spacing:4px;color:#8b93a7;margin-bottom:20px}
+.kn-title{font-size:clamp(42px,9.5vw,118px);font-weight:900;line-height:1.02;letter-spacing:-1.5px}
+.kn-title .g{background:linear-gradient(110deg,#5eead4,#818cf8 55%,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kn-sub{font-size:clamp(20px,3.6vw,40px);font-weight:600;color:#cbd5e1;margin-top:26px;max-width:980px;line-height:1.4}
+.kn-small{font-size:clamp(15px,2vw,21px);color:#8b93a7;margin-top:22px;max-width:760px;line-height:1.6}
+.kn-scroll{position:absolute;bottom:28px;left:50%;color:#5b6479;font-size:14px;font-weight:700;animation:knbob 1.8s infinite;transform:translateX(-50%)}
+@keyframes knbob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,9px)}}
+.kn-stats{display:flex;gap:clamp(24px,7vw,96px);flex-wrap:wrap;justify-content:center;margin-top:40px}
+.kn-stat .n{font-size:clamp(48px,8.5vw,96px);font-weight:900;line-height:1;background:linear-gradient(110deg,#5eead4,#818cf8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kn-stat .l{font-size:clamp(14px,2vw,20px);color:#9aa3b6;margin-top:8px;font-weight:700}
+.kn-feats{display:flex;flex-direction:column;gap:18px;margin-top:36px}
+.kn-feat{display:flex;gap:18px;align-items:center;justify-content:center;font-size:clamp(20px,3.6vw,40px);font-weight:800}
+.kn-feat .e{font-size:1.25em;filter:drop-shadow(0 4px 12px rgba(129,140,248,.4))}
+.kn-omt{font-size:clamp(38px,8vw,96px);font-weight:900;font-style:italic;letter-spacing:-1px}
+.kn-yev{width:clamp(230px,44vw,440px);height:auto;filter:drop-shadow(0 24px 60px rgba(129,140,248,.5))}
+.kn-cta{margin-top:38px}
+.kn-cta button{font-family:inherit;font-weight:900;font-size:clamp(18px,2.4vw,25px);padding:18px 44px;border:none;border-radius:999px;cursor:pointer;background:linear-gradient(110deg,#5eead4,#818cf8);color:#0b0b0c;box-shadow:0 16px 44px rgba(129,140,248,.5);transition:.18s}
+.kn-cta button:hover{transform:translateY(-3px) scale(1.02)}
+.kn-skip{position:fixed;top:14px;left:18px;z-index:1300;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:9px 18px;font-family:inherit;font-weight:800;font-size:13px;cursor:pointer;backdrop-filter:blur(6px)}
+body:not(.pre-start) .kn-skip{display:none}
+.kn-pop{opacity:0;transform:scale(.55) translateY(24px);transition:opacity .8s ease, transform .9s cubic-bezier(.2,1.35,.3,1)}
+.kn-pop.show{opacity:1;transform:none}
+
+/* hero map — big icons + flip on click */
+.hero-art .aflip{position:relative;perspective:800px;cursor:pointer}
+.hero-art .aflip .ai{position:relative;width:100%;height:100%;min-height:150px;transition:transform .6s cubic-bezier(.4,.15,.2,1);transform-style:preserve-3d}
+.hero-art .aflip.flipped .ai{transform:rotateY(180deg)}
+.hero-art .aflip .af{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);color:#fff;text-align:center;padding:12px}
+.hero-art .aflip .af .e{font-size:clamp(50px,6vw,78px);line-height:1;filter:drop-shadow(0 3px 8px rgba(0,0,0,.25))}
+.hero-art .aflip .af .l{font-size:16.5px;font-weight:800}
+.hero-art .aflip .ab{transform:rotateY(180deg);background:rgba(255,255,255,.30);font-size:16px;font-weight:700;line-height:1.5}
+.hero-art .aflip .hintp{position:absolute;bottom:7px;left:0;right:0;font-size:11.5px;opacity:.85;font-weight:700}
+</style>
+</head>
+<body class="pre-start">
+
+<!-- ===================== APPLE-STYLE KEYNOTE INTRO ===================== -->
+<button class="kn-skip" onclick="startLesson()">דלגו לשיעור ←</button>
+<div class="kn" id="intro">
+
+  <section class="kn-slide">
+    <div class="kn-eyebrow reveal">קורס BI וארכיטקטורת נתונים · מאת ד״ר שי צבאן</div>
+    <h1 class="kn-title reveal">מערך השיעור.<br><span class="g">נכתב מחדש.</span></h1>
+    <p class="kn-sub reveal">הרצאה 12 — בגרסה שלא ראיתם כמותה.</p>
+    <p class="kn-small reveal">מאת <b>ד״ר שי צבאן</b> · 29 ביוני 2026</p>
+    <div class="kn-scroll">גללו למטה ↓</div>
+  </section>
+
+  <section class="kn-slide">
+    <div class="kn-eyebrow reveal">מה השתנה?</div>
+    <h2 class="kn-title reveal">לא עוד <span class="g">שקפים.</span></h2>
+    <p class="kn-sub reveal">מערכי השיעור הקודמים היו טקסט על מסך.<br>זה — <b>חוויית למידה</b>.</p>
+  </section>
+
+  <section class="kn-slide">
+    <div class="kn-eyebrow reveal">נגישות ברמה אחרת</div>
+    <h2 class="kn-title reveal">כל מושג.<br><span class="g">מהאפס.</span></h2>
+    <p class="kn-sub reveal">בלי להניח שום ידע מוקדם. כל מילה לועזית — מוסברת בשפה פשוטה, מצוירת בתרשים, ומקושרת לעולם ה-BI.</p>
+  </section>
+
+  <section class="kn-slide">
+    <div class="kn-eyebrow reveal">לא לקרוא. <b>לגעת.</b></div>
+    <h2 class="kn-title reveal"><span class="g">אינטראקטיבי.</span> באמת.</h2>
+    <div class="kn-feats stagger">
+      <div class="kn-feat"><span class="e">🔄</span><span>כרטיסים שמתהפכים בלחיצה</span></div>
+      <div class="kn-feat"><span class="e">⚖️</span><span>הדגמה חיה של Load Balancer</span></div>
+      <div class="kn-feat"><span class="e">🧪</span><span>5 מעבדות hands-on — בענן, חינם</span></div>
+      <div class="kn-feat"><span class="e">❓</span><span>חידונים שמאתגרים (לא טריוויאליים)</span></div>
+    </div>
+  </section>
+
+  <section class="kn-slide">
+    <div class="kn-eyebrow reveal">במספרים</div>
+    <h2 class="kn-title reveal">ההשקעה, <span class="g">בקצרה.</span></h2>
+    <div class="kn-stats stagger">
+      <div class="kn-stat"><div class="n">6</div><div class="l">תחנות</div></div>
+      <div class="kn-stat"><div class="n">5</div><div class="l">מעבדות בענן</div></div>
+      <div class="kn-stat"><div class="n">15+</div><div class="l">תרשימים מצוירים</div></div>
+      <div class="kn-stat"><div class="n">∞</div><div class="l">סבלנות</div></div>
+    </div>
+    <p class="kn-small reveal">וכן — הכל רץ בדפדפן. גם אם יש לכם מק. 😎</p>
+  </section>
+
+  <section class="kn-slide short">
+    <h2 class="kn-omt reveal">One more thing</h2>
+    <div class="kn-scroll">גללו ↓</div>
+  </section>
+
+  <section class="kn-slide">
+    <svg class="kn-yev kn-pop" viewBox="0 0 100 100"><use href="#yevFace"/></svg>
+    <h2 class="kn-title reveal" style="margin-top:18px">הכירו את <span class="g">יבגני.</span></h2>
+    <p class="kn-sub reveal">העוזר האישי שלכם להרצאה. הוא ילווה אתכם בכל בלוק, יקפוץ עם טיפים ברגע הנכון, ואפשר לגרור אותו לכל מקום על המסך.</p>
+    <p class="kn-small reveal">ורק שתדעו: יבגני קנה לא מזמן <b>MacBook Pro M5 Pro</b> — אז מבחינתו הוא כבר רשמית <b>גיבור-על מחשובי שיודע הכל</b> 💻⚡. הוא לא נרדם, לא מתעצבן משאלות, ותמיד יודע מתי להפנות אתכם בעדינות ל"על זה תרחיבו עם ד״ר קונדילה". 😄</p>
+    <div class="kn-cta reveal"><button onclick="startLesson()">יאללה, בואו נתחיל ←</button></div>
+  </section>
+
+</div>
+<!-- ===================== END KEYNOTE INTRO ===================== -->
+
+<div class="progress"><span id="bar"></span></div>
+<div class="lesson-prog" id="lessonProg">בלוק 1 / 7 · 0%</div>
+
+<!-- Yevgeni reusable face -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="yevFace" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#eef2ff"/>
+  <path d="M20 98 Q50 68 80 98 Z" fill="#14b8a6"/>
+  <path d="M30 98 L34 82 L40 98 Z" fill="#fff"/>
+  <circle cx="24" cy="48" r="5" fill="#f3c9a0"/><circle cx="76" cy="48" r="5" fill="#f3c9a0"/>
+  <circle cx="50" cy="47" r="27" fill="#f3c9a0"/>
+  <path d="M23 42 Q24 17 50 17 Q76 17 77 42 Q70 29 50 29 Q30 29 23 42 Z" fill="#4b3a2f"/>
+  <path d="M21 47 Q21 23 50 23 Q79 23 79 47" fill="none" stroke="#0f172a" stroke-width="3.2"/>
+  <rect x="16" y="45" width="8" height="13" rx="3.5" fill="#0f172a"/>
+  <circle cx="39" cy="47" r="9.5" fill="#fff" stroke="#0f172a" stroke-width="2.6"/>
+  <circle cx="61" cy="47" r="9.5" fill="#fff" stroke="#0f172a" stroke-width="2.6"/>
+  <line x1="48.5" y1="47" x2="51.5" y2="47" stroke="#0f172a" stroke-width="2.6"/>
+  <circle cx="39" cy="47" r="3.1" fill="#0f172a"/><circle cx="61" cy="47" r="3.1" fill="#0f172a"/>
+  <path d="M40 61 Q50 69 60 61" fill="none" stroke="#a0522d" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M20 58 Q20 70 34 70" fill="none" stroke="#0f172a" stroke-width="2.6"/>
+  <circle cx="35" cy="70" r="3.4" fill="#14b8a6"/>
+</symbol></svg>
+
+<!-- Yevgeni floating assistant -->
+<div class="yevgeni" id="yevgeni">
+  <svg class="yev-avatar" id="yevAvatar" viewBox="0 0 100 100"><use href="#yevFace"/></svg>
+  <div class="yev-bubble">
+    <div class="yev-head"><span>יבגני · העוזר שלכם 🎓 <span class="yev-newbadge">💡 טיפ חדש!</span></span><button onclick="yevMin()" title="מזער">–</button></div>
+    <div class="yev-tip" id="yevTip">שלום, אני יבגני! 👋 אלווה אתכם לאורך השיעור. אפשר לגרור אותי לכל מקום נוח על המסך — ואני אקפוץ עם טיפ קצר בכל בלוק.</div>
+  </div>
+  <div class="yev-reopen" onclick="yevReopen()" title="פתח את יבגני">💬</div>
+</div>
+
+<nav class="topnav">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="badge-bi">BI</div>
+      <div>
+        <div class="t">קורס BI וארכיטקטורת נתונים</div>
+        <div class="s">הרצאה 12 · 29.6.2026 · ד״ר שי צבאן</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a class="nav-block" href="#block1">1 · איפה עצרנו</a>
+      <a class="nav-block" href="#block2">2 · Stored Procedures</a>
+      <a class="nav-block" href="#block3">3 · Triggers</a>
+      <a class="nav-block" href="#block4">4 · NoSQL · Firebase</a>
+      <a class="nav-block" href="#block5">5 · Load Balancers</a>
+      <a class="nav-block" href="#block6">6 · הכל מתחבר ל-BI</a>
+      <a class="nav-block" href="#block7">7 · סיכום</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-badge">📚 הרצאה 12 · 29.6.2026</span>
+      <h1>מסד הנתונים <span class="grad">מתעורר לחיים</span></h1>
+      <p class="hero-sub">עד עכשיו מסד הנתונים רק <b>שמר</b> נתונים. היום נלמד איך הוא <b>חושב, מגיב, ומתרחב</b>: Stored Procedures, Triggers, מסד NoSQL עם Firebase, ו-Load Balancers — ואיך כל זה מתחבר בסוף לדשבורד BI שמנהל באמת מסתכל עליו. הכל עם <b>מעבדות hands-on בענן</b>, צעד-אחר-צעד.</p>
+      <div class="meta-chips">
+        <span class="chip">👤 מאת ד״ר שי צבאן</span>
+        <span class="chip">📅 29.6.2026</span>
+        <span class="chip">⏱ כ-3 שעות (מקיף)</span>
+        <span class="chip">🧪 5 מעבדות hands-on</span>
+        <span class="chip">☁️ הכל רץ בדפדפן / בענן</span>
+        <span class="chip">🍼 מתאים למתחילים גמורים</span>
+      </div>
+      <div class="cta">
+        <a class="btn btn-primary" href="#block1">בואו נתחיל ←</a>
+        <a class="btn btn-ghost" href="#block2">קפיצה ל-Stored Procedures</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="aflip" onclick="flipCard(this)"><div class="ai">
+        <div class="af"><span class="e">🐘</span><span class="l">PostgreSQL</span><span class="hintp">↻ הקליקו</span></div>
+        <div class="af ab">מסד ה-SQL שלנו — חינמי וחזק, רץ בענן</div></div></div>
+      <div class="aflip" onclick="flipCard(this)"><div class="ai">
+        <div class="af"><span class="e">⚙️</span><span class="l">Procedures</span><span class="hintp">↻ הקליקו</span></div>
+        <div class="af ab">"מתכון" שמור במסד שקוראים לו בשם</div></div></div>
+      <div class="aflip" onclick="flipCard(this)"><div class="ai">
+        <div class="af"><span class="e">⚡</span><span class="l">Triggers</span><span class="hintp">↻ הקליקו</span></div>
+        <div class="af ab">קוד שרץ אוטומטית כשקורה אירוע</div></div></div>
+      <div class="aflip" onclick="flipCard(this)"><div class="ai">
+        <div class="af"><span class="e">🔥</span><span class="l">Firebase</span><span class="hintp">↻ הקליקו</span></div>
+        <div class="af ab">מסד NoSQL — מסמכים גמישים</div></div></div>
+      <div class="aflip" onclick="flipCard(this)"><div class="ai">
+        <div class="af"><span class="e">⚖️</span><span class="l">Load Balancer</span><span class="hintp">↻ הקליקו</span></div>
+        <div class="af ab">מחלק עומס בין כמה שרתים</div></div></div>
+      <div class="aflip" onclick="flipCard(this)"><div class="ai">
+        <div class="af"><span class="e">📊</span><span class="l">BI Dashboard</span><span class="hintp">↻ הקליקו</span></div>
+        <div class="af ab">מנתונים לתובנה ולהחלטה</div></div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ BLOCK 1 ============ -->
+<section class="section" id="block1">
+  <span class="block-tag">בלוק 1 · איפה עצרנו · 15 דקות</span>
+  <h2>איפה עצרנו — ולאן ממשיכים?</h2>
+  <p class="section-sub">קודם נזכיר היטב מה כבר עשינו, נראה איך זה מתחבר לעולם ה-BI, ואז נפתח את מפת היום.</p>
+
+  <div class="yev-callout reveal">
+    <svg class="face" viewBox="0 0 100 100"><use href="#yevFace"/></svg>
+    <div class="tx"><b>היי, אני יבגני! 👋</b> אלווה אתכם לאורך כל השיעור עם טיפים קצרים (אפשר לגרור אותי לכל מקום על המסך). חשוב שתדעו דבר אחד מראש: <b>היום אנחנו בעיקר "מסתכלים מלמעלה" על תהליכים ומושגים.</b> יהיו התנסויות hands-on, אבל המטרה המרכזית היא <b>להכיר את המונחים ואת התמונה הגדולה</b>. בכל פעם שניגע במושג עמוק רק על קצה המזלג — אקפוץ ואומר:
+    <span class="kondila">על זה תרחיבו בהמשך עם ד״ר קונדילה 👨‍🏫</span></div>
+  </div>
+
+  <h3 style="font-size:clamp(24px,3vw,34px);font-weight:900;margin:36px 0 4px">📌 מה כבר עשינו — תזכורת מהשיעורים הקודמים</h3>
+  <p class="section-sub">עקבנו אחרי הזמנה אחת במסע שלם. הנה התחנות, מלמעלה למטה:</p>
+  <div class="vflow-big stagger">
+    <div class="vnode c-indigo"><div class="ic">🖱️</div><div class="bd"><b>חלק א׳ · הקליק + JSON</b><div class="sub">לקוח לוחץ "הזמן" → האפליקציה אורזת את הנתונים בפורמט JSON ושולחת לשרת.</div></div></div>
+    <div class="vdown">↓</div>
+    <div class="vnode c-indigo"><div class="ic">⚙️</div><div class="bd"><b>חלק א׳ · ה-Backend</b><div class="sub">שרת (Node.js / Python / Java) מקבל את הבקשה, בודק אותה, ומחליט מה לשמור.</div></div></div>
+    <div class="vdown">↓</div>
+    <div class="vnode c-teal"><div class="ic">🗄️</div><div class="bd"><b>חלק א׳ · INSERT למסד התפעולי (OLTP)</b><div class="sub">הנתונים נשמרים ב-PostgreSQL/SQL Server בטרנזקציה — ACID, "הכל או כלום".</div></div></div>
+    <div class="vdown">↓</div>
+    <div class="vnode c-teal"><div class="ic">🔄</div><div class="bd"><b>חלק ב׳-1 · ETL / ELT</b><div class="sub">תהליך אוטומטי מעתיק את הנתונים מהמסד התפעולי, מנקה אותם, ומכין לניתוח.</div></div></div>
+    <div class="vdown">↓</div>
+    <div class="vnode c-purple"><div class="ic">🏛️</div><div class="bd"><b>חלק ב׳-1 · מחסן OLAP + Star Schema</b><div class="sub">הנתונים מסודרים במחסן אנליטי (BigQuery) במבנה "כוכב" — מהיר לשאלות ניתוח.</div></div></div>
+  </div>
+  <div class="soft-note">📍 <b>כאן עצרנו:</b> יש לנו נתונים תפעוליים שנשמרים, ועותק אנליטי במחסן. היום נפתח את "מכסה המנוע" של המסד התפעולי עצמו — ונראה איך הכל זורם בסוף ל-BI.</div>
+
+  <h3 style="font-size:clamp(24px,3vw,34px);font-weight:900;margin:42px 0 4px">🔗 ואיך כל זה קשור לעולם ה-BI?</h3>
+  <p class="section-sub">זה הסיפור המקוצר ביותר של כל הקורס — מהקליק ועד ההחלטה:</p>
+  <div class="vflow-big stagger">
+    <div class="vnode c-indigo"><div class="ic">🗄️</div><div class="bd"><b>1. נתונים נשמרים</b><div class="sub">מסד הנתונים התפעולי. <b>היום:</b> נהפוך אותו לחכם (Procedures, Triggers) וגמיש (NoSQL).</div></div></div>
+    <div class="vdown">↓</div>
+    <div class="vnode c-teal"><div class="ic">⚖️</div><div class="bd"><b>2. נשאר זמין בקנה מידה</b><div class="sub"><b>היום:</b> Load Balancers מאפשרים לשרת מיליוני משתמשים בלי שהמערכת תקרוס.</div></div></div>
+    <div class="vdown">↓</div>
+    <div class="vnode c-purple"><div class="ic">📊</div><div class="bd"><b>3. הנתונים הופכים לתובנה</b><div class="sub"><b>היום:</b> מחברים הכל לכלי BI (Data Studio) ובונים דשבורד שמנהל מבין במבט.</div></div></div>
+    <div class="vdown">↓</div>
+    <div class="vnode" style="border-color:var(--green);background:linear-gradient(160deg,#fff,#ecfdf5)"><div class="ic">✅</div><div class="bd"><b>4. מתקבלת החלטה עסקית</b><div class="sub">זו כל המטרה של BI: נתונים → תובנה → החלטה. אתם, האנליסטים, הגשר בדרך.</div></div></div>
+  </div>
+  <div class="why"><b>למה זה חשוב לכם?</b> כל מה שנלמד היום — גם החלקים ה"טכניים" — נועד בסוף לשרת מטרה אחת: שהנתונים יגיעו נקיים, אמינים וזמינים אל הדשבורד. וזה בדיוק התחום שלכם.</div>
+
+  <h3 style="font-size:clamp(24px,3vw,34px);font-weight:900;margin:46px 0 4px">🗺️ מפת היום — 6 התחנות</h3>
+  <p class="section-sub">לחצו על כל כרטיס כדי להפוך אותו ולגלות מה נלמד ובאיזו תוכנה. 👆</p>
+  <div class="flip-grid cols6 stagger">
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">1</div><div class="ic">🐘</div><div class="ttl">הבסיס<span class="en">PostgreSQL · Cloud SQL</span></div><div class="hint">↻ הקליקו להפוך</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">🐘 מסד הנתונים שלנו</div><p>עליו נריץ את כל מעבדות ה-SQL היום.</p><div class="tool-note"><b>PostgreSQL</b> = מסד נתונים SQL חינמי וקוד-פתוח, מהפופולריים בעולם. <b>Cloud SQL</b> = השירות המנוהל של גוגל שמריץ אותו בענן בשבילכם.</div></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">2</div><div class="ic">⚙️</div><div class="ttl">פרוצדורות<span class="en">Stored Procedures</span></div><div class="hint">↻ הקליקו להפוך</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">⚙️ "מתכון" שמור במסד</div><p>שומרים פעולה מורכבת פעם אחת וקוראים לה בשם — עקביות, מהירות ואבטחה.</p><div class="tool-note">רץ בתוך <b>PostgreSQL</b> (וכל מסד SQL) — מסד הנתונים שנשתמש בו במעבדה.</div></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">3</div><div class="ic">⚡</div><div class="ttl">טריגרים<span class="en">Triggers</span></div><div class="hint">↻ הקליקו להפוך</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">⚡ חיישן אוטומטי</div><p>קוד שרץ לבד כשקורה אירוע במסד. שומר על איכות הנתונים ועל היסטוריה.</p><div class="tool-note">גם הוא חי בתוך <b>PostgreSQL</b> (וכל מסד SQL).</div></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">4</div><div class="ic">🔥</div><div class="ttl">NoSQL<span class="en">Firebase Firestore</span></div><div class="hint">↻ הקליקו להפוך</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">🔥 מסד מסוג אחר</div><p>לא טבלאות אלא "מסמכים" גמישים. מצוין לאפליקציות ולזמן-אמת.</p><div class="tool-note"><b>Firebase</b> = פלטפורמת פיתוח של גוגל. <b>Firestore</b> = מסד ה-NoSQL שבתוכה, ששומר "מסמכים" במקום טבלאות.</div></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">5</div><div class="ic">⚖️</div><div class="ttl">מאזן עומסים<span class="en">Load Balancer</span></div><div class="hint">↻ הקליקו להפוך</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">⚖️ "שוטר תנועה"</div><p>מחלק בקשות בין כמה שרתים כדי לשרת מיליונים בלי קריסה. יש הדגמה חיה בהמשך!</p><div class="tool-note"><b>NGINX</b> = תוכנת שרת חינמית ונפוצה מאוד, שמשמשת (בין השאר) כמאזן עומסים. <b>Cloud LB</b> = שירות מאזן-עומסים מנוהל של ספק ענן (כמו Google), בלי שתתחזקו שרת בעצמכם.</div></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">6</div><div class="ic">📊</div><div class="ttl">חיבור ל-BI<span class="en">Data Studio</span></div><div class="hint">↻ הקליקו להפוך</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">📊 מנתונים לדשבורד</div><p>מחברים את כל המקורות לכלי BI ובונים דשבורד שמנהל מבין.</p><div class="tool-note"><b>Data Studio</b> (לשעבר Looker Studio) = כלי ה-BI החינמי של גוגל לבניית דשבורדים, רץ כולו בדפדפן.</div></div>
+    </div></div>
+  </div>
+
+  <div class="info reveal">
+    <div class="hd">🛒 הדוגמה הרצה שלנו: "Mini-Shop"</div>
+    <p>נמשיך עם אותה חנות אונליין ואותן דמויות מהחלקים הקודמים: הלקוח <b>יוסי כהן</b>, הלקוחה <b>רינה לוי</b>, והמוצר <b>חולצה כחולה</b> (מחיר 49.9 ₪). אותן 4 טבלאות מוכרות: <span class="inline-code">customers</span>, <span class="inline-code">products</span>, <span class="inline-code">orders</span>, <span class="inline-code">order_items</span>.</p>
+  </div>
+
+  <div class="takeaway">
+    <div class="big-emoji">🎯</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">היום הופכים את מסד הנתונים מ"מחסן ששומר" ל"מערכת שחושבת, מגיבה ומתרחבת" — ומחברים את הכל לדשבורד שמנהל באמת מסתכל עליו.</div>
+  </div>
+</section>
+
+<!-- ============ BLOCK 2 ============ -->
+<section class="section" id="block2">
+  <span class="block-tag">בלוק 2 · Stored Procedures · 35 דקות</span>
+  <h2>Stored Procedures — "מתכונים שמורים" במסד</h2>
+  <p class="section-sub">איך לשמור פעולה מורכבת פעם אחת בתוך המסד, ולקרוא לה בשם — במקום לחזור עליה כל פעם מחדש.</p>
+
+  <div class="deep-card">
+    <h3>🧠 קודם כל — מה זה בכלל? (בשפה של בן אדם)</h3>
+    <p class="lead"><b>Stored Procedure</b> (בעברית: "פרוצדורה שמורה") היא <b>סדרה של פקודות SQL ששומרים בתוך מסד הנתונים עצמו, נותנים לה שם, וקוראים לה בשם</b> מתי שצריך. במקום לשלוח כל פעם מחדש את כל הפקודות — שולחים שורה אחת: "תריץ את הפרוצדורה ששמה כך-וכך".</p>
+
+    <h4 style="font-size:22px;margin-top:22px">🤔 רגע אחד — למה בכלל צריך כמה פקודות SQL להזמנה אחת?</h4>
+    <p>בלי לענות על זה אי אפשר להבין את היתרון, אז נלך לאט. זוכרים מחלק ב׳-1 שהמידע מפוזר ב-<b>4 טבלאות נפרדות</b> (נורמליזציה)? בגלל זה, הזמנה אחת "פשוטה" של יוסי דורשת בעצם <b>כמה פעולות נפרדות</b> במסד:</p>
+    <div class="code-block" data-lang="sql"><span class="lang">SQL · הזמנה אחת = 4 פקודות נפרדות</span><pre>-- 1. check there is enough stock
+SELECT stock FROM products WHERE product_id = 7;
+-- 2. open a new order row
+INSERT INTO orders (...) VALUES (...);
+-- 3. add the ordered item to that order
+INSERT INTO order_items (...) VALUES (...);
+-- 4. reduce the stock by what was bought
+UPDATE products SET stock = stock - 3 WHERE ...;</pre></div>
+    <p>זה הרבה — וגם <b>מסוכן</b>: אם האפליקציה תשכח את שלב 4, המלאי לא יתעדכן והנתונים "ישקרו". הפתרון: לארוז את כל 4 השלבים כ"מתכון" אחד בתוך המסד, ולקרוא לו בשם.</p>
+
+    <div class="info term">
+      <div class="hd">🍳 האנלוגיה: מתכון במטבח</div>
+      <p><b>בלי</b> מתכון שמור — בכל פעם שמישהו רוצה עוגה אתם מכתיבים מההתחלה: "קח קמח, 3 ביצים, ערבב, אפה ב-180°"... שוב ושוב. <b>עם</b> מתכון שמור אתם אומרים רק: "תכין עוגה מס' 7" — והמטבח יודע את כל הצעדים.</p>
+      <p><b>אצלנו:</b> במקום 4 פקודות, האפליקציה שולחת שורה אחת — <span class="inline-code">CALL place_order(...)</span> — והמסד מריץ את כל 4 הצעדים בעצמו.</p>
+    </div>
+
+    <div class="yev-callout">
+      <svg class="face" viewBox="0 0 100 100"><use href="#yevFace"/></svg>
+      <div class="tx"><b>יבגני מבהיר נקודה שמבלבלת רבים:</b> זה <b>לא</b> קשור ל-OLAP מול OLTP! פרוצדורה היא כלי <b>בתוך המסד התפעולי (OLTP)</b> — היא עוזרת לבצע פעולות. ההבחנה OLTP/OLAP היא "איפה הנתונים יושבים ולמה" (תפעול מול ניתוח), ופרוצדורה היא "איך מבצעים פעולה" בתוך ה-OLTP. שני נושאים שונים לגמרי.</div>
+    </div>
+
+    <h4 style="font-size:22px;margin-top:24px">🎬 איך זה נראה — בקשה אחת, ארבעה צעדים אוטומטיים</h4>
+    <div class="vflow-big stagger">
+      <div class="vnode c-indigo"><div class="ic">📱</div><div class="bd"><b>האפליקציה שולחת פקודה אחת בלבד</b><div class="sub" style="direction:ltr;text-align:left;font-family:'Courier New',monospace;font-size:16px">CALL place_order(customer=42, product=7, qty=3)</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-teal"><div class="ic">🗄️</div><div class="bd"><b>מסד הנתונים מריץ את ה"מתכון" השמור — לבד</b><div class="sub">1️⃣ בודק מלאי &nbsp;·&nbsp; 2️⃣ פותח הזמנה ב-orders &nbsp;·&nbsp; 3️⃣ מוסיף שורה ל-order_items &nbsp;·&nbsp; 4️⃣ מוריד מהמלאי ב-products</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode" style="border-color:var(--green);background:linear-gradient(160deg,#fff,#ecfdf5)"><div class="ic">✅</div><div class="bd"><b>הכל קרה כיחידה אחת (אטומית)</b><div class="sub">או שכל הצעדים הצליחו — או ששום דבר לא נשמר. אין "חצי הזמנה".</div></div></div>
+    </div>
+    <div class="diagram-cap" style="text-align:center;color:var(--muted);font-size:15px;margin:6px 0 4px">שורה אחת מהאפליקציה ⟸ המסד מבצע את כל הצעדים בעצמו (החץ "נכנס" מימין, כיוון הקריאה בעברית).</div>
+
+    <span class="sw"><span class="d"></span>באיזו תוכנה? PostgreSQL (וגם SQL Server, MySQL, Oracle — בכולם יש פרוצדורות)</span>
+
+    <h3 style="margin-top:28px">🏆 4 הסיבות שחברות משתמשות בפרוצדורות</h3>
+    <p>לחצו על כל כרטיס כדי להפוך אותו ולגלות בדיוק למה זה חשוב — גם טכנית, וגם לכם כאנליסטים. 👆</p>
+    <div class="flip-grid cols4 stagger">
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🎯</div><div class="ttl">עקביות<span class="en">Consistency</span></div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🎯 עקביות</div><p>כל הזמנה עוברת בדיוק דרך אותם צעדים ובדיקות. אי אפשר "לשכוח" להוריד מלאי או לדלג על בדיקה.</p><p><b>לאנליסט:</b> הנתונים נוצרים אחיד — אפשר לסמוך עליהם בניתוח.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">⚡</div><div class="ttl">ביצועים<span class="en">Performance</span></div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">⚡ ביצועים</div><p>במקום 4 נסיעות הלוך-ושוב ברשת בין השרת למסד — נסיעה אחת בלבד.</p><p>במערכת עמוסה (אלפי הזמנות בדקה) זה הבדל עצום בזמן התגובה.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🔒</div><div class="ttl">אבטחה<span class="en">Security</span></div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🔒 אבטחה</div><p>נותנים הרשאה "להריץ את הפרוצדורה" בלי גישה ישירה לשנות את הטבלאות.</p><p>פחות משטח תקיפה, פחות סיכוי לטעות הרסנית.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🧩</div><div class="ttl">לוגיקה במקום אחד<span class="en">Single source</span></div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🧩 לוגיקה אחת מרכזית</div><p>החוק העסקי ("אסור להזמין יותר מהמלאי") יושב במקום אחד.</p><p>לא מפוזר ומשוכפל ב-5 אפליקציות שונות שכל אחת עלולה לטעות אחרת.</p></div>
+      </div></div>
+    </div>
+
+    <div class="info insight">
+      <div class="hd">🧐 מושג קרוב שחשוב לא להתבלבל בו: FUNCTION מול PROCEDURE</div>
+      <p>ב-PostgreSQL יש שני "בני דודים" קרובים. שניהם קוד שמור במסד, אבל יש הבדל פשוט:</p>
+      <div class="tbl-wrap">
+      <table class="tbl">
+        <tr><th>&nbsp;</th><th>FUNCTION (פונקציה)</th><th>PROCEDURE (פרוצדורה)</th></tr>
+        <tr><td>מה היא עושה?</td><td><b>מחזירה ערך</b> (מספר, טקסט, טבלה)</td><td><b>מבצעת פעולה</b> (תהליך/workflow)</td></tr>
+        <tr><td>איך קוראים לה?</td><td><span class="inline-code">SELECT order_total(1)</span></td><td><span class="inline-code">CALL place_order(...)</span></td></tr>
+        <tr><td>אפשר בתוך שאילתה?</td><td>כן — חלק מ-SELECT</td><td>לא — פקודה עצמאית</td></tr>
+        <tr><td>מתי להשתמש?</td><td>כשרוצים <b>תשובה</b> בחזרה</td><td>כשרוצים <b>לבצע משהו</b></td></tr>
+      </table>
+      </div>
+      <p><b>כלל אצבע למתחילים:</b> רוצים מספר בחזרה? → FUNCTION. רוצים לבצע פעולה? → PROCEDURE.</p>
+    </div>
+  </div>
+
+  <!-- HANDS-ON LAB -->
+  <div class="lab">
+    <div class="lab-head">
+      <span class="lab-pill">🧪 HANDS-ON</span>
+      <h3>בונים פרוצדורה אמיתית — צעד אחר צעד</h3>
+    </div>
+    <p>נבנה את הפרוצדורה <span class="inline-code">place_order</span> שמבצעת הזמנה שלמה. <b>אל תדאגו אם לא הבנתם כל שורת קוד</b> — המטרה היא לראות את זה עובד ולהבין את הרעיון. בחרו איך אתם רוצים להריץ:</p>
+
+    <div class="info term">
+      <div class="hd">🐘 רגע — למה PostgreSQL? ולמה דווקא בענן של גוגל?</div>
+      <p><b>למה PostgreSQL:</b> מסד SQL חינמי וקוד-פתוח, חזק ברמת ה"גדולים" (Apple, Spotify, Instagram), והכי חשוב — <b>חוצה-פלטפורמה</b>: רץ זהה על Windows, Mac ו-Linux. כך לכל סטודנט/ית יהיה בדיוק אותו דבר, בלי "אצלי זה לא עובד".</p>
+      <p><b>למה Google Cloud:</b> כדי שלא תצטרכו להתקין כלום על המחשב — הכל רץ <b>בדפדפן</b>, ויש אפשרות <b>חינמית לגמרי</b>. <b>לאן הולכים?</b> בדרך א׳ — לכתובת <span class="inline-code">shell.cloud.google.com</span> (טרמינל בענן). בדרך ב׳ — ל-<span class="inline-code">console.cloud.google.com/sql</span> (השירות המנוהל Cloud SQL).</p>
+      <span class="sw"><span class="d"></span>PostgreSQL · חינמי · חוצה-פלטפורמה · רץ על Google Cloud בדפדפן</span>
+    </div>
+
+    <div class="tabwrap">
+      <div class="tabs">
+        <button class="tab active" onclick="showTab(this,'sp-shell')">דרך א׳: Cloud Shell — חינם, בלי כרטיס אשראי ✅</button>
+        <button class="tab" onclick="showTab(this,'sp-studio')">דרך ב׳: Cloud SQL Studio — השירות המנוהל</button>
+      </div>
+
+      <div class="tab-panel active" id="sp-shell">
+        <p><b>Google Cloud Shell</b> זה חלון טרמינל (שורת פקודה) שרץ בענן של גוגל — נפתח ישר בדפדפן, חינמי לגמרי, ולא צריך כרטיס אשראי. נתקין בתוכו PostgreSQL אמיתי.</p>
+        <div class="info warn">
+          <div class="hd">⚠️ לפני הכל</div>
+          <p>צריך חשבון Google רגיל (Gmail). אם אתם על חשבון אוניברסיטה/ארגון, ייתכן ש-Cloud Shell חסום — במקרה כזה השתמשו בחשבון פרטי. כל מה שמתקינים נמחק כשהחלון נסגר אחרי חוסר פעילות — וזה בסדר גמור למעבדה.</p>
+        </div>
+        <ol class="lab-steps">
+          <li class="lab-step"><div class="st">פתחו את Cloud Shell</div>היכנסו ל-<span class="inline-code">shell.cloud.google.com</span> והתחברו עם חשבון Google. ייפתח טרמינל שחור בתוך הדפדפן.</li>
+          <li class="lab-step"><div class="st">התקינו והפעילו את PostgreSQL</div>העתיקו את הפקודות האלה לטרמינל (שורה-שורה או הכל ביחד):
+            <div class="code-block" data-lang="bash"><span class="lang">BASH · Cloud Shell</span><pre># refresh the catalog of installable software
+sudo apt-get update
+# install the PostgreSQL database engine (-y means "yes to all")
+sudo apt-get -y install postgresql postgresql-contrib
+# turn the database on so we can connect to it
+sudo service postgresql start</pre></div>
+          </li>
+          <li class="lab-step"><div class="st">היכנסו ל-PostgreSQL וצרו מסד נתונים</div>
+            <div class="code-block" data-lang="bash"><span class="lang">BASH</span><pre># open PostgreSQL's command line, logged in as the admin user 'postgres'
+sudo -u postgres psql</pre></div>
+            עכשיו אתם בתוך PostgreSQL (תראו <span class="kbd">postgres=#</span>). צרו מסד נתונים והיכנסו אליו:
+            <div class="code-block" data-lang="sql"><span class="lang">SQL</span><pre>-- create a new, empty database called minishop
+CREATE DATABASE minishop;
+-- connect to it (everything from now on happens inside minishop)
+\c minishop</pre></div>
+          </li>
+          <li class="lab-step"><div class="st">צרו את הטבלאות והכניסו נתונים</div>הדביקו את כל הבלוק הבא בבת אחת:
+            <div class="code-block" data-lang="sql"><span class="lang">SQL · יצירת הטבלאות</span><pre>-- create a table to store customers:
+CREATE TABLE customers (
+  -- auto-numbered unique id for each customer
+  customer_id SERIAL PRIMARY KEY,
+  -- the customer's name (NOT NULL = cannot be empty)
+  name        TEXT NOT NULL,
+  -- email address; UNIQUE = no two customers can share one
+  email       TEXT UNIQUE
+);
+-- create a table to store products:
+CREATE TABLE products (
+  -- auto-numbered unique id for each product
+  product_id SERIAL PRIMARY KEY,
+  -- the product's name
+  name       TEXT NOT NULL,
+  -- price with 2 decimals, e.g. 49.90
+  price      NUMERIC(10,2) NOT NULL,
+  -- how many units are in stock (DEFAULT 0 if not given)
+  stock      INTEGER NOT NULL DEFAULT 0
+);
+-- create a table for orders (one row per order):
+CREATE TABLE orders (
+  -- auto-numbered unique id for each order
+  order_id    SERIAL PRIMARY KEY,
+  -- who ordered it (a link to the customers table)
+  customer_id INTEGER NOT NULL REFERENCES customers(customer_id),
+  -- when it was ordered (now() = the current time)
+  order_date  TIMESTAMP NOT NULL DEFAULT now(),
+  -- the order's total price
+  total       NUMERIC(10,2) NOT NULL DEFAULT 0
+);
+-- create a table for the items inside each order:
+CREATE TABLE order_items (
+  -- auto-numbered unique id for each line item
+  order_item_id SERIAL PRIMARY KEY,
+  -- which order this item belongs to (link to orders)
+  order_id      INTEGER NOT NULL REFERENCES orders(order_id),
+  -- which product was bought (link to products)
+  product_id    INTEGER NOT NULL REFERENCES products(product_id),
+  -- how many units (CHECK forces it to be more than 0)
+  quantity      INTEGER NOT NULL CHECK (quantity &gt; 0)
+);
+
+-- now add some sample data so we have something to play with.
+-- add two customers in one command:
+INSERT INTO customers (name, email) VALUES
+  -- this row becomes customer_id 1:
+  ('Yossi Cohen', 'yossi@example.com'),
+  -- this row becomes customer_id 2:
+  ('Rina Levi',   'rina@example.com');
+-- add two products:
+INSERT INTO products (name, price, stock) VALUES
+  -- product_id 1: 100 units in stock
+  ('Blue Shirt',  49.90, 100),
+  -- product_id 2: 40 units in stock
+  ('Black Jeans', 129.90, 40);</pre></div>
+          </li>
+          <li class="lab-step"><div class="st">עכשיו הכוכב: צרו את הפרוצדורה</div>זאת ה"מתכון השמור". קראו את ההערות (אחרי <span class="kbd">--</span>) כדי להבין כל שלב:
+            <div class="code-block" data-lang="sql"><span class="lang">SQL · CREATE PROCEDURE</span><pre>-- define (or replace) a procedure named place_order:
+CREATE OR REPLACE PROCEDURE place_order(
+    -- input #1: which customer is ordering
+    p_customer_id INTEGER,
+    -- input #2: which product
+    p_product_id  INTEGER,
+    -- input #3: how many units
+    p_quantity    INTEGER
+)
+-- written in PostgreSQL's procedural language:
+LANGUAGE plpgsql
+AS $$
+-- declare temporary "helper" variables:
+DECLARE
+    -- will hold the id of the new order we create
+    v_order_id INTEGER;
+    -- will hold the product's price
+    v_price    NUMERIC(10,2);
+    -- will hold the product's current stock
+    v_stock    INTEGER;
+BEGIN
+    -- STEP 1: read the product's price and current stock into our variables
+    SELECT price, stock INTO v_price, v_stock
+    FROM products WHERE product_id = p_product_id;
+
+    -- STEP 2: safety checks before we change anything
+    IF v_stock IS NULL THEN
+        -- the product wasn't found -> stop with a clear error:
+        RAISE EXCEPTION 'Product % does not exist', p_product_id;
+    ELSIF v_stock &lt; p_quantity THEN
+        -- not enough units in stock -> stop too:
+        RAISE EXCEPTION 'Not enough stock (have %, need %)', v_stock, p_quantity;
+    END IF;
+
+    -- STEP 3: create the order header row, and grab its new id
+    INSERT INTO orders (customer_id, total)
+    -- total = price x quantity:
+    VALUES (p_customer_id, v_price * p_quantity)
+    -- save the new order's id into v_order_id for the next step:
+    RETURNING order_id INTO v_order_id;
+
+    -- STEP 4: add the ordered item, linked to the order we just created
+    INSERT INTO order_items (order_id, product_id, quantity)
+    VALUES (v_order_id, p_product_id, p_quantity);
+
+    -- STEP 5: subtract what was bought from the product's stock
+    UPDATE products SET stock = stock - p_quantity
+    WHERE product_id = p_product_id;
+
+    -- print a friendly confirmation message:
+    RAISE NOTICE 'Order % placed!', v_order_id;
+END;
+$$;</pre></div>
+          </li>
+          <li class="lab-step"><div class="st">קראו לפרוצדורה — והזמינו!</div>יוסי (לקוח 1) קונה 3 חולצות כחולות (מוצר 1):
+            <div class="code-block" data-lang="sql"><span class="lang">SQL · CALL</span><pre>-- run the procedure: customer #1 buys 3 units of product #1
+CALL place_order(1, 1, 3);
+
+-- now let's verify what the procedure did.
+-- show the new order row that was created:
+SELECT * FROM orders;
+-- show the line item that was added:
+SELECT * FROM order_items;
+-- check the stock: Blue Shirt should have dropped from 100 to 97:
+SELECT product_id, name, stock FROM products;</pre></div>
+            🎉 בפקודה אחת — נוצרה הזמנה, נוסף פריט, והמלאי ירד מ-100 ל-97. <b>זה</b> הכוח של פרוצדורה.
+          </li>
+        </ol>
+      </div>
+
+      <div class="tab-panel" id="sp-studio">
+        <p><b>Cloud SQL</b> הוא השירות המנוהל של גוגל למסדי נתונים — גוגל מתחזקת את השרת בשבילכם. בתוכו יש עורך SQL בדפדפן בשם <b>Cloud SQL Studio</b>, אז לא צריך להתקין כלום.</p>
+        <div class="info important">
+          <div class="hd">💳 חשוב לדעת מראש</div>
+          <p>Cloud SQL <b>דורש חשבון חיוב (כרטיס אשראי)</b> — גם בשביל הניסיון החינמי. אין "שכבה חינמית לתמיד". יש $300 קרדיט חינם ל-90 יום, ויש instance ניסיון חינם ל-30 יום. אם אתם רק רוצים לתרגל — <b>דרך א׳ (Cloud Shell) עדיפה כי היא חינם לחלוטין</b>. הדרך הזו נועדה להכיר את השירות ה"אמיתי".</p>
+        </div>
+        <ol class="lab-steps">
+          <li class="lab-step"><div class="st">צרו instance של Cloud SQL</div>בקונסולה של גוגל: <span class="inline-code">console.cloud.google.com/sql</span> → <b>Create instance</b> → <b>Choose PostgreSQL</b> → בחרו edition <b>Enterprise</b> ו-preset <b>Sandbox</b> (הזול ביותר) → תנו שם, סיסמה למשתמש <span class="inline-code">postgres</span>, ואזור (למשל europe-west) → <b>Create</b>. (לוקח כמה דקות.)</li>
+          <li class="lab-step"><div class="st">פתחו את Cloud SQL Studio</div>בעמוד ה-instance, בתפריט הצד לחצו <b>Cloud SQL Studio</b>. התחברו עם שם מסד הנתונים (<span class="inline-code">postgres</span>), המשתמש (<span class="inline-code">postgres</span>) והסיסמה שקבעתם.</li>
+          <li class="lab-step"><div class="st">הריצו את אותו SQL</div>פתחו טאב חדש בעורך, הדביקו את אותו קוד יצירת הטבלאות והפרוצדורה מדרך א׳ (שלבים 4–6), ולחצו <b>Run</b>. התוצאות מופיעות למטה.</li>
+          <li class="lab-step"><div class="st">⚠️ אל תשכחו לכבות</div>Cloud SQL מחייב לפי שעה גם כשלא משתמשים. אחרי המעבדה — <b>Stop</b> או <b>Delete</b> ל-instance כדי לא להצטבר חיוב.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="info tip">
+      <div class="hd">✍️ תרגיל קטן לבד</div>
+      <p>כתבו פונקציה בשם <span class="inline-code">order_total</span> שמקבלת <span class="inline-code">order_id</span> ומחזירה את הסכום הכולל של ההזמנה. רמז: זאת FUNCTION (כי מחזירה מספר), קוראים לה עם <span class="inline-code">SELECT order_total(1);</span></p>
+      <details style="margin-top:8px"><summary style="cursor:pointer;font-weight:800;color:var(--primary)">לפתרון — לחצו כאן</summary>
+        <div class="code-block" data-lang="sql"><span class="lang">SQL · פתרון</span><pre>-- a function that takes an order id and returns its total price:
+CREATE OR REPLACE FUNCTION order_total(p_order_id INTEGER)
+-- it gives back a number:
+RETURNS NUMERIC
+-- written in PostgreSQL's procedural language:
+LANGUAGE plpgsql
+AS $$
+-- a temporary variable to hold the running sum:
+DECLARE v_total NUMERIC(10,2);
+BEGIN
+    -- add up quantity x price for every item in this order:
+    SELECT SUM(oi.quantity * p.price) INTO v_total
+    FROM order_items oi
+    -- match each item to its product, to get the price:
+    JOIN products p ON p.product_id = oi.product_id
+    -- ...but only for the order we were asked about:
+    WHERE oi.order_id = p_order_id;
+    -- return the total (COALESCE turns NULL into 0 for an empty order):
+    RETURN COALESCE(v_total, 0);
+END;
+$$;
+
+-- functions are called with SELECT; show order #1's total:
+SELECT order_total(1);</pre></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="israel">
+    <div class="hd">🇮🇱 מה קורה בישראל? (בתרשים)</div>
+    <div class="vflow-big stagger" style="margin-top:12px">
+      <div class="vnode c-indigo"><div class="ic">🏦</div><div class="bd"><b>בנקים וחברות ביטוח גדולות</b><div class="sub">לאומי, הפועלים, הפניקס, כלל...</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-teal"><div class="ic">📜</div><div class="bd"><b>אלפי Stored Procedures</b><div class="sub">חלקן נכתבו לפני 20+ שנה — ועדיין רצות בלב המערכת.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-purple"><div class="ic">🧠</div><div class="bd"><b>הלוגיקה העסקית הקריטית יושבת במסד</b><div class="sub">לא באפליקציה — אלא בתוך הפרוצדורות עצמן.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode" style="border-color:var(--green);background:linear-gradient(160deg,#fff,#ecfdf5)"><div class="ic">📊</div><div class="bd"><b>ואתם, האנליסטים?</b><div class="sub">לפעמים תצטרכו לקרוא פרוצדורה כדי להבין מאיפה נתון הגיע ואיך חושב.</div></div></div>
+    </div>
+  </div>
+
+  <div class="quiz" data-yv="זוכרים? פרוצדורה חיה בתוך ה-OLTP ולא הופכת אותו ל-OLAP. תשובות ג׳ ו-ד׳ מערבבות מושגים מעולם המחסן האנליטי — בדיוק המלכודת הקלאסית במבחנים!">
+    <div class="q-tag">❓ חידון · בלוק 2</div>
+    <div class="q-txt">מעבירים את הלוגיקה של "ביצוע הזמנה" מ-4 פקודות SQL נפרדות (שהשרת שולח) ל-Stored Procedure אחת במסד. מה היתרון <b>הכי משמעותי לאמינות הנתונים</b> שתנתחו בהמשך?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>הקוד ייראה מסודר ויפה יותר.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ב</span>הפרוצדורה הופכת את מסד ה-OLTP למסד OLAP.</button>
+    <button class="quiz-opt" data-c="1" data-exp="עקביות היא הלב: כשכל הזמנה עוברת דרך אותה פרוצדורה, היא חייבת לעבור את אותם צעדים ובדיקות — אי אפשר 'לשכוח' להוריד מלאי או לדלג על בדיקה. כך הנתונים נוצרים אחיד ואפשר לבנות עליהם ניתוח אמין. שאר התשובות שגויות: 'קוד יפה' הוא שיפור קוסמטי בלבד; פרוצדורה אינה הופכת OLTP ל-OLAP; ו-Columnar Storage שייך למחסן האנליטי, לא לכאן." onclick="quizAns(this)"><span class="k">ג</span>כל הזמנה עוברת דרך אותם צעדים ובדיקות בדיוק — אי אפשר "לשכוח" שלב, והנתונים נוצרים בעקביות.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>הנתונים יישמרו מהר יותר בזכות Columnar Storage.</button>
+    <div class="quiz-fb"></div>
+  </div>
+
+  <div class="quiz" data-yv="טעות קלאסית בראיונות — להחליף בין השניים. תרגיל זיכרון: FUNCTION = Fetch a value (SELECT). PROCEDURE = Perform an action (CALL).">
+    <div class="q-tag">❓ חידון נוסף · בלוק 2</div>
+    <div class="q-txt">איזו אמירה על ההבדל בין <b>FUNCTION</b> ל-<b>PROCEDURE</b> ב-PostgreSQL היא הנכונה?</div>
+    <div class="q-note">בחרו תשובה אחת. (כל המסיחים נשמעים הגיוניים — שימו לב לפרטים!)</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>שתיהן נקראות עם CALL, וההבדל היחיד הוא בשם שנותנים להן.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ב</span>PROCEDURE יכולה לשמש בתוך שאילתת SELECT, אבל FUNCTION לא.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>רק FUNCTION יכולה לקבל פרמטרים; פרוצדורה לא.</button>
+    <button class="quiz-opt" data-c="1" data-exp="FUNCTION מחזירה ערך ולכן משתמשים בה בתוך שאילתה (למשל SELECT order_total(1)); PROCEDURE מבצעת פעולה/תהליך ומפעילים אותה עם CALL. שאר התשובות שגויות: לא שתיהן נקראות עם CALL; דווקא FUNCTION (ולא PROCEDURE) משתלבת בתוך SELECT; ושתיהן יכולות לקבל פרמטרים." onclick="quizAns(this)"><span class="k">ד</span>FUNCTION מחזירה ערך ונקראת עם SELECT; PROCEDURE מבצעת פעולה ונקראת עם CALL.</button>
+    <div class="quiz-fb"></div>
+  </div>
+
+  <div class="takeaway">
+    <div class="big-emoji">⚙️</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">Stored Procedure = מתכון שמור במסד. שומרים פעם אחת, קוראים בשם — וזוכים בעקביות, מהירות, אבטחה ולוגיקה במקום אחד.</div>
+  </div>
+</section>
+
+<!-- ============ BLOCK 3 ============ -->
+<section class="section" id="block3">
+  <span class="block-tag">בלוק 3 · Triggers · 35 דקות</span>
+  <h2>Triggers — "חיישני תנועה" במסד</h2>
+  <p class="section-sub">קוד שרץ <b>אוטומטית</b> כשמשהו קורה בטבלה — בלי שאף אחד קרא לו. זה הקסם שמשאיר את הנתונים שלכם נקיים.</p>
+
+  <div class="deep-card">
+    <h3>🧠 מה זה? (בשפה של בן אדם)</h3>
+    <p class="lead"><b>Trigger</b> (בעברית: "טריגר" או "הדק") הוא <b>קוד ששמור במסד ומופעל אוטומטית בכל פעם שקורה אירוע מסוים בטבלה</b> — הוספת שורה (INSERT), עדכון (UPDATE) או מחיקה (DELETE).</p>
+
+    <div class="info term">
+      <div class="hd">🚪 האנלוגיה: דלת אוטומטית / חיישן תנועה</div>
+      <p>כשאתם מתקרבים לדלת אוטומטית בסופר — היא נפתחת לבד. אף אחד לא לחץ על כפתור; ה<b>אירוע</b> ("מישהו התקרב") הפעיל את ה<b>תגובה</b> ("הדלת נפתחת"). טריגר זה בדיוק זה: אתם מגדירים מראש "כשקורה X בטבלה → תעשה אוטומטית Y".</p>
+      <p>דוגמה: <b>כשמוסיפים פריט להזמנה → המלאי יורד לבד.</b> אף אפליקציה לא צריכה לזכור לעשות את זה — המסד עושה את זה בעצמו, תמיד.</p>
+    </div>
+
+    <h4 style="font-size:22px;margin-top:8px">🎬 בואו נראה את זה קורה — צעד אחר צעד</h4>
+    <p>יוסי מוסיף 3 חולצות להזמנה. <b>בלי</b> טריגר, מישהו צריך לזכור להוריד מהמלאי. <b>עם</b> טריגר — זה קורה לבד, מלמעלה למטה:</p>
+    <div class="vflow-big stagger">
+      <div class="vnode c-indigo"><div class="ic">➕</div><div class="bd"><b>אירוע: מוסיפים שורה ל-order_items</b><div class="sub" style="direction:ltr;text-align:left;font-family:'Courier New',monospace;font-size:15px">INSERT INTO order_items (product=7, qty=3)</div></div></div>
+      <div class="vdown">↓ <span style="font-size:15px;color:#b45309;font-weight:800">הטריגר "מרגיש" את ההוספה ונדלק אוטומטית</span></div>
+      <div class="vnode c-amber"><div class="ic">⚡</div><div class="bd"><b>הטריגר רץ לבד — אף אחד לא קרא לו</b><div class="sub">הוא יודע בדיוק מה נוסף, דרך משתנה הקסם <span class="inline-code">NEW</span> (השורה החדשה).</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-teal"><div class="ic">📦</div><div class="bd"><b>תוצאה: המלאי יורד לבד בטבלת products</b><div class="sub" style="direction:ltr;text-align:left;font-family:'Courier New',monospace;font-size:15px">UPDATE products SET stock = stock - 3</div></div></div>
+    </div>
+    <div class="diagram-cap" style="text-align:center;color:var(--muted);font-size:15px;margin:6px 0">אירוע (הוספה) → הטריגר נדלק → תגובה (עדכון מלאי). הכל אוטומטי.</div>
+
+    <span class="sw"><span class="d"></span>באיזו תוכנה? PostgreSQL (וגם בכל מסד SQL: SQL Server, MySQL, Oracle)</span>
+
+    <div class="info insight">
+      <div class="hd">🔑 ההבדל החשוב: Procedure מול Trigger</div>
+      <p>שניהם קוד שמור במסד, אבל ההבדל הוא <b>מי מפעיל אותם</b>:</p>
+      <ul>
+        <li><b>Procedure</b> — <b>אתם</b> מפעילים אותה ביודעין: <span class="inline-code">CALL place_order(...)</span>. כמו ללחוץ על כפתור.</li>
+        <li><b>Trigger</b> — מפעיל את <b>עצמו</b> אוטומטית כשקורה אירוע. כמו חיישן תנועה. אתם לא "קוראים" לטריגר — הוא פשוט מחכה ומגיב.</li>
+      </ul>
+    </div>
+
+    <div class="yev-callout">
+      <svg class="face" viewBox="0 0 100 100"><use href="#yevFace"/></svg>
+      <div class="tx"><b>יבגני:</b> טריגרים יכולים גם להפעיל פרוצדורות, להשתרשר זה לתוך זה, ולטפל באירועים מורכבים. היום ניגע רק בבסיס המעשי שצריך כדי להבין את הרעיון. <span class="kondila">על טריגרים מתקדמים תרחיבו עם ד״ר קונדילה 👨‍🏫</span></div>
+    </div>
+
+    <h3>🧩 מאיזה חלקים טריגר בנוי?</h3>
+    <p>ב-PostgreSQL טריגר זה תמיד <b>שני חלקים</b>:</p>
+    <div class="two-col">
+      <div class="compare-card a"><h4>1. פונקציית הטריגר</h4><p>פונקציה מיוחדת (<span class="inline-code">RETURNS trigger</span>) שמכילה את ה"מה לעשות". בתוכה יש שתי מילות קסם:</p>
+        <p><span class="inline-code">NEW</span> = השורה <b>החדשה</b> (אחרי השינוי)<br><span class="inline-code">OLD</span> = השורה <b>הישנה</b> (לפני השינוי)</p></div>
+      <div class="compare-card d"><h4>2. הגדרת הטריגר</h4><p>פקודת <span class="inline-code">CREATE TRIGGER</span> שמחברת את הפונקציה לטבלה ואומרת <b>מתי</b> להריץ: לפני/אחרי (BEFORE/AFTER) איזה אירוע (INSERT/UPDATE/DELETE).</p></div>
+    </div>
+
+    <div class="info term">
+      <div class="hd">💡 מה זה NEW ו-OLD? (חשוב!)</div>
+      <p>כשמעדכנים מחיר חולצה מ-49.9 ל-69.9: <span class="inline-code">OLD.price</span> = 49.9 (מה שהיה), <span class="inline-code">NEW.price</span> = 69.9 (מה שיהיה). זה מאפשר לטריגר "לראות" את השינוי ולשמור היסטוריה — בדיוק מה שנעשה עוד רגע.</p>
+    </div>
+  </div>
+
+  <!-- HANDS-ON LAB -->
+  <div class="lab">
+    <div class="lab-head">
+      <span class="lab-pill">🧪 HANDS-ON</span>
+      <h3>בונים 2 טריגרים אמיתיים</h3>
+    </div>
+    <p>נמשיך באותו מסד <span class="inline-code">minishop</span> מהבלוק הקודם (אותו חלון psql / Cloud SQL Studio). נבנה שני טריגרים שימושיים.</p>
+
+    <h4>טריגר 1 · עדכון מלאי אוטומטי</h4>
+    <p>במקום שמישהו יזכור להוריד מלאי — נגדיר טריגר שעושה את זה לבד בכל הוספת פריט.</p>
+    <ol class="lab-steps">
+      <li class="lab-step"><div class="st">צרו את פונקציית הטריגר</div>
+        <div class="code-block" data-lang="sql"><span class="lang">SQL · trigger function</span><pre>-- a special function that a trigger will run:
+CREATE OR REPLACE FUNCTION trg_decrement_stock()
+-- trigger functions must declare "RETURNS trigger":
+RETURNS trigger
+-- PostgreSQL's procedural language:
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- NEW = the row that was just inserted (it holds product_id and quantity).
+    -- update products: subtract the quantity that was just ordered,
+    -- for the matching product:
+    UPDATE products
+    SET stock = stock - NEW.quantity
+    WHERE product_id = NEW.product_id;
+    -- AFTER triggers ignore the return value, so NULL is fine:
+    RETURN NULL;
+END;
+$$;</pre></div>
+      </li>
+      <li class="lab-step"><div class="st">חברו את הפונקציה לטבלה</div>
+        <div class="code-block" data-lang="sql"><span class="lang">SQL · CREATE TRIGGER</span><pre>-- give the trigger a name:
+CREATE TRIGGER decrement_stock_after_insert
+-- run it AFTER a row is INSERTed into order_items:
+AFTER INSERT ON order_items
+-- run once for every inserted row:
+FOR EACH ROW
+-- the function (above) to run each time:
+EXECUTE FUNCTION trg_decrement_stock();</pre></div>
+        קראו את זה כמשפט: "<b>אחרי</b> כל <b>הוספה</b> ל-order_items, <b>לכל שורה</b>, הרץ את הפונקציה."
+      </li>
+      <li class="lab-step"><div class="st">בדקו — הוסיפו פריט ותראו את המלאי יורד לבד</div>
+        <div class="code-block" data-lang="sql"><span class="lang">SQL · test</span><pre>-- create an empty order first, then add a line item directly (to fire our trigger).
+-- a new order for customer #2 (Rina):
+INSERT INTO orders (customer_id, total) VALUES (2, 0);
+-- add a line to that order. currval = the id of the order we just made; 5 Black Jeans:
+INSERT INTO order_items (order_id, product_id, quantity)
+VALUES (currval('orders_order_id_seq'), 2, 5);
+
+-- check product #2's stock: it dropped from 40 to 35 automatically, thanks to the trigger:
+SELECT product_id, name, stock FROM products WHERE product_id = 2;</pre></div>
+      </li>
+    </ol>
+    <div class="info warn">
+      <div class="hd">⚠️ הערת מורה חשובה</div>
+      <p>שימו לב: גם הפרוצדורה <span class="inline-code">place_order</span> מבלוק 2 הורידה מלאי (שלב 5), וגם הטריגר הזה מוריד מלאי. במערכת אמיתית בוחרים <b>מנגנון אחד בלבד</b> כדי לא להוריד פעמיים.</p>
+      <p><b>בפועל במעבדה:</b> אחרי שיצרתם את הטריגר — <b>אל תקראו שוב</b> ל-<span class="inline-code">place_order</span>, אחרת המלאי יירד פעמיים (פעם ע"י הפרוצדורה ופעם ע"י הטריגר). אם אתם רוצים להמשיך להשתמש בפרוצדורה, הסירו קודם את הטריגר: <span class="inline-code">DROP TRIGGER decrement_stock_after_insert ON order_items;</span></p>
+    </div>
+
+    <h4 style="margin-top:26px">טריגר 2 · יומן היסטוריית מחירים (אודיט) 🕵️</h4>
+    <p>זוכרים מחלק ב׳-1 את <b>החולצה הכחולה שהמחיר שלה עלה מ-49.9 ל-69.9</b>, ואת מושג ה-<b>SCD Type 2</b> (שמירת היסטוריה)? עכשיו נראה איך טריגר עושה את זה <b>אוטומטית</b>.</p>
+    <ol class="lab-steps">
+      <li class="lab-step"><div class="st">צרו טבלת היסטוריה</div>
+        <div class="code-block" data-lang="sql"><span class="lang">SQL</span><pre>-- a table that logs every price change:
+CREATE TABLE price_history (
+    -- auto-numbered id for each log entry
+    history_id  SERIAL PRIMARY KEY,
+    -- which product changed
+    product_id  INTEGER NOT NULL,
+    -- the price before the change
+    old_price   NUMERIC(10,2),
+    -- the price after the change
+    new_price   NUMERIC(10,2),
+    -- when it changed (defaults to the current time)
+    changed_at  TIMESTAMP NOT NULL DEFAULT now(),
+    -- which database user made the change
+    changed_by  TEXT NOT NULL DEFAULT current_user
+);</pre></div>
+      </li>
+      <li class="lab-step"><div class="st">צרו פונקציית טריגר שמשווה OLD ל-NEW</div>
+        <div class="code-block" data-lang="sql"><span class="lang">SQL · trigger function</span><pre>-- the function our audit trigger will run:
+CREATE OR REPLACE FUNCTION trg_log_price_change()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- OLD = the row before the change, NEW = after.
+    -- IS DISTINCT FROM means "not equal" (and is safe with NULLs).
+    -- only log if the price actually changed:
+    IF NEW.price IS DISTINCT FROM OLD.price THEN
+        -- write one log row with the product and the before/after prices:
+        INSERT INTO price_history (product_id, old_price, new_price)
+        VALUES (OLD.product_id, OLD.price, NEW.price);
+    END IF;
+    -- for row triggers, returning NEW is the conventional choice:
+    RETURN NEW;
+END;
+$$;</pre></div>
+      </li>
+      <li class="lab-step"><div class="st">חברו לטבלת products</div>
+        <div class="code-block" data-lang="sql"><span class="lang">SQL · CREATE TRIGGER</span><pre>-- name the trigger:
+CREATE TRIGGER log_price_change_after_update
+-- run it AFTER any UPDATE on the products table:
+AFTER UPDATE ON products
+-- once for every changed row:
+FOR EACH ROW
+-- run the audit function (above):
+EXECUTE FUNCTION trg_log_price_change();</pre></div>
+      </li>
+      <li class="lab-step"><div class="st">בדקו — שנו את מחיר החולצה הכחולה</div>
+        <div class="code-block" data-lang="sql"><span class="lang">SQL · test</span><pre>-- change Blue Shirt's price from 49.9 to 69.9:
+UPDATE products SET price = 69.90 WHERE product_id = 1;
+
+-- look at the audit log table:
+SELECT * FROM price_history;
+-- one row appeared automatically: old 49.90 -> new 69.90, with a timestamp!</pre></div>
+        🎉 בלי שום קוד באפליקציה — כל שינוי מחיר נרשם להיסטוריה. ככה בונים <b>אמינות נתונים</b> שאתם, כאנליסטים, יכולים לסמוך עליה.
+      </li>
+    </ol>
+
+    <div class="info tip">
+      <div class="hd">✍️ תרגיל קטן לבד</div>
+      <p>נסו ליצור טריגר <span class="inline-code">AFTER INSERT</span> על טבלת <span class="inline-code">orders</span> שמדפיס הודעת <span class="inline-code">RAISE NOTICE</span> "New order received!" בכל הזמנה חדשה. (רמז: פונקציית טריגר עם <span class="inline-code">RAISE NOTICE</span> ואז <span class="inline-code">RETURN NEW;</span>.)</p>
+    </div>
+  </div>
+
+  <div class="info important">
+    <div class="hd">⚖️ מתי <u>לא</u> כדאי טריגר? — דוגמה שתבהיר</div>
+    <p>טריגר הוא "קסם נסתר": הוא רץ מאחורי הקלעים, ולא רואים אותו בקוד האפליקציה. <b>דוגמה לבעיה אמיתית:</b> מתכנת חדש מוסיף שורת בדיקה ל-<span class="inline-code">order_items</span> סתם כדי לנסות משהו — ופתאום המלאי במחסן יורד "לבד". הוא יבזבז שעה בחיפוש "באג" באפליקציה, בזמן שהאשם הוא טריגר שהוא בכלל לא ידע שקיים.</p>
+    <p><b>הכלל הפשוט:</b> טריגרים מצוינים ל<b>חוקים קטנים, קריטיים וצפויים</b> — אודיט, שמירת היסטוריה, שמירה על תקינות. <b>הימנעו</b> מלהכניס בהם לוגיקה עסקית גדולה או שרשרת טריגרים שמדליקים זה את זה — זה הופך את המערכת לבלתי ניתנת להבנה ולתחזוקה.</p>
+  </div>
+
+  <div class="israel">
+    <div class="hd">🇮🇱 מה קורה בישראל?</div>
+    <p>רגולציה (בנק ישראל, רשות ני"ע, חוק הגנת הפרטיות) מחייבת חברות פיננסיות לשמור <b>היסטוריה מלאה ובלתי ניתנת לשינוי</b> של פעולות. טריגרי אודיט כמו זה שבנינו הם בדיוק הדרך שבה בנקים מבטיחים שכל שינוי נרשם. זה גם הבסיס לטבלאות ההיסטוריה שמהן אתם מנתחים מגמות לאורך זמן.</p>
+  </div>
+
+  <div class="quiz" data-yv="זו בדיוק הסיבה שבמערכת אמיתית בוחרים מנגנון אחד בלבד. 'קסם נסתר' שמצטבר על קוד שכבר עושה את הפעולה = באגים שקשה לאתר.">
+    <div class="q-tag">❓ חידון · בלוק 3</div>
+    <div class="q-txt">יצרתם טריגר <span class="inline-code">AFTER INSERT</span> על order_items שמוריד מלאי. אבל הפרוצדורה <span class="inline-code">place_order</span> מבלוק 2 <b>כבר</b> מורידה מלאי (שלב 5). מה יקרה כשתריצו <span class="inline-code">CALL place_order(...)</span>?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="1" data-exp="המלאי יירד פעמיים. הפרוצדורה מורידה מלאי בשלב 5, ובנוסף ה-INSERT ל-order_items שהיא מבצעת מפעיל אוטומטית את הטריגר — שמוריד שוב. המסד לא 'מזהה כפילות'; הוא פשוט מבצע נאמנה את שני המנגנונים. הלקח המעשי: בוחרים מנגנון אחד בלבד — או טריגר, או קוד מפורש בפרוצדורה — לא את שניהם." onclick="quizAns(this)"><span class="k">א</span>המלאי יירד פעמיים: גם הפרוצדורה מורידה (שלב 5), וגם ה-INSERT שלה מפעיל את הטריגר שמוריד שוב.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ב</span>המלאי יירד פעם אחת — המסד "חכם" ומזהה כפילות.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>הטריגר "מנצח" ומבטל את שלב 5 של הפרוצדורה.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>המסד יזרוק שגיאה ויקרוס.</button>
+    <div class="quiz-fb"></div>
+  </div>
+
+  <div class="quiz" data-yv="NEW/OLD תלויים בסוג האירוע: INSERT → רק NEW · DELETE → רק OLD · UPDATE → גם וגם. זה בדיוק מה שמפילים בראיונות.">
+    <div class="q-tag">❓ חידון נוסף · בלוק 3</div>
+    <div class="q-txt">בטריגר ה-AFTER UPDATE השתמשנו ב-<span class="inline-code">OLD.price</span> וב-<span class="inline-code">NEW.price</span>. בטריגר מסוג <b>INSERT</b> (הוספה בלבד) — מה הערך של <span class="inline-code">OLD</span>?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>OLD שווה לשורה החדשה, בדיוק כמו NEW.</button>
+    <button class="quiz-opt" data-c="1" data-exp="ב-INSERT אין שורה קודמת, ולכן OLD ריק (NULL) — קיים רק NEW (השורה החדשה). הכלל: INSERT נותן רק NEW, DELETE נותן רק OLD, ו-UPDATE נותן את שניהם. לכן טריגר אודיט שמשווה OLD ל-NEW מתאים דווקא ל-UPDATE." onclick="quizAns(this)"><span class="k">ב</span>ל-OLD אין ערך (NULL) — כי בהוספה לא הייתה שורה קודמת.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>OLD מכיל את השורה הבאה שתתווסף בעתיד.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>OLD ו-NEW תמיד זהים בכל סוגי הטריגרים.</button>
+    <div class="quiz-fb"></div>
+  </div>
+
+  <div class="takeaway">
+    <div class="big-emoji">⚡</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">Trigger = חיישן אוטומטי במסד. אירוע מפעיל תגובה — בלי שאף אחד ביקש. מושלם לשמירה אוטומטית של מלאי, היסטוריה ואיכות נתונים.</div>
+  </div>
+</section>
+
+<!-- ============ BLOCK 4 ============ -->
+<section class="section" id="block4">
+  <span class="block-tag">בלוק 4 · NoSQL עם Firebase · 35 דקות</span>
+  <h2>NoSQL עם Firebase — מסד מסוג אחר לגמרי</h2>
+  <p class="section-sub">לא כל מסד נתונים בנוי מטבלאות ושורות. נכיר משפחה שלמה אחרת — ונבנה מסד אמיתי בדפדפן.</p>
+
+  <div class="deep-card">
+    <h3>🧠 מה זה NoSQL? (בשפה של בן אדם)</h3>
+    <p class="lead"><b>NoSQL</b> (מבטאים "נו-אס-קיו-אל", הכוונה: "Not Only SQL") היא <b>משפחה של מסדי נתונים שלא משתמשים בטבלאות-עם-עמודות-קבועות, ובדרך כלל גם לא בשפת SQL</b>. במקום מבנה נוקשה, הם נותנים גמישות ויכולת להתרחב בקלות.</p>
+
+    <div class="info term">
+      <div class="hd">🗂️ האנלוגיה: גיליון אקסל מול ערימת כרטיסיות</div>
+      <p><b>מסד SQL</b> הוא כמו <b>גיליון אקסל מסודר</b>: יש כותרות עמודות קבועות (name, price, stock), וכל שורה <b>חייבת</b> להתאים בדיוק לעמודות האלה.</p>
+      <p><b>מסד NoSQL</b> הוא כמו <b>ערימת כרטיסיות</b>: כל כרטיסייה (="מסמך") יכולה להכיל שדות שונים. לכרטיסייה של חולצה אפשר להוסיף שדה "מידות", ולכרטיסייה של ספר שדה "מחבר" — בלי לשנות שום "מבנה" מראש.</p>
+    </div>
+
+    <h3>📦 שלושת המושגים של Firebase Firestore</h3>
+    <p>נשתמש ב-<b>Cloud Firestore</b> — מסד ה-NoSQL של Firebase (חברת בת של גוגל). יש בו רק 3 מושגים, וכולם פשוטים:</p>
+    <p style="color:var(--muted)">לחצו על כל כרטיס כדי להפוך אותו ולראות הסבר ואנלוגיה. 👆</p>
+    <div class="flip-grid cols3 stagger">
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">📄</div><div class="ttl">מסמך<span class="en">Document</span></div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">📄 Document — מסמך</div><p>רשומה אחת: אוסף של שדות בצורת שם:ערך. בעצם בדיוק אובייקט JSON.</p><div class="tool-note">אנלוגיה: <b>כרטיסייה אחת</b> בערימת כרטיסיות.</div></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🗃️</div><div class="ttl">אוסף<span class="en">Collection</span></div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🗃️ Collection — אוסף</div><p>קופסה שמכילה הרבה מסמכים. למשל אוסף <span class="inline-code">products</span> עם מסמך לכל מוצר.</p><div class="tool-note">אנלוגיה: <b>שואבּוקס</b> שמלא כרטיסיות.</div></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🔤</div><div class="ttl">שדה<span class="en">Field</span></div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🔤 Field — שדה</div><p>זוג של שם+ערך בתוך מסמך, למשל <span class="inline-code">price: 69.9</span>. יכול להיות גם רשימה או אובייקט מקונן.</p><div class="tool-note">אנלוגיה: <b>שורה אחת</b> שכתובה על הכרטיסייה.</div></div>
+      </div></div>
+    </div>
+    <div class="yev-callout">
+      <svg class="face" viewBox="0 0 100 100"><use href="#yevFace"/></svg>
+      <div class="tx"><b>יבגני:</b> ל-Firestore יש עוד עולם שלם — כללי אבטחה (Security Rules), האזנה בזמן-אמת, ותתי-אוספים. היום נכיר רק את הבסיס כדי להבין את הרעיון. <span class="kondila">על Firestore מתקדם תרחיבו עם ד״ר קונדילה 👨‍🏫</span></div>
+    </div>
+
+    <div class="diagram" style="padding:24px">
+      <div class="two-col">
+        <!-- SQL side -->
+        <div>
+          <h4 style="text-align:center;color:var(--primary);margin:0 0 12px;font-size:21px">🗄️ SQL — טבלה נוקשה</h4>
+          <div class="db-wrap"><table class="db-table" style="width:100%;font-size:16px">
+            <caption>products</caption>
+            <tr><th>product_id</th><th>name</th><th>price</th></tr>
+            <tr><td>7</td><td>Blue Shirt</td><td>69.9</td></tr>
+            <tr><td>8</td><td>Black Jeans</td><td>129.9</td></tr>
+          </table></div>
+          <p style="text-align:center;color:var(--muted);font-size:15.5px;margin-top:10px">כל שורה חייבת <b>בדיוק אותן עמודות</b>.</p>
+        </div>
+        <!-- NoSQL side -->
+        <div>
+          <h4 style="text-align:center;color:var(--accent-dark);margin:0 0 12px;font-size:21px">🔥 Firestore — מסמכים גמישים</h4>
+          <div style="background:#ccfbf1;border:2px solid #0f766e;border-radius:12px;padding:11px 16px;font-weight:800;color:#0f766e;margin-bottom:12px;font-size:16px;direction:ltr;text-align:center">🗃️ collection: "products"</div>
+          <div style="background:#fff;border:2px solid #0f766e;border-radius:12px;padding:14px 16px;margin-bottom:12px">
+            <div style="font-weight:800;margin-bottom:6px;font-size:16px;direction:ltr;text-align:left">📄 document "shirt_7"</div>
+            <div style="direction:ltr;text-align:left;font-family:'Courier New',monospace;font-size:15.5px;line-height:1.7">name: "Blue Shirt"<br>price: 69.9<br><span style="color:#0f766e">sizes: ["S","M","L"]</span></div>
+            <div style="color:#14b8a6;font-weight:700;font-size:14px;margin-top:4px">← למסמך הזה יש שדה נוסף!</div>
+          </div>
+          <div style="background:#fff;border:2px solid #0f766e;border-radius:12px;padding:14px 16px">
+            <div style="font-weight:800;margin-bottom:6px;font-size:16px;direction:ltr;text-align:left">📄 document "jeans_8"</div>
+            <div style="direction:ltr;text-align:left;font-family:'Courier New',monospace;font-size:15.5px;line-height:1.7">name: "Black Jeans"<br>price: 129.9</div>
+          </div>
+          <p style="text-align:center;color:var(--muted);font-size:15.5px;margin-top:10px">כל מסמך — <b>שדות משלו</b>. הראשון קיבל "sizes", השני לא. מותר!</p>
+        </div>
+      </div>
+      <div class="cap" style="margin-top:14px">אותם נתונים, שתי תפיסות עולם: עמודות קבועות (SQL) מול מסמכים גמישים (NoSQL).</div>
+    </div>
+
+    <span class="sw"><span class="d"></span>באיזו תוכנה? Firebase / Cloud Firestore (גוגל). NoSQL נוסף: MongoDB, DynamoDB (אמזון), Redis</span>
+
+    <h3>🤷 אז מתי SQL ומתי NoSQL?</h3>
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <tr><th>שאלה</th><th>🗄️ בחרו SQL כש...</th><th>🔥 בחרו NoSQL כש...</th></tr>
+      <tr><td>מבנה הנתונים</td><td>קבוע ומסודר (הזמנות, חשבונות)</td><td>גמיש ומשתנה (פרופילים, צ'אט, אירועים)</td></tr>
+      <tr><td>קשרים בין נתונים</td><td>הרבה קשרים ו-JOINs</td><td>מעט קשרים, מסמכים עצמאיים</td></tr>
+      <tr><td>עקביות (כסף!)</td><td>קריטית — צריך טרנזקציות ACID</td><td>אפשר להתפשר על "מיד" תמורת מהירות</td></tr>
+      <tr><td>קצב גדילה / זמן-אמת</td><td>גדילה צפויה</td><td>ענק וזמן-אמת (אפליקציות מובייל, IoT)</td></tr>
+      <tr><td>דוגמה</td><td>מערכת הזמנות של בנק</td><td>צ'אט WhatsApp, פיד אינסטגרם</td></tr>
+    </table>
+    </div>
+    <div class="info insight">
+      <div class="hd">🎓 הבהרה שמבלבלת הרבה אנשים</div>
+      <p>NoSQL הוא לא "טוב יותר" או "מודרני יותר" מ-SQL — הם פשוט <b>כלים שונים למשימות שונות</b>. רוב החברות הגדולות משתמשות ב<b>שניהם ביחד</b>: SQL להזמנות וכספים, NoSQL לצ'אט, התראות ופרופילים. (זוכרים מחלק א׳? "חברה ממוצעת משתמשת ב-5–10 מסדים שונים בו-זמנית".)</p>
+    </div>
+  </div>
+
+  <!-- HANDS-ON LAB -->
+  <div class="lab">
+    <div class="lab-head">
+      <span class="lab-pill">🧪 HANDS-ON</span>
+      <h3>בונים מסד Firestore אמיתי — בדפדפן, בחינם</h3>
+    </div>
+    <div class="info tip">
+      <div class="hd">✅ למה זה מושלם למתחילים</div>
+      <p>Firebase במסלול ה-<b>Spark</b> חינמי לגמרי ו<b>לא דורש כרטיס אשראי</b>. הכל קורה בדפדפן בלי להתקין כלום. (מגבלות המסלול החינמי נדיבות: ~50,000 קריאות ו-20,000 כתיבות ביום, 1GB אחסון — יותר ממספיק ללמידה.)</p>
+    </div>
+    <ol class="lab-steps">
+      <li class="lab-step"><div class="st">צרו פרויקט Firebase</div>היכנסו ל-<span class="inline-code">console.firebase.google.com</span> והתחברו עם חשבון Google. לחצו <b>Add project</b> → תנו שם (למשל <span class="inline-code">minishop</span>) → <b>Continue</b> → אפשר <b>לכבות</b> את Google Analytics → <b>Create project</b>. (לא מבקשים כרטיס אשראי.)</li>
+      <li class="lab-step"><div class="st">צרו מסד Firestore</div>בתפריט הצד פתחו את <b>Firestore</b> (מופיע תחת הקבוצה <b>Build</b> או <b>Databases &amp; Storage</b> — תלוי בגרסת הקונסולה) → <b>Create database</b> → בחרו מיקום (למשל אזור אירופאי) → <b>Next</b> → בחרו <b>Test mode</b> (מאפשר קריאה/כתיבה חופשית — מצוין ללמידה, לא לפרודקשן) → <b>Create</b>.</li>
+      <li class="lab-step"><div class="st">צרו אוסף (collection) ומסמך ראשון</div>לחצו <b>Start collection</b> → הקלידו Collection ID: <span class="inline-code">products</span> → <b>Next</b> → ל-Document ID לחצו <b>Auto-ID</b> → הוסיפו שדות:
+        <div class="code-block" data-lang="json"><span class="lang">FIRESTORE · מסמך ראשון</span><pre>name   (string)  =  Blue Shirt
+price  (number)  =  69.9
+stock  (number)  =  97</pre></div>
+        לחצו <b>Save</b>. ברכות — יצרתם מסמך NoSQL ראשון! 🎉
+      </li>
+      <li class="lab-step"><div class="st">הוסיפו מסמך שני — עם שדה נוסף</div>לחצו <b>Add document</b> → <b>Auto-ID</b> → הוסיפו:
+        <div class="code-block" data-lang="json"><span class="lang">FIRESTORE · מסמך שני (שונה!)</span><pre>name   (string)  =  Black Jeans
+price  (number)  =  129.9
+stock  (number)  =  40
+sizes  (array)   =  ["32","34","36"]   ← שדה שאין במסמך הראשון</pre></div>
+        שימו לב: הוספנו שדה <span class="inline-code">sizes</span> רק למסמך הזה — <b>וזה חוקי לגמרי</b>. זה בדיוק היתרון של NoSQL.
+      </li>
+      <li class="lab-step"><div class="st">צפו וסננו את הנתונים</div>במסך ה-<b>Data</b> תראו את המבנה: אוסף ← מסמכים ← שדות. נסו את כפתור ה-<b>Filter</b> / Query builder כדי לסנן (למשל <span class="inline-code">price &gt; 100</span>) — בלי לכתוב SQL.</li>
+    </ol>
+    <div class="info warn">
+      <div class="hd">🔎 שימו לב להבדל מהמעבדה הקודמת</div>
+      <p>ב-PostgreSQL כתבנו <b>SQL</b> כדי ליצור טבלאות. ב-Firestore פשוט <b>הקלקנו</b> כדי ליצור מסמכים — אין "סכמה" קבועה מראש, ואין שפת SQL. זה ההבדל המעשי בין שתי המשפחות.</p>
+    </div>
+  </div>
+
+  <div class="info important">
+    <div class="hd">🔗 הקשר ל-BI (חשוב לבלוק הבא!)</div>
+    <p>הרבה מידע באפליקציות מודרניות חי ב-Firebase. אבל Firestore <b>לא נועד לניתוח</b> (אי אפשר להריץ עליו שאילתות אנליטיות כבדות, אין לו JOINs). לכן, כשרוצים לנתח נתוני Firebase ב-BI — <b>מייצאים</b> אותם החוצה: או ל-BigQuery (דרך תוסף רשמי), או לגיליון Google Sheets. נראה את זה בבלוק 6.</p>
+  </div>
+
+  <div class="israel">
+    <div class="hd">🇮🇱 מה קורה בישראל?</div>
+    <p>סטארטאפים ישראליים רבים מתחילים עם Firebase כי הוא מהיר להקמה (MVP תוך ימים), כולל גם אימות משתמשים והתראות. אפליקציות מובייל ישראליות רבות נשענות על Firestore לפרופילים, צ'אט והתראות, ובמקביל מחזיקות PostgreSQL/MySQL לנתונים הפיננסיים. גם כאן — שילוב, לא "או-או".</p>
+  </div>
+
+  <div class="quiz" data-yv="הכלל: SQL מצטיין בקשרים ועקביות (כסף, הזמנות); NoSQL מצטיין בגמישות, זמן-אמת וסקייל (צ'אט, פידים, פרופילים). 'תמיד עדיף' זו תשובה שתמיד שגויה במבחן.">
+    <div class="q-tag">❓ חידון · בלוק 4</div>
+    <div class="q-txt">אפליקציית צ'אט שומרת הודעות בזמן-אמת. לכל הודעה שדות שונים (טקסט / תמונה / מיקום), וכמעט אין קשרים מורכבים בין טבלאות. מה מתאים יותר — ולמה?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>PostgreSQL — כי SQL תמיד עדיף על NoSQL.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ב</span>אין הבדל — שניהם זהים לחלוטין.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>PostgreSQL — כי צריך Columnar Storage להודעות.</button>
+    <button class="quiz-opt" data-c="1" data-exp="Firestore (NoSQL) מתאים כאן: המבנה גמיש (כל הודעה יכולה להחזיק שדות אחרים — טקסט/תמונה/מיקום), יש תמיכה מצוינת בזמן-אמת, וכמעט אין צורך בקשרים/JOINs. זה לא ש'NoSQL טוב יותר' — פשוט מתאים יותר למשימה הזו. ל-SQL היה יתרון אילו נדרשו קשרים מורכבים ועקביות כספית." onclick="quizAns(this)"><span class="k">ד</span>Firestore (NoSQL) — מבנה גמיש למסמכים שונים, זמן-אמת, ומעט קשרים.</button>
+    <div class="quiz-fb"></div>
+  </div>
+
+  <div class="quiz" data-yv="זו בדיוק ההבחנה SQL מול NoSQL: ב-SQL הסכמה נכפית מראש על כל הטבלה; ב-Firestore הגמישות היא ברמת המסמך הבודד.">
+    <div class="q-tag">❓ חידון נוסף · בלוק 4</div>
+    <div class="q-txt">באוסף <span class="inline-code">orders</span> ב-Firestore שמרתם 1,000 מסמכים — לחלקם יש שדה <span class="inline-code">discount</span> ולחלקם אין כלל. מה נכון?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>שגיאה — כל המסמכים באוסף חייבים להכיל בדיוק אותם שדות.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ב</span>Firestore ימחק אוטומטית את discount מהמסמכים שאין בהם אותו.</button>
+    <button class="quiz-opt" data-c="1" data-exp="זה תקין לחלוטין. ב-NoSQL כמו Firestore אין סכמה קבועה לאוסף — כל מסמך יכול להחזיק שדות שונים. זו בדיוק הגמישות שבגללה בוחרים NoSQL. שתי תשובות 'חושבות כמו SQL' (כאילו סכמה נכפית מראש), ותשובת המחיקה האוטומטית פשוט לא קורה — Firestore לא נוגע בשדות שלא ביקשתם." onclick="quizAns(this)"><span class="k">ג</span>תקין לגמרי — מסמכים באותו אוסף יכולים להחזיק שדות שונים.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>חובה להגדיר מראש סכמה עם רשימת כל השדות.</button>
+    <div class="quiz-fb"></div>
+  </div>
+
+  <div class="takeaway">
+    <div class="big-emoji">🔥</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">NoSQL = מסמכים גמישים במקום טבלאות נוקשות. Firebase Firestore נותן לכם מסד כזה בדפדפן, בחינם — מושלם לאפליקציות מהירות וזמן-אמת. SQL ו-NoSQL חיים יחד.</div>
+  </div>
+</section>
+
+<!-- ============ BLOCK 5 ============ -->
+<section class="section" id="block5">
+  <span class="block-tag">בלוק 5 · Load Balancers · 30 דקות</span>
+  <h2>Load Balancers — לשרת מיליון אנשים בבת אחת</h2>
+  <p class="section-sub">שרת אחד לא יכול להחזיק את כל ישראל. נכיר את ה"שוטר תנועה" שמחלק את העומס — עם הדגמה חיה כאן בעמוד.</p>
+
+  <div class="deep-card">
+    <h3>😱 קודם הבעיה</h3>
+    <p class="lead">דמיינו שהאפליקציה שלכם הפכה ללהיט. במקום 100 משתמשים — מיליון נכנסים בו-זמנית בבלאק-פריידיי. <b>שרת אחד פשוט קורס</b>: ה-CPU ב-100%, הזיכרון מתפוצץ, וכולם מקבלים מסך לבן. מה עושים?</p>
+
+    <div class="diagram" style="padding:24px">
+      <div class="two-col">
+        <div style="border:3px solid #ef4444;border-radius:18px;padding:22px;background:#fef2f2;text-align:center">
+          <div style="font-weight:900;color:#b91c1c;font-size:21px;margin-bottom:12px">❌ בלי מאזן — שרת אחד</div>
+          <div style="font-size:30px;line-height:1.5">👥👥👥<div style="font-size:34px;color:#ef4444">↓</div>🖥️🔥</div>
+          <p style="font-weight:800;color:#b91c1c;margin-top:12px;font-size:16px">כל המשתמשים על שרת אחד → CPU ב-100% → קריסה → מסך לבן לכולם.</p>
+        </div>
+        <div style="border:3px solid #10b981;border-radius:18px;padding:22px;background:#ecfdf5;text-align:center">
+          <div style="font-weight:900;color:#047857;font-size:21px;margin-bottom:12px">✅ עם מאזן עומסים</div>
+          <div style="font-size:26px;line-height:1.5">👥👥👥<div style="font-size:30px;color:#10b981">↓</div>⚖️ <b style="font-size:18px">Load Balancer</b><div style="font-size:30px;color:#10b981">↓</div>🖥️ &nbsp; 🖥️ &nbsp; 🖥️</div>
+          <p style="font-weight:800;color:#047857;margin-top:12px;font-size:16px">המאזן מחלק את העומס בין כמה שרתים → כולם מהירים, ואם אחד נופל — השאר ממשיכים.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>🧠 הפתרון: מה זה Load Balancer? (בשפה של בן אדם)</h3>
+    <p class="lead"><b>Load Balancer</b> (בעברית: "מאזן עומסים") הוא <b>"שוטר תנועה" שיושב לפני כמה שרתים זהים, ומחלק ביניהם את הבקשות הנכנסות</b> — כך שאף שרת לא נחנק, והאתר נשאר מהיר וזמין גם אם שרת אחד נופל.</p>
+    <div class="info term">
+      <div class="hd">🏦 האנלוגיה: הסדרן בכניסה לבנק</div>
+      <p>נכנסתם לבנק עמוס. במקום שכולם יעמדו בתור אחד לפקיד אחד, יש <b>סדרן</b> בכניסה שמפנה כל לקוח לפקיד הפנוי הבא: "אתה לעמדה 3, את לעמדה 5". ואם פקיד יוצא להפסקה — הסדרן פשוט מפסיק לשלוח אליו. זה בדיוק Load Balancer: הוא מפזר את העומס, ומדלג על שרת שנפל.</p>
+    </div>
+    <span class="sw"><span class="d"></span>באיזו תוכנה? NGINX, HAProxy (תוכנה) · Google Cloud Load Balancing, AWS ELB, Azure Load Balancer, Cloudflare (שירותי ענן)</span>
+
+    <h3 style="margin-top:26px">🎯 בשביל מה זה באמת? (3 סיבות)</h3>
+    <div class="vflow-big stagger">
+      <div class="vnode c-teal"><div class="ic">📈</div><div class="bd"><b>1. קנה מידה (Scale)</b><div class="sub">שרת אחד מוגבל. כמה שרתים מאחורי מאזן = הרבה יותר משתמשים בו-זמנית.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-teal"><div class="ic">🛡️</div><div class="bd"><b>2. זמינות גבוהה (High Availability)</b><div class="sub">אם שרת נופל — המאזן מנתב את הבקשות סביבו לשרתים הבריאים. אין downtime.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-teal"><div class="ic">🔧</div><div class="bd"><b>3. תחזוקה בלי הפסקה</b><div class="sub">מוציאים שרת אחד לעדכון בזמן שהשאר ממשיכים לשרת — המשתמשים לא מרגישים.</div></div></div>
+    </div>
+
+    <h3 style="margin-top:26px">🧩 4 מושגים שכדאי להכיר</h3>
+    <p>לחצו על כל כרטיס כדי להפוך ולקרוא הסבר. 👆</p>
+    <div class="flip-grid cols4 stagger">
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🔀</div><div class="ttl">פיזור בקשות<span class="en">Distribution</span></div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🔀 פיזור בקשות</div><p>המאזן מחזיק רשימת שרתים ("backends") ושולח כל בקשה נכנסת לאחד מהם — וכך העומס מתחלק שווה.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">❤️</div><div class="ttl">בדיקות תקינות<span class="en">Health Checks</span></div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">❤️ Health Checks</div><p>המאזן "דופק" על כל שרת כל כמה שניות. שרת שלא עונה — מוּצָא מהמערך עד שיתאושש, כך שאף משתמש לא מגיע לשרת מת.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🎲</div><div class="ttl">אלגוריתם חלוקה<span class="en">Algorithm</span></div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🎲 אלגוריתם חלוקה</div><p><b>Round-Robin:</b> בתורות — 1, 2, 3, 1, 2, 3.<br><b>Least-Connections:</b> לשרת עם הכי מעט בקשות פעילות כרגע.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🍪</div><div class="ttl">Sticky Sessions<span class="en">Session affinity</span></div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🍪 Sticky Sessions</div><p>"הצמדה" של אותו משתמש לאותו שרת (דרך cookie). שימושי כששרת זוכר מצב בזיכרון — אבל עלול לפגוע באיזון.</p></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE DEMO -->
+  <div class="lab" style="border-color:var(--primary)">
+    <div class="lab-head">
+      <span class="lab-pill" style="background:var(--primary)">🎮 הדגמה חיה</span>
+      <h3>נסו בעצמכם — שלחו בקשות וצפו בחלוקה</h3>
+    </div>
+    <p>לחצו "שלח בקשה" וראו איך ה-Load Balancer מחלק את הבקשות בין שלושת השרתים. אחרי כמה בקשות — <b>"הפילו" שרת</b> (כפתור "הפל") וראו איך ה-LB מפסיק לשלוח אליו וממשיך לעבוד. נסו גם להחליף אלגוריתם.</p>
+    <div class="lbsim">
+      <div class="ctrl">
+        <button onclick="lbSend(1)">שלח בקשה אחת ➤</button>
+        <button onclick="lbSend(10)">שלח 10 בקשות ⏩</button>
+        <button class="sec" onclick="lbAuto(this)">▶ הפעלה אוטומטית</button>
+        <select id="lbalgo">
+          <option value="rr">אלגוריתם: Round-Robin (בתורות)</option>
+          <option value="lc">אלגוריתם: Least-Connections (הכי פנוי)</option>
+        </select>
+        <button class="sec" onclick="lbReset()">איפוס</button>
+      </div>
+      <div class="stage">
+        <div class="users"><div class="e">👥</div>משתמשים</div>
+        <div class="lbbox" id="lbbox">⚖️<br>Load<br>Balancer</div>
+        <div class="servers">
+          <div class="srv" id="srv0"><span class="nm">🖥️ Server 1</span><span class="bar"><i></i></span><span style="display:flex;gap:10px;align-items:center"><span class="cnt">0</span><button class="kill" onclick="lbToggle(0)">הפל</button></span></div>
+          <div class="srv" id="srv1"><span class="nm">🖥️ Server 2</span><span class="bar"><i></i></span><span style="display:flex;gap:10px;align-items:center"><span class="cnt">0</span><button class="kill" onclick="lbToggle(1)">הפל</button></span></div>
+          <div class="srv" id="srv2"><span class="nm">🖥️ Server 3</span><span class="bar"><i></i></span><span style="display:flex;gap:10px;align-items:center"><span class="cnt">0</span><button class="kill" onclick="lbToggle(2)">הפל</button></span></div>
+        </div>
+      </div>
+      <div class="log" id="lblog"></div>
+    </div>
+    <div class="info tip">
+      <div class="hd">👀 מה לשים לב אליו</div>
+      <p>ב-Round-Robin הבקשות מתחלקות שווה בתורות. כש"מפילים" שרת — הספירה שלו נעצרת והשאר ממשיכים (זה ה-Health Check + High Availability בפעולה). אם מפילים את <b>כל</b> השרתים — מקבלים שגיאת 502, בדיוק כמו במציאות.</p>
+    </div>
+  </div>
+
+  <!-- OPTIONAL CLOUD LAB -->
+  <div class="lab">
+    <div class="lab-head">
+      <span class="lab-pill">🧪 HANDS-ON (אופציונלי)</span>
+      <h3>Load Balancer אמיתי ב-Cloud Shell עם NGINX</h3>
+    </div>
+    <p>רוצים לראות את הדבר האמיתי? נבנה מאזן עומסים — <b>לאט ובצורה ברורה</b>. קודם נבין בדיוק מה אנחנו עומדים לעשות, בלי לקפוץ:</p>
+    <div class="info term">
+      <div class="hd">🧭 מה אנחנו עומדים לעשות? (הסבר לפני קוד)</div>
+      <p><b>מה זה "לאזן"?</b> לפזר בקשות נכנסות בין כמה שרתים, כדי שאף שרת לא ייחנק.</p>
+      <p><b>מה יהיו שני ה"שרתים"?</b> שתי תוכניות זעירות שכל אחת מגישה דף אינטרנט פשוט: אחת כותבת "Hello from SERVER 1", השנייה "SERVER 2". הן לא עושות כלום חכם — רק כדי שנראה <b>מי ענה</b>.</p>
+      <p><b>מי מאזן ביניהן?</b> תוכנת <b>NGINX</b>, שנגדיר שתשב לפניהן ותחלק אליהן בקשות לפי הסדר (Round-Robin).</p>
+      <p><b>מהן "6 הבקשות"?</b> נשלח 6 פעמים את אותה בקשה פשוטה לכתובת של NGINX. זה מדמה 6 משתמשים שנכנסים בזה אחר זה.</p>
+      <p><b>איפה רואים את האיזון?</b> בפלט על המסך: התשובות יתחלפו — SERVER 1, SERVER 2, SERVER 1, SERVER 2... זה הסימן שהמאזן באמת חילק אותן.</p>
+    </div>
+    <div class="vflow-big stagger">
+      <div class="vnode c-indigo"><div class="ic">🙋×6</div><div class="bd"><b>אנחנו שולחים 6 בקשות</b><div class="sub">6 פעמים <span class="inline-code">curl</span> לכתובת של NGINX (פורט 8080).</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-teal"><div class="ic">⚖️</div><div class="bd"><b>NGINX מחלק בתורות (Round-Robin)</b><div class="sub">בקשה 1 → שרת 1 · בקשה 2 → שרת 2 · בקשה 3 → שרת 1 ...</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode" style="border-color:var(--green);background:linear-gradient(160deg,#fff,#ecfdf5)"><div class="ic">🖥️🖥️</div><div class="bd"><b>שני השרתים עונים לסירוגין</b><div class="sub">בפלט נראה: SERVER 1, SERVER 2, SERVER 1... — <b>זה האיזון!</b></div></div></div>
+    </div>
+    <p style="margin-top:12px"><b>עכשיו נבנה את זה בפועל, צעד-אחר-צעד:</b></p>
+    <ol class="lab-steps">
+      <li class="lab-step"><div class="st">פתחו את Cloud Shell</div>היכנסו ל-<span class="inline-code">shell.cloud.google.com</span> (אותו טרמינל מבלוק 2).</li>
+      <li class="lab-step"><div class="st">הקימו שני שרתים זעירים</div>כל אחד מגיש עמוד שאומר מי הוא:
+        <div class="code-block" data-lang="bash"><span class="lang">BASH</span><pre># create two folders, one per "server"
+mkdir -p ~/s1 ~/s2
+# write server 1's web page text
+echo "Hello from SERVER 1" &gt; ~/s1/index.html
+# write server 2's web page text
+echo "Hello from SERVER 2" &gt; ~/s2/index.html
+# start server 1 on port 8081 ( the &amp; means: run in the background )
+( cd ~/s1 &amp;&amp; python3 -m http.server 8081 ) &amp;
+# start server 2 on port 8082 (in the background too)
+( cd ~/s2 &amp;&amp; python3 -m http.server 8082 ) &amp;</pre></div>
+      </li>
+      <li class="lab-step"><div class="st">התקינו NGINX והגדירו אותו כמאזן</div>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH</span><pre># install the NGINX web server (it can also act as a load balancer):
+sudo apt-get update &amp;&amp; sudo apt-get install -y nginx
+
+# write a config file that turns NGINX into a load balancer:
+sudo tee /etc/nginx/conf.d/lb.conf &gt;/dev/null &lt;&lt;'EOF'
+# "upstream" = the pool of backend servers to balance between
+upstream myapp {
+    # backend #1 = our server 1
+    server 127.0.0.1:8081;
+    # backend #2 = our server 2
+    server 127.0.0.1:8082;
+}
+# how NGINX itself receives visitors:
+server {
+    # NGINX listens on port 8080
+    listen 8080;
+    # forward every request to the pool (the default is round-robin)
+    location / { proxy_pass http://myapp; }
+}
+EOF
+
+# remove NGINX's default page so port 8080 is free for us:
+sudo rm -f /etc/nginx/sites-enabled/default
+# check the config is valid, then restart NGINX to apply it:
+sudo nginx -t &amp;&amp; sudo service nginx restart</pre></div>
+      </li>
+      <li class="lab-step"><div class="st">ראו את האיזון בפעולה</div>שלחו 6 בקשות — והן יתחלפו בין השרתים (Round-Robin):
+        <div class="code-block" data-lang="bash"><span class="lang">BASH</span><pre># send 6 requests to NGINX and print each reply
+for i in $(seq 1 6); do curl -s http://localhost:8080/; done</pre></div>
+        הפלט יתחלף: <span class="kbd">SERVER 1</span>, <span class="kbd">SERVER 2</span>, <span class="kbd">SERVER 1</span>...
+      </li>
+      <li class="lab-step"><div class="st">הדגימו failover</div>"הרגו" שרת אחד והריצו שוב — NGINX יזהה וישלח רק לשני:
+        <div class="code-block" data-lang="bash"><span class="lang">BASH</span><pre># stop server 1 (the 1st background job) - this simulates a crash:
+kill %1
+# send 6 requests again - now only SERVER 2 answers:
+for i in $(seq 1 6); do curl -s http://localhost:8080/; done</pre></div>
+        עכשיו כל הבקשות הולכות ל-SERVER 2 בלבד. זה בדיוק מה שראיתם בהדגמה החיה למעלה.
+      </li>
+    </ol>
+  </div>
+
+  <div class="info insight">
+    <div class="hd">📊 ומה הקשר שלי, האנליסט/ית, לזה?</div>
+    <p>שתי נקודות חשובות: (1) כשיש <b>הרבה שרתים</b>, גם הלוגים מתפזרים ביניהם — לכן אוספים אותם למקום מרכזי, וזה הופך למקור נתונים לניתוח (זוכרים את ה-log files מ-ETL בחלק ב׳-1?). (2) בדיוק כמו שמאזנים שרתי אפליקציה, מאזנים גם <b>קריאה ממסד הנתונים</b> בעזרת <b>Read Replicas</b> (עותקי-קריאה). אתם, כאנליסטים, פעמים רבות מתחברים דווקא ל-replica כדי לא להעמיס על מסד הייצור — בדיוק כמו שלמדנו בחלק ב׳-1.</p>
+  </div>
+
+  <div class="israel">
+    <div class="hd">🇮🇱 מה קורה בישראל?</div>
+    <p>כל אתר ישראלי גדול (בנקים, רשתות, חברות הייטק) רץ מאחורי load balancers — לרוב של ספק הענן (Google Cloud Load Balancing / AWS / Azure) או Cloudflare בקצה. ב"ימי עומס" כמו בחירות, בלאק-פריידיי או פתיחת הרשמה לאוניברסיטה, היכולת להוסיף שרתים מאחורי ה-LB היא ההבדל בין אתר שעובד לאתר שקורס.</p>
+  </div>
+
+  <div class="quiz" data-yv="זה בדיוק מה שראיתם בהדגמה החיה: 'הפלתם' שרת — והבקשות המשיכו לזרום לשאר. ה-Health Check הוא הגיבור השקט של הזמינות.">
+    <div class="q-tag">❓ חידון · בלוק 5</div>
+    <div class="q-txt">מאזן עומסים מחלק בקשות בין 3 שרתים ב-Round-Robin. פתאום <b>שרת 2 קורס</b>. מה קורה לבקשות הבאות?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>כל הבקשות נכשלות עד שמתקנים את שרת 2.</button>
+    <button class="quiz-opt" data-c="1" data-exp="בדיקת התקינות (Health Check) של המאזן מזהה תוך שניות ששרת 2 לא עונה, מוציאה אותו מהמערך, וממשיכה לחלק את הבקשות רק בין שרת 1 ושרת 3. המשתמשים בכלל לא מרגישים — זו 'זמינות גבוהה' (High Availability) בפעולה. (כשהשרת יתאושש, המאזן יחזיר אותו למערך אוטומטית.)" onclick="quizAns(this)"><span class="k">ב</span>ה-Health Check מזהה ששרת 2 מת, והמאזן ממשיך לחלק רק בין שרת 1 ו-3.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>גם המאזן קורס, כי שרת נפל.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>הבקשות ממתינות בתור עד ששרת 2 חוזר לפעול.</button>
+    <div class="quiz-fb"></div>
+  </div>
+
+  <div class="quiz" data-yv="שימו לב לפרטים: Round-Robin הוא הגורם לבעיה כאן, לא הפתרון. Health Check בודק חיוּת — לא זהות משתמש. רק Sticky Sessions פותר 'זיכרון בשרת'.">
+    <div class="q-tag">❓ חידון נוסף · בלוק 5</div>
+    <div class="q-txt">אפליקציה שומרת את סל-הקניות <b>בזיכרון של השרת</b> שטיפל במשתמש. בלי הגדרה מיוחדת, כל בקשה מנותבת לשרת אחר וה"סל" נעלם. מה פותר זאת?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>Round-Robin — חלוקה שווה בתורות בין השרתים.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ב</span>Health Check — בדיקת תקינות תקופתית של השרתים.</button>
+    <button class="quiz-opt" data-c="1" data-exp="הפתרון הוא Sticky Sessions (הצמדת מושב): המאזן מצמיד את אותו משתמש לאותו שרת (בעזרת cookie), כך שה'סל' שנשמר בזיכרון אותו שרת נשאר זמין. Round-Robin (א׳) הוא בעצם הגורם לבעיה; Health Check (ב׳) בודק אם שרת חי, לא מי המשתמש; הוספת שרתים (ד׳) רק מחמירה. הערה מקצועית: עדיף בכלל לא לשמור מצב בזיכרון השרת — אבל זה כבר נושא לשיעור אחר." onclick="quizAns(this)"><span class="k">ג</span>Sticky Sessions — הצמדת המשתמש לאותו שרת קבוע.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>פשוט להוסיף עוד שרתים מאחורי המאזן.</button>
+    <div class="quiz-fb"></div>
+  </div>
+
+  <div class="takeaway">
+    <div class="big-emoji">⚖️</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">Load Balancer = שוטר תנועה שמחלק בקשות בין כמה שרתים, מדלג על שרת שנפל, ומאפשר לשרת מיליוני משתמשים בלי שהמערכת תקרוס.</div>
+  </div>
+</section>
+
+<!-- ============ BLOCK 6 ============ -->
+<section class="section" id="block6">
+  <span class="block-tag">בלוק 6 · הכל מתחבר ל-BI · 30 דקות</span>
+  <h2>הכל מתחבר ל-BI 📊</h2>
+  <p class="section-sub">בנינו מסד SQL חכם ומסד NoSQL גמיש. עכשיו נחבר את שניהם לדשבורד אחד שמנהל באמת מסתכל עליו — וכך נסגור את המעגל.</p>
+
+  <div class="deep-card">
+    <h3>🎯 לאן הגענו</h3>
+    <p class="lead">יש לנו נתונים בשני מקומות: ב-<b>Cloud SQL</b> (הזמנות, מוצרים, היסטוריית מחירים — בזכות הפרוצדורות והטריגרים) וב-<b>Firebase</b> (נתוני אפליקציה גמישים). אבל מנהל לא הולך לכתוב SQL ולא יודע מה זה מסמך Firestore. <b>הוא רוצה לראות גרף.</b> כאן נכנס כלי ה-BI.</p>
+
+    <div class="info term">
+      <div class="hd">💡 מה זה כלי BI? (תזכורת קצרה)</div>
+      <p>כלי BI הוא תוכנה שמתחברת לנתונים שלכם והופכת אותם ל<b>גרפים, כרטיסים ודשבורדים</b> אינטראקטיביים — בלי שהמנהל יראה אי-פעם שורת SQL אחת. האנליסט (אתם!) גורר שדות, והכלי מייצר את ה-SQL לבד מאחורי הקלעים.</p>
+    </div>
+
+    <div class="info important">
+      <div class="hd">📛 שימו לב לשם — זה מבלבל הרבה אנשים</div>
+      <p>נשתמש בכלי ה-BI החינמי של גוגל. <b>באפריל 2026 גוגל שינתה את שמו בחזרה מ-"Looker Studio" ל-"Data Studio"</b> — זה <b>אותו מוצר בדיוק</b>. הכתובת היום: <span class="inline-code">datastudio.google.com</span> (הקישור הישן <span class="inline-code">lookerstudio.google.com</span> עדיין מפנה אליה). אל תתבלבלו עם "Looker" (בלי "Studio") — זה מוצר ארגוני יקר ושונה לגמרי.</p>
+    </div>
+    <span class="sw"><span class="d"></span>באיזו תוכנה? Google Data Studio (לשעבר Looker Studio) · חינמי · 100% בדפדפן</span>
+
+    <h4 style="font-size:22px">🔁 הצינור — מהמקורות אל הדשבורד (מלמעלה למטה)</h4>
+    <div class="vflow-big stagger">
+      <div class="vnode c-teal"><div class="ic">🗄️🔥</div><div class="bd"><b>1. המקורות: Cloud SQL + Firebase</b><div class="sub">כאן יושבים הנתונים שבנינו — הזמנות, מוצרים, היסטוריה, ונתוני אפליקציה.</div></div></div>
+      <div class="vdown">↓ <span style="font-size:15px;color:var(--purple);font-weight:800">connector / גיליון מחבר את המקור לכלי</span></div>
+      <div class="vnode c-purple"><div class="ic">📊</div><div class="bd"><b>2. כלי ה-BI: Data Studio</b><div class="sub">מתחבר למקור, האנליסט גורר שדות, והכלי מייצר את ה-SQL לבד.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-indigo"><div class="ic">📋</div><div class="bd"><b>3. דשבורד למנהל</b><div class="sub">KPI + גרפים + פילטרים במסך אחד — בלי שורת SQL אחת מול העיניים.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode" style="border-color:var(--green);background:linear-gradient(160deg,#fff,#ecfdf5)"><div class="ic">✅</div><div class="bd"><b>4. החלטה עסקית</b><div class="sub">המנהל מבין במבט אחד — ומחליט. זו המטרה של כל המסע.</div></div></div>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>🤷 למה דווקא Data Studio — ולא סתם "בגוגל קלאוד"?</h3>
+    <p>שאלה מצוינת: הנתונים כבר יושבים בגוגל קלאוד, אז למה צריך עוד כלי? כי גוגל קלאוד הוא <b>המחסן</b> — לא חלון הראווה. הנה ההבדל:</p>
+    <div class="two-col">
+      <div class="compare-card c"><h4>❌ "רק" Google Cloud / SQL</h4><p>שם הנתונים <b>נשמרים</b>. כדי לראות משהו צריך לכתוב SQL ולקרוא טבלאות גולמיות. מנהל לא יעשה את זה לעולם.</p></div>
+      <div class="compare-card a"><h4>✅ Data Studio (BI)</h4><p>שכבה שמחוברת לאותם נתונים, אבל מציגה <b>גרפים אינטראקטיביים</b>: מתעדכן לבד, פילטרים, שיתוף בקליק, נגיש לכל מנהל — בלי קוד.</p></div>
+    </div>
+    <div class="why"><b>בקיצור:</b> Cloud SQL = <u>איפה</u> הנתונים. Data Studio = <u>איך</u> בני אדם רואים אותם ומחליטים. צריך את שניהם.</div>
+
+    <h3 style="margin-top:26px">🎨 "דשבורד" זה לא דבר אחד — כמה סוגים מהעולם</h3>
+    <p>הקליקו על כל כרטיס כדי לראות סוג דשבורד אחר. 👆</p>
+    <div class="flip-grid cols3 stagger">
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">💰</div><div class="ttl">מכירות</div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">💰 דשבורד מכירות</div><p>הכנסות, הזמנות, צמיחה YoY, מכירות לפי קטגוריה ואזור. המנכ"ל פותח כל בוקר.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">📣</div><div class="ttl">שיווק</div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">📣 דשבורד שיווק</div><p>תנועה לאתר, המרות, עלות לליד, ROI לקמפיין. מחבר את Google Ads ו-Analytics.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">⚡</div><div class="ttl">תפעולי</div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">⚡ דשבורד תפעולי</div><p>ניטור שרתים בזמן-אמת, שגיאות, זמני תגובה. כלים: Grafana, DataDog. (נבנה ע"י DevOps, לא אנליסט.)</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🎵</div><div class="ttl">למשתמש</div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🎵 דשבורד למשתמש הפרטי</div><p>Spotify Wrapped, סיכום הוצאות בבנק, Screen Time. הנתונים הם "פיצ'ר" במוצר עצמו.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">💼</div><div class="ttl">פיננסי</div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">💼 דשבורד פיננסי (CFO)</div><p>תזרים מזומנים, רווחיות, תקציב מול ביצוע. דיוק מעל הכל.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🧩</div><div class="ttl">מוטמע (Embedded)</div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🧩 דשבורד מוטמע</div><p>דשבורד בתוך מוצר SaaS שהלקוחות רואים (Shopify Analytics, Monday). מוטמע דרך iframe/API.</p></div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="deep-card">
+    <h3>👀 איך נראה דשבורד אמיתי? (דוגמה חיה)</h3>
+    <p>לפני שבונים — נראה לאן חותרים. ככה נראה דשבורד מכירות טיפוסי (נתונים לדוגמה):</p>
+    <div class="dash">
+      <div class="dash-top"><span class="title">📊 דשבורד מכירות · Mini-Shop</span><span class="dash-filter">📅 החודש ▾</span></div>
+      <div class="kpi-row">
+        <div class="kpi k1"><div class="v">₪15.0K</div><div class="l">הכנסות החודש</div></div>
+        <div class="kpi k2"><div class="v">368</div><div class="l">הזמנות</div></div>
+        <div class="kpi k3"><div class="v">+23%</div><div class="l">צמיחה (YoY)</div></div>
+        <div class="kpi k4"><div class="v">54</div><div class="l">לקוחות חדשים</div></div>
+      </div>
+      <div class="dash-charts">
+        <div class="chart-card"><h5>הכנסות לפי מוצר</h5>
+          <div class="bar-row"><span>Blue Shirt</span><span class="bar" style="width:100%"></span><span class="val">6,800</span></div>
+          <div class="bar-row"><span>Black Jeans</span><span class="bar" style="width:76%"></span><span class="val">5,200</span></div>
+          <div class="bar-row"><span>Red Cap</span><span class="bar" style="width:31%"></span><span class="val">2,100</span></div>
+          <div class="bar-row"><span>Green Socks</span><span class="bar" style="width:13%"></span><span class="val">900</span></div>
+        </div>
+        <div class="chart-card"><h5>מגמת הכנסות (30 יום)</h5>
+          <svg viewBox="0 0 300 150" style="width:100%;height:auto" preserveAspectRatio="none">
+            <polyline fill="rgba(79,70,229,.12)" stroke="none" points="0,150 0,120 50,100 100,108 150,72 200,82 250,42 300,30 300,150"/>
+            <polyline fill="none" stroke="#4f46e5" stroke-width="3" points="0,120 50,100 100,108 150,72 200,82 250,42 300,30"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="why"><b>שימו לב לאנטומיה:</b> KPIs גדולים למעלה (המספרים הקריטיים), גרף השוואה (עמודות), גרף מגמה (קו), ופילטר. זה השלד של כמעט כל דשבורד ניהולי.</div>
+
+    <h3 style="margin-top:28px">🛠️ סימולטור: בנו דשבורד בעצמכם</h3>
+    <p>ככה בדיוק עובד אנליסט בכלי BI: בוחרים <b>ממד</b> (לפי מה לפלח), <b>מדד</b> (מה למדוד), וסוג תצוגה — והכלי מצייר. שנו את הבחירות וראו איך הגרף "נבנה" לבד:</p>
+    <div class="builder">
+      <div class="ctrls">
+        <div><label>ממד (Dimension) — לפי מה לפלח</label><select id="bDim" onchange="dashRender()"><option value="product">מוצר</option><option value="country">מדינה</option></select></div>
+        <div><label>מדד (Metric) — מה למדוד</label><select id="bMet" onchange="dashRender()"><option value="revenue">הכנסות</option><option value="units">יחידות שנמכרו</option></select></div>
+        <div><label>סוג תצוגה</label><select id="bType" onchange="dashRender()"><option value="bar">גרף עמודות</option><option value="table">טבלה</option></select></div>
+      </div>
+      <div class="canvas" id="dashCanvas"></div>
+      <div class="hint">💡 שמתם לב? לא כתבתם שורת SQL אחת — בחרתם שדות, והכלי "תרגם" אותם לגרף. בדיוק זה ה-drag &amp; drop בכלי BI אמיתי.</div>
+    </div>
+
+    <h3 style="margin-top:28px">🎨 6 עקרונות לדשבורד טוב (הקליקו כל כרטיס)</h3>
+    <div class="flip-grid cols3 stagger">
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">⬆️</div><div class="ttl">הכי חשוב — למעלה</div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">⬆️ היררכיה ויזואלית</div><p>ה-KPIs הקריטיים בראש העמוד, גדולים ובולטים. מנהל צריך "לתפוס" אותם תוך שתי שניות.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🎯</div><div class="ttl">פחות זה יותר</div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🎯 מיקוד</div><p>5–7 ויזואליזציות, לא 30. דשבורד עמוס = אף אחד לא מבין כלום. כל גרף חייב לענות על שאלה.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🧑‍💼</div><div class="ttl">קהל-יעד תחילה</div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🧑‍💼 למי זה מיועד?</div><p>דשבורד למנכ"ל ≠ דשבורד לאנליסט. הקהל קובע אילו מדדים, איזו רמת פירוט, ואיזו שפה.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🌈</div><div class="ttl">צבע עם משמעות</div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🌈 צבע = מידע</div><p>ירוק=טוב, אדום=בעיה. לא 10 צבעים סתם ליופי. עקביות צבעים עוזרת להבין מהר.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">🔍</div><div class="ttl">פילטרים ו-Drill-down</div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">🔍 אינטראקטיביות</div><p>לאפשר לחתוך לפי תאריך/אזור, וללחוץ כדי "לצלול" מהכללי לפרטי. קודם תמונה גדולה — ואז עומק.</p></div>
+      </div></div>
+      <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+        <div class="flip-face flip-front"><div class="ic">📖</div><div class="ttl">סיפור, לא רעש</div><div class="hint">↻ הקליקו</div></div>
+        <div class="flip-face flip-back"><div class="bk-ttl">📖 Storytelling</div><p>דשבורד טוב מספר סיפור: מה קרה, למה, ומה לעשות. סדר הגרפים מוביל את העין למסקנה.</p></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- HANDS-ON: BI -->
+  <div class="lab">
+    <div class="lab-head">
+      <span class="lab-pill">🧪 HANDS-ON</span>
+      <h3>בונים דשבורד אמיתי ב-Data Studio</h3>
+    </div>
+    <p>נראה שתי דרכי חיבור. <b>דרך 1 עובדת לכולם וחינמית לגמרי</b> (גם אם השתמשתם ב-Cloud Shell). <b>דרך 2 היא השיטה ה"מקצועית"</b> לחיבור ישיר ל-Cloud SQL.</p>
+
+    <div class="tabwrap">
+      <div class="tabs">
+        <button class="tab active" onclick="showTab(this,'bi-sheet')">דרך 1: דרך Google Sheet — לכולם, חינם ✅</button>
+        <button class="tab" onclick="showTab(this,'bi-direct')">דרך 2: חיבור ישיר ל-Cloud SQL</button>
+      </div>
+
+      <div class="tab-panel active" id="bi-sheet">
+        <p>הדרך הכי פשוטה והכי חינמית: מוציאים את הנתונים לגיליון Google Sheets, ומחברים אותו ל-Data Studio. <b>ככה גם מחברים נתוני Firebase</b> (כי ל-Firestore אין connector ישיר ל-BI).</p>
+        <ol class="lab-steps">
+          <li class="lab-step"><div class="st">הוציאו את הנתונים לגיליון</div>
+            <p style="margin:6px 0">מ-<b>PostgreSQL</b>: הריצו שאילתה והעתיקו את התוצאה, או ייצאו ל-CSV. שאילתה לדוגמה (כמה מכרנו מכל מוצר):</p>
+            <div class="code-block" data-lang="sql"><span class="lang">SQL</span><pre>-- product name + total units sold:
+SELECT p.name AS product, SUM(oi.quantity) AS units_sold,
+       -- total revenue (quantity x price), rounded to 2 decimals:
+       ROUND(SUM(oi.quantity * p.price), 2) AS revenue
+-- take rows from order_items (nicknamed "oi")...
+FROM order_items oi
+-- ...joined to products ("p") to get each name and price:
+JOIN products p ON p.product_id = oi.product_id
+-- collapse into one row per product:
+GROUP BY p.name
+-- sort from highest revenue to lowest:
+ORDER BY revenue DESC;</pre></div>
+            <p style="margin:6px 0">מ-<b>Firebase</b>: ייצוא הנתונים לגיליון (ידנית למעבדה, או בעבודה אמיתית דרך התוסף הרשמי "Stream Firestore to BigQuery" או סקריפט). פתחו גיליון ב-<span class="inline-code">sheets.google.com</span> והדביקו: עמודה <span class="inline-code">product</span>, <span class="inline-code">units_sold</span>, <span class="inline-code">revenue</span> + השורות.</p>
+          </li>
+          <li class="lab-step"><div class="st">פתחו את Data Studio</div>היכנסו ל-<span class="inline-code">datastudio.google.com</span> → לחצו <b>Create</b> → <b>Report</b> (או Blank Report).</li>
+          <li class="lab-step"><div class="st">חברו את הגיליון</div>במסך "Add data" בחרו את ה-connector של <b>Google Sheets</b> → בחרו את הספרדשיט ואת הלשונית (worksheet) → <b>Add</b>. (Sheets לא דורש כרטיס אשראי — מושלם.)</li>
+          <li class="lab-step"><div class="st">בנו גרף ראשון</div>בסרגל לחצו <b>Add a chart</b> → בחרו <b>Bar chart</b> → בחלונית <b>Setup</b> מימין הגדירו: <b>Dimension</b> = <span class="inline-code">product</span>, <b>Metric</b> = <span class="inline-code">revenue</span>. תקבלו מיד גרף עמודות של הכנסה לפי מוצר! 🎉</li>
+          <li class="lab-step"><div class="st">הוסיפו KPI ופילטר</div>הוסיפו <b>Scorecard</b> עם המדד <span class="inline-code">revenue</span> (כרטיס "סך הכנסות"), ו-<b>Add a control</b> → <b>Drop-down list</b> על <span class="inline-code">product</span> כדי לאפשר סינון. עכשיו יש לכם דשבורד אינטראקטיבי.</li>
+        </ol>
+      </div>
+
+      <div class="tab-panel" id="bi-direct">
+        <p>אם הקמתם <b>Cloud SQL מנוהל</b> (דרך ב׳ בבלוק 2), אפשר לחבר את Data Studio <b>ישירות</b> אליו — כל שינוי במסד מתעדכן בדשבורד. זו השיטה המקצועית.</p>
+        <ol class="lab-steps">
+          <li class="lab-step"><div class="st">פתחו כתובת IP ציבורית ל-Cloud SQL</div>בקונסולה: ה-instance → <b>Edit</b> → <b>Connections</b> → <b>Networking</b> → סמנו <b>Public IP</b>. רשמו לעצמכם את כתובת ה-IP הציבורית מעמוד ה-Overview.</li>
+          <li class="lab-step"><div class="st">אשרו את כתובת ה-IP של Data Studio</div>באותו מסך → <b>Authorized networks</b> → <b>Add a network</b> → שם: <span class="inline-code">data-studio</span>, טווח: <span class="inline-code">142.251.74.0/23</span> → <b>Save</b>. (זה טווח כתובות היציאה של Data Studio.)</li>
+          <li class="lab-step"><div class="st">חברו ב-Data Studio</div><span class="inline-code">datastudio.google.com</span> → <b>Create</b> → <b>Data Source</b> → connector <b>PostgreSQL</b> → לשונית <b>BASIC</b>:
+            <div class="code-block" data-lang="text"><span class="lang">חיבור</span><pre>Host       = כתובת ה-IP הציבורית של ה-instance
+Port       = 5432
+Database   = minishop   (או postgres)
+Username   = postgres
+Password   = הסיסמה שקבעתם</pre></div>
+            לחצו <b>AUTHENTICATE</b> → בחרו טבלה (או CUSTOM QUERY עם השאילתה מלמעלה) → <b>CONNECT</b> → בנו גרפים כמו בדרך 1.
+          </li>
+          <li class="lab-step"><div class="st">⚠️ אבטחה — חובה</div>אשרו <b>רק</b> את הטווח <span class="inline-code">142.251.74.0/23</span> (לעולם לא <span class="inline-code">0.0.0.0/0</span> שחושף לכל האינטרנט!), השתמשו בסיסמה חזקה, ובסוף — <b>Stop/Delete</b> ל-instance.</li>
+        </ol>
+        <div class="soft-note">הערה: ה-connector של Data Studio תומך רק בטבלאות בסכימת <span class="inline-code">public</span>, מגביל ל-150,000 שורות לשאילתה, ולא תומך בחיבור Private IP / Cloud SQL Proxy — לכן צריך Public IP.</div>
+      </div>
+    </div>
+
+    <div class="info tip">
+      <div class="hd">🔁 זוכרים? זה בדיוק "הלולאה של האנליסט"</div>
+      <p>מנהל שאל שאלה → אתם תרגמתם ל-SQL / חיברתם מקור → הכלי הציג גרף → הרכבתם דשבורד → המנהל קיבל החלטה. <b>נתונים → ויזואליזציה → דשבורד → תובנה → החלטה.</b> זה התפקיד שלכם.</p>
+    </div>
+  </div>
+
+  <!-- CAPSTONE: full architecture -->
+  <div class="deep-card" style="border-color:var(--accent)">
+    <h3>🏗️ התמונה המלאה — הארכיטקטורה של Mini-Shop</h3>
+    <p>בואו נחבר את <b>כל</b> מה שלמדנו היום לתמונה אחת. ככה נראית מערכת אמיתית מקצה לקצה:</p>
+    <div class="vflow-big stagger">
+      <div class="vnode c-indigo"><div class="ic">👥</div><div class="bd"><b>מיליון משתמשים</b><div class="sub">נכנסים לאפליקציה בו-זמנית</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-teal"><div class="ic">⚖️</div><div class="bd"><b>Load Balancer</b><div class="sub">מחלק את העומס בין כמה שרתי Backend</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-indigo"><div class="ic">⚙️</div><div class="bd"><b>שרתי Backend (כמה מהם)</b><div class="sub">מקבלים בקשות, מריצים לוגיקה, פונים למסד</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-teal"><div class="ic">🗄️</div><div class="bd"><b>Cloud SQL — Procedures + Triggers</b><div class="sub">ולצידו 🔥 Firebase (NoSQL) לנתוני אפליקציה גמישים</div></div></div>
+      <div class="vdown">↓ <span style="font-size:15px;color:var(--purple);font-weight:800">connector / גיליון</span></div>
+      <div class="vnode c-purple"><div class="ic">📊</div><div class="bd"><b>Data Studio (BI)</b><div class="sub">הופך את הנתונים לדשבורד אינטראקטיבי</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode" style="border-color:var(--green);background:linear-gradient(160deg,#fff,#ecfdf5)"><div class="ic">👔</div><div class="bd"><b>המנהל מקבל החלטה</b><div class="sub">מהקליק של המשתמש ועד ההחלטה — מסע אחד שלם 🎯</div></div></div>
+    </div>
+  </div>
+
+  <div class="quiz" data-yv="זוכרים מחלק ב׳-1? ETL רץ בלילה ומעתיק נתונים. ה-connector, לעומת זאת, חי — הוא שואל את המקור בכל רענון של הדשבורד. שני דברים שונים לגמרי שקל להתבלבל ביניהם.">
+    <div class="q-tag">❓ חידון · בלוק 6</div>
+    <div class="q-txt">מה ההבדל בין <b>connector</b> של כלי BI לבין תהליך <b>ETL</b>?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="1" data-exp="ה-connector לא מעתיק נתונים: בכל פעם שפותחים את הדשבורד או משנים פילטר, הוא שולח שאילתה חיה למקור ומציג את התוצאה. ETL, לעומתו, הוא תהליך נפרד שמעתיק נתונים פיזית מהמקור אל מחסן (OLAP) בתדירות קבועה (למשל כל לילה), תוך ניקוי והמרה. בקצרה: connector = חלון חי אל הנתונים; ETL = העברה ואחסון של הנתונים." onclick="quizAns(this)"><span class="k">א</span>connector שולח שאילתה חיה למקור בכל רענון ומציג; ETL מעתיק נתונים פיזית למחסן בתדירות קבועה.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ב</span>אין הבדל — זה אותו דבר בשמות שונים.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>connector מעתיק את כל הנתונים פעם ביום, ו-ETL עובד בזמן-אמת.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>ETL הוא הכלי שמצייר את הגרפים בתוך הדשבורד.</button>
+    <div class="quiz-fb"></div>
+  </div>
+
+  <div class="quiz" data-yv="שאלת 'מי בונה ומאיפה קוראים' חוזרת בכל ראיון BI. דשבורד ניהולי = אנליסט BI על המחסן האנליטי. לא Frontend על OLTP, ולא DevOps על Grafana.">
+    <div class="q-tag">❓ חידון נוסף · בלוק 6</div>
+    <div class="q-txt">מנכ"ל מבקש <b>דשבורד מכירות ניהולי</b> שמתעדכן כל בוקר. מי בונה אותו, וממה הוא קורא נתונים?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>מפתח Frontend בונה, וקורא ישירות מ-OLTP בזמן אמת.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ב</span>צוות DevOps בונה ב-Grafana, מחובר ל-OLTP.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>המנכ"ל כותב SQL בעצמו ישירות על המחסן.</button>
+    <button class="quiz-opt" data-c="1" data-exp="דשבורד ניהולי נבנה ע״י אנליסט BI (אתם!) בכלי כמו Data Studio, ומחובר למחסן האנליטי (OLAP) — ולא ל-OLTP התפעולי, שאסור להעמיס עליו שאילתות ניתוח כבדות. שאר התשובות מתארות תפקידים אחרים: דשבורד-למשתמש (Frontend על OLTP), דשבורד תפעולי (DevOps על Grafana), ומנכ״לים פשוט לא כותבים SQL בעצמם." onclick="quizAns(this)"><span class="k">ד</span>אנליסט BI בונה ב-Data Studio, מחובר למחסן האנליטי (OLAP).</button>
+    <div class="quiz-fb"></div>
+  </div>
+
+  <div class="takeaway">
+    <div class="big-emoji">📊</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">כלי BI מחבר את כל מקורות הנתונים — SQL ו-NoSQL כאחד — לדשבורד אחד. האנליסט גורר שדות, הכלי מייצר SQL, והמנהל מקבל החלטה. ככה נסגר המעגל מהקליק ועד התובנה.</div>
+  </div>
+</section>
+
+<!-- ============ BLOCK 7 ============ -->
+<section class="section" id="block7">
+  <span class="block-tag">בלוק 7 · סיכום · 15 דקות</span>
+  <h2>סיכום: מה למדנו היום</h2>
+  <p class="section-sub">חמישה כלים שהפכו את מסד הנתונים מ"מחסן" ל"מערכת חיה" — וחיברו הכל ל-BI.</p>
+
+  <div class="deep-card">
+    <div class="flow-steps">
+      <div class="flow-step expanded">
+        <div class="num">⚙️</div>
+        <div><div class="fs-title">Stored Procedures</div><div class="fs-sub">"מתכון שמור" במסד — קוראים בשם <span class="inline-code">CALL place_order()</span></div>
+        <div class="fs-details">שומרים פעולה מורכבת פעם אחת, מרוויחים עקביות, מהירות ואבטחה. <b>תוכנה:</b> PostgreSQL / Cloud SQL.</div></div>
+      </div>
+      <div class="flow-step expanded">
+        <div class="num">⚡</div>
+        <div><div class="fs-title">Triggers</div><div class="fs-sub">"חיישן" שרץ אוטומטית על אירוע (INSERT/UPDATE)</div>
+        <div class="fs-details">המלאי יורד לבד, היסטוריית מחירים נשמרת לבד. בסיס לאיכות נתונים ואודיט. <b>תוכנה:</b> PostgreSQL / Cloud SQL.</div></div>
+      </div>
+      <div class="flow-step expanded">
+        <div class="num">🔥</div>
+        <div><div class="fs-title">NoSQL · Firebase</div><div class="fs-sub">מסמכים גמישים במקום טבלאות נוקשות</div>
+        <div class="fs-details">אוספים (collections) ומסמכים (documents). מצוין לזמן-אמת ואפליקציות. <b>תוכנה:</b> Firebase / Cloud Firestore.</div></div>
+      </div>
+      <div class="flow-step expanded">
+        <div class="num">⚖️</div>
+        <div><div class="fs-title">Load Balancers</div><div class="fs-sub">"שוטר תנועה" שמחלק עומס בין שרתים</div>
+        <div class="fs-details">פיזור בקשות, בדיקות תקינות, failover. ככה משרתים מיליונים. <b>תוכנה:</b> NGINX, Google Cloud Load Balancing.</div></div>
+      </div>
+      <div class="flow-step expanded">
+        <div class="num">📊</div>
+        <div><div class="fs-title">הכל מתחבר ל-BI</div><div class="fs-sub">מקורות נתונים → דשבורד שמנהל מבין</div>
+        <div class="fs-details">connector שולח SQL אוטומטית; גוררים שדות → גרפים. <b>תוכנה:</b> Data Studio (לשעבר Looker Studio).</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- glossary -->
+  <div class="deep-card">
+    <h3>📖 מילון מונחים — כל המושגים של היום במקום אחד</h3>
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <tr><th>מונח</th><th>בשפה פשוטה</th><th>באיזו תוכנה</th></tr>
+      <tr><td>Stored Procedure</td><td>סדרת פקודות שמורה במסד, מופעלת ב-<span class="inline-code">CALL</span></td><td>PostgreSQL, SQL Server, Oracle</td></tr>
+      <tr><td>Function</td><td>כמו פרוצדורה, אבל <b>מחזירה ערך</b>; מופעלת ב-<span class="inline-code">SELECT</span></td><td>PostgreSQL</td></tr>
+      <tr><td>Trigger</td><td>קוד שרץ <b>אוטומטית</b> כשקורה אירוע בטבלה</td><td>PostgreSQL, כל מסד SQL</td></tr>
+      <tr><td>NEW / OLD</td><td>השורה אחרי / לפני השינוי — בתוך טריגר</td><td>PostgreSQL (PL/pgSQL)</td></tr>
+      <tr><td>NoSQL</td><td>משפחת מסדים בלי טבלאות נוקשות ובלי SQL</td><td>Firebase, MongoDB, Redis</td></tr>
+      <tr><td>Document / Collection</td><td>"כרטיסייה" / "קופסה של כרטיסיות"</td><td>Cloud Firestore (Firebase)</td></tr>
+      <tr><td>Field</td><td>זוג שם:ערך בתוך מסמך (כמו ב-JSON)</td><td>Cloud Firestore</td></tr>
+      <tr><td>Load Balancer</td><td>"שוטר תנועה" שמחלק בקשות בין שרתים</td><td>NGINX, HAProxy, Cloud LB</td></tr>
+      <tr><td>Health Check</td><td>"דפיקה" תקופתית לבדוק ששרת חי</td><td>כל Load Balancer</td></tr>
+      <tr><td>Round-Robin</td><td>חלוקה בתורות: 1,2,3,1,2,3</td><td>NGINX, Cloud LB</td></tr>
+      <tr><td>Read Replica</td><td>עותק-קריאה של המסד, להורדת עומס</td><td>Cloud SQL, RDS</td></tr>
+      <tr><td>Connector</td><td>תוסף שמחבר כלי BI למקור נתונים</td><td>Data Studio, Tableau</td></tr>
+      <tr><td>Data Studio</td><td>כלי BI חינמי בדפדפן (לשעבר Looker Studio)</td><td>Google</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <!-- capstone -->
+  <div class="lab">
+    <div class="lab-head">
+      <span class="lab-pill">🏆 אתגר מסכם</span>
+      <h3>תרגיל קצה-לקצה: בנו את Mini-Shop בעצמכם</h3>
+    </div>
+    <p>שלבו את כל מה שלמדתם. נסו לבצע את הרצף הבא (אפשר בזוגות):</p>
+    <ul class="checklist">
+      <li>ב-PostgreSQL: צרו את 4 הטבלאות והכניסו 2 לקוחות + 2 מוצרים.</li>
+      <li>כתבו פרוצדורה <span class="inline-code">place_order</span> ובצעו 3 הזמנות שונות.</li>
+      <li>הוסיפו טריגר שמתעד כל שינוי מחיר ל-<span class="inline-code">price_history</span>, ושנו מחיר אחד כדי לבדוק.</li>
+      <li>ב-Firebase: צרו אוסף <span class="inline-code">reviews</span> עם 3 מסמכי חוות-דעת (עם שדות שונים בכל אחד).</li>
+      <li>הוציאו את סיכום המכירות לגיליון, וב-Data Studio בנו דשבורד עם: KPI הכנסות, גרף עמודות לפי מוצר, ופילטר.</li>
+      <li>שרטטו (על דף!) איפה היה ממוקם Load Balancer בארכיטקטורה שלכם, ולמה.</li>
+    </ul>
+
+    <div class="info insight">
+      <div class="hd">💼 שאלות שמופיעות בראיונות עבודה (ישראל 2026)</div>
+      <ul>
+        <li>"מה ההבדל בין Stored Procedure ל-Trigger?" → <i>מי מפעיל: פרוצדורה אני קורא לה, טריגר מפעיל את עצמו על אירוע.</i></li>
+        <li>"מתי תבחר NoSQL על פני SQL?" → <i>מבנה גמיש, זמן-אמת, סקייל ענק; לא לכספים שדורשים ACID.</i></li>
+        <li>"איך load balancer עוזר לזמינות?" → <i>health check מזהה שרת שנפל ומנתב סביבו — אין downtime.</i></li>
+        <li>"איך מחברים דשבורד למסד?" → <i>connector מובנה ששולח SQL ישירות; או דרך גיליון/מחסן.</i></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quiz" data-yv="שאלה כזו בודקת אם אתם רואים את התמונה השלמה: כל כלי למשימה שלו. Trigger לאוטומציה במסד, ו-Data Studio להצגה. ערבוב כלים (Load Balancer להיסטוריה?!) הוא הסימן הקלאסי לתשובה שגויה.">
+    <div class="q-tag">🏆 חידון מסכם · כל ההרצאה</div>
+    <div class="q-txt">ב-Mini-Shop רוצים ש<b>כל שינוי מחיר יישמר אוטומטית להיסטוריה</b>, ושהמנהל <b>יראה את מגמת המחירים בדשבורד</b>. מה השילוב הנכון של הכלים שלמדנו היום?</div>
+    <div class="q-note">בחרו תשובה אחת. (משלב שני נושאים!)</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>Load Balancer לשמירת ההיסטוריה + Firebase לדשבורד.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ב</span>Stored Procedure שהמנהל מריץ ידנית כל בוקר + ייצוא ל-Excel.</button>
+    <button class="quiz-opt" data-c="1" data-exp="הכלי הנכון לכל משימה: (1) Trigger מסוג AFTER UPDATE על products, שכותב כל שינוי מחיר ל-price_history אוטומטית — בלי תלות באפליקציה. (2) חיבור Data Studio למסד (דרך connector או גיליון) שמציג את מגמת המחירים בגרף למנהל. שאר התשובות מערבבות כלים לא שייכים: Load Balancer מפזר תעבורה (לא שומר היסטוריה), Stored Procedure ידני כל בוקר אינו אוטומטי, ו-NoSQL לבד לא נותן את ההיסטוריה והדשבורד." onclick="quizAns(this)"><span class="k">ג</span>Trigger על products ששומר ל-price_history + חיבור Data Studio למסד להצגת המגמה.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>NoSQL בלבד — כי הוא הכי גמיש.</button>
+    <div class="quiz-fb"></div>
+  </div>
+
+  <div class="quiz" data-yv="הטריק לכל שאלת 'איזה כלי': שאלו מה הצורך. אוטומציה במסד → Trigger · פעולה מורכבת לקריאה → Procedure · גמישות/זמן-אמת → NoSQL · סקייל/זמינות → Load Balancer · הצגה למנהל → BI.">
+    <div class="q-tag">🏆 חידון מסכם נוסף · כל ההרצאה</div>
+    <div class="q-txt">סטארטאפ רוצה ש<b>בכל הרשמה של משתמש חדש</b> תיווצר אוטומטית שורת "פרופיל ריק" בטבלה אחרת — בלי תלות באיזו אפליקציה ביצעה את ההרשמה. מה הכלי הנכון?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="1" data-exp="טריגר AFTER INSERT על טבלת המשתמשים: בכל הוספת משתמש הוא ייצר אוטומטית את שורת הפרופיל — לא משנה איזו אפליקציה (אתר, מובייל, API) ביצעה את ההרשמה, כי הלוגיקה יושבת במסד עצמו. Stored Procedure (ב׳) תעבוד רק אם כל אפליקציה תזכור לקרוא לה — בדיוק מה שרצינו למנוע. Load Balancer (ג׳) ו-Data Studio (ד׳) כלל לא עוסקים ביצירת נתונים." onclick="quizAns(this)"><span class="k">א</span>Trigger מסוג AFTER INSERT על טבלת המשתמשים.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ב</span>Stored Procedure שכל אפליקציה צריכה לזכור לקרוא לה.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>Load Balancer שמפזר את ההרשמות בין שרתים.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>דשבורד ב-Data Studio שמציג את המשתמשים החדשים.</button>
+    <div class="quiz-fb"></div>
+  </div>
+
+  <div class="yev-callout">
+    <svg class="face" viewBox="0 0 100 100"><use href="#yevFace"/></svg>
+    <div class="tx"><b>יבגני נפרד 👋</b> כל הכבוד שהגעתם עד לכאן! זכרו את התמונה הגדולה: המסד <b>חושב</b> (Procedures), <b>מגיב</b> (Triggers), <b>גמיש</b> (NoSQL), <b>מתרחב</b> (Load Balancers) — והכל זורם בסוף ל-BI. ואם נתקעתם במושג — אני (וה-MacBook Pro M5 Pro שלי 💻⚡) תמיד כאן. נתראה בהרצאה הבאה!</div>
+  </div>
+
+  <div class="next">
+    <div class="n">➡️</div>
+    <div>
+      <h4 style="margin:0 0 4px">בהמשך הקורס</h4>
+      <p style="margin:0">נצלול עמוק יותר לכלי ה-BI עצמם: בניית דשבורדים מתקדמים ב-Data Studio (ענני וחוצה-פלטפורמה), היכרות עם Tableau, עיצוב ו-Storytelling של נתונים, ופרויקט Capstone מסכם. נעבוד רק עם כלים שרצים בענן ובכל מערכת הפעלה. כל הבסיס הטכני — מהקליק, דרך המסד, ועד הדשבורד — כבר אצלכם ביד. 🎓</p>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <div class="big-emoji">🎯</div>
+    <div class="hd">השורה התחתונה של ההרצאה</div>
+    <div class="tx">מסד נתונים אמיתי לא רק שומר — הוא <b>חושב</b> (Procedures), <b>מגיב</b> (Triggers), <b>גמיש</b> (NoSQL), <b>מתרחב</b> (Load Balancers), ו<b>מתחבר</b> ל-BI כדי להפוך נתונים להחלטות. השלמתם את המסע מהקליק ועד הדשבורד! 🚀</div>
+  </div>
+</section>
+
+<!-- /MAIN -->
+</main>
+
+<footer>
+  <div class="big">🎉 סוף חלק ב׳-2 · השלמנו את התמונה: מהקליק ועד הדשבורד</div>
+  <div>קורס BI וארכיטקטורת נתונים · הרצאה 12 · 29.6.2026 · מאת ד״ר שי צבאן</div>
+  <div class="small">נבנה כחומר עזר מקיף ל-Hands-on · כל המעבדות חינמיות ורצות בדפדפן</div>
+</footer>
+
+<script>
+/* ---------- progress bar + active nav ---------- */
+const bar = document.getElementById('bar');
+const sections = [...document.querySelectorAll('main .section')];
+const navlinks = [...document.querySelectorAll('.nav-block')];
+function onScroll(){
+  const h = document.documentElement;
+  const sc = h.scrollTop;
+  const max = h.scrollHeight - h.clientHeight;
+  bar.style.width = (max>0 ? (sc/max*100) : 0) + '%';
+  let cur = sections[0];
+  for(const s of sections){ if(s.getBoundingClientRect().top <= 130) cur = s; }
+  navlinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+(cur&&cur.id)));
+  // update Yevgeni's tip to match the current block (reliable even for tall sections)
+  if(cur && cur.id && typeof YEV_TIPS!=='undefined' && YEV_TIPS[cur.id]){
+    const t=document.getElementById('yevTip');
+    if(t && t.dataset.b!==cur.id){
+      t.textContent = YEV_TIPS[cur.id];
+      t.dataset.b = cur.id;
+      const y=document.getElementById('yevgeni');
+      if(y){ y.classList.remove('pulse'); void y.offsetWidth; y.classList.add('pulse'); clearTimeout(window._yevT); window._yevT=setTimeout(function(){ y.classList.remove('pulse'); },1600); }
+    }
+  }
+}
+document.addEventListener('scroll', onScroll, {passive:true});
+window.addEventListener('load', onScroll);
+
+/* ---------- expandable flow steps ---------- */
+function toggleStep(el){ el.classList.toggle('expanded'); }
+
+/* ---------- tabs ---------- */
+function showTab(btn, id){
+  const wrap = btn.closest('.tabwrap');
+  wrap.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  wrap.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  wrap.querySelector('#'+id).classList.add('active');
+}
+
+/* ---------- lightweight syntax highlighter ---------- */
+const SQL_KW = ['CREATE','OR','REPLACE','PROCEDURE','FUNCTION','TRIGGER','TABLE','LANGUAGE','AS','BEGIN','END','DECLARE','IF','THEN','ELSIF','ELSE','RETURN','RETURNS','CALL','SELECT','INSERT','INTO','VALUES','UPDATE','SET','DELETE','FROM','WHERE','JOIN','LEFT','RIGHT','INNER','OUTER','ON','GROUP','BY','ORDER','LIMIT','DESC','ASC','AND','NOT','IS','DISTINCT','NULL','PRIMARY','KEY','REFERENCES','DEFAULT','CHECK','UNIQUE','SERIAL','INTEGER','INT','TEXT','VARCHAR','NUMERIC','DECIMAL','TIMESTAMP','DATE','BOOLEAN','AFTER','BEFORE','FOR','EACH','ROW','EXECUTE','NEW','OLD','RAISE','EXCEPTION','NOTICE','CONSTRAINT','ADD','ALTER','DROP','EXISTS','COMMIT','ROLLBACK','GRANT','COUNT','SUM','ROUND','COALESCE','CURRENT_USER','NOW','CURRVAL','TG_OP'];
+const BASH_KW = ['sudo','apt','apt-get','install','update','echo','mkdir','cd','python3','curl','for','in','do','done','seq','kill','tee','rm','systemctl','service','psql','nginx','gcloud','cat','sleep','EOF'];
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function buildRules(lang){
+  if(lang==='bash'){
+    return [
+      [/#[^\n]*/, 'comment'],
+      [/"(?:[^"\\]|\\.)*"|'(?:[^']|\\.)*'/, 'str'],
+      [new RegExp('\\b(?:'+BASH_KW.join('|')+')\\b'), 'kw'],
+      [/\b\d+(?:\.\d+)?\b/, 'num']
+    ];
+  }
+  return [
+    [/--[^\n]*/, 'comment'],
+    [/\/\*[\s\S]*?\*\//, 'comment'],
+    [/'(?:[^']|'')*'/, 'str'],
+    [/\$\$/, 'tb'],
+    [new RegExp('\\b(?:'+SQL_KW.join('|')+')\\b','i'), 'kw'],
+    [/\b\d+(?:\.\d+)?\b/, 'num']
+  ];
+}
+function highlight(code, lang){
+  const rules = buildRules(lang);
+  const combined = new RegExp(rules.map(r=>'('+r[0].source+')').join('|'), 'gi');
+  let out='', last=0, m;
+  while((m = combined.exec(code))){
+    out += escHtml(code.slice(last, m.index));
+    let cls='kw';
+    for(let i=0;i<rules.length;i++){ if(m[i+1]!==undefined){ cls=rules[i][1]; break; } }
+    out += '<span class="'+cls+'">'+escHtml(m[0])+'</span>';
+    last = m.index + m[0].length;
+    if(m.index===combined.lastIndex) combined.lastIndex++;
+  }
+  out += escHtml(code.slice(last));
+  return out;
+}
+document.querySelectorAll('.code-block pre').forEach(pre=>{
+  const lang = pre.parentElement.getAttribute('data-lang') || 'sql';
+  if(lang==='sql' || lang==='plpgsql' || lang==='bash'){
+    pre.innerHTML = highlight(pre.textContent, lang);
+  }
+});
+
+/* ---------- Load Balancer simulator ---------- */
+const LB = {n:3, down:[false,false,false], cnt:[0,0,0], rr:0, auto:null, total:0};
+function lbRender(){
+  for(let i=0;i<LB.n;i++){
+    const srv = document.getElementById('srv'+i);
+    if(!srv) continue;
+    srv.classList.toggle('down', LB.down[i]);
+    srv.querySelector('.cnt').textContent = LB.cnt[i];
+    const max = Math.max(1, ...LB.cnt);
+    srv.querySelector('.bar>i').style.width = (LB.cnt[i]/max*100)+'%';
+  }
+}
+function lbLog(msg, ok){
+  const log = document.getElementById('lblog'); if(!log) return;
+  const line = document.createElement('div');
+  line.innerHTML = ok ? msg : '<span style="color:#fca5a5">'+msg+'</span>';
+  log.prepend(line);
+}
+function lbPick(){
+  const algo = (document.getElementById('lbalgo')||{}).value || 'rr';
+  const alive = [];
+  for(let i=0;i<LB.n;i++) if(!LB.down[i]) alive.push(i);
+  if(alive.length===0) return -1;
+  if(algo==='lc'){
+    let best=alive[0];
+    for(const i of alive) if(LB.cnt[i]<LB.cnt[best]) best=i;
+    return best;
+  }
+  // round robin over alive servers
+  for(let k=0;k<LB.n;k++){
+    LB.rr = (LB.rr+1)%LB.n;
+    if(!LB.down[LB.rr]) return LB.rr;
+  }
+  return alive[0];
+}
+function lbSend(times){
+  for(let t=0;t<times;t++){
+    LB.total++;
+    const i = lbPick();
+    const box = document.getElementById('lbbox');
+    if(box){ box.classList.remove('ping'); void box.offsetWidth; box.classList.add('ping'); }
+    if(i===-1){ lbLog('בקשה #'+LB.total+' ❌ אין שרת זמין! (502)', false); continue; }
+    LB.cnt[i]++;
+    const srv = document.getElementById('srv'+i);
+    if(srv){ srv.classList.add('hit'); setTimeout(()=>srv.classList.remove('hit'),220); }
+    lbLog('request #'+LB.total+' → <b>Server '+(i+1)+'</b>', true);
+  }
+  lbRender();
+}
+function lbAuto(btn){
+  if(LB.auto){ clearInterval(LB.auto); LB.auto=null; btn.textContent='▶ הפעלה אוטומטית'; btn.classList.add('sec'); return; }
+  btn.textContent='⏸ עצור'; btn.classList.remove('sec');
+  LB.auto = setInterval(()=>lbSend(1), 420);
+}
+function lbToggle(i){ LB.down[i]=!LB.down[i]; lbLog('🔧 Server '+(i+1)+(LB.down[i]?' הורד מהמערך (בדיקת תקינות תזהה אותו)':' חזר לאוויר'), true); lbRender(); }
+function lbReset(){ LB.cnt=[0,0,0]; LB.down=[false,false,false]; LB.rr=0; LB.total=0; const l=document.getElementById('lblog'); if(l) l.innerHTML=''; lbRender(); }
+
+/* ---------- dashboard builder simulator ---------- */
+const DASH_DATA = {
+  product:{ labels:['Blue Shirt','Black Jeans','Red Cap','Green Socks'], revenue:[6800,5200,2100,900], units:[138,40,70,120] },
+  country:{ labels:['ישראל','ארה״ב','גרמניה','צרפת'], revenue:[7400,4300,1800,1500], units:[210,95,40,33] }
+};
+function dashRender(){
+  const dimEl=document.getElementById('bDim'); if(!dimEl) return;
+  const dim=dimEl.value, met=document.getElementById('bMet').value, typ=document.getElementById('bType').value;
+  const d=DASH_DATA[dim], vals=d[met], labels=d.labels;
+  const metName = met==='revenue' ? 'הכנסות (₪)' : 'יחידות שנמכרו';
+  const dimName = dim==='product' ? 'מוצר' : 'מדינה';
+  let html='<h5>'+(typ==='table'?'📋 טבלה':'📊 גרף עמודות')+': '+metName+' לפי '+dimName+'</h5>';
+  if(typ==='table'){
+    html+='<table class="tbl" style="font-size:15px"><tr><th>'+dimName+'</th><th>'+metName+'</th></tr>';
+    labels.forEach((l,i)=>{ html+='<tr><td>'+l+'</td><td style="direction:ltr;text-align:left">'+vals[i].toLocaleString()+'</td></tr>'; });
+    html+='</table>';
+  } else {
+    const max=Math.max.apply(null,vals);
+    labels.forEach((l,i)=>{ const w=Math.round(vals[i]/max*100); html+='<div class="bar-row"><span>'+l+'</span><span class="bar" style="width:'+w+'%"></span><span class="val">'+vals[i].toLocaleString()+'</span></div>'; });
+  }
+  document.getElementById('dashCanvas').innerHTML=html;
+}
+if(document.getElementById('dashCanvas')) dashRender();
+
+/* ---------- flip cards ---------- */
+function flipCard(el){ el.classList.toggle('flipped'); }
+
+/* ---------- quiz ---------- */
+function quizAns(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.dataset.done==='1') return;
+  const opts = [...quiz.querySelectorAll('.quiz-opt')];
+  const correct = btn.dataset.c==='1';
+  opts.forEach(o=>{ o.classList.add('dim'); if(o.dataset.c==='1'){ o.classList.remove('dim'); o.classList.add('correct'); } });
+  if(!correct){ btn.classList.remove('dim'); btn.classList.add('wrong'); }
+  const fb = quiz.querySelector('.quiz-fb');
+  const correctOpt = quiz.querySelector('.quiz-opt[data-c="1"]');
+  const exp = correctOpt ? (correctOpt.dataset.exp||'') : '';
+  const yv = quiz.dataset.yv || '';
+  fb.innerHTML = '<div class="verdict">'+(correct?'✅ תשובה נכונה!':'❌ לא מדויק — הנה ההסבר המלא')+'</div><div>'+exp+'</div>'+(yv?'<div class="yv"><div class="f">🧑‍🏫</div><div><b>יבגני מסביר:</b> '+yv+'</div></div>':'');
+  fb.classList.add('show');
+  quiz.dataset.done='1';
+}
+
+/* ---------- scroll reveal ---------- */
+const _io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); _io.unobserve(e.target); } });
+}, {threshold:.12});
+document.querySelectorAll('.reveal,.stagger').forEach(el=>_io.observe(el));
+
+/* ---------- lesson progress pill ---------- */
+const _lp = document.getElementById('lessonProg');
+const _total = sections.length;
+function updateLessonProg(){
+  const h=document.documentElement; const max=h.scrollHeight-h.clientHeight;
+  const pct = max>0 ? Math.round(h.scrollTop/max*100) : 0;
+  let idx=1; for(let i=0;i<sections.length;i++){ if(sections[i].getBoundingClientRect().top<=140) idx=i+1; }
+  if(_lp) _lp.textContent='בלוק '+idx+' / '+_total+' · '+pct+'%';
+}
+document.addEventListener('scroll', updateLessonProg, {passive:true});
+window.addEventListener('load', updateLessonProg);
+
+/* ---------- Yevgeni tips per block ---------- */
+const YEV_TIPS = {
+  block1:'בבלוק הזה רק "מסתכלים על המפה". אל תילחצו אם מונח לא ברור — נצלול לכל אחד בנפרד. 🗺️',
+  block2:'Stored Procedure = "מתכון" שמור במסד. כמו כפתור "הכן קפה" במכונה: לחיצה אחת, הרבה צעדים מאחורי הקלעים. ☕',
+  block3:'Trigger = חיישן. הוא לא מחכה שתבקשו — מגיב לבד. שימו לב מתי זה עוזר ומתי מבלבל. ⚡',
+  block4:'ב-NoSQL אין "טבלה". חשבו על ערימת כרטיסיות גמישות. זה לא "טוב יותר" מ-SQL — כלי אחר. 🗂️',
+  block5:'Load Balancer = סדרן בכניסה. שחקו עם ההדגמה החיה: שלחו בקשות, "הפילו" שרת, וראו מה קורה. ⚖️',
+  block6:'כאן הכל מתחבר: הנתונים שבנינו → דשבורד שמנהל מבין. זו בדיוק העבודה של אנליסט BI. 📊',
+  block7:'זמן לסכם ולתרגל. נסו את החידונים — וזכרו: טעות = הזדמנות ללמוד. 💪'
+};
+/* Yevgeni's tips are updated inside onScroll() — reliable even for sections taller than the viewport. */
+
+/* ---------- Yevgeni drag + minimize ---------- */
+function yevMin(){ document.getElementById('yevgeni').classList.add('min'); }
+function yevReopen(){ document.getElementById('yevgeni').classList.remove('min'); }
+(function(){
+  const yev=document.getElementById('yevgeni'), handle=document.getElementById('yevAvatar');
+  if(!yev||!handle) return;
+  let dragging=false, ox=0, oy=0;
+  handle.addEventListener('pointerdown', e=>{
+    dragging=true; try{handle.setPointerCapture(e.pointerId);}catch(_){}
+    const r=yev.getBoundingClientRect(); ox=e.clientX-r.left; oy=e.clientY-r.top;
+    yev.style.bottom='auto'; e.preventDefault();
+  });
+  window.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    let x=e.clientX-ox, y=e.clientY-oy;
+    x=Math.max(6, Math.min(window.innerWidth - yev.offsetWidth - 6, x));
+    y=Math.max(6, Math.min(window.innerHeight - 84, y));
+    yev.style.left=x+'px'; yev.style.top=y+'px';
+  });
+  window.addEventListener('pointerup', ()=>{ dragging=false; });
+})();
+
+/* ---------- keynote intro → lesson ---------- */
+function startLesson(){
+  document.body.classList.remove('pre-start');
+  document.body.classList.add('lesson-started');
+  const h=document.querySelector('.hero');
+  if(h) h.scrollIntoView({behavior:'smooth'});
+}
+document.querySelectorAll('.kn-pop').forEach(el=>_io.observe(el));
+(function(){
+  const h=document.querySelector('.hero'); if(!h) return;
+  const o=new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ document.body.classList.remove('pre-start'); document.body.classList.add('lesson-started'); o.disconnect(); } }); }, {threshold:.08});
+  o.observe(h);
+})();
+</script>
+</body>
+</html>
