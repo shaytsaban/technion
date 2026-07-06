@@ -1,0 +1,2317 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הרצאה 13 · 6.7.2026 | מהמסך לענן: בונים ומפרסמים מערכת אמיתית, עקב בצד אגודל — ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#4f46e5; --primary-dark:#3730a3; --primary-light:#eef2ff;
+  --accent:#14b8a6; --accent-dark:#0f766e; --accent-light:#ccfbf1;
+  --pink:#ec4899; --purple:#a855f7; --blue:#3b82f6; --amber:#f59e0b; --red:#ef4444; --green:#10b981;
+  --ink:#0f172a; --ink-soft:#334155; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; --white:#fff;
+  --shadow:0 10px 30px rgba(15,23,42,.08); --shadow-lg:0 20px 50px rgba(15,23,42,.14);
+  --radius:28px;
+  --navy-950:#0e1b2e; --navy-900:#142a45; --navy-800:#1c3a5e;
+  --gold-600:#a9791f; --gold-500:#c39a3a; --gold-400:#d8b862; --gold-100:#f3e6c4; --cream-50:#faf7f0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Heebo',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:21px;line-height:1.8;direction:rtl;-webkit-font-smoothing:antialiased}
+b,strong{font-weight:800}
+a{color:var(--primary)}
+.progress{position:fixed;top:0;right:0;left:0;height:5px;background:transparent;z-index:1000}
+.progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .1s linear}
+.topnav{position:sticky;top:0;z-index:900;background:rgba(255,255,255,.86);backdrop-filter:blur(12px);border-bottom:3px solid var(--line)}
+.nav-inner{max-width:1280px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:16px;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.badge-bi{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:900;font-size:19px;display:grid;place-items:center;box-shadow:var(--shadow)}
+.brand .t{font-weight:800;font-size:15px;line-height:1.25}
+.brand .s{font-weight:500;font-size:11.5px;color:var(--muted)}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.nav-block{font-size:12px;font-weight:700;color:var(--ink-soft);text-decoration:none;padding:7px 11px;border-radius:999px;background:#fff;border:2px solid var(--line);white-space:nowrap;transition:.15s}
+.nav-block:hover{border-color:var(--primary);color:var(--primary)}
+.nav-block.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+@media(max-width:1300px){.nav-links{display:none}}
+.hero{position:relative;overflow:hidden;background:radial-gradient(1100px 480px at 82% -12%, #e8ecff 0%, #f8fafc 62%)}
+.hero-inner{max-width:1240px;margin:0 auto;padding:64px 22px 56px;display:grid;grid-template-columns:1.35fr .85fr;gap:42px;align-items:center}
+@media(max-width:1000px){.hero-inner{grid-template-columns:1fr;gap:30px}}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--line);color:var(--primary-dark);font-weight:800;font-size:14.5px;padding:8px 16px;border-radius:999px}
+.hero h1{font-size:clamp(38px,5.4vw,64px);font-weight:900;line-height:1.08;margin:20px 0 16px}
+.hero h1 .grad{background:linear-gradient(120deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-sub{font-size:clamp(17px,2.1vw,23px);color:var(--ink-soft);max-width:680px;line-height:1.7}
+.meta-chips{display:flex;gap:11px;flex-wrap:wrap;margin:26px 0 24px}
+.chip{background:#fff;border:2px solid var(--line);border-radius:14px;padding:9px 15px;font-weight:700;font-size:14.5px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:16.5px;padding:14px 26px;border-radius:14px;text-decoration:none;transition:.18s}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;box-shadow:var(--shadow)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.btn-ghost{background:#fff;border:2px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--primary);color:var(--primary)}
+.hero-art{border-radius:24px;background:linear-gradient(135deg,var(--primary),var(--accent-dark));padding:16px;box-shadow:var(--shadow-lg);display:grid;grid-template-columns:1fr 1fr 1fr;grid-auto-rows:minmax(150px,1fr);gap:12px}
+.art-tile{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;text-align:center;padding:8px}
+main{display:block}
+.section{max-width:1080px;margin:0 auto;padding:84px 22px;scroll-margin-top:84px;border-top:1px solid var(--line)}
+.section:first-child{border-top:none}
+.block-tag{display:inline-block;background:var(--primary-light);color:var(--primary-dark);font-weight:800;font-size:13.5px;padding:7px 15px;border-radius:999px;letter-spacing:.2px}
+.section>h2{font-size:clamp(30px,4.3vw,50px);font-weight:900;margin:16px 0 6px;line-height:1.12}
+.section-sub{font-size:clamp(16px,2vw,22px);color:var(--muted);margin-bottom:14px}
+.deep-card{background:#fff;border:3px solid var(--line);border-radius:var(--radius);padding:clamp(22px,3.6vw,44px);box-shadow:var(--shadow);margin:22px 0}
+.deep-card h3{font-size:clamp(21px,2.6vw,29px);font-weight:900;margin:6px 0 12px}
+.deep-card h4{font-size:20px;font-weight:800;margin:22px 0 9px}
+.deep-card p{margin:12px 0}
+.deep-card ul,.deep-card ol{margin:12px 0;padding-right:24px}
+.deep-card li{margin:8px 0}
+.lead{font-size:clamp(18px,2.1vw,22px);color:var(--ink-soft)}
+.info{border-radius:16px;padding:20px 24px;margin:20px 0;border-right:8px solid var(--primary);background:var(--primary-light)}
+.info .hd{font-weight:900;font-size:20px;margin-bottom:6px;display:flex;gap:8px;align-items:center}
+.info p{margin:9px 0;font-size:18.5px}
+.info.tip{border-right-color:var(--green);background:#ecfdf5}
+.info.warn{border-right-color:var(--amber);background:#fffbeb}
+.info.important{border-right-color:var(--red);background:#fef2f2}
+.info.insight{border-right-color:var(--purple);background:#faf5ff}
+.info.term{border-right-color:var(--blue);background:#eff6ff}
+.soft-note{background:#fff;border:3px dashed var(--line);border-radius:14px;padding:16px 20px;color:var(--ink-soft);font-size:18.5px;font-weight:600;margin:16px 0}
+.teacher-note{background:linear-gradient(135deg,#fff3c4,#ffe27a);border:3px solid #d97706;border-radius:18px;padding:20px 24px;margin:20px 0;font-size:19px;font-weight:600;color:#78350f;box-shadow:var(--shadow)}
+.teacher-note b{color:#7c2d12;font-weight:900}
+.tn-label{display:block;font-weight:900;color:#fff;background:#b45309;padding:4px 14px;border-radius:999px;font-size:15.5px;margin-bottom:10px;width:fit-content}
+.sw{display:inline-flex;align-items:center;gap:7px;background:#0f172a;color:#fff;font-weight:700;font-size:15.5px;padding:7px 15px;border-radius:999px;margin-top:8px}
+.sw .d{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.diagram{background:#fff;border:3px solid var(--line);border-radius:22px;padding:18px;margin:22px 0;overflow-x:auto}
+.diagram .cap{text-align:center;color:var(--muted);font-size:14.5px;margin-top:10px}
+.flow-steps{display:flex;flex-direction:column;gap:13px;margin:20px 0}
+.flow-step{display:grid;grid-template-columns:54px 1fr;gap:16px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:17px 19px}
+.flow-step .num{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:900;font-size:23px;display:grid;place-items:center}
+.flow-step .fs-title{font-weight:800;font-size:19.5px}
+.flow-step .fs-sub{color:var(--muted);font-size:15.5px;margin-top:1px}
+.flow-step .fs-details{color:var(--ink-soft);font-size:17px;margin-top:11px}
+.lab{background:linear-gradient(180deg,#fff, #fbfdff);border:3px solid var(--accent);border-radius:24px;padding:clamp(20px,3.4vw,40px);margin:24px 0;box-shadow:var(--shadow)}
+.lab-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.lab-pill{background:var(--accent);color:#fff;font-weight:900;font-size:14px;padding:6px 14px;border-radius:999px;letter-spacing:.4px}
+.lab h3{font-size:clamp(20px,2.5vw,28px);font-weight:900}
+.lab-steps{counter-reset:lab;display:flex;flex-direction:column;gap:14px;margin-top:16px}
+.lab-step{position:relative;background:#fff;border:2px solid var(--line);border-radius:16px;padding:18px 20px}
+.lab-step::before{counter-increment:lab;content:counter(lab);position:absolute;top:-13px;inset-inline-start:18px;width:30px;height:30px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:900;font-size:15px;border-radius:9px;display:grid;place-items:center;box-shadow:var(--shadow)}
+.lab-step .st{font-weight:800;font-size:19px;margin-bottom:5px}
+.lab-step p{margin:10px 0}
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:20px 0}
+.compare-card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px;border-top:6px solid var(--primary)}
+.compare-card.a{border-top-color:var(--green)} .compare-card.b{border-top-color:var(--amber)}
+.compare-card.c{border-top-color:var(--pink)} .compare-card.d{border-top-color:var(--blue)}
+.compare-card h4{margin-top:0;font-size:19px}
+.compare-card p{margin:10px 0}
+.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:17px;background:#fff;border-radius:14px;overflow:hidden;border:2px solid var(--line)}
+.tbl th{background:var(--primary);color:#fff;padding:13px 15px;text-align:right;font-weight:800;font-size:16px}
+.tbl td{padding:12px 15px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:hover td{background:var(--primary-light)}
+.tbl td:first-child{font-weight:700}
+.tbl-wrap{overflow-x:auto}
+.code-block{position:relative;background:#0f172a;color:#e2e8f0;border:5px solid #1e293b;border-radius:18px;padding:36px 26px 26px;margin:20px 0;direction:ltr;text-align:left;overflow-x:auto}
+.code-block .lang{position:absolute;top:0;left:0;background:#1e293b;color:#94a3b8;font-size:12.5px;font-weight:700;padding:5px 15px;border-radius:0 0 10px 0;letter-spacing:1px}
+.code-block pre{margin:0;white-space:pre;font-family:'Courier New',monospace;font-size:19px;line-height:1.85;tab-size:2}
+.code-block .kw{color:#c4b5fd;font-weight:700}
+.code-block .str{color:#86efac}
+.code-block .num{color:#fcd34d}
+.code-block .comment{color:#7dd3fc;font-style:italic}
+.code-block .fn{color:#67e8f9}
+.code-block .tb{color:#f9a8d4}
+.code-block .copy-btn{position:absolute;top:0;left:auto;right:0;background:#334155;color:#e2e8f0;border:none;font-size:12.5px;font-weight:700;padding:6px 16px;border-radius:0 0 0 10px;cursor:pointer;transition:.15s;z-index:3}
+.code-block .copy-btn:hover{background:var(--accent);color:#0f172a}
+.code-block .copy-btn.copied{background:#22c55e;color:#fff}
+.real-world{background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:20px;padding:24px 26px;margin:22px 0;border:2px solid #fcd34d}
+.takeaway{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:24px;padding:34px 32px;margin:26px 0;box-shadow:var(--shadow-lg)}
+.takeaway .big-emoji{position:absolute;left:18px;top:-10px;font-size:120px;opacity:.16}
+.takeaway .hd{font-weight:900;font-size:16px;letter-spacing:.6px;opacity:.95;margin-bottom:8px}
+.takeaway .tx{font-weight:800;font-size:clamp(20px,2.6vw,28px);line-height:1.45;position:relative;z-index:2}
+.israel{background:#fff;border:2px solid var(--line);border-right:7px solid var(--blue);border-radius:16px;padding:18px 22px;margin:18px 0}
+.israel .hd{font-weight:800;font-size:18px;margin-bottom:4px}
+.next{display:grid;grid-template-columns:60px 1fr;gap:16px;background:linear-gradient(135deg,var(--primary-light),#fff);border:2px solid var(--line);border-radius:18px;padding:20px;margin:14px 0}
+.next .n{width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-size:28px;display:grid;place-items:center}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}
+@media(max-width:760px){.two-col{grid-template-columns:1fr}}
+.vflow-big{display:flex;flex-direction:column;align-items:center;margin:28px 0}
+.vflow-big .vnode{width:min(720px,100%);background:#fff;border:3px solid var(--line);border-radius:24px;padding:22px 28px;display:flex;align-items:center;gap:24px;box-shadow:var(--shadow)}
+.vflow-big .vnode .ic{font-size:62px;line-height:1;flex-shrink:0;width:78px;text-align:center}
+.vflow-big .vnode .bd{flex:1}
+.vflow-big .vnode .bd b{font-size:25px;font-weight:900;display:block;line-height:1.2}
+.vflow-big .vnode .bd .sub{font-size:18px;color:var(--ink-soft);margin-top:4px}
+.vflow-big .vdown{font-size:48px;line-height:1;color:var(--accent);margin:2px 0;text-align:center}
+.vflow-big .vnode.c-indigo{border-color:var(--primary);background:linear-gradient(160deg,#fff,#eef2ff)}
+.vflow-big .vnode.c-teal{border-color:var(--accent-dark);background:linear-gradient(160deg,#fff,#ecfeff)}
+.vflow-big .vnode.c-amber{border-color:var(--amber);background:linear-gradient(160deg,#fff,#fffbeb)}
+.vflow-big .vnode.c-purple{border-color:var(--purple);background:linear-gradient(160deg,#fff,#faf5ff)}
+@media(max-width:620px){.vflow-big .vnode{flex-direction:column;text-align:center;gap:10px}.vflow-big .vnode .ic{font-size:54px}}
+.flip-grid{display:grid;gap:20px;margin:26px 0}
+.flip-grid.cols6{grid-template-columns:repeat(3,1fr)}
+.flip-grid.cols4{grid-template-columns:repeat(2,1fr)}
+.flip-grid.cols3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:980px){.flip-grid.cols6{grid-template-columns:repeat(2,1fr)}.flip-grid.cols3{grid-template-columns:1fr}.flip-grid.cols4{grid-template-columns:1fr}}
+@media(max-width:620px){.flip-grid.cols6{grid-template-columns:1fr}}
+.flip{perspective:1600px;cursor:pointer}
+.flip-inner{position:relative;display:grid;height:100%;min-height:270px;transition:transform .6s cubic-bezier(.4,.15,.2,1);transform-style:preserve-3d}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-face{position:relative;grid-area:1/1;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:24px;padding:30px 26px 36px;display:flex;flex-direction:column;justify-content:center;border:3px solid var(--line);background:#fff;box-shadow:var(--shadow)}
+.flip-front{align-items:center;text-align:center}
+.flip-front .ic{font-size:74px;line-height:1;margin-bottom:14px}
+.flip-front .ttl{font-size:25px;font-weight:900;line-height:1.25}
+.flip-front .ttl .en{display:block;font-size:16.5px;color:var(--muted);font-weight:700;margin-top:5px}
+.flip-front .hint{position:absolute;bottom:14px;left:0;right:0;font-size:14px;color:var(--primary);font-weight:800}
+.flip-num{position:absolute;top:14px;right:16px;width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:900;font-size:21px;display:grid;place-items:center;z-index:2}
+.flip-back{transform:rotateY(180deg);background:linear-gradient(155deg,#ffffff,#eef2ff);text-align:right}
+.flip-back .flip-num{display:none}
+.flip-back .bk-ttl{font-size:22px;font-weight:900;color:var(--primary-dark);margin-bottom:10px}
+.flip-back p{font-size:17.5px;margin:7px 0;line-height:1.55;color:var(--ink)}
+.why{background:#ecfeff;border:3px solid var(--accent);border-right:9px solid var(--accent-dark);border-radius:16px;padding:18px 22px;margin:18px 0;font-size:19px;font-weight:600;box-shadow:var(--shadow)}
+.why b{color:var(--accent-dark)}
+.yev-callout{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:center;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px solid #c7d2fe;border-right:7px solid var(--primary);border-radius:18px;padding:16px 22px;margin:20px 0}
+.yev-callout .face{width:64px;height:64px;flex-shrink:0}
+.yev-callout .tx{font-size:17.5px;line-height:1.6}
+.yev-callout .tx b{color:var(--primary-dark)}
+.yevgeni{position:fixed;z-index:1200;bottom:20px;left:20px;display:flex;align-items:flex-end;gap:10px;max-width:330px;user-select:none;touch-action:none}
+.yev-avatar{width:76px;height:76px;flex-shrink:0;cursor:grab;filter:drop-shadow(0 6px 14px rgba(15,23,42,.28))}
+.yev-avatar:active{cursor:grabbing}
+.yev-bubble{background:#fff;border:3px solid var(--primary);border-radius:18px 18px 4px 18px;padding:11px 15px;box-shadow:var(--shadow-lg)}
+.yev-head{font-weight:900;color:var(--primary-dark);font-size:15px;margin-bottom:3px;display:flex;gap:8px;align-items:center;justify-content:space-between}
+.yev-head button{background:none;border:none;cursor:pointer;font-size:16px;color:var(--muted);font-weight:900;line-height:1}
+.yev-tip{font-size:14.5px;line-height:1.5;color:var(--ink)}
+.yevgeni.min .yev-bubble{display:none}
+.yev-reopen{display:none}
+.yevgeni.min .yev-reopen{display:grid;place-items:center;position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:900}
+@media(max-width:600px){.yevgeni{max-width:220px;bottom:12px;left:12px}.yev-avatar{width:60px;height:60px}.yev-tip{font-size:13.5px}}
+.yevgeni.pulse .yev-bubble{animation:yevpulse .9s ease}
+@keyframes yevpulse{0%{transform:scale(1)}18%{transform:scale(1.13) rotate(-1deg);box-shadow:0 0 0 9px rgba(20,184,166,.35);border-color:var(--accent)}45%{transform:scale(1.02)}65%{transform:scale(1.06)}100%{transform:scale(1)}}
+.yevgeni.pulse .yev-avatar{animation:yevnudge .85s ease}
+@keyframes yevnudge{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-13px) rotate(-9deg)}50%{transform:translateY(0) rotate(0)}72%{transform:translateY(-7px) rotate(6deg)}}
+.yev-newbadge{display:none;background:var(--accent);color:#fff;font-size:11px;font-weight:900;padding:2px 9px;border-radius:999px;margin-inline-start:6px;white-space:nowrap}
+.yevgeni.pulse .yev-newbadge{display:inline-block;animation:yevbadge 1.3s ease}
+@keyframes yevbadge{0%{transform:scale(.4);opacity:0}25%{transform:scale(1.1);opacity:1}80%{opacity:1}100%{opacity:0}}
+.quiz{background:linear-gradient(160deg,#0f172a,#1e293b);color:#e2e8f0;border-radius:24px;padding:30px;margin:28px 0;box-shadow:var(--shadow-lg)}
+.quiz .q-tag{display:inline-block;background:var(--amber);color:#0f172a;font-weight:900;font-size:14px;padding:6px 15px;border-radius:999px;margin-bottom:12px}
+.quiz .q-txt{font-size:23px;font-weight:800;margin-bottom:8px;line-height:1.5}
+.quiz .q-note{font-size:15px;color:#94a3b8;margin-bottom:14px}
+.quiz-opt{display:block;width:100%;text-align:right;font-family:inherit;font-size:18px;font-weight:700;color:#e2e8f0;background:#0b1220;border:2px solid #334155;border-radius:14px;padding:15px 20px;margin:11px 0;cursor:pointer;transition:.15s}
+.quiz-opt:hover{border-color:var(--accent);transform:translateX(-4px)}
+.quiz-opt .k{display:inline-block;width:30px;height:30px;line-height:30px;text-align:center;background:#334155;border-radius:8px;margin-left:10px;font-weight:900}
+.quiz-opt.correct{background:#064e3b;border-color:#10b981;color:#d1fae5}
+.quiz-opt.correct .k{background:#10b981;color:#04231a}
+.quiz-opt.wrong{background:#4c0519;border-color:#ef4444;color:#fecaca}
+.quiz-opt.wrong .k{background:#ef4444;color:#3f0710}
+.quiz-opt.dim{opacity:.5}
+.quiz-fb{margin-top:16px;background:#020617;border-radius:14px;padding:18px 20px;font-size:17px;line-height:1.65;display:none}
+.quiz-fb.show{display:block}
+.quiz-fb .verdict{font-weight:900;font-size:19px;margin-bottom:6px}
+.quiz-fb .yv{display:flex;gap:12px;align-items:flex-start;margin-top:12px;border-top:1px solid #1e293b;padding-top:12px}
+.quiz-fb .yv .f{font-size:34px;flex-shrink:0}
+.quiz-fb .yv b{color:#a5b4fc}
+.lesson-prog{position:fixed;top:64px;left:50%;transform:translateX(-50%);z-index:850;background:rgba(15,23,42,.9);color:#fff;font-weight:800;font-size:13px;padding:6px 16px;border-radius:999px;backdrop-filter:blur(8px);box-shadow:var(--shadow);transition:opacity .3s}
+@media(max-width:600px){.lesson-prog{font-size:11px;top:60px}}
+.checklist{list-style:none;padding:0!important}
+.checklist li{padding-right:34px;position:relative;margin:10px 0}
+.checklist li::before{content:"✓";position:absolute;right:0;top:0;width:24px;height:24px;background:var(--green);color:#fff;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:900}
+.kbd{font-family:'Courier New',monospace;background:#1e293b;color:#e2e8f0;padding:3px 9px;border-radius:6px;font-size:.95em;direction:ltr;display:inline-block}
+.inline-code{font-family:'Courier New',monospace;background:var(--primary-light);color:var(--primary-dark);padding:3px 8px;border-radius:6px;font-size:.95em;direction:ltr;display:inline-block;font-weight:700}
+.mock-window{background:#fff;border-radius:16px;border:3px solid var(--line);box-shadow:var(--shadow-lg);overflow:hidden;margin:20px 0}
+.mock-titlebar{background:#f1f5f9;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:2px solid var(--line);direction:ltr}
+.mock-dot{width:12px;height:12px;border-radius:50%}
+.mock-dot.r{background:#ef4444}.mock-dot.y{background:#f59e0b}.mock-dot.g{background:#10b981}
+.mock-url{margin-inline-start:14px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:4px 12px;font-size:13px;color:var(--muted);font-family:'Courier New',monospace}
+.mock-term{background:#0b1220;color:#cbd5e1;padding:18px 22px;font-family:'Courier New',monospace;font-size:15.5px;line-height:1.9;direction:ltr;text-align:left;overflow-x:auto}
+.mock-term .p1{color:#67e8f9}
+.mock-term .ok{color:#86efac}
+.mock-term .err{color:#fca5a5}
+.mock-term .cmt{color:#94a3b8}
+.mock-term .dim{color:#64748b}
+.term-tabbar{background:#181818;padding:0 10px;display:flex;align-items:center;gap:0;border-bottom:1px solid #2d2d2d;direction:ltr;height:38px}
+.term-tabbar .ti{color:#8a8a8a;font-size:15px;padding:0 7px}
+.term-tabbar .tt{display:flex;align-items:center;gap:8px;background:#1e1e1e;color:#e8eaed;font-size:12.5px;font-family:'Courier New',monospace;padding:8px 12px;border-top:2px solid #67e8f9;height:100%}
+.term-tabbar .tt .x{color:#8a8a8a;font-size:13px}
+.term-tabbar .sp{flex:1}
+.term-tabbar .pl{color:#8a8a8a;font-size:17px;padding:0 10px}
+.taviv{background:var(--cream-50);padding:30px 24px;font-family:'Heebo',sans-serif}
+.taviv-head{text-align:center;padding:8px 0 22px}
+.taviv-head .orn{color:var(--gold-500);font-size:16px;letter-spacing:5px}
+.taviv-head h4{font-weight:900;font-size:clamp(26px,4vw,38px);color:var(--navy-900);margin:6px 0}
+.taviv-head .sub{color:var(--ink-soft);font-size:14.5px}
+.taviv-head .period{display:inline-block;margin-top:10px;padding:6px 18px;border:1px solid var(--gold-500);border-radius:999px;background:var(--gold-100);color:var(--navy-800);font-weight:700;font-size:13px}
+.taviv-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+@media(max-width:680px){.taviv-cards{grid-template-columns:1fr}}
+.taviv-card{border-radius:14px;padding:16px 18px;color:#fff}
+.taviv-card.c1{background:linear-gradient(160deg,var(--navy-950),var(--navy-800))}
+.taviv-card.c2{background:linear-gradient(160deg,#2b2015,#4a341c)}
+.taviv-card.c3{background:linear-gradient(160deg,#10261d,#1c3f2f)}
+.taviv-card .l{font-size:12px;color:var(--gold-400);font-weight:700;margin-bottom:6px}
+.taviv-card .v{font-size:22px;font-weight:900;font-family:Georgia,serif}
+.taviv-bar-wrap{height:11px;background:#ece3cf;border-radius:999px;overflow:hidden;margin:6px 0 18px}
+.taviv-bar{height:100%;background:linear-gradient(90deg,var(--gold-600),var(--gold-400));border-radius:999px}
+.taviv-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;font-size:14px}
+.taviv-table th{background:#fff;color:var(--muted);text-align:right;padding:8px 10px;font-size:12px;border-bottom:2px solid var(--navy-900)}
+.taviv-table td{padding:9px 10px;border-bottom:1px solid #ece3cf}
+.taviv-pill{background:var(--gold-100);color:var(--gold-600);border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:700}
+.taviv-form{display:flex;gap:8px;flex-wrap:wrap;background:#fff;border:1px solid #ece3cf;border-radius:12px;padding:12px;margin-bottom:14px}
+.taviv-form .fld{flex:1;min-width:130px;padding:9px 12px;border:1px solid #ccc;border-radius:8px;font-size:13.5px;color:#999;background:#fafafa}
+.taviv-form .go{padding:9px 18px;border:none;border-radius:8px;background:var(--navy-900);color:#fff;font-size:13.5px;font-weight:700}
+.gh-mock{background:#0d1117;border-radius:16px;border:1px solid #30363d;padding:20px 24px;color:#c9d1d9;font-family:'Heebo',sans-serif;direction:ltr;text-align:left}
+.gh-mock .row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #21262d;font-size:14.5px}
+.gh-mock .row:last-child{border-bottom:none}
+.gh-mock .icon{width:20px;text-align:center}
+.gh-mock .btn-green{display:inline-block;background:#238636;color:#fff;font-weight:700;font-size:13px;padding:6px 14px;border-radius:8px}
+.gh-mock .btn-gray{display:inline-block;background:#21262d;border:1px solid #30363d;color:#c9d1d9;font-weight:700;font-size:13px;padding:6px 14px;border-radius:8px}
+.gh-mock input[type=text]{background:#0d1117;border:1px solid #30363d;border-radius:8px;color:#c9d1d9;padding:5px 10px;font-size:13px}
+.render-mock{background:#0b0c10;border-radius:16px;border:1px solid #26282e;padding:20px;color:#e6edf3;font-family:'Heebo',sans-serif;direction:ltr;text-align:left}
+.render-mock .status{display:inline-flex;align-items:center;gap:6px;background:#0f2e1c;color:#4ade80;border:1px solid #16532c;border-radius:8px;padding:4px 12px;font-size:12.5px;font-weight:700}
+.gcs-mock{background:#202124;border-radius:16px;border:1px solid #3c4043;padding:0;color:#e8eaed;font-family:'Heebo',sans-serif;direction:ltr;text-align:left;overflow:hidden}
+.gcs-topbar{background:#292a2d;padding:10px 16px;font-size:13px;color:#9aa0a6;border-bottom:1px solid #3c4043}
+.gcs-body{padding:16px 20px;font-family:'Courier New',monospace;font-size:15px;line-height:1.85}
+.gcs-btn{display:inline-flex;align-items:center;gap:6px;background:#8ab4f8;color:#202124;font-weight:800;font-size:13px;padding:6px 14px;border-radius:8px;margin-inline-start:8px}
+.neon-mock{background:#0c0d10;border-radius:16px;border:1px solid #2a2d35;padding:20px;color:#e6edf3;font-family:'Heebo',sans-serif;direction:ltr;text-align:left}
+.neon-mock .nbtn{display:inline-block;background:#00e599;color:#0c0d10;font-weight:800;font-size:13px;padding:7px 16px;border-radius:8px}
+.neon-mock .cstr{background:#15171c;border:1px solid #2a2d35;border-radius:10px;padding:10px 14px;font-family:'Courier New',monospace;font-size:13px;color:#9fe8cf;margin:10px 0;overflow-x:auto;white-space:nowrap}
+.persist-sim{background:#0f172a;border-radius:24px;padding:22px;margin:22px 0;color:#e2e8f0}
+.persist-sim .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:720px){.persist-sim .cols{grid-template-columns:1fr}}
+.persist-panel{background:#1e293b;border:2px solid #334155;border-radius:16px;padding:16px}
+.persist-panel h5{margin:0 0 10px;font-size:16px;color:#fff}
+.persist-panel .list{min-height:110px;background:#0b1220;border-radius:10px;padding:10px 12px;font-size:14.5px;margin-bottom:12px}
+.persist-panel .list .row{padding:6px 0;border-bottom:1px dashed #334155}
+.persist-panel .list .row:last-child{border-bottom:none}
+.persist-panel .empty{color:#64748b;font-style:italic;font-size:14px}
+.persist-panel button{font-family:inherit;font-weight:800;font-size:13.5px;border:none;cursor:pointer;padding:9px 14px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;margin-inline-end:6px}
+.persist-panel button.danger{background:#7f1d1d;color:#fecaca}
+.persist-log{margin-top:14px;background:#020617;border-radius:12px;padding:12px 14px;font-family:'Courier New',monospace;font-size:13px;direction:ltr;text-align:left;height:90px;overflow-y:auto;color:#94a3b8}
+.envbox{background:#0b1220;border:3px dashed #475569;border-radius:14px;padding:18px 22px;margin:18px 0;direction:ltr;text-align:left;font-family:'Courier New',monospace;color:#e2e8f0;font-size:17px;overflow-x:auto}
+.envbox .k{color:#67e8f9}
+.envbox .v{color:#86efac}
+footer{background:#0f172a;color:#cbd5e1;padding:46px 22px;text-align:center;margin-top:40px}
+footer .big{font-weight:800;color:#fff;font-size:19px;margin-bottom:8px}
+footer .small{font-size:14px;color:#64748b;margin-top:14px}
+body.pre-start .topnav,
+body.pre-start .progress,
+body.pre-start .lesson-prog{display:none}
+.yevgeni{display:none}
+body.lesson-started .yevgeni{display:flex}
+.kn{background:#000;color:#fff;font-family:'Heebo',system-ui,sans-serif;overflow:hidden}
+.kn-slide{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;position:relative}
+.kn-slide.short{min-height:78vh}
+.kn-eyebrow{font-size:clamp(14px,2vw,19px);font-weight:800;letter-spacing:4px;color:#8b93a7;margin-bottom:20px}
+.kn-title{font-size:clamp(40px,9vw,108px);font-weight:900;line-height:1.03;letter-spacing:-1.5px}
+.kn-title .g{background:linear-gradient(110deg,#5eead4,#818cf8 55%,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kn-sub{font-size:clamp(20px,3.4vw,38px);font-weight:600;color:#cbd5e1;margin-top:26px;max-width:980px;line-height:1.4}
+.kn-small{font-size:clamp(15px,2vw,21px);color:#8b93a7;margin-top:22px;max-width:760px;line-height:1.6}
+.kn-scroll{position:absolute;bottom:28px;left:50%;color:#5b6479;font-size:14px;font-weight:700;animation:knbob 1.8s infinite;transform:translateX(-50%)}
+@keyframes knbob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,9px)}}
+.kn-feats{display:flex;flex-direction:column;gap:18px;margin-top:36px}
+.kn-feat{display:flex;gap:18px;align-items:center;justify-content:center;font-size:clamp(19px,3.4vw,36px);font-weight:800}
+.kn-feat .e{font-size:1.25em}
+.kn-yev{width:clamp(230px,44vw,420px);height:auto;filter:drop-shadow(0 24px 60px rgba(129,140,248,.5))}
+.kn-cta{margin-top:38px}
+.kn-cta button{font-family:inherit;font-weight:900;font-size:clamp(18px,2.4vw,25px);padding:18px 44px;border:none;border-radius:999px;cursor:pointer;background:linear-gradient(110deg,#5eead4,#818cf8);color:#0b0b0c;box-shadow:0 16px 44px rgba(129,140,248,.5);transition:.18s}
+.kn-cta button:hover{transform:translateY(-3px) scale(1.02)}
+.kn-skip{position:fixed;top:14px;left:18px;z-index:1300;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:9px 18px;font-family:inherit;font-weight:800;font-size:13px;cursor:pointer;backdrop-filter:blur(6px)}
+body:not(.pre-start) .kn-skip{display:none}
+.kn-pop{opacity:0;transform:scale(.55) translateY(24px);transition:opacity .8s ease, transform .9s cubic-bezier(.2,1.35,.3,1)}
+.kn-pop.show{opacity:1;transform:none}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease, transform .7s ease}
+.reveal.show{opacity:1;transform:none}
+.stagger>*{opacity:0;transform:translateY(24px);transition:opacity .55s ease, transform .55s ease}
+.stagger.show>*{opacity:1;transform:none}
+.stagger.show>*:nth-child(1){transition-delay:.04s}
+.stagger.show>*:nth-child(2){transition-delay:.18s}
+.stagger.show>*:nth-child(3){transition-delay:.32s}
+.stagger.show>*:nth-child(4){transition-delay:.46s}
+.stagger.show>*:nth-child(5){transition-delay:.60s}
+.stagger.show>*:nth-child(6){transition-delay:.74s}
+.stagger.show>*:nth-child(7){transition-delay:.88s}
+@media(prefers-reduced-motion:reduce){.reveal,.stagger>*{opacity:1!important;transform:none!important}}
+/* ===== תוספות לגרסת עקב-בצד-אגודל ===== */
+.pipe{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 8px}
+.pipe .pst{flex:1;min-width:104px;text-align:center;background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 6px 8px;font-size:13px;font-weight:800;color:var(--muted);line-height:1.35}
+.pipe .pst .n{display:block;font-size:19px;margin-bottom:2px}
+.pipe .pst.done{border-color:var(--green);color:#047857;background:#ecfdf5}
+.pipe .pst.on{border-color:var(--primary);color:var(--primary-dark);background:var(--primary-light);box-shadow:var(--shadow);transform:scale(1.04)}
+.pipe-cap{font-size:14px;color:var(--muted);font-weight:700;margin-bottom:14px}
+.checkpoint{background:#ecfdf5;border:3px solid var(--green);border-radius:18px;padding:18px 22px;margin:18px 0}
+.checkpoint .hd{font-weight:900;color:#065f46;font-size:19.5px;margin-bottom:6px}
+.checkpoint p{margin:8px 0;font-size:18px}
+.meaning{background:linear-gradient(160deg,#eef2ff,#fff);border:3px solid var(--primary);border-radius:18px;padding:18px 22px;margin:18px 0}
+.meaning .hd{font-weight:900;color:var(--primary-dark);font-size:19.5px;margin-bottom:6px}
+.meaning p{margin:9px 0;font-size:18.5px}
+.fixit{background:#fffbeb;border:3px solid var(--amber);border-radius:20px;padding:20px 24px;margin:22px 0}
+.fixit .hd{font-weight:900;color:#92400e;font-size:21px;margin-bottom:4px}
+.fixit .sub{color:#a16207;font-size:15.5px;font-weight:600;margin-bottom:8px}
+.fixit .tbl th{background:var(--amber);color:#3b2300}
+.fixit .tbl tr:hover td{background:#fffbeb}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:18px 0}
+.legend .lg{display:flex;gap:10px;align-items:flex-start;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15.5px;line-height:1.5}
+.legend .lg .sq{flex-shrink:0;width:26px;height:26px;border-radius:8px;margin-top:2px}
+.stephead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 6px}
+.stephead .goal{background:var(--primary);color:#fff;font-weight:900;font-size:13.5px;padding:4px 13px;border-radius:999px}
+</style>
+</head>
+<body class="pre-start">
+<button class="kn-skip" onclick="startLesson()">דלגו לשיעור ←</button>
+<div class="kn" id="intro">
+  <section class="kn-slide">
+    <div class="kn-eyebrow reveal">קורס BI וארכיטקטורת נתונים · מאת ד״ר שי צבאן</div>
+    <h1 class="kn-title reveal">מהמסך שלכם.<br><span class="g">לענן. באמת.</span></h1>
+    <p class="kn-sub reveal">הרצאה 13 — בונים ומפרסמים מערכת אמיתית, עקב בצד אגודל, בלי להתקין דבר על המחשב.</p>
+    <p class="kn-small reveal">מאת <b>ד״ר שי צבאן</b> · 6 ביולי 2026</p>
+    <div class="kn-scroll">גללו למטה ↓</div>
+  </section>
+  <section class="kn-slide">
+    <div class="kn-eyebrow reveal">גרסה מוקשחת ומפורטת</div>
+    <h2 class="kn-title reveal">מ-<span class="g">אפס</span> ידע.<br>צעד. אחרי. צעד.</h2>
+    <p class="kn-sub reveal">כל פקודה בהרצאה הזו הורצה ונבדקה מראש, מול שרת ומסד נתונים אמיתיים. בכל שלב תדעו: מה עושים, מה אמורים לראות, מה זה אומר — ומה עושים אם זה לא מה שרואים.</p>
+  </section>
+  <section class="kn-slide short">
+    <div class="kn-eyebrow reveal">איך עובדים היום</div>
+    <div class="kn-feats stagger">
+      <div class="kn-feat"><span class="e">☁️</span><span>הכל בדפדפן — Windows או Mac, אותו דבר בדיוק</span></div>
+      <div class="kn-feat"><span class="e">🚫💻</span><span>אפס התקנות על המחשב שלכם</span></div>
+      <div class="kn-feat"><span class="e">📋</span><span>כל קטע קוד = קובץ שלם להעתקה. בלי "להדביק באמצע"</span></div>
+      <div class="kn-feat"><span class="e">✅</span><span>נקודת ביקורת אחרי כל שלב: יודעים שהצלחתם לפני שממשיכים</span></div>
+      <div class="kn-feat"><span class="e">🛟</span><span>לכל שלב — טבלת "אם משהו השתבש" עם הפתרון</span></div>
+    </div>
+    <div class="kn-scroll">גללו ↓</div>
+  </section>
+  <section class="kn-slide">
+    <svg class="kn-yev kn-pop" viewBox="0 0 100 100"><use href="#yevFace"/></svg>
+    <h2 class="kn-title reveal" style="margin-top:18px">יבגני <span class="g">חוזר.</span></h2>
+    <p class="kn-sub reveal">והפעם עם מפת מסלול של 6 תחנות, הסבר לכל מסך שתראו, ואפס הנחות על ידע קודם. שום דבר לא "מובן מאליו".</p>
+    <div class="kn-cta reveal"><button onclick="startLesson()">בואו נתחיל, לאט ובבטחה ←</button></div>
+  </section>
+</div>
+<div class="progress"><span id="bar"></span></div>
+<div class="lesson-prog" id="lessonProg">בלוק 1 / 9 · 0%</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="yevFace" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#eef2ff"/>
+  <path d="M20 98 Q50 68 80 98 Z" fill="#14b8a6"/>
+  <path d="M30 98 L34 82 L40 98 Z" fill="#fff"/>
+  <circle cx="24" cy="48" r="5" fill="#f3c9a0"/><circle cx="76" cy="48" r="5" fill="#f3c9a0"/>
+  <circle cx="50" cy="47" r="27" fill="#f3c9a0"/>
+  <path d="M23 42 Q24 17 50 17 Q76 17 77 42 Q70 29 50 29 Q30 29 23 42 Z" fill="#4b3a2f"/>
+  <path d="M21 47 Q21 23 50 23 Q79 23 79 47" fill="none" stroke="#0f172a" stroke-width="3.2"/>
+  <rect x="16" y="45" width="8" height="13" rx="3.5" fill="#0f172a"/>
+  <circle cx="39" cy="47" r="9.5" fill="#fff" stroke="#0f172a" stroke-width="2.6"/>
+  <circle cx="61" cy="47" r="9.5" fill="#fff" stroke="#0f172a" stroke-width="2.6"/>
+  <line x1="48.5" y1="47" x2="51.5" y2="47" stroke="#0f172a" stroke-width="2.6"/>
+  <circle cx="39" cy="47" r="3.1" fill="#0f172a"/><circle cx="61" cy="47" r="3.1" fill="#0f172a"/>
+  <path d="M40 61 Q50 69 60 61" fill="none" stroke="#a0522d" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M20 58 Q20 70 34 70" fill="none" stroke="#0f172a" stroke-width="2.6"/>
+  <circle cx="35" cy="70" r="3.4" fill="#14b8a6"/>
+</symbol></svg>
+<div class="yevgeni" id="yevgeni">
+  <svg class="yev-avatar" id="yevAvatar" viewBox="0 0 100 100"><use href="#yevFace"/></svg>
+  <div class="yev-bubble">
+    <div class="yev-head"><span>יבגני · העוזר שלכם 🎓 <span class="yev-newbadge">💡 טיפ חדש!</span></span><button onclick="yevMin()" title="מזער">–</button></div>
+    <div class="yev-tip" id="yevTip">שלום, שוב אני! הפעם כל פקודה נבדקה מראש, וכל שלב מסתיים בנקודת ביקורת. אם אתם רואים בדיוק את מה שכתוב ב"מה אמורים לראות" — אתם על המסלול. אפשר לגרור אותי לכל מקום נוח.</div>
+  </div>
+  <div class="yev-reopen" onclick="yevReopen()" title="פתח את יבגני">💬</div>
+</div>
+<nav class="topnav">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="badge-bi">BI</div>
+      <div>
+        <div class="t">קורס BI וארכיטקטורת נתונים</div>
+        <div class="s">הרצאה 13 · 6.7.2026 · ד״ר שי צבאן</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a class="nav-block" href="#block1">1 · המסלול</a>
+      <a class="nav-block" href="#block2">2 · מושגים</a>
+      <a class="nav-block" href="#block3">3 · Cloud Shell</a>
+      <a class="nav-block" href="#block4">4 · שרת ראשון</a>
+      <a class="nav-block" href="#block5">5 · מסד נתונים</a>
+      <a class="nav-block" href="#block6">6 · GitHub</a>
+      <a class="nav-block" href="#block7">7 · Render</a>
+      <a class="nav-block" href="#block8">8 · סיור מסכם</a>
+      <a class="nav-block" href="#block9">9 · סיכום</a>
+    </div>
+  </div>
+</nav>
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-badge">📚 הרצאה 13 · 6.7.2026 · גרסת עקב-בצד-אגודל</span>
+      <h1>מהמסך שלכם <span class="grad">אל הענן</span></h1>
+      <p class="hero-sub">מסלול אחד רציף, בשש תחנות: מבינים מה זה שרת ← מקבלים מחשב בענן ← כותבים שרת אמיתי ← מחברים מסד נתונים ← שולחים ל-GitHub ← מפרסמים ב-Render. <b>כל פקודה נבדקה מראש, כל קטע קוד הוא קובץ שלם להעתקה, ולכל שלב יש "מה אמורים לראות" ו"מה אם השתבש".</b></p>
+      <div class="meta-chips">
+        <span class="chip">👤 מאת ד״ר שי צבאן</span>
+        <span class="chip">📅 6.7.2026</span>
+        <span class="chip">⏱ כ-4.5 שעות (מפורט מאוד)</span>
+        <span class="chip">☁️ 100% בענן — אפס התקנות</span>
+        <span class="chip">✅ כל פקודה נבדקה מראש</span>
+        <span class="chip">🍼 מניח אפס ידע קודם</span>
+      </div>
+      <div class="cta">
+        <a class="btn btn-primary" href="#block1">בואו נתחיל ←</a>
+        <a class="btn btn-ghost" href="#block4">קפיצה ל-Hands-on</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="art-tile"><span style="font-size:44px">🌐</span><span class="l">Node.js + Express</span></div>
+      <div class="art-tile"><span style="font-size:44px">☁️</span><span class="l">Cloud Shell</span></div>
+      <div class="art-tile"><span style="font-size:44px">🐘</span><span class="l">Neon Postgres</span></div>
+      <div class="art-tile"><span style="font-size:44px">🐙</span><span class="l">GitHub</span></div>
+      <div class="art-tile"><span style="font-size:44px">☁️</span><span class="l">Render</span></div>
+      <div class="art-tile"><span style="font-size:44px">💰</span><span class="l">תקציבי אביב</span></div>
+    </div>
+  </div>
+</header>
+<main>
+<section class="section" id="block1">
+  <span class="block-tag">בלוק 1 · המסלול והפרויקט · 15 דקות</span>
+  <h2>לאן הולכים, ואיך ההרצאה הזו בנויה</h2>
+  <p class="section-sub">לפני הכל: מה בונים, באיזה סדר, ולמה דווקא בסדר הזה. אחרי הבלוק הזה תמיד תדעו איפה אתם על המפה.</p>
+  <div class="yev-callout reveal">
+    <svg class="face" viewBox="0 0 100 100"><use href="#yevFace"/></svg>
+    <div class="tx"><b>היי, שוב אני יבגני! 👋</b> ההרצאה הזו בנויה כמו מסלול טיול מסומן: <b>שש תחנות, בסדר קבוע, שאסור להפוך</b>. בכל תחנה עושים דבר אחד, בודקים שהוא הצליח, ורק אז ממשיכים. אם משהו לא עובד — לא ממשיכים "בתקווה שיסתדר", אלא עוצרים בטבלת "אם משהו השתבש" של אותו שלב. ואם משהו לא ברור — זו אשמתי, לא שלכם.</div>
+  </div>
+  <div class="deep-card">
+    <h3>💰 מה בונים? "תקציבי אביב"</h3>
+    <p class="lead">אפליקציית web לניהול תקציב אישי: מגדירים תקציב כולל (1,650$ לתקופה), רושמים כל הוצאה — והמערכת מחשבת לבד כמה נוצל וכמה נשאר. בסוף ההרצאה היא תרוץ <b>בכתובת אינטרנט אמיתית</b>, זמינה מכל מחשב וטלפון בעולם, והנתונים שלה יישמרו לתמיד במסד נתונים בענן.</p>
+    <p>זו דוגמה מושלמת ללמידה: <b>קטנה מספיק</b> להבין כל שורה בה, אבל <b>אמיתית מספיק</b> לעבור דרך כל שרשרת הפיתוח — קוד, מסד נתונים, בקרת גרסאות, ופרסום לעולם.</p>
+    <h4>🖥️ ככה זה ייראה בסוף — אתר חי, בכתובת אמיתית</h4>
+    <div class="mock-window">
+      <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">🔒 takziv-aviv.onrender.com</span></div>
+      <div class="taviv">
+        <div class="taviv-head">
+          <div class="orn">✦</div>
+          <h4>תקציבי אביב</h4>
+          <div class="sub">מערכת ניהול תקציב אישית · הנתונים נשמרים ב-Postgres בענן</div>
+          <div class="period">3.7.2026 – 30.9.2026</div>
+        </div>
+        <div class="taviv-cards">
+          <div class="taviv-card c1"><div class="l">היקף תקציב כולל</div><div class="v">$1,650.00</div></div>
+          <div class="taviv-card c2"><div class="l">ניצול בפועל</div><div class="v">$165.00</div></div>
+          <div class="taviv-card c3"><div class="l">יתרה זמינה</div><div class="v">$1,485.00</div></div>
+        </div>
+        <div class="taviv-bar-wrap"><div class="taviv-bar" style="width:10%"></div></div>
+        <div class="taviv-form"><span class="fld">תיאור ההוצאה (למשל: רישיון תוכנה)</span><span class="fld">סכום בדולרים</span><span class="go">רישום ההוצאה</span></div>
+        <table class="taviv-table">
+          <tr><th>תאריך</th><th>תיאור</th><th>סכום</th><th>מחיקה</th></tr>
+          <tr><td>6.7.2026</td><td>רישיון תוכנה שנתי</td><td>$120.00</td><td><span class="taviv-pill">מחיקה</span></td></tr>
+          <tr><td>6.7.2026</td><td>רכישת שרת ענן חודשי</td><td>$45.00</td><td><span class="taviv-pill">מחיקה</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="soft-note">📍 <b>וזה לא צילום מסך "לקישוט":</b> את הדף הזה בדיוק, על הטופס והטבלה שבו, תבנו במו ידיכם בתחנות 3–4. כל הקוד שמאחוריו הורץ ונבדק מראש, מול מסד נתונים אמיתי, לפני שנכנס להרצאה.</div>
+  </div>
+  <div class="deep-card">
+    <h3>🗺️ מפת המסלול: שש תחנות, בסדר הזה בלבד</h3>
+    <p class="lead">כל תחנה קיימת כי התחנה שאחריה זקוקה לה. זה לב ההרצאה — אם תבינו את הרצף הזה, כל השאר הוא רק פרטים:</p>
+    <div class="flow-steps stagger">
+      <div class="flow-step">
+        <div class="num">1</div>
+        <div><div class="fs-title">מבינים מה זה שרת (בלוק 2)</div><div class="fs-sub">בלי לכתוב שום קוד עדיין</div>
+        <div class="fs-details"><b>למה קודם?</b> כי אי אפשר לבנות משהו שלא מבינים מה הוא. נלמד דרך אנלוגיית מסעדה אחת פשוטה, שתלווה אותנו עד הסוף.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">2</div>
+        <div><div class="fs-title">מקבלים מחשב עבודה בענן (בלוק 3)</div><div class="fs-sub">Google Cloud Shell — בחינם, בדפדפן</div>
+        <div class="fs-details"><b>למה עכשיו?</b> כי כדי לכתוב ולהריץ קוד צריך "מקום עבודה". במקום להתקין כלים על 40 מחשבים שונים בכיתה — כולנו נקבל אותו מחשב ענן בדיוק.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">3</div>
+        <div><div class="fs-title">כותבים ומריצים שרת ראשון (בלוק 4)</div><div class="fs-sub">קובץ server.js אמיתי, שעונה לדפדפן</div>
+        <div class="fs-details"><b>למה לפני מסד הנתונים?</b> כי שרת יכול לחיות בלי מסד נתונים (עם נתונים זמניים), אבל מסד נתונים לא שווה כלום בלי שרת שידבר איתו. בונים קודם את מה שעומד לבד.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">4</div>
+        <div><div class="fs-title">מחברים מסד נתונים קבוע (בלוק 5)</div><div class="fs-sub">Neon Postgres — כדי שהנתונים ישרדו</div>
+        <div class="fs-details"><b>למה עכשיו?</b> כי בשלב 3 נגלה בעיה אמיתית: השרת שלנו "שוכח" הכל. נבין למה זה קורה (ולמה גם שמירה לקובץ לא תציל אותנו בענן), ונפתור את זה כמו מקצוענים.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">5</div>
+        <div><div class="fs-title">שולחים את הקוד ל-GitHub (בלוק 6)</div><div class="fs-sub">הספרייה העולמית של קוד</div>
+        <div class="fs-details"><b>למה צריך את זה בכלל?</b> כי Render — השירות שיריץ את האתר שלנו 24/7 — לא רואה את המחשב הפרטי שלנו. הוא יודע לקחת קוד ממקום אחד: GitHub. זו תחנת מעבר הכרחית.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">6</div>
+        <div><div class="fs-title">מפרסמים לעולם עם Render (בלוק 7)</div><div class="fs-sub">מקוד בתיקייה — לאתר חי בכתובת ציבורית</div>
+        <div class="fs-details"><b>הגמר:</b> Render לוקח את הקוד מ-GitHub, מריץ אותו על שרת שדולק תמיד, ומחבר אותו ל-Neon. מהרגע הזה — כל אחד בעולם יכול לפתוח את האתר שלכם.</div></div>
+      </div>
+    </div>
+    <div class="why"><b>ואיך נדע שכל תחנה הצליחה?</b> בסוף כל שלב מחכה "נקודת ביקורת" ירוקה — בדיקה של 10 שניות שמאשרת שאפשר להמשיך. אם נקודת הביקורת לא עוברת, טבלת "אם משהו השתבש" הצהובה של אותו שלב מכסה את התקלות הנפוצות ופתרונן. <b>אף אחד לא ממשיך לתחנה הבאה עם תקלה פתוחה.</b></div>
+  </div>
+  <div class="deep-card">
+    <h3>🧭 מקרא: חמשת סוגי הקופסאות שילוו אתכם</h3>
+    <p>כדי שתמיד תדעו "מה אני אמור לעשות עם הקטע הזה", כל ההרצאה משתמשת בחמש קופסאות קבועות:</p>
+    <div class="legend">
+      <div class="lg"><span class="sq" style="background:#0f172a"></span><span><b>קופסת קוד שחורה</b> — תוכן להעתקה. תמיד קובץ שלם או רצף פקודות שלם. לוחצים "העתק", מדביקים כמו שהוא. אף פעם לא "להוסיף באמצע".</span></div>
+      <div class="lg"><span class="sq" style="background:#e2e8f0;border:2px solid #94a3b8"></span><span><b>חלון דמה (מסגרת חלון)</b> — "מה אמורים לראות" על המסך אחרי הפעולה. משווים אליו כדי לוודא שהכל תקין.</span></div>
+      <div class="lg"><span class="sq" style="background:#eef2ff;border:2px solid #4f46e5"></span><span><b>קופסת "מה זה אומר" כחולה</b> — עצירה קצרה שמסבירה מה בעצם קרה עכשיו ולמה זה חשוב לפאזל.</span></div>
+      <div class="lg"><span class="sq" style="background:#ecfdf5;border:2px solid #10b981"></span><span><b>נקודת ביקורת ירוקה</b> — הבדיקה שמאשרת שהשלב הצליח. עוברים אותה ← ממשיכים בראש שקט.</span></div>
+      <div class="lg"><span class="sq" style="background:#fffbeb;border:2px solid #f59e0b"></span><span><b>"אם משהו השתבש" צהובה</b> — טבלת תקלות נפוצות: מה רואים ← מה הסיבה ← מה הפתרון.</span></div>
+    </div>
+    <div class="teacher-note"><span class="tn-label">👩‍🏫 הערת אתי</span> חשוב לפני שממשיכים: מכאן והלאה, <u>כל</u> מה שנעשה — כתיבת קוד, הרצתו, שמירת קבצים, פרסום לאינטרנט — יקרה <b>בתוך הדפדפן, בענן</b>. לא תתקינו Node.js, לא Git, ולא שום תוכנה אחרת על המחשב. לכן גם <b>אין שום הבדל בין Windows ל-Mac</b> — כשהכל קורה בדפדפן, סוג המחשב פשוט לא משנה. ההבדל היחיד: במקומות שבהם על Windows לוחצים <span class="kbd">Ctrl</span>, על Mac לוחצים <span class="kbd">Cmd ⌘</span> — ונציין את זה בכל פעם שזה רלוונטי.</div>
+  </div>
+  <h3 style="font-size:clamp(24px,3vw,34px);font-weight:900;margin:42px 0 4px">🃏 תשע התחנות של היום, בקלפים</h3>
+  <p class="section-sub">לחצו על כל כרטיס כדי להפוך אותו ולגלות מה מחכה בו. 👆</p>
+  <div class="flip-grid cols6 stagger">
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">1</div><div class="ic">🗺️</div><div class="ttl">המסלול<span class="en">אתם כאן</span></div><div class="hint">↻ הקליקו</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">🗺️ המפה והמקרא</div><p>מה בונים, שש התחנות, ואיך קוראים את הקופסאות. הבסיס לכל השאר.</p></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">2</div><div class="ic">🍽️</div><div class="ttl">מושגים<span class="en">שרת, API, SQL</span></div><div class="hint">↻ הקליקו</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">🍽️ המסעדה</div><p>מה זה שרת, למה מסד נתונים לבד לא מספיק, ומה זו נקודת קצה — בלי שורת קוד אחת.</p></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">3</div><div class="ic">☁️</div><div class="ttl">Cloud Shell<span class="en">מחשב בענן</span></div><div class="hint">↻ הקליקו</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">☁️ סביבת העבודה</div><p>פותחים מחשב לינוקס אמיתי בתוך הדפדפן, ובודקים שכל הכלים כבר מותקנים.</p></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">4</div><div class="ic">⚙️</div><div class="ttl">שרת ראשון<span class="en">Hands-on</span></div><div class="hint">↻ הקליקו</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">⚙️ הקוד הראשון</div><p>כותבים server.js, מריצים, ורואים אותו עונה לדפדפן — ואז מבינים לעומק מה בדיוק קרה שם.</p></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">5</div><div class="ic">🐘</div><div class="ttl">מסד נתונים<span class="en">Neon Postgres</span></div><div class="hint">↻ הקליקו</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">🐘 הזיכרון הקבוע</div><p>הבאג האמיתי של "ההוצאה שנעלמה", ולמה מסד חיצוני פותר אותו לתמיד. כולל האפליקציה המלאה.</p></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">6</div><div class="ic">🐙</div><div class="ttl">GitHub<span class="en">שולחים את הקוד</span></div><div class="hint">↻ הקליקו</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">🐙 תחנת המעבר</div><p>יוצרים ריפו, מפיקים מפתח גישה (Token), ודוחפים את הקוד — צעד-צעד, כולל כל הפתרונות לתקלות.</p></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">7</div><div class="ic">☁️</div><div class="ttl">Render<span class="en">האתר עולה לאוויר</span></div><div class="hint">↻ הקליקו</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">☁️ הפרסום</div><p>מחברים את GitHub ל-Render, מגדירים משתנה סביבה, ומקבלים כתובת ציבורית חיה. כולל מבחן ההישרדות של הנתונים.</p></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">8</div><div class="ic">🖥️</div><div class="ttl">סיור מסכם<span class="en">End-to-End</span></div><div class="hint">↻ הקליקו</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">🖥️ הכל מחובר</div><p>עוברים על כל המערכות שפתחנו, ורואים איך בקשה אחת של גולש עוברת דרך כולן.</p></div>
+    </div></div>
+    <div class="flip" onclick="flipCard(this)"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="flip-num">9</div><div class="ic">🎯</div><div class="ttl">סיכום<span class="en">Wrap-up</span></div><div class="hint">↻ הקליקו</div></div>
+      <div class="flip-face flip-back"><div class="bk-ttl">🎯 עכשיו אתם</div><p>מילון מונחים מלא, אתגר לבנייה עצמאית, ושאלות ראיון אמיתיות.</p></div>
+    </div></div>
+  </div>
+  <div class="info term">
+    <div class="hd">🧠 מושג-על שילווה את כל ההרצאה: Full-Stack</div>
+    <p>מפתח/ת "פול-סטאק" (Full-Stack) הוא מי שנוגע בכל השכבות: מה שהמשתמש רואה (Frontend), הלוגיקה שרצה מאחורי הקלעים (Backend), המקום שבו הנתונים נשמרים (Database) — ועד הפרסום בפועל לאינטרנט (Deployment). היום תעברו את כל השכבות האלה, פעם אחת, בסדר הנכון, עם דוגמה אחת.</p>
+  </div>
+  <div class="takeaway">
+    <div class="big-emoji">🎯</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">שש תחנות בסדר קבוע: מושגים ← מחשב ענן ← שרת ← מסד נתונים ← GitHub ← Render. כל תחנה נסגרת בנקודת ביקורת, ואף אחד לא ממשיך עם תקלה פתוחה.</div>
+  </div>
+</section>
+<section class="section" id="block2">
+  <span class="block-tag">בלוק 2 · תחנה 1: מבינים מה זה שרת · 40 דקות</span>
+  <h2>מה זה בכלל "שרת"? ולמה מסד נתונים לבד לא מספיק?</h2>
+  <p class="section-sub">תחנה של הבנה בלבד — אף שורת קוד עדיין. כל מה שנלמד כאן נראה בקוד אמיתי בתחנה הבאה, כשהידיים כבר יבינו מה הן עושות.</p>
+  <div class="pipe">
+    <span class="pst on"><span class="n">🍽️</span>1 · מושגים</span>
+    <span class="pst"><span class="n">☁️</span>2 · Cloud Shell</span>
+    <span class="pst"><span class="n">⚙️</span>3 · שרת ראשון</span>
+    <span class="pst"><span class="n">🐘</span>4 · מסד נתונים</span>
+    <span class="pst"><span class="n">🐙</span>5 · GitHub</span>
+    <span class="pst"><span class="n">🚀</span>6 · Render</span>
+  </div>
+  <div class="pipe-cap">אתם בתחנה 1 מתוך 6 · עדיין לא נוגעים במקלדת — רק בונים את התמונה בראש</div>
+  <div class="deep-card">
+    <h3>🍽️ המסעדה: שלושה חדרים, שלושה תפקידים</h3>
+    <p class="lead">כל אתר אינטרנט בעולם — כולל "תקציבי אביב" — בנוי משלושה חלקים נפרדים, כמו מסעדה עם שלושה חדרים. זו האנלוגיה היחידה שתצטרכו היום, ונחזור אליה בכל תחנה:</p>
+    <div class="two-col">
+      <div class="compare-card a"><h4>🪑 חדר האוכל — מה שהמשתמש רואה</h4><p>השולחנות, התפריט, העיצוב. זה ה-<b>Frontend</b> — כל מה שרואים ולוחצים עליו בדפדפן. אצלנו: הדף עם הכרטיסים והטופס שראיתם בבלוק 1.</p></div>
+      <div class="compare-card d"><h4>🍳 המטבח — איפה שקורית העבודה</h4><p>מקבל הזמנות, מחליט מה לעשות, מחזיר תוצאה. זה ה-<b>Backend</b> — תוכנית שרצה מאחורי הקלעים, בלי שהלקוח רואה אותה. אצלנו: קובץ בשם <span class="inline-code">server.js</span>.</p></div>
+    </div>
+    <div class="compare-card c" style="margin:16px 0"><h4>🥫 המחסן — איפה שהכל נשמר</h4><p>מדפים מסודרים של מלאי, עם מנהל קפדני שיודע בדיוק מה יש ואיפה. זה ה-<b>Database (מסד הנתונים)</b> — אצלנו: PostgreSQL. שימו לב לכלל הברזל של מנהל המחסן: <b>הוא לא מדבר עם לקוחות. אף פעם.</b> הוא עונה רק למטבח, ורק בשפה המקצועית שלו — SQL.</p></div>
+    <h4>📄 רגע, מאילו קבצים מורכב "חדר האוכל"?</h4>
+    <p>כשדפדפן פותח אתר, בדרך כלל נטענים שלושה סוגי קבצים. חשוב להכיר אותם בשמם כי תפגשו אותם בכל מקום:</p>
+    <div class="two-col">
+      <div class="compare-card b"><h4>📃 HTML — "השלד"</h4><p>רק <b>התוכן והמבנה</b>: אילו כותרות, אילו כפתורים, אילו שדות. כמו תפריט שכתוב על דף לבן פשוט — רק המילים.</p></div>
+      <div class="compare-card b"><h4>🎨 CSS — "העיצוב"</h4><p>איך הדברים <b>נראים</b>: צבעים, גופנים, מרווחים. אותו תפריט, עכשיו עם גופן יוקרתי ומסגרת מוזהבת.</p></div>
+      <div class="compare-card b"><h4>⚡ JavaScript — "ההתנהגות"</h4><p>קוד שרץ <b>בתוך הדפדפן</b> ומגיב ללחיצות. כשלוחצים "רישום ההוצאה", הוא זה ש"אורז" את הפרטים ושולח אותם למטבח — כמו מלצר שרושם פתק ומעביר אותו, בלי לבשל בעצמו.</p></div>
+    </div>
+    <div class="soft-note">💡 באפליקציה שנבנה היום, שלושת אלה יגיעו יחד בקובץ אחד שהשרת מגיש — כדי שיהיה לכם קובץ אחד בלבד לנהל. באתרים גדולים הם קבצים נפרדים (<span class="inline-code">index.html</span>, <span class="inline-code">styles.css</span>, <span class="inline-code">app.js</span>) — אותו רעיון בדיוק, רק מפוצל.</div>
+    <h4>🍳 אז מה זה בדיוק "שרת" (Server)?</h4>
+    <p><b>שרת הוא תוכנית שיושבת דלוקה 24 שעות ביממה, מחכה שיגיעו אליה בקשות מהאינטרנט, ועונה עליהן.</b> זהו. זו כל ההגדרה. המטבח של המסעדה: פתוח תמיד, מחכה לפתקים, מבצע, מחזיר. אצלנו התוכנית הזו תיכתב בקובץ אחד בשם <span class="inline-code">server.js</span>.</p>
+    <div class="teacher-note"><span class="tn-label">🎩 הערת מיסטר אולאף</span> למה קוראים לקובץ <b>server.js</b>? שני חלקים: הסיומת <span class="inline-code">.js</span> היא <b>חובה</b> — היא אומרת "זהו קובץ בשפת JavaScript", כמו ש-<span class="inline-code">.jpg</span> אומר "זו תמונה". השם <span class="inline-code">server</span> שלפני הנקודה הוא רק <b>מוסכמה נוחה</b> — אפשר היה לקרוא לו גם <span class="inline-code">muffin.js</span> והכל היה עובד, כי ממילא אומרים למחשב במפורש איזה קובץ להריץ (<span class="inline-code">node server.js</span>). בוחרים שם שמסביר את התפקיד, כדי שמתכנת אחר יבין מיד.</div>
+    <h4>⚙️ ומי מריץ את הקובץ הזה? Node.js ו-Express</h4>
+    <p>JavaScript נולדה כשפה שרצה רק בתוך דפדפנים. <b>Node.js הוא תוכנה שמשחררת את השפה מהדפדפן</b> — ומאפשרת להריץ אותה כתוכנית עצמאית על כל מחשב, כולל שרת שיושב ומחכה לבקשות. ו-<b>Express</b>? זו ספריית עזר שרצה על גבי Node.js וחוסכת לנו את כל העבודה השחורה של "איך בכלל מקשיבים לבקשות מהאינטרנט".</p>
+    <div class="info term">
+      <div class="hd">🔥 האנלוגיה: אספקת גז מול מטבח מאובזר</div>
+      <p><b>Node.js</b> = חיבור הגז למטבח: הכוח שמאפשר לבשל בכלל, אבל בלי כיריים ובלי כלים. <b>Express</b> = ציוד המטבח המוכן שבנוי סביב הגז: כיריים, טיימרים, משטחים. שניהם יחד = מטבח שאפשר לעבוד בו מיד. שניהם חינמיים לגמרי, ושניהם כבר יחכו לנו מותקנים-או-מוכנים-להתקנה בתחנה הבאה.</p>
+    </div>
+    <h4 style="margin-top:28px">🚪 ולמה מסד נתונים לבד לא מספיק? (הנקודה הכי חשובה בבלוק)</h4>
+    <p>עכשיו אפשר לענות במדויק: מנהל המחסן (PostgreSQL) הוא גאון במה שהוא עושה — שמירה, חיפוש, חישוב. אבל <b>אין לו דלת לרחוב</b>: הוא לא יודע לקבל בקשות מהאינטרנט, לא מבין מה דפדפן רוצה ממנו, לא בודק אם מותר למישהו לבקש משהו. הוא מדבר רק עם מי שנכנס אליו פנימה, ורק ב-SQL.</p>
+    <p>לכן <b>חייבים מישהו באמצע</b>: תוכנית שדלתה כן פונה לרחוב, שמדברת "אינטרנט" מול הלקוחות ו-SQL מול המחסן. זו בדיוק ההגדרה של שרת — וזו הסיבה שתחנה 3 (שרת) באה לפני תחנה 4 (מסד נתונים): קודם בונים את מי שיודע לדבר עם העולם, ורק אז מחברים לו מחסן.</p>
+    <div class="info insight">
+      <div class="hd">🐘 ולמה דווקא PostgreSQL, ולא מנהל מחסן אחר?</div>
+      <p>יש הרבה מסדי נתונים בעולם, ו-PostgreSQL הוא רק אחד מהם — אבל אהוב במיוחד: <b>חינמי וקוד-פתוח</b>, <b>עוצמתי מאוד</b>, <b>עובד זהה</b> בכל מקום, ועם <b>קהילה ענקית</b> שכבר ענתה כמעט על כל שאלה. Apple, Spotify ו-Instagram משתמשות בו בקנה מידה עצום.</p>
+      <p>הוא לא היחיד: <span class="inline-code">MySQL</span> דומה ופופולרי לא פחות, <span class="inline-code">SQL Server</span> של מיקרוסופט נפוץ מאוד בארגונים ישראליים, ו-<span class="inline-code">Oracle</span> שולט בבנקים. יש גם משפחה אחרת לגמרי (NoSQL, כמו MongoDB). ההבדלים העמוקים ומתי בוחרים מה — זה התחום שד"ר קונדילה 👨‍🏫 יורד אליו לעומק בקורס. להיום מספיק לדעת: כולם "מנהלי מחסן" קפדניים שמדברים רק דרך שרת.</p>
+    </div>
+    <h4 style="margin-top:30px">🖼️ התרשים המרכזי של כל ההרצאה: מה קורה כשלוחצים על כפתור</h4>
+    <p>זהו "תרשים חמשת השלבים". תחזרו אליו בכל פעם שמשהו לא ברור — כל תחנה בהמשך היא "זום פנימה" לתוך אחד מהריבועים האלה:</p>
+    <div class="vflow-big stagger">
+      <div class="vnode c-indigo"><div class="ic">🙋</div><div class="bd"><b>1. הלקוח מזמין (חדר האוכל)</b><div class="sub">גולש לוחץ "רישום ההוצאה" בטופס שבדפדפן.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-indigo"><div class="ic">📡</div><div class="bd"><b>2. הפתק נשלח למטבח (בקשת HTTP)</b><div class="sub">ה-JavaScript שבדף אורז את הפרטים ושולח אותם דרך האינטרנט אל כתובת השרת.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-teal"><div class="ic">🍳</div><div class="bd"><b>3. המטבח מקבל את הפתק (server.js)</b><div class="sub">השרת — שדלוק ומחכה 24/7 — מזהה איזו בקשה הגיעה ומה צריך לעשות איתה.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-purple"><div class="ic">🗄️</div><div class="bd"><b>4. המטבח פונה למחסן (SQL אל Postgres)</b><div class="sub">השרת שומר או שולף נתונים מול מסד הנתונים — בשם הלקוח, ורק הוא.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode" style="border-color:var(--green);background:linear-gradient(160deg,#fff,#ecfdf5)"><div class="ic">✅</div><div class="bd"><b>5. התשובה חוזרת, והמסך מתעדכן</b><div class="sub">השרת מחזיר תשובה, וחדר האוכל מציג את היתרה החדשה — בלי לרענן את הדף.</div></div></div>
+    </div>
+    <div class="soft-note">💡 שימו לב: החץ בין 4 ל-5 עובר תמיד <b>בחזרה דרך המטבח</b>. אין ולא יהיה אף חץ ישיר בין הלקוח למחסן — זו בדיוק הסיבה שצריך שרת.</div>
+  </div>
+  <div class="deep-card">
+    <h3>🔌 איך המטבח קורא את הפתק: כתובות ופעלים (REST API)</h3>
+    <p class="lead">נשארנו עם שאלה אחת פתוחה: כשמגיע פתק למטבח, איך השרת יודע <b>מה בדיוק</b> מבקשים ממנו? התשובה: לכל פתק יש בדיוק שני פרטים.</p>
+    <h4>1️⃣ קודם הרעיון, בשפה יומיומית</h4>
+    <p>כל בקשה שמגיעה לשרת מורכבת מ: <b>(א) על מה מדובר</b> — כתובת, ו-<b>(ב) מה לעשות עם זה</b> — פעולה. בדיוק כמו פתק במסעדה: "שולחן 5" (על מה) + "תוסיף מנה" (מה לעשות). הנה שלוש בקשות אמיתיות מ"תקציבי אביב":</p>
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <tr><th>מה הלקוח רוצה (בעברית)</th><th>(א) על מה מדובר — הכתובת</th><th>(ב) מה לעשות</th></tr>
+      <tr><td>"תראה לי כמה כסף נשאר"</td><td><span class="inline-code">/api/summary</span></td><td>תן לי מידע</td></tr>
+      <tr><td>"תרשום שהוצאתי 45 דולר"</td><td><span class="inline-code">/api/expenses</span></td><td>צור משהו חדש</td></tr>
+      <tr><td>"תמחק את הוצאה מספר 3"</td><td><span class="inline-code">/api/expenses/3</span></td><td>מחק</td></tr>
+    </table>
+    </div>
+    <div class="teacher-note"><span class="tn-label">👩‍🏫 הערת אתי</span> שאלה שכולם שואלים כאן: <b>מאיפה הגיע השם <span class="inline-code">/api/expenses</span>?</b> משום מקום רשמי! זה לא תקן עולמי ולא חוק. <b>מי שכותב את האפליקציה בוחר את השמות</b> — כמו שמות לתאי דואר בבניין. אפשר היה לבחור <span class="inline-code">/money-stuff</span> והכל היה עובד. הדבר היחיד שחשוב: שהצד ששולח (הדף בדפדפן) והצד שמקבל (server.js) <b>מסכימים מראש על אותו שם בדיוק</b> — אחרת הפתק מגיע לתא דואר לא קיים, ושום דבר לא קורה.</div>
+    <h4>2️⃣ עכשיו השמות הרשמיים: Endpoint, Method, ו-REST</h4>
+    <p>לשיטה המסודרת הזו קוראים <b>REST API</b>. "(א) הכתובת" נקראת <b>נקודת קצה (Endpoint)</b>, ו"(ב) הפעולה" נקראת <b>פועל (Method)</b>. יש ארבעה פעלים עיקריים, והנה כל מה שהמערכת שלנו תדע לעשות — כל שורה בטבלה תהפוך בתחנות הבאות לכמה שורות קוד:</p>
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <tr><th>פועל (Method)</th><th>כתובת (Endpoint)</th><th>מה זה עושה אצלנו</th></tr>
+      <tr><td><span class="inline-code">GET</span></td><td><span class="inline-code">/</span></td><td>תן לי את הדף עצמו (חדר האוכל)</td></tr>
+      <tr><td><span class="inline-code">GET</span></td><td><span class="inline-code">/api/summary</span></td><td>תן לי את התקציב, הניצול והיתרה</td></tr>
+      <tr><td><span class="inline-code">GET</span></td><td><span class="inline-code">/api/expenses</span></td><td>תן לי את כל רשימת ההוצאות</td></tr>
+      <tr><td><span class="inline-code">POST</span></td><td><span class="inline-code">/api/expenses</span></td><td>צור הוצאה חדשה</td></tr>
+      <tr><td><span class="inline-code">DELETE</span></td><td><span class="inline-code">/api/expenses/:id</span></td><td>מחק הוצאה לפי המספר שלה</td></tr>
+    </table>
+    </div>
+    <p><b>כלל אצבע לזכור:</b> <span class="inline-code">GET</span> = "תן לי" (לא משנה כלום). <span class="inline-code">POST</span> = "צור חדש". <span class="inline-code">PUT</span> = "עדכן קיים". <span class="inline-code">DELETE</span> = "מחק".</p>
+    <div class="info important">
+      <div class="hd">📖 ההגדרה שצריך לזכור: מה זו "נקודת קצה" (Endpoint)?</div>
+      <p><b>נקודת קצה = כלל בודד שכתוב בקוד השרת</b>, שאומר: "אם הגיעה בקשה מהפועל הזה, לכתובת הזו — בצע את הפעולה הזו". השרת שלנו יכיל חמש נקודות קצה — בדיוק כמו חמש השורות בטבלה. אתרים גדולים מכילים מאות. זה "התפריט הפנימי" של מה שהמטבח יודע להכין.</p>
+    </div>
+    <div class="soft-note">🔭 <b>ומה עם הקוד?</b> בכוונה עוד לא ראינו שורת קוד אחת. את נקודת הקצה הראשונה שלכם תכתבו <b>בעצמכם</b> בתחנה 3 (בלוק 4), אחרי שיהיה לכם מחשב ענן ביד — ואז נפרק אותה שורה-שורה. ככה כשתקלידו אותה, כבר תדעו בדיוק מה אתם מקלידים ולמה.</div>
+  </div>
+  <div class="israel">
+    <div class="hd">🇮🇱 מה קורה בישראל?</div>
+    <p>Node.js הוא אחת הטכנולוגיות הנפוצות ביותר בהייטק הישראלי — Wix, Fiverr ו-Monday.com נשענות עליו בחלקים נרחבים מהמערכות שלהן. הסיבה: שפה אחת (JavaScript) גם ל-Frontend וגם ל-Backend מקצרת פיתוח וגיוס.</p>
+  </div>
+  <div class="quiz" data-yv="הכלל: למסד נתונים אין 'דלת לרחוב'. הוא גאון במחסן, אבל מישהו אחר חייב לעמוד בדלת ולדבר עם הלקוחות — וזה השרת.">
+    <div class="q-tag">❓ חידון · בלוק 2</div>
+    <div class="q-txt">למה, באופן עקרוני, PostgreSQL לבדו לא יכול לשמש כאתר אינטרנט שגולשים פותחים בדפדפן?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>כי PostgreSQL איטי מדי לאינטרנט.</button>
+    <button class="quiz-opt" data-c="1" data-exp="מסד נתונים יודע 'לדבר' רק SQL, ורק עם מי שמחובר אליו ישירות ובאופן מורשה. הוא לא יודע לקבל בקשות HTTP מהאינטרנט, לא מבין דפדפנים, ולא מחליט מה מותר למי. לכן חייבת להיות תוכנית באמצע — שרת (Node.js + Express אצלנו) — שמדברת 'אינטרנט' מול העולם ו-SQL מול המסד." onclick="quizAns(this)"><span class="k">ב</span>כי הוא לא יודע לקבל בקשות מהאינטרנט או לדבר בשפה שהדפדפן מבין — צריך שרת שיתווך.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>כי PostgreSQL עולה כסף ואי אפשר להשתמש בו בחינם.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>אפשר בהחלט — לא צריך שרת בכלל.</button>
+    <div class="quiz-fb"></div>
+  </div>
+  <div class="quiz" data-yv="בדיוק כמו תא דואר בבניין: השם עצמו הוא בחירה חופשית, אבל שני הצדדים חייבים להסכים עליו מראש — אחרת הפתק הולך לאיבוד.">
+    <div class="q-tag">❓ חידון נוסף · בלוק 2</div>
+    <div class="q-txt">מי בעצם "החליט" שהכתובת לרישום הוצאה חדשה תיקרא <span class="inline-code">/api/expenses</span> ולא, למשל, <span class="inline-code">/api/money</span>?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>זה תקן עולמי קבוע שכל אתר חייב לפי חוק.</button>
+    <button class="quiz-opt" data-c="1" data-exp="הכתובת היא בחירה חופשית של מי שכתב את האפליקציה — כמו שם לתא דואר. הדבר היחיד שחשוב: שהצד ששולח (הדף בדפדפן) והצד שמקבל (server.js) מסכימים על אותו שם בדיוק." onclick="quizAns(this)"><span class="k">ב</span>מי שכתב את "תקציבי אביב" — בחירה חופשית, כל עוד שני הצדדים מסכימים על אותו שם.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>Node.js בוחר את הכתובת אוטומטית לפי סוג הנתונים.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>Express דורש שכל כתובת תתחיל במילה "money".</button>
+    <div class="quiz-fb"></div>
+  </div>
+  <div class="takeaway">
+    <div class="big-emoji">🌐</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">שרת = תוכנית שדלוקה תמיד ועונה לבקשות מהאינטרנט. מסד הנתונים מדבר רק איתו, לעולם לא עם הגולש. כל בקשה = כתובת (Endpoint) + פועל (Method), והשמות — בחירה שלנו.</div>
+  </div>
+</section>
+<section class="section" id="block3">
+  <span class="block-tag">בלוק 3 · תחנה 2: מקבלים מחשב עבודה בענן · 30 דקות</span>
+  <h2>Google Cloud Shell: מחשב לינוקס שלם, בתוך הדפדפן</h2>
+  <p class="section-sub">לפני שכותבים שורת קוד, צריך "מקום" לכתוב ולהריץ אותה. התחנה הזו נגמרת כשלכל אחד בכיתה יש טרמינל פתוח ועובד.</p>
+  <div class="pipe">
+    <span class="pst done"><span class="n">🍽️</span>1 · מושגים</span>
+    <span class="pst on"><span class="n">☁️</span>2 · Cloud Shell</span>
+    <span class="pst"><span class="n">⚙️</span>3 · שרת ראשון</span>
+    <span class="pst"><span class="n">🐘</span>4 · מסד נתונים</span>
+    <span class="pst"><span class="n">🐙</span>5 · GitHub</span>
+    <span class="pst"><span class="n">🚀</span>6 · Render</span>
+  </div>
+  <div class="pipe-cap">אתם בתחנה 2 מתוך 6 · בסוף התחנה: טרמינל פתוח + אישור שכל הכלים מותקנים</div>
+  <div class="deep-card">
+    <h3>🤔 למה לא פשוט להתקין הכל על המחשב שלי?</h3>
+    <p class="lead">אפשר, וזו הדרך המקובלת בתעשייה. אבל בכיתה עם עשרות מחשבים שונים — Windows, Mac, ולפעמים Chromebook — ההתקנות עצמן הופכות לשיעור שלם של תקלות: לכל אחד גרסה אחרת, הרשאה אחרת, שגיאה אחרת. <b>הפתרון: כולם מקבלים את אותו מחשב בדיוק — מחשב וירטואלי בענן של גוגל, שנפתח בתוך הדפדפן, עם כל הכלים כבר מותקנים.</b> זה נקרא Google Cloud Shell.</p>
+    <h4>💡 מה זה בעצם "טרמינל"? (מניחים אפס ידע, כמו שהבטחנו)</h4>
+    <p><b>טרמינל (Terminal)</b> הוא חלון שבו מדברים עם המחשב בפקודות טקסט במקום בלחיצות עכבר. כותבים פקודה, לוחצים <span class="kbd">Enter</span>, המחשב מבצע ומדפיס תשובה. למה מתכנתים אוהבים אותו? כי פקודה כתובה היא <b>מדויקת, ניתנת להעתקה, וזהה אצל כולם</b> — בדיוק מה שצריך בהרצאה כמו שלנו. כל הפקודות היום יגיעו מוכנות להעתקה, עם הסבר מה כל שורה עושה.</p>
+    <h4>✅ מה מקבלים ב-Cloud Shell, בחינם</h4>
+    <ul class="checklist">
+      <li>מחשב וירטואלי שמריץ לינוקס, עם טרמינל בתוך הדפדפן ועורך קבצים גרפי</li>
+      <li>Node.js, npm ו-Git <b>כבר מותקנים</b> — שלושת הכלים שנצטרך, בלי להתקין דבר</li>
+      <li>5 ג'יגה-בייט של אחסון אישי קבוע (תיקיית הבית שלכם) שנשאר גם אחרי שסוגרים את הדפדפן</li>
+      <li>שימוש חינמי לגמרי לצרכים שלנו — בלי כרטיס אשראי ובלי חיוב</li>
+    </ul>
+    <div class="info important">
+      <div class="hd">💳 הדבר היחיד שצריך מראש: חשבון Google</div>
+      <p>אם יש לכם Gmail — יש לכם הכל. כניסה לכתובת <span class="inline-code">shell.cloud.google.com</span> נפתחת ישר לסביבת עבודה. ייתכן שתראו אזכור של "פרויקט" (Project) — זה שם טכני ל"תיקיית משאבים" בענן של גוגל, ו<b>לתרגילים שלנו אין בו שום צורך</b>. אפשר לעבוד כשמוצג "no project", ולא נדרש כרטיס אשראי בשום שלב.</p>
+    </div>
+  </div>
+  <div class="lab" style="border-color:var(--primary)">
+    <div class="lab-head"><span class="lab-pill" style="background:var(--primary)">📸 עקב בצד אגודל</span><h3>פותחים את Cloud Shell, מהכניסה ועד טרמינל עובד</h3></div>
+    <ol class="lab-steps">
+      <li class="lab-step">
+        <div class="st">🎯 שלב 2.1 · נכנסים לכתובת</div>
+        <p><b>מה עושים:</b> פותחים דפדפן (Chrome, Edge או Safari — לא משנה), ונכנסים לכתובת:</p>
+        <div class="envbox"><span class="k">https://shell.cloud.google.com</span></div>
+        <p>אם תתבקשו להתחבר — מתחברים עם חשבון ה-Gmail הרגיל. בכניסה ראשונה גוגל עשויה להציג מסך תנאי שימוש — מאשרים וממשיכים.</p>
+      </li>
+      <li class="lab-step">
+        <div class="st">👀 שלב 2.2 · מה אמורים לראות: סביבת עבודה עם טרמינל בתחתית</div>
+        <p>נפתחת סביבת עבודה מלאה (עורך קוד + פאנלים). החלק שמעניין אותנו עכשיו הוא <b>הפאנל בתחתית המסך</b>, עם כיתוב כמו <span class="inline-code">cloudshell</span> על הלשונית — זה הטרמינל:</p>
+        <div class="mock-window">
+          <div class="term-tabbar">
+            <span class="ti">⌨️</span><span class="ti">⚙️</span>
+            <span class="tt">cloudshell <span class="x">✕</span></span>
+            <span class="sp"></span>
+            <span class="pl">+</span><span class="pl">▾</span>
+          </div>
+          <div class="mock-term" style="background:#151515">
+Welcome to Cloud Shell! Type "help" to get started...<br>
+To set your Cloud Platform project in this session use `<span class="p1">gcloud config set project [PROJECT_ID]</span>`.<br>
+your_name@cloudshell:~$ <span class="cmt">▍</span>
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 מה זה אומר, שורה אחר שורה</div>
+          <p><b>ההודעה באנגלית</b> — הודעת פתיחה אוטומטית של גוגל. היא מציעה להגדיר "פרויקט" — <b>מתעלמים, לא צריך</b>.</p>
+          <p><b>השורה האחרונה</b> (<span class="inline-code">your_name@cloudshell:~$</span>) — זו "שורת הפקודה": המחשב מציג את שם המשתמש שלכם, איפה אתם (הסימן <span class="inline-code">~</span> = תיקיית הבית), והסימן <span class="inline-code">$</span> שאומר "אני מוכן, תקלידו פקודה". הסמן המהבהב מחכה לכם.</p>
+        </div>
+        <div class="info tip">
+          <div class="hd">🙈 לא רואים פאנל טרמינל בכלל?</div>
+          <p>לפעמים הוא סגור. שלוש דרכים לפתוח, לפי הסדר: (1) בתפריט העליון: <b>Terminal ← New Terminal</b>. (2) קיצור מקלדת: <span class="kbd">Ctrl+`</span> (המקש עם הגרש, משמאל למקש 1 או מעל Tab). (3) חפשו סמל <span class="kbd">&gt;_</span> בסרגל העליון ולחצו עליו.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 2.3 · הפקודות הראשונות שלכם: בודקים שהכלים קיימים</div>
+        <p><b>מה עושים:</b> לוחצים על כפתור "העתק" בקופסה השחורה, לוחצים פעם אחת בתוך הטרמינל (כדי שהסמן יהיה שם), מדביקים (<span class="kbd">Ctrl+V</span> ב-Windows / <span class="kbd">Cmd+V</span> ב-Mac), ולוחצים <span class="kbd">Enter</span>.</p>
+        <p><b>מה הקטע:</b> אנחנו לא מתקינים כלום — רק שואלים את המחשב "איזו גרסה של כל כלי יש לך?". אם הוא עונה במספר, הכלי קיים. זו ההרגשה הכי טובה שיש: לגלות שהכל כבר מוכן.</p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להעתיק ולהדביק בטרמינל</span><pre># שלוש בדיקות: שואלים את המחשב איזו גרסה מותקנת אצלו.
+# לא מתקינים כלום - רק בודקים. אם חוזר מספר, הכלי קיים ומוכן.
+node -v
+npm -v
+git --version</pre></div>
+        <div class="info warn">
+          <div class="hd">📋 בפעם הראשונה שמדביקים</div>
+          <p>הדפדפן עשוי להקפיץ חלונית "Allow paste?" / "לאפשר הדבקה?" — לוחצים <b>Allow / אישור</b>. זו בקשת אבטחה חד-פעמית של הדפדפן, לא שגיאה.</p>
+        </div>
+        <div class="st" style="margin-top:14px">👀 מה אמורים לראות</div>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">shell.cloud.google.com</span></div>
+          <div class="mock-term">
+<span class="p1">$</span> node -v<br>
+<span class="ok">v22.17.0</span><br>
+<span class="p1">$</span> npm -v<br>
+<span class="ok">10.9.2</span><br>
+<span class="p1">$</span> git --version<br>
+<span class="ok">git version 2.47.1</span>
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 מה זה אומר</div>
+          <p>שלושה מספרי גרסה = שלושה כלים מותקנים ומוכנים: <b>Node.js</b> (יריץ את השרת שלנו), <b>npm</b> (יוריד לנו ספריות כמו Express), ו-<b>Git</b> (ישלח את הקוד ל-GitHub בתחנה 5). <b>המספרים אצלכם לא חייבים להיות זהים לדוגמה</b> — גוגל מעדכנת גרסאות כל הזמן. כל מספר = תקין.</p>
+        </div>
+        <div class="checkpoint">
+          <div class="hd">✅ נקודת ביקורת · תחנה 2</div>
+          <p>שלוש הפקודות החזירו מספרי גרסה (ולא הודעת שגיאה כמו <span class="inline-code">command not found</span>)? מעולה — יש לכם מחשב ענן עובד עם כל הכלים. אפשר להמשיך לתחנה 3.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+  <div class="deep-card">
+    <h3>🗂️ חשוב להבין: מה נשמר לכם ומה לא</h3>
+    <p class="lead">שלוש עובדות על Cloud Shell שיחסכו לכם בלבול בהמשך — ואחת מהן תחזור בגדול בתחנה 4:</p>
+    <ul>
+      <li><b>תיקיית הבית שלכם (עד 5GB) נשמרת.</b> כל קובץ שתיצרו בה יחכה לכם גם מחר וגם בעוד חודש. סוגרים דפדפן — הקבצים נשארים.</li>
+      <li><b>המחשב הווירטואלי עצמו — זמני.</b> אחרי כשעה של חוסר פעילות הוא "מוחזר למלאי", ובכניסה הבאה תקבלו מחשב טרי עם אותה תיקיית בית. משמעות מעשית: <b>דברים שהיו "בזיכרון" נעלמים</b> (למשל: הגדרות זמניות, תוכניות שרצו). זו בדיוק התופעה שנפגוש שוב אצל שרתים בענן בתחנה 4 — סמנו את זה בראש.</li>
+      <li><b>אם לא נכנסים 120 יום</b> — גוגל מוחקת את תיקיית הבית (אחרי אזהרה במייל). לא רלוונטי לסמסטר פעיל, אבל טוב לדעת.</li>
+    </ul>
+  </div>
+  <div class="fixit">
+    <div class="hd">🛟 אם משהו השתבש · תחנה 2</div>
+    <div class="sub">מצאו את מה שאתם רואים בעמודה הימנית, ופעלו לפי הפתרון:</div>
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <tr><th>מה רואים</th><th>מה הסיבה</th><th>מה עושים</th></tr>
+      <tr><td>הדף לא נטען / מסך לבן</td><td>לרוב חוסם פרסומות או דפדפן ישן</td><td>נסו חלון גלישה רגיל (לא פרטי), כבו זמנית חוסמי תוכן, או עברו ל-Chrome</td></tr>
+      <tr><td>נתקעתם במסך בחירת/יצירת פרויקט</td><td>נכנסתם דרך console.cloud.google.com במקום לכתובת שלנו</td><td>גשו ישירות ל-<span class="inline-code">shell.cloud.google.com</span> — שם לא נדרש פרויקט</td></tr>
+      <tr><td>ההדבקה לא עובדת בטרמינל</td><td>הרשאת הדבקה לא אושרה, או מקש שגוי</td><td>אשרו את חלונית ה-Allow של הדפדפן; ב-Windows הדביקו עם <span class="kbd">Ctrl+V</span>, ב-Mac עם <span class="kbd">Cmd+V</span></td></tr>
+      <tr><td><span class="inline-code">command not found</span> על node</td><td>נדיר מאוד ב-Cloud Shell; לרוב שגיאת הקלדה</td><td>ודאו שהדבקתם בדיוק את הפקודות מהקופסה (בלי תווים נוספים) ונסו שוב</td></tr>
+      <tr><td>הטרמינל קפא / לא מגיב</td><td>תקלת רשת רגעית</td><td>בתפריט הטרמינל בחרו Restart, או רעננו את הדף — תיקיית הבית לא נמחקת מריענון</td></tr>
+    </table>
+    </div>
+  </div>
+  <div class="israel">
+    <div class="hd">🇮🇱 מה קורה בישראל?</div>
+    <p>מוסדות אקדמיים בישראל (הטכניון, אונ' ת"א, רייכמן ועוד) מלמדים תכנות בדיוק כך — סביבת ענן אחידה (Cloud Shell / GitHub Codespaces) במקום לבזבז שיעורים על תקלות התקנה אישיות. כל הכיתה על אותה סביבה = כל התקלות זהות = פתרון אחד לכולם.</p>
+  </div>
+  <div class="quiz" data-yv="'נשאר קיים' ו'תמיד אותה מכונה' הם שני דברים שונים לגמרי. תיקיית הבית שורדת; המכונה מתחלפת. תזכרו את זה בתחנה 4 — זה בדיוק הסיפור של השרתים בענן.">
+    <div class="q-tag">❓ חידון · בלוק 3</div>
+    <div class="q-txt">מה בדיוק "שורד" בין סגירת הדפדפן היום לבין הכניסה הבאה שלכם ל-Cloud Shell?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>שום דבר — כל פעם מתחילים מאפס לגמרי.</button>
+    <button class="quiz-opt" data-c="1" data-exp="תיקיית הבית (עד 5GB) נשמרת — כל קובץ שיצרתם בה יחכה לכם. אבל המחשב הווירטואלי עצמו מתחלף: אחרי כשעה של חוסר פעילות הוא מוחזר למלאי, ובפעם הבאה מקבלים מכונה טרייה שמחוברת לאותה תיקיית בית. ההבחנה הזו — אחסון ששורד מול מכונה שמתחלפת — היא בדיוק לב הסיפור של תחנה 4." onclick="quizAns(this)"><span class="k">ב</span>תיקיית הבית שלכם (עד 5GB) — כל הקבצים שיצרתם בה.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>רק ההיסטוריה של הפקודות שהקלדתם, בלי הקבצים עצמם.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>הכל, כולל תוכנות שהתקנתם מחוץ לתיקיית הבית.</button>
+    <div class="quiz-fb"></div>
+  </div>
+  <div class="takeaway">
+    <div class="big-emoji">☁️</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">יש לכם מחשב לינוקס בענן, בחינם, עם Node.js, npm ו-Git כבר מותקנים. תיקיית הבית נשמרת; המכונה מתחלפת. Windows ו-Mac — זהים לחלוטין, כי הכל בדפדפן.</div>
+  </div>
+</section>
+<section class="section" id="block4">
+  <span class="block-tag">בלוק 4 · תחנה 3: כותבים ומריצים שרת ראשון · 50 דקות</span>
+  <h2>הקוד הראשון שלכם: server.js אמיתי, שרץ ועונה</h2>
+  <p class="section-sub">כאן התיאוריה של בלוק 2 הופכת לידיים על המקלדת. שמונה צעדים קטנים, כל אחד עם בדיקה — ובסופם שרת חי שעונה לכם בדפדפן.</p>
+  <div class="pipe">
+    <span class="pst done"><span class="n">🍽️</span>1 · מושגים</span>
+    <span class="pst done"><span class="n">☁️</span>2 · Cloud Shell</span>
+    <span class="pst on"><span class="n">⚙️</span>3 · שרת ראשון</span>
+    <span class="pst"><span class="n">🐘</span>4 · מסד נתונים</span>
+    <span class="pst"><span class="n">🐙</span>5 · GitHub</span>
+    <span class="pst"><span class="n">🚀</span>6 · Render</span>
+  </div>
+  <div class="pipe-cap">אתם בתחנה 3 מתוך 6 · בסוף התחנה: שרת שכתבתם בעצמכם עונה לכם בדפדפן</div>
+  <div class="info warn">
+    <div class="hd">⚠️ לפני שמתחילים — הכלל שמונע 90% מהתקלות: קובץ ≠ טרמינל</div>
+    <p>מהרגע הזה נעבוד עם שני סוגי תוכן, ואסור לערבב ביניהם: <b>פקודות</b> (קופסאות שכתוב עליהן BASH) מדביקים <b>בטרמינל</b> שבתחתית המסך. <b>קוד JavaScript</b> (קופסאות שכתוב עליהן JAVASCRIPT) מדביקים <b>בתוך קובץ בעורך</b> שבחלק העליון. אם תדביקו קוד JavaScript בטרמינל — תקבלו שגיאות מוזרות (<span class="inline-code">bash: syntax error</span>), כי הטרמינל מבין רק פקודות. על כל קופסה כתוב במפורש לאן היא הולכת.</p>
+  </div>
+  <div class="lab">
+    <div class="lab-head"><span class="lab-pill">🧪 HANDS-ON</span><h3>מאפס ועד שרת עונה — שמונה צעדים</h3></div>
+    <ol class="lab-steps">
+      <li class="lab-step">
+        <div class="st">🎯 שלב 3.1 · יוצרים תיקייה לפרויקט</div>
+        <p><b>מה הקטע:</b> כל פרויקט תוכנה חי בתיקייה משלו. ניצור תיקייה בשם <span class="inline-code">takziv-aviv</span> בתוך תיקיית הבית — היא תלווה אותנו עד סוף ההרצאה, וכל הקבצים שלנו יגורו בה.</p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל</span><pre># יוצרים תיקייה חדשה לפרויקט, ונכנסים אליה.
+# הסימן ~ פירושו "תיקיית הבית שלי". הדגל -p פירושו "אם היא כבר קיימת - לא נורא".
+mkdir -p ~/takziv-aviv
+cd ~/takziv-aviv</pre></div>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">shell.cloud.google.com</span></div>
+          <div class="mock-term">
+<span class="p1">$</span> mkdir -p ~/takziv-aviv<br>
+<span class="p1">$</span> cd ~/takziv-aviv<br>
+your_name@cloudshell:<span class="ok">~/takziv-aviv</span>$ <span class="cmt">▍</span>
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 מה זה אומר</div>
+          <p>שתי הפקודות לא מדפיסות כלום — וזה תקין: בטרמינל, שקט = הצלחה. ההוכחה שזה עבד: שורת הפקודה עצמה השתנתה ומציגה עכשיו <span class="inline-code">~/takziv-aviv</span> — אתם "עומדים" בתוך התיקייה החדשה.</p>
+          <p><b>טריק שנשתמש בו כל ההרצאה:</b> כל קופסת פקודות שלנו תתחיל ב-<span class="inline-code">cd ~/takziv-aviv</span>. זה מבטיח שאתם תמיד בתיקייה הנכונה — גם אם פתחתם טרמינל חדש, גם אם חזרתם מחר. להריץ אותה פעמיים לא מזיק אף פעם.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 3.2 · יוצרים את "תעודת הזהות" של הפרויקט</div>
+        <p><b>מה הקטע:</b> לכל פרויקט Node.js יש קובץ בשם <span class="inline-code">package.json</span> — תעודת זהות שמתעדת את שם הפרויקט ואילו ספריות הוא צריך. כלים אחרים (כמו Render בתחנה 6) קוראים אותה כדי לדעת מה להתקין ואיך להריץ. הפקודה יוצרת אותה אוטומטית:</p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל</span><pre># קודם מוודאים שאנחנו בתיקייה הנכונה (בטוח להריץ תמיד, גם אם כבר שם)
+cd ~/takziv-aviv
+# יוצרים את package.json - "תעודת הזהות" של הפרויקט.
+# הדגל -y אומר: קבל את כל ברירות המחדל, אל תשאל שאלות.
+npm init -y</pre></div>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">shell.cloud.google.com</span></div>
+          <div class="mock-term">
+<span class="p1">$</span> npm init -y<br>
+Wrote to /home/your_name/takziv-aviv/package.json:<br>
+{<br>
+&nbsp;&nbsp;"name": "takziv-aviv",<br>
+&nbsp;&nbsp;"version": "1.0.0",<br>
+&nbsp;&nbsp;<span class="dim">... (עוד כמה שורות אוטומטיות)</span><br>
+}
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 מה זה אומר</div>
+          <p>npm הדפיס את תוכן הקובץ שהוא יצר. שימו לב ש-<span class="inline-code">"name"</span> קיבל אוטומטית את שם התיקייה. בתחנה 4 נחליף את הקובץ הזה בגרסה מותאמת משלנו — בינתיים ברירת המחדל מספיקה.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 3.3 · מתקינים את Express (ציוד המטבח)</div>
+        <p><b>מה הקטע:</b> זוכרים מבלוק 2? Node.js הוא הגז, Express הוא ציוד המטבח. עכשיו מורידים את הציוד — פקודה אחת, ו-npm מוריד את הספרייה מהאינטרנט לתוך תיקייה בשם <span class="inline-code">node_modules</span>:</p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל</span><pre>cd ~/takziv-aviv
+# מורידים ומתקינים את ערכת הכלים Express, לתוך תיקייה בשם node_modules
+npm install express</pre></div>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">shell.cloud.google.com</span></div>
+          <div class="mock-term">
+<span class="p1">$</span> npm install express<br>
+added 69 packages in 3s<br>
+found <span class="ok">0 vulnerabilities</span>
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 מה זה אומר</div>
+          <p><span class="inline-code">added 69 packages</span> — הותקן Express, יחד עם כל חלקי החילוף הקטנים שהוא עצמו צריך (המספר המדויק אצלכם עשוי להיות שונה — תקין). מעכשיו הקוד שלנו יוכל לכתוב <span class="inline-code">require('express')</span> ולקבל את ערכת הכלים.</p>
+        </div>
+        <div class="checkpoint">
+          <div class="hd">✅ נקודת ביקורת קטנה</div>
+          <p>הריצו בטרמינל <span class="inline-code">ls</span> (פקודה שמציגה את תוכן התיקייה). אמורים לראות: <span class="inline-code">node_modules</span>, <span class="inline-code">package.json</span>, <span class="inline-code">package-lock.json</span>. שלושתם שם? ממשיכים.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 3.4 · יוצרים את קובץ server.js ופותחים אותו בעורך</div>
+        <p><b>מה הקטע:</b> עכשיו יוצרים את הקובץ שיהיה השרת. שתי פקודות: הראשונה יוצרת קובץ ריק, השנייה — פקודה מיוחדת של Cloud Shell — פותחת אותו בעורך הגרפי שלמעלה, מוכן להדבקה:</p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל</span><pre>cd ~/takziv-aviv
+# touch = צור קובץ חדש וריק בשם server.js
+touch server.js
+# פקודה מיוחדת של Cloud Shell: פתח את הקובץ הזה בעורך הגרפי
+cloudshell edit ~/takziv-aviv/server.js</pre></div>
+        <div class="st" style="margin-top:14px">👀 מה אמורים לראות</div>
+        <p>בחלק העליון של המסך נפתחת לשונית בשם <span class="inline-code">server.js</span> — קובץ ריק לגמרי, עם סמן מהבהב. זה העורך. אם העורך היה סגור, Cloud Shell יפתח אותו אוטומטית (זה עשוי לקחת כמה שניות בפעם הראשונה).</p>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 3.5 · מדביקים את הקוד — קובץ שלם, מוסבר שורה-שורה</div>
+        <p><b>מה עושים:</b> לוחצים "העתק" על הקופסה למטה ← לוחצים בתוך הקובץ הריק בעורך ← מדביקים (<span class="kbd">Ctrl+V</span> / <span class="kbd">Cmd+V</span>) ← שומרים (<span class="kbd">Ctrl+S</span> ב-Windows / <span class="kbd">Cmd+S</span> ב-Mac).</p>
+        <p><b>מה הקטע:</b> זהו שרת שלם ואמיתי — 17 שורות בלבד, שלושה חלקים. זה בדיוק המבנה שלמדנו בבלוק 2, עכשיו בקוד:</p>
+        <div class="code-block" data-lang="js"><span class="lang">JAVASCRIPT · תוכן הקובץ server.js — קובץ שלם, מחליף כל מה שבקובץ</span><pre>// server.js — the first server you will ever run. 3 parts, that's all.
+
+// part 1: load the Express toolkit (we installed it with: npm install express)
+// and create "app" — the object that represents our whole server
+const express = require('express');
+const app = express();
+
+// part 2: ONE rule (an "endpoint"): when a browser asks for the
+// home address "/", send back a small JSON answer
+app.get('/', (req, res) =&gt; {
+  res.json({ message: 'שלום! אני שרת אמיתי, ואני רץ בענן' });
+});
+
+// part 3: start listening on door number 8080, and never stop
+app.listen(8080, () =&gt; {
+  console.log('השרת פועל ומאזין על פורט 8080');
+});</pre></div>
+        <div class="meaning">
+          <div class="hd">🧠 הקוד, שורה-שורה, במילים של בלוק 2</div>
+          <p><b>חלק 1</b> — <span class="inline-code">require('express')</span>: "תביא לי את ציוד המטבח שהתקנו בשלב 3.3". ואז <span class="inline-code">express()</span> יוצר את <span class="inline-code">app</span> — האובייקט שמייצג את השרת כולו, המטבח שלנו.</p>
+          <p><b>חלק 2</b> — <span class="inline-code">app.get('/', ...)</span>: זו <b>נקודת קצה</b> — הכלל הבודד הראשון שלכם! בעברית: "כשמגיעה בקשת GET לכתובת הראשית /, הרץ את הקוד הזה". והקוד — <span class="inline-code">res.json(...)</span> — פשוט שולח תשובה קצרה חזרה למי ששאל.</p>
+          <p><b>חלק 3</b> — <span class="inline-code">app.listen(8080, ...)</span>: השורה שהופכת קוד רגיל לשרת. היא אומרת: "התיישב ליד דלת מספר 8080, ואל תפסיק להקשיב". בלעדיה — התוכנית הייתה מסתיימת מיד. 8080 הוא "מספר דלת" (פורט) — מוסכמה נפוצה, אין בו קסם.</p>
+          <p><b>ו-req, res?</b> שני "עוזרים" ש-Express מגיש לנו בכל בקשה: <span class="inline-code">req</span> (request) מכיל את כל פרטי הבקשה שהגיעה; <span class="inline-code">res</span> (response) הוא הכלי לשלוח תשובה חזרה.</p>
+        </div>
+        <div class="info tip">
+          <div class="hd">💾 איך יודעים שהקובץ נשמר?</div>
+          <p>כשיש שינויים לא-שמורים, מופיעה <b>נקודה עגולה</b> על לשונית הקובץ למעלה. אחרי שמירה מוצלחת הנקודה נעלמת (חוזר סימן ה-✕ הרגיל). התרגלו להציץ בה אחרי כל שמירה — "שכחתי לשמור" היא תקלת מתחילים מספר 1 בעולם.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 3.6 · מריצים את השרת</div>
+        <p><b>מה עושים:</b> חוזרים לטרמינל שבתחתית המסך (לוחצים בתוכו), ומדביקים:</p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל</span><pre>cd ~/takziv-aviv
+node server.js</pre></div>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">shell.cloud.google.com</span></div>
+          <div class="mock-term">
+<span class="p1">$</span> node server.js<br>
+<span class="ok">השרת פועל ומאזין על פורט 8080</span><br>
+<span class="cmt">▍ (אין שורת $ חדשה — הטרמינל "תפוס". זה מצוין!)</span>
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 מה זה אומר — והנקודה שכולם נבהלים ממנה</div>
+          <p>ההודעה בעברית הגיעה מהשורה <span class="inline-code">console.log</span> שבחלק 3 של הקוד — השרת שלכם באוויר. ועכשיו החלק החשוב: <b>הטרמינל "נתקע" ולא חוזר סימן $. זו לא תקלה — זו בדיוק המהות של שרת.</b> זוכרים את ההגדרה מבלוק 2? "תוכנית שיושבת דלוקה ומחכה". היא יושבת. היא מחכה. הטרמינל תפוס כי היא רצה בו. כדי לעצור אותה (עוד מעט, לא עכשיו): <span class="kbd">Ctrl+C</span> — גם על Mac זה Ctrl, לא Cmd.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 3.7 · רואים את השרת עונה — Web Preview</div>
+        <p><b>מה הקטע:</b> השרת רץ על המחשב הווירטואלי בענן — אז איך "נכנסים אליו" מהדפדפן? ל-Cloud Shell יש כפתור בדיוק בשביל זה: <b>Web Preview</b>, בפינה של סרגל הכלים של הטרמינל (סמל של עין 👁 או מסך עם עין).</p>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">shell.cloud.google.com</span></div>
+          <div class="gcs-mock">
+            <div class="gcs-topbar">☁️ Cloud Shell &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="gcs-btn">👁 Web Preview ▾</span></div>
+            <div class="gcs-body" style="color:#9aa0a6">לוחצים על הכפתור ← נפתח תפריט קטן ← בוחרים<br><b style="color:#e8eaed">Preview on port 8080</b><br><span style="font-size:12px">(אם מוצג מספר אחר: Change port ← מקלידים 8080 ← Change and Preview)</span></div>
+          </div>
+        </div>
+        <div class="st" style="margin-top:14px">👀 מה אמורים לראות: טאב חדש נפתח, ובו —</div>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">🔒 8080-cs-xxxxxxxx.cloudshell.dev</span></div>
+          <div class="mock-term" style="background:#fff;color:#0f172a">{"message":"שלום! אני שרת אמיתי, ואני רץ בענן"}</div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 עצרו הכל. בואו נבין מה בדיוק קרה כאן — כי קרה כאן משהו גדול</div>
+          <p>על המסך מופיעה שורה אחת קטנה, וקל לחשוב "זהו?? בשביל זה עבדתי?". אז לא — <b>השורה ה"משעממת" הזו היא רגע חניכה</b>. הנה מה שבאמת התרחש, בשניות האחרונות, לפי תרשים חמשת השלבים:</p>
+          <p>1️⃣ הדפדפן שלכם (חדר האוכל) שלח <b>בקשת HTTP אמיתית</b> — פתק "GET /" — אל כתובת בענן של גוגל. 2️⃣ הפתק עבר את הדרך והגיע אל <b>התוכנית שאתם כתבתם</b>, שישבה וחיכתה בדיוק לרגע הזה. 3️⃣ נקודת הקצה שלכם זיהתה: "בקשת GET לכתובת /? זה שלי!". 4️⃣ השורה <span class="inline-code">res.json(...)</span> שלחה תשובה חזרה. 5️⃣ הדפדפן הציג אותה.</p>
+          <p><b>ולמה זה גדול?</b> כי זה — בדיוק זה — מה שקורה בכל לחיצה בכל אפליקציה שאתם מכירים. כשאתם פותחים וולט, בנק, אינסטגרם: דפדפן/אפליקציה שולחים בקשה ← שרת שמישהו כתב עונה ← המסך מתעדכן. ההבדל היחיד בין השורה שלכם לוולט: לוולט יש עוד כמה מאות נקודות קצה, ותשובות עשירות יותר. <b>המנגנון — אחד לאחד מה שבניתם הרגע.</b> אתם כבר בצד של מי שבונים את האינטרנט, לא רק גולשים בו.</p>
+          <p>ומה זה הפורמט עם הסוגריים? <b>JSON</b> — פורמט התשובות הסטנדרטי של האינטרנט: זוגות של "שם":"ערך". תראו אותו בכל מקום מהיום.</p>
+        </div>
+        <div class="soft-note">🔗 <b>והכתובת הארוכה למעלה?</b> כתובת זמנית ופרטית שגוגל יצרה, שמובילה לפורט 8080 של המחשב הווירטואלי <b>שלכם בלבד</b> — רק החשבון שלכם יכול לפתוח אותה. זו עוד לא כתובת ציבורית לשיתוף עם העולם. כתובת אמיתית לכולם — זה בדיוק מה שנשיג בתחנה 6 עם Render.</div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 3.8 · תרגיל: מוסיפים נקודת קצה שנייה (גרסה 2 של הקובץ)</div>
+        <p><b>מה הקטע:</b> שרת אמיתי מכיל הרבה נקודות קצה. נוסיף שנייה — כזו שמקבלת <b>פרמטר מהכתובת</b>. וכמו שהבטחנו: לא "מוסיפים שורות באמצע" אלא מחליפים את הקובץ כולו בגרסה 2 המלאה.</p>
+        <p><b>מה עושים, לפי הסדר:</b></p>
+        <ol style="font-size:18px">
+          <li>בטרמינל: עוצרים את השרת עם <span class="kbd">Ctrl+C</span> (סימן ה-$ חוזר).</li>
+          <li>בעורך: לוחצים בתוך server.js, מסמנים הכל (<span class="kbd">Ctrl+A</span> / <span class="kbd">Cmd+A</span>), ומדביקים במקום — הקובץ הישן מוחלף כולו.</li>
+          <li>שומרים (<span class="kbd">Ctrl+S</span> / <span class="kbd">Cmd+S</span>) — ובודקים שהנקודה על הלשונית נעלמה.</li>
+          <li>בטרמינל: מריצים שוב <span class="inline-code">node server.js</span>.</li>
+        </ol>
+        <div class="code-block" data-lang="js"><span class="lang">JAVASCRIPT · server.js גרסה 2 — קובץ שלם, מחליף את הכל</span><pre>// server.js — version 2: same server, now with TWO endpoints.
+
+const express = require('express');
+const app = express();
+
+// endpoint 1: the home address (exactly like before)
+app.get('/', (req, res) =&gt; {
+  res.json({ message: 'שלום! אני שרת אמיתי, ואני רץ בענן' });
+});
+
+// endpoint 2 (NEW): an address with a "placeholder".
+// :name means: whatever you type after /hello/ in the address
+// will land inside req.params.name
+app.get('/hello/:name', (req, res) =&gt; {
+  res.json({ message: 'שלום ' + req.params.name + '! זיהיתי אותך לפי הכתובת' });
+});
+
+app.listen(8080, () =&gt; {
+  console.log('השרת פועל ומאזין על פורט 8080');
+});</pre></div>
+        <p><b>הבדיקה:</b> פותחים שוב את טאב ה-Web Preview מקודם, ומוסיפים לסוף הכתובת <span class="inline-code">/hello/Aviv</span> (או כל שם אחר, אפילו בעברית) ולוחצים Enter:</p>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">🔒 8080-cs-xxxx.cloudshell.dev/hello/Aviv</span></div>
+          <div class="mock-term" style="background:#fff;color:#0f172a">{"message":"שלום Aviv! זיהיתי אותך לפי הכתובת"}</div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 מה זה אומר</div>
+          <p>הקסם הוא בשורה <span class="inline-code">/hello/:name</span> — הנקודתיים אומרות ל-Express: "מה שיופיע כאן בכתובת הוא <b>ממלא-מקום</b>, שים לי אותו בתוך <span class="inline-code">req.params.name</span>". ככה בדיוק עובד <span class="inline-code">/api/expenses/:id</span> מהטבלה של בלוק 2 — הכתובת עצמה נושאת מידע. עכשיו כתבתם כבר שתי נקודות קצה במו ידיכם.</p>
+        </div>
+        <div class="checkpoint">
+          <div class="hd">✅ נקודת ביקורת · תחנה 3</div>
+          <p>שתי הבדיקות עברו? — הכתובת הראשית מציגה את הודעת השלום, ו-<span class="inline-code">/hello/השם-שלכם</span> עונה עם השם שלכם? <b>יש לכם שרת עובד שכתבתם בעצמכם.</b> עצרו אותו עם <span class="kbd">Ctrl+C</span>, וממשיכים לתחנה 4.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+  <div class="fixit">
+    <div class="hd">🛟 אם משהו השתבש · תחנה 3</div>
+    <div class="sub">כל התקלות הנפוצות של השלב הזה, ופתרונן:</div>
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <tr><th>מה רואים</th><th>מה הסיבה</th><th>מה עושים</th></tr>
+      <tr><td><span class="inline-code">Cannot find module 'express'</span></td><td>מריצים מהתיקייה הלא נכונה, או ששלב 3.3 דולג</td><td>הריצו <span class="inline-code">cd ~/takziv-aviv</span> ואז <span class="inline-code">npm install express</span>, ונסו שוב</td></tr>
+      <tr><td><span class="inline-code">Cannot find module '/home/.../server.js'</span></td><td>הקובץ לא נשמר, או שאתם בתיקייה אחרת</td><td>בדקו שהנקודה על לשונית הקובץ נעלמה (שמרתם), והריצו קודם <span class="inline-code">cd ~/takziv-aviv</span></td></tr>
+      <tr><td><span class="inline-code">EADDRINUSE: address already in use</span></td><td>שרת קודם עדיין רץ על פורט 8080 (למשל בטרמינל אחר)</td><td>עצרו אותו עם <span class="kbd">Ctrl+C</span> בטרמינל שבו הוא רץ; אם לא מוצאים — הריצו <span class="inline-code">pkill node</span> והפעילו מחדש</td></tr>
+      <tr><td><span class="inline-code">SyntaxError: Unexpected ...</span></td><td>ההדבקה הייתה חלקית, או שנערך משהו בטעות</td><td>מסמנים הכל בקובץ (<span class="kbd">Ctrl+A</span>), מדביקים שוב את הקופסה המלאה, שומרים, מריצים</td></tr>
+      <tr><td><span class="inline-code">bash: syntax error near ...</span> בטרמינל</td><td>הודבק קוד JavaScript לטרמינל במקום לקובץ</td><td>זה הכלל מתחילת הבלוק: JS ← לעורך, BASH ← לטרמינל. הדביקו את הקוד בקובץ</td></tr>
+      <tr><td>Web Preview מציג שגיאה / לא נטען</td><td>השרת לא רץ, או פורט לא תואם</td><td>ודאו שבטרמינל עדיין כתוב "השרת פועל..." בלי $ אחריו, ושבחרתם port 8080 בתפריט</td></tr>
+      <tr><td><span class="inline-code">Cannot GET /hello</span></td><td>שכחתם את החלק של השם בכתובת, או שהשרת רץ עם גרסה 1</td><td>הכתובת חייבת להיות <span class="inline-code">/hello/משהו</span>; ואם החלפתם קובץ — חובה Ctrl+C ולהריץ מחדש (שינויים לא נטענים לשרת רץ)</td></tr>
+    </table>
+    </div>
+  </div>
+  <div class="quiz" data-yv="Ctrl+C עוצר, טרמינל 'תקוע' = שרת חי. השניים האלה הם ההבדל בין תוכנית רגילה (רצה ונגמרת) לשרת (רץ ומחכה).">
+    <div class="q-tag">❓ חידון · בלוק 4</div>
+    <div class="q-txt">אחרי שהרצתם <span class="inline-code">node server.js</span>, הטרמינל "נתקע" ולא חוזר סימן <span class="inline-code">$</span> חדש. מה זה אומר?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>יש תקלה, וצריך להפעיל מחדש את Cloud Shell.</button>
+    <button class="quiz-opt" data-c="1" data-exp="זו ההתנהגות הבריאה: app.listen() גורם לתוכנית להישאר ערה ולהמתין לבקשות בלי סוף — בדיוק ההגדרה של שרת מבלוק 2. הטרמינל תפוס כי השרת רץ בו. עצירה זמנית: Ctrl+C. ואגב — אחרי כל שינוי בקובץ חייבים לעצור ולהריץ מחדש, אחרת השרת ממשיך לרוץ עם הגרסה הישנה." onclick="quizAns(this)"><span class="k">ב</span>הכל תקין — השרת "ער" ומחכה לבקשות. זו בדיוק ההגדרה של שרת.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>שכחתם להתקין את Express.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>צריך לרענן את דף ה-Web Preview כדי לשחרר את הטרמינל.</button>
+    <div class="quiz-fb"></div>
+  </div>
+  <div class="takeaway">
+    <div class="big-emoji">⚙️</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">כתבתם שרת אמיתי עם שתי נקודות קצה, הרצתם אותו בענן, וראיתם את הדפדפן מקבל ממנו תשובה. השורה הקטנה ההיא בדפדפן = אותו מנגנון בדיוק שמריץ כל אפליקציה שאתם מכירים.</div>
+  </div>
+</section>
+<section class="section" id="block5">
+  <span class="block-tag">בלוק 5 · תחנה 4: מחברים זיכרון קבוע · 55 דקות</span>
+  <h2>"ההוצאה נעלמה!" — למה צריך מסד נתונים, ואיך מחברים אחד</h2>
+  <p class="section-sub">השרת מתחנה 3 עובד — אבל הוא סובל מבעיה קטלנית: הוא לא זוכר כלום. בתחנה הזו מבינים למה, פוגשים באג אמיתי מהשטח, ופותרים אותו כמו מקצוענים.</p>
+  <div class="pipe">
+    <span class="pst done"><span class="n">🍽️</span>1 · מושגים</span>
+    <span class="pst done"><span class="n">☁️</span>2 · Cloud Shell</span>
+    <span class="pst done"><span class="n">⚙️</span>3 · שרת ראשון</span>
+    <span class="pst on"><span class="n">🐘</span>4 · מסד נתונים</span>
+    <span class="pst"><span class="n">🐙</span>5 · GitHub</span>
+    <span class="pst"><span class="n">🚀</span>6 · Render</span>
+  </div>
+  <div class="pipe-cap">אתם בתחנה 4 מתוך 6 · בסוף התחנה: האפליקציה המלאה רצה אצלכם, מחוברת ל-Postgres אמיתי, והנתונים שורדים הפעלה מחדש</div>
+  <div class="deep-card">
+    <h3>🤔 הבעיה: השרת שלנו סובל מאמנזיה</h3>
+    <p class="lead">השרת מתחנה 3 עונה יפה — אבל שימו לב: הוא לא <b>שומר</b> שום דבר. אם היינו מוסיפים לו "רשימת הוצאות" בתוך משתנה בקוד, היא הייתה חיה בזיכרון של התוכנית — וברגע שהתוכנית נעצרת (Ctrl+C, קריסה, הפעלה מחדש), <b>הכל נמחק</b>. לאפליקציית תקציב זה פסול: הוצאה שנרשמה חייבת להישאר רשומה. לנצח.</p>
+    <h4>😱 "אז נשמור לקובץ!" — הפיתוי שכולם נופלים בו, והבאג האמיתי שקרה לנו</h4>
+    <p>המחשבה הראשונה של כל מתחיל: "פשוט נכתוב את ההוצאות לקובץ JSON ליד הקוד". וב-Cloud Shell זה אפילו עובד! אבל הנה סיפור אמיתי מהמסע שלנו: גרסה מוקדמת של "תקציבי אביב" עשתה בדיוק את זה, ועלתה לשירות אירוח בענן. משתמש הוסיף הוצאה. היא נשמרה. ואז, אחרי שהאתר עמד רגע בשקט… <b>ההוצאה נעלמה. כאילו לא הייתה.</b></p>
+    <div class="info term">
+      <div class="hd">📝 ההסבר: אחסון ארעי (Ephemeral Storage) — אנלוגיית הלוח המחיק</div>
+      <p>שרת חינמי בענן הוא כמו <b>כיתה עם לוח מחיק</b>: כל עוד השיעור רץ, מה שכתבתם על הלוח נשאר. אבל כשהכיתה מתפנה (השירות "נרדם" מחוסר פעילות — בתוכניות חינמיות זה קורה אחרי רבע שעה) — <b>מוחקים את הלוח</b> ומכינים כיתה טרייה לבאים. ה"כיתה הטרייה" מקבלת עותק נקי של הקוד מ-GitHub — <b>בלי שום קובץ שנכתב תוך כדי ריצה</b>.</p>
+      <p>נשמע מוכר? זה בדיוק מה שראינו ב-Cloud Shell בתחנה 2: תיקיית הבית שורדת, אבל <b>המכונה עצמה מתחלפת</b>. בענן, מכונות הן בקר חד-פעמי. מסקנה: <b>כל מה שחייב לשרוד — נשמר מחוץ למכונה, במסד נתונים חיצוני.</b></p>
+    </div>
+    <div class="vflow-big stagger">
+      <div class="vnode c-amber"><div class="ic">✍️</div><div class="bd"><b>1. משתמש מוסיף הוצאה</b><div class="sub">היא נכתבת לקובץ JSON על הדיסק של השרת בענן.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-amber"><div class="ic">😴</div><div class="bd"><b>2. השירות נרדם (15 דקות בלי גולשים)</b><div class="sub">כך חוסכים משאבים בתוכנית החינמית. עד כאן הכל נראה תקין.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode" style="border-color:var(--red);background:#fef2f2"><div class="ic">🗑️</div><div class="bd"><b>3. גולש חדש מגיע ← השירות מתעורר במכונה חדשה</b><div class="sub">דיסק נקי, עותק טרי מ-GitHub. קובץ ההוצאות? לא היה ב-GitHub — נעלם.</div></div></div>
+    </div>
+  </div>
+  <div class="lab" style="border-color:var(--primary)">
+    <div class="lab-head">
+      <span class="lab-pill" style="background:var(--primary)">🎮 הדגמה חיה</span>
+      <h3>נסו בעצמכם: קובץ מקומי מול מסד נתונים חיצוני</h3>
+    </div>
+    <p>הוסיפו "הוצאה" בשני הפאנלים, ואז לחצו <b>"הפעל מחדש את השרת"</b> בכל אחד — וצפו בהבדל:</p>
+    <div class="persist-sim">
+      <div class="cols">
+        <div class="persist-panel">
+          <h5>📄 קובץ JSON על דיסק השרת (הדרך שנכשלה)</h5>
+          <div class="list" id="pfList"><div class="empty">אין הוצאות עדיין...</div></div>
+          <button onclick="persistAdd('file')">➕ הוסף הוצאה</button>
+          <button class="danger" onclick="persistRestart('file')">🔄 הפעל מחדש את השרת</button>
+        </div>
+        <div class="persist-panel">
+          <h5>🐘 Postgres חיצוני (הדרך שנבנה עכשיו)</h5>
+          <div class="list" id="pdList"><div class="empty">אין הוצאות עדיין...</div></div>
+          <button onclick="persistAdd('db')">➕ הוסף הוצאה</button>
+          <button class="danger" onclick="persistRestart('db')">🔄 הפעל מחדש את השרת</button>
+        </div>
+      </div>
+      <div class="persist-log" id="persistLog"></div>
+    </div>
+    <div class="info tip">
+      <div class="hd">👀 מה לשים לב אליו</div>
+      <p>בפאנל של הקובץ, הפעלה מחדש מוחקת הכל — בדיוק הבאג מהסיפור. בפאנל של Postgres הנתונים חיים <b>מחוץ למכונה</b>, ולכן שורדים כל הפעלה מחדש. את הגרסה האמיתית של הניסוי הזה תעשו בעצמכם בסוף הבלוק — ושוב, על האתר החי, בתחנה 6.</p>
+    </div>
+  </div>
+  <div class="deep-card">
+    <h3>🐘 הפתרון: מסד Postgres חיצוני חינמי — ולמה בחרנו Neon</h3>
+    <p class="lead">צריך מסד נתונים ש<b>חי בכתובת משלו באינטרנט</b>, נפרד מהשרת שלנו. השווינו את האפשרויות החינמיות המובילות:</p>
+    <div class="compare-grid">
+      <div class="compare-card a"><h4>✅ Neon — הבחירה שלנו</h4><p>Postgres מלא בחינם. "נרדם" אחרי כמה דקות שקט אבל <b>מתעורר תוך כשנייה</b> — והנתונים <b>לא נמחקים לעולם</b>. הרשמה עם חשבון Google. פשוט ומצוין ללימוד ול-MVP.</p></div>
+      <div class="compare-card b"><h4>🟡 Supabase</h4><p>Postgres חינמי מעולה, אבל פרויקט חינמי <b>מושהה אחרי שבוע ללא פעילות</b> ודורש כניסה ידנית להחייאה. פחות מתאים לאתר שעומד בשקט בין שיעורים.</p></div>
+      <div class="compare-card c"><h4>🔴 ה-Postgres החינמי של Render</h4><p>נוח שהכל במקום אחד, אבל שימו לב לאותיות הקטנות: מסד חינמי של Render <b>פג-תוקף אחרי 30 יום</b> — ואז נמחק. מצוין לניסוי של שבוע, מסוכן לפרויקט קורס.</p></div>
+    </div>
+    <div class="soft-note">💡 ההשוואה הזו נבדקה מול התיעוד הרשמי של שלושת השירותים נכון ליולי 2026. תנאים של שירותי ענן משתנים — אם אתם קוראים את זה בעתיד, שווה לוודא רגע מול האתר הרשמי.</div>
+    <h4>🔑 מושג חדש והכרחי לפני שממשיכים: משתנה סביבה (Environment Variable)</h4>
+    <p>כדי להתחבר ל-Neon נקבל "מחרוזת חיבור" — כתובת שמכילה גם <b>שם משתמש וסיסמה</b>. ובדיוק כאן כלל ברזל של המקצוע: <b>סודות לעולם לא נכתבים בתוך הקוד.</b> למה? כי הקוד שלנו ייסע בתחנה הבאה ל-GitHub, שם הוא גלוי. הפתרון: משתנה סביבה — ערך שמוגדר <b>מחוץ לקוד</b>, בסביבה שמריצה אותו, והקוד רק שואל עליו בשמו.</p>
+    <div class="info term">
+      <div class="hd">🏨 האנלוגיה: כספת בחדר מלון</div>
+      <p>הכספת (הקוד) זהה בכל חדר בכל מלון בעולם. אבל <b>קוד הפתיחה</b> שלה לא מודפס עליה — הוא נמסר לכל אורח בנפרד, בצ'ק-אין. גם אם מישהו יצלם את הכספת (=יקרא את הקוד שלכם ב-GitHub), אין לו את הקוד לפתוח אותה. אצלנו: הקוד ב-GitHub יכיל רק את השאלה <span class="inline-code">process.env.DATABASE_URL</span> ("מה קוד הפתיחה?") — והתשובה תוגדר בנפרד: היום בטרמינל, ובתחנה 6 בהגדרות Render.</p>
+    </div>
+  </div>
+  <div class="lab">
+    <div class="lab-head"><span class="lab-pill">🧪 HANDS-ON</span><h3>יוצרים מסד Neon, ובונים את האפליקציה המלאה</h3></div>
+    <ol class="lab-steps">
+      <li class="lab-step">
+        <div class="st">🎯 שלב 4.1 · נרשמים ל-Neon ויוצרים פרויקט</div>
+        <p><b>מה עושים:</b> נכנסים ל-<span class="inline-code">neon.com</span> ← לוחצים <b>Sign up</b> ← בוחרים <b>Continue with Google</b> (עם אותו חשבון Google של Cloud Shell — פחות סיסמאות לזכור). אחרי ההרשמה נוצר פרויקט ראשון (או שתתבקשו ליצור אחד): נותנים שם — <span class="inline-code">takziv-aviv</span> — ובוחרים Region קרוב, למשל <b>Frankfurt (eu-central-1)</b>. את שאר ההגדרות משאירים כברירת מחדל ולוחצים <b>Create</b>.</p>
+        <div class="meaning">
+          <div class="hd">🧠 מה בעצם קיבלתם עכשיו</div>
+          <p>מסד PostgreSQL אמיתי ומלא, שרץ על שרתים באירופה, עם כתובת משלו באינטרנט. "מנהל המחסן" מבלוק 2 — קיים, מחכה, ריק. עוד אין בו אפילו טבלה אחת. (וזה בסדר: הקוד שלנו ידאג לזה לבד — תיכף תראו איך.)</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 4.2 · מעתיקים את מחרוזת החיבור</div>
+        <p><b>מה עושים:</b> בדשבורד של הפרויקט לוחצים על כפתור <b>Connect</b>. נפתח חלון "Connect to your database" ובו מחרוזת ארוכה שמתחילה ב-<span class="inline-code">postgresql://</span>. לוחצים על סמל ההעתקה 📋 לידה.</p>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">console.neon.tech</span></div>
+          <div class="neon-mock">
+            <b>Connect to your database</b> &nbsp;&nbsp;<span class="nbtn">Connect</span><br>
+            <div class="cstr">postgresql://neondb_owner:npg_a1B2c3D4e5F6@ep-cool-forest-a2b3c4d5-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require&amp;channel_binding=require &nbsp;📋</div>
+            <span style="font-size:12px;color:#9aa0a6">(המחרוזת שלכם תיראה דומה אבל שונה — היא ייחודית לפרויקט שלכם)</span>
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 מה יש בתוך המחרוזת הזו</div>
+          <p>הכל: מי אתם (<span class="inline-code">neondb_owner</span>), <b>הסיסמה</b> (החלק שאחרי הנקודתיים), כתובת השרת של Neon, שם המסד (<span class="inline-code">neondb</span>), והוראות אבטחה (<span class="inline-code">sslmode=require</span> = תקשורת מוצפנת חובה). שורה אחת = מפתח מלא למחסן שלכם.</p>
+        </div>
+        <div class="info important">
+          <div class="hd">🔒 אזהרת אבטחה אמיתית</div>
+          <p>המחרוזת הזו היא <b>סיסמה לכל דבר</b>. לא מדביקים אותה בצ'אטים, לא בקוד, לא במצגות. רק בשני מקומות: פקודת ה-export בטרמינל (עוד רגע) והגדרות הסביבה של Render (תחנה 6). אם בטעות נחשפה — בדשבורד של Neon אפשר לאפס סיסמה (Reset password) ולקבל מחרוזת חדשה.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 4.3 · מתקינים את ספריית pg</div>
+        <p><b>מה הקטע:</b> כמו ש-Express הוא ערכת הכלים לדבר עם האינטרנט, <span class="inline-code">pg</span> היא ערכת הכלים לדבר עם Postgres. חוזרים לטרמינל של Cloud Shell:</p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל</span><pre>cd ~/takziv-aviv
+# מתקינים את ספריית pg - הדרך הסטנדרטית של Node.js לדבר עם Postgres
+npm install pg</pre></div>
+        <p>👀 אמורים לראות שוב <span class="inline-code">added N packages</span> — כמו בהתקנת Express.</p>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 4.4 · מחליפים את server.js בגרסה המלאה והסופית</div>
+        <p><b>מה הקטע:</b> זו הגרסה שתעלה לאוויר — האפליקציה השלמה: חיבור ל-Postgres, חמש נקודות הקצה מהטבלה של בלוק 2, והדף היפה עם הטופס. היא ארוכה יותר, אבל בנויה מ-6 חלקים ממוספרים שכל אחד מהם כבר מוכר לכם. <b>כרגיל: מסמנים הכל בקובץ (Ctrl+A / Cmd+A), מדביקים במקום, ושומרים.</b></p>
+        <div class="code-block" data-lang="js"><span class="lang">JAVASCRIPT · server.js — הגרסה הסופית · קובץ שלם, מחליף את הכל</span><pre>// ==========================================================
+//   תקציבי אביב · server.js — הגרסה המלאה והסופית
+//   Express server + direct Postgres (Neon) + built-in page
+// ==========================================================
+
+// --- part 1: load the two toolkits we installed with npm ---
+const express = require('express');   // npm install express
+const { Pool } = require('pg');       // npm install pg
+
+const app = express();
+app.use(express.json());   // teach the server to read JSON sent by the browser
+
+const BUDGET = 1650;        // the total budget, in dollars
+
+// --- part 2: connect to the database (the "pantry") ---
+// the address + password come from an environment variable — NEVER from the code
+if (!process.env.DATABASE_URL) {
+  console.log('==========================================================');
+  console.log('  שגיאה: לא הוגדר DATABASE_URL — אין כתובת למסד הנתונים');
+  console.log('  הפתרון: הריצו בטרמינל את הפקודה הבאה, עם המחרוזת');
+  console.log('  שהעתקתם מ-Neon בין הגרשיים, ואז הריצו שוב node server.js');
+  console.log("  export DATABASE_URL='postgresql://.....'");
+  console.log('==========================================================');
+  process.exit(1);
+}
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+// --- part 3: create our table automatically, if it does not exist yet ---
+async function initDb() {
+  await pool.query(
+    'CREATE TABLE IF NOT EXISTS expenses (' +
+    ' id SERIAL PRIMARY KEY,' +
+    ' description TEXT NOT NULL,' +
+    ' amount NUMERIC(10,2) NOT NULL,' +
+    ' expense_date DATE NOT NULL DEFAULT CURRENT_DATE' +
+    ')'
+  );
+}
+
+// --- part 4: the API endpoints (the "order notes" the kitchen understands) ---
+
+// GET /api/summary → the budget, how much was spent, and the balance
+app.get('/api/summary', async (req, res) =&gt; {
+  const r = await pool.query('SELECT COALESCE(SUM(amount), 0) AS spent FROM expenses');
+  const spent = Number(r.rows[0].spent);
+  res.json({ budget: BUDGET, spent: spent, balance: BUDGET - spent });
+});
+
+// GET /api/expenses → the full list of expenses, newest first
+app.get('/api/expenses', async (req, res) =&gt; {
+  const r = await pool.query('SELECT * FROM expenses ORDER BY id DESC');
+  res.json(r.rows);
+});
+
+// POST /api/expenses → add a new expense (sent from the form on the page)
+app.post('/api/expenses', async (req, res) =&gt; {
+  const description = req.body.description;
+  const amount = req.body.amount;
+  if (!description || !amount) {
+    return res.status(400).json({ error: 'חסר תיאור או סכום' });
+  }
+  const r = await pool.query(
+    'INSERT INTO expenses (description, amount) VALUES ($1, $2) RETURNING *',
+    [description, amount]
+  );
+  res.status(201).json(r.rows[0]);
+});
+
+// DELETE /api/expenses/:id → delete one expense by its id number
+app.delete('/api/expenses/:id', async (req, res) =&gt; {
+  await pool.query('DELETE FROM expenses WHERE id = $1', [req.params.id]);
+  res.json({ ok: true });
+});
+
+// --- part 5: the page itself (the "dining room"), served at the home address ---
+const PAGE = `&lt;!DOCTYPE html&gt;
+&lt;html lang="he" dir="rtl"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+&lt;title&gt;תקציבי אביב&lt;/title&gt;
+&lt;style&gt;
+  body{font-family:Arial,sans-serif;background:#faf7f0;color:#142a45;margin:0;padding:24px}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{text-align:center;margin:8px 0 2px}
+  .sub{text-align:center;color:#666;font-size:14px;margin-bottom:8px}
+  .period{display:block;width:fit-content;margin:0 auto 18px;padding:4px 16px;border:1px solid #c39a3a;border-radius:999px;background:#f3e6c4;font-size:13px}
+  .cards{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .card{flex:1;min-width:150px;border-radius:12px;padding:14px;color:#fff}
+  .c1{background:#142a45}.c2{background:#4a341c}.c3{background:#1c3f2f}
+  .card .l{font-size:12px;color:#d8b862}
+  .card .v{font-size:22px;font-weight:bold}
+  .bar{height:10px;background:#ece3cf;border-radius:999px;overflow:hidden;margin-bottom:20px}
+  .bar&gt;div{height:100%;background:#c39a3a}
+  form{display:flex;gap:8px;flex-wrap:wrap;background:#fff;border:1px solid #ece3cf;border-radius:12px;padding:12px;margin-bottom:16px}
+  input{flex:1;min-width:130px;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:15px}
+  button{padding:10px 18px;border:none;border-radius:8px;background:#142a45;color:#fff;font-size:15px;cursor:pointer}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}
+  th{background:#142a45;color:#fff;padding:8px;font-size:13px;text-align:right}
+  td{padding:8px;border-bottom:1px solid #ece3cf;font-size:14px}
+  .del{background:#8b1e1e;padding:4px 10px;font-size:12px}
+  .empty{text-align:center;color:#999;padding:14px}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="wrap"&gt;
+  &lt;h1&gt;תקציבי אביב&lt;/h1&gt;
+  &lt;div class="sub"&gt;מערכת ניהול תקציב אישית · הנתונים נשמרים ב-Postgres בענן&lt;/div&gt;
+  &lt;span class="period"&gt;3.7.2026 – 30.9.2026&lt;/span&gt;
+  &lt;div class="cards"&gt;
+    &lt;div class="card c1"&gt;&lt;div class="l"&gt;היקף תקציב כולל&lt;/div&gt;&lt;div class="v" id="budget"&gt;...&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="card c2"&gt;&lt;div class="l"&gt;ניצול בפועל&lt;/div&gt;&lt;div class="v" id="spent"&gt;...&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="card c3"&gt;&lt;div class="l"&gt;יתרה זמינה&lt;/div&gt;&lt;div class="v" id="balance"&gt;...&lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="bar"&gt;&lt;div id="barFill" style="width:0%"&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;form id="addForm"&gt;
+    &lt;input id="desc" placeholder="תיאור ההוצאה (למשל: רישיון תוכנה)" required&gt;
+    &lt;input id="amount" type="number" step="0.01" min="0.01" placeholder="סכום בדולרים" required&gt;
+    &lt;button type="submit"&gt;רישום ההוצאה&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;table&gt;
+    &lt;thead&gt;&lt;tr&gt;&lt;th&gt;תאריך&lt;/th&gt;&lt;th&gt;תיאור&lt;/th&gt;&lt;th&gt;סכום&lt;/th&gt;&lt;th&gt;מחיקה&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+    &lt;tbody id="rows"&gt;&lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
+&lt;script&gt;
+function money(n){ return '$' + Number(n).toFixed(2); }
+function esc(s){ var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function load(){
+  fetch('/api/summary').then(function(r){ return r.json(); }).then(function(s){
+    document.getElementById('budget').textContent = money(s.budget);
+    document.getElementById('spent').textContent = money(s.spent);
+    document.getElementById('balance').textContent = money(s.balance);
+    var pct = s.budget &gt; 0 ? Math.min(100, Math.round(s.spent / s.budget * 100)) : 0;
+    document.getElementById('barFill').style.width = pct + '%';
+  });
+  fetch('/api/expenses').then(function(r){ return r.json(); }).then(function(list){
+    var tb = document.getElementById('rows');
+    if (list.length === 0) {
+      tb.innerHTML = '&lt;tr&gt;&lt;td colspan="4" class="empty"&gt;אין הוצאות עדיין — הוסיפו את הראשונה בטופס למעלה&lt;/td&gt;&lt;/tr&gt;';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i &lt; list.length; i++) {
+      var e = list[i];
+      var d = new Date(e.expense_date).toLocaleDateString('he-IL');
+      html += '&lt;tr&gt;&lt;td&gt;' + d + '&lt;/td&gt;&lt;td&gt;' + esc(e.description) + '&lt;/td&gt;&lt;td&gt;' + money(e.amount) +
+              '&lt;/td&gt;&lt;td&gt;&lt;button class="del" onclick="delExpense(' + e.id + ')"&gt;מחיקה&lt;/button&gt;&lt;/td&gt;&lt;/tr&gt;';
+    }
+    tb.innerHTML = html;
+  });
+}
+document.getElementById('addForm').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var body = JSON.stringify({
+    description: document.getElementById('desc').value,
+    amount: document.getElementById('amount').value
+  });
+  fetch('/api/expenses', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body })
+    .then(function(){ document.getElementById('addForm').reset(); load(); });
+});
+function delExpense(id){
+  fetch('/api/expenses/' + id, { method: 'DELETE' }).then(load);
+}
+load();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;`;
+
+app.get('/', (req, res) =&gt; {
+  res.send(PAGE);
+});
+
+// --- part 6: start everything, in the right order ---
+// on Render, the platform chooses the door number and passes it in PORT;
+// in Cloud Shell there is no PORT variable, so we fall back to 8080
+const PORT = process.env.PORT || 8080;
+
+initDb()
+  .then(() =&gt; {
+    console.log('OK: מחובר ל-Postgres והטבלה מוכנה');
+    app.listen(PORT, () =&gt; {
+      console.log('OK: תקציבי אביב פועלת ומאזינה על פורט ' + PORT);
+    });
+  })
+  .catch((err) =&gt; {
+    console.log('שגיאה: החיבור למסד הנתונים נכשל');
+    console.log('הודעת המערכת: ' + err.message);
+    console.log('בדקו: האם העתקתם את המחרוזת המלאה מ-Neon? האם היא בין גרשיים?');
+    process.exit(1);
+  });</pre></div>
+        <div class="meaning">
+          <div class="hd">🧠 סיור בקובץ, חלק-חלק (כל חלק ממופה לתרשים חמשת השלבים)</div>
+          <p><b>חלק 1 — טעינת כלים:</b> עכשיו שתי ערכות: express (לדבר עם האינטרנט) ו-pg (לדבר עם Postgres). השורה <span class="inline-code">app.use(express.json())</span> מלמדת את השרת לקרוא JSON שמגיע מהטופס.</p>
+          <p><b>חלק 2 — החיבור למחסן:</b> קודם בדיקת בטיחות: אם שכחתם להגדיר את משתנה הסביבה, השרת לא קורס בשקט — הוא מדפיס לכם הוראות תיקון בעברית ועוצר. ואז <span class="inline-code">new Pool(...)</span> פותח צינור חיבור אחד ל-Postgres, לפי הכתובת שבמשתנה הסביבה. שימו לב: <b>הסיסמה לא מופיעה בקוד בשום מקום.</b></p>
+          <p><b>חלק 3 — יצירת הטבלה אוטומטית:</b> ה-SQL כאן אומר "צור טבלת expenses — אם היא לא קיימת כבר". בזכות זה אין שום שלב ידני של "להכין את המסד": ההרצה הראשונה בונה את המחסן לבד, וההרצות הבאות פשוט ממשיכות. (עמודת id ממוספרת לבד, ותאריך נרשם לבד.)</p>
+          <p><b>חלק 4 — נקודות הקצה:</b> הטבלה מבלוק 2, אחת-לאחת בקוד. שימו לב לשורות <span class="inline-code">pool.query(...)</span> — זה בדיוק שלב 4 בתרשים: המטבח שואל את המחסן ב-SQL אמיתי. ולשאלת האבטחה: הסימנים <span class="inline-code">$1, $2</span> הם "ממלאי מקום" ש-pg ממלא בזהירות — כך נתונים מהגולש לא יכולים "להתחפש" לפקודת SQL (ההגנה הבסיסית מפני SQL Injection).</p>
+          <p><b>חלק 5 — הדף (חדר האוכל):</b> כל ה-HTML/CSS/JavaScript של הדף שמור במשתנה אחד ארוך, ונקודת הקצה <span class="inline-code">GET /</span> פשוט מגישה אותו. ה-JavaScript שבדף הוא "המלצר": שולח fetch ל-<span class="inline-code">/api/summary</span> ו-<span class="inline-code">/api/expenses</span>, ומצייר את התוצאות.</p>
+          <p><b>חלק 6 — ההפעלה, עם שינוי קטן וקריטי:</b> <span class="inline-code">process.env.PORT || 8080</span> פירושו: "אם הסביבה מכתיבה מספר דלת — קח אותו; אחרת, 8080". למה? כי <b>Render מקצה לשרתים שלו דלת משלו</b> (בדרך כלל 10000) ומודיע עליה דרך משתנה סביבה בשם PORT. בלי השורה הזו — האתר היה עובד ב-Cloud Shell ונכשל ב-Render. עכשיו הוא עובד בשניהם. ולבסוף: קודם מתחברים למחסן (initDb), רק אחר-כך פותחים את הדלת (listen) — מסעדה לא פותחת לפני שיש מלאי.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 4.5 · מחליפים גם את package.json (הכנה ל-Render)</div>
+        <p><b>מה הקטע:</b> בתחנה 6, Render יצטרך לדעת איך מפעילים את הפרויקט. המוסכמה: פקודת <span class="inline-code">npm start</span>, שמוגדרת בתוך package.json. נחליף את קובץ ברירת-המחדל משלב 3.2 בגרסה מסודרת. <b>איך:</b> בעורך פותחים את <span class="inline-code">package.json</span> (לוחצים עליו בסייר הקבצים משמאל, או מריצים בטרמינל <span class="inline-code">cloudshell edit ~/takziv-aviv/package.json</span>) ← מסמנים הכל ← מדביקים ← שומרים:</p>
+        <div class="code-block" data-lang="json"><span class="lang">JSON · package.json — קובץ שלם, מחליף את הכל</span><pre>{
+  "name": "takziv-aviv",
+  "version": "1.0.0",
+  "description": "Takziv Aviv - personal budget app (Lecture 13)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  }
+}</pre></div>
+        <div class="meaning">
+          <div class="hd">🧠 מה זה אומר</div>
+          <p>השורה החשובה: <span class="inline-code">"start": "node server.js"</span> — היא מלמדת את העולם ש"להפעיל את הפרויקט הזה" = להריץ <span class="inline-code">node server.js</span>. מעכשיו גם <span class="inline-code">npm start</span> יעבוד אצלכם, וחשוב מזה — יעבוד אצל Render. חלק ה-dependencies מתעד את שתי הספריות שהתקנו, כדי ש-Render יידע מה להתקין.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 4.6 · מגדירים את משתנה הסביבה בטרמינל</div>
+        <p><b>מה עושים:</b> מעתיקים את הקופסה, מדביקים אותה בעורך טקסט זמני או ישר בטרמינל, <b>מחליפים את מה שבין הגרשיים במחרוזת שהעתקתם מ-Neon בשלב 4.2</b>, ומריצים:</p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל · להחליף רק את מה שבין הגרשיים</span><pre># מחליפים רק את מה שבין הגרשיים - במחרוזת המלאה שהעתקתם מ-Neon.
+# חובה להשאיר את הגרשיים! יש במחרוזת תווים מיוחדים (כמו &amp;)
+# שבלעדיהם הטרמינל יתבלבל ויעשה דברים מוזרים.
+export DATABASE_URL='postgresql://.....'</pre></div>
+        <p>ומיד בודקים שהשמירה הצליחה:</p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל</span><pre># בדיקה: מבקשים מהטרמינל להדפיס בחזרה את מה ששמרנו הרגע
+echo $DATABASE_URL</pre></div>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">shell.cloud.google.com</span></div>
+          <div class="mock-term">
+<span class="p1">$</span> echo $DATABASE_URL<br>
+<span class="ok">postgresql://neondb_owner:npg_a1B2c3D4e5F6@ep-cool-forest...neon.tech/neondb?sslmode=require&amp;channel_binding=require</span>
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 מה זה אומר + שתי מלכודות ידועות</div>
+          <p><span class="inline-code">export</span> = "שמור בסביבת הטרמינל הזו ערך בשם DATABASE_URL". ה-echo מדפיס אותו בחזרה — אם רואים את המחרוזת המלאה, הצליח.</p>
+          <p><b>מלכודת 1 — הגרשיים:</b> אסור להשמיט אותם. במחרוזת יש תו <span class="inline-code">&amp;</span>, ובלי גרשיים הטרמינל מפרש אותו כפקודה מיוחדת והמחרוזת נקטעת בשקט.</p>
+          <p><b>מלכודת 2 — export הוא זמני:</b> הוא חי רק בטרמינל הנוכחי. פתחתם טרמינל חדש או חזרתם מחר? מריצים את ה-export שוב. (ב-Render, לעומת זאת, המשתנה יוגדר פעם אחת ויישמר לתמיד.)</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 4.7 · הרגע הגדול: מריצים את האפליקציה המלאה</div>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל</span><pre>cd ~/takziv-aviv
+node server.js</pre></div>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">shell.cloud.google.com</span></div>
+          <div class="mock-term">
+<span class="p1">$</span> node server.js<br>
+<span class="dim">(node:1234) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require'... are treated as aliases for 'verify-full' ...</span><br>
+<span class="ok">OK: מחובר ל-Postgres והטבלה מוכנה</span><br>
+<span class="ok">OK: תקציבי אביב פועלת ומאזינה על פורט 8080</span><br>
+<span class="cmt">▍ (רץ ומחכה — כרגיל אצל שרתים)</span>
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 מה זה אומר, שורה-שורה</div>
+          <p><b>שורת ה-Warning האפורה</b> — צפויה ותקינה! ספריית pg מודיעה שהיא מפרשת את הגדרת ההצפנה בדרך המחמירה ביותר (verify-full — הכי מאובטח שיש). זו הודעת מידע לעתיד, לא שגיאה. מתעלמים בראש שקט.</p>
+          <p><b>"מחובר ל-Postgres והטבלה מוכנה"</b> — השרת שלכם ב-Cloud Shell יצר קשר עם המחסן של Neon בפרנקפורט, וידא שטבלת expenses קיימת (וברגע הראשון — יצר אותה!). חיבור חי בין שתי מערכות ענן, שאתם חיברתם.</p>
+          <p><b>"פועלת ומאזינה על פורט 8080"</b> — הדלת פתוחה. עכשיו: <b>Web Preview ← Preview on port 8080</b>, בדיוק כמו בתחנה 3.</p>
+        </div>
+        <div class="st" style="margin-top:14px">👀 מה אמורים לראות בטאב שנפתח</div>
+        <p>את "תקציבי אביב" האמיתית — הדף מבלוק 1, חי אצלכם: כרטיסי תקציב, טופס, וטבלה ריקה שמזמינה הוצאה ראשונה. <b>נסו את הכל:</b> הוסיפו הוצאה (למשל "רכישת שרת ענן חודשי", 45) — הכרטיסים והפס מתעדכנים מיד. הוסיפו עוד אחת. מחקו אחת. כל לחיצה כזו היא סיבוב שלם בתרשים חמשת השלבים — עד פרנקפורט וחזרה.</p>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 4.8 · מבחן האמנזיה: מפעילים מחדש ובודקים שהזיכרון שרד</div>
+        <p><b>מה עושים:</b> משאירים את הטאב של האפליקציה פתוח, ובטרמינל: <span class="kbd">Ctrl+C</span> (השרת מת!) ← מריצים שוב <span class="inline-code">node server.js</span> ← מרעננים את טאב האפליקציה.</p>
+        <div class="checkpoint">
+          <div class="hd">✅ נקודת ביקורת · תחנה 4 (החשובה של היום)</div>
+          <p>ההוצאות שרשמתם — <b>עדיין שם</b>, למרות שהשרת מת וקם לתחייה? זה כל הסיפור של התחנה: הנתונים כבר לא גרים אצל השרת, אלא במחסן חיצוני ששורד הכל. עצרו את השרת (Ctrl+C) — וממשיכים לתחנה 5, להוציא את הקוד לעולם.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+  <div class="fixit">
+    <div class="hd">🛟 אם משהו השתבש · תחנה 4</div>
+    <div class="sub">התקלות הנפוצות של חיבור מסד נתונים, ופתרונן:</div>
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <tr><th>מה רואים</th><th>מה הסיבה</th><th>מה עושים</th></tr>
+      <tr><td>ההודעה "לא הוגדר DATABASE_URL" (של הקוד שלנו)</td><td>ה-export לא הורץ בטרמינל הזה, או שהטרמינל הוחלף</td><td>מריצים שוב את פקודת ה-export משלב 4.6 (עם המחרוזת), ואז שוב node server.js</td></tr>
+      <tr><td><span class="inline-code">echo $DATABASE_URL</span> מדפיס מחרוזת קטועה (בלי הסוף)</td><td>הגרשיים הושמטו וה-<span class="inline-code">&amp;</span> קטע את הפקודה</td><td>מריצים שוב את ה-export, הפעם עם גרשיים סביב כל המחרוזת</td></tr>
+      <tr><td>"החיבור למסד הנתונים נכשל" + <span class="inline-code">getaddrinfo ENOTFOUND</span></td><td>שגיאת העתקה בכתובת השרת (חסר קטע מהמחרוזת)</td><td>חוזרים ל-Neon ← Connect ← מעתיקים שוב את המחרוזת בשלמותה ← export מחדש</td></tr>
+      <tr><td>"נכשל" + <span class="inline-code">password authentication failed</span></td><td>חלק הסיסמה במחרוזת שגוי/חלקי</td><td>מעתיקים מחדש מ-Neon; אם צריך — Reset password בדשבורד ומקבלים מחרוזת חדשה</td></tr>
+      <tr><td>Warning: SECURITY WARNING על SSL</td><td>הודעת מידע צפויה של ספריית pg</td><td>שום דבר — זה תקין, החיבור מוצפן ומאומת. ממשיכים</td></tr>
+      <tr><td>הדף עולה אך ההוצאה לא נוספת בלחיצה</td><td>לרוב: השרת רץ עם גרסה ישנה של הקובץ</td><td>Ctrl+C ← ודאו שהקובץ נשמר (אין נקודה על הלשונית) ← node server.js מחדש</td></tr>
+      <tr><td>ההרצה הראשונה איטית (שנייה-שתיים)</td><td>מסד Neon "התעורר" מתרדמת חיסכון</td><td>תקין לגמרי — זו בדיוק ההתנהגות שתיארנו; הבקשות הבאות מהירות</td></tr>
+    </table>
+    </div>
+  </div>
+  <div class="israel">
+    <div class="hd">🇮🇱 מה קורה בישראל?</div>
+    <p>סטארטאפים ישראליים רבים מתחילים בדיוק במבנה הזה: MVP על שכבות חינמיות (שרת על Render/Railway + מסד על Neon/Supabase), ורק כשמגיעה תעבורה אמיתית עוברים לתשתית בתשלום. הארכיטקטורה שאתם בונים היום היא ארכיטקטורת פתיחה אמיתית של התעשייה.</p>
+  </div>
+  <div class="quiz" data-yv="הקוד נוסע ל-GitHub הפומבי; הסוד נשאר בסביבה. process.env הוא בדיוק נקודת המפגש: הקוד שואל, הסביבה עונה.">
+    <div class="q-tag">❓ חידון · בלוק 5</div>
+    <div class="q-txt">למה שמרנו את מחרוזת החיבור ב-<span class="inline-code">export DATABASE_URL=...</span> במקום לכתוב אותה ישירות בתוך server.js?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>כי JavaScript לא תומך במחרוזות ארוכות כל כך.</button>
+    <button class="quiz-opt" data-c="1" data-exp="המחרוזת מכילה סיסמה מלאה למסד. הקוד שלנו עולה בתחנה הבאה ל-GitHub — מקום גלוי. משתנה סביבה מפריד בין הקוד (ציבורי, זהה בכל מקום — כמו הכספת) לבין הסוד (מוגדר בנפרד בכל סביבה — כמו קוד הפתיחה שנמסר בצ'ק-אין). בכל סביבה מגדירים את אותו שם משתנה עם הערך המתאים לה." onclick="quizAns(this)"><span class="k">ב</span>כי המחרוזת מכילה סיסמה, והקוד עומד לעלות ל-GitHub — סודות מגדירים מחוץ לקוד.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>כי Postgres מסרב להתחבר אם הכתובת כתובה בקוד.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>כי export גורם לחיבור להיות מהיר יותר.</button>
+    <div class="quiz-fb"></div>
+  </div>
+  <div class="takeaway">
+    <div class="big-emoji">🐘</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">דיסק של שרת ענן הוא לוח מחיק; מסד נתונים חיצוני הוא הזיכרון האמיתי. האפליקציה שלכם כבר מחוברת ל-Postgres חי, הסוד נשמר במשתנה סביבה — והנתונים שרדו את מבחן ההפעלה-מחדש.</div>
+  </div>
+</section>
+<section class="section" id="block6">
+  <span class="block-tag">בלוק 6 · תחנה 5: שולחים את הקוד ל-GitHub · 40 דקות</span>
+  <h2>GitHub: מוציאים את הקוד מהמחשב הפרטי אל הספרייה העולמית</h2>
+  <p class="section-sub">הקוד שלכם עובד — אבל הוא כלוא בתיקייה של Cloud Shell, ש-Render לא רואה. בתחנה הזו מוציאים אותו למקום ש-Render כן מכיר: GitHub. כולל החלק שמפחיד את כולם — ההזדהות — צעד-צעד.</p>
+  <div class="pipe">
+    <span class="pst done"><span class="n">🍽️</span>1 · מושגים</span>
+    <span class="pst done"><span class="n">☁️</span>2 · Cloud Shell</span>
+    <span class="pst done"><span class="n">⚙️</span>3 · שרת ראשון</span>
+    <span class="pst done"><span class="n">🐘</span>4 · מסד נתונים</span>
+    <span class="pst on"><span class="n">🐙</span>5 · GitHub</span>
+    <span class="pst"><span class="n">🚀</span>6 · Render</span>
+  </div>
+  <div class="pipe-cap">אתם בתחנה 5 מתוך 6 · בסוף התחנה: הקוד שלכם מופיע בעמוד ריפו ציבורי ב-GitHub</div>
+  <div class="deep-card">
+    <h3>📚 שלושה מושגים בדקה, לפני הידיים</h3>
+    <p class="lead"><b>Git</b> הוא כלי (שכבר מותקן לכם) ששומר "צילומי מצב" של תיקיית קוד — כל גרסה נשמרת, אפשר לחזור אחורה. <b>GitHub</b> הוא אתר שמאחסן עותקים של פרויקטים כאלה בענן — הספרייה העולמית של קוד. <b>ריפו (Repository)</b> = "תא" אחד בספרייה הזו, לפרויקט אחד.</p>
+    <p><b>ולמה אנחנו חייבים את זה עכשיו?</b> סיבה מעשית אחת: Render — התחנה הבאה — לא יודע לקחת קוד מהטרמינל שלכם. הוא יודע לקחת קוד <b>רק מריפו</b>. GitHub הוא המסוע שמעביר את הקוד מהמחשב שלכם אל מכונת הפרסום. (עולם ה-Git עצום — branches, merges, עבודת צוות — ונקדיש לו הרצאה משלו. היום: המסלול המינימלי, המדויק, שעובד.)</p>
+  </div>
+  <div class="lab">
+    <div class="lab-head"><span class="lab-pill">🧪 HANDS-ON</span><h3>מ-Cloud Shell אל GitHub — שבעה צעדים</h3></div>
+    <ol class="lab-steps">
+      <li class="lab-step">
+        <div class="st">🎯 שלב 5.1 · יוצרים קובץ .gitignore (30 שניות שחוסכות צרות)</div>
+        <p><b>מה הקטע:</b> תיקיית <span class="inline-code">node_modules</span> מכילה אלפי קבצים של ספריות — אין שום סיבה לשלוח אותם ל-GitHub (Render מתקין אותם מחדש לבד לפי package.json). קובץ בשם <span class="inline-code">.gitignore</span> אומר ל-Git "את אלה אל תיקח". יוצרים אותו בדיוק כמו שיצרנו את server.js:</p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל</span><pre>cd ~/takziv-aviv
+touch .gitignore
+cloudshell edit ~/takziv-aviv/.gitignore</pre></div>
+        <p>ובקובץ שנפתח מדביקים ושומרים:</p>
+        <div class="code-block" data-lang="bash"><span class="lang">תוכן הקובץ .gitignore — קובץ שלם</span><pre># אל תשלח את תיקיית הכלים ל-GitHub: היא ענקית, ו-Render ממילא מתקין אותה מחדש בעצמו
+node_modules/</pre></div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 5.2 · מציגים את עצמכם בפני Git (פעם אחת בחיים)</div>
+        <p><b>מה הקטע:</b> Git מסרב לשמור "צילום מצב" בלי לדעת מי המצלם. מגדירים שם ומייל — פעם אחת, והם נשמרים לתמיד בתיקיית הבית. <b>שימו לב: זה המקום היחיד היום שבו מקלידים ערכים אישיים משלכם</b> — החליפו את השם והמייל שבין הגרשיים:</p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל · להחליף את הערכים שבין הגרשיים</span><pre># פעם אחת בלבד: מציגים את עצמכם בפני Git (השם יופיע ליד כל שמירה).
+# החליפו את מה שבין הגרשיים בפרטים שלכם, באותיות באנגלית:
+git config --global user.name "Israel Israeli"
+git config --global user.email "israel@example.com"
+# מבקשים מ-Git לזכור את פרטי ההתחברות, כדי להקליד אותם רק פעם אחת
+git config --global credential.helper store</pre></div>
+        <div class="meaning">
+          <div class="hd">🧠 מה זה אומר</div>
+          <p>שתי השורות הראשונות = תג השם שלכם על כל שמירה. השלישית (<span class="inline-code">credential.helper store</span>) מבקשת מ-Git לזכור את פרטי ההתחברות ל-GitHub אחרי הפעם הראשונה — כדי שאת המפתח שניצור עוד רגע תדביקו <b>פעם אחת בלבד</b>. (הוא נשמר כקובץ טקסט בתיקיית הבית הפרטית שלכם — סבבה לסביבת לימוד.)</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 5.3 · יוצרים חשבון GitHub וריפו חדש</div>
+        <p><b>אם אין לכם חשבון:</b> נכנסים ל-<span class="inline-code">github.com</span> ← <b>Sign up</b> ← מייל, סיסמה, שם משתמש (באנגלית, בלי רווחים — תצטרכו אותו בעוד רגע!) ← מאמתים מייל. <b>אם יש:</b> מתחברים.</p>
+        <p><b>יוצרים ריפו:</b> בפינה העליונה לוחצים על סמל <b>+</b> ← <b>New repository</b>, וממלאים <b>בדיוק</b> כך:</p>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">github.com/new</span></div>
+          <div class="gh-mock">
+            <div class="row"><span class="icon">📦</span><span>Repository name: &nbsp;<input type="text" value="takziv-aviv" readonly></span></div>
+            <div class="row"><span class="icon">🔘</span><span><b>Public</b> ✓ &nbsp;<span style="color:#8b949e">(כדי ש-Render החינמי יגיע אליו בקלות)</span></span></div>
+            <div class="row"><span class="icon">⬜</span><span style="color:#f85149"><b>Add a README file — להשאיר לא מסומן!</b></span></div>
+            <div class="row"><span class="icon">⬜</span><span style="color:#8b949e">.gitignore template: None &nbsp;·&nbsp; License: None — להשאיר כמו שהם</span></div>
+            <div class="row"><span class="btn-green">Create repository</span></div>
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 למה בלי README?</div>
+          <p>כי אצלנו הקוד כבר קיים ב-Cloud Shell, ואנחנו רוצים ריפו <b>ריק לגמרי</b> לקבל אותו. אם GitHub יוצר בו קובץ README, נוצרות "שתי היסטוריות" שמתנגשות בדחיפה הראשונה — תקלת המתחילים הקלאסית של Git. ריק = חלק.</p>
+          <p>👀 <b>מה אמורים לראות אחרי הלחיצה:</b> עמוד "Quick setup" עם כתובת הריפו החדש והצעות לפקודות. לא מעתיקים מהן כלום — יש לנו קופסאות משלנו, מותאמות בדיוק.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 5.4 · מייצרים "מפתח כניסה" (Personal Access Token)</div>
+        <p><b>מה הקטע:</b> כשתדחפו קוד, GitHub ידרוש להזדהות. <b>הסיסמה הרגילה שלכם לא תעבוד בטרמינל</b> — GitHub ביטל את זה מטעמי אבטחה. במקומה: טוקן — מפתח ארוך וחד-פעמי, שאפשר לבטל בכל רגע בלי להחליף את סיסמת החשבון. מסלול הקליקים המדויק (באתר GitHub, כשאתם מחוברים):</p>
+        <ol style="font-size:18px">
+          <li>לוחצים על <b>תמונת הפרופיל</b> (פינה עליונה) ← <b>Settings</b></li>
+          <li>בתפריט הצד, בתחתית: <b>Developer settings</b></li>
+          <li><b>Personal access tokens</b> ← <b>Tokens (classic)</b></li>
+          <li><b>Generate new token</b> ← <b>Generate new token (classic)</b></li>
+          <li>Note: כותבים <span class="inline-code">cloud-shell</span> · Expiration: בוחרים <b>90 days</b></li>
+          <li>ברשימת ההרשאות מסמנים תיבה אחת בלבד: <b>repo</b> (השורה הראשונה)</li>
+          <li>גוללים למטה ← <b>Generate token</b></li>
+        </ol>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">github.com/settings/tokens</span></div>
+          <div class="gh-mock">
+            <div class="row"><span class="icon">✅</span><span>Make sure to copy your personal access token now. You won't be able to see it again!</span></div>
+            <div class="row"><span style="background:#0f2e1c;border:1px solid #16532c;border-radius:8px;padding:6px 12px;font-family:'Courier New',monospace;font-size:13px;color:#7ee787">ghp_A1b2C3d4E5f6G7h8I9j0K1l2M3n4O5p6Q7r8 &nbsp;📋</span></div>
+          </div>
+        </div>
+        <div class="info important">
+          <div class="hd">⚠️ הרגע החד-פעמי של היום</div>
+          <p>הטוקן (מתחיל ב-<span class="inline-code">ghp_</span>) מוצג <b>פעם אחת בלבד</b>. העתיקו אותו עכשיו והדביקו אותו זמנית במקום בטוח (פתק/מסמך פרטי). אם פספסתם — לא נורא: מוחקים אותו ומייצרים חדש באותו מסלול. וכמו מחרוזת Neon: הטוקן הוא סיסמה. לא משתפים.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 5.5 · אורזים את הפרויקט (צילום המצב הראשון)</div>
+        <p><b>מה עושים:</b> חוזרים לטרמינל של Cloud Shell ומדביקים. ארבע פקודות — כל אחת מוסברת בהערה שמעליה:</p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל</span><pre>cd ~/takziv-aviv
+# הופכים את התיקייה לפרויקט Git (נוצרת "ספריית גרסאות" נסתרת בשם .git)
+git init
+# מסמנים את כל הקבצים לשמירה (חוץ ממה שרשום ב-.gitignore)
+git add .
+# שומרים "צילום מצב" ראשון של הפרויקט, עם תיאור קצר
+git commit -m "Takziv Aviv - first version"
+# נותנים לענף הראשי את השם המקובל: main
+git branch -M main</pre></div>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">shell.cloud.google.com</span></div>
+          <div class="mock-term">
+<span class="p1">$</span> git commit -m "Takziv Aviv - first version"<br>
+[main (root-commit) a1b2c3d] Takziv Aviv - first version<br>
+&nbsp;<span class="ok">4 files changed</span>, 350 insertions(+)
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 מה זה אומר</div>
+          <p><b>4 קבצים</b> נכנסו לצילום המצב: server.js, package.json, package-lock.json, ו-.gitignore. שימו לב מי <b>לא</b> שם: node_modules (בזכות שלב 5.1) — אלפי קבצים שנחסכו. הצילום קיים בינתיים רק אצלכם; עכשיו נשלח אותו.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 5.6 · מחברים ודוחפים — הרגע של הטוקן</div>
+        <p><b>מה עושים:</b> בקופסה הבאה יש <b>החלפה אחת ויחידה</b>: את המילה <span class="inline-code">YOUR-USERNAME</span> מחליפים בשם המשתמש שלכם ב-GitHub (זה שבחרתם בשלב 5.3). כל שאר התווים נשארים בדיוק כפי שהם. למשל, אם שם המשתמש הוא <span class="inline-code">shay-tsaban</span>, השורה תהיה: <span class="inline-code">git remote add origin https://github.com/shay-tsaban/takziv-aviv.git</span></p>
+        <div class="code-block" data-lang="bash"><span class="lang">BASH · להדביק בטרמינל · להחליף רק את YOUR-USERNAME</span><pre>cd ~/takziv-aviv
+# מחברים את הפרויקט לכתובת הריפו שיצרתם ב-GitHub.
+# החליפו אך ורק את YOUR-USERNAME בשם המשתמש שלכם. כל השאר נשאר בדיוק כך!
+git remote add origin https://github.com/YOUR-USERNAME/takziv-aviv.git
+# שולחים ("דוחפים") את הקוד ל-GitHub
+git push -u origin main</pre></div>
+        <p><b>ואז יגיע רגע ההזדהות.</b> הטרמינל ישאל שתי שאלות:</p>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">shell.cloud.google.com</span></div>
+          <div class="mock-term">
+<span class="p1">$</span> git push -u origin main<br>
+Username for 'https://github.com': <span class="ok">shay-tsaban</span><br>
+Password for 'https://shay-tsaban@github.com': <span class="cmt">▍ (מדביקים את הטוקן - לא רואים כלום!)</span><br>
+...<br>
+To https://github.com/shay-tsaban/takziv-aviv.git<br>
+&nbsp;* [new branch]      main -&gt; main<br>
+branch 'main' set up to track <span class="ok">'origin/main'</span>.
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 שתי נקודות שמבלבלות את כולם — מראש</div>
+          <p><b>Username</b> — מקלידים את שם המשתמש שלכם ב-GitHub ולוחצים Enter. <b>Password — מדביקים את הטוקן מ-5.4 (לא את סיסמת האתר!)</b>, ולוחצים Enter.</p>
+          <p><b>ובזמן ההדבקה לא יופיע שום דבר על המסך — אפילו לא כוכביות.</b> ככה טרמינלים מסתירים סיסמאות. זה מרגיש כאילו "לא נדבק" — אבל זה שם. מדביקים פעם אחת, Enter, וזהו. (ובזכות שלב 5.2 — Git זכר את הטוקן, ולא ישאל שוב.)</p>
+        </div>
+        <div class="st" style="margin-top:14px">👀 הבדיקה: מרעננים את עמוד הריפו ב-GitHub</div>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">github.com/shay-tsaban/takziv-aviv</span></div>
+          <div class="gh-mock">
+            <div class="row"><span class="icon">📦</span><b>takziv-aviv</b> <span style="background:#21262d;border-radius:999px;padding:1px 10px;font-size:11px">Public</span></div>
+            <div class="row"><span class="icon">📄</span> .gitignore <span style="color:#8b949e;margin-left:auto">Takziv Aviv - first version</span></div>
+            <div class="row"><span class="icon">📄</span> package-lock.json <span style="color:#8b949e;margin-left:auto">Takziv Aviv - first version</span></div>
+            <div class="row"><span class="icon">📄</span> package.json <span style="color:#8b949e;margin-left:auto">Takziv Aviv - first version</span></div>
+            <div class="row"><span class="icon">📄</span> server.js <span style="color:#8b949e;margin-left:auto">Takziv Aviv - first version</span></div>
+          </div>
+        </div>
+        <div class="checkpoint">
+          <div class="hd">✅ נקודת ביקורת · תחנה 5</div>
+          <p>ארבעת הקבצים מופיעים בעמוד הריפו (ואין node_modules)? הקוד שלכם רשמית בספרייה העולמית. פתחו את server.js שם ותראו — <b>אין בו שום סיסמה</b>, רק <span class="inline-code">process.env.DATABASE_URL</span>. הכספת עלתה בלי קוד הפתיחה, בדיוק כמתוכנן. לתחנה 6!</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+  <div class="fixit">
+    <div class="hd">🛟 אם משהו השתבש · תחנה 5</div>
+    <div class="sub">תקלות ה-Git הקלאסיות — כולן פתירות בשורה-שתיים:</div>
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <tr><th>מה רואים</th><th>מה הסיבה</th><th>מה עושים</th></tr>
+      <tr><td><span class="inline-code">Please tell me who you are</span></td><td>שלב 5.2 (git config) דולג</td><td>מריצים את קופסת 5.2 (עם הפרטים שלכם), ואז שוב את פקודת ה-commit</td></tr>
+      <tr><td><span class="inline-code">Authentication failed</span></td><td>הודבקה סיסמת האתר במקום טוקן, או טוקן בלי הרשאת repo, או שגיאת הדבקה</td><td>מוודאים שמדביקים את ה-ghp_... ; אם צריך — מייצרים טוקן חדש (שלב 5.4) עם סימון repo, ומנסים שוב</td></tr>
+      <tr><td><span class="inline-code">remote origin already exists</span></td><td>פקודת remote add הורצה פעמיים (למשל אחרי טעות ב-username)</td><td>מריצים <span class="inline-code">git remote set-url origin https://github.com/שם-נכון/takziv-aviv.git</span> ואז שוב push</td></tr>
+      <tr><td><span class="inline-code">src refspec main does not match any</span></td><td>ה-commit לא הצליח (לרוב בגלל התקלה הראשונה בטבלה)</td><td>פותרים את ה-config, מריצים שוב את קופסת 5.5 במלואה, ואז push</td></tr>
+      <tr><td><span class="inline-code">! [rejected] ... fetch first</span></td><td>הריפו נוצר עם README (לא היה ריק)</td><td>הכי פשוט: מוחקים את הריפו ב-GitHub (Settings ← Danger Zone ← Delete), יוצרים חדש בלי README, ומריצים שוב את קופסת 5.6</td></tr>
+      <tr><td>ההדבקה של הטוקן "לא עושה כלום"</td><td>זו הסתרת סיסמאות רגילה של הטרמינל</td><td>להדביק פעם אחת וללחוץ Enter — זה שם גם אם לא רואים</td></tr>
+    </table>
+    </div>
+  </div>
+  <div class="quiz" data-yv="Render מתקין את הספריות בעצמו לפי package.json — לכן שולחים לו את רשימת המצרכים, לא את המזווה כולו.">
+    <div class="q-tag">❓ חידון · בלוק 6</div>
+    <div class="q-txt">למה יצרנו .gitignore שמונע מ-node_modules לעלות ל-GitHub? הרי Render יצטרך את הספריות האלה כדי להריץ את האתר!</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>כי GitHub אוסר להעלות ספריות קוד פתוח.</button>
+    <button class="quiz-opt" data-c="1" data-exp="package.json הוא 'רשימת המצרכים' — הוא מתעד בדיוק אילו ספריות צריך. Render מריץ npm install כשלב הבנייה, ומוריד את כולן טרי מהאינטרנט. לכן אין טעם לגרור אלפי קבצים כבדים דרך GitHub — שולחים את הרשימה, לא את המזווה." onclick="quizAns(this)"><span class="k">ב</span>כי package.json כבר מתעד מה צריך, ו-Render מריץ npm install ומתקין הכל בעצמו.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>כי node_modules מכיל את הסיסמאות שלנו.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>כי Git לא מסוגל טכנית לשמור יותר מ-100 קבצים.</button>
+    <div class="quiz-fb"></div>
+  </div>
+  <div class="takeaway">
+    <div class="big-emoji">🐙</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">הקוד שלכם יושב בריפו ציבורי — בלי node_modules ובלי אף סוד בפנים. ההזדהות נעשית בטוקן (לא בסיסמה), שמודבק "בעיוורון" פעם אחת ונשמר. Render כבר יכול לראות אתכם.</div>
+  </div>
+</section>
+<section class="section" id="block7">
+  <span class="block-tag">בלוק 7 · תחנה 6: מפרסמים לעולם עם Render · 40 דקות</span>
+  <h2>Render: מקוד ב-GitHub — לאתר חי שדולק 24/7</h2>
+  <p class="section-sub">התחנה האחרונה. בסופה: כתובת אינטרנט אמיתית שאפשר לשלוח לחברים, עם האפליקציה שלכם רצה בה — מחוברת ל-Neon, עם נתונים ששורדים הכל.</p>
+  <div class="pipe">
+    <span class="pst done"><span class="n">🍽️</span>1 · מושגים</span>
+    <span class="pst done"><span class="n">☁️</span>2 · Cloud Shell</span>
+    <span class="pst done"><span class="n">⚙️</span>3 · שרת ראשון</span>
+    <span class="pst done"><span class="n">🐘</span>4 · מסד נתונים</span>
+    <span class="pst done"><span class="n">🐙</span>5 · GitHub</span>
+    <span class="pst on"><span class="n">🚀</span>6 · Render</span>
+  </div>
+  <div class="pipe-cap">אתם בתחנה 6 מתוך 6 · בסוף התחנה: אתר חי בכתובת ציבורית + מבחן הישרדות נתונים</div>
+  <div class="deep-card">
+    <h3>🤷 מה בדיוק Render עושה, ולמה GitHub לבד לא מספיק?</h3>
+    <p class="lead">GitHub הוא <b>ספרייה</b>: שומר את הספר, לא מקריא אותו לאף אחד. כדי שהאתר יחיה, מישהו צריך <b>להריץ</b> את <span class="inline-code">node server.js</span> על מחשב שדולק תמיד, עם כתובת ציבורית. זה Render: הוא מתחבר לריפו, מתקין את הספריות, מריץ את השרת — ומחדש את הכל אוטומטית בכל פעם שתדחפו קוד חדש.</p>
+    <div class="info important">
+      <div class="hd">📛 ולמה לא GitHub Pages, שגם הוא חינמי?</div>
+      <p>GitHub Pages מגיש <b>קבצים סטטיים בלבד</b> — HTML/CSS/JS שנשלחים לדפדפן כמו-שהם. הוא <b>לא מריץ שום תוכנית שרת</b>. ל"תקציבי אביב" יש Backend אמיתי (server.js שמדבר עם Postgres) — ולכן חייבים שירות שמריץ תהליכים, כמו Render. אם תנסו Pages: תראו את קוד המקור כטקסט, לא אתר עובד.</p>
+    </div>
+  </div>
+  <div class="lab">
+    <div class="lab-head"><span class="lab-pill">🧪 HANDS-ON</span><h3>הפריסה: שישה צעדים עד כתובת חיה</h3></div>
+    <ol class="lab-steps">
+      <li class="lab-step">
+        <div class="st">🎯 שלב 6.1 · נרשמים ל-Render עם חשבון GitHub</div>
+        <p><b>מה עושים:</b> נכנסים ל-<span class="inline-code">dashboard.render.com/register</span> ← בוחרים <b>Sign up with GitHub</b> ← GitHub יבקש אישור (Authorize Render) ← מאשרים.</p>
+        <div class="meaning">
+          <div class="hd">🧠 למה דווקא דרך GitHub?</div>
+          <p>שתי ציפורים: אין עוד סיסמה לזכור, ו-Render מקבל מיד את החיבור לריפואים שלכם — החיבור שכל הפריסה תלויה בו. האישור שאתם נותנים מוגבל ולניתן לביטול בכל רגע מהגדרות GitHub.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 6.2 · יוצרים Web Service מהריפו</div>
+        <p><b>מה עושים:</b> בדשבורד לוחצים <b>New +</b> ← <b>Web Service</b> ← בוחרים <b>Git Provider</b> (GitHub). בפעם הראשונה Render יבקש הרשאת גישה לריפואים — בוחרים <b>All repositories</b> (או רק את takziv-aviv) ומאשרים. ואז בוחרים מהרשימה את <span class="inline-code">takziv-aviv</span> ← <b>Connect</b>.</p>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 6.3 · ממלאים את טופס ההגדרות — שדה-שדה</div>
+        <p>נפתח טופס יצירת השירות. הנה כל שדה, מה למלא בו, ולמה:</p>
+        <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>שדה</th><th>מה ממלאים</th><th>למה</th></tr>
+          <tr><td>Name</td><td><span class="inline-code">takziv-aviv</span></td><td>מזהה את השירות, ונכנס לכתובת האתר: takziv-aviv.onrender.com (אם תפוס — Render יוסיף סיומת)</td></tr>
+          <tr><td>Language</td><td><span class="inline-code">Node</span></td><td>שהמכונה תגיע עם Node.js מותקן</td></tr>
+          <tr><td>Branch</td><td><span class="inline-code">main</span></td><td>הענף שיצרנו בתחנה 5 — משם נלקח הקוד</td></tr>
+          <tr><td>Region</td><td><span class="inline-code">Frankfurt (EU Central)</span></td><td>קרוב לישראל, וקרוב ל-Neon שפתחנו בפרנקפורט — השרת והמחסן באותה עיר</td></tr>
+          <tr><td>Build Command</td><td><span class="inline-code">npm install</span></td><td>פקודת ה"הכנה": מתקינה את express ו-pg לפי package.json</td></tr>
+          <tr><td>Start Command</td><td><span class="inline-code">npm start</span></td><td>פקודת ה"הפעלה": מריצה node server.js — בזכות שלב 4.5 שהכנו</td></tr>
+          <tr><td>Instance Type</td><td><b>Free</b></td><td>חינמי לגמרי. המחיר: האתר "נרדם" אחרי רבע שעה שקטה (תיכף נדבר על זה)</td></tr>
+        </table>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 6.4 · הרגע הקריטי: מוסיפים את DATABASE_URL לפני היצירה</div>
+        <p><b>מה הקטע:</b> זוכרים? על Render אף אחד לא הריץ export. בלי המשתנה — השרת שלנו יעצור בכוונה עם הודעת השגיאה שכתבנו. לכן מגדירים אותו <b>עכשיו, בתוך הטופס</b>: באזור <b>Environment Variables</b> (בטופס היצירה) לוחצים <b>Add Environment Variable</b> וממלאים:</p>
+        <div class="envbox">
+<span class="k">Key:</span> &nbsp;&nbsp;DATABASE_URL<br>
+<span class="k">Value:</span> <span class="v">postgresql://neondb_owner:npg_a1B...@ep-...neon.tech/neondb?sslmode=require&amp;channel_binding=require</span>
+        </div>
+        <div class="info warn">
+          <div class="hd">⚠️ הבדל קטן וקריטי מהטרמינל</div>
+          <p>בטרמינל עטפנו את המחרוזת בגרשיים כי הטרמינל צריך הגנה מה-<span class="inline-code">&amp;</span>. <b>כאן — בלי גרשיים בכלל!</b> זהו שדה טופס, לא שורת פקודה: מדביקים את המחרוזת חשופה, בדיוק כפי שהועתקה מ-Neon. גרשיים כאן יהפכו לחלק מהערך — והחיבור ייכשל.</p>
+        </div>
+        <p>ולסיום: גוללים למטה ולוחצים על הכפתור הגדול <b>Create Web Service</b>.</p>
+      </li>
+      <li class="lab-step">
+        <div class="st">👀 שלב 6.5 · צופים בבנייה חיה — ולומדים לקרוא את הלוגים</div>
+        <p>נפתח מסך הלוגים — "צילום מסך חי" מהמכונה של Render. ככה נראית בנייה מוצלחת, שורה-שורה:</p>
+        <div class="mock-window">
+          <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">dashboard.render.com · Logs</span></div>
+          <div class="render-mock">
+==&gt; Cloning from https://github.com/shay-tsaban/takziv-aviv... &nbsp;<span style="color:#8b949e">← מוריד את הקוד מ-GitHub</span><br>
+==&gt; Running build command 'npm install'... &nbsp;<span style="color:#8b949e">← מתקין את express ו-pg</span><br>
+added 70 packages in 4s<br>
+==&gt; Running 'npm start' &nbsp;<span style="color:#8b949e">← מפעיל לפי package.json</span><br>
+&gt; takziv-aviv@1.0.0 start<br>
+&gt; node server.js<br>
+<span style="color:#8b949e">(node) Warning: SECURITY WARNING: The SSL modes ... aliases for 'verify-full' ← מוכר? תקין!</span><br>
+OK: מחובר ל-Postgres והטבלה מוכנה<br>
+OK: תקציבי אביב פועלת ומאזינה על פורט 10000 &nbsp;<span style="color:#8b949e">← 10000! ראו הסבר</span><br>
+==&gt; <span style="color:#4ade80">Your service is live 🎉</span><br>
+==&gt; Available at your primary URL <span style="color:#67e8f9">https://takziv-aviv.onrender.com</span><br><br>
+<span class="status">✓ Deployed</span>
+          </div>
+        </div>
+        <div class="meaning">
+          <div class="hd">🧠 שימו לב לשני דברים יפים בלוג</div>
+          <p><b>"פורט 10000"</b> — לא 8080! זה בדיוק <span class="inline-code">process.env.PORT || 8080</span> משלב 4.4 בפעולה: Render הכתיב דלת משלו דרך משתנה סביבה, והקוד שלנו כיבד את זה. אותו קוד, שתי סביבות, אפס שינויים.</p>
+          <p><b>"מחובר ל-Postgres"</b> — השרת של Render בפרנקפורט מדבר עם המחסן של Neon בפרנקפורט. משתנה הסביבה שהגדרתם בטופס עשה את העבודה.</p>
+        </div>
+      </li>
+      <li class="lab-step">
+        <div class="st">🎯 שלב 6.6 · פותחים את הכתובת — ומריצים את מבחן ההישרדות הסופי</div>
+        <p><b>מה עושים:</b> לוחצים על הקישור <span class="inline-code">https://takziv-aviv.onrender.com</span> שבראש עמוד השירות. זו כתובת ציבורית אמיתית — שלחו אותה עכשיו למישהו בטלפון, שיפתח אצלו. ואז, המבחן שסוגר את המעגל של תחנה 4:</p>
+        <ol style="font-size:18px">
+          <li><b>מוסיפים הוצאה</b> באתר החי (למשל: "רישיון תוכנה שנתי", 120).</li>
+          <li>בעמוד השירות ב-Render לוחצים <b>Manual Deploy ← Deploy latest commit</b> — זה בונה מחדש את השירות על מכונה טרייה (בדיוק כמו "הירדמות והתעוררות", רק לפי דרישה). מחכים ל-Deployed (2–3 דקות).</li>
+          <li><b>מרעננים את האתר.</b></li>
+        </ol>
+        <div class="checkpoint">
+          <div class="hd">✅ נקודת ביקורת · תחנה 6 — סוף המסלול</div>
+          <p>ההוצאה שם. <b>מכונה חדשה לגמרה, דיסק חדש לגמרי — והנתונים חיים</b>, כי הם מעולם לא גרו על המכונה: הם ב-Neon. אם היינו שומרים לקובץ מקומי, הרגע הזה היה מוחק הכל — זה היה כל ההבדל בין תחנה 4 לבאג מהסיפור. 🎉 <b>בניתם ופרסמתם מערכת אמיתית, מקצה לקצה.</b></p>
+        </div>
+      </li>
+    </ol>
+    <div class="info tip">
+      <div class="hd">😴 מה שחשוב לדעת על התוכנית החינמית (כדי לא להיבהל מחר)</div>
+      <p>אחרי 15 דקות בלי גולשים, Render מרדים את השירות. הגולש הבא שיפתח את הכתובת יראה <b>עמוד טעינה של Render למשך עד דקה</b> — ואז האתר יעלה רגיל. זה לא באג וזו לא תקלה — זה המחיר של "חינם". הנתונים, כמובן, לא נפגעים מזה בכלל (הם ב-Neon). ועוד שתיים: יש 750 שעות ריצה חינמיות בחודש (הרבה מעבר לצורך), ובכל push חדש ל-GitHub — Render מעדכן את האתר אוטומטית.</p>
+    </div>
+  </div>
+  <div class="fixit">
+    <div class="hd">🛟 אם משהו השתבש · תחנה 6</div>
+    <div class="sub">קוראים את הלוגים (Logs בעמוד השירות) — התשובה כמעט תמיד שם:</div>
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <tr><th>מה רואים</th><th>מה הסיבה</th><th>מה עושים</th></tr>
+      <tr><td>בלוגים: ההודעה שלנו "לא הוגדר DATABASE_URL"</td><td>שלב 6.4 דולג או שהמשתנה נמחק</td><td>עמוד השירות ← לשונית <b>Environment</b> ← Add Environment Variable ← מוסיפים ושומרים. Render יפרוס מחדש לבד</td></tr>
+      <tr><td>בלוגים: "החיבור למסד הנתונים נכשל"</td><td>ערך המשתנה שגוי — לרוב הודבק עם גרשיים או חלקית</td><td>Environment ← עורכים את הערך ← מדביקים את המחרוזת מ-Neon נקייה, בלי גרשיים ← Save</td></tr>
+      <tr><td>Build failed / <span class="inline-code">npm error</span></td><td>package.json פגום או חסר (לא הוחלף בשלב 4.5, או נשמר חלקי)</td><td>ב-Cloud Shell מוודאים שהקובץ תואם לקופסה של שלב 4.5, שומרים, ואז git add . ← git commit -m "fix" ← git push. הפריסה תרוץ שוב לבד</td></tr>
+      <tr><td><span class="inline-code">Deploy failed</span> בלי שגיאה ברורה, או "No open ports detected"</td><td>השרת לא נפתח על הפורט הנכון — כמעט תמיד server.js ישן בלי process.env.PORT</td><td>מוודאים שחלק 6 של server.js אצלכם זהה לקופסה משלב 4.4, ודוחפים מחדש (add ← commit ← push)</td></tr>
+      <tr><td>האתר מציג עמוד טעינה של Render</td><td>השירות מתעורר משינה — התנהגות רגילה בתוכנית החינמית</td><td>מחכים עד דקה. זהו</td></tr>
+      <tr><td>דחפתי קוד חדש ל-GitHub והאתר לא השתנה</td><td>הפריסה עוד רצה, או שה-push לא באמת עלה</td><td>בודקים בעמוד Events שהפריסה הסתיימה; מוודאים ב-GitHub שהקובץ באמת התעדכן; אפשר גם Manual Deploy ← Deploy latest commit</td></tr>
+      <tr><td>הריפו לא מופיע ברשימה בשלב 6.2</td><td>הרשאת הגישה של Render ל-GitHub לא כוללת אותו</td><td>בחלון הבחירה לוחצים Configure account/repositories ומוסיפים את takziv-aviv להרשאה</td></tr>
+    </table>
+    </div>
+  </div>
+  <div class="quiz" data-yv="GitHub Pages הוא מדף תצוגה: מראה קבצים. Render הוא מטבח: מריץ אותם. לאפליקציה עם Backend אין ברירה — צריך מישהו שמריץ.">
+    <div class="q-tag">❓ חידון · בלוק 7</div>
+    <div class="q-txt">דחפתם את "תקציבי אביב" (עם server.js אמיתי) ל-GitHub, והפעלתם GitHub Pages כדי לפרסם אותה. מה יקרה?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>האפליקציה תרוץ בדיוק כמו על Render, רק בחינם יותר.</button>
+    <button class="quiz-opt" data-c="1" data-exp="GitHub Pages מגיש קבצים סטטיים בלבד — הוא לא מריץ תהליך Node.js. server.js לעולם לא יופעל שם: במקרה הטוב תראו את קוד המקור כטקסט. להרצת Backend צריך שירות שמריץ תהליכים אמיתיים — כמו Render." onclick="quizAns(this)"><span class="k">ב</span>שום שרת לא ירוץ — Pages מגיש קבצים סטטיים בלבד, ו-server.js לא יופעל.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>תופיע שגיאת "quota exceeded" מיד.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>Express יתחיל לרוץ אוטומטית בתוך הדפדפן של המשתמש.</button>
+    <div class="quiz-fb"></div>
+  </div>
+  <div class="takeaway">
+    <div class="big-emoji">🚀</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">GitHub שומר, Render מריץ, Neon זוכר. משתנה סביבה אחד חיבר את שלושתם — והאתר שלכם חי בכתובת ציבורית, שורד גם מכונה חדשה לגמרי.</div>
+  </div>
+</section>
+<section class="section" id="block8">
+  <span class="block-tag">בלוק 8 · סיור מסכם: כל המערכת, חיה · 15 דקות</span>
+  <h2>הסיור המסכם: ארבע מערכות, שרשרת אחת</h2>
+  <p class="section-sub">פתחתם היום ארבע מערכות ענן. בואו נראה את כולן זו לצד זו — ואיך בקשה אחת של גולש עוברת דרך כולן.</p>
+  <div class="pipe">
+    <span class="pst done"><span class="n">🍽️</span>1 · מושגים</span>
+    <span class="pst done"><span class="n">☁️</span>2 · Cloud Shell</span>
+    <span class="pst done"><span class="n">⚙️</span>3 · שרת ראשון</span>
+    <span class="pst done"><span class="n">🐘</span>4 · מסד נתונים</span>
+    <span class="pst done"><span class="n">🐙</span>5 · GitHub</span>
+    <span class="pst done"><span class="n">🚀</span>6 · Render</span>
+  </div>
+  <div class="pipe-cap">כל שש התחנות מאחוריכם ✓ — עכשיו רואים את התמונה כולה</div>
+  <div class="deep-card">
+    <h3>☁️ Google Cloud Shell — שולחן העבודה (כאן כותבים)</h3>
+    <div class="mock-window">
+      <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">shell.cloud.google.com</span></div>
+      <div class="mock-term">
+your_name@cloudshell:~/takziv-aviv$ node server.js<br>
+<span class="ok">OK: מחובר ל-Postgres והטבלה מוכנה</span><br>
+<span class="ok">OK: תקציבי אביב פועלת ומאזינה על פורט 8080</span>
+      </div>
+    </div>
+    <h3 style="margin-top:30px">🐙 GitHub — הספרייה (כאן הקוד שמור)</h3>
+    <div class="mock-window">
+      <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">github.com/shay-tsaban/takziv-aviv</span></div>
+      <div class="gh-mock">
+        <div class="row"><span class="icon">📦</span><b>takziv-aviv</b> <span style="background:#21262d;border-radius:999px;padding:1px 10px;font-size:11px">Public</span></div>
+        <div class="row"><span class="icon">📄</span> server.js &nbsp;·&nbsp; package.json &nbsp;·&nbsp; package-lock.json &nbsp;·&nbsp; .gitignore</div>
+        <div class="row"><span class="icon">🕐</span> <span style="color:#8b949e">main · 1 commit · "Takziv Aviv - first version"</span></div>
+      </div>
+    </div>
+    <h3 style="margin-top:30px">☁️ Render — המנוע (כאן זה רץ 24/7)</h3>
+    <div class="mock-window">
+      <div class="render-mock">
+<b>takziv-aviv</b> &nbsp; <span style="background:#1e293b;padding:2px 10px;border-radius:6px;font-size:12px">Node</span> &nbsp; <span style="background:#4c1d95;padding:2px 10px;border-radius:6px;font-size:12px">Free</span> &nbsp; <span style="background:#1e293b;padding:2px 10px;border-radius:6px;font-size:12px">Frankfurt</span><br><br>
+shay-tsaban / takziv-aviv &nbsp;·&nbsp; main &nbsp;·&nbsp; Auto-deploy: on<br>
+https://takziv-aviv.onrender.com<br><br>
+<span class="status">✓ Deployed</span>
+      </div>
+    </div>
+    <h3 style="margin-top:30px">🐘 Neon — המחסן (כאן הנתונים חיים)</h3>
+    <div class="mock-window">
+      <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">console.neon.tech</span></div>
+      <div class="taviv" style="background:#0b1220;color:#e2e8f0">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center;font-size:13px">
+          <div style="background:#1e293b;border-radius:10px;padding:12px"><b style="font-size:19px;color:#67e8f9">takziv-aviv</b><br>פרויקט</div>
+          <div style="background:#1e293b;border-radius:10px;padding:12px"><b style="font-size:19px;color:#67e8f9">expenses</b><br>טבלה (נוצרה לבד!)</div>
+          <div style="background:#1e293b;border-radius:10px;padding:12px"><b style="font-size:19px;color:#67e8f9">eu-central-1</b><br>פרנקפורט</div>
+          <div style="background:#1e293b;border-radius:10px;padding:12px"><b style="font-size:19px;color:#4ade80">Active</b><br>סטטוס</div>
+        </div>
+      </div>
+    </div>
+    <h3 style="margin-top:30px">💰 והתוצאה — האתר החי</h3>
+    <div class="mock-window">
+      <div class="mock-titlebar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span><span class="mock-url">🔒 takziv-aviv.onrender.com</span></div>
+      <div class="taviv">
+        <div class="taviv-head">
+          <div class="orn">✦</div>
+          <h4>תקציבי אביב</h4>
+          <div class="sub">מערכת ניהול תקציב אישית · הנתונים נשמרים ב-Postgres בענן</div>
+          <div class="period">3.7.2026 – 30.9.2026</div>
+        </div>
+        <div class="taviv-cards">
+          <div class="taviv-card c1"><div class="l">היקף תקציב כולל</div><div class="v">$1,650.00</div></div>
+          <div class="taviv-card c2"><div class="l">ניצול בפועל</div><div class="v">$165.00</div></div>
+          <div class="taviv-card c3"><div class="l">יתרה זמינה</div><div class="v">$1,485.00</div></div>
+        </div>
+        <div class="taviv-bar-wrap"><div class="taviv-bar" style="width:10%"></div></div>
+        <table class="taviv-table">
+          <tr><th>תאריך</th><th>תיאור</th><th>סכום</th><th>מחיקה</th></tr>
+          <tr><td>6.7.2026</td><td>רישיון תוכנה שנתי</td><td>$120.00</td><td><span class="taviv-pill">מחיקה</span></td></tr>
+          <tr><td>6.7.2026</td><td>רכישת שרת ענן חודשי</td><td>$45.00</td><td><span class="taviv-pill">מחיקה</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="deep-card">
+    <h3>🔄 והנה המסע של לחיצה אחת, מקצה לקצה</h3>
+    <p class="lead">גולשת בתל אביב לוחצת "רישום ההוצאה" באתר החי. מה קורה? תרשים חמשת השלבים מבלוק 2 — הפעם עם השמות האמיתיים:</p>
+    <div class="vflow-big stagger">
+      <div class="vnode c-indigo"><div class="ic">📱</div><div class="bd"><b>1. הדפדפן שלה (חדר האוכל)</b><div class="sub">הדף — שהגיע מ-Render — אורז את הפרטים ושולח POST ל-/api/expenses.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-teal"><div class="ic">🍳</div><div class="bd"><b>2. server.js על Render, פרנקפורט (המטבח)</b><div class="sub">אם השירות ישן — הוא מתעורר (עד דקה). נקודת הקצה POST מזהה את הפתק.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode c-purple"><div class="ic">🐘</div><div class="bd"><b>3. Neon, פרנקפורט (המחסן)</b><div class="sub">pool.query מריץ INSERT. ההוצאה נחרטת בדיסק של Neon — מחוץ למכונה של Render.</div></div></div>
+      <div class="vdown">↓</div>
+      <div class="vnode" style="border-color:var(--green);background:linear-gradient(160deg,#fff,#ecfdf5)"><div class="ic">✅</div><div class="bd"><b>4. התשובה חוזרת, המסך מתעדכן</b><div class="sub">היתרה קטנה ב-45$, בלי ריענון דף. ואם Render יחליף מכונה הלילה? ההוצאה תישאר.</div></div></div>
+    </div>
+    <div class="why"><b>ואיפה GitHub ו-Cloud Shell בתמונה?</b> הם לא משתתפים בבקשה החיה — הם "מאחורי הקלעים" של הפיתוח: Cloud Shell הוא המקום שבו כותבים גרסה חדשה, GitHub הוא המסוע שמעביר אותה ל-Render. שני צירים נפרדים: <b>ציר הפיתוח</b> (אתם ← Cloud Shell ← GitHub ← Render) ו<b>ציר הריצה</b> (גולש ← Render ← Neon). להבין את ההפרדה הזו = להבין את כל ההרצאה.</div>
+  </div>
+  <div class="takeaway">
+    <div class="big-emoji">🖥️</div>
+    <div class="hd">השורה התחתונה של הבלוק</div>
+    <div class="tx">אין קסם: ארבע מערכות פשוטות שכל אחת עושה דבר אחד — כתיבה (Cloud Shell), שמירת קוד (GitHub), הרצה (Render), שמירת נתונים (Neon) — מחוברות בשני צירים ברורים.</div>
+  </div>
+</section>
+<section class="section" id="block9">
+  <span class="block-tag">בלוק 9 · סיכום · 20 דקות</span>
+  <h2>סיכום: מקוד לענן — ומה עכשיו</h2>
+  <p class="section-sub">שישה רעיונות שלוקחים הביתה, מילון מלא, אתגר אמיתי — ושאלות ראיון שנשענות בדיוק על מה שעשיתם היום.</p>
+  <div class="deep-card">
+    <h3>🧠 שישה רעיונות = כל ההרצאה</h3>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="num">🌐</div>
+        <div><div class="fs-title">שרת = תוכנית שדלוקה תמיד ועונה לבקשות</div><div class="fs-sub">Node.js מריץ JavaScript מחוץ לדפדפן; Express מפשט את ההאזנה</div>
+        <div class="fs-details">מסד נתונים לבדו לא "מדבר אינטרנט" — לכן כל מערכת צריכה את המתווך הזה. כל בקשה = כתובת (Endpoint) + פועל (GET/POST/DELETE...).</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">☁️</div>
+        <div><div class="fs-title">סביבת פיתוח בענן = כולם על אותו מחשב</div><div class="fs-sub">Google Cloud Shell: לינוקס + Node + Git, בדפדפן, בחינם</div>
+        <div class="fs-details">תיקיית הבית שורדת; המכונה מתחלפת. ההבחנה הזו חזרה אלינו בגדול אצל שרתי הענן.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">💾</div>
+        <div><div class="fs-title">דיסק של שרת ענן = לוח מחיק</div><div class="fs-sub">Ephemeral: כל restart/הירדמות = מכונה חדשה, דיסק נקי</div>
+        <div class="fs-details">לכן נתונים חיים תמיד במסד חיצוני (Neon אצלנו) — והם שרדו אצלכם גם Ctrl+C וגם פריסה מחדש שלמה ב-Render.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">🏨</div>
+        <div><div class="fs-title">סודות חיים מחוץ לקוד</div><div class="fs-sub">משתני סביבה: הכספת זהה בכל חדר, הקוד נמסר בצ'ק-אין</div>
+        <div class="fs-details">DATABASE_URL הוגדר פעמיים — export בטרמינל, Environment ב-Render — והקוד ב-GitHub נשאר נקי מסיסמאות. גם PORT הוא משתנה סביבה: Render מכתיב, הקוד מכבד.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">🐙</div>
+        <div><div class="fs-title">GitHub = המסוע בין הפיתוח לפרסום</div><div class="fs-sub">git add ← commit ← push, עם טוקן במקום סיסמה</div>
+        <div class="fs-details">Render לא רואה את המחשב שלכם — רק ריפו. ומה לא עולה לריפו? node_modules (יש .gitignore) וסודות (יש משתני סביבה).</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="num">🚀</div>
+        <div><div class="fs-title">פריסה = חיבור שלושה שירותים בשני צירים</div><div class="fs-sub">ציר פיתוח: Cloud Shell ← GitHub ← Render · ציר ריצה: גולש ← Render ← Neon</div>
+        <div class="fs-details">כל push מעדכן את האתר אוטומטית. התוכנית החינמית נרדמת אחרי רבע שעה ומתעוררת תוך דקה — והנתונים אף פעם לא בסכנה.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="deep-card">
+    <h3>📖 מילון מונחים — כל מה שפגשנו היום</h3>
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <tr><th>מונח</th><th>בשפה פשוטה</th><th>איפה פגשתם אותו</th></tr>
+      <tr><td>Server (שרת)</td><td>תוכנית שדלוקה 24/7 ועונה לבקשות מהאינטרנט</td><td>server.js, מתחנה 3 והלאה</td></tr>
+      <tr><td>Node.js</td><td>מריץ JavaScript מחוץ לדפדפן</td><td>הפקודה node server.js</td></tr>
+      <tr><td>Express</td><td>ערכת כלים שמפשטת כתיבת שרתים</td><td>npm install express, require('express')</td></tr>
+      <tr><td>Endpoint (נקודת קצה)</td><td>כלל בודד בשרת: כתובת + פועל ← פעולה</td><td>app.get('/', ...), חמישה כאלה בגרסה הסופית</td></tr>
+      <tr><td>Method (פועל)</td><td>GET=תן, POST=צור, PUT=עדכן, DELETE=מחק</td><td>טבלת ה-REST של בלוק 2, והקוד של בלוק 5</td></tr>
+      <tr><td>JSON</td><td>פורמט התשובות של האינטרנט: "שם":"ערך"</td><td>התשובה הראשונה שקיבלתם ב-Web Preview</td></tr>
+      <tr><td>Port (פורט)</td><td>"מספר דלת" של תוכנית במחשב</td><td>8080 ב-Cloud Shell, 10000 ב-Render</td></tr>
+      <tr><td>package.json</td><td>תעודת הזהות: מה הפרויקט צריך ואיך מפעילים</td><td>npm init, ואז הגרסה שלנו עם "start"</td></tr>
+      <tr><td>node_modules</td><td>תיקיית הספריות שהותקנו — כבדה, לא עולה ל-Git</td><td>npm install, ואז .gitignore</td></tr>
+      <tr><td>Cloud Shell / Web Preview</td><td>מחשב בענן בדפדפן / הצצה לשרת שרץ בו</td><td>כל התחנות המעשיות</td></tr>
+      <tr><td>pg / Pool / pool.query</td><td>הספרייה, החיבור, והשאילתות של Node מול Postgres</td><td>חלקים 2–4 של server.js הסופי</td></tr>
+      <tr><td>SQL / CREATE TABLE IF NOT EXISTS</td><td>שפת המחסן / "בנה את הטבלה אם אינה"</td><td>initDb — המסד הכין את עצמו לבד</td></tr>
+      <tr><td>Environment Variable</td><td>ערך שמוגדר מחוץ לקוד — סודות והגדרות</td><td>DATABASE_URL (export וב-Render), PORT</td></tr>
+      <tr><td>Ephemeral Storage</td><td>דיסק ארעי שמתאפס בכל החלפת מכונה</td><td>הבאג של "ההוצאה שנעלמה" + הסימולטור</td></tr>
+      <tr><td>Git / Repo / Commit / Push</td><td>כלי הגרסאות / התא בספרייה / צילום מצב / שליחה</td><td>כל תחנה 5</td></tr>
+      <tr><td>Personal Access Token</td><td>מפתח כניסה זמני במקום סיסמה, לטרמינל</td><td>ghp_... שהודבק "בעיוורון"</td></tr>
+      <tr><td>Deploy / Build / Start</td><td>פרסום גרסה / התקנת תלויות / הפעלה</td><td>הלוגים של Render בשלב 6.5</td></tr>
+      <tr><td>Cold Start (התעוררות)</td><td>הדקה שלוקח לשירות חינמי להתעורר משינה</td><td>עמוד הטעינה של Render</td></tr>
+    </table>
+    </div>
+  </div>
+  <div class="lab">
+    <div class="lab-head">
+      <span class="lab-pill">🏆 אתגר מסכם</span>
+      <h3>עכשיו לבד: בנו מערכת משלכם, מקצה לקצה</h3>
+    </div>
+    <p>קחו רעיון פשוט שלכם — רשימת קריאה, מעקב אימונים, יומן הרגלים — ועברו איתו את כל שש התחנות. אותו מסלול בדיוק, בלי לדלג על נקודות ביקורת:</p>
+    <ul class="checklist">
+      <li>Cloud Shell: תיקייה חדשה (שם משלכם), npm init, התקנת express ו-pg.</li>
+      <li>שרת מינימלי עם GET אחד ← מריצים ← Web Preview ← רק אז ממשיכים.</li>
+      <li>פרויקט Neon חדש ← מחרוזת חיבור ← export (עם גרשיים!) ← בדיקת echo.</li>
+      <li>server.js מלא: טבלה משלכם ב-initDb, GET + POST + DELETE, ודף פשוט. מבחן האמנזיה: Ctrl+C ← הרצה מחדש ← הנתונים שרדו.</li>
+      <li>.gitignore ← git config (אם צריך) ← ריפו חדש בלי README ← push עם הטוקן.</li>
+      <li>Render: Web Service ← הטופס לפי הטבלה שלנו ← DATABASE_URL בלי גרשיים ← Create ← מבחן ההישרדות עם Deploy latest commit.</li>
+    </ul>
+    <div class="info insight">
+      <div class="hd">💼 שאלות שמופיעות בראיונות עבודה (ואתם כבר יודעים לענות)</div>
+      <ul>
+        <li>"למה מסד נתונים לבד לא יכול להיות אתר?" → <i>אין לו דלת לאינטרנט; חייבים שרת שמתווך בין HTTP ל-SQL.</i></li>
+        <li>"מה ההבדל בין אחסון ארעי לקבוע בענן?" → <i>דיסק המכונה מתאפס בכל החלפה/פריסה; מה שחייב לשרוד חי במסד חיצוני.</i></li>
+        <li>"למה לא שומרים סיסמאות בקוד, ומה עושים במקום?" → <i>הקוד ציבורי ב-Git; סודות מוזרקים דרך משתני סביבה, שונים לכל סביבה.</i></li>
+        <li>"למה השרת שלך מאזין ל-process.env.PORT?" → <i>כי פלטפורמת האירוח מכתיבה את הפורט; הקוד חייב לכבד את הסביבה שהוא רץ בה.</i></li>
+      </ul>
+    </div>
+  </div>
+  <div class="quiz" data-yv="שאלה כזו בודקת אם רואים את שני הצירים: מי שומר קוד, מי מריץ, ומי זוכר נתונים — שלושה תפקידים, שלושה שירותים.">
+    <div class="q-tag">🏆 חידון מסכם · כל ההרצאה</div>
+    <div class="q-txt">מפתחת כותבת אפליקציית Node.js ב-Cloud Shell, ורוצה שתהיה זמינה לציבור 24/7 עם נתונים ששורדים לאורך זמן. מהו הרצף הנכון?</div>
+    <div class="q-note">בחרו תשובה אחת.</div>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">א</span>GitHub Pages לקוד, ואחסון בקובץ JSON מקומי על אותו שרת.</button>
+    <button class="quiz-opt" data-c="1" data-exp="הרצף המלא: GitHub שומר את הקוד (המסוע); Render מושך אותו ומריץ כתהליך חי 24/7 עם משתני סביבה; Neon מחזיק את הנתונים מחוץ למכונה, כך שהם שורדים כל restart, redeploy והירדמות." onclick="quizAns(this)"><span class="k">ב</span>GitHub לקוד ← Render להרצה חיה ← Neon לאחסון קבוע.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ג</span>Render להרצה, וקובץ JSON מקומי על אותו שרת לנתונים.</button>
+    <button class="quiz-opt" data-c="0" onclick="quizAns(this)"><span class="k">ד</span>מספיק לדחוף שוב ושוב ל-GitHub בכל פעם שרוצים לשמור נתון חדש.</button>
+    <div class="quiz-fb"></div>
+  </div>
+  <div class="yev-callout">
+    <svg class="face" viewBox="0 0 100 100"><use href="#yevFace"/></svg>
+    <div class="tx"><b>יבגני נפרד 👋</b> עברנו את כל המסלול: הבנו מה זה שרת, קיבלנו מחשב בענן, כתבנו שרת במו ידינו, חיברנו מחסן אמיתי, שלחנו הכל לספרייה — ופרסמנו לעולם. ובעיקר: בכל תחנה ידעתם בדיוק מה אתם עושים ולמה. אם תיתקעו באתגר — התשובה כמעט תמיד באחת הטבלאות הצהובות. נתראה בהרצאה הבאה!</div>
+  </div>
+  <div class="next">
+    <div class="n">➡️</div>
+    <div>
+      <h4 style="margin:0 0 4px">בהמשך הקורס</h4>
+      <p style="margin:0">נעמיק ב-Git וב-GitHub (ענפים, גרסאות, עבודת צוות), נחבר את נתוני "תקציבי אביב" מ-Neon לדשבורד BI אמיתי, ונדבר על ניטור, לוגים והתראות למערכות שכבר רצות בענן.</p>
+    </div>
+  </div>
+  <div class="takeaway">
+    <div class="big-emoji">🚀</div>
+    <div class="hd">השורה התחתונה של ההרצאה</div>
+    <div class="tx">מערכת אמיתית = שרת + מסד נתונים + בקרת גרסאות + פרסום. עברתם את כל הדרך בעצמכם, בענן, בלי להתקין דבר — וכל תחנה נסגרה בנקודת ביקורת ירוקה. עכשיו זה אתם. 🎯</div>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="big">🎉 סוף הרצאה 13 · מקוד לענן, עקב בצד אגודל</div>
+  <div>קורס BI וארכיטקטורת נתונים · הרצאה 13 · 6.7.2026 · מאת ד״ר שי צבאן</div>
+  <div class="small">נבנה כחומר עזר מקיף ל-Hands-on · כל הפקודות והקוד נבדקו מול שרת ומסד נתונים אמיתיים לפני הפרסום · הכל רץ בענן, ללא התקנות מקומיות</div>
+</footer>
+<script>
+const bar = document.getElementById('bar');
+const sections = [...document.querySelectorAll('main .section')];
+const navlinks = [...document.querySelectorAll('.nav-block')];
+function onScroll(){
+  const h = document.documentElement;
+  const sc = h.scrollTop;
+  const max = h.scrollHeight - h.clientHeight;
+  bar.style.width = (max>0 ? (sc/max*100) : 0) + '%';
+  let cur = sections[0];
+  for(const s of sections){ if(s.getBoundingClientRect().top <= 130) cur = s; }
+  navlinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+(cur&&cur.id)));
+  if(cur && cur.id && typeof YEV_TIPS!=='undefined' && YEV_TIPS[cur.id]){
+    const t=document.getElementById('yevTip');
+    if(t && t.dataset.b!==cur.id){
+      t.textContent = YEV_TIPS[cur.id];
+      t.dataset.b = cur.id;
+      const y=document.getElementById('yevgeni');
+      if(y){ y.classList.remove('pulse'); void y.offsetWidth; y.classList.add('pulse'); clearTimeout(window._yevT); window._yevT=setTimeout(function(){ y.classList.remove('pulse'); },1600); }
+    }
+  }
+}
+document.addEventListener('scroll', onScroll, {passive:true});
+window.addEventListener('load', onScroll);
+const SQL_KW = ['CREATE','TABLE','SELECT','INSERT','INTO','VALUES','UPDATE','SET','DELETE','FROM','WHERE','RETURNING','NOT','NULL','PRIMARY','KEY','IF','EXISTS','DEFAULT','SERIAL','TEXT','NUMERIC','DATE','COALESCE','SUM','AS','ORDER','BY','DESC','LIMIT'];
+const BASH_KW = ['sudo','apt','apt-get','install','curl','mkdir','cd','node','npm','npx','git','init','add','commit','push','remote','branch','config','echo','cat','nano','touch','cloudshell','edit','export','ls','pkill'];
+const JS_KW = ['const','let','var','function','async','await','require','module','exports','if','else','return','new','class','try','catch','throw','this','true','false','null','undefined','import','export','from','for'];
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function buildRules(lang){
+  if(lang==='bash'){
+    return [
+      [/#[^\n]*/, 'comment'],
+      [/"(?:[^"\\]|\\.)*"|'(?:[^']|\\.)*'/, 'str'],
+      [new RegExp('\\b(?:'+BASH_KW.join('|')+')\\b'), 'kw'],
+      [/\b\d+(?:\.\d+)?\b/, 'num']
+    ];
+  }
+  if(lang==='js'||lang==='javascript'||lang==='json'){
+    return [
+      [/\/\/[^\n]*/, 'comment'],
+      [/\/\*[\s\S]*?\*\//, 'comment'],
+      [/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`/, 'str'],
+      [new RegExp('\\b(?:'+JS_KW.join('|')+')\\b'), 'kw'],
+      [/\b\d+(?:\.\d+)?\b/, 'num']
+    ];
+  }
+  return [
+    [/--[^\n]*/, 'comment'],
+    [/'(?:[^']|'')*'/, 'str'],
+    [new RegExp('\\b(?:'+SQL_KW.join('|')+')\\b','i'), 'kw'],
+    [/\b\d+(?:\.\d+)?\b/, 'num']
+  ];
+}
+function highlight(code, lang){
+  const rules = buildRules(lang);
+  const combined = new RegExp(rules.map(r=>'('+r[0].source+')').join('|'), 'gi');
+  let out='', last=0, m;
+  while((m = combined.exec(code))){
+    out += escHtml(code.slice(last, m.index));
+    let cls='kw';
+    for(let i=0;i<rules.length;i++){ if(m[i+1]!==undefined){ cls=rules[i][1]; break; } }
+    out += '<span class="'+cls+'">'+escHtml(m[0])+'</span>';
+    last = m.index + m[0].length;
+    if(m.index===combined.lastIndex) combined.lastIndex++;
+  }
+  out += escHtml(code.slice(last));
+  return out;
+}
+document.querySelectorAll('.code-block pre').forEach(pre=>{
+  const lang = pre.parentElement.getAttribute('data-lang') || 'sql';
+  pre.innerHTML = highlight(pre.textContent, lang);
+});
+document.querySelectorAll('.code-block').forEach(block=>{
+  const pre = block.querySelector('pre');
+  if(!pre) return;
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'copy-btn';
+  btn.textContent = '📋 העתק';
+  btn.setAttribute('aria-label','העתק קוד ללוח');
+  btn.addEventListener('click', function(){
+    const text = pre.textContent;
+    function markCopied(){
+      btn.textContent = '✅ הועתק!';
+      btn.classList.add('copied');
+      clearTimeout(btn._t);
+      btn._t = setTimeout(function(){ btn.textContent = '📋 העתק'; btn.classList.remove('copied'); }, 1700);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(markCopied).catch(function(){
+        try{
+          const ta=document.createElement('textarea');
+          ta.value=text; document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); document.body.removeChild(ta);
+          markCopied();
+        }catch(_){}
+      });
+    } else {
+      try{
+        const ta=document.createElement('textarea');
+        ta.value=text; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta);
+        markCopied();
+      }catch(_){}
+    }
+  });
+  block.appendChild(btn);
+});
+function flipCard(el){ el.classList.toggle('flipped'); }
+function quizAns(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.dataset.done==='1') return;
+  const opts = [...quiz.querySelectorAll('.quiz-opt')];
+  const correct = btn.dataset.c==='1';
+  opts.forEach(o=>{ o.classList.add('dim'); if(o.dataset.c==='1'){ o.classList.remove('dim'); o.classList.add('correct'); } });
+  if(!correct){ btn.classList.remove('dim'); btn.classList.add('wrong'); }
+  const fb = quiz.querySelector('.quiz-fb');
+  const correctOpt = quiz.querySelector('.quiz-opt[data-c="1"]');
+  const exp = correctOpt ? (correctOpt.dataset.exp||'') : '';
+  const yv = quiz.dataset.yv || '';
+  fb.innerHTML = '<div class="verdict">'+(correct?'✅ תשובה נכונה!':'❌ לא מדויק — הנה ההסבר המלא')+'</div><div>'+exp+'</div>'+(yv?'<div class="yv"><div class="f">🧑‍🏫</div><div><b>יבגני מסביר:</b> '+yv+'</div></div>':'');
+  fb.classList.add('show');
+  quiz.dataset.done='1';
+}
+const _io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); _io.unobserve(e.target); } });
+}, {threshold:.12});
+document.querySelectorAll('.reveal,.stagger').forEach(el=>_io.observe(el));
+const _lp = document.getElementById('lessonProg');
+const _total = sections.length;
+function updateLessonProg(){
+  const h=document.documentElement; const max=h.scrollHeight-h.clientHeight;
+  const pct = max>0 ? Math.round(h.scrollTop/max*100) : 0;
+  let idx=1; for(let i=0;i<sections.length;i++){ if(sections[i].getBoundingClientRect().top<=140) idx=i+1; }
+  if(_lp) _lp.textContent='בלוק '+idx+' / '+_total+' · '+pct+'%';
+}
+document.addEventListener('scroll', updateLessonProg, {passive:true});
+window.addEventListener('load', updateLessonProg);
+const YEV_TIPS = {
+  block1:'שש תחנות, סדר קבוע, נקודת ביקורת בסוף כל אחת. אם תלמדו רק דבר אחד מהבלוק הזה — שיהיה זה המקרא של חמש הקופסאות. 🗺️',
+  block2:'זכרו את תרשים חמשת השלבים — כל מה שנבנה היום הוא "זום פנימה" לתוך אחד הריבועים שלו. ולמנהל המחסן אין דלת לרחוב! 🍽️',
+  block3:'Cloud Shell = מחשב שלם בענן. תיקיית הבית שורדת, המכונה מתחלפת — סמנו את המשפט הזה, הוא חוזר בתחנה 4. ☁️',
+  block4:'טרמינל "תקוע" אחרי node server.js = שרת בריא שמחכה. ואחרי כל שינוי בקובץ: Ctrl+C ולהריץ מחדש! ⚙️',
+  block5:'דיסק של שרת ענן הוא לוח מחיק — הנתונים חיים ב-Neon, מחוץ למכונה. ואת הסוד שומרים במשתנה סביבה, לא בקוד. 🐘',
+  block6:'ההדבקה של הטוקן לא מציגה כלום על המסך — זה נורמלי לגמרי! מדביקים פעם אחת, Enter, וזהו. 🐙',
+  block7:'בטרמינל המחרוזת עם גרשיים; ב-Render — בלי! ואם האתר מציג עמוד טעינה — הוא סתם מתעורר, תנו לו דקה. 🚀',
+  block8:'שני צירים: פיתוח (Cloud Shell←GitHub←Render) וריצה (גולש←Render←Neon). מי שמבין את ההפרדה — מבין הכל. 🖥️',
+  block9:'האתגר בנוי בדיוק לפי שש התחנות. תיתקעו? התשובה כמעט תמיד בטבלה צהובה של אותה תחנה. 💪'
+};
+function yevMin(){ document.getElementById('yevgeni').classList.add('min'); }
+function yevReopen(){ document.getElementById('yevgeni').classList.remove('min'); }
+(function(){
+  const yev=document.getElementById('yevgeni'), handle=document.getElementById('yevAvatar');
+  if(!yev||!handle) return;
+  let dragging=false, ox=0, oy=0;
+  handle.addEventListener('pointerdown', e=>{
+    dragging=true; try{handle.setPointerCapture(e.pointerId);}catch(_){}
+    const r=yev.getBoundingClientRect(); ox=e.clientX-r.left; oy=e.clientY-r.top;
+    yev.style.bottom='auto'; e.preventDefault();
+  });
+  window.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    let x=e.clientX-ox, y=e.clientY-oy;
+    x=Math.max(6, Math.min(window.innerWidth - yev.offsetWidth - 6, x));
+    y=Math.max(6, Math.min(window.innerHeight - 84, y));
+    yev.style.left=x+'px'; yev.style.top=y+'px';
+  });
+  window.addEventListener('pointerup', ()=>{ dragging=false; });
+})();
+function startLesson(){
+  document.body.classList.remove('pre-start');
+  document.body.classList.add('lesson-started');
+  const h=document.querySelector('.hero');
+  if(h) h.scrollIntoView({behavior:'smooth'});
+}
+document.querySelectorAll('.kn-pop').forEach(el=>_io.observe(el));
+(function(){
+  const h=document.querySelector('.hero'); if(!h) return;
+  const o=new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ document.body.classList.remove('pre-start'); document.body.classList.add('lesson-started'); o.disconnect(); } }); }, {threshold:.08});
+  o.observe(h);
+})();
+/* ---------- persistence simulator (file vs Postgres) ---------- */
+const PSIM = { file:[], db:[], nextId:1 };
+function persistLog(msg){
+  const log=document.getElementById('persistLog'); if(!log) return;
+  const line=document.createElement('div'); line.textContent=msg; log.prepend(line);
+}
+function persistRenderList(kind){
+  const el = document.getElementById(kind==='file' ? 'pfList' : 'pdList');
+  const items = PSIM[kind];
+  if(!el) return;
+  if(items.length===0){ el.innerHTML = '<div class="empty">אין הוצאות עדיין...</div>'; return; }
+  el.innerHTML = items.map(function(it){ return '<div class="row">💵 '+it+'</div>'; }).join('');
+}
+function persistAdd(kind){
+  const label = 'הוצאה #'+(PSIM.nextId++);
+  PSIM[kind].push(label);
+  persistRenderList(kind);
+  persistLog((kind==='file' ? 'FILE: ' : 'POSTGRES: ') + 'added ' + label);
+}
+function persistRestart(kind){
+  if(kind==='file'){
+    PSIM.file = [];
+    persistLog('RESTART -> fresh machine, empty disk -> file GONE');
+  } else {
+    persistLog('RESTART -> fresh machine -> data lives in Neon, still there');
+  }
+  persistRenderList(kind);
+}
+</script>
+</body>
+</html>
