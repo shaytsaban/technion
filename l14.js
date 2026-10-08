@@ -57,7 +57,7 @@ function riskRows(){ const team = tbl('team'); return tbl('risks').map(r=>({id:r
 
 /* ---------- progress ---------- */
 function markDone(id){ $$('[data-act="'+id+'"]').forEach(e=>e.classList.add('is-done')); }
-function done(id){ if (ALL.indexOf(id) < 0) return; if (!store.acts[id]){ store.acts[id] = 1; save(); } markDone(id); renderProgress(); }
+function done(id){ if (ALL.indexOf(id) < 0) return; if (!store.acts[id]){ store.acts[id] = 1; save(); fxPop(id); } markDone(id); renderProgress(); }
 function renderProgress(){
   const n = SESSION.filter(i=>store.acts[i]).length, pct = Math.round(100*n/SESSION.length);
   if ($('#pbar')) $('#pbar').style.width = pct + '%';
@@ -403,6 +403,54 @@ function renderAuto(){ $$('.autochart').forEach(box => { const key = box.dataset
 const EX_A = [`זה לא באיחור,`, `טכנית זה גמור,`, `ה-90% האלה יציבים מאוד,`, `הקוד מושלם,`, `אצלי במחשב זה עובד,`, `אני לא מבינה מה הלחץ,`];
 const EX_B = [`רק מחכים לאישור של חברת הסליקה`, `נשאר רק ליטוש קטן של כמה שבועות`, `פשוט הדרישות השתנו מאז שלא קראתי אותן`, `ה-Wi-Fi של המסעדה מקנא בנו`, `המלצרים עוד לא בשלים לגדולה`, `זה תלוי בצוות אחר, שבמקרה הוא גם אני`, `מיסטר אולאף ביקש עוד כפתור אחד קטן`];
 const EX_C = [`וחוץ מזה, 90% זה כמעט 100%.`, `נסגור את זה עד השבוע הבא. או זה שאחריו.`, `מי שמבין בטכנולוגיה יודע שככה זה.`, `אני מציעה שנדבר על זה אחרי החגים.`, `ובכל מקרה, זה באחריות הנהלת החשבונות.`];
+// ---------- v6: gradual reveal, jokes, small celebrations ----------
+const JOKES = [
+  ['כמה מנהלי פרויקטים צריך כדי להחליף נורה?','אף אחד. זה לא היה בתכולה. נכניס את זה לגרסה הבאה.'],
+  ['מה ההבדל בין מנהל פרויקט לאופטימיסט?','האופטימיסט יודע שהוא אופטימיסט.'],
+  ['לקוח: ״זה רק שינוי קטן, נכון?״','המפתחת: ״בטח. קטן. כמו להזיז את המטבח לקומה השנייה.״'],
+  ['שאילתה נכנסת לבר, ניגשת לשתי טבלאות ושואלת:','״אפשר להצטרף?״ (JOIN)'],
+  ['למה מסד הנתונים נפרד מהאקסל?','לא היו ביניהם קשרים. רק תאים ממוזגים.'],
+  ['הפרויקט גמור ב-90%. כמה זמן נשאר?','עוד 90%.'],
+  ['מה שלושת המשפטים הכי נפוצים בפרויקט?','״זה כמעט גמור.״ ״אצלי זה עובד.״ ״נתעד את זה אחר כך.״'],
+  ['מה ההבדל בין סיכון לבעיה?','סיכון הוא בעיה שעוד לא הגיעה לישיבת הסטטוס.'],
+  ['איך קוראים ללוח זמנים שאף אחד לא מאמין בו?','״לוח זמנים מאושר.״'],
+  ['ביקשתי מהבינה המלאכותית דוח סטטוס אופטימי.','היא כתבה: ״הפרויקט מתקדם מצוין.״ על פרויקט אחר.'],
+  ['כמה התראות צריך כדי שמישהו יגיב?','אחת. בתנאי שהיא היחידה.'],
+  ['מה ההגדרה של ישיבה מוצלחת?','ישיבה שנגמרת עם פחות ישיבות המשך ממה שהתחילה.'],
+  ['שאלו את ד״ר קונדילה מתי המערכת תהיה מוכנה.','״טכנית, היא כבר מוכנה. מעשית, תשאלו שוב בשבוע הבא.״'],
+  ['למה השף אוהב את המערכת החדשה?','סוף סוף הוא לא צריך לפענח כתב יד של מלצר בשעת לחץ.'],
+  ['מה המשפט הכי מסוכן בפרויקט?','״תמיד עשינו את זה ככה.״']
+];
+function fxPop(id){ try {
+  const e = $('[data-act="' + id + '"]'); if (!e) return; const r = e.getBoundingClientRect();
+  const p = document.createElement('div'); p.className = 'fxpop'; p.textContent = ['🎉','✨','👏','💪','🥳'][Math.floor(Math.random() * 5)];
+  p.style.top = Math.max(50, Math.min(innerHeight - 90, r.top + 10)) + 'px'; p.style.left = Math.max(10, r.left + 24) + 'px';
+  document.body.appendChild(p); setTimeout(() => p.remove(), 1200);
+  const mine = ACTS[PAGE] || []; if (mine.length && mine.every(i => store.acts[i])) fxConfetti();
+} catch (_) {} }
+function fxConfetti(){ try { const em = ['🎉','🎊','⭐','🍽️','👑','✨'];
+  for (let i = 0; i < 36; i++){ const c = document.createElement('div'); c.className = 'fxc'; c.textContent = em[i % em.length];
+    c.style.left = (Math.random() * 96) + 'vw'; c.style.animationDuration = (2.2 + Math.random() * 2) + 's'; c.style.animationDelay = (Math.random() * .8) + 's';
+    document.body.appendChild(c); setTimeout(() => c.remove(), 5200); } } catch (_) {} }
+function initFx(){ try {
+  // "what does it have to do with us" opens on click
+  $$('.news .link').forEach(l => { const b = document.createElement('button'); b.className = 'btn lite newsbtn'; b.textContent = '🤔 מה הקשר אלינו? נחשו, ואז לחצו';
+    l.style.display = 'none'; l.parentNode.insertBefore(b, l); b.onclick = () => { l.style.display = ''; l.classList.add('pop'); b.remove(); }; });
+  // a joke before every station except the first
+  const start = [0, 0, 5, 9, 12][PAGE] || 0;
+  $$('section.sec').forEach((s, i) => { if (!i) return; const jk = JOKES[(start + i - 1) % JOKES.length]; const d = document.createElement('div'); d.className = 'joke';
+    d.innerHTML = '<span class="jq">😄 הפסקת חיוך: ' + jk[0] + '</span><button class="btn lite">🥁 לפאנץ׳</button><span class="ja" style="display:none">' + jk[1] + '</span>';
+    $('button', d).onclick = function(){ const a = $('.ja', d); a.style.display = ''; a.classList.add('pop'); this.remove(); };
+    s.parentNode.insertBefore(d, s); });
+  // gradual reveal on scroll
+  if (!('IntersectionObserver' in window) || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  const io = new IntersectionObserver(es => { es.forEach(en => { if (!en.isIntersecting) return; const t = en.target; io.unobserve(t); t.classList.add('in');
+    if (t.classList.contains('rv')) setTimeout(() => t.classList.remove('rv', 'in'), 900); }); }, { threshold: 0, rootMargin: '0px 0px -6% 0px' });
+  $$('.pipe, .vflow, .flow, table.route, .defs').forEach(g => { const kids = g.matches('table') ? $$('tr', g) : Array.from(g.children); if (!kids.length) return;
+    kids.forEach((k, i) => { k.classList.add('rvc'); k.style.setProperty('--i', Math.min(i, 14)); }); g.classList.add('rvg'); io.observe(g); });
+  $$('.why, .rem, .def, .world, .news, .tip, .hand, .yev, .kondila, .fun, .joke, .credo, .chat, .scene').forEach(e => { if (e.closest('.rvg')) return; e.classList.add('rv'); io.observe(e); });
+} catch (_) {} }
+
 function initFun(){
   $$('.excuse').forEach(box => { const out = $('.excuse-out', box), btn = $('button', box); let n = 0;
     btn.addEventListener('click', () => { n++; const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -424,7 +472,7 @@ function refreshAll(){ [renderBoard, renderChart, renderPrompt, renderRiskTable,
 function on(sel, ev, fn){ const e = $(sel); if (e) e.addEventListener(ev, fn); }
 function initStatic(){
   $$('.flip').forEach(c => c.addEventListener('click', () => c.classList.toggle('on')));
-  initPipes(); initSteps(); initMatch(); initPick(); initQuiz(); initDQ(); initFun();
+  initPipes(); initSteps(); initMatch(); initPick(); initQuiz(); initDQ(); initFun(); initFx();
   // audit
   $$('#audit .sent').forEach(s => s.addEventListener('click', () => { if (!s.classList.contains('shown')) s.classList.toggle('sel'); }));
   on('#auditCheck', 'click', () => { let hit = 0, wrong = 0;
