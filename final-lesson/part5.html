@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חלק 5: AI: מה נותנים לו ומה בודקים · המפגש המסכם · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=5;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+<script src="fl-data.js?v=1"></script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="fl-map.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">🍽️ המסע המלא</a>
+    <div class="parts"><a id="part1" href="part1.html" title="מרעיון לטבלאות">1<small></small></a><a id="part2" href="part2.html" title="SQL: לשאול את הנתונים">2<small></small></a><a id="part3" href="part3.html" title="איך המערכת עובדת מאחורי הקלעים">3<small></small></a><a id="part4" href="part4.html" title="מנתונים לדוחות שאפשר לסמוך עליהם">4<small></small></a><a id="part5" href="part5.html" title="AI: מה נותנים לו ומה בודקים" class=on>5<small></small></a><a id="part6" href="part6.html" title="הפרויקט: לעקוב, להחליט, למסור">6<small></small></a></div>
+    <span class="ppct" id="ppct"></span><span class="chipst" id="eng">⏳ SQL</span></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · המפגש המסכם</div>
+  <h1>AI: מה נותנים לו<br><span>ומה בודקים</span></h1>
+  <p>יבגני שואל אם אפשר לתת ל-AI לבנות את המערכת. אפשר, אבל צריך לדעת איך לבקש ממנו, מה לבדוק לפני שסומכים על התוצאה, ואיפה הוא רץ ומה הוא רואה. בסוף החלק תכתבו פרומפט מסודר, תבדקו שאילתות של AI מול מספרים שאתם יודעים ותבחרו כלי לפי המשימה.</p>
+  <div class="chips"><span>🧪 מעבדות SQL אמיתיות</span><span>🧾 בדיקת שאילתות של AI</span><span>🎞️ הנפשות</span><span>📱 מוקאפים</span><span>🎛️ הדמיות</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף. בהן: מה לומר, איפה לעצור לדיון ומה לבדוק לפני המעבר הלאה.</div>
+<style>
+.p5-bld{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.p5-bld{grid-template-columns:1fr}}
+.p5-bld label{display:block;font-weight:700;font-size:.9rem;color:var(--navy);margin:6px 0 2px}
+.p5-bld textarea{width:100%;min-height:62px;font:inherit;font-size:.9rem;font-weight:400;border:1px solid #cbd5e1;border-radius:10px;padding:6px 9px;resize:vertical}
+.p5-checks{list-style:none;padding:0;margin:6px 0}
+.p5-checks li{display:flex;gap:8px;align-items:flex-start;font-size:.88rem;margin:3px 0}
+.p5-prev{white-space:pre-wrap;background:#1e1b4b;color:#e0e7ff;border-radius:10px;padding:10px 12px;font-size:.84rem;max-height:240px;overflow:auto;direction:rtl;unicode-bidi:plaintext;margin-top:8px}
+.p5-score{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.p5-score b{font-size:2rem;color:var(--navy)}
+</style>
+<style>
+.p5-sqlbox{direction:ltr;text-align:left;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:10px 12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.85rem;line-height:1.55;white-space:pre-wrap;overflow-x:auto;margin:8px 0;unicode-bidi:plaintext}
+.p5-b{max-width:90%;padding:6px 10px;border-radius:12px;margin:6px 0;font-size:.88rem;line-height:1.5}
+.p5-b.u{background:#e0e7ff;margin-inline-end:auto}
+.p5-b.a{background:#f1f5f9;margin-inline-start:auto}
+.p5-b.bad{background:#fee2e2;color:#991b1b;font-weight:700;max-width:100%;text-align:center}
+.p5-b.ok{background:#d1fae5;color:#065f46;font-weight:700;max-width:100%;text-align:center}
+.p5-err{background:#fee2e2;color:#991b1b;padding:8px 12px;border-radius:10px;margin:8px 0}
+.p5-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px}
+.p5-tab{font:inherit;font-weight:800;border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:2px 14px;cursor:pointer}
+.p5-tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.p5-tab.good{border-color:#10b981;color:#047857}.p5-tab.bad{border-color:#ef4444;color:#b91c1c}
+.p5-tab.on.good,.p5-tab.on.bad{color:#fff}
+.p5-av{border-radius:12px;padding:10px 14px;margin:10px 0}
+.p5-av.ok{background:#d1fae5;color:#064e3b}.p5-av.no{background:#fee2e2;color:#7f1d1d}
+.p5-ctrl{background:#f8fafc;border:1px dashed #94a3b8;border-radius:12px;padding:8px 12px;margin:10px 0}
+.p5-case .res{overflow-x:auto}
+.p5-case table,.p5-ctx-res table,.p5-ctrl table{border-collapse:collapse;font-size:.88rem}
+.p5-case th,.p5-case td,.p5-ctx-res th,.p5-ctx-res td{border:1px solid var(--line);padding:4px 10px;direction:ltr;text-align:left}
+.p5-case th,.p5-ctx-res th{background:#f1f5f9}
+.p5-case .cnt,.p5-ctx-res .cnt{font-size:.8rem;color:var(--muted)}
+</style>
+<style>
+.p5-case table,.p5-ctx-res table,.p5-ctrl table{direction:ltr}
+.p5-srow{border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin:8px 0;background:#fff}
+.p5-srow.ok{border-color:#6ee7b7;background:#f0fdf4}.p5-srow.no{border-color:#fca5a5;background:#fef2f2}
+.p5-sbtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.p5-sbtns .btn{font-size:.82rem;padding:3px 10px}
+.p5-sbtns .btn.sel{outline:2px solid var(--navy)}
+.p5-sfb{margin-top:6px;font-size:.9rem}
+</style>
+<style>
+.p5-ln{padding:5px 0;border-bottom:1px dashed #e2e8f0}
+.p5-agtbl table{direction:ltr;border-collapse:collapse;font-size:.85rem;margin:4px 0}
+.p5-agtbl th,.p5-agtbl td{border:1px solid var(--line);padding:3px 9px}
+.p5-agtbl .cnt{font-size:.78rem;color:var(--muted)}
+</style>
+<style>
+.p5-code{display:block;width:100%;direction:ltr;text-align:left;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88rem;line-height:1.55;background:#0f172a;color:#e2e8f0;border:0;border-radius:10px;padding:10px 12px;resize:vertical;margin:6px 0}
+</style>
+<div class="box note">
+<p><b>לפני שמתחילים.</b> בחלק הזה ה-AI שרואים בדפים הוא הדמיה, אלא אם כתוב שזה כלי אמיתי. המעבדות והבדיקות רצות על מסד אמיתי: המסד של מסעדת יבגני, שאתם כבר מכירים. לא באנו ללמוד כלי מסוים (הכלים מתחלפים כל כמה חודשים). באנו ללמוד שיטה: איך מבקשים נכון, איך בודקים מול מספר שאתם יודעים, ואיפה ה-AI רץ.</p>
+<p>הרעיון המרכזי מלווה אתכם מתחילת הקורס: ה-AI הוא הקבלן. הוא בונה מהר, ובדיוק לפי מה שביקשו ממנו. אתם האדריכלים: אתם מחליטים מה בונים, ובודקים שזה נבנה נכון.</p>
+</div>
+
+<section class="sec" id="s5-1" data-t="איך מבקשים מ-AI">
+<div class="sec-h"><div class="sec-n">1</div><h2>איך מבקשים מ-AI: ארבעה חלקים ופרומפט לכל שכבה</h2></div>
+<p class="lead">יבגני כתב ל-AI: ״תביא לי הכנסות״. הוא קיבל שאילתה על טבלה שלא קיימת. ה-AI לא טעה בכוונה. פשוט לא אמרו לו על מה, איך ובאיזו צורה.</p>
+
+<div class="defline"><b>פרומפט (Prompt):</b> הטקסט שנותנים למודל כהוראה. למשל ״כתוב שאילתה שמחזירה הכנסה לפי ערוץ״. זה פרומפט, אבל חסר בו כמעט כל מה שהמודל צריך לדעת.</div>
+
+<p>פרומפט טוב בנוי מארבעה חלקים (את זה למדנו <a href="../lec5.html">בשיעור על פרומפט בארבעה חלקים</a>). כל חלק עונה על שאלה אחת שהקבלן היה שואל אתכם אילו ישב מולכם.</p>
+
+<div class="cols2">
+<div class="card"><h4>1. הקשר: על מה עובדים?</h4><p>איזו מערכת, אילו טבלאות ועמודות, ואיזו גרסה של SQL. <small>למשל: ״מסד SQLite של מסעדה, טבלאות orders, order_items, dishes״.</small></p></div>
+<div class="card"><h4>2. משימה: מה בדיוק רוצים?</h4><p>שאלה אחת, והגדרה ברורה של המספר. <small>למשל: ״הכנסה לפי ערוץ, רק הזמנות שנמסרו, הכנסה של פריט היא qty כפול price״.</small></p></div>
+<div class="card"><h4>3. אילוצים: מה אסור ומה חובה?</h4><p>הגבולות שהקבלן לא חוצה. <small>למשל: ״אל תמציא עמודות. SELECT בלבד. אם חסר מידע, שאל״.</small></p></div>
+<div class="card"><h4>4. פורמט: איך מחזירים?</h4><p>איך התשובה צריכה להיראות, כדי שיהיה קל לבדוק ולהדביק. <small>למשל: ״שאילתה אחת, הערה בעברית על כל JOIN, עמודות channel ו-revenue״.</small></p></div>
+</div>
+
+<div class="defline"><b>דיאלקט (Dialect):</b> הגרסה של SQL שמסד נתונים מסוים מדבר. למשל חודש מתוך תאריך נכתב <code>strftime('%Y-%m', order_ts)</code> ב-SQLite ו-<code>date_trunc('month', order_ts)</code> ב-PostgreSQL. שאילתה מדיאלקט אחר פשוט תיכשל.</div>
+
+<h3>בונים פרומפט וצופים בציון</h3>
+<p>מלאו את ארבעת החלקים. הציון נבנה מבדיקות פשוטות על מה שכתבתם: יש סכמה? יש דיאלקט? המדד מוגדר? יש אילוצים ופורמט? והאם הדבקתם בטעות מפתח סודי. <dfn data-d="סכמה היא רשימת הטבלאות והעמודות של מסד נתונים, עם הסוג של כל עמודה. למשל: orders(id, channel, status, ...).">סכמה</dfn> היא בעצם רשימת הטבלאות והעמודות. נסו קודם את הפרומפט החלש, ואז שפרו עד שהציון עובר 80.</p>
+
+<div class="sim" data-id="p5-sim-builder"><div class="sh">בונה פרומפט: ארבעה חלקים</div>
+<div class="p5-bld">
+<div class="p5-bld-in">
+<label>1. הקשר<textarea data-k="ctx" placeholder="איזו מערכת, אילו טבלאות, איזה דיאלקט"></textarea></label>
+<label>2. משימה<textarea data-k="task" placeholder="מה השאלה העסקית, ואיך מגדירים את המדד"></textarea></label>
+<label>3. אילוצים<textarea data-k="con" placeholder="מה אסור, מה מחייב"></textarea></label>
+<label>4. פורמט<textarea data-k="fmt" placeholder="באיזו צורה להחזיר את התשובה"></textarea></label>
+</div>
+<div class="p5-bld-out">
+<div class="p5-score"><b class="p5-pct">0</b><span>/ 100</span><span class="chip p5-verdict">בקשה לא ברורה</span></div>
+<ul class="p5-checks"></ul>
+<div class="p5-prev" aria-label="הפרומפט המורכב"></div>
+</div>
+</div>
+<div class="row">
+<button type="button" class="btn sec2" data-a="weak">פרומפט חלש</button>
+<button type="button" class="btn sec2" data-a="full">פרומפט מלא לדוגמה</button>
+<button type="button" class="btn sec2" data-a="schema">הכנסת הסכמה האמיתית מהמסד</button>
+<button type="button" class="btn sec2" data-a="key">מה קורה אם מדביקים מפתח?</button>
+<button type="button" class="btn" data-a="copy">העתקת הפרומפט</button>
+<button type="button" class="btn sec2" data-a="clear">ניקוי</button>
+</div>
+<p><small>זו הדמיה. הציון מחושב לפי מילות מפתח בטקסט, לא על ידי מודל. הוא בודק שיש מבנה, לא שהפרומפט חכם. המפתח בדוגמה בדוי.</small></p>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p5-sim-builder"]'); if(!box) return;
+const F={}; ['ctx','task','con','fmt'].forEach(k=>F[k]=FL.$('[data-k="'+k+'"]',box));
+const list=FL.$('.p5-checks',box), prev=FL.$('.p5-prev',box), pct=FL.$('.p5-pct',box), ver=FL.$('.p5-verdict',box);
+const TABLES=['orders','order_items','dishes','customers','couriers'];
+const SECRET=/(AIza[0-9A-Za-z_]{8,}|sk-[0-9A-Za-z]{10,}|api[_-]?key\s*[:=]\s*\S{6,}|postgres(ql)?:\/\/[^\s:]+:[^\s@]+@)/i;
+const PRESET={
+ weak:{ctx:'',task:'תביא לי הכנסות',con:'',fmt:''},
+ full:{ctx:'מערכת ההזמנות של מסעדה. מסד SQLite. טבלאות:\norders(id, customer_id, courier_id, order_ts, channel, delivery_min, rating, tip, status)\norder_items(order_id, dish_id, qty)\ndishes(id, name, category, price, cost)\nהעמודה status היא delivered או cancelled.',task:'כתוב שאילתה שמחזירה את ההכנסה לפי ערוץ (channel), רק להזמנות שנמסרו. הכנסה של פריט היא qty כפול price.',con:'אל תמציא טבלאות או עמודות שלא מופיעות בסכמה. SELECT בלבד, בלי UPDATE או DELETE. אם חסר מידע, שאל אותי לפני שאתה מנחש.',fmt:'שאילתה אחת בלבד, עם הערה קצרה בעברית על כל JOIN. שמות העמודות בתוצאה: channel, revenue.'}
+};
+function pts(r,w){return r.test(w)?1:0;}
+function evalAll(){
+ const v={ctx:F.ctx.value,task:F.task.value,con:F.con.value,fmt:F.fmt.value};
+ const all=[v.ctx,v.task,v.con,v.fmt].join('\n');
+ const tc=TABLES.filter(t=>new RegExp('\\b'+t+'\\b','i').test(v.ctx)).length;
+ const secret=SECRET.test(all);
+ const R=[];
+ R.push({t:'הקשר: סכמת הטבלאות',s:tc>=3?2:(tc>=1?1:0),h:'צרפו שמות טבלאות ועמודות'});
+ R.push({t:'הקשר: דיאלקט של SQL',s:/sqlite|postgres|bigquery|mysql/i.test(all)?2:0,h:'ציינו SQLite, PostgreSQL או BigQuery'});
+ const m=pts(/הכנסה|רווח|מרווח|ממוצע|סכום|כמה|ספירת|מספר ה/,v.task), sc=pts(/נמסרו|delivered|status|חודש|שבוע|ערוץ|channel|לפי|בין התאריכים|2026/i,v.task);
+ R.push({t:'משימה: מה סופרים ועל מי',s:v.task.trim().length<15?0:m+sc,h:'הגדירו מה סופרים ועל איזו קבוצה'});
+ R.push({t:'אילוצים: מה אסור',s:pts(/אל תמציא|לא להמציא|do not invent|don.?t invent/i,v.con)+pts(/SELECT בלבד|קריאה בלבד|read.?only|בלי UPDATE|ללא UPDATE|אסור/i,v.con),h:'אסרו המצאות וכתיבה למסד'});
+ R.push({t:'פורמט: איך מחזירים',s:v.fmt.trim().length<8?0:pts(/שאילתה אחת|SQL בלבד|קוד בלבד|טבלה|JSON|עמודות/,v.fmt)+pts(/הערה|הערות|הסבר|בלי הסברים|בעברית/,v.fmt),h:'כמה שאילתות, באיזו שפה, אילו עמודות'});
+ R.push({t:'בטיחות: אין מפתחות וסיסמאות',s:secret?0:2,h:'מפתח בפרומפט כבר יצא החוצה',bad:secret});
+ let sum=R.reduce((a,r)=>a+r.s,0), p=Math.round(100*sum/12); if(secret) p=Math.min(p,40);
+ pct.textContent=p;
+ ver.textContent=secret?'יש כאן מפתח!':(p>=85?'אפשר לעבוד עם זה':(p>=50?'חצי דרך':'בקשה לא ברורה'));
+ ver.className='chip p5-verdict '+(secret?'r':(p>=85?'g':(p>=50?'a':'r')));
+ list.innerHTML=R.map(r=>'<li><span class="lamp '+(r.s===2?'g':(r.s===1?'y':'r'))+'"></span><span>'+FL.esc(r.t)+(r.s<2?' <small style="color:#64748b">('+FL.esc(r.h)+')</small>':'')+'</span></li>').join('');
+ const parts=[['הקשר',v.ctx],['משימה',v.task],['אילוצים',v.con],['פורמט',v.fmt]].filter(x=>x[1].trim());
+ prev.textContent=parts.length?parts.map(x=>x[0]+':\n'+x[1].trim()).join('\n\n'):'(הפרומפט יופיע כאן)';
+ if(p>=80&&!secret) FL.done('p5-sim-builder');
+}
+function setAll(o){['ctx','task','con','fmt'].forEach(k=>F[k].value=o[k]||'');evalAll();}
+box.addEventListener('click',function(e){
+ const b=e.target.closest('button[data-a]'); if(!b) return; const a=b.dataset.a;
+ if(a==='weak') setAll(PRESET.weak);
+ if(a==='full') setAll(PRESET.full);
+ if(a==='clear') setAll({});
+ if(a==='schema'){
+  let sql='';
+  try{ const r=FL.ok()&&FL.exec("SELECT group_concat(sql, char(10)) FROM sqlite_master WHERE type='table' AND name IN ('orders','order_items','dishes')",'rest'); sql=r&&r.values[0][0]||''; }catch(x){}
+  F.ctx.value='מערכת ההזמנות של מסעדה. מסד SQLite. הסכמה האמיתית:\n'+(sql||'(מנוע ה-SQL לא נטען)');
+  evalAll();
+ }
+ if(a==='key'){ F.ctx.value=F.ctx.value+'\nהמפתח שלי: '+'AI'+'za'+'SyFAKEFAKEFAKEFAKE12345'; evalAll(); }
+ if(a==='copy') FL.copyText(prev.textContent,b);
+});
+['ctx','task','con','fmt'].forEach(k=>F[k].addEventListener('input',evalAll));
+evalAll();
+});})();</script>
+
+<div class="box meaning"><p>פרומפט הוא לא שאלה, הוא מפרט עבודה. מי שמדביק ״תביא לי הכנסות״ מקבל ניחוש. מי שכותב מפרט מקבל טיוטה שאפשר לבדוק. את ההקשר מתחילים לדלג עליו, ולכן שם נעשות הכי הרבה טעויות. והחלק הכי חשוב בהקשר הוא הסכמה: בלעדיה המודל מנחש שמות של טבלאות ועמודות.</p></div>
+
+<h3>הסכמה: שולפים אותה מהמסד ולא מהראש</h3>
+<p>במקום להקליד את הסכמה בידיים (ולהתבלבל), שולפים אותה מהמסד. זו הפקודה שנותנת ל-AI את ה״מפה״ של הטבלאות. שימו לב: שולחים רק מבנה, לא שורות של נתונים.</p>
+
+<div class="lab" data-id="p5-lab-schema" data-title="הסכמה כהקשר לפרומפט" data-ordered="0">
+<div class="q-src">שלפו מ-<code>sqlite_master</code> את <code>name</code> ו-<code>sql</code> של שלוש הטבלאות <code>orders</code>, <code>order_items</code> ו-<code>dishes</code> (טבלאות בלבד). מה שיוצא הוא הטקסט שמדביקים בהקשר.</div>
+<pre class="start">SELECT name, sql
+FROM sqlite_master
+-- השלימו את התנאי</pre>
+<pre class="check">SELECT name, sql FROM sqlite_master WHERE type = 'table' AND name IN ('orders','order_items','dishes')</pre>
+<pre class="solution">SELECT name, sql
+FROM sqlite_master
+WHERE type = 'table'
+  AND name IN ('orders', 'order_items', 'dishes')</pre>
+<ol class="hints"><li>ב-<code>sqlite_master</code> יש שורה לכל טבלה, אינדקס ועוד. סננו לפי העמודה <code>type</code>.</li><li>הוסיפו תנאי על <code>name</code> עם <code>IN (...)</code>.</li></ol>
+<div class="why-src">קיבלתם את מבנה הטבלאות כטקסט. את זה מדביקים בתחילת הפרומפט. ב-PostgreSQL עושים את אותו דבר דרך <code>information_schema.columns</code>. ובשום שלב לא שלחנו נתונים של לקוחות.</div>
+</div>
+
+<h3>פרומפט אחד לכל שכבה</h3>
+<p>מערכת שלמה היא שלוש שכבות: ממשק, שרת ומסד. הכלל מהפגישה השלישית: <b>פרומפט אחד, תפקיד אחד</b>. אם מבקשים הכול בבת אחת, ה-AI מערבב שכבות (למשל מכניס לקוד של הממשק גישה ישירה למסד), ואי אפשר לבדוק כל חלק לחוד.</p>
+
+<div class="anim" data-id="p5-anim-layers" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 310" role="img" aria-label="פרומפט אחד מול פרומפט לכל שכבה">
+<defs><marker id="p5-lay-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4f46e5"/></marker></defs>
+<rect x="590" y="130" width="180" height="90" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+<text x="680" y="170" text-anchor="middle" font-size="19" font-weight="700" fill="#3730a3">ממשק</text>
+<text x="680" y="196" text-anchor="middle" font-size="14" fill="#475569">HTML בדפדפן</text>
+<rect x="310" y="130" width="180" height="90" rx="14" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+<text x="400" y="170" text-anchor="middle" font-size="19" font-weight="700" fill="#047857">שרת</text>
+<text x="400" y="196" text-anchor="middle" font-size="14" fill="#475569">Apps Script</text>
+<rect x="30" y="130" width="180" height="90" rx="14" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+<text x="120" y="170" text-anchor="middle" font-size="19" font-weight="700" fill="#b45309">מסד</text>
+<text x="120" y="196" text-anchor="middle" font-size="14" fill="#475569">טבלאות</text>
+<g data-only="1"><rect x="60" y="30" width="680" height="64" rx="16" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="400" y="58" text-anchor="middle" font-size="18" font-weight="700" fill="#92400e">פרומפט אחד: ״תבנה לי את כל המערכת״</text>
+<text x="400" y="82" text-anchor="middle" font-size="14" fill="#92400e">השכבות מתערבבות והבדיקה בלתי אפשרית</text>
+<path d="M400 96V126" stroke="#f59e0b" stroke-width="3" stroke-dasharray="5 4"/>
+<text x="400" y="262" text-anchor="middle" font-size="16" fill="#b91c1c">?</text></g>
+<g data-s="2"><rect x="590" y="40" width="180" height="56" rx="12" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="680" y="64" text-anchor="middle" font-size="15" font-weight="700" fill="#3730a3">פרומפט 1</text><text x="680" y="84" text-anchor="middle" font-size="13" fill="#475569">רק HTML ו-JS</text><path d="M680 98V126" stroke="#4f46e5" stroke-width="2" marker-end="url(#p5-lay-ar)"/>
+<rect x="310" y="40" width="180" height="56" rx="12" fill="#fff" stroke="#10b981" stroke-width="2"/><text x="400" y="64" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">פרומפט 2</text><text x="400" y="84" text-anchor="middle" font-size="13" fill="#475569">רק קוד שרת</text><path d="M400 98V126" stroke="#10b981" stroke-width="2" marker-end="url(#p5-lay-ar)"/>
+<rect x="30" y="40" width="180" height="56" rx="12" fill="#fff" stroke="#f59e0b" stroke-width="2"/><text x="120" y="64" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">פרומפט 3</text><text x="120" y="84" text-anchor="middle" font-size="13" fill="#475569">רק טבלאות</text><path d="M120 98V126" stroke="#f59e0b" stroke-width="2" marker-end="url(#p5-lay-ar)"/></g>
+<g data-s="3"><path d="M588 175H492" stroke="#4f46e5" stroke-width="3" marker-end="url(#p5-lay-ar)"/><path d="M308 175H212" stroke="#4f46e5" stroke-width="3" marker-end="url(#p5-lay-ar)"/>
+<rect x="500" y="236" width="80" height="26" rx="13" fill="#e0e7ff"/><text x="540" y="254" text-anchor="middle" font-size="13" font-weight="700" fill="#3730a3">JSON</text>
+<rect x="220" y="236" width="80" height="26" rx="13" fill="#e0e7ff"/><text x="260" y="254" text-anchor="middle" font-size="13" font-weight="700" fill="#3730a3">SQL</text>
+<text x="540" y="164" text-anchor="middle" font-size="13" fill="#475569">חוזה</text><text x="260" y="164" text-anchor="middle" font-size="13" fill="#475569">חוזה</text></g>
+<g data-s="4" data-pulse><rect x="352" y="238" width="96" height="38" rx="10" fill="#142a45"/><text x="400" y="262" text-anchor="middle" font-size="14" font-weight="700" fill="#d8b862">🔐 הסוד כאן</text></g>
+</svg></div>
+<ol class="caps"><li>פרומפט אחד לכל המערכת: השכבות מתערבבות, ובכל שינוי קטן צריך לבקש הכול מחדש.</li><li>פרומפט אחד לכל שכבה: תפקיד אחד, פלט נקי יותר, ובדיקה נפרדת לכל חלק.</li><li>בין השכבות יש חוזה: צורת ה-<dfn data-d="פורמט טקסט שבו תוכנות מחליפות נתונים: שמות וערכים בתוך סוגריים מסולסלים. למשל: {&quot;channel&quot;: &quot;app&quot;}.">JSON</dfn> וה-SQL שמוסכמים מראש. כל שכבה מכירה רק את החוזה.</li><li>סודות (מפתח, סיסמה) לא נכנסים לשום פרומפט. הם נשמרים בהגדרות של השרת, לא בקוד של הממשק.</li></ol>
+</div>
+
+<p>בין הממשק לשרת מדברים דרך <dfn data-d="API: דרך מוסכמת שבה תוכנה אחת פונה לתוכנה אחרת. כאן: הדפדפן מבקש מהשרת סיכום הזמנות.">API</dfn>. הנה שני פרומפטים לדוגמה, מותאמים למסעדה של יבגני. שימו לב לשלושה דברים: הסכמה מופיעה בהם, החוזה (מבנה ה-JSON) מוגדר מראש, ואין בהם אף מפתח. בשלב הראשון השרת מחזיר נתוני דוגמה קבועים, כדי לבדוק את כל הקו לפני שמחברים מסד אמיתי.</p>
+
+<details open><summary><b>פרומפט 1: שכבת השרת (Google Apps Script)</b></summary>
+<pre class="prompt">הקשר: אני בונה את שכבת השרת של מערכת ההזמנות של מסעדה. הנתונים נמצאים (בהמשך) במסד PostgreSQL עם הטבלאות:
+orders(id, customer_id, courier_id, order_ts, channel, delivery_min, rating, tip, status)
+order_items(order_id, dish_id, qty)
+dishes(id, name, category, price, cost)
+channel הוא אחד מ: app, phone, walk-in. status הוא אחד מ: delivered, cancelled.
+הכנסה של הזמנה היא SUM(qty * price) על הפריטים שלה. סופרים רק הזמנות עם status = delivered.
+
+משימה: כתוב סקריפט Google Apps Script עצמאי (קובץ .gs אחד), שמוגדר כ-Web App ומחזיר JSON.
+פונקציית הכניסה היחידה היא doGet(e), עם הפרמטר action: summary (ברירת מחדל) או health.
+action=summary מחזיר מספר הזמנות והכנסה לפי ערוץ.
+בשלב הזה אין חיבור למסד: הפונקציה getSummaryRows_() מחזירה נתוני דוגמה קבועים במבנה שלמטה, כדי שאפשר יהיה לבדוק את כל השרשרת לפני שמחברים מסד.
+
+אילוצים:
+- הפלט הוא קוד .gs בלבד: בלי הסברים, בלי HTML, בלי גדרות markdown.
+- השתמש רק בשירותים מובנים של Apps Script (ContentService לתשובה). אל תמציא שירותים, ואל תשתמש ב-SpreadsheetApp.
+- אין בקוד מפתחות או סיסמאות. אם בהמשך נדרש סוד, יש לקרוא אותו מ-PropertiesService.getScriptProperties().
+- עטוף ב-try/catch. בכישלון החזר {"error": true, "message": "הודעה קצרה בעברית"}.
+- כשיתווספו שאילתות למסד, הן יהיו SELECT בלבד ופרמטריות.
+
+פורמט תשובת ה-API (JSON):
+{"updated":"(זמן עדכון בפורמט ISO)","rows":[{"channel":"app","orders":39,"revenue":6180},{"channel":"phone","orders":20,"revenue":3492},{"channel":"walk-in","orders":23,"revenue":3212}]}</pre>
+</details>
+
+<details><summary><b>פרומפט 2: שכבת הממשק (קובץ HTML יחיד)</b></summary>
+<pre class="prompt">הקשר: יש לי Web App ב-Google Apps Script שמחזיר JSON לפי החוזה הבא.
+בקשה: GET {API_URL}?action=summary
+תשובה תקינה: {"updated": string, "rows": [{"channel": string, "orders": number, "revenue": number}]}
+תשובת שגיאה: {"error": true, "message": string}
+
+משימה: צור קובץ HTML יחיד, בעברית (dir="rtl"), שמציג לוח קטן למנהל המסעדה: שלושה כרטיסי KPI (סך הזמנות, סך הכנסה, הערוץ המוביל בהכנסה) וגרף עמודות אופקי של ההכנסה לפי ערוץ.
+
+אילוצים:
+- קובץ אחד, CSS ו-JavaScript פנימיים. בלי ספריות ובלי CDN: הגרף בנוי מ-div-ים או מ-SVG.
+- const API_URL = ''; השאר אותו ריק בכוונה. אם הוא ריק, הצג הודעה ידידותית ואל תבצע fetch.
+- כל fetch בתוך try/catch. אם data.error הוא true, הצג את data.message. לעולם אל תציג שגיאת JavaScript גולמית למשתמש.
+- הלוח מוסתר עד שמגיעים נתונים. סכומים בפורמט עם פסיק לאלפים וסימן ₪.
+- בלי localStorage, בלי cookies ובלי מפתחות או סיסמאות.
+
+פורמט: קובץ HTML מלא בלבד, ללא הסברים וללא גדרות markdown.</pre>
+</details>
+
+<div class="tw"><table class="tbl"><thead><tr><th>קטע בפרומפט</th><th>למה הוא שם</th></tr></thead><tbody>
+<tr><td>״הקשר״ עם הסכמה והגדרת ההכנסה</td><td>בלי זה המודל ממציא עמודה כמו <code>total_price</code>, או סופר גם הזמנות שבוטלו.</td></tr>
+<tr><td>״קובץ .gs אחד, בלי הסברים״</td><td>פלט נקי שאפשר להדביק מיד. הסברים ו-markdown מקלקלים את ההדבקה.</td></tr>
+<tr><td>״נתוני דוגמה קבועים בשלב הזה״</td><td>פרוסה דקה ראשונה: בודקים את הקו כולו לפני שמחברים מסד.</td></tr>
+<tr><td><code>API_URL = ''</code> ריק בכוונה</td><td>אם משאירים מקום, המודל ממציא כתובת שנראית אמיתית. ריק מכריח הודעה שמזכירה למלא.</td></tr>
+<tr><td>״אין מפתחות בקוד״</td><td>מפתח שנכנס לקוד או לפרומפט יכול להגיע לגיטהאב או לשרת של מישהו אחר.</td></tr>
+<tr><td>try/catch והודעת שגיאה בעברית</td><td>המשתמש לא צריך לראות <code>TypeError</code>. הוא צריך לדעת מה לעשות.</td></tr>
+</tbody></table></div>
+
+<p>המספרים בחוזה לא הומצאו. הם יוצאים משאילתה על מסד המסעדה. בואו נבדוק אותם בעצמנו.</p>
+
+<div class="lab" data-id="p5-lab-summary" data-title="בודקים את נתוני הדוגמה בחוזה" data-ordered="0">
+<div class="q-src">שלפו לכל ערוץ את מספר ההזמנות שנמסרו (<code>orders</code>) ואת ההכנסה שלהן (<code>revenue</code>). העמודות: <code>channel</code>, <code>orders</code>, <code>revenue</code>. שימו לב ל-<dfn data-d="כשחיבור לטבלה עם הרבה שורות להזמנה מכפיל שורות, וכל סכום שמחשבים אחר כך יוצא מנופח.">fan-out</dfn>: את ההזמנות סופרים עם <code>COUNT(DISTINCT ...)</code>.</div>
+<pre class="start">SELECT o.channel,
+       COUNT(*) AS orders,
+       SUM(oi.qty * d.price) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+JOIN dishes d ON d.id = oi.dish_id
+-- הוסיפו סינון, וטפלו בספירה</pre>
+<pre class="check">SELECT o.channel, COUNT(DISTINCT o.id), SUM(oi.qty * d.price) FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status = 'delivered' GROUP BY o.channel</pre>
+<pre class="solution">SELECT o.channel,
+       COUNT(DISTINCT o.id) AS orders,
+       SUM(oi.qty * d.price) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+JOIN dishes d ON d.id = oi.dish_id
+WHERE o.status = 'delivered'
+GROUP BY o.channel</pre>
+<ol class="hints"><li><code>COUNT(*)</code> סופר שורות אחרי ה-JOIN, כלומר פריטים. מה צריך לספור במקום?</li><li>״רק הזמנות שנמסרו״ זה תנאי על <code>o.status</code>.</li></ol>
+<div class="why-src">יצא 39, 20 ו-23 הזמנות, והכנסה של 6,180, 3,492 ו-3,212 ₪. בסך הכול 82 הזמנות ו-12,884 ₪. אלה בדיוק המספרים שבחוזה של פרומפט 1. ככה בודקים שהדוגמה שביקשתם מה-AI אמיתית.</div>
+</div>
+
+<div class="box try" data-id="p5-try-prompt">
+<ol>
+<li>פתחו כלי AI שנוח לכם (למשל Claude או AI Studio של גוגל) והדביקו את פרומפט 1.</li>
+<li>בדקו מה חזר: האם זה מתחיל ב-<code>function doGet</code>? יש HTML או הסברים? המודל ״המציא״ מפתח?</li>
+<li>אם כן, החזירו למודל את השגיאה ואת האילוץ שהוא הפר, ובקשו תיקון. אל תכתבו רק ״לא עובד״.</li>
+<li>רשמו לעצמכם איזה חלק בפרומפט היה צריך להיות ברור יותר.</li>
+</ol>
+<p class="tools"><a class="tool" href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a><a class="tool" href="https://aistudio.google.com" target="_blank" rel="noopener">AI Studio</a><a class="tool" href="https://script.google.com" target="_blank" rel="noopener">Apps Script</a></p>
+</div>
+
+<div class="quiz" data-id="p5-q-layers" data-a="2"><p class="qq">למה לא מבקשים מה-AI שרת, ממשק ומסד בפרומפט אחד?</p>
+<button class="opt">כי הפרומפט יהיה ארוך מדי, ומודל לא מסוגל לקרוא טקסט ארוך</button>
+<button class="opt">כי השכבות מתערבבות, קשה לבדוק כל חלק לחוד, ובכל שינוי קטן צריך לבקש הכול מחדש</button>
+<button class="opt">כי מודל לא יודע לכתוב HTML ו-SQL באותה תשובה</button>
+<button class="opt">כי פרומפט אחד יקר יותר בכל מקרה</button>
+<div class="why">התשובה השנייה. הבעיה היא לא האורך ולא יכולת של המודל, אלא סדר: בלי הפרדה אי אפשר לבדוק כל שכבה, ושכבה אחת מקלקלת אחרת. אורך (א) זה לא הגורם, מודלים כותבים כמה סוגי קוד בתשובה אחת (ג), ועלות (ד) היא לא הסיבה העיקרית.</div></div>
+
+<div class="box think" data-id="p5-th-ctx"><p>במסד הלקוחות שלכם יש נתונים אישיים אמיתיים. מה תכתבו בחלק ״הקשר״, ומה בכוונה לא?</p>
+<div class="ans">אכתוב את הסכמה: שמות של טבלאות, עמודות וסוגים, ואת הכללים העסקיים (למשל איך מגדירים הכנסה). לא אדביק שורות אמיתיות של לקוחות, שמות, אימיילים או טלפונים. אם צריך דוגמת שורות, אצור שורות בדויות באותו מבנה. המודל צריך להכיר את המבנה, לא את האנשים.</div></div>
+
+<div class="box real"><p>צוותי פיתוח שעובדים עם עוזרי קוד שומרים קובץ הוראות קבוע בתיקיית הפרויקט: תיאור המערכת, הסכמה, כללי כתיבה, מה אסור. הכלי מצרף אותו לכל בקשה, ככה ההקשר לא נשכח. זה אותו עיקרון של ארבעת החלקים, רק שחלק ההקשר נכתב פעם אחת.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בקשו ממתנדב להקליד ״תביא לי הכנסות״ ולהראות את הציון. שאלו את הכיתה: מה הקבלן היה שואל? אספו שלוש שאלות והראו שכל אחת שייכת לאחד מארבעת החלקים. בהנפשה, עצרו בשלב 3 ושאלו מי מחליט על החוזה (האדריכל, לא ה-AI).</div>
+</section>
+<section class="sec" id="s5-2" data-t="שלוש מלכודות">
+<div class="sec-h"><div class="sec-n">2</div><h2>שלוש טעויות שחוזרות: המצאה, חוסר הקשר והסכמה בכוח</h2></div>
+<p class="lead">קבלן מהיר ונלהב יכול להזיק יותר מקבלן איטי. שלוש טעויות חוזרות אצל כל מי שעובד עם AI: הוא ממציא, הוא לא מכיר את הקונטקסט שלכם, והוא מסכים איתכם גם כשאתם טועים. לכל אחת יש דוגמה ודרך לבדוק.</p>
+
+<h3>טעות 1: המצאה (הזיה)</h3>
+<div class="defline"><b>הזיה (Hallucination):</b> המודל עונה בביטחון ומשלב פרט שהוא המציא, כמו עמודה או פונקציה שלא קיימות. למשל: שאילתה שמסכמת <code>total_price</code> בטבלת <code>orders</code>, אף שאין שם עמודה כזו.</div>
+<p>בטבלת <code>orders</code> אין סכום הזמנה, ובכוונה: את ההכנסה מחשבים מהפריטים. מודל שלא יודע את זה ״נזכר״ בעמודה שנשמעת הגיונית. זו ההמצאה הקלה לגילוי, כי המסד פשוט צועק.</p>
+
+<div class="lab" data-id="p5-lab-halluc" data-title="המצאה שהמסד תופס" data-ordered="0">
+<div class="q-src">ה-AI כתב שאילתה להכנסה לפי ערוץ (הזמנות שנמסרו). הריצו, קראו את השגיאה, ותקנו כך שתחשב הכנסה אמיתית. העמודות: <code>channel</code> ו-<code>revenue</code>.</div>
+<pre class="start">SELECT channel, SUM(total_price) AS revenue
+FROM orders
+WHERE status = 'delivered'
+GROUP BY channel</pre>
+<pre class="check">SELECT o.channel, SUM(oi.qty * d.price) FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status = 'delivered' GROUP BY o.channel</pre>
+<pre class="solution">SELECT o.channel, SUM(oi.qty * d.price) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+JOIN dishes d ON d.id = oi.dish_id
+WHERE o.status = 'delivered'
+GROUP BY o.channel</pre>
+<ol class="hints"><li>השגיאה אומרת בדיוק איזה שם לא קיים. איפה נמצאים הכמות והמחיר?</li><li>צריך לחבר את <code>orders</code> ל-<code>order_items</code> ול-<code>dishes</code>.</li></ol>
+<div class="why-src">ההכנסה מחושבת מ-<code>qty * price</code> של הפריטים. זו המצאה ״טובה״, כי היא נכשלת בקול. המצאות מסוכנות הן אלה שרצות בשקט, ועליהן בסעיף הבא.</div>
+</div>
+
+<h3>טעות 2: חוסר הקשר</h3>
+<div class="defline"><b>חוסר הקשר (Missing context):</b> המודל לא מכיר את הטבלאות, הכללים והמושגים שלכם, אלא אם הדבקתם אותם בשיחה. למשל: ״הלקוחות הטובים״ בלי הגדרה ובלי סכמה, והוא מנחש.</div>
+<p>הנה אותה שאלה בשלושה מצבים. הכפתורים מציגים שאילתות <b>לדוגמה</b> של מה שמודל נוטה להחזיר בכל מצב. את ההרצה על מסד המסעדה עושים באמת.</p>
+
+<div class="sim" data-id="p5-sim-ctx"><div class="sh">אותה שאלה, שלושה מצבים</div>
+<p>יבגני שואל: <b>״מי הלקוחות הטובים ביותר שלנו?״</b></p>
+<div class="row"><button type="button" class="btn sec2" data-m="0">1. בלי הקשר</button><button type="button" class="btn sec2" data-m="1">2. עם סכמה</button><button type="button" class="btn sec2" data-m="2">3. סכמה והגדרה של ״טוב״</button></div>
+<div class="out">
+<div class="p5-ctx-sent"></div>
+<div class="p5-sqlbox"></div>
+<div class="row"><button type="button" class="btn" data-run="1">▶ הרצה על מסד המסעדה</button><span class="chip">הדמיה: השאילתות לדוגמה, ההרצה אמיתית</span></div>
+<div class="p5-ctx-res"></div>
+<div class="p5-ctx-note"></div>
+</div></div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p5-sim-ctx"]'); if(!box) return;
+const M=[
+ {sent:'נשלח למודל: רק המשפט ״מי הלקוחות הטובים ביותר שלנו?״',sql:"SELECT customer_id, SUM(total_amount) AS total_spent\nFROM orders\nGROUP BY customer_id\nORDER BY total_spent DESC\nLIMIT 5",note:'המודל לא ראה את הסכמה, אז הוא בחר שם עמודה שנשמע הגיוני. זו המצאה שנובעת מחוסר הקשר.'},
+ {sent:'נשלח למודל: השאלה + הסכמה של orders, customers, order_items, dishes',sql:"SELECT c.name, COUNT(*) AS orders\nFROM orders o\nJOIN customers c ON c.id = o.customer_id\nGROUP BY c.id\nORDER BY orders DESC\nLIMIT 5",note:'השאילתה רצה. אבל ״טוב״ התפרש כ״הרבה הזמנות״, וגם הזמנות שבוטלו נספרו. בלי הגדרה, המודל בחר הגדרה במקומכם.'},
+ {sent:'נשלח למודל: השאלה + הסכמה + ״לקוח טוב הוא מי שהוציא הכי הרבה בהזמנות שנמסרו״',sql:"SELECT c.name, SUM(oi.qty * d.price) AS spent\nFROM orders o\nJOIN customers c ON c.id = o.customer_id\nJOIN order_items oi ON oi.order_id = o.id\nJOIN dishes d ON d.id = oi.dish_id\nWHERE o.status = 'delivered'\nGROUP BY c.id\nORDER BY spent DESC\nLIMIT 5",note:'כשיש הגדרה ברורה התשובה משתנה: במקום הילה אבני, הראשונה היא תמר שפירא. ההגדרה היא חלק מההקשר, לא פרט קטן.'}
+];
+let cur=-1; const sent=FL.$('.p5-ctx-sent',box), sq=FL.$('.p5-sqlbox',box), res=FL.$('.p5-ctx-res',box), note=FL.$('.p5-ctx-note',box);
+function show(i){cur=i; sent.innerHTML='<span class="chip b">'+FL.esc(M[i].sent)+'</span>'; sq.innerHTML=FL.hl(M[i].sql); res.innerHTML=''; note.innerHTML=''; FL.$$('button[data-m]',box).forEach(b=>b.classList.toggle('sec2',+b.dataset.m!==i));}
+box.addEventListener('click',function(e){
+ const b=e.target.closest('button'); if(!b) return;
+ if(b.dataset.m!==undefined) show(+b.dataset.m);
+ if(b.dataset.run){
+  if(cur<0){ res.innerHTML='<div class="cnt">בחרו קודם מצב הקשר.</div>'; return; }
+  if(!FL.ok()){ res.textContent='מנוע ה-SQL לא נטען.'; return; }
+  try{ const r=FL.exec(M[cur].sql,'rest'); res.innerHTML='<div class="res">'+FL.tableHTML(r)+'</div>'; note.innerHTML='<div class="box meaning" style="margin:8px 0"><p>'+FL.esc(M[cur].note)+'</p></div>'; }
+  catch(err){ res.innerHTML='<div class="msg bad" style="display:block;background:#fee2e2;color:#991b1b;padding:8px 12px;border-radius:10px">שגיאת SQL: <span class="mono">'+FL.esc(err.message||String(err))+'</span></div>'; note.innerHTML='<div class="box meaning" style="margin:8px 0"><p>'+FL.esc(M[cur].note)+'</p></div>'; }
+  seen[cur]=1; if(seen[0]&&seen[1]&&seen[2]) FL.done('p5-sim-ctx');
+ }
+});
+const seen={};
+show(0);
+});})();</script>
+
+<h3>טעות 3: הסכמה בכוח</h3>
+<div class="defline"><b>הסכמת יתר (Over-agreement):</b> מודל נוטה להסכים איתכם, להתנצל ולשנות קוד גם כשהקוד היה נכון. למשל: כתבתם ״זה לא נכון״, והוא ״מתקן״ שאילתה נכונה לשאילתה שגויה.</div>
+<p>זה דבר שקורה הרבה, ולכן מה שרואים כאן הוא שיחה לדוגמה ולא תמלול של מודל מסוים. שימו לב איך אותה שאלה נגמרת בשני מקומות שונים, לפי איך מתנגדים.</p>
+
+<div class="cols2">
+<div class="mk rtl"><div class="mk-bar"><i></i><i></i><i></i><span class="url">הדמיה · מתנגדים בלי ראיה</span></div><div class="mk-body">
+<div class="p5-b u">כמה הכנסנו מהזמנות שנמסרו?</div>
+<div class="p5-b a">הנה השאילתה, עם הסינון <code>WHERE o.status = 'delivered'</code>, והתוצאה: <b>12,884 ₪</b></div>
+<div class="p5-b u">זה לא נכון. תתקן.</div>
+<div class="p5-b a">סליחה על הטעות! הנה גרסה מתוקנת, בלי הסינון. התוצאה: <b>13,592 ₪</b></div>
+<div class="p5-b bad">המספר השגוי נכנס, והסינון הנכון נעלם.</div>
+</div></div>
+<div class="mk rtl"><div class="mk-bar"><i></i><i></i><i></i><span class="url">הדמיה · מתנגדים עם ראיה</span></div><div class="mk-body">
+<div class="p5-b u">כמה הכנסנו מהזמנות שנמסרו?</div>
+<div class="p5-b a">הנה השאילתה, עם הסינון <code>WHERE o.status = 'delivered'</code>, והתוצאה: <b>12,884 ₪</b></div>
+<div class="p5-b u">בדוח הישן יש 13,592. ההגדרה שלנו היא הכנסה מהזמנות שנמסרו בלבד. תבדוק אם ההפרש הוא הזמנות שבוטלו, ואל תשנה לפני שבדקת.</div>
+<div class="p5-b a">ההפרש הוא 708 ₪ מהזמנות שבוטלו. השאילתה המקורית מתאימה להגדרה, אז אין מה לשנות.</div>
+<div class="p5-b ok">המספר נשאר, וההפרש הוסבר.</div>
+</div></div>
+</div>
+
+<p>שלושת המספרים בשיחה אמיתיים. אפשר לשחזר אותם:</p>
+
+<div class="lab" data-id="p5-lab-baseline" data-title="מספר ידוע, לפני ששינינו משהו" data-ordered="0">
+<div class="q-src">החזירו שורה אחת עם שלוש עמודות: הכנסה מהזמנות שנמסרו, הכנסה מכל ההזמנות, והכנסה מהזמנות שבוטלו. הכלי: <code>SUM(CASE WHEN ... THEN ... END)</code>.</div>
+<pre class="start">SELECT
+  SUM(CASE WHEN o.status = 'delivered' THEN oi.qty * d.price END) AS delivered_rev,
+  -- הוסיפו: כל ההזמנות
+  -- הוסיפו: הזמנות שבוטלו
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+JOIN dishes d ON d.id = oi.dish_id</pre>
+<pre class="check">SELECT SUM(CASE WHEN o.status = 'delivered' THEN oi.qty * d.price END), SUM(oi.qty * d.price), SUM(CASE WHEN o.status = 'cancelled' THEN oi.qty * d.price END) FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id</pre>
+<pre class="solution">SELECT
+  SUM(CASE WHEN o.status = 'delivered' THEN oi.qty * d.price END) AS delivered_rev,
+  SUM(oi.qty * d.price) AS all_rev,
+  SUM(CASE WHEN o.status = 'cancelled' THEN oi.qty * d.price END) AS cancelled_rev
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+JOIN dishes d ON d.id = oi.dish_id</pre>
+<ol class="hints"><li>העמודה השנייה היא סכום בלי שום <code>CASE</code>.</li><li>העמודה השלישית דומה לראשונה, רק עם <code>'cancelled'</code>.</li></ol>
+<div class="why-src"><bdi dir="ltr">12,884 + 708 = 13,592.</bdi> כשיש לכם מספר ידוע ביד, אפשר לדחות ״תיקון״ של המודל בלי להתווכח. זו כל השיטה: לא מתווכחים עם המודל, מכריעים לפי הנתונים.</div>
+</div>
+
+<p>ואם רוצים שהמודל יאתגר אתכם ולא יסכים איתכם, מבקשים את זה במפורש. הנה פרומפט מהתדריך של הפרויקט המלווה:</p>
+<pre class="prompt">שחק פרקליט השטן: היכן אני טועה? היה ביקורתי וישיר, ואל תסכים רק כדי לרצות. פורמט: שלושה סיכונים, ולכל אחד דרך לצמצם אותו.</pre>
+
+<div class="box trap"><p><b>שלוש טעויות, שלוש בדיקות.</b> המצאה: מריצים ובודקים שמות מול הסכמה. חוסר הקשר: מדביקים סכמה והגדרות בכל שיחה חדשה. הסכמה בכוח: עונים לו בראיה (מספר ידוע, שורה, שגיאה) ולא בטון.</p></div>
+
+<div class="quiz" data-id="p5-q-halluc" data-a="2"><p class="qq">איזו המצאה מסוכנת יותר לעסק?</p>
+<button class="opt">שאילתה שנכשלת עם שגיאה של עמודה שלא קיימת</button>
+<button class="opt">שאילתה שרצה בהצלחה ומחזירה מספר סביר אבל שגוי</button>
+<button class="opt">שתיהן זהות, כי בשני המקרים המודל טעה</button>
+<button class="opt">אף אחת, כי מודלים מודרניים לא מזייפים</button>
+<div class="why">התשובה השנייה. שגיאה רואים ואי אפשר להכניס אותה לדוח. מספר שגוי נראה תקין, מגיע להנהלה ומשפיע על החלטות. שתיהן זהות (ג)? לא, רמת הסיכון שונה. ואין דבר כזה ״מודל שלא ממציא״ (ד): זה עדיין קורה, בעיקר כשחסר הקשר.</div></div>
+
+<div class="quiz" data-id="p5-q-agree" data-a="3"><p class="qq">כתבתם ל-AI ״זה לא נכון״, והוא התנצל והחליף שאילתה נכונה בשאילתה שגויה. מה עושים בפעם הבאה?</p>
+<button class="opt">כותבים בטון חד יותר</button>
+<button class="opt">עוברים מיד למודל אחר ומאמינים לו</button>
+<button class="opt">מציגים ראיה (מספר ידוע, שורה או שגיאה), ומבקשים לבדוק לפני שמשנים</button>
+<button class="opt">מקבלים את התיקון, כי המודל התנצל</button>
+<div class="why">התשובה השלישית. ראיה מכוונת את המודל למה שצריך לבדוק. טון חד לא מוסיף מידע (א). מודל אחר יסכים איתכם באותה קלות (ב). התנצלות היא לא הוכחה שהוא בדק (ד).</div></div>
+
+<div class="box think" data-id="p5-th-agree"><p>המודל כתב ״צדקת, סליחה״ ושינה את הקוד. זה אומר שהוא בדק שוב ומצא טעות?</p>
+<div class="ans">לא בהכרח. מודל ממשיך את השיחה לכיוון שהמשתמש רומז עליו, ו״צדקת״ זה המשך טבעי. ההסכמה היא לא הוכחה לבדיקה. הדרך להבדיל: מתעלמים מהטון ומשווים את התוצאה למספר ידוע.</div></div>
+
+<div class="box meaning"><p>שלוש הטעויות מובילות לאותו הרגל: לא מאמינים למספר שלא בדקו. מי שרואה ב-AI קבלן שעובד לפי מפרט ובודק כל עבודה מול מספר ידוע, מקבל את המהירות בלי לשלם על טעויות שקטות. מי שמאמין לטון הבטוח של המודל משלם בהחלטות לא נכונות.</p></div>
+
+<div class="box real"><p>בצוותי נתונים נהוג שמי שכותב לא זה שמאשר: ״ארבע עיניים״ על כל שאילתה שמגיעה לדוח של ההנהלה. כלי BI שמציעים ״תשאל את הנתונים בעברית או באנגלית״ מציגים לפעמים את השאילתה שנוצרה, כדי שאדם יקרא ויאשר. זה לא פגם במוצר, זה חלק ממנו.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הריצו בכיתה את ההדמיה בשלושת המצבים, ולפני כל הרצה שאלו: מה לדעתכם יצא? בשיחה עם ההתנצלות, עצרו על ״סליחה על הטעות״ ושאלו איזה מידע חדש יש בה. אפס.</div>
+</section>
+<section class="sec" id="s5-3" data-t="מעבדת הביקורת">
+<div class="sec-h"><div class="sec-n">3</div><h2>בודקים שבע שאילתות ש-AI כתב</h2></div>
+<p class="lead">יבגני ביקש מהקבלן שבע שאילתות. כולן רצות. כולן מחזירות מספר שנראה סביר. עכשיו אתם האדריכלים: מחליטים איזה מקבלים ואיזה מחזירים לתיקון, לפי הרצה ובדיקה ולא לפי ״נראה בסדר״.</p>
+
+<div class="defline"><b>ביקורת של שאילתה (Audit):</b> בודקים אם מקבלים שאילתה או לא: מריצים, משווים את התוצאה למספר שאפשר להגיע אליו בדרך אחרת, ובודקים אילו שורות נכנסו ואילו נפלו. למשל: שאילתת הכנסה החזירה 13,592 ₪ ובדיקה בדרך אחרת נותנת 12,884 ₪, אז דוחים.</div>
+
+<p>הכלל: <b>שאילתה שרצה היא עוד לא שאילתה נכונה</b>. מודלים היום כמעט לא טועים בתחביר (כמו שראינו <a href="../lec2.4.html">בשיעור על שיקול דעת בעידן ה-AI</a>). הבעיות הן בפירוש: <dfn data-d="INNER JOIN משאיר רק שורות שיש להן התאמה בשני הצדדים. LEFT JOIN משאיר את כל שורות הטבלה השמאלית, גם בלי התאמה.">חיבור</dfn> לא נכון, סינון שנשכח, התעלמות מ-<dfn data-d="ערך חסר: לא אפס ולא טקסט ריק. למשל: customer_id בהזמנה של לקוח שלא נרשם.">NULL</dfn>, או שורות שהוכפלו. את זה המסד לא יתפוס בשבילכם.</p>
+
+<div class="sim" data-id="p5-sim-audit"><div class="sh">בודקים שבע שאילתות</div>
+<p>לכל שאילתה: קראו מה ביקשו ומה נכתב, לחצו הרצה, תסתכלו על התוצאה והחליטו. רק אחרי ההחלטה תראו בדיקה בדרך אחרת. <small>הקוד נכתב כמו שמודל נוטה לכתוב. ההרצה אמיתית, על מסד המסעדה.</small></p>
+<div class="p5-tabs"></div>
+<div class="p5-case"></div>
+<div class="p5-ascore"></div>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p5-sim-audit"]'); if(!box) return;
+const D="o.status = 'delivered'";
+const C=[
+ {q:'כמה הזמנות התקבלו בכל ערוץ?',
+  sql:"SELECT o.channel, COUNT(*) AS orders\nFROM orders o\nJOIN customers c ON c.id = o.customer_id\nGROUP BY o.channel",
+  ok:false,
+  why:'ה-INNER JOIN ללקוחות זרק כל הזמנה בלי לקוח רשום: הרבה הזמנות walk-in (שם customer_id הוא NULL) וגם ההזמנה היתומה. בערוץ walk-in נשארו 6 מתוך 25. כשסופרים הזמנות אין סיבה לחבר לקוחות. ואם כן צריך, משתמשים ב-LEFT JOIN כדי לא לאבד שורות.',
+  ctrl:{l:'בדיקה בדרך אחרת: ספירה ישירה מטבלת orders',sql:"SELECT channel, COUNT(*) AS orders FROM orders GROUP BY channel"}},
+ {q:'מהן שלוש המנות הנמכרות ביותר ביחידות, בהזמנות שנמסרו?',
+  sql:"SELECT d.name, SUM(oi.qty) AS units\nFROM order_items oi\nJOIN dishes d ON d.id = oi.dish_id\nJOIN orders o ON o.id = oi.order_id\nWHERE o.status = 'delivered'\nGROUP BY d.id\nORDER BY units DESC\nLIMIT 3",
+  ok:true,
+  why:'השאילתה בסדר: היא מסכמת qty (יחידות, לא מספר שורות), מסננת הזמנות שנמסרו ומקבצת לפי מנה. הבדיקה בניסוח אחר, עם תת-שאילתה, נותנת אותן שלוש מנות באותן כמויות. ביקורת טובה יודעת גם לאשר.',
+  ctrl:{l:'בדיקה בדרך אחרת: ניסוח אחר עם IN',sql:"SELECT dish_id, SUM(qty) AS units FROM order_items WHERE order_id IN (SELECT id FROM orders WHERE status = 'delivered') GROUP BY dish_id ORDER BY units DESC LIMIT 3"}},
+ {q:'מה סך ההכנסות? (הכנסה היא כסף מהזמנות שנמסרו)',
+  sql:"SELECT SUM(oi.qty * d.price) AS revenue\nFROM order_items oi\nJOIN dishes d ON d.id = oi.dish_id",
+  ok:false,
+  why:'הסכום כולל גם הזמנות שבוטלו. השאילתה לא מחוברת ל-orders, אז אין לה איך לסנן לפי status. ההפרש, 708 ₪, הוא בדיוק הערך של ההזמנות שבוטלו.',
+  ctrl:{l:'בדיקה בדרך אחרת: רק הזמנות שנמסרו',sql:"SELECT SUM(oi.qty * d.price) AS revenue FROM order_items oi JOIN dishes d ON d.id = oi.dish_id JOIN orders o ON o.id = oi.order_id WHERE o.status = 'delivered'"}},
+ {q:'מה ההכנסה ומה סכום הטיפים בכל ערוץ, בהזמנות שנמסרו?',
+  sql:"SELECT o.channel,\n       SUM(oi.qty * d.price) AS revenue,\n       SUM(o.tip) AS tips\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.id\nJOIN dishes d ON d.id = oi.dish_id\nWHERE o.status = 'delivered'\nGROUP BY o.channel",
+  ok:false,
+  why:'ההכנסה נכונה והטיפים מנופחים. הטיפ שייך להזמנה, אבל אחרי החיבור לפריטים ההזמנה מופיעה בשורה לכל פריט, והטיפ נסכם שוב ושוב (fan-out). בערוץ app יצא 320 ₪ במקום 135 ₪. ההכנסה לא נפגעה כי היא מחושבת על הפריט עצמו.',
+  ctrl:{l:'בדיקה בדרך אחרת: סכום הטיפים ישירות מ-orders',sql:"SELECT channel, SUM(tip) AS tips FROM orders WHERE status = 'delivered' GROUP BY channel"}},
+ {q:'מה המרווח הגולמי (מחיר פחות עלות) מההזמנות שנמסרו?',
+  sql:"SELECT SUM(d.price - d.cost) AS gross_margin\nFROM order_items oi\nJOIN dishes d ON d.id = oi.dish_id\nJOIN orders o ON o.id = oi.order_id\nWHERE o.status = 'delivered'",
+  ok:false,
+  why:'את המרווח של מנה סופרים פעם אחת לשורה, בלי להכפיל בכמות. מי שהזמין שלוש לימונדות נספר כאילו הזמין אחת. השאילתה רצה ומחזירה 6,630 ₪, והמספר האמיתי הוא 8,432 ₪. התחביר תקין והמשמעות לא.',
+  ctrl:{l:'בדיקה בדרך אחרת: מרווח כפול כמות',sql:"SELECT SUM(oi.qty * (d.price - d.cost)) AS gross_margin FROM order_items oi JOIN dishes d ON d.id = oi.dish_id JOIN orders o ON o.id = oi.order_id WHERE o.status = 'delivered'"}},
+ {q:'אילו שליחים עם זמן משלוח ממוצע מעל 35 דקות?',
+  sql:"SELECT courier_id, ROUND(AVG(delivery_min), 1) AS avg_min\nFROM orders\nWHERE delivery_min > 35\nGROUP BY courier_id",
+  ok:false,
+  why:'התנאי על delivery_min נמצא ב-WHERE, כלומר מסננים שורות לפני הקיבוץ. הממוצע חושב רק מהמשלוחים האיטיים, אז כל שליח עם משלוח איטי אחד מופיע, גם שליח 1 שהממוצע האמיתי שלו 29.4. תנאי על ממוצע שייך ל-HAVING, אחרי הקיבוץ.',
+  ctrl:{l:'בדיקה בדרך אחרת: HAVING',sql:"SELECT courier_id, ROUND(AVG(delivery_min), 1) AS avg_min FROM orders GROUP BY courier_id HAVING AVG(delivery_min) > 35"}},
+ {q:'לקוחה 18 (רונית מלכה, נרשמה ב-10.5.2026) עברה לחיפה. עדכנו את העיר שלה.',
+  sql:"UPDATE customers\nSET city = 'חיפה'\nWHERE name = 'רונית מלכה'",
+  runSql:"UPDATE customers SET city = 'חיפה' WHERE name = 'רונית מלכה'; SELECT id, name, city, joined, changes() AS rows_changed FROM customers WHERE name = 'רונית מלכה' ORDER BY id",
+  ok:false,
+  why:'שם הוא לא מזהה. במסד יש שתי רשומות בשם רונית מלכה (17 ו-18), והפקודה שינתה את שתיהן. הבקשה דיברה רק על לקוחה 18. הכלל: מעדכנים לפי המפתח הראשי, ולפני כל UPDATE מריצים SELECT עם אותו WHERE כדי לראות כמה שורות ייפגעו. הכפילות עצמה היא בעיית איכות נתונים, ועליה נדבר בחלק 4.',
+  ctrl:{l:'בדיקה בדרך אחרת: כמה שורות מתאימות לתנאי ״לפי שם״?',sql:"SELECT COUNT(*) AS rows_matching_name FROM customers WHERE name = 'רונית מלכה'"}}
+];
+const tabs=FL.$('.p5-tabs',box), body=FL.$('.p5-case',box), sc=FL.$('.p5-ascore',box);
+const st=C.map(()=>({ran:false,v:null}));
+let cur=0;
+function res(sql){ try{ return {r:FL.exec(sql,'rest')}; }catch(e){ return {e:e.message||String(e)}; } }
+function tbl(o){ return o.e?'<div class="p5-err">שגיאת SQL: <span class="mono">'+FL.esc(o.e)+'</span></div>':(o.r?'<div class="res">'+FL.tableHTML(o.r)+'</div>':'<div class="cnt">הפקודה בוצעה.</div>'); }
+function draw(){
+ tabs.innerHTML=C.map((c,i)=>'<button type="button" class="p5-tab'+(i===cur?' on':'')+(st[i].v!==null?(st[i].good?' good':' bad'):'')+'" data-i="'+i+'">'+(i+1)+(st[i].v!==null?(st[i].good?' ✓':' ✗'):'')+'</button>').join('');
+ const c=C[cur], s=st[cur];
+ let h='<h4>שאילתה '+(cur+1)+'. '+FL.esc(c.q)+'</h4><pre class="p5-sqlbox">'+FL.hl(c.sql)+'</pre><div class="row"><button type="button" class="btn" data-k="run">▶ הרצה</button>';
+ if(s.v===null) h+='<button type="button" class="btn ok" data-k="acc" '+(s.ran?'':'disabled')+'>✅ מקבלים</button><button type="button" class="btn" style="background:#ef4444" data-k="rej" '+(s.ran?'':'disabled')+'>❌ מחזירים לתיקון</button>';
+ h+='</div><div class="p5-run">'+(s.runHTML||'')+'</div>';
+ if(s.v!==null){
+  const good=s.good;
+  h+='<div class="p5-av '+(good?'ok':'no')+'"><b>'+(good?'החלטה נכונה. ':'החלטה שגויה. ')+(c.ok?'השאילתה תקינה.':'השאילתה פגומה.')+'</b> '+FL.esc(c.why)+'</div>';
+  const k=res(c.ctrl.sql);
+  h+='<div class="p5-ctrl"><b>'+FL.esc(c.ctrl.l)+'</b><pre class="p5-sqlbox">'+FL.hl(c.ctrl.sql)+'</pre>'+tbl(k)+'</div>';
+ } else if(!s.ran) h+='<p class="cnt">קודם מריצים, ואז אפשר להחליט.</p>';
+ body.innerHTML=h;
+ const n=st.filter(x=>x.v!==null).length, g=st.filter(x=>x.good).length;
+ sc.innerHTML='<div class="kpis"><div class="kpi"><b>'+n+' / '+C.length+'</b><span>נבדקו</span></div><div class="kpi '+(n? (g===n?'g':'a'):'')+'"><b>'+g+'</b><span>החלטות נכונות</span></div></div>'+(n===C.length?'<div class="box meaning" style="margin:8px 0"><p>'+(g===C.length?'כל ההחלטות נכונות. ':'')+'כל שש השאילתות הפגומות רצו בלי שגיאה, וחמש מהן החזירו מספר שנראה סביר. השישית הייתה פקודת עדכון ששינתה בשקט שתי שורות. מה שהפריד בין שאילתה טובה לפגומה היה בדיקה בדרך אחרת.</p></div>':'');
+ if(n===C.length) FL.done('p5-sim-audit');
+}
+box.addEventListener('click',function(e){
+ const t=e.target.closest('.p5-tab'); if(t){ cur=+t.dataset.i; draw(); return; }
+ const b=e.target.closest('button[data-k]'); if(!b) return; const k=b.dataset.k, c=C[cur], s=st[cur];
+ if(!FL.ok()){ body.insertAdjacentHTML('beforeend','<p class="p5-err">מנוע ה-SQL לא נטען.</p>'); return; }
+ if(k==='run'){ s.ran=true; s.runHTML=tbl(res(c.runSql||c.sql)); draw(); }
+ if(k==='acc'||k==='rej'){ s.v=(k==='acc'); s.good=(s.v===c.ok); draw(); }
+});
+draw();
+});})();</script>
+
+<div class="box meaning"><p>שש מתוך שבע השאילתות היו פגומות, וכמעט כולן רצו בלי שגיאה ונראו סבירות. כשמספר שגוי מגיע לדוח של ההנהלה, אף אחד לא יודע שהוא שגוי. לכן העבודה של האדריכל היא לא לכתוב את השאילתה אלא להחליט אם סומכים עליה. ההחלטה באה ממספר שאנחנו יודעים, ספירת שורות ובדיקה של מה נפל בדרך.</p></div>
+
+<h3>מתקנים את מה שדחינו</h3>
+<p>לדחות בלי לתקן זה חצי עבודה. בששת התרגילים הבאים נותנים לכם את הקוד הפגום, ואתם מתקנים. כל תיקון נבדק מול התוצאה הנכונה.</p>
+
+<div class="lab" data-id="p5-lab-fix-inner" data-title="תיקון 1: הזמנות שנעלמו בחיבור" data-ordered="0">
+<div class="q-src">הקוד סופר רק הזמנות עם לקוח רשום. החזירו לכל ערוץ: <code>orders</code> (כל ההזמנות) ו-<code>with_customer</code> (כמה מהן עם לקוח רשום).</div>
+<pre class="start">SELECT o.channel, COUNT(*) AS orders
+FROM orders o
+JOIN customers c ON c.id = o.customer_id
+GROUP BY o.channel</pre>
+<pre class="check">SELECT o.channel, COUNT(*), COUNT(c.id) FROM orders o LEFT JOIN customers c ON c.id = o.customer_id GROUP BY o.channel</pre>
+<pre class="solution">SELECT o.channel,
+       COUNT(*) AS orders,
+       COUNT(c.id) AS with_customer
+FROM orders o
+LEFT JOIN customers c ON c.id = o.customer_id
+GROUP BY o.channel</pre>
+<ol class="hints"><li>איזה חיבור שומר שורות גם כשאין להן התאמה?</li><li><code>COUNT(c.id)</code> סופר רק ערכים שהם לא NULL.</li></ol>
+<div class="why-src">יצא app 42 ו-41, phone 20 ו-20, walk-in 25 ו-6. בסך הכול 87 הזמנות, ומהן 67 עם לקוח רשום. ההזמנה היתומה של לקוח 99 נספרת ב-<code>orders</code> אבל לא ב-<code>with_customer</code>, ולכן ב-app חסרה אחת.</div>
+</div>
+
+<div class="lab" data-id="p5-lab-fix-sum" data-title="תיקון 2: סכום בלי סינון" data-ordered="0">
+<div class="q-src">הוסיפו את מה שחסר כדי שהשאילתה תחזיר את ההכנסה מהזמנות שנמסרו בלבד.</div>
+<pre class="start">SELECT SUM(oi.qty * d.price) AS revenue
+FROM order_items oi
+JOIN dishes d ON d.id = oi.dish_id</pre>
+<pre class="check">SELECT SUM(oi.qty * d.price) FROM order_items oi JOIN dishes d ON d.id = oi.dish_id JOIN orders o ON o.id = oi.order_id WHERE o.status = 'delivered'</pre>
+<pre class="solution">SELECT SUM(oi.qty * d.price) AS revenue
+FROM order_items oi
+JOIN dishes d ON d.id = oi.dish_id
+JOIN orders o ON o.id = oi.order_id
+WHERE o.status = 'delivered'</pre>
+<ol class="hints"><li>הסטטוס נמצא בטבלה אחרת. מה צריך לחבר?</li></ol>
+<div class="why-src">12,884 ₪. ההפרש מ-13,592 הוא 708 ₪ של הזמנות מבוטלות. בגרסה הפגומה לא הייתה שום דרך לסנן, כי הטבלה עם העמודה הזו בכלל לא הופיעה בשאילתה.</div>
+</div>
+
+<div class="lab" data-id="p5-lab-fix-fanout" data-title="תיקון 3: טיפים שהוכפלו" data-ordered="0">
+<div class="q-src">תקנו כך שסכום הטיפים יהיה נכון בכל ערוץ וההכנסה תישאר נכונה. עמודות: <code>channel</code>, <code>revenue</code>, <code>tips</code>. עצה: סכמו קודם את הפריטים של כל הזמנה בתת-שאילתה, ואז חברו.</div>
+<pre class="start">SELECT o.channel,
+       SUM(oi.qty * d.price) AS revenue,
+       SUM(o.tip) AS tips
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+JOIN dishes d ON d.id = oi.dish_id
+WHERE o.status = 'delivered'
+GROUP BY o.channel</pre>
+<pre class="check">SELECT o.channel, SUM(t.rev), SUM(o.tip) FROM orders o JOIN (SELECT oi.order_id, SUM(oi.qty * d.price) AS rev FROM order_items oi JOIN dishes d ON d.id = oi.dish_id GROUP BY oi.order_id) t ON t.order_id = o.id WHERE o.status = 'delivered' GROUP BY o.channel</pre>
+<pre class="solution">SELECT o.channel,
+       SUM(t.rev) AS revenue,
+       SUM(o.tip) AS tips
+FROM orders o
+JOIN (
+  SELECT oi.order_id, SUM(oi.qty * d.price) AS rev
+  FROM order_items oi
+  JOIN dishes d ON d.id = oi.dish_id
+  GROUP BY oi.order_id
+) t ON t.order_id = o.id
+WHERE o.status = 'delivered'
+GROUP BY o.channel</pre>
+<ol class="hints"><li>הבעיה: הטיפ נמצא בשורה אחת להזמנה, אבל אחרי JOIN לפריטים יש שורה לכל פריט.</li><li>תת-שאילתה שמחזירה שורה אחת לכל הזמנה פותרת את זה.</li></ol>
+<div class="why-src">עכשיו app: הכנסה 6,180 וטיפים 135. phone: 3,492 ו-74. walk-in: 3,212 וטיפים NULL. הכלל: כשמחברים טבלה שיש בה הרבה שורות להזמנה, כל סכום ברמת ההזמנה צריך להיסכם לפני החיבור, או בנפרד.</div>
+</div>
+
+<div class="lab" data-id="p5-lab-fix-qty" data-title="תיקון 4: כמות שנשכחה" data-ordered="0">
+<div class="q-src">תקנו את חישוב המרווח הגולמי כך שיכפיל בכמות.</div>
+<pre class="start">SELECT SUM(d.price - d.cost) AS gross_margin
+FROM order_items oi
+JOIN dishes d ON d.id = oi.dish_id
+JOIN orders o ON o.id = oi.order_id
+WHERE o.status = 'delivered'</pre>
+<pre class="check">SELECT SUM(oi.qty * (d.price - d.cost)) FROM order_items oi JOIN dishes d ON d.id = oi.dish_id JOIN orders o ON o.id = oi.order_id WHERE o.status = 'delivered'</pre>
+<pre class="solution">SELECT SUM(oi.qty * (d.price - d.cost)) AS gross_margin
+FROM order_items oi
+JOIN dishes d ON d.id = oi.dish_id
+JOIN orders o ON o.id = oi.order_id
+WHERE o.status = 'delivered'</pre>
+<ol class="hints"><li>את המרווח של מנה אחת צריך להכפיל במספר המנות שהוזמנו.</li></ol>
+<div class="why-src">8,432 ₪ במקום 6,630 ₪. שגיאה לא תתפוס טעות כזו. רק מי ששואל ״הכפלנו בכמות?״ תופס אותה.</div>
+</div>
+
+<div class="lab" data-id="p5-lab-fix-having" data-title="תיקון 5: WHERE במקום HAVING" data-ordered="0">
+<div class="q-src">החזירו רק שליחים שזמן המשלוח הממוצע שלהם מעל 35 דקות, עם הממוצע האמיתי (מעוגל לספרה אחת).</div>
+<pre class="start">SELECT courier_id, ROUND(AVG(delivery_min), 1) AS avg_min
+FROM orders
+WHERE delivery_min > 35
+GROUP BY courier_id</pre>
+<pre class="check">SELECT courier_id, ROUND(AVG(delivery_min), 1) FROM orders GROUP BY courier_id HAVING AVG(delivery_min) > 35</pre>
+<pre class="solution">SELECT courier_id, ROUND(AVG(delivery_min), 1) AS avg_min
+FROM orders
+GROUP BY courier_id
+HAVING AVG(delivery_min) > 35</pre>
+<ol class="hints"><li><code>WHERE</code> מסנן שורות לפני הקיבוץ. <code>HAVING</code> מסנן קבוצות אחרי הקיבוץ.</li></ol>
+<div class="why-src">רק שליח 2 (36.5) ושליח 3 (41.8) עוברים. בגרסה הפגומה שליח 1 הופיע עם 38.0, אף שהממוצע האמיתי שלו 29.4. הממוצע חושב רק מהמשלוחים שכבר היו איטיים.</div>
+</div>
+
+<div class="lab" data-id="p5-lab-fix-update" data-title="תיקון 6: עדכון לפי מפתח" data-ordered="0">
+<div class="q-src">עדכנו את העיר ל-<code>'חיפה'</code> רק ללקוחה 18, ובדקו שרשומה 17 לא השתנתה.</div>
+<pre class="start">UPDATE customers
+SET city = 'חיפה'
+WHERE name = 'רונית מלכה'</pre>
+<pre class="show">SELECT id, name, city FROM customers WHERE id IN (17, 18) ORDER BY id</pre>
+<pre class="check">UPDATE customers SET city = 'חיפה' WHERE id = 18</pre>
+<pre class="solution">UPDATE customers
+SET city = 'חיפה'
+WHERE id = 18</pre>
+<ol class="hints"><li>איזו עמודה מזהה לקוחה אחת בלבד?</li></ol>
+<div class="why-src">רק שורה 18 השתנתה. בטבלת ״לפני ואחרי״ רואים מיד כמה שורות נפגעו, וזה בדיוק ההרגל: SELECT עם אותו WHERE לפני כל UPDATE. ב-PostgreSQL אפשר להוסיף ל-UPDATE את <code>RETURNING *</code> כדי לראות מה השתנה.</div>
+</div>
+
+<div class="tw"><table class="tbl"><thead><tr><th>הפגם</th><th>איך מזהים</th><th>התיקון</th></tr></thead><tbody>
+<tr><td>INNER JOIN שמשמיט שורות</td><td>סופרים שורות לפני ואחרי החיבור. סכום הקבוצות קטן מהסך הכול</td><td><code>LEFT JOIN</code>, או בלי חיבור מיותר</td></tr>
+<tr><td>סכום בלי סינון עסקי</td><td>משווים להגדרה (״רק שנמסרו״) ולמספר ידוע</td><td>מוסיפים את התנאי ומחברים את הטבלה שמחזיקה אותו</td></tr>
+<tr><td>Fan-out</td><td>סכום ברמת הזמנה גדול מהסכום הישיר מהטבלה</td><td>מסכמים לפני החיבור, או תת-שאילתה</td></tr>
+<tr><td>שאילתה שנשמעת נכון ומשמעותה שגויה (כמות נשכחה)</td><td>שואלים ״מה כל שורה מייצגת?״ ובודקים מול מספר ידוע</td><td>מחשבים ברמת הפריט: <code>qty * ...</code></td></tr>
+<tr><td>WHERE במקום HAVING</td><td>רואים ערכים שלא יכולים להיות בקבוצה (ממוצע 38 אצל מי שהממוצע שלו 29)</td><td>תנאי על חישוב מסכם הולך ל-<code>HAVING</code></td></tr>
+<tr><td>UPDATE לפי שם</td><td><code>SELECT COUNT(*)</code> עם אותו WHERE לפני העדכון</td><td><code>WHERE id = ...</code> ובדיקה כמה שורות השתנו</td></tr>
+</tbody></table></div>
+
+<div class="quiz" data-id="p5-q-audit1" data-a="1"><p class="qq">נניח ששאילתת הכנסה לפי ערוץ החזירה בשלושת הערוצים יחד 11,900 ₪, והסכום שבדקנו בנפרד הוא 12,884 ₪. מה עושים?</p>
+<button class="opt">לא מקבלים: הפער של 984 ₪ אומר ששורות נפלו בדרך. בודקים חיבורים וסינונים</button>
+<button class="opt">מקבלים: הפער קטן, בטח עיגול</button>
+<button class="opt">מקבלים: זה רץ בלי שגיאה</button>
+<button class="opt">לבקש מהמודל להגיד שהמספר נכון</button>
+<div class="why">התשובה הראשונה. עיגול לא מסביר פער של כמעט אלף שקלים. הודעת שגיאה (ג) היא לא קריטריון, והמודל יסכים כמעט לכל דבר (ד). מספר ידוע הוא הכלי של הביקורת: פער שאין לו הסבר אומר ששורות נפלו או הוכפלו.</div></div>
+
+<div class="box think" data-id="p5-th-audit"><p>כל שש השאילתות הפגומות רצו בלי שגיאה. מה זה אומר על בדיקה של קוד של AI לפי הודעות שגיאה?</p>
+<div class="ans">הפקודה היחידה ששינתה נתונים (ה-UPDATE) רצה בהצלחה וגרמה נזק, וכל השאר החזירו מספרים שנראו סבירים. הודעות שגיאה תופסות רק תחביר ושמות. טעויות בסינון, בחיבורים ובמשמעות עוברות בשקט. לכן בודקים את התוצאה: ספירות, סכומים ידועים ושורות שנכנסו.</div></div>
+
+<div class="box real"><p>בצוותי נתונים קוראים לזה לפעמים ״בדיקת איזון״ (reconciliation): מחשבים את אותו מספר בשתי דרכים, ודורשים שיתאימו. בדיוק כמו מנהלי חשבונות שמתאימים יתרות בין ספרים. יש כלים שמריצים בדיקות כאלה כל לילה, אבל הרעיון פשוט ואפשר לעשות אותו עכשיו: עוד שאילתה אחת שמחשבת את אותו דבר אחרת.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> חלקו את הכיתה לשלשות. כל שלשה מקבלת שאילתה אחת, ומציגה החלטה ונימוק לפני שנחשפת הבדיקה. אל תגלו שאחת מהשבע תקינה: תראו כמה סטודנטים דוחים את הנכונה מתוך חשדנות. בסוף שאלו איזו שאילתה הייתה הכי קשה לזהות (בדרך כלל המרווח הגולמי).</div>
+</section>
+<section class="sec" id="s5-4" data-t="רשימת בדיקה">
+<div class="sec-h"><div class="sec-n">4</div><h2>רשימת בדיקה: חמש בדיקות לכל שאילתה</h2></div>
+<p class="lead">בסעיף הקודם מצאנו פגמים אחד אחד. עכשיו הופכים את זה לשיטה: חמש בדיקות קבועות שעושים על כל שאילתה שה-AI מוסר, גם כשלא יודעים מראש מה הפגם.</p>
+
+<div class="defline"><b>בדיקת איזון (Reconciliation):</b> מחשבים את אותו מספר בשתי דרכים שונות, ורוצים שיצא אותו דבר. למשל: סכום ההכנסה פעם מהפריטים ופעם כסכום של סכומי ההזמנות. אם יש פער, לפחות דרך אחת שגויה.</div>
+
+<div class="cols3">
+<div class="card"><h4>1. סוגים</h4><p>העמודות מהסוג הנכון (מספר, טקסט, תאריך)? המחיר הוא מספר, והתאריך אצלנו <dfn data-d="מחרוזת שנראית כמו תאריך. כשהפורמט קבוע (שנה, חודש, יום) אפשר להשוות ולמיין אותה נכון, ולכן SQLite מסתדר עם תאריכים בטקסט.">נשמר כטקסט</dfn>.</p></div>
+<div class="card"><h4>2. מפתחות</h4><p>כל הפניה מצביעה על שורה שקיימת? הזמנה שמצביעה ללקוח 99 מקלקלת כל דוח לפי לקוח.</p></div>
+<div class="card"><h4>3. סינון עסקי</h4><p>התנאים מההגדרה נכנסו? ״רק שנמסרו״, טווח תאריכים, בלי בדיקות פנימיות?</p></div>
+<div class="card"><h4>4. ספירת שורות</h4><p>כמה שורות היו לפני החיבור וכמה אחריו? ירידה אומרת שהחיבור זרק שורות, ועלייה אומרת fan-out.</p></div>
+<div class="card"><h4>5. סכום ידוע</h4><p>התוצאה מתאימה למספר שחישבנו בדרך אחרת, או למספר שהעסק כבר מכיר?</p></div>
+<div class="card"><h4>ולא: ״תשאלו את ה-AI״</h4><p>לבקש מאותו מודל לבדוק את עצמו זו לא בדיקה. יש לו אותה הבנה שהביאה לטעות, והוא נוטה להסכים איתכם.</p></div>
+</div>
+
+<h3>בדיקה 1: סוגים</h3>
+<p>הטבלה <code>pragma_table_info</code> היא כמו תעודת זהות של טבלה: שם וסוג של כל עמודה. אפשר לשלוף אותה בשאילתה רגילה.</p>
+<div class="lab" data-id="p5-lab-types" data-title="סוגי העמודות בטבלת orders" data-ordered="0">
+<div class="q-src">שלפו את <code>name</code> ו-<code>type</code> של כל עמודות הטבלה <code>orders</code> בעזרת <code>pragma_table_info</code>. אילו עמודות הן TEXT? יש עמודה לכסף?</div>
+<pre class="start">SELECT name, type
+FROM pragma_table_info('...')</pre>
+<pre class="check">SELECT name, type FROM pragma_table_info('orders')</pre>
+<pre class="solution">SELECT name, type
+FROM pragma_table_info('orders')</pre>
+<ol class="hints"><li>החליפו את שלוש הנקודות בשם הטבלה, בין גרשיים בודדים.</li></ol>
+<div class="why-src">תאריך ההזמנה <code>order_ts</code> הוא TEXT, והתשר <code>tip</code> הוא REAL. ב-PostgreSQL ובמחסנים כמו BigQuery יש טיפוסי תאריך אמיתיים, ואותה בדיקה נעשית עם <code>information_schema.columns</code>. כשמודל כותב שאילתה לפי הנחה על טיפוס, כאן בודקים שההנחה נכונה.</div>
+</div>
+
+<h3>בדיקה 2: מפתחות</h3>
+<div class="lab" data-id="p5-lab-orphan" data-title="הפניות שלא מצביעות לשום מקום" data-ordered="0">
+<div class="q-src">מצאו הזמנות שיש להן <code>customer_id</code> אבל אין לקוח כזה ב-<code>customers</code>. החזירו <code>id</code> ו-<code>customer_id</code>.</div>
+<pre class="start">SELECT o.id, o.customer_id
+FROM orders o
+LEFT JOIN customers c ON c.id = o.customer_id
+-- הוסיפו תנאי</pre>
+<pre class="check">SELECT o.id, o.customer_id FROM orders o LEFT JOIN customers c ON c.id = o.customer_id WHERE o.customer_id IS NOT NULL AND c.id IS NULL</pre>
+<pre class="solution">SELECT o.id, o.customer_id
+FROM orders o
+LEFT JOIN customers c ON c.id = o.customer_id
+WHERE o.customer_id IS NOT NULL
+  AND c.id IS NULL</pre>
+<ol class="hints"><li>אחרי LEFT JOIN, שורה בלי התאמה היא שורה ש-<code>c.id</code> שלה NULL.</li><li>אבל הזמנות walk-in הן גם בלי לקוח, ואין בהן בעיה: <code>customer_id</code> שלהן NULL מההתחלה.</li></ol>
+<div class="why-src">נמצאה הזמנה אחת: מספר 85, שמצביעה ללקוח 99. כל דוח שמחבר לקוחות בחיבור רגיל (INNER JOIN) מאבד אותה בשקט. ״מי מצביע על כלום?״ היא בדיקה שעושים תמיד כשמקבלים נתונים.</div>
+</div>
+
+<h3>בדיקה 4: ספירת שורות לפני ואחרי</h3>
+<div class="lab" data-id="p5-lab-rowloss" data-title="כמה שורות איבדנו בחיבור" data-ordered="0">
+<div class="q-src">החזירו שורה אחת עם שתי עמודות: <code>before_join</code> (כמה הזמנות יש ב-<code>orders</code>) ו-<code>after_join</code> (כמה שורות יוצאות אחרי חיבור רגיל של <code>orders</code> ל-<code>customers</code>).</div>
+<pre class="start">SELECT
+  (SELECT COUNT(*) FROM orders) AS before_join,
+  COUNT(*) AS after_join
+FROM orders o
+-- חברו ללקוחות</pre>
+<pre class="check">SELECT (SELECT COUNT(*) FROM orders), COUNT(*) FROM orders o JOIN customers c ON c.id = o.customer_id</pre>
+<pre class="solution">SELECT
+  (SELECT COUNT(*) FROM orders) AS before_join,
+  COUNT(*) AS after_join
+FROM orders o
+JOIN customers c ON c.id = o.customer_id</pre>
+<ol class="hints"><li>הוסיפו <code>JOIN customers c ON c.id = o.customer_id</code>.</li></ol>
+<div class="why-src">87 לפני, 67 אחרי. איבדנו 20 הזמנות: 19 בלי לקוח ועוד ההזמנה היתומה. זו הבדיקה הכי זולה שיש, והיא תופסת את התקלה הכי נפוצה בחיבורים.</div>
+</div>
+
+<h3>בדיקה 5: אותו סכום בשתי דרכים</h3>
+<div class="lab" data-id="p5-lab-tworoutes" data-title="אותה הכנסה, שתי דרכים" data-ordered="0">
+<div class="q-src">העמודה <code>route_a</code> כבר מחשבת את ההכנסה מהזמנות שנמסרו, ישירות. הוסיפו <code>route_b</code>: סכום של סכומי ההזמנות (תת-שאילתה שמסכמת כל הזמנה), ו-<code>diff</code>, ההפרש ביניהן. ההפרש צריך להיות 0.</div>
+<pre class="start">SELECT
+  (SELECT SUM(oi.qty * d.price)
+   FROM order_items oi
+   JOIN dishes d ON d.id = oi.dish_id
+   JOIN orders o ON o.id = oi.order_id
+   WHERE o.status = 'delivered') AS route_a,
+  -- route_b: סכום של סכומי הזמנות
+  -- diff: route_a פחות route_b
+  0 AS diff</pre>
+<pre class="check">SELECT 12884.0, 12884.0, 0</pre>
+<pre class="solution">SELECT
+  a.route_a,
+  b.route_b,
+  a.route_a - b.route_b AS diff
+FROM (
+  SELECT SUM(oi.qty * d.price) AS route_a
+  FROM order_items oi
+  JOIN dishes d ON d.id = oi.dish_id
+  JOIN orders o ON o.id = oi.order_id
+  WHERE o.status = 'delivered'
+) a,
+(
+  SELECT SUM(t.rev) AS route_b
+  FROM (
+    SELECT o.id, SUM(oi.qty * d.price) AS rev
+    FROM orders o
+    JOIN order_items oi ON oi.order_id = o.id
+    JOIN dishes d ON d.id = oi.dish_id
+    WHERE o.status = 'delivered'
+    GROUP BY o.id
+  ) t
+) b</pre>
+<ol class="hints"><li>תת-שאילתה אחת מחשבת <code>SUM(qty * price)</code> לכל הזמנה, ואז מסכמים את התוצאה.</li><li>אפשר לשים את שתי הדרכים ב-<code>FROM</code> כשתי תת-שאילתות, ולהחסיר ביניהן.</li></ol>
+<div class="why-src">שתי הדרכים נותנות 12,884 והפער הוא 0. כשדרך אחת מחזירה מספר אחר, אתם יודעים שיש בעיה לפני שהמספר מגיע לדוח, עוד לפני שהחלטתם איזו דרך טועה.</div>
+</div>
+
+<h3>איך זה נראה בצוות אמיתי</h3>
+<p>בצוותים מקצועיים ביקורת כזו נעשית בכלי שבו כל שינוי מחכה לאישור. זו הדמיה סכמטית של מסך כזה, עם חמש הבדיקות שלנו.</p>
+<div class="mk rtl"><div class="mk-bar"><i></i><i></i><i></i><span class="url">הדמיה סכמטית · סקירת שאילתה</span></div><div class="mk-body">
+<p style="margin:0 0 6px"><b>שאילתה: ״הכנסה לפי ערוץ״</b> <span class="chip a">נכתבה על ידי AI</span> <span class="chip">ממתינה לאישור אדם</span></p>
+<div class="tw"><table class="tbl"><tbody>
+<tr><td>סוגים</td><td><span class="lamp g"></span> price הוא REAL, qty הוא INTEGER</td></tr>
+<tr><td>מפתחות</td><td><span class="lamp y"></span> הזמנה 85 מצביעה ללקוח שלא קיים (לא משפיע על השאילתה, אבל מדווח)</td></tr>
+<tr><td>סינון עסקי</td><td><span class="lamp g"></span> status = 'delivered'</td></tr>
+<tr><td>ספירת שורות</td><td><span class="lamp g"></span> פלט של 3 ערוצים שמכסים 82 הזמנות שנמסרו, כמו ב-orders</td></tr>
+<tr><td>סכום ידוע</td><td><span class="lamp g"></span> 12,884 בשתי דרכים, הפרש 0</td></tr>
+</tbody></table></div>
+<p style="margin:8px 0 0"><button class="btn" type="button" disabled>אישור ומיזוג</button> <small>הכפתור נפתח רק אחרי שכל הבדיקות עברו ואדם הסתכל על התוצאה.</small></p>
+</div></div>
+
+<div class="box try" data-id="p5-try-review">
+<ol>
+<li>קחו שאילתה ש-AI כתב לכם (למשל מסעיף 1, או בקשו מכלי AI שאילתה ל״הזמנות לפי חודש״ בלי להסביר את ההגדרות).</li>
+<li>הריצו אותה במעבדה החופשית שלמטה ועברו על חמש הבדיקות. רשמו מה בדקתם בכל אחת.</li>
+<li>שנו משהו בכוונה (למשל סננו רק את חודש מרץ) ובדקו אם התוצאה עדיין מתאימה.</li>
+<li>רשמו לעצמכם: איזו בדיקה גילתה הכי הרבה?</li>
+</ol>
+<p class="tools"><a class="tool" href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a><a class="tool" href="https://aistudio.google.com" target="_blank" rel="noopener">AI Studio</a><a class="tool" href="https://sqlite.org" target="_blank" rel="noopener">SQLite</a></p>
+</div>
+
+<div class="lab" data-id="p5-lab-paste" data-title="מעבדה חופשית: מדביקים שאילתה של AI" data-ordered="0">
+<div class="q-src">הדביקו כאן כל שאילתה ש-AI כתב על מסד המסעדה (הטבלאות <code>customers</code>, <code>dishes</code>, <code>couriers</code>, <code>orders</code>, <code>order_items</code>, <code>app_events</code>) והריצו. כל הרצה מתחילה ממסד חדש, אז אי אפשר לשבור פה כלום.</div>
+<pre class="start">SELECT COUNT(*) AS orders_total FROM orders</pre>
+<ol class="hints"><li>אם המודל כתב עמודה שלא קיימת תקבלו שגיאה: זו המצאה. נסו להחזיר לו אותה עם הודעת השגיאה.</li></ol>
+<div class="why-src">הפקודה רצה. המעבדה הזו היא ארגז חול (sandbox): עותק מבודד של המסד שאפשר להריץ עליו כל דבר. כאן בודקים קוד של AI לפני שהוא מתקרב למסד אמיתי.</div>
+</div>
+
+<div class="defline"><b>ארגז חול (Sandbox):</b> סביבה מבודדת עם עותק של הנתונים, שבה מריצים קוד לא מוכר בלי לסכן את הנתונים האמיתיים. למשל: כל מעבדה בדף הזה מתחילה ממסד חדש, אז גם <code>DELETE</code> בלי <code>WHERE</code> לא יזיק.</div>
+
+<div class="quiz" data-id="p5-q-checklist" data-a="3"><p class="qq">איזו בדיקה זולה תגלה גם חיבור שזורק שורות וגם fan-out?</p>
+<button class="opt">בדיקת הטיפוסים של העמודות</button>
+<button class="opt">הרצה פעם שנייה של אותה שאילתה</button>
+<button class="opt">ספירת שורות לפני ואחרי החיבור</button>
+<button class="opt">בקשה מהמודל לבדוק את עצמו</button>
+<div class="why">התשובה השלישית: ירידה בספירה אומרת ששורות נפלו, ועלייה אומרת שהן הוכפלו. טיפוסים (א) חשובים אבל לא קשורים לחיבור. הרצה חוזרת (ב) תחזיר אותו מספר שגוי. ובדיקה עצמית של המודל (ד) היא לא בדיקה עצמאית.</div></div>
+
+<div class="box think" data-id="p5-th-known"><p>אין לכם בכלל ״מספר ידוע״, כי השאלה חדשה. מה עושים?</p>
+<div class="ans">יוצרים אחד. מחשבים את אותו דבר בדרך אחרת (שאילתה אחרת, ספירה ידנית של עשר שורות, או חישוב גס באקסל). או בודקים שהמספר הגיוני מבפנים: סכום החלקים שווה לסך? האחוזים מסתכמים ב-100? הערך בטווח סביר? ואם אי אפשר לאמת בשום דרך, כותבים את זה בדוח ולא מציגים את המספר בביטחון.</div></div>
+
+<div class="box meaning"><p>חמש הבדיקות לוקחות כמה דקות, והן שוות יותר מכל ניסוח חכם של פרומפט. הן הופכות ״אני מקווה שזה נכון״ ל״אני יודע שזה מתאים״. מי שמקבל דוח מצוות שעובד עם AI צריך לשאול שאלה אחת: למספר ידוע של מה זה מתאים?</p></div>
+
+<div class="box real"><p>בצוותי תוכנה קוד חדש עובר סקירה (code review) ובדיקות אוטומטיות לפני שהוא נכנס. בצוותי נתונים מוסיפים בדיקות על התוצאה: כמה שורות, ערכים חסרים, סכומים מול מערכת המקור. כשהקוד נכתב ב-AI זה לא מתבטל, זה אפילו חשוב יותר, כי הקוד נכתב מהר ובכמות.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בקשו מהכיתה להציע ״מספר ידוע״ לכל אחת מחמש השאילתות מהסעיף הקודם, לפני שמראים את הבדיקות. רוב הסטודנטים יציעו להריץ שוב. הסבירו שבדיקה עוזרת רק כשעושים אותה בדרך אחרת.</div>
+</section>
+<section class="sec" id="s5-5" data-t="איפה ה-AI רץ">
+<div class="sec-h"><div class="sec-n">5</div><h2>איפה ה-AI רץ ומה הוא רואה</h2></div>
+<p class="lead">יבגני רוצה שה-AI ינתח את הזמנות הלקוחות. לפני שבוחרים מודל, שואלים שלוש שאלות: לאן הנתונים נוסעים, מה המודל רואה בכל בקשה, ומה קובע כמה ״יצירתי״ הוא יהיה.</p>
+
+<h3>ענן או מקומי</h3>
+<div class="defline"><b>מודל ענן (Cloud model):</b> מודל שרץ על השרתים של חברה. שולחים אליו טקסט דרך האינטרנט, ובדרך כלל משלמים לפי שימוש או במנוי. למשל: אתם כותבים בצ׳אט באתר של ספק, והטקסט עובר לשרתים שלו.</div>
+<div class="defline"><b>מודל מקומי (Local model):</b> מודל שהורדתם לקובץ והוא רץ על המחשב שלכם או על שרת של הארגון. הטקסט לא יוצא החוצה. למשל: תוכנה כמו LM Studio או Ollama שמריצה מודל על הנייד. (על ההבדל בין ענן למקומי דיברנו גם <a href="../lec_1_part5.html">בשיעור על בחירת ה-AI</a>.)</div>
+
+<div class="tw"><table class="tbl"><thead><tr><th>שאלה</th><th>מודל ענן</th><th>מודל מקומי</th></tr></thead><tbody>
+<tr><td>לאן הנתונים הולכים?</td><td>לשרתים של הספק. מה קורה להם תלוי בתנאי השימוש ובהגדרות החשבון, ובתוכניות ארגוניות זה לרוב אחרת מאשר בתוכניות אישיות.</td><td>לא יוצאים מהמחשב או מהרשת של הארגון.</td></tr>
+<tr><td>עוצמה</td><td>המודלים הגדולים והמתקדמים ביותר נמצאים בענן.</td><td>בדרך כלל קטנים יותר, והביצועים תלויים בחומרה שיש לכם.</td></tr>
+<tr><td>עלות</td><td>לפי שימוש או מנוי. את התעריף העדכני בודקים באתר של הספק.</td><td>עולה חומרה וחשמל, ואין תשלום על כל בקשה.</td></tr>
+<tr><td>בלי אינטרנט</td><td>לא עובד.</td><td>עובד.</td></tr>
+<tr><td>שליטה בגרסה</td><td>הספק מעדכן ומוריד גרסאות, והתשובות משתנות.</td><td>הקובץ שלכם נשאר כמו שהוא עד שאתם מחליפים אותו.</td></tr>
+<tr><td>התקנה</td><td>מפתח וכמה שורות קוד, או סתם שימוש באתר.</td><td>מורידים תוכנה ומודל, וצריך חומרה שמתאימה.</td></tr>
+</tbody></table></div>
+
+<div class="box meaning"><p>אין ״מודל הכי טוב״. יש מודל שמתאים למשימה, לרגישות של הנתונים ולתקציב. שאילתה על נתוני דוגמה בדויים: ענן. ניתוח של רשומות לקוחות אמיתיות: מודל מקומי, או נתונים שהסרנו מהם פרטים מזהים לפני שהם יוצאים.</p></div>
+
+<h3>טוקנים וטמפרטורה</h3>
+<div class="defline"><b>טוקן (Token):</b> חתיכת טקסט שהמודל קורא וכותב. לפעמים מילה שלמה ולפעמים חלק ממילה. למשל: ״הזמנה״ יכולה להיות טוקן אחד או כמה. בעברית בדרך כלל יוצאים יותר טוקנים למילה מאשר באנגלית.</div>
+<div class="defline"><b>טמפרטורה (Temperature):</b> הגדרה שקובעת כמה המודל מוכן לבחור טוקנים פחות צפויים. כשהיא נמוכה, הוא כמעט תמיד בוחר את הצפוי, ואז מקבלים שוב ושוב אותה תשובה. כשהיא גבוהה, התשובות מגוונות יותר ויש יותר טעויות. (עוד על זה <a href="../lec51.html">בשיעור על כלי AI ופרמטרים</a>.)</div>
+<p>מודל כותב טוקן אחרי טוקן, ובכל צעד הוא מחשב הסתברות לכל טוקן אפשרי. הטמפרטורה משנה את ההתפלגות הזו. ההדמיה מראה את החישוב: ההסתברות של טוקן היא <span class="n">exp(score / T)</span> חלקי הסכום של כולם. הציונים בדויים, החישוב אמיתי.</p>
+
+<div class="sim" data-id="p5-sim-temp"><div class="sh">טמפרטורה: מה יהיה הטוקן הבא?</div>
+<p>המודל כותב שאילתה לחישוב הכנסה. מה הטוקן הראשון שלו? <small>כל הטוקנים אחריו נבחרים באותה שיטה.</small></p>
+<div class="row"><label>טמפרטורה: <b class="p5-tval">0.0</b></label><input type="range" min="0" max="20" step="1" value="0" aria-label="טמפרטורה"></div>
+<div class="p5-tbars"></div>
+<div class="row"><button type="button" class="btn" data-a="draw">הגרלה של 20 תשובות</button><span class="chip">הדמיה: ציונים בדויים, חישוב אמיתי</span></div>
+<div class="p5-tdraw out">לחצו על ״הגרלה״ ותראו כמה פעמים כל טוקן נבחר.</div>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p5-sim-temp"]'); if(!box) return;
+const TOK=[['SELECT',4.0],['WITH',3.0],['```sql',2.6],['הנה',2.0],['UPDATE',0.6],['DROP',-0.5]];
+const rng=FL.$('input[type=range]',box), lab=FL.$('.p5-tval',box), bars=FL.$('.p5-tbars',box), out=FL.$('.p5-tdraw',box);
+let drew=false, high=false;
+function T(){return (+rng.value)/10;}
+function probs(t){ if(t<0.05){ const m=Math.max.apply(null,TOK.map(x=>x[1])); return TOK.map(x=>x[1]===m?1:0); } const ex=TOK.map(x=>Math.exp(x[1]/t)); const s=ex.reduce((a,b)=>a+b,0); return ex.map(e=>e/s); }
+function draw(){
+ const t=T(); lab.textContent=t.toFixed(1); const p=probs(t); if(t>=1.4) high=true;
+ bars.innerHTML=TOK.map((x,i)=>{ const danger=(x[0]==='UPDATE'||x[0]==='DROP'); return '<div style="display:flex;align-items:center;gap:8px;margin:3px 0"><code style="min-width:74px;text-align:center">'+FL.esc(x[0])+'</code><div class="meter" style="flex:1"><i style="width:'+(p[i]*100).toFixed(1)+'%;background:'+(danger?'#ef4444':'#4f46e5')+'"></i></div><span style="min-width:48px;direction:ltr;text-align:end">'+(p[i]*100).toFixed(1)+'%</span></div>'; }).join('');
+}
+function sample(p){ let r=Math.random(), a=0; for(let i=0;i<p.length;i++){ a+=p[i]; if(r<a) return i; } return p.length-1; }
+rng.addEventListener('input',draw);
+box.addEventListener('click',function(e){
+ const b=e.target.closest('button[data-a]'); if(!b) return;
+ const p=probs(T()); const cnt=TOK.map(()=>0); for(let i=0;i<20;i++) cnt[sample(p)]++;
+ const bad=cnt[4]+cnt[5];
+ out.innerHTML='<div>'+TOK.map((x,i)=>cnt[i]?'<span class="chip '+((i>=4)?'r':'b')+'" style="margin:2px"><span class="n">'+FL.esc(x[0])+'</span> × '+cnt[i]+'</span>':'').join('')+'</div><p style="margin:6px 0 0">'+(bad?'ב-'+bad+' מתוך 20 הגרלות התשובה נפתחת בפקודה שמשנה או מוחקת נתונים. בקוד גם סיכוי קטן הוא סיכון.':(T()<0.3?'כמעט תמיד אותה פתיחה. זה מה שרוצים בשאילתות ובקוד: תוצאה צפויה שאפשר לשחזר.':'הפתיחות מגוונות יותר. בטקסט שיווקי זה יתרון, ב-SQL זה סיכון.'))+'</p>';
+ drew=true; if(drew&&high) FL.done('p5-sim-temp');
+});
+draw();
+});})();</script>
+
+<p>הכלל הפשוט: לשאילתות, לקוד ולחילוץ נתונים מכוונים לטמפרטורה נמוכה. לכתיבה יצירתית, כמו ניסוח של מבצע, אפשר גבוהה יותר. הטווחים וברירות המחדל שונים בין ספקים, אז בודקים בתיעוד של הכלי. בחלק מהכלים יש גם הגדרה קרובה (top-p) שמגבילה את הבחירה לטוקנים הסבירים בלבד.</p>
+
+<h3>חלון הקשר: מה שיצא החוצה, נשכח</h3>
+<div class="defline"><b>חלון הקשר (Context window):</b> כמה טקסט מודל רואה בבקשה אחת, ביחד: ההוראות, ההיסטוריה והתשובה. מה שמחוץ לחלון לא קיים בשבילו. למשל: סכמה שהדבקתם בתחילת שיחה ארוכה יכולה לצאת מהחלון.</div>
+<p>זה מסביר משהו שכבר ראינו: בשיחה ארוכה המודל מתחיל להמציא שמות עמודות. הסכמה לא נעלמה מהצ׳אט, אבל היא כבר לא בחלון. שחקו עם ההדמיה: הקטינו את החלון או הוסיפו הודעות, ותראו מתי הסכמה נופלת החוצה.</p>
+
+<div class="sim" data-id="p5-sim-win"><div class="sh">חלון הקשר: מי עוד בפנים?</div>
+<div class="row"><label>גודל החלון: <b class="p5-wval">4000</b> טוקנים (הדמיה)</label><input type="range" min="1000" max="6000" step="250" value="4000" aria-label="גודל החלון"><button type="button" class="btn sec2" data-a="add">הוספת הודעה לשיחה</button><button type="button" class="btn sec2" data-a="reset">איפוס</button></div>
+<div class="meter" style="margin:6px 0"><i class="p5-wfill" style="width:0"></i></div>
+<div class="p5-wmsgs"></div>
+<div class="p5-wstat out"></div>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p5-sim-win"]'); if(!box) return;
+const BASE=[{t:'הסכמה של חמש הטבלאות',n:600,s:1},{t:'שאלה 1 ותשובה',n:400},{t:'שאלה 2 ותשובה',n:500},{t:'שגיאה ארוכה שהודבקה',n:900},{t:'שאלה 3 ותשובה',n:450},{t:'קובץ CSV שהודבק',n:1500},{t:'שאלה 4',n:200}];
+let M=BASE.map(x=>Object.assign({},x)); let sawOut=false;
+const rng=FL.$('input[type=range]',box), wv=FL.$('.p5-wval',box), msgs=FL.$('.p5-wmsgs',box), stat=FL.$('.p5-wstat',box), fill=FL.$('.p5-wfill',box);
+function render(){
+ const W=+rng.value; wv.textContent=W; let acc=0; const ins=new Array(M.length).fill(false);
+ for(let i=M.length-1;i>=0;i--){ if(acc+M[i].n<=W){ acc+=M[i].n; ins[i]=true; } else break; }
+ msgs.innerHTML=M.map((m,i)=>'<div style="display:flex;justify-content:space-between;gap:8px;padding:5px 10px;margin:3px 0;border-radius:8px;border:1px solid '+(ins[i]?'#6ee7b7':'#e2e8f0')+';background:'+(ins[i]?'#ecfdf5':'#f1f5f9')+';color:'+(ins[i]?'#064e3b':'#94a3b8')+'"><span>'+(m.s?'📋 ':'')+FL.esc(m.t)+'</span><span class="n">'+m.n+' '+(ins[i]?'בפנים':'בחוץ')+'</span></div>').join('');
+ fill.style.width=Math.min(100,100*acc/W)+'%';
+ const schemaIn=ins[0];
+ stat.innerHTML='בחלון: <b class="n">'+acc+' / '+W+'</b> טוקנים. הסכמה: '+(schemaIn?'<span class="chip g">נראית למודל</span>':'<span class="chip r">מחוץ לחלון. המודל יתחיל לנחש שמות עמודות</span>');
+ if(!schemaIn) sawOut=true;
+ if(sawOut) FL.done('p5-sim-win');
+}
+rng.addEventListener('input',render);
+box.addEventListener('click',function(e){ const b=e.target.closest('button[data-a]'); if(!b) return;
+ if(b.dataset.a==='add'){ M.push({t:'הודעה נוספת בשיחה',n:250+Math.floor(Math.random()*5)*100}); }
+ if(b.dataset.a==='reset'){ M=BASE.map(x=>Object.assign({},x)); rng.value=4000; }
+ render(); });
+render();
+});})();</script>
+
+<div class="box real"><p>כלים שונים מתמודדים עם גלישה מהחלון בדרכים שונות: חלקם חותכים הודעות ישנות, חלקם מסכמים אותן, וחלקם מחזירים שגיאה. מי שבונה מוצר על מודל צריך להחליט מה נשאר ״בפנים״. בדרך כלל ההוראות והסכמה נשלחות מחדש בכל בקשה, וההיסטוריה מקוצרת. גם גודל החלון משתנה בין מודלים ומתעדכן, אז בודקים בתיעוד.</p></div>
+
+<h3>משחק מיון: מה מותר להדביק לענן?</h3>
+<p>בכל צוות, מתישהו מישהו מדביק למודל ״רק קטע קטן״. כדי להחליט מה מותר, שואלים שלוש שאלות: יש בו פרטים מזהים? הוא סוד (מפתח, סיסמה)? הארגון או החוק אוסרים להוציא אותו? מיינו את עשרת הפריטים.</p>
+
+<div class="sim" data-id="p5-sim-sorter"><div class="sh">מיון: מה מותר להדביק לענן?</div>
+<div class="p5-sort"></div>
+<div class="p5-sortstat out"></div>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p5-sim-sorter"]'); if(!box) return;
+const BINS=[['a','מותר כמו שהוא'],['b','רק אחרי הסרת פרטים מזהים'],['c','לא לענן בשום צורה']];
+const IT=[
+ ['הסכמה של הטבלאות: שמות טבלאות, עמודות וסוגים','a','זה מבנה, לא נתונים. (אם המבנה עצמו חסוי בארגון שלכם, בדקו את מדיניות הארגון.)'],
+ ['תפריט המסעדה והמחירים שמפורסמים באתר','a','מידע ציבורי.'],
+ ['עשר שורות מטבלת הלקוחות: שם, אימייל, עיר','b','יש כאן פרטים מזהים. אפשר להחליף בשמות בדויים או במזהים, או להשתמש במודל מקומי.'],
+ ['רשימת הזמנות לפי לקוח: שם, עיר ומה הזמין','b','השילוב מזהה אדם. מחליפים שם במזהה ומורידים עמודות מיותרות.'],
+ ['מפתח API של ספק התשלומים','c','זה סוד. לא מדביקים לשום מודל. מחליפים בערך מקום (placeholder, למשל put-your-key-here) וממלאים את הערך האמיתי בהגדרות של השרת.'],
+ ['שכר העובדים וההערכות שלהם','c','מידע אישי ורגיש. הוא לא יוצא מהארגון, וגם בניתוח מקומי שומרים על הרשאות.'],
+ ['שאלות נפוצות של לקוחות שבהן השמות הוחלפו ב-C1, C2, C3','a','הפרטים המזהים כבר הוסרו. אי אפשר לזהות פה אף אחד.'],
+ ['הודעת שגיאה מהשרת שכוללת כתובת חיבור למסד עם סיסמה','c','סוד שדלף ליומן. מסירים אותו לפני ההדבקה, ואם כבר הודבק, מחליפים את הסיסמה.'],
+ ['הערות חופשיות של לקוחות על אלרגיות ומצב רפואי','c','מידע רפואי הוא קטגוריה רגישה. לא מוציאים אותו מהארגון.'],
+ ['תיאור במילים של הבעיה: ״הממוצע של שליח אחד יוצא גבוה מדי״','a','אין בו נתונים אישיים או סודות.']
+];
+const st=IT.map(()=>null); const wrap=FL.$('.p5-sort',box), stat=FL.$('.p5-sortstat',box);
+function draw(){
+ wrap.innerHTML=IT.map((it,i)=>{ const s=st[i]; const done=s!==null; const good=done&&s===it[1];
+  return '<div class="p5-srow '+(done?(good?'ok':'no'):'')+'"><div class="p5-stxt">'+(i+1)+'. '+FL.esc(it[0])+'</div><div class="p5-sbtns">'+BINS.map(b=>'<button type="button" class="btn sec2'+(done&&b[0]===s?' sel':'')+'" data-i="'+i+'" data-b="'+b[0]+'"'+(done?' disabled':'')+'>'+FL.esc(b[1])+'</button>').join('')+'</div>'+(done?'<div class="p5-sfb">'+(good?'נכון. ':'הסיווג המומלץ: '+FL.esc(BINS.find(b=>b[0]===it[1])[1])+'. ')+FL.esc(it[2])+'</div>':'')+'</div>'; }).join('');
+ const n=st.filter(x=>x!==null).length, g=st.filter((x,i)=>x===IT[i][1]).length;
+ stat.innerHTML='מוינו '+n+' מתוך '+IT.length+'. נכונים: <b>'+g+'</b>.'+(n===IT.length?' בקיצור: מבנה בלי נתונים וטקסט ציבורי, כן. פרטים מזהים, רק אחרי שהסרנו אותם או במודל מקומי. סודות, אף פעם.':'');
+ if(n===IT.length) FL.done('p5-sim-sorter');
+}
+wrap.addEventListener('click',function(e){ const b=e.target.closest('button[data-i]'); if(!b) return; st[+b.dataset.i]=b.dataset.b; draw(); });
+draw();
+});})();</script>
+
+<h3>מסירים פרטים מזהים בעזרת SQL</h3>
+<div class="defline"><b>הסרת פרטים מזהים (אנונימיזציה):</b> מסירים או מחליפים שמות, אימיילים ומזהים אחרים, כך שאי אפשר לדעת על מי הנתונים. למשל: במקום ״רונית מלכה, ronit.malka@...״ כותבים ״C17״. שימו לב: להחליף שם במזהה זה לא מספיק. עיר, תאריך וקנייה ביחד יכולים עדיין לחשוף אדם. לכן מוציאים רק את העמודות שבאמת צריך.</div>
+
+<div class="lab" data-id="p5-lab-anon" data-title="טבלה שמותר להדביק" data-ordered="0">
+<div class="q-src">בנו טבלה שאפשר להדביק במודל ענן: לכל לקוח, <code>ref</code> (האות C ואחריה ה-id), <code>city</code> (אם אין עיר, <code>'לא ידוע'</code>) ו-<code>orders</code> (כמה הזמנות). בלי שם ובלי אימייל. כל 18 הלקוחות, גם מי שאין לו הזמנות.</div>
+<pre class="start">SELECT 'C' || c.id AS ref,
+       -- עיר
+       -- מספר הזמנות
+FROM customers c
+-- חיבור</pre>
+<pre class="check">SELECT 'C' || c.id, COALESCE(c.city, 'לא ידוע'), COUNT(o.id) FROM customers c LEFT JOIN orders o ON o.customer_id = c.id GROUP BY c.id</pre>
+<pre class="solution">SELECT 'C' || c.id AS ref,
+       COALESCE(c.city, 'לא ידוע') AS city,
+       COUNT(o.id) AS orders
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.id
+GROUP BY c.id</pre>
+<ol class="hints"><li><code>||</code> מחבר טקסטים. <code>COALESCE(עמודה, ערך)</code> מחליף NULL בערך.</li><li>כדי לא לאבד לקוחות בלי הזמנות צריך חיבור שמשאיר את כל השורות של <code>customers</code>.</li></ol>
+<div class="why-src">קיבלתם 18 שורות בלי שם ובלי אימייל. לקוח 14, בלי עיר, הפך ל״לא ידוע״. זו עדיין לא אנונימיות מושלמת, אבל זו התחלה סבירה, וההחלטה מה לשלוח תלויה בכל מקרה במדיניות של הארגון. ב-BigQuery וב-PostgreSQL זה עובד אותו דבר.</div>
+</div>
+
+<div class="box try" data-id="p5-try-local">
+<ol>
+<li>הורידו תוכנה להרצת מודלים מקומיים: LM Studio (עם ממשק גרפי) או Ollama (בשורת פקודה).</li>
+<li>בחרו מודל קטן שמתאים לזיכרון של המחשב שלכם, והורידו אותו. התוכנה מראה בערך כמה מקום הוא תופס.</li>
+<li>הדביקו את הפרומפט המלא מסעיף 1 (עם הסכמה) וראו מה חוזר.</li>
+<li>נתקו את האינטרנט וחזרו על הבקשה. זה עובד? מה השתנה באיכות לעומת מודל בענן?</li>
+</ol>
+<p class="tools"><a class="tool" href="https://lmstudio.ai" target="_blank" rel="noopener">LM Studio</a><a class="tool" href="https://ollama.com" target="_blank" rel="noopener">Ollama</a><a class="tool" href="https://openwebui.com" target="_blank" rel="noopener">Open WebUI</a></p>
+</div>
+
+<div class="quiz" data-id="p5-q-temp" data-a="4"><p class="qq">אתם בונים כלי שהופך שאלות בעברית לשאילתות SQL. איזו טמפרטורה מתאימה?</p>
+<button class="opt">גבוהה, שהשאילתות יהיו יצירתיות</button>
+<button class="opt">אקראית, שבכל פעם תצא שאילתה אחרת</button>
+<button class="opt">לא משנה, הטמפרטורה משפיעה רק על אורך התשובה</button>
+<button class="opt">נמוכה, כדי שאותה שאלה תביא אותה שאילתה, ואפשר יהיה לבדוק אותה</button>
+<div class="why">התשובה הרביעית. בקוד רוצים תוצאה צפויה שאפשר לשחזר. טמפרטורה גבוהה (א) או אקראית (ב) מגדילה את הסיכוי לטוקנים לא צפויים, ובקוד זה אומר שגיאות. והטמפרטורה לא קשורה לאורך (ג): היא משפיעה על בחירת הטוקן.</div></div>
+
+<div class="quiz" data-id="p5-q-window" data-a="2"><p class="qq">שיחה ארוכה. המודל פתאום כותב שאילתות עם עמודות שלא קיימות, אף שהדבקתם סכמה בהתחלה. מה ההסבר הכי סביר?</p>
+<button class="opt">המודל התעצבן מהשיחה הארוכה</button>
+<button class="opt">הסכמה יצאה מחלון ההקשר, והמודל כבר לא רואה אותה</button>
+<button class="opt">המסד שינה את שמות העמודות בלי שאמרו לכם</button>
+<button class="opt">הטמפרטורה עלתה בעצמה</button>
+<div class="why">התשובה השנייה: חלון ההקשר הוא תקרה, והחומר הישן נדחק החוצה. לכן שולחים את הסכמה מחדש. מודל לא ״מתעצבן״ (א), שינוי במסד (ג) אפשרי אבל הוא לא ההסבר הראשון, והטמפרטורה (ד) לא משתנה לבד.</div></div>
+
+<div class="box think" data-id="p5-th-cloud"><p>חבר מציע: ״נעלה את כל ההזמנות לענן, המודל יסכם לנו מי הלקוחות הטובים, ונבין דברים מעניינים״. מה שואלים קודם?</p>
+<div class="ans">אשאל איזה חלק מהנתונים באמת צריך. כדי לדעת ״מי הוציא הכי הרבה״ לא צריך שמות ואימיילים: מספיק מזהה לכל לקוח והסכומים. אחר כך אבדוק מה כתוב בתנאי השימוש של הספק לגבי נתוני לקוחות, ומה המדיניות בארגון. אם זה לא ברור, אשתמש בנתונים שהסרתי מהם פרטים מזהים או במודל מקומי.</div></div>
+
+<div class="box real"><p>ארגונים שמטפלים במידע רגיש, כמו בנקים, קופות חולים וגופי ביטחון, בדרך כלל מגבילים העלאת נתוני לקוחות לשירותי AI חיצוניים, ולפעמים דורשים מודל שרץ בתוך הארגון. ספקי הענן הגדולים מציעים תוכניות ארגוניות, ושם ההתחייבויות לגבי שימוש בנתונים שונות מאשר בתוכניות האישיות. צריך לקרוא את התנאים ולא להניח. הדין משתנה בין מדינות, ובישראל חל חוק הגנת הפרטיות, אז ההחלטה בארגון היא לא של האנליסט לבד.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> במשחק המיון, בקשו מהכיתה להצביע על כל פריט לפני שחושפים. הפריט הכי מעניין הוא השגיאה עם הסיסמה: סטודנטים לא חושבים שגם יומן שרת יכול לדלוף. בהדמיית הטמפרטורה, קבעו 2.0 והגרילו כמה פעמים, שיראו את DROP יוצא.</div>
+</section>
+<section class="sec" id="s5-6" data-t="API, MCP וסוכנים">
+<div class="sec-h"><div class="sec-n">6</div><h2>API, MCP וסוכנים: איך מחברים AI לכלים</h2></div>
+<p class="lead">עד עכשיו ה-AI ענה על שאלות. יבגני רוצה יותר: שה-AI יבדוק לבד מה קרה במסעדה ויגיד לו. בשביל זה צריך לחבר את המודל למערכת, ולהחליט מה מותר לו לעשות שם.</p>
+
+<div class="defline"><b>API:</b> דרך מוסכמת שבה תוכנה אחת פונה לתוכנה אחרת. למשל: השרת שלכם שולח למודל טקסט ומפתח, ומקבל תשובה. במסעדה: אתם מזמינים מהתפריט ולא נכנסים למטבח.</div>
+<div class="defline"><b>MCP (Model Context Protocol):</b> תקן פתוח שקובע איך מודל מתחבר לכלים ולמקורות נתונים בצורה אחידה. למשל: שרת שנותן למודל כלי בשם ״ספירת הזמנות״, והמודל מפעיל אותו בלי להכיר את המסד. הכיוון הפוך מ-API: כאן המודל הוא זה שפונה אל הכלים. (עוד על MCP <a href="../lec7.4.html">בשיעור על כספת המפתחות ו-MCP</a>.)</div>
+
+<div class="anim" data-id="p5-anim-apimcp" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="API מול MCP">
+<defs><marker id="p5-am-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4f46e5"/></marker><marker id="p5-am-ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#047857"/></marker></defs>
+<rect x="430" y="22" width="360" height="30" rx="15" fill="#e0e7ff"/><text x="610" y="43" text-anchor="middle" font-size="15" font-weight="700" fill="#3730a3">API: הקוד שלכם פונה למודל</text>
+<rect x="10" y="22" width="400" height="30" rx="15" fill="#d1fae5"/><text x="210" y="43" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">MCP: המודל פונה לכלים</text>
+<rect x="640" y="120" width="150" height="100" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="715" y="162" text-anchor="middle" font-size="18" font-weight="700" fill="#3730a3">האפליקציה</text><text x="715" y="188" text-anchor="middle" font-size="14" fill="#475569">השרת שלכם</text>
+<rect x="430" y="120" width="150" height="100" rx="14" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/><text x="505" y="162" text-anchor="middle" font-size="18" font-weight="700" fill="#6d28d9">מודל AI</text><text x="505" y="188" text-anchor="middle" font-size="14" fill="#475569">חושב ומחליט</text>
+<rect x="220" y="120" width="150" height="100" rx="14" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="295" y="162" text-anchor="middle" font-size="18" font-weight="700" fill="#047857">שרת MCP</text><text x="295" y="188" text-anchor="middle" font-size="14" fill="#475569">חושף כלים</text>
+<rect x="10" y="120" width="150" height="100" rx="14" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/><text x="85" y="162" text-anchor="middle" font-size="18" font-weight="700" fill="#b45309">מסד</text><text x="85" y="188" text-anchor="middle" font-size="14" fill="#475569">קריאה בלבד</text>
+<g data-only="1"><path d="M636 152H586" stroke="#4f46e5" stroke-width="3" marker-end="url(#p5-am-ar)"/><text x="611" y="106" text-anchor="middle" font-size="14" font-weight="700" fill="#3730a3">שאלה + מפתח</text></g>
+<g data-only="2"><path d="M586 192H636" stroke="#4f46e5" stroke-width="3" marker-end="url(#p5-am-ar)"/><text x="611" y="250" text-anchor="middle" font-size="14" font-weight="700" fill="#3730a3">תשובה</text></g>
+<g data-only="3"><rect x="350" y="250" width="300" height="52" rx="12" fill="#fff" stroke="#7c3aed" stroke-width="2"/><text x="500" y="272" text-anchor="middle" font-size="15" font-weight="700" fill="#6d28d9">״כמה הזמנות בוטלו?״</text><text x="500" y="292" text-anchor="middle" font-size="14" fill="#475569">אין לי גישה לנתונים</text></g>
+<g data-only="4"><path d="M426 152H374" stroke="#047857" stroke-width="3" marker-end="url(#p5-am-ag)"/><text x="400" y="106" text-anchor="middle" font-size="14" font-weight="700" fill="#047857">קריאה לכלי</text></g>
+<g data-only="5"><path d="M216 152H164" stroke="#047857" stroke-width="3" marker-end="url(#p5-am-ag)"/><text x="190" y="106" text-anchor="middle" font-size="14" font-weight="700" fill="#047857">SELECT</text></g>
+<g data-only="6"><path d="M164 192H216" stroke="#047857" stroke-width="3" marker-end="url(#p5-am-ag)"/><path d="M374 192H426" stroke="#047857" stroke-width="3" marker-end="url(#p5-am-ag)"/><rect x="226" y="236" width="200" height="40" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="326" y="262" text-anchor="middle" font-size="16" font-weight="700" fill="#047857">תוצאה: 5</text></g>
+</svg></div>
+<ol class="caps"><li>API: האפליקציה שולחת למודל שאלה ומפתח. הקוד שלכם הוא זה שמתחיל.</li><li>המודל מחזיר תשובה. בלי חיבור לנתונים, זה כל מה שהוא יודע לעשות.</li><li>שאלה על נתוני המסעדה: ״כמה הזמנות בוטלו?״ למודל אין את המידע הזה.</li><li>MCP: המודל מבקש להפעיל כלי שהשרת חושף, למשל ״ספירת הזמנות לפי סטטוס״.</li><li>שרת ה-MCP מריץ שאילתת SELECT על המסד, במשתמש שמורשה רק לקרוא.</li><li>התוצאה (5 הזמנות בוטלו) חוזרת למודל והוא עונה בשפה פשוטה. המספר הגיע מהמסד, לא מניחוש.</li></ol>
+</div>
+
+<p>ככה מגדירים כלי למודל. זה תיאור בפורמט JSON: שם, הסבר למודל, ופרמטרים. המודל לא רואה את קוד ה-SQL שבפנים, רק את התיאור.</p>
+<pre class="code" data-lang="json">{
+  "name": "count_orders",
+  "description": "Counts orders by status (delivered or cancelled). Read-only.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "status": { "type": "string", "enum": ["delivered", "cancelled"] }
+    },
+    "required": ["status"]
+  }
+}</pre>
+
+<div class="box meaning"><p>מי שמחבר מודל למסד נותן לו יכולת, ולכן צריך גם גבולות. המודל לא מחזיק את סיסמת המסד: פרטי ההתחברות נמצאים אצל שרת הכלים. אבל ההגנה האמיתית היא ההרשאות של אותו שרת. לכן נותנים לו משתמש מסד לקריאה בלבד, ומחליטים מראש אילו כלים חושפים.</p></div>
+
+<h3>סוכן: חושב, פועל, קורא, מחליט</h3>
+<div class="defline"><b>סוכן (Agent):</b> תוכנה שמחברת מודל לכלים ועובדת בלולאה: חושבת מה לעשות, מפעילה כלי, קוראת את התוצאה ומחליטה מה הלאה, עד שיש תשובה. למשל: שואלים על שליח איטי, הסוכן מריץ שאילתה, רואה מספרים ומחליט לבדוק גם שעות.</div>
+<div class="defline"><b>כלי (Tool):</b> פונקציה שמותר למודל להפעיל, עם שם, תיאור ופרמטרים. למשל: ״הרצת SELECT״ או ״שליחת מייל״. כל כלי שנותנים הוא יכולת, וגם סיכון.</div>
+
+<p>יבגני שואל: ״למה המשלוחים של דימה איטיים?״ הנה הלולאה של סוכן. המספרים בהנפשה נשלפו ממסד המסעדה.</p>
+
+<div class="anim" data-id="p5-anim-agent" data-speed="3600">
+<div class="stage"><svg viewBox="0 0 800 370" role="img" aria-label="לולאת סוכן">
+<defs><marker id="p5-ag-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+<rect x="95" y="20" width="140" height="50" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/><text x="165" y="53" text-anchor="middle" font-size="18" font-weight="700" fill="#6d28d9">חשיבה</text>
+<rect x="200" y="250" width="130" height="50" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="265" y="283" text-anchor="middle" font-size="18" font-weight="700" fill="#047857">פעולה</text>
+<rect x="10" y="250" width="130" height="50" rx="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/><text x="75" y="283" text-anchor="middle" font-size="18" font-weight="700" fill="#b45309">תצפית</text>
+<path d="M225 74C300 110 312 190 290 246" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#p5-ag-ar)"/>
+<path d="M196 275H146" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#p5-ag-ar)"/>
+<path d="M60 246C16 190 40 110 104 72" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#p5-ag-ar)"/>
+<text x="165" y="170" text-anchor="middle" font-size="15" fill="#64748b">לולאה</text>
+<g data-only="1,2,5"><rect x="85" y="12" width="160" height="66" rx="16" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="3,6"><rect x="190" y="242" width="150" height="66" rx="16" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="4,7"><rect x="0" y="242" width="150" height="66" rx="16" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="1"><rect x="380" y="20" width="400" height="90" rx="14" fill="#fff" stroke="#7c3aed" stroke-width="2"/><text x="580" y="58" text-anchor="middle" font-size="20" font-weight="700" fill="#6d28d9">שאלה</text><text x="580" y="88" text-anchor="middle" font-size="19" fill="#334155">למה דימה איטי?</text></g>
+<g data-only="2"><rect x="380" y="20" width="400" height="90" rx="14" fill="#fff" stroke="#7c3aed" stroke-width="2"/><text x="580" y="58" text-anchor="middle" font-size="20" font-weight="700" fill="#6d28d9">מה חסר?</text><text x="580" y="88" text-anchor="middle" font-size="19" fill="#334155">זמן משלוח ממוצע לכל שליח</text></g>
+<g data-only="3"><rect x="380" y="20" width="400" height="110" rx="14" fill="#0f172a"/><text x="396" y="52" font-size="16" font-family="monospace" fill="#93c5fd">run_select(</text><text x="410" y="78" font-size="15" font-family="monospace" fill="#e2e8f0">SELECT courier_id, AVG(delivery_min)</text><text x="410" y="100" font-size="15" font-family="monospace" fill="#e2e8f0">FROM orders GROUP BY courier_id</text><text x="396" y="122" font-size="16" font-family="monospace" fill="#93c5fd">)</text></g>
+<g data-only="5"><rect x="380" y="20" width="400" height="90" rx="14" fill="#fff" stroke="#7c3aed" stroke-width="2"/><text x="580" y="58" text-anchor="middle" font-size="20" font-weight="700" fill="#6d28d9">שאלת המשך</text><text x="580" y="88" text-anchor="middle" font-size="19" fill="#334155">האם זה רק בשעות העומס?</text></g>
+<g data-only="6"><rect x="380" y="20" width="400" height="110" rx="14" fill="#0f172a"/><text x="396" y="52" font-size="16" font-family="monospace" fill="#93c5fd">run_select(</text><text x="410" y="78" font-size="15" font-family="monospace" fill="#e2e8f0">... WHERE courier_id = 3</text><text x="410" y="100" font-size="15" font-family="monospace" fill="#e2e8f0">GROUP BY meal_period</text><text x="396" y="122" font-size="16" font-family="monospace" fill="#93c5fd">)</text></g>
+<g data-only="7"><rect x="380" y="20" width="400" height="90" rx="14" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="580" y="56" text-anchor="middle" font-size="20" font-weight="700" fill="#047857">תשובה</text><text x="580" y="86" text-anchor="middle" font-size="17" fill="#334155">הפער בשתי התקופות. המדגם קטן.</text></g>
+<g data-only="4,5,6">
+<text x="580" y="162" text-anchor="middle" font-size="16" font-weight="700" fill="#475569">זמן משלוח ממוצע (דקות)</text>
+<rect x="660" y="246" width="70" height="94" rx="6" fill="#818cf8"/><text x="695" y="238" text-anchor="middle" font-size="17" font-weight="700" fill="#3730a3">29.4</text><text x="695" y="362" text-anchor="middle" font-size="16" fill="#334155">אורי</text>
+<rect x="545" y="223" width="70" height="117" rx="6" fill="#818cf8"/><text x="580" y="215" text-anchor="middle" font-size="17" font-weight="700" fill="#3730a3">36.5</text><text x="580" y="362" text-anchor="middle" font-size="16" fill="#334155">נועה</text>
+<rect x="430" y="206" width="70" height="134" rx="6" fill="#ef4444"/><text x="465" y="198" text-anchor="middle" font-size="17" font-weight="700" fill="#b91c1c">41.8</text><text x="465" y="362" text-anchor="middle" font-size="16" fill="#334155">דימה</text>
+</g>
+<g data-only="7">
+<text x="580" y="162" text-anchor="middle" font-size="16" font-weight="700" fill="#475569">דימה: צהריים מול ערב (דקות)</text>
+<rect x="620" y="212" width="80" height="128" rx="6" fill="#f59e0b"/><text x="660" y="204" text-anchor="middle" font-size="17" font-weight="700" fill="#92400e">40.1</text><text x="660" y="362" text-anchor="middle" font-size="16" fill="#334155">צהריים</text>
+<rect x="480" y="201" width="80" height="139" rx="6" fill="#ef4444"/><text x="520" y="193" text-anchor="middle" font-size="17" font-weight="700" fill="#b91c1c">43.5</text><text x="520" y="362" text-anchor="middle" font-size="16" fill="#334155">ערב</text>
+</g>
+</svg></div>
+<ol class="caps"><li>הלולאה מתחילה בשאלה של המשתמש: למה המשלוחים של דימה איטיים?</li><li>חשיבה: המודל מתכנן איזה מידע חסר לו, בלי לנחש. הוא צריך זמן משלוח ממוצע לכל שליח.</li><li>פעולה: הסוכן מפעיל כלי. כאן הוא מריץ שאילתת SELECT.</li><li>תצפית: התוצאה חוזרת לסוכן. דימה (שליח 3) הכי איטי בממוצע: 41.8 דקות, לעומת 29.4 של אורי ו-36.5 של נועה.</li><li>חשיבה שנייה: אולי זה רק בשעות העומס? בודקים צהריים מול ערב.</li><li>פעולה שנייה: שאילתה מצומצמת לשליח 3, עם קיבוץ לפי תקופת היום.</li><li>תצפית ותשובה: אצל דימה צהריים 40.1 וערב 43.5 דקות. הפער קיים בשתי התקופות, והסוכן מציין שהמדגם קטן (16 משלוחים) ושהרכב שונה (קטנוע). זה סוף הלולאה.</li></ol>
+</div>
+
+<p>המספרים בהנפשה (29.4, 36.5, 41.8, 40.1 ו-43.5) לא הומצאו, אפשר לשחזר אותם. הצהריים הם הזמנות לפני 16:00.</p>
+
+<div class="lab" data-id="p5-lab-agent-obs" data-title="משחזרים את מה שהסוכן ראה" data-ordered="0">
+<div class="q-src">החזירו לשליח 3 (דימה) את הממוצע של <code>delivery_min</code> בצהריים (לפני 16:00) ובערב (מ-16:00), בשתי שורות: <code>period</code> ו-<code>avg_min</code> (מעוגל לספרה אחת).</div>
+<pre class="start">SELECT CASE WHEN CAST(substr(order_ts, 12, 2) AS INTEGER) &lt; 16 THEN 'lunch' ELSE 'evening' END AS period,
+       ROUND(AVG(delivery_min), 1) AS avg_min
+FROM orders
+-- סננו לשליח 3 ולמשלוחים עם זמן
+-- קבצו לפי period</pre>
+<pre class="check">SELECT CASE WHEN CAST(substr(order_ts, 12, 2) AS INTEGER) &lt; 16 THEN 'lunch' ELSE 'evening' END, ROUND(AVG(delivery_min), 1) FROM orders WHERE courier_id = 3 AND delivery_min IS NOT NULL GROUP BY 1</pre>
+<pre class="solution">SELECT CASE WHEN CAST(substr(order_ts, 12, 2) AS INTEGER) &lt; 16 THEN 'lunch' ELSE 'evening' END AS period,
+       ROUND(AVG(delivery_min), 1) AS avg_min
+FROM orders
+WHERE courier_id = 3
+  AND delivery_min IS NOT NULL
+GROUP BY period</pre>
+<ol class="hints"><li><code>substr(order_ts, 12, 2)</code> מוציא את השעה מהטקסט.</li><li>אפשר לקבץ לפי הכינוי <code>period</code>.</li></ol>
+<div class="why-src">צהריים 40.1 וערב 43.5 דקות, 8 משלוחים בכל תקופה. זה מה שהסוכן ״ראה״. שימו לב כמה קטן המדגם: שמונה משלוחים בכל קבוצה. סוכן שמסיק מסקנות מנתונים כאלה צריך להגיד את זה.</div>
+</div>
+
+<h3>סוכן עם הרשאות: מה נותנים לו?</h3>
+<p>בהדמיה הבאה ה״סוכן״ הוא טבלת כללים ולא מודל אמיתי, אבל השאילתות שהוא מריץ אמיתיות. בחרו אילו כלים מותרים, ותנו לו משימות. שימו לב מה קורה כשהוא מגיע לכלי שלא קיבל, ומה משתנה כשצריך אישור של אדם.</p>
+
+<div class="sim" data-id="p5-sim-agent"><div class="sh">סוכן עם כלים והרשאות</div>
+<div class="row"><b>כלים מותרים:</b>
+<label><input type="checkbox" data-t="run_select" checked disabled> הרצת SELECT (קריאה בלבד)</label>
+<label><input type="checkbox" data-t="update_price"> עדכון מחיר</label>
+<label><input type="checkbox" data-t="send_email"> שליחת אימייל</label></div>
+<div class="row"><label><input type="checkbox" data-a="approve" checked> פעולה ששינה משהו צריכה אישור של אדם</label></div>
+<div class="row"><b>משימה:</b>
+<button type="button" class="btn sec2" data-k="0">כמה הזמנות בוטלו?</button>
+<button type="button" class="btn sec2" data-k="1">מי השליח האיטי ביותר?</button>
+<button type="button" class="btn sec2" data-k="2">העלו את מחיר הסלמון ב-10%</button>
+<button type="button" class="btn sec2" data-k="3">שלחו מבצע לכל הלקוחות</button></div>
+<div class="p5-agtrace out"><span class="chip">הדמיה: כללים במקום מודל. ה-SQL רץ באמת.</span></div>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p5-sim-agent"]'); if(!box) return;
+const TASKS=[
+ {q:'כמה הזמנות בוטלו?',tool:'run_select',sql:"SELECT COUNT(*) AS cancelled FROM orders WHERE status = 'cancelled'",think:'צריך לספור הזמנות עם סטטוס cancelled.',ans:r=>'בוטלו '+r.values[0][0]+' הזמנות.'},
+ {q:'מי השליח האיטי ביותר?',tool:'run_select',sql:"SELECT c.name, ROUND(AVG(o.delivery_min),1) AS avg_min FROM orders o JOIN couriers c ON c.id = o.courier_id GROUP BY c.id ORDER BY avg_min DESC LIMIT 1",think:'צריך ממוצע זמן משלוח לכל שליח ולהחזיר את הגבוה.',ans:r=>'השליח האיטי ביותר הוא '+r.values[0][0]+', בממוצע '+r.values[0][1]+' דקות.'},
+ {q:'העלו את מחיר הסלמון ב-10%',tool:'update_price',sql:"UPDATE dishes SET price = ROUND(price * 1.1, 1) WHERE name = 'סלמון בתנור'",show:"SELECT name, price FROM dishes WHERE name = 'סלמון בתנור'",think:'צריך לעדכן את העמודה price של המנה סלמון.'},
+ {q:'שלחו מבצע לכל הלקוחות',tool:'send_email',sql:"SELECT COUNT(*) AS recipients, COUNT(DISTINCT email) AS distinct_emails FROM customers",think:'צריך רשימת נמענים ואז לשלוח לכל אחד.'}
+];
+const out=FL.$('.p5-agtrace',box); const ran=new Set(); let blocked=false, wrote=false;
+function allowed(t){ const c=FL.$('input[data-t="'+t+'"]',box); return c&&c.checked; }
+function needApproval(){ return FL.$('input[data-a="approve"]',box).checked; }
+function line(ic,h){ return '<div class="p5-ln">'+ic+' '+h+'</div>'; }
+function tbl(r){ if(r&&r.err) return '<div class="p5-err">'+FL.esc(r.err)+'</div>'; return r?'<div class="res p5-agtbl">'+FL.tableHTML(r)+'</div>':''; }
+function safe(sql){ try{ return FL.exec(sql,'rest'); }catch(e){ return {err:e.message}; } }
+function check(){ if(ran.size>=3&&blocked) FL.done('p5-sim-agent'); }
+function runTask(i){
+ if(!FL.ok()){ out.innerHTML='מנוע ה-SQL לא נטען.'; return; }
+ const T=TASKS[i]; ran.add(i); let h=line('🙋','<b>משימה:</b> '+FL.esc(T.q))+line('🧠','<b>חשיבה:</b> '+FL.esc(T.think));
+ if(!allowed(T.tool)){ blocked=true; h+=line('⛔','<b>חסום:</b> הכלי <span class="n">'+T.tool+'</span> לא הוענק לסוכן. הוא עונה: ״אין לי הרשאה לעשות את זה. אפשר לבקש מאדם.״')+line('✅','<b>תשובה:</b> לא בוצע שום שינוי.'); out.innerHTML=h; check(); return; }
+ if(T.tool==='run_select'){
+  const r=safe(T.sql); h+=line('🔧','<b>פעולה</b> (run_select): <span class="n">'+FL.esc(T.sql)+'</span>')+line('👁️','<b>תצפית:</b>')+tbl(r)+line('✅','<b>תשובה:</b> '+FL.esc(T.ans(r)));
+  out.innerHTML=h; check(); return;
+ }
+ if(T.tool==='send_email'){
+  const r=safe(T.sql); const rec=r.values[0][0], d=r.values[0][1];
+  h+=line('🔧','<b>פעולה</b> (send_email): הוכנה רשימת נמענים')+line('👁️','<b>תצפית:</b>')+tbl(r);
+  const msg='הסוכן ביקש לשלוח '+rec+' הודעות, אבל בטבלה רק '+d+' כתובות שונות. לקוחה אחת (רונית מלכה) תקבל את המבצע פעמיים. כדי לשלוח צריך קודם לטפל בכפילות.';
+  if(needApproval()){ h+=line('⏸️','<b>ממתין לאישור אדם.</b> '+FL.esc(msg)+' <button type="button" class="btn sec2" data-x="rej">דחייה</button>'); }
+  else { h+=line('⚠️','<b>נשלח (הדמיה, שום דבר לא נשלח באמת).</b> '+FL.esc(msg)); wrote=true; }
+  out.innerHTML=h; check(); return;
+ }
+ // update_price
+ const before=safe(T.show);
+ h+=line('🔧','<b>פעולה מוצעת</b> (update_price): <span class="n">'+FL.esc(T.sql)+'</span>')+line('👁️','<b>המחיר היום:</b>')+tbl(before);
+ if(needApproval()){ h+=line('⏸️','<b>ממתין לאישור אדם.</b> <button type="button" class="btn" data-x="ok">אישור</button> <button type="button" class="btn sec2" data-x="rej">דחייה</button>'); out.innerHTML=h; out._h=h; out._i=i; check(); return; }
+ const after=safe(T.sql+'; '+T.show); h+=line('⚠️','<b>בוצע בלי אישור.</b> המחיר אחרי:')+tbl(after)+line('✅','<b>תשובה:</b> המחיר עודכן. אם התנאי היה שגוי, ייתכן שהשתנו עוד מנות, ואף אחד לא היה עוצר את זה.'); out.innerHTML=h; wrote=true; check();
+}
+box.addEventListener('click',function(e){
+ const k=e.target.closest('button[data-k]'); if(k){ runTask(+k.dataset.k); return; }
+ const x=e.target.closest('button[data-x]'); if(!x) return;
+ if(x.dataset.x==='rej'){ out.insertAdjacentHTML('beforeend',line('✋','<b>האדם דחה.</b> לא בוצע שום שינוי.')); return; }
+ if(x.dataset.x==='ok'){ const T=TASKS[out._i]; const after=safe(T.sql+'; '+T.show); out.insertAdjacentHTML('beforeend',line('✔️','<b>האדם אישר.</b> המחיר אחרי:')+tbl(after)+line('✅','<b>תשובה:</b> המחיר עודכן באישור. כל הרצה כאן מתחילה ממסד טרי, ולכן המחיר חוזר אחר כך ל-89.')); wrote=true; }
+});
+});})();</script>
+
+<h3>תוכנית ב׳: מה קורה כשהמודל טועה או נופל</h3>
+<div class="defline"><b>תוכנית גיבוי (Fallback):</b> מה המערכת עושה כשהמודל נכשל, איטי מדי, או מחזיר תשובה שלא עוברת בדיקה. למשל: במקום להציג מספר מפוקפק, מציגים את הדוח הקבוע של אתמול ומסמנים שהניתוח החי לא זמין. תשובה שגויה היא לרוב יותר גרועה מאין תשובה.</div>
+
+<div class="flow"><span class="nd">שאלה</span><span class="ar">←</span><span class="nd">מודל כותב שאילתה</span><span class="ar">←</span><span class="nd a">בדיקות: קריאה בלבד? שמות קיימים? מגבלת שורות?</span><span class="ar">←</span><span class="nd g">הרצה והצגה</span></div>
+<div class="flow"><span class="nd a">נכשל בבדיקה</span><span class="ar">←</span><span class="nd">ניסיון שני עם הודעת השגיאה</span><span class="ar">←</span><span class="nd r">עדיין נכשל</span><span class="ar">←</span><span class="nd g">תוכנית ב': דוח קבוע או אדם</span></div>
+
+<p>בחירת מודל היא עניין של עלות מול תועלת. מודל גדול ומדויק עולה יותר לכל בקשה. מודל קטן ומקומי זול ומהיר, אבל נכשל יותר, ולכן תוכנית ב׳ נכנסת אצלו יותר. ההדמיה מחשבת עלות צפויה לבקשה בנוסחה פשוטה. המספרים הם הנחות שלכם, לא תעריפים אמיתיים.</p>
+
+<div class="sim" data-id="p5-sim-cost"><div class="sh">עלות צפויה לבקשה: מודל קטן מול גדול</div>
+<div class="row"><label>אחוז ההצלחה של המודל הקטן: <b class="n p5-v1">70</b>%</label><input type="range" min="40" max="99" value="70" data-r="1"></div>
+<div class="row"><label>אחוז ההצלחה של המודל הגדול: <b class="n p5-v2">92</b>%</label><input type="range" min="40" max="99" value="92" data-r="2"></div>
+<div class="row"><label>עלות בקשה במודל הגדול, ביחידות (הקטן = 1): <b class="n p5-v3">8</b></label><input type="range" min="1" max="30" value="8" data-r="3"></div>
+<div class="row"><label>עלות הטיפול בכישלון (תוכנית ב׳), ביחידות: <b class="n p5-v4">40</b></label><input type="range" min="0" max="100" value="40" data-r="4"></div>
+<div class="p5-costout out"></div>
+<p><small>הנוסחה: עלות צפויה לבקשה = עלות הבקשה + (1 פחות אחוז ההצלחה) כפול עלות הטיפול בכישלון. המספרים הם הנחות להמחשה.</small></p>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p5-sim-cost"]'); if(!box) return;
+const R=FL.$$('input[data-r]',box), V=[1,2,3,4].map(i=>FL.$('.p5-v'+i,box)), out=FL.$('.p5-costout',box); let moved=0;
+function calc(){
+ const p1=+R[0].value/100,p2=+R[1].value/100,c2=+R[2].value,h=+R[3].value;
+ R.forEach((r,i)=>V[i].textContent=r.value);
+ const e1=1+(1-p1)*h, e2=c2+(1-p2)*h, mx=Math.max(e1,e2,1);
+ function bar(n,e,c){ return '<div style="margin:6px 0"><b>'+n+':</b> <span class="n">'+e.toFixed(1)+'</span> יחידות<div class="meter"><i style="width:'+(100*e/mx)+'%;background:'+c+'"></i></div></div>'; }
+ out.innerHTML=bar('מודל קטן',e1,'#4f46e5')+bar('מודל גדול',e2,'#7c3aed')+'<p style="margin:6px 0 0">'+(e1<e2?'במספרים האלה המודל הקטן זול יותר לבקשה, כי תוכנית ב׳ זולה או שההצלחה שלו מספיקה.':(e2<e1?'במספרים האלה המודל הגדול זול יותר לבקשה, כי כל כישלון של הקטן מפעיל טיפול יקר.':'שוויון.'))+'</p>';
+ moved++; if(moved>3) FL.done('p5-sim-cost');
+}
+R.forEach(r=>r.addEventListener('input',calc)); calc(); moved=0;
+});})();</script>
+
+<div class="box try" data-id="p5-try-mcp">
+<ol>
+<li>פתחו את התיעוד של MCP ועברו על רשימת השרתים לדוגמה ועל הרעיון של ״כלים״.</li>
+<li>הציעו שלושה כלים שהייתם נותנים לסוכן של יבגני (למשל ספירת הזמנות לפי סטטוס, זמן משלוח ממוצע לשליח) ושלושה שלא (למשל מחיקת הזמנות, שליחת מייל ללקוחות).</li>
+<li>לכל כלי רשמו: הוא קורא או כותב? ומי מאשר?</li>
+</ol>
+<p class="tools"><a class="tool" href="https://modelcontextprotocol.io" target="_blank" rel="noopener">MCP</a><a class="tool" href="https://developer.mozilla.org/en-US/docs/Web/HTTP" target="_blank" rel="noopener">HTTP (MDN)</a></p>
+</div>
+
+<div class="quiz" data-id="p5-q-apimcp" data-a="1"><p class="qq">מה ההבדל בין API ל-MCP במשפט אחד?</p>
+<button class="opt">ב-API הקוד שלכם פונה למודל, וב-MCP המודל פונה לכלים שהקוד שלכם חושף</button>
+<button class="opt">MCP מהיר יותר מ-API בכל מקרה</button>
+<button class="opt">API הוא למודלים בענן ו-MCP הוא רק למודלים מקומיים</button>
+<button class="opt">MCP מחליף את הצורך בהרשאות</button>
+<div class="why">התשובה הראשונה: ההבדל הוא הכיוון של הפנייה. מהירות (ב) לא קשורה. MCP עובד גם עם מודלים בענן וגם עם מקומיים (ג). והרשאות (ד) נשארות חובה, ולכן נותנים לשרת הכלים משתמש מסד מוגבל.</div></div>
+
+<div class="quiz" data-id="p5-q-agent" data-a="3"><p class="qq">סוכן קיבל כלי שמעדכן מחירים, בלי אישור של אדם. מה הסיכון העיקרי?</p>
+<button class="opt">הוא יהיה איטי</button>
+<button class="opt">הוא יחסום את המסד לכל המשתמשים האחרים</button>
+<button class="opt">טעות בתנאי או בהבנת הבקשה תשנה נתונים אמיתיים, אף אחד לא יעצור אותה</button>
+<button class="opt">אין סיכון: מודלים לא טועים בעדכונים</button>
+<div class="why">התשובה השלישית. הכלי נותן יכולת כתיבה, והכתיבה קורית מיד. לכן עדכונים צריכים אישור של אדם, ולפעמים גם גיבוי. מהירות (א) וחסימה (ב) הם לא הסיכון העיקרי, ומודלים כן טועים (ד).</div></div>
+
+<div class="box think" data-id="p5-th-tools"><p>איזה כלי הייתם נותנים לסוכן של יבגני כבר בשבוע הראשון, ואיזה לא הייתם נותנים גם אחרי שנה?</p>
+<div class="ans">בשבוע הראשון: קריאה בלבד. כלי אחד שמריץ SELECT במשתמש מסד שמורשה רק לקרוא, עם הגבלה על מספר השורות. גם אחרי שנה לא הייתי נותן: מחיקת נתונים ושליחת הודעות ללקוחות בלי אישור. הכלל: כלי שכותב או שולח צריך אדם בלולאה, וכלי שאי אפשר לבטל את מה שהוא עושה לא נותנים בכלל.</div></div>
+
+<div class="box real"><p>״סוכנים״ הם היום דרך נפוצה לבנות עוזרי קוד, עוזרי שירות לקוחות ועוזרי ניתוח נתונים. מה שמבדיל בין מוצר יציב למוצר מסוכן הוא בדרך כלל לא המודל אלא מה שעוטף אותו: אילו כלים הוא מקבל, אילו בדיקות רצות על הפלט, איפה נדרש אדם, ומה קורה כשמשהו נכשל. MCP הוא תקן ציבורי שנועד להקל על חיבור כלים כאלה, וכלים רבים תומכים בו. בדקו בתיעוד שלהם מה נתמך כרגע.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בהדמיית הסוכן, בקשו מהכיתה להצביע לפני כל לחיצה: יצליח? המשימה ״שלחו מבצע לכל הלקוחות״ חושפת את הכפילות של רונית מלכה, וזה חיבור יפה לבעיות איכות הנתונים בחלק 4. בדיון על הרשאות שאלו מי נתן פעם הרשאת כתיבה רחבה ״רק כדי שזה יעבוד״.</div>
+</section>
+<section class="sec" id="s5-7" data-t="זיכרון ו-RAG">
+<div class="sec-h"><div class="sec-n">7</div><h2>זיכרון ו-RAG: איך נותנים ל-AI מידע שהוא לא למד</h2></div>
+<p class="lead">יבגני רוצה עוזר ללקוחות שעונה על שאלות כמו ״יש לי אלרגיה, מה עושים?״ ו״אפשר לבטל?״ התשובות כתובות במסמכי המדיניות של המסעדה, והמודל מעולם לא ראה אותם. איך נותנים לו אותן בלי לאמן אותו מחדש?</p>
+
+<div class="defline"><b>חסר מצב (Stateless):</b> מודל לא זוכר שיחות קודמות. כל בקשה עומדת בפני עצמה. למשל: אמרתם ״שמי רונית״, ובבקשה הבאה הוא לא יודע מי אתם, אלא אם שולחים לו שוב את כל השיחה. (על זה דיברנו <a href="../lec9.1.html">בשיעור על כלים וארכיטקטורה של AI</a>.)</div>
+
+<div class="anim" data-id="p5-anim-stateless" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="מודל חסר מצב">
+<defs><marker id="p5-sl-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4f46e5"/></marker></defs>
+<g data-only="1,2,3"><rect x="610" y="120" width="170" height="90" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="695" y="172" text-anchor="middle" font-size="19" font-weight="700" fill="#3730a3">האפליקציה</text>
+<rect x="20" y="120" width="170" height="90" rx="14" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/><text x="105" y="172" text-anchor="middle" font-size="19" font-weight="700" fill="#6d28d9">המודל</text></g>
+<g data-only="1"><path d="M604 150H196" stroke="#4f46e5" stroke-width="3" marker-end="url(#p5-sl-ar)"/><rect x="330" y="104" width="150" height="34" rx="12" fill="#e0e7ff"/><text x="405" y="127" text-anchor="middle" font-size="16" font-weight="700" fill="#3730a3">״שמי רונית״</text>
+<path d="M196 190H604" stroke="#10b981" stroke-width="3" marker-end="url(#p5-sl-ar)"/><rect x="330" y="198" width="150" height="34" rx="12" fill="#d1fae5"/><text x="405" y="221" text-anchor="middle" font-size="16" font-weight="700" fill="#047857">״נעים להכיר״</text></g>
+<g data-only="2"><path d="M604 150H196" stroke="#4f46e5" stroke-width="3" marker-end="url(#p5-sl-ar)"/><rect x="310" y="104" width="190" height="34" rx="12" fill="#e0e7ff"/><text x="405" y="127" text-anchor="middle" font-size="16" font-weight="700" fill="#3730a3">״איך קוראים לי?״</text>
+<path d="M196 190H604" stroke="#ef4444" stroke-width="3" marker-end="url(#p5-sl-ar)"/><rect x="310" y="198" width="190" height="34" rx="12" fill="#fee2e2"/><text x="405" y="221" text-anchor="middle" font-size="16" font-weight="700" fill="#b91c1c">״אין לי מידע עליך״</text></g>
+<g data-only="3"><rect x="290" y="30" width="230" height="34" rx="12" fill="#e0e7ff"/><text x="405" y="53" text-anchor="middle" font-size="15" font-weight="700" fill="#3730a3">״שמי רונית״</text>
+<rect x="290" y="68" width="230" height="34" rx="12" fill="#d1fae5"/><text x="405" y="91" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">״נעים להכיר״</text>
+<rect x="290" y="106" width="230" height="34" rx="12" fill="#e0e7ff"/><text x="405" y="129" text-anchor="middle" font-size="15" font-weight="700" fill="#3730a3">״איך קוראים לי?״</text>
+<path d="M604 165H196" stroke="#4f46e5" stroke-width="3" marker-end="url(#p5-sl-ar)"/>
+<path d="M196 205H604" stroke="#10b981" stroke-width="3" marker-end="url(#p5-sl-ar)"/><rect x="340" y="214" width="130" height="34" rx="12" fill="#d1fae5"/><text x="405" y="237" text-anchor="middle" font-size="16" font-weight="700" fill="#047857">״רונית״</text></g>
+<g data-only="4"><text x="400" y="40" text-anchor="middle" font-size="17" font-weight="700" fill="#475569">גודל כל בקשה גדל עם השיחה</text>
+<rect x="570" y="70" width="110" height="30" rx="6" fill="#818cf8"/><text x="790" y="91" text-anchor="end" font-size="15" fill="#334155">בקשה 1</text>
+<rect x="420" y="116" width="260" height="30" rx="6" fill="#818cf8"/><text x="790" y="137" text-anchor="end" font-size="15" fill="#334155">בקשה 2</text>
+<rect x="240" y="162" width="440" height="30" rx="6" fill="#ef4444"/><text x="790" y="183" text-anchor="end" font-size="15" fill="#334155">בקשה 3</text>
+<path d="M330 60V205" stroke="#b45309" stroke-width="3" stroke-dasharray="6 5"/><text x="330" y="228" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">גבול החלון</text>
+<text x="400" y="282" text-anchor="middle" font-size="16" fill="#334155">מעבר לגבול, החלק הישן נחתך והמודל שוכח אותו</text></g>
+</svg></div>
+<ol class="caps"><li>בקשה ראשונה: המשתמש מציג את עצמו, והמודל עונה.</li><li>בקשה שנייה לבד: ״איך קוראים לי?״ המודל לא יודע. שום דבר מהשיחה הקודמת לא נשלח אליו.</li><li>הפתרון: האפליקציה שולחת מחדש את כל השיחה בכל בקשה. ככה המודל ״זוכר״.</li><li>המחיר: כל בקשה גדולה מהקודמת, עד שמגיעים לגבול של חלון ההקשר שראינו קודם. מכאן ה״זיכרון״ שנעלם בשיחות ארוכות.</li></ol>
+</div>
+
+<h3>שלוש שכבות של זיכרון</h3>
+<div class="cols3">
+<div class="card"><h4>קצר טווח</h4><p>ההיסטוריה של השיחה הנוכחית, שנשלחת מחדש בכל בקשה. מוגבלת על ידי חלון ההקשר.</p></div>
+<div class="card"><h4>ארוך טווח</h4><p>עובדות על המשתמש ששמורות בטבלה במסד: העדפות, הערות, היסטוריה. שולפים לפי הצורך ומכניסים לפרומפט.</p></div>
+<div class="card"><h4>סמנטי</h4><p>מסמכים וידע ששמורים כך שאפשר לחפש לפי משמעות. זה RAG, ועליו בהמשך הסעיף.</p></div>
+</div>
+
+<p>זיכרון ארוך טווח הוא לא קסם, זו סתם טבלה. אתם כבר יודעים לבנות טבלה ולשאול אותה, אז אתם יודעים לבנות זיכרון. הנה טבלת העדפות לדוגמה. המשימה: לשלוף ממנה את מה שהמודל צריך לראות לפני שהוא עונה ללקוחה.</p>
+
+<div class="lab" data-id="p5-lab-memory" data-title="זיכרון ארוך טווח הוא טבלה" data-ordered="0">
+<div class="q-src">בטבלה <code>customer_prefs</code> (נוצרה בשביל התרגיל) יש העדפות של לקוחות. החזירו ללקוחה 11 (הילה אבני) שורה אחת של טקסט, בצורה <code>key: value; key: value</code>, שאפשר להדביק בפרומפט. עצה: <code>group_concat</code> מחברת ערכים מכמה שורות לטקסט אחד.</div>
+<pre class="setup">CREATE TABLE customer_prefs (customer_id INTEGER, pref_key TEXT, pref_value TEXT);
+INSERT INTO customer_prefs VALUES (11, 'allergy', 'בוטנים'), (11, 'usual_dish', 'פסטה שמנת'), (11, 'delivery_note', 'לצלצל פעמיים'), (1, 'usual_dish', 'סלמון בתנור');</pre>
+<pre class="start">SELECT group_concat(pref_key || ': ' || pref_value, '; ') AS memory
+FROM customer_prefs
+-- סננו ללקוחה 11</pre>
+<pre class="check">SELECT group_concat(pref_key || ': ' || pref_value, '; ') FROM customer_prefs WHERE customer_id = 11</pre>
+<pre class="solution">SELECT group_concat(pref_key || ': ' || pref_value, '; ') AS memory
+FROM customer_prefs
+WHERE customer_id = 11</pre>
+<ol class="hints"><li>הוסיפו <code>WHERE customer_id = 11</code>.</li></ol>
+<div class="why-src">יצאה שורה אחת: allergy: בוטנים; usual_dish: פסטה שמנת; delivery_note: לצלצל פעמיים. את השורה הזו מדביקים בפרומפט לפני השאלה. שימו לב: אלרגיה היא מידע רגיש, אז גם הזיכרון הזה צריך הרשאות ואבטחה, כמו שראינו בסעיף על פרטיות.</div>
+</div>
+
+<h3>RAG: קודם מחפשים, אחר כך עונים</h3>
+<div class="defline"><b>הטמעה (Embedding):</b> וקטור של מספרים שמייצג את המשמעות של טקסט, כך שטקסטים קרובים במשמעות מקבלים וקטורים קרובים. למשל: ״החזר כספי״ ו״ביטול וזיכוי״ יהיו קרובים, ו״סלמון בתנור״ רחוק מהם.</div>
+<div class="defline"><b>RAG (Retrieval-Augmented Generation):</b> לפני שהמודל עונה, מחפשים במאגר מסמכים את הקטעים שקשורים לשאלה ומצרפים אותם לפרומפט. למשל: שואלים על אלרגנים, מוצאים את הסעיף על אלרגנים במסמך המדיניות, ומבקשים מהמודל לענות רק לפיו.</div>
+<div class="defline"><b>מסד וקטורים (Vector database):</b> מסד שמתאים לשמור וקטורים ולמצוא מהר את הקרובים ביותר לוקטור של שאלה. למשל: התוסף <code>pgvector</code> ל-PostgreSQL, או מסדים שנבנו לזה.</div>
+
+<div class="anim" data-id="p5-anim-rag" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 310" role="img" aria-label="צינור RAG">
+<defs><marker id="p5-rg-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4f46e5"/></marker></defs>
+<g data-s="1"><rect x="640" y="30" width="150" height="62" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="715" y="67" text-anchor="middle" font-size="16" font-weight="700" fill="#3730a3">מסמכי מדיניות</text>
+<path d="M636 61H606" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#p5-rg-ar)"/>
+<rect x="450" y="30" width="150" height="62" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="525" y="67" text-anchor="middle" font-size="16" font-weight="700" fill="#3730a3">חיתוך לקטעים</text></g>
+<g data-s="2"><path d="M446 61H416" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#p5-rg-ar)"/>
+<rect x="260" y="30" width="150" height="62" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/><text x="335" y="67" text-anchor="middle" font-size="16" font-weight="700" fill="#6d28d9">המרה לוקטורים</text>
+<path d="M256 61H226" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#p5-rg-ar)"/>
+<rect x="70" y="30" width="150" height="62" rx="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/><text x="145" y="67" text-anchor="middle" font-size="16" font-weight="700" fill="#b45309">מאגר וקטורים</text></g>
+<g data-s="3"><rect x="640" y="215" width="150" height="62" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="715" y="252" text-anchor="middle" font-size="16" font-weight="700" fill="#047857">שאלת לקוח</text></g>
+<g data-s="4"><path d="M636 246H606" stroke="#047857" stroke-width="2.5" marker-end="url(#p5-rg-ar)"/>
+<rect x="450" y="215" width="150" height="62" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/><text x="525" y="252" text-anchor="middle" font-size="16" font-weight="700" fill="#6d28d9">וקטור של השאלה</text>
+<path d="M446 246H416" stroke="#047857" stroke-width="2.5" marker-end="url(#p5-rg-ar)"/>
+<rect x="260" y="215" width="150" height="62" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="335" y="252" text-anchor="middle" font-size="16" font-weight="700" fill="#047857">חיפוש הקרובים</text>
+<path d="M145 96C145 160 230 190 262 230" fill="none" stroke="#b45309" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#p5-rg-ar)"/></g>
+<g data-s="5" data-pulse><path d="M256 246H226" stroke="#047857" stroke-width="2.5" marker-end="url(#p5-rg-ar)"/>
+<rect x="30" y="206" width="190" height="80" rx="12" fill="#fff" stroke="#d8b862" stroke-width="3"/><text x="125" y="236" text-anchor="middle" font-size="16" font-weight="700" fill="#142a45">פרומפט + תשובה</text><text x="125" y="262" text-anchor="middle" font-size="14" fill="#475569">עם ציון המקור</text></g>
+</svg></div>
+<ol class="caps"><li>הכנה, פעם אחת: מסמכי המדיניות נחתכים לקטעים קצרים.</li><li>כל קטע הופך לוקטור, והוקטורים נשמרים במאגר וקטורים.</li><li>בזמן אמת: מגיעה שאלה של לקוח.</li><li>גם השאלה הופכת לוקטור, והמערכת מחפשת במאגר את הקטעים הכי קרובים אליה.</li><li>הקטעים שנמצאו נכנסים לפרומפט יחד עם השאלה, והמודל עונה לפיהם ומציין את המקור. אם לא נמצא קטע מתאים, הוא אומר שאין לו מידע.</li></ol>
+</div>
+
+<p>הנה הדמיה, כדי להרגיש איך החיפוש עובד. ״מאגר המדיניות״ כולל שישה קטעים בדויים של מסעדת יבגני. החיפוש כאן הוא לא הטמעה אמיתית אלא דמיון בין צירופי אותיות: הוא תופס מילים דומות, אבל לא נרדפות. הטמעה אמיתית תופסת גם משמעות. כתבו שאלה או לחצו על דוגמה.</p>
+
+<div class="sim" data-id="p5-sim-rag"><div class="sh">חיפוש במסמכי המדיניות</div>
+<div class="row"><input type="text" class="p5-rq" placeholder="שאלה של לקוח" style="min-width:240px;flex:1"><button type="button" class="btn" data-a="go">חיפוש</button></div>
+<div class="row"><button type="button" class="btn sec2" data-q="יש לי אלרגיה לבוטנים">יש לי אלרגיה לבוטנים</button><button type="button" class="btn sec2" data-q="אפשר לבטל את ההזמנה?">אפשר לבטל את ההזמנה?</button><button type="button" class="btn sec2" data-q="הפיצה הגיעה קרה">הפיצה הגיעה קרה</button><button type="button" class="btn sec2" data-q="מה המרווח הגולמי של הלימונדה?">מה המרווח הגולמי של הלימונדה?</button></div>
+<div class="p5-rres"></div>
+<p><small>הדמיה: מסמכי המדיניות בדויים. הדמיון מחושב בין צירופי אותיות (שלשות), ואין כאן מודל.</small></p>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p5-sim-rag"]'); if(!box) return;
+const CH=[
+['אלרגנים','כל מנה מסומנת באלרגנים הנפוצים. אם יש לכם אלרגיה, ציינו אותה בהערות להזמנה והמטבח יכין את המנה בנפרד.'],
+['ביטולים','אפשר לבטל הזמנה עד עשר דקות מרגע ביצועה בלי חיוב. אחרי שההכנה התחילה, ההזמנה מחויבת במלואה.'],
+['החזרים','אם המשלוח הגיע קר או חלקי, כתבו לנו תוך שעה מקבלת ההזמנה וקבלו זיכוי או משלוח חוזר.'],
+['זמני משלוח','בשעות העומס של הצהריים והערב זמן המשלוח עשוי להתארך. זמן משוער מוצג באפליקציה לפני האישור.'],
+['תשר','אפשר להוסיף תשר לשליח באפליקציה אחרי המסירה. התשר מועבר במלואו לשליח.'],
+['מנות לילדים','לכל מנה עיקרית יש גרסה קטנה במחיר מופחת. שאלו בעת ההזמנה.']
+];
+const STOP=new Set(['את','של','על','עם','או','אם','לא','כל','יש','לי','אני','זה','הוא','היא','מה','איך','כמה','אפשר','לכם','לנו','אחרי','עד']);
+function words(t){return t.toLowerCase().replace(/[^֐-׿a-z0-9\s]/g,' ').split(/\s+/).filter(w=>w&&!STOP.has(w));}
+function grams(t){const m={};words(t).forEach(w=>{const s='_'+w+'_'; for(let i=0;i<=s.length-3;i++){const g=s.slice(i,i+3); m[g]=(m[g]||0)+1;}}); return m;}
+function cos(a,b){let d=0,na=0,nb=0;for(const k in a){na+=a[k]*a[k]; if(b[k]) d+=a[k]*b[k];} for(const k in b) nb+=b[k]*b[k]; return na&&nb? d/Math.sqrt(na*nb):0;}
+const G=CH.map(c=>grams(c[0]+' '+c[1]));
+const inp=FL.$('.p5-rq',box), res=FL.$('.p5-rres',box); const tried={}; let n=0;
+function go(q){
+ q=(q||'').trim(); if(!q){ res.innerHTML='<div class="cnt">הקלידו שאלה.</div>'; return; }
+ const g=grams(q); const sc=CH.map((c,i)=>({i:i,s:cos(g,G[i])})).sort((a,b)=>b.s-a.s);
+ const pick=sc.filter(x=>x.s>=0.12).slice(0,2); const ok=pick.length>0;
+ let h='<div class="tw"><table class="tbl"><thead><tr><th>קטע</th><th>דמיון</th><th></th></tr></thead><tbody>'+sc.map((x,r)=>'<tr><td>'+FL.esc(CH[x.i][0])+'</td><td style="min-width:140px"><div class="meter"><i style="width:'+Math.min(100,x.s*140)+'%"></i></div></td><td><span class="n">'+x.s.toFixed(2)+'</span> '+(ok&&r<pick.length?'<span class="chip g">נבחר</span>':'')+'</td></tr>').join('')+'</tbody></table></div>';
+ if(ok){ h+='<div class="out"><b>הפרומפט שנשלח למודל:</b><div class="p5-prev" style="max-height:none">ענה לשאלת הלקוח רק על סמך הקטעים הבאים. אם התשובה לא מופיעה בהם, כתוב ״אין לי מידע על זה״ וציין את שם הקטע שבו השתמשת.\n\n'+pick.map(x=>'קטע: '+FL.esc(CH[x.i][0])+'\n'+FL.esc(CH[x.i][1])).join('\n\n')+'\n\nשאלה: '+FL.esc(q)+'</div><small>כאן המודל היה כותב תשובה לפי הקטעים. זו הדמיה, ולכן התשובה עצמה לא מוצגת.</small></div>'; }
+ else { h+='<div class="out"><b>אף קטע לא קרוב מספיק.</b> מערכת RAG טובה לא מנחשת, היא עונה ״אין לי מידע״. השאלה הזו, על מרווח, היא בכלל שאלה למסד הנתונים ולא למסמכים. היא שייכת ל-SQL.</div>'; }
+ res.innerHTML=h; tried[q]=1; n=Object.keys(tried).length; if(n>=3) FL.done('p5-sim-rag');
+}
+box.addEventListener('click',function(e){ const q=e.target.closest('button[data-q]'); if(q){ inp.value=q.dataset.q; go(q.dataset.q); return; } if(e.target.closest('button[data-a="go"]')) go(inp.value); });
+inp.addEventListener('keydown',function(e){ if(e.key==='Enter') go(inp.value); });
+});})();</script>
+
+<div class="box meaning"><p>RAG מחליף את השאלה ״האם המודל יודע?״ בשאלה ״האם מצאנו את הקטע הנכון?״ ואת זה אפשר למדוד ולבדוק. המודל לא ״לומד״ את המסמכים, הוא רק מקבל אותם בכל בקשה. לכן כשמדיניות משתנה, מחליפים קטע במאגר ולא מאמנים מחדש. וההוראה ״ענה רק על סמך הקטעים״ היא אילוץ בפרומפט, בדיוק כמו בסעיף הראשון.</p></div>
+
+<h3>SQL או RAG?</h3>
+<div class="quiz" data-id="p5-q-sqlrag" data-a="2"><p class="qq">לקוח שואל ״כמה הזמנות בוטלו במאי?״ ולקוח אחר שואל ״מה המדיניות לגבי אלרגנים?״ איזה כלי מתאים לכל שאלה?</p>
+<button class="opt">RAG לשתיהן: הוא עונה על הכול</button>
+<button class="opt">SQL לראשונה (מספר מדויק מטבלה), RAG לשנייה (טקסט במסמך)</button>
+<button class="opt">RAG לראשונה ו-SQL לשנייה</button>
+<button class="opt">אף אחד: צריך אימון מחדש של המודל</button>
+<div class="why">התשובה השנייה. שאלה שהתשובה לה היא חישוב על נתונים מסודרים, כמו ספירה או סכום, שייכת ל-SQL. שאלה שהתשובה לה כתובה במסמך שייכת ל-RAG. RAG הוא לא מחשבון (א ו-ג), ואימון מחדש (ד) כמעט לא צריך בשביל מידע חדש.</div></div>
+
+<h3>וקטורים בתוך SQLite</h3>
+<p>לא צריך מסד מיוחד כדי להבין את הרעיון. נניח שכל מנה מתוארת בשלושה מספרים: כמה כבדה, כמה מתוקה, כמה חמה. זה וקטור בן שלושה ממדים. בהטמעות אמיתיות הוקטורים הם בני מאות עד אלפי ממדים, ומחשב יוצר אותם בשבילכם. את הקרבה בין שני וקטורים מחשבים עם מכפלה פנימית: מכפילים ממד מול ממד וסוכמים. כשהוקטורים מנורמלים לאורך 1, זה כבר הדמיון עצמו (קוסינוס).</p>
+
+<div class="lab" data-id="p5-lab-vec" data-title="חיפוש לפי קרבה בתוך SQL" data-ordered="1">
+<div class="q-src">בטבלה <code>dish_vec</code> (נוצרה בשביל התרגיל) יש לכל מנה וקטור בן שלושה ממדים: כבדות, מתיקות, חום. הוקטורים בדויים, להמחשה. הוקטור של השאלה ״משהו קל, מתוק וקר״ הוא <code>[0.124, 0.992, 0.0]</code>. החזירו את שלוש המנות הקרובות ביותר: <code>name</code> ו-<code>similarity</code> (מעוגל ל-3 ספרות), מהגבוה לנמוך.</div>
+<pre class="setup">CREATE TABLE dish_vec (dish_id INTEGER, v TEXT);
+INSERT INTO dish_vec VALUES (1,'[0.816,0.408,0.408]'),(2,'[0.314,0.105,0.943]'),(3,'[0.745,0.083,0.662]'),(4,'[0.704,0.088,0.704]'),(5,'[0.597,0.1,0.796]'),(6,'[0.612,0.087,0.786]'),(7,'[0.656,0.094,0.749]'),(8,'[0.464,0.881,0.093]'),(9,'[0.083,0.997,0.0]'),(10,'[0.894,0.447,0.0]');</pre>
+<pre class="start">WITH q AS (
+  SELECT key AS k, value AS x FROM json_each('[0.124, 0.992, 0.0]')
+),
+d AS (
+  SELECT dish_id, key AS k, value AS y
+  FROM dish_vec, json_each(dish_vec.v)
+)
+SELECT dsh.name, ROUND(SUM(q.x * d.y), 3) AS similarity
+FROM d
+JOIN q ON q.k = d.k
+-- חברו למנות, קבצו, מיינו והגבילו</pre>
+<pre class="check">WITH q AS (SELECT key AS k, value AS x FROM json_each('[0.124, 0.992, 0.0]')), d AS (SELECT dish_id, key AS k, value AS y FROM dish_vec, json_each(dish_vec.v)) SELECT dsh.name, ROUND(SUM(q.x * d.y), 3) AS similarity FROM d JOIN q ON q.k = d.k JOIN dishes dsh ON dsh.id = d.dish_id GROUP BY d.dish_id ORDER BY similarity DESC LIMIT 3</pre>
+<pre class="solution">WITH q AS (
+  SELECT key AS k, value AS x FROM json_each('[0.124, 0.992, 0.0]')
+),
+d AS (
+  SELECT dish_id, key AS k, value AS y
+  FROM dish_vec, json_each(dish_vec.v)
+)
+SELECT dsh.name, ROUND(SUM(q.x * d.y), 3) AS similarity
+FROM d
+JOIN q ON q.k = d.k
+JOIN dishes dsh ON dsh.id = d.dish_id
+GROUP BY d.dish_id
+ORDER BY similarity DESC
+LIMIT 3</pre>
+<ol class="hints"><li>הוסיפו <code>JOIN dishes dsh ON dsh.id = d.dish_id</code> כדי לקבל שם.</li><li>קבצו לפי <code>d.dish_id</code>, מיינו לפי <code>similarity</code> מהגבוה לנמוך, והגבילו ל-3.</li></ol>
+<div class="why-src">יצאו לימונדה (0.999), טירמיסו (0.931) ובירה מקומית (0.554). זה בדיוק מה שמסד וקטורים עושה, רק בקנה מידה גדול ומהר. ב-PostgreSQL עם התוסף <code>pgvector</code> השורה האחרונה נכתבת בערך ככה: <code>ORDER BY embedding &lt;=&gt; '[...]' LIMIT 3</code>, כש-<code>&lt;=&gt;</code> הוא מרחק קוסינוס.</div>
+</div>
+
+<div class="box try" data-id="p5-try-rag">
+<ol>
+<li>העתיקו את ששת קטעי המדיניות מההדמיה למסמך טקסט.</li>
+<li>בכלי AI שנוח לכם, שאלו שאלה על אלרגיה בלי לצרף את המסמך, ורשמו את התשובה.</li>
+<li>הדביקו את המסמך ושאלו שוב, עם ההוראה ״ענה רק על סמך המסמך, ואם אין תשובה כתוב שאין״.</li>
+<li>שאלו שאלה שהמסמך לא מכסה (למשל על שעות פתיחה). המודל מודה שאין לו מידע, או ממציא?</li>
+</ol>
+<p class="tools"><a class="tool" href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a><a class="tool" href="https://aistudio.google.com" target="_blank" rel="noopener">AI Studio</a><a class="tool" href="https://supabase.com" target="_blank" rel="noopener">Supabase</a><a class="tool" href="https://neon.tech" target="_blank" rel="noopener">Neon</a></p>
+</div>
+
+<div class="quiz" data-id="p5-q-rag" data-a="4"><p class="qq">מערכת RAG קיבלה שאלה ולא נמצא אף קטע קרוב. מה צריך לקרות?</p>
+<button class="opt">לבחור את הקטע הכי קרוב ולענות כאילו הוא מתאים</button>
+<button class="opt">להשאיר למודל להמציא תשובה מהידע הכללי שלו</button>
+<button class="opt">להגדיל את הטמפרטורה כדי לקבל יותר רעיונות</button>
+<button class="opt">להחזיר ״אין לי מידע על זה״, ולהפנות לאדם או למקור אחר</button>
+<div class="why">התשובה הרביעית. כשאין מקור, תשובה משכנעת היא המצאה, ובשירות לקוחות היא גם התחייבות שאף אחד לא אישר. לבחור קטע לא מתאים (א) או להמציא (ב) זו אותה בעיה, וטמפרטורה גבוהה (ג) רק מחמירה אותה.</div></div>
+
+<div class="box think" data-id="p5-th-rag"><p>מדיניות הביטולים של המסעדה השתנתה מ״עשר דקות״ ל״חמש דקות״. מה עושים במערכת ה-RAG, ומה במודל?</p>
+<div class="ans">ב-RAG מחליפים את הקטע במאגר ומעדכנים את הוקטור שלו. במודל לא משנים כלום, כי הוא לא ״למד״ את המדיניות. זה היתרון: עדכון זול ומיידי. הסכנה: אם הקטע הישן נשאר במאגר ליד החדש, המודל יכול לצטט את שניהם. לכן מוחקים גרסאות ישנות.</div></div>
+
+<div class="box real"><p>RAG הוא אחד הדפוסים הנפוצים בעוזרים ארגוניים שעונים לפי מסמכים פנימיים, כמו נהלים, מדיניות ותיעוד. יש מסדי וקטורים ייעודיים (למשל Chroma, Qdrant ו-Pinecone), ובמסדים קיימים אפשר להפעיל תוסף: pgvector ל-PostgreSQL זמין, למשל, ב-Supabase וב-Neon. הבחירה בין תוסף למסד ייעודי תלויה בגודל, ובכמה מערכות אתם מוכנים לתחזק.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> התחילו מהאנימציה של חוסר המצב ושאלו: למה צ׳אט ״זוכר״ מה אמרתי לפני דקה? (כי האפליקציה שולחת את השיחה מחדש.) בהדמיית החיפוש, הקלידו שאלה בניסוח אחר (למשל ״תשלום חוזר״ במקום ״החזר״) והראו שחיפוש האותיות נכשל. משם עוברים להסביר מה הטמעה אמיתית עושה אחרת.</div>
+</section>
+<section class="sec" id="s5-8" data-t="כלי פיתוח AI">
+<div class="sec-h"><div class="sec-n">8</div><h2>כלי פיתוח עם AI ומה שיכול להשתבש כשסוכן בונה</h2></div>
+<p class="lead">הצוות של יבגני רוצה לבנות את האפליקציה בעזרת AI. יש כלים שונים לעבודות שונות. בוחרים לפי מי מחזיק את ההגה: אתם מעתיקים, או הסוכן מציע ואתם מאשרים, או הסוכן מבצע ואתם בודקים אחר כך.</p>
+
+<div class="defline"><b>הוראות מערכת (System prompt):</b> הוראות קבועות שנותנים לפני השיחה. הן קובעות מי המודל, איך הוא מתנהג ובאיזה פורמט הוא עונה, והן חזקות יותר מהודעה רגילה. למשל: ״אתה אנליסט זהיר, השתמש רק בטבלאות שבסכמה, SELECT בלבד״.</div>
+
+<div class="cols2">
+<div class="card"><h4>צ׳אט בדפדפן</h4><p>חושבים, מתכננים, מבקרים ומדביקים קוד. אתם מעתיקים ומריצים בעצמכם. למשל claude.ai והצ׳אט של AI Studio. הסיכון: טעויות בהעתקה וקוד שלא נבדק.</p></div>
+<div class="card"><h4>AI Studio: המוח</h4><p>מקום לעצב הוראות מערכת, לשחק עם הטמפרטורה ולבדוק תשובות, וגם לקבל מפתח API. בדיוק כמו שראינו <a href="../lec7.2.html">בשיעור על AI Studio</a>: קודם מעצבים את ההתנהגות של המודל, ורק אחר כך מחברים אותו לאפליקציה.</p></div>
+<div class="card"><h4>סביבת פיתוח עם סוכן: הגוף</h4><p>כלי כמו Antigravity: הסוכן קורא את הקבצים, מציע תוכנית, כותב קוד ומריץ אותו. אתם מאשרים תוכנית וסוקרים את התוצאה. הסיכון: סוכן שהולך רחוק מדי.</p></div>
+<div class="card"><h4>סוכן בטרמינל</h4><p>כלי כמו Claude Code: רץ בתיקיית הפרויקט, קורא קבצים, מריץ פקודות ומתקן שגיאות לבד. הוא חזק, ולכן נותנים לו הרשאות מוגדרות וסוקרים כל שינוי.</p></div>
+<div class="card"><h4>הרצה מקומית</h4><p>LM Studio או Ollama מריצים מודל על המחשב. Open WebUI נותן להם ממשק צ׳אט בדפדפן. הנתונים נשארים אצלכם. הסיכון: איכות נמוכה יותר, והתקנה.</p></div>
+<div class="card"><h4>מה משותף לכולם</h4><p>הכלי משתנה, השיטה לא: פרומפט מסודר, תוכנית לפני ביצוע, בדיקה מול מספר ידוע, וסודות מחוץ לקוד. מי שיודע את השיטה עובר בין כלים בקלות.</p></div>
+</div>
+
+<h3>איך זה נראה: שלושה מסכים סכמטיים</h3>
+<p>אלה הדמיות סכמטיות, בלי סימנים של מוצר מסוים. הן רק מראות מה בערך מחכה לכם בכלים כאלה.</p>
+
+<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span class="url">הדמיה סכמטית · מסך עיצוב הוראות מערכת</span></div><div class="mk-body">
+<div style="display:grid;grid-template-columns:1.6fr 1fr;gap:12px">
+<div><b>System instructions</b><div class="p5-sqlbox" style="white-space:pre-wrap">You are a careful data analyst for a restaurant.
+Use only tables and columns in the schema.
+Revenue = SUM(qty * price), delivered orders only.
+SELECT only. If information is missing, ask.</div>
+<b>Chat</b><div style="background:#f1f5f9;border-radius:8px;padding:8px 10px;margin-top:4px">User: revenue by channel?<br><span style="color:#64748b">Model: (query in a code block + two sentences of assumptions)</span></div></div>
+<div><b>Settings</b><div style="margin:8px 0">Temperature <input type="range" min="0" max="10" value="1" disabled style="width:100%"></div><div style="margin:8px 0">Model <select disabled><option>(בחירת מודל)</option></select></div><div style="margin:8px 0"><button class="btn sec2" type="button" disabled>Get API key</button></div><div style="margin:8px 0"><button class="btn sec2" type="button" disabled>Get code</button></div></div>
+</div></div></div>
+
+<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span class="url">הדמיה סכמטית · סביבת פיתוח עם סוכן</span></div><div class="mk-body">
+<div style="display:grid;grid-template-columns:150px 1fr 1fr;gap:10px">
+<div style="border-inline-end:1px solid #e2e8f0;padding-inline-end:8px"><b>Files</b><br>📄 index.html<br>📄 api.gs<br>📄 .gitignore<br>🔒 .env</div>
+<div><b>Agent plan</b><ol style="margin:4px 0;padding-inline-start:1.2em"><li>Add a card for cancelled orders to the dashboard</li><li>Return cancelled count from summary</li><li>Check against SELECT COUNT(*) on orders</li></ol><button class="btn" type="button" disabled>Approve plan</button> <button class="btn sec2" type="button" disabled>Edit</button></div>
+<div><b>Diff</b><div class="p5-sqlbox" style="white-space:pre"><span style="color:#86efac">+ cancelled: row.cancelled,</span>
+<span style="color:#fca5a5">- // TODO</span>
+<span style="color:#94a3b8">  (no secrets in the diff)</span></div></div>
+</div></div></div>
+
+<div class="mk mk-term"><div class="mk-bar"><i></i><i></i><i></i><span>הדמיה סכמטית · מודל מקומי בטרמינל</span></div><div class="mk-body"><span class="p">$</span> ollama list
+NAME            SIZE
+&lt;model-name&gt;    (a few GB)
+
+<span class="p">$</span> ollama run &lt;model-name&gt;
+<span class="p">&gt;&gt;&gt;</span> Write a SQLite query: revenue by channel, delivered only.
+SELECT o.channel, SUM(oi.qty * d.price) AS revenue
+FROM orders o JOIN order_items oi ON oi.order_id = o.id
+JOIN dishes d ON d.id = oi.dish_id
+WHERE o.status = 'delivered' GROUP BY o.channel;
+<span class="p">&gt;&gt;&gt;</span> <span style="color:#94a3b8">(no network was used)</span></div></div>
+
+<div class="box try" data-id="p5-try-studio">
+<ol>
+<li>פתחו את AI Studio (או כלי צ׳אט אחר שמאפשר הוראות מערכת) והדביקו את ההוראות הבאות בשדה של הוראות המערכת.</li>
+<li>הדביקו את הסכמה מהמעבדה בסעיף 1 ושאלו: ״מה ההכנסה לפי ערוץ?״ בדקו את השאילתה עם חמש הבדיקות.</li>
+<li>שנו את הטמפרטורה (למשל מנמוכה לגבוהה), שאלו את אותה שאלה שלוש פעמים והשוו. יצאו שאילתות שונות?</li>
+<li>בקשו ממנו ״עדכן את מחיר הסלמון״. הוא מסרב, בהתאם לכלל SELECT בלבד?</li>
+</ol>
+<pre class="prompt">זהות: אתה אנליסט נתונים זהיר של מסעדה.
+מטרה: לכתוב שאילתות SQLite על הסכמה שתקבל, ולהסביר בקצרה מה כל שאילתה מחשבת.
+כללים: השתמש רק בטבלאות ובעמודות שמופיעות בסכמה. הכנסה היא SUM(qty * price) של הזמנות שנמסרו בלבד. אם חסר מידע, שאל.
+פורמט: שאילתה אחת בבלוק קוד, ואחריה שני משפטים בעברית על ההנחות שלך.
+גבולות: SELECT בלבד. אל תציע UPDATE או DELETE, ואל תבקש סיסמאות או מפתחות.</pre>
+<p class="tools"><a class="tool" href="https://aistudio.google.com" target="_blank" rel="noopener">AI Studio</a><a class="tool" href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a></p>
+</div>
+
+<div class="box try" data-id="p5-try-agent">
+<ol>
+<li>פתחו כלי סוכן שמתאים לכם: סביבת פיתוח עם סוכן (למשל Antigravity) או סוכן בטרמינל.</li>
+<li>תנו לו את פרומפט 2 מסעיף 1 (הממשק). לפני שהוא כותב קוד, בקשו תוכנית וקראו אותה.</li>
+<li>אשרו ובדקו את התוצאה: <code>API_URL</code> נשאר ריק? הוא הוסיף ספרייה שלא ביקשתם?</li>
+<li>הריצו git diff (מראה אילו שורות השתנו בקבצים) או עברו על השינויים, ובדקו שלא נוסף סוד באף קובץ.</li>
+</ol>
+<p class="tools"><a class="tool" href="https://antigravity.google" target="_blank" rel="noopener">Antigravity</a><a class="tool" href="https://github.com" target="_blank" rel="noopener">GitHub</a><a class="tool" href="https://nodejs.org" target="_blank" rel="noopener">Node.js</a></p>
+</div>
+
+<div class="box meaning"><p>הכלי קובע כמה מהעבודה עוברת לסוכן, אבל האחריות נשארת שלכם. ככל שהסוכן עצמאי יותר, חשוב יותר מה אתם שולטים בו בהתחלה ובסוף: פרומפט ברור בכניסה, תוכנית שמאשרים לפני ביצוע, ובדיקה של התוצאה בסוף. אפשר לעבוד מהר, אבל לא בלי נקודות עצירה.</p></div>
+
+<h3>חמש דברים שמשתבשים כשסוכן בונה</h3>
+<div class="cols2">
+<div class="card"><h4>1. סוד בקוד או בפרומפט</h4><p>מפתח API שהוטמע בקוד, בקובץ שעולה ל-GitHub או בפרומפט, יכול לדלוף, ומי שיגנוב אותו יריץ בקשות על החשבון שלכם. שומרים סודות בקובץ <code>.env</code> או בהגדרות של השרת.</p></div>
+<div class="card"><h4>2. ספרייה חסרה</h4><p><dfn data-d="ספרייה חיצונית שהקוד שלכם צריך כדי לרוץ, כמו חבילה שמורידים ומתקינים.">תלות</dfn> שלא הותקנה גורמת לשגיאה כמו <code>ModuleNotFoundError</code>. כדאי להתקין אותה ב<dfn data-d="סביבה וירטואלית: תיקייה מבודדת שבה מתקינים את הספריות של פרויקט אחד בלי להפריע לפרויקטים אחרים.">סביבה וירטואלית</dfn> נפרדת לכל פרויקט.</p></div>
+<div class="card"><h4>3. מדביקים שגיאה, אבל נכון</h4><p>הדביקו למודל את השגיאה המלאה, את הקוד הרלוונטי ומה ציפיתם שיקרה. ״לא עובד״ לא מספיק. ואל תדביקו סודות.</p></div>
+<div class="card"><h4>4. סוכן שהולך רחוק מדי</h4><p>לסוכן עם גישה לתיקייה שלמה יש יכולת לשנות הרבה קבצים. מבקשים תוכנית קודם, שומרים גרסה (commit) לפני, וסוקרים את השינויים אחרי.</p></div>
+<div class="card"><h4>5. הלקוח מדבר ישירות עם המסד</h4><p>אפליקציה שמותקנת אצל המשתמש ומכילה סיסמה למסד חושפת אותה: אפשר לפתוח את הקובץ ולמצוא אותה. הגישה למסד עוברת תמיד דרך שרת שאתם שולטים בו.</p></div>
+</div>
+
+<h3>סורק סודות: מה דלף בקובץ?</h3>
+<p>זה קובץ שסוכן יכול היה לכתוב. סרקו אותו וראו מה נתפס. אחר כך לחצו ״תיקון״ והריצו סריקה שנייה. הסריקה מבוססת על דפוסים פשוטים: היא תופסת הרבה אבל לא הכול, והיא לא מחליפה בדיקה של אדם. כל הערכים כאן בדויים.</p>
+
+<div class="sim" data-id="p5-sim-secret"><div class="sh">סורק סודות בקוד</div>
+<textarea class="p5-code" rows="11" spellcheck="false" aria-label="קוד לסריקה"></textarea>
+<div class="row"><button type="button" class="btn sec2" data-a="load">טעינת קובץ לדוגמה</button><button type="button" class="btn" data-a="scan">🔍 סריקה</button><button type="button" class="btn sec2" data-a="fix">תיקון: שימוש במשתני סביבה</button></div>
+<div class="p5-sres out"></div>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p5-sim-secret"]'); if(!box) return;
+const ta=FL.$('.p5-code',box), res=FL.$('.p5-sres',box);
+const SAMPLE=[
+ '// server.js (קובץ לדוגמה)',
+ 'const GEMINI_API_KEY = "AI'+'zaSy'+'FAKE0FAKE0FAKE0FAKE0FAKE0123";',
+ 'const DB_URL = "postgres'+'ql://app:Pa55word@db.example.com:5432/yevgeni";',
+ 'const PAYMENT_SECRET = "sk-'+'FAKEFAKEFAKEFAKE12345678";',
+ 'const PORT = 3000;',
+ '',
+ 'app.get("/summary", async (req, res) => {',
+ '  const rows = await db.query("SELECT channel, COUNT(*) FROM orders GROUP BY 1");',
+ '  res.json(rows);',
+ '});'
+].join('\n');
+const PAT=[
+ [/AIza[0-9A-Za-z_-]{16,}/,'מפתח בפורמט של Google'],
+ [/\bsk-[0-9A-Za-z]{12,}/,'מפתח בפורמט sk-'],
+ [/postgres(?:ql)?:\/\/[^\s:\/]+:[^\s@]+@/i,'מחרוזת חיבור עם סיסמה'],
+ [/(api[_-]?key|secret|token|passw(?:or)?d)\s*[:=]\s*["']([^"']{6,})["']/i,'סוד כערך קבוע בקוד',2],
+ [/-----BEGIN [A-Z ]*PRIVATE KEY-----/,'מפתח פרטי']
+];
+function mask(s){ return s.length<=8? '****' : s.slice(0,4)+'****'+s.slice(-2); }
+let scanned=false, fixed=false;
+function scan(){
+ const lines=ta.value.split('\n'); const F=[];
+ lines.forEach((ln,i)=>{ PAT.forEach(p=>{ const m=ln.match(p[0]); if(m){ F.push({n:i+1,t:p[1],v:mask(m[p[2]||0])}); } }); });
+ const seen={}; const U=F.filter(f=>{ const k=f.n+f.t; if(seen[k]) return false; seen[k]=1; return true; });
+ if(!U.length){ res.innerHTML='<span class="chip g">לא נמצאו סודות בדפוסים הידועים</span><p style="margin:6px 0 0">זה לא אומר שהקוד נקי: הסורק מכיר רק כמה דפוסים. עדיין צריך שאדם יסתכל, ויבדוק גם את היסטוריית הגרסאות.</p>'; if(scanned&&fixed) FL.done('p5-sim-secret'); return; }
+ res.innerHTML='<span class="chip r">נמצאו '+U.length+' ממצאים</span><ul style="margin:6px 0 0;padding-inline-start:1.2em">'+U.map(f=>'<li>שורה <span class="n">'+f.n+'</span>: '+FL.esc(f.t)+' <span class="n" style="background:#fee2e2">'+FL.esc(f.v)+'</span></li>').join('')+'</ul><p style="margin:6px 0 0">מה עושים: מוציאים את הערך לקובץ <code>.env</code> או להגדרות השרת, מוסיפים את <code>.env</code> ל-<code>.gitignore</code>, ואם הסוד כבר עלה לגיטהאב או הודבק בפרומפט, מחליפים אותו אצל הספק.</p>'; scanned=true;
+}
+function fix(){
+ let t=ta.value;
+ t=t.replace(/(const\s+(\w+)\s*=\s*)"[^"]*"\s*;/g,function(m,a,name){ if(/KEY|URL|SECRET|PASS|TOKEN/i.test(name)) return a+'process.env.'+name+';'; return m; });
+ ta.value=t; fixed=true; res.innerHTML='<span class="chip a">הקוד עודכן. הריצו סריקה שנייה.</span>';
+}
+box.addEventListener('click',function(e){ const b=e.target.closest('button[data-a]'); if(!b) return; const a=b.dataset.a; if(a==='load'){ ta.value=SAMPLE; res.innerHTML='<span class="chip">הקובץ נטען. לחצו על סריקה.</span>'; scanned=false; fixed=false; } if(a==='scan') scan(); if(a==='fix') fix(); });
+});})();</script>
+
+<p>אחרי התיקון הקוד קורא את הערכים ממשתני הסביבה, והערכים עצמם יושבים בקובץ שלא עולה לגיטהאב. ככה נראים שני הקבצים, עם ערך מקום (placeholder):</p>
+<pre class="code" data-lang="bash"># .env  (לא מעלים לגיטהאב)
+GEMINI_API_KEY=put-your-key-here
+DB_URL=put-your-connection-string-here
+
+# .gitignore
+.env</pre>
+
+<h3>איך מבקשים עזרה עם שגיאה</h3>
+<pre class="prompt">הקוד הרלוונטי: [הדביקו את הפונקציה, לא את כל הקובץ]
+השגיאה המלאה: [הדביקו את הטקסט האדום מהמסוף או מה-Console, כולל מספר השורה]
+מה ציפיתי שיקרה: [משפט אחד]
+מה כבר ניסיתי: [משפט אחד]
+אילוצים: אל תשנה פונקציות אחרות. הסבר את הסיבה לפני התיקון. אין בהדבקה מפתחות או סיסמאות.</pre>
+
+<div class="quiz" data-id="p5-q-secrets" data-a="3"><p class="qq">סוכן כתב קוד ממשק שמתחבר ישירות למסד, והסיסמה נמצאת בקובץ ה-JavaScript שנטען בדפדפן. מה הבעיה?</p>
+<button class="opt">אין בעיה, ככה הקוד רץ יותר מהר</button>
+<button class="opt">הסיסמה תהיה גלויה רק למי שבנה את האתר</button>
+<button class="opt">כל מי שפותח את האתר יכול לקרוא את הסיסמה ולהשתמש בה, ולכן הגישה למסד חייבת לעבור דרך שרת</button>
+<button class="opt">הבעיה היחידה היא הביצועים של המסד</button>
+<div class="why">התשובה השלישית. קוד שרץ בדפדפן או מותקן אצל הלקוח הוא קוד שהלקוח יכול לקרוא. לכן סודות נשמרים רק בשרת, והדפדפן פונה לשרת שמחליט מה מותר. מהירות (א) היא לא הסיבה, והסיסמה לא גלויה רק לבונה (ב).</div></div>
+
+<div class="quiz" data-id="p5-q-debug" data-a="1"><p class="qq">איזו הודעה לכלי AI תביא לתיקון הכי טוב של שגיאה?</p>
+<button class="opt">הפונקציה הרלוונטית, השגיאה המלאה, מה ציפיתם שיקרה ומה כבר ניסיתם</button>
+<button class="opt">״לא עובד, תתקן״</button>
+<button class="opt">צילום מסך חלקי, בלי טקסט השגיאה</button>
+<button class="opt">כל הפרויקט, בלי הסבר מה לא עובד</button>
+<div class="why">התשובה הראשונה: הקשר ממוקד ושגיאה מלאה נותנים למודל מה לנתח. ״לא עובד״ (ב) מביא ניחוש, צילום חלקי (ג) מסתיר את הסיבה, וכל הפרויקט בלי הסבר (ד) מציף ומביא ״תיקונים״ במקומות שלא צריך.</div></div>
+
+<div class="box think" data-id="p5-th-agent"><p>הסוכן בנה בחצי שעה אפליקציה שעובדת. מה בכל זאת בודקים לפני שמראים אותה ללקוחות?</p>
+<div class="ans">שאין סוד בקוד ובהיסטוריית הגרסאות. שהמספרים בדשבורד מתאימים לשאילתות שאנחנו מכירים. שהאפליקציה לא מדברת ישירות עם המסד. שכל כתיבה עוברת בדיקת קלט. שיש טיפול בשגיאות ותוכנית גיבוי. ושיש מי שמבין את הקוד מספיק כדי לתחזק אותו, כי ״הסוכן כבר יתקן״ זו לא תוכנית לתחזוקה.</div></div>
+
+<div class="box real"><p>מפתחים מקצועיים שעובדים עם סוכני קוד משתמשים באותן שיטות שהיו לפני: ניהול גרסאות, סקירת קוד, בדיקות אוטומטיות וניהול סודות. הסוכן מאיץ את הכתיבה, אבל לא מבטל את הצורך בהן. יש גם סורקי סודות שהם חלק מכלי הפיתוח ומהמערכות לניהול קוד, כולל סריקה אוטומטית של שינויים לפני שהם נכנסים. בדקו מה יש בכלים שלכם.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בקשו מסטודנט להדביק לסורק שורת קוד משלו (בדויה!) ולנסות לעקוף אותו, למשל בפיצול המפתח לשתי מחרוזות. זה מראה את המגבלה של סריקה לפי דפוסים. שאלו: מי תופס את הדליפה אם הסורק לא? (סקירה של אדם, הרשאות מצומצמות על המפתח, והחלפה מהירה של מפתח שדלף.)</div>
+</section>
+<section class="sec" id="s5-9" data-t="אימות Text-to-SQL">
+<div class="sec-h"><div class="sec-n">9</div><h2>Text-to-SQL: איך בודקים שאילתה כשאף אחד לא מסתכל עליה</h2></div>
+<p class="lead">יבגני רוצה לשאול את המסד בעברית, בלי אנליסט באמצע: ״כמה הזמנות בוטלו במאי?״ ולקבל מספר. עד עכשיו אדם קרא כל שאילתה. מה קורה כשהשאילתה נכתבת ורצה בלי שאף אחד מסתכל? צריך שערים אוטומטיים, ובסוף עדיין אדם שאחראי.</p>
+
+<div class="defline"><b>Text-to-SQL:</b> מערכת שהופכת שאלה בשפה רגילה לשאילתת SQL, מריצה אותה ומחזירה תוצאה. למשל: ״כמה הזמנות בוטלו?״ הופכת ל-<code>SELECT COUNT(*) FROM orders WHERE status = 'cancelled'</code>.</div>
+
+<p>במערכת כזו המודל מקבל בדרך כלל את הסכמה ואת השאלה, ולא את הנתונים עצמם. זה טוב לפרטיות, וגם גורם לניחושים: הוא לא יודע אילו ערכים יש בעמודה <code>status</code>, אלא אם אמרו לו. יש מוצרים ששולחים למודל גם דוגמאות של ערכים או תוצאות, אז בכל מוצר בודקים מה בדיוק נשלח.</p>
+
+<div class="anim" data-id="p5-anim-tsql" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="צינור Text-to-SQL עם שערים">
+<defs><marker id="p5-ts-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4f46e5"/></marker></defs>
+<g data-s="1"><rect x="650" y="40" width="140" height="70" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="720" y="70" text-anchor="middle" font-size="16" font-weight="700" fill="#3730a3">שאלה בעברית</text><text x="720" y="94" text-anchor="middle" font-size="14" fill="#475569">+ סכמה + כללים</text>
+<path d="M646 75H596" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#p5-ts-ar)"/>
+<rect x="456" y="40" width="140" height="70" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/><text x="526" y="70" text-anchor="middle" font-size="16" font-weight="700" fill="#6d28d9">מודל</text><text x="526" y="94" text-anchor="middle" font-size="14" fill="#475569">כותב SQL</text></g>
+<g data-s="2"><path d="M452 75H402" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#p5-ts-ar)"/>
+<rect x="262" y="40" width="140" height="70" rx="12" fill="#fffbeb" stroke="#ef4444" stroke-width="3"/><text x="332" y="68" text-anchor="middle" font-size="16" font-weight="700" fill="#b91c1c">שער 1</text><text x="332" y="92" text-anchor="middle" font-size="14" fill="#475569">קריאה בלבד, פקודה אחת</text></g>
+<g data-s="3"><path d="M258 75H208" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#p5-ts-ar)"/>
+<rect x="68" y="40" width="140" height="70" rx="12" fill="#fffbeb" stroke="#ef4444" stroke-width="3"/><text x="138" y="68" text-anchor="middle" font-size="16" font-weight="700" fill="#b91c1c">שער 2</text><text x="138" y="92" text-anchor="middle" font-size="14" fill="#475569">השמות קיימים</text>
+<path d="M138 114C138 150 250 160 330 190" fill="none" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#p5-ts-ar)"/>
+<rect x="262" y="190" width="140" height="70" rx="12" fill="#fffbeb" stroke="#ef4444" stroke-width="3"/><text x="332" y="218" text-anchor="middle" font-size="16" font-weight="700" fill="#b91c1c">שער 3</text><text x="332" y="242" text-anchor="middle" font-size="14" fill="#475569">מגבלת שורות וזמן</text></g>
+<g data-s="4" data-pulse><path d="M258 225H208" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#p5-ts-ar)"/>
+<rect x="30" y="190" width="178" height="100" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="3"/><text x="119" y="222" text-anchor="middle" font-size="16" font-weight="700" fill="#047857">הרצה בהרשאת קריאה</text><text x="119" y="246" text-anchor="middle" font-size="14" fill="#475569">תוצאה + ה-SQL גלוי</text><text x="119" y="270" text-anchor="middle" font-size="14" font-weight="700" fill="#b45309">אדם משווה למספר ידוע</text></g>
+</svg></div>
+<ol class="caps"><li>השאלה, הסכמה והכללים נכנסים למודל, והוא מחזיר שאילתה.</li><li>שער 1: זו פקודה אחת, ורק קריאה (SELECT)? פקודת כתיבה, או שתי פקודות, נעצרות כאן.</li><li>שער 2: הטבלאות והעמודות קיימות? מנסים להכין את השאילתה בלי להריץ. שער 3: מספר השורות והזמן מוגבלים?</li><li>רק אז היא רצה, במשתמש מסד שמורשה רק לקרוא. התוצאה מוצגת יחד עם ה-SQL, ואדם משווה אותה למספר ידוע לפני שהיא נכנסת לדוח.</li></ol>
+</div>
+
+<p>ההדמיה הבאה היא שערים אמיתיים, שרצים על מסד המסעדה. בחרו שאילתה לדוגמה או כתבו אחת בעצמכם, ובדקו אותה. שימו לב איזו שאילתה עוברת את כל השערים בלי להיות נכונה.</p>
+
+<div class="sim" data-id="p5-sim-gate"><div class="sh">שערי בדיקה לשאילתה ש-AI כתב</div>
+<div class="row"><label>שאילתה לדוגמה: <select class="p5-gs"></select></label><label>מספר ידוע להשוואה: <select class="p5-gb"></select></label></div>
+<textarea class="p5-code" rows="5" spellcheck="false" aria-label="שאילתה לבדיקה"></textarea>
+<div class="row"><button type="button" class="btn" data-a="check">בדיקת השערים</button></div>
+<div class="p5-gres out"></div>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p5-sim-gate"]'); if(!box) return;
+const S=[
+ {n:'תקינה: הכנסה מהזמנות שנמסרו',b:0,sql:"SELECT SUM(oi.qty * d.price) AS revenue\nFROM order_items oi\nJOIN dishes d ON d.id = oi.dish_id\nJOIN orders o ON o.id = oi.order_id\nWHERE o.status = 'delivered'"},
+ {n:'הכנסה בלי סינון',b:0,sql:"SELECT SUM(oi.qty * d.price) AS revenue\nFROM order_items oi\nJOIN dishes d ON d.id = oi.dish_id"},
+ {n:'עמודה שלא קיימת',b:0,sql:"SELECT SUM(total_price) AS revenue\nFROM orders\nWHERE status = 'delivered'"},
+ {n:'פקודת מחיקה',b:-1,sql:"DELETE FROM orders WHERE status = 'cancelled'"},
+ {n:'שתי פקודות',b:-1,sql:"SELECT COUNT(*) FROM orders; DROP TABLE orders"},
+ {n:'שאילתה רחבה מדי',b:-1,sql:"SELECT * FROM order_items"},
+ {n:'דיאלקט אחר (DATE_TRUNC)',b:-1,sql:"SELECT DATE_TRUNC('month', order_ts) AS m, COUNT(*)\nFROM orders\nGROUP BY 1"},
+ {n:'ספירת הזמנות שנמסרו',b:2,sql:"SELECT COUNT(*) FROM orders WHERE status = 'delivered'"}
+];
+const B=[
+ {n:'הכנסה מהזמנות שנמסרו',sql:"SELECT SUM(oi.qty * d.price) FROM order_items oi JOIN dishes d ON d.id = oi.dish_id JOIN orders o ON o.id = oi.order_id WHERE o.status = 'delivered'"},
+ {n:'מספר כל ההזמנות',sql:"SELECT COUNT(*) FROM orders"},
+ {n:'מספר ההזמנות שנמסרו',sql:"SELECT COUNT(*) FROM orders WHERE status = 'delivered'"}
+];
+const ss=FL.$('.p5-gs',box), sb=FL.$('.p5-gb',box), ta=FL.$('.p5-code',box), out=FL.$('.p5-gres',box);
+ss.innerHTML=S.map((x,i)=>'<option value="'+i+'">'+FL.esc(x.n)+'</option>').join('');
+sb.innerHTML='<option value="-1">ללא</option>'+B.map((x,i)=>'<option value="'+i+'">'+FL.esc(x.n)+'</option>').join('');
+const tested={};
+function load(i){ ta.value=S[i].sql; sb.value=String(S[i].b); out.innerHTML=''; }
+ss.addEventListener('change',()=>load(+ss.value)); load(0);
+const LB={g:'g',y:'y',r:'r',x:''};
+function lamp(t,st,m){ return '<li style="display:flex;gap:8px;align-items:flex-start;margin:4px 0"><span class="lamp '+(LB[st]||'')+'"></span><span><b>'+FL.esc(t)+'</b>'+(m?' <small style="color:#475569">'+FL.esc(m)+'</small>':'')+'</span></li>'; }
+function run(){
+ if(!FL.ok()){ out.textContent='מנוע ה-SQL לא נטען.'; return; }
+ const raw=ta.value.trim(); const s=raw.replace(/;+\s*$/,''); const noStr=s.replace(/'[^']*'/g,"''");
+ let h='', blocked=false, warn=false;
+ const single=!/;/.test(noStr);
+ h+=lamp('שער 1א: פקודה אחת בלבד',single?'g':'r',single?'':'יש עוד פקודה אחרי נקודה-פסיק'); if(!single) blocked=true;
+ const ro=/^(select|with)\b/i.test(s)&&!/\b(insert|update|delete|drop|alter|create|replace|attach|detach|pragma|vacuum)\b/i.test(noStr);
+ h+=lamp('שער 1ב: קריאה בלבד',ro?'g':'r',ro?'':'הפקודה היא לא SELECT, או שיש בה פקודת כתיבה'); if(!ro) blocked=true;
+ if(blocked){ h+=lamp('שערים 2 עד 4','x','עוצרים כאן: אין טעם להריץ פקודה חסומה'); out.innerHTML='<ul style="list-style:none;padding:0;margin:0">'+h+'</ul><p style="margin:6px 0 0"><span class="chip r">נחסמה</span> היא לא תגיע למסד.</p>'; mark(); return; }
+ let names=true, msg='';
+ try{ FL.exec('EXPLAIN '+s,'rest'); }catch(e){ names=false; msg=e.message||String(e); }
+ h+=lamp('שער 2: הטבלאות והעמודות קיימות',names?'g':'r',names?'':msg); if(!names) blocked=true;
+ let n=null;
+ if(names){ try{ n=FL.exec('SELECT COUNT(*) FROM ('+s+')','rest').values[0][0]; }catch(e){ n=null; } }
+ if(n!==null){ const big=n>200; h+=lamp('שער 3: מגבלת שורות (עד 200)',big?'y':'g',n+' שורות'+(big?'. יש להוסיף LIMIT או סינון':'')); if(big) warn=true; }
+ else if(names){ h+=lamp('שער 3: מגבלת שורות','x','לא ניתן למדוד'); }
+ let cmp='';
+ if(names){
+  const bi=+sb.value;
+  try{ const r=FL.exec(s,'rest'); const one=r&&r.columns.length===1&&r.values.length===1&&typeof r.values[0][0]==='number';
+   if(bi<0) cmp=lamp('שער 4: השוואה למספר ידוע','x','לא נבחר מספר להשוואה');
+   else if(!one) cmp=lamp('שער 4: השוואה למספר ידוע','x','התוצאה היא לא תא אחד, אז אין השוואה אוטומטית. בדקו ידנית');
+   else { const base=FL.exec(B[bi].sql,'rest').values[0][0]; const v=r.values[0][0]; const ok=Math.abs(v-base)<0.005; cmp=lamp('שער 4: השוואה למספר ידוע ('+B[bi].n+')',ok?'g':'r',ok?('התאמה: '+v):('השאילתה החזירה '+v+', המספר הידוע '+base+'. הפרש: '+Math.round((v-base)*100)/100)); if(!ok) blocked=true; }
+  }catch(e){}
+ }
+ h+=cmp;
+ const v=blocked?'<span class="chip r">נחסמה</span> לא מעבירים לדוח. מתקנים וחוזרים.':(warn?'<span class="chip a">עוברת בתנאי</span> מתקנים את האזהרות לפני שמשתמשים.':'<span class="chip g">עברה את השערים</span> עכשיו אדם קורא את התוצאה ומחליט.');
+ out.innerHTML='<ul style="list-style:none;padding:0;margin:0">'+h+'</ul><p style="margin:6px 0 0">'+v+'</p>';
+ mark();
+}
+function mark(){ tested[ss.value+'|'+ta.value]=1; if(Object.keys(tested).length>=5) FL.done('p5-sim-gate'); }
+box.addEventListener('click',function(e){ if(e.target.closest('button[data-a="check"]')) run(); });
+});})();</script>
+
+<div class="box meaning"><p>השערים תופסים סוגים שונים של בעיות: פקודות מסוכנות (שער 1), שמות שהמודל המציא (שער 2), שאילתות כבדות (שער 3) ומספרים לא נכונים (שער 4). כל שער זול, וביחד הם עוצרים את רוב הנזק. אבל שאילתה כמו ״הכנסה בלי סינון״ עוברת את שערים 1 עד 3, ורק השוואה למספר ידוע חושפת אותה. לכן שום בדיקה אוטומטית לא מחליפה אדם שמכיר את המספרים.</p></div>
+
+<h3>עוד שלוש בדיקות על שאלות בעברית</h3>
+<div class="lab" data-id="p5-lab-tsql-distinct" data-title="״כמה לקוחות הזמינו?״" data-ordered="0">
+<div class="q-src">יבגני שאל ״כמה לקוחות שונים הזמינו אצלנו?״ ה-AI החזיר את השאילתה למטה. היא סופרת הזמנות ולא לקוחות, וכוללת גם הזמנות בלי לקוח. תקנו כך שתספור לקוחות שונים שקיימים ב-<code>customers</code> ושהזמינו לפחות פעם אחת.</div>
+<pre class="start">SELECT COUNT(*) AS customers_who_ordered
+FROM orders</pre>
+<pre class="check">SELECT COUNT(DISTINCT c.id) FROM orders o JOIN customers c ON c.id = o.customer_id</pre>
+<pre class="solution">SELECT COUNT(DISTINCT c.id) AS customers_who_ordered
+FROM orders o
+JOIN customers c ON c.id = o.customer_id</pre>
+<ol class="hints"><li>צריך לספור מזהי לקוחות שונים, לא שורות.</li><li>חיבור רגיל ל-<code>customers</code> מסנן הזמנות בלי לקוח ואת ההזמנה היתומה.</li></ol>
+<div class="why-src">יצא 18, בזמן ש-<code>COUNT(*)</code> החזיר 87. אבל גם 18 הוא לא מספר האנשים: לקוחות 17 ו-18 הם אותה רונית מלכה (אותו אימייל), אז אנשים שונים הם 17. לפני שמציגים ״כמה לקוחות״ בדוח צריך להחליט מי נחשב לקוח. זו שאלה של הגדרה, לא של תחביר.</div>
+</div>
+
+<div class="lab" data-id="p5-lab-tsql-dupes" data-title="מי הלקוח הכפול?" data-ordered="0">
+<div class="q-src">מצאו אימיילים שמופיעים אצל יותר מלקוח אחד. החזירו <code>email</code>, <code>n</code> (כמה פעמים) ו-<code>ids</code> (רשימת המזהים, עם <code>group_concat</code>).</div>
+<pre class="start">SELECT email, COUNT(*) AS n, group_concat(id) AS ids
+FROM customers
+-- הוסיפו קיבוץ ותנאי על הקבוצות</pre>
+<pre class="check">SELECT email, COUNT(*), group_concat(id) FROM customers GROUP BY email HAVING COUNT(*) > 1</pre>
+<pre class="solution">SELECT email, COUNT(*) AS n, group_concat(id) AS ids
+FROM customers
+GROUP BY email
+HAVING COUNT(*) > 1</pre>
+<ol class="hints"><li>תנאי על ספירה של קבוצה הולך ל-<code>HAVING</code>.</li></ol>
+<div class="why-src">אימייל אחד, ronit.malka@example.com, מופיע פעמיים: מזהים 17 ו-18. זו בדיקת איכות פשוטה שמודל לא ירוץ עליה מעצמו, כי אף אחד לא ביקש. בחלק 4 נטפל בזה כחלק מבדיקות איכות הנתונים.</div>
+</div>
+
+<div class="lab" data-id="p5-lab-tsql-date" data-title="דיאלקט: חודש מתוך תאריך" data-ordered="1">
+<div class="q-src">ה-AI כתב שאילתה לספירת הזמנות לפי חודש, בדיאלקט של PostgreSQL. במסד שלנו (SQLite) היא נכשלת. תקנו עם <code>strftime</code>, כך שהעמודה הראשונה היא החודש בצורה <code>'2026-03'</code> והשנייה מספר ההזמנות.</div>
+<pre class="start">SELECT DATE_TRUNC('month', order_ts) AS month, COUNT(*) AS orders
+FROM orders
+GROUP BY 1
+ORDER BY 1</pre>
+<pre class="check">SELECT strftime('%Y-%m', order_ts), COUNT(*) FROM orders GROUP BY 1 ORDER BY 1</pre>
+<pre class="solution">SELECT strftime('%Y-%m', order_ts) AS month, COUNT(*) AS orders
+FROM orders
+GROUP BY 1
+ORDER BY 1</pre>
+<ol class="hints"><li><code>strftime('%Y-%m', עמודה)</code> מחזירה שנה וחודש כטקסט.</li></ol>
+<div class="why-src">מרץ 29, אפריל 30, מאי 28: בסך הכול 87. הכלל: כותבים בפרומפט ״SQLite״, ״PostgreSQL״ או ״BigQuery״. ב-PostgreSQL הפונקציה היא <code>date_trunc('month', order_ts)</code>, וב-BigQuery, עם עמודת TIMESTAMP, כותבים <code>DATE_TRUNC(DATE(order_ts), MONTH)</code>. שער 2 תופס את הטעות הזו מיד, כי השמות לא קיימים.</div>
+</div>
+
+<div class="quiz" data-id="p5-q-gates" data-a="2"><p class="qq">שאילתה בשם ״הכנסה בלי סינון״ עברה את שערים 1 עד 3. מי תופס אותה?</p>
+<button class="opt">אף אחד: אין דרך לתפוס טעות כזו</button>
+<button class="opt">ההשוואה למספר ידוע, כי הסכום שונה מההגדרה העסקית</button>
+<button class="opt">שער 1, כי יש בה SUM</button>
+<button class="opt">שער 2, כי חסר סינון</button>
+<div class="why">התשובה השנייה. זו טעות במשמעות, ולכן רק השוואה למספר שחישבנו בנפרד חושפת אותה. שער 1 בודק קריאה בלבד (ג), ושער 2 בודק שהשמות קיימים, לא שהסינון נכנס (ד). ויש דרך לתפוס אותה (א).</div></div>
+
+<div class="quiz" data-id="p5-q-schema" data-a="3"><p class="qq">מוצר Text-to-SQL כותב: ״ה-AI רואה רק את מבנה הטבלאות, לא את הנתונים״. מה נכון לגבי המשפט הזה?</p>
+<button class="opt">הוא נכון בכל מוצר, אז אין צורך לבדוק</button>
+<button class="opt">הוא תמיד שקר</button>
+<button class="opt">הוא נכון בחלק מהמוצרים. באחרים שולחים גם דוגמאות של ערכים או תוצאות. בודקים מה נשלח באמת</button>
+<button class="opt">הוא לא רלוונטי לפרטיות</button>
+<div class="why">התשובה השלישית. כל מוצר בונה את הפרומפט אחרת: חלקם שולחים רק סכמה, חלקם מוסיפים ערכים לדוגמה כדי לדייק. הפרטיות תלויה במה שנשלח בפועל ובתנאים של הספק (א ו-ד לא נכונים), והמשפט לא תמיד שקרי (ב).</div></div>
+
+<div class="box think" data-id="p5-th-owner"><p>מערכת Text-to-SQL החזירה מספר שגוי, והוא נכנס לדוח של ההנהלה. מי אחראי: המודל, הספק, או מי שהעביר את הדוח?</p>
+<div class="ans">האחריות על המספר נשארת אצל האנשים שהחליטו להשתמש בו. המודל לא אחראי מקצועית, והספק מניח שהמשתמשים בודקים. לכן מחליטים מראש מי מאשר איזה סוג מספר: מה אפשר להוציא בלי אישור (תשובה פנימית לשאלה מהירה) ומה צריך בדיקה (מספר שמגיע להנהלה או ללקוח).</div></div>
+
+<div class="box real"><p>כלי BI שמציעים ״תשאלו את הנתונים״ משלבים לעיתים קרובות שלושה דברים: הצגת השאילתה שנוצרה, הגבלה לטבלאות ולמדדים שהוגדרו מראש, והרשאת קריאה בלבד. ההגבלה למדדים שהוגדרו נקראת לפעמים שכבה סמנטית: בקשה ל״הכנסה״ משתמשת בהגדרה אחת שנקבעה מראש, ולא בניחוש בכל שאלה. ב-BigQuery יש גם הרצת ניסיון (dry run) שמעריכה כמה נתונים השאילתה תסרוק לפני שמריצים אותה.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בקשו מכל סטודנט לכתוב שאילתה שתעבור את כל ארבעת השערים ובכל זאת תהיה שגויה (למשל ספירה עם חיבור שזורק שורות). זה תרגיל טוב להבנה שבדיקות אוטומטיות מצמצמות סיכון אבל לא מבטלות אותו.</div>
+</section>
+<section class="sec" id="s5-10" data-t="סיכום">
+<div class="sec-h"><div class="sec-n">10</div><h2>סיכום: מה עברנו בחלק הזה</h2></div>
+<p class="lead">יבגני שאל אם אפשר לתת ל-AI לבנות את המערכת. התשובה: כן, בתור קבלן. הוא בונה מהר ובדיוק לפי מה שביקשו ממנו. אתם האדריכלים: כותבים מפרט, בודקים את העבודה מול מספר שאתם יודעים, ומחליטים מה נכנס למערכת.</p>
+
+<div class="flow"><span class="nd">מפרט (4 חלקים)</span><span class="ar">←</span><span class="nd">בקשה לקבלן</span><span class="ar">←</span><span class="nd a">הרצה בארגז חול</span><span class="ar">←</span><span class="nd a">בדיקה מול מספר ידוע</span><span class="ar">←</span><span class="nd g">החלטה של אדם</span></div>
+
+<div class="box recap"><ul>
+<li><b>פרומפט:</b> ארבעה חלקים (הקשר עם סכמה, משימה עם הגדרה ברורה, אילוצים, פורמט), פרומפט אחד לכל שכבה, ושום סוד בפנים.</li>
+<li><b>שלוש טעויות:</b> המצאה, חוסר הקשר והסכמה בכוח. עוצרים אותן עם מספר ידוע או שורה בנתונים, לא עם טון.</li>
+<li><b>בדיקה:</b> שאילתה שרצה היא עוד לא שאילתה נכונה. בודקים סוגים, מפתחות, סינון עסקי, ספירת שורות וסכום ידוע בשתי דרכים. לא מבקשים מהמודל לבדוק את עצמו.</li>
+<li><b>איפה ה-AI רץ:</b> ענן או מקומי, לפי כמה הנתונים רגישים. טמפרטורה נמוכה לקוד. חלון ההקשר הוא תקרה. מה שלא הסרנו ממנו פרטים מזהים לא יוצא החוצה.</li>
+<li><b>API, MCP וסוכנים:</b> ב-API הקוד שלכם פונה למודל, וב-MCP המודל פונה לכלים. סוכן הוא לולאה של חשיבה, פעולה ותצפית. לכלי שכותב מוסיפים אדם ותוכנית גיבוי.</li>
+<li><b>RAG ו-Text-to-SQL:</b> RAG נותן למודל מסמכים בזמן הבקשה, ו-Text-to-SQL צריך שערים ומספר ידוע. האחריות על המספר נשארת אצל אדם.</li>
+</ul></div>
+
+<div class="cmap" data-part="5" data-mini="1"></div>
+
+<div class="quiz" data-id="p5-q-final1" data-a="2"><p class="qq">איך מתחלקת העבודה בין האדריכל ל-AI?</p>
+<button class="opt">ה-AI מחליט מה לבנות, והאדריכל מריץ את הקוד</button>
+<button class="opt">האדריכל מחליט מה בונים וכותב מפרט ובדיקות, וה-AI בונה מהר לפי המפרט</button>
+<button class="opt">כשה-AI מספיק טוב, לא צריך אדריכל</button>
+<button class="opt">האדריכל כותב את כל הקוד בעצמו, והמודל רק מתרגם</button>
+<div class="why">התשובה השנייה. ה-AI מהיר ומציית, אבל אין לו שיקול דעת עסקי: הוא לא יודע מה זו ״הכנסה״ אצל יבגני אלא אם אומרים לו. לכן ההחלטה והבדיקה נשארות אצל אדם (א ו-ג לא נכונות), ואין סיבה לכתוב הכול ידנית (ד).</div></div>
+
+<div class="quiz" data-id="p5-q-final2" data-a="4"><p class="qq">אתם רוצים לתת לסוכן כלי שמוחק הזמנות כפולות. מה הדרישה המינימלית?</p>
+<button class="opt">להגדיר טמפרטורה נמוכה, וזה מספיק</button>
+<button class="opt">לבקש מהסוכן להיזהר</button>
+<button class="opt">לא לתת כלום, כי סוכן לא יכול לעבוד עם מסד</button>
+<button class="opt">אישור של אדם לפני ביצוע, גיבוי, והצגת הרשימה שתימחק לפני שמוחקים</button>
+<div class="why">התשובה הרביעית. מחיקה קשה לבטל, ולכן שמים גבולות מבחוץ. טמפרטורה (א) והבקשה להיזהר (ב) הן הוראות למודל, לא בקרה. ואין סיבה למנוע כל גישה (ג): סוכן יכול לעבוד עם מסד בתוך מסגרת מוגדרת.</div></div>
+
+<div class="quiz" data-id="p5-q-final3" data-a="1"><p class="qq">מתי מותר להדביק נתוני לקוחות למודל בענן?</p>
+<button class="opt">רק אחרי שהסרנו פרטים מזהים, או לפי מדיניות ותנאי שימוש שהארגון אישר. אחרת, במודל מקומי</button>
+<button class="opt">תמיד, כי המודל לא זוכר בין שיחות</button>
+<button class="opt">אף פעם, בשום מצב</button>
+<button class="opt">רק אם כותבים בפרומפט ״אל תשמור את הנתונים״</button>
+<div class="why">התשובה הראשונה. ההגנה היא ההחלטה מה יוצא, לפי מדיניות ותנאי שימוש. מודל לא ״זוכר״ בין שיחות, אבל הנתונים עצמם יכולים להישמר אצל הספק (ב). ״אף פעם״ (ג) זה מחמיר מדי, והוראה במודל (ד) היא לא הגנה.</div></div>
+
+<div class="box think" data-id="p5-th-monday"><p>אתם חוזרים מחר לעבודה. מה הדבר הראשון שתשנו באיך שאתם (או הצוות) משתמשים ב-AI, ולמה?</p>
+<div class="ans">תשובה אפשרית: כל שאילתה שמגיעה לדוח נבדקת מול מספר ידוע לפני שהיא יוצאת. הסיבה: זה הדבר הכי זול שמקטין את הסיכון הכי גדול, טעות שקטה. תשובות אחרות גם הגיוניות: קובץ הוראות קבוע עם הסכמה, או להוציא סודות מהקוד.</div></div>
+
+<p><b>חומר המקור</b> (השיעורים שבהם למדנו את הנושאים של החלק הזה):</p>
+<p class="tools">
+<a class="tool" href="../lec1_part2.html">בקרת SQL של AI</a>
+<a class="tool" href="../lec1_part4.html">מלכודות AI ו-UPDATE</a>
+<a class="tool" href="../lec_1_part5.html">ענן מול מקומי</a>
+<a class="tool" href="../lec2.4.html">שיקול דעת בעידן ה-AI</a>
+<a class="tool" href="../lec3.2.html">פרומפט לשרת</a>
+<a class="tool" href="../lec3.3.html">פרומפט לממשק</a>
+<a class="tool" href="../lec5.html">פרומפט בארבעה חלקים</a>
+<a class="tool" href="../lec51.html">כלי AI ומפתחות</a>
+<a class="tool" href="../lec7.0.html">סוכנים ובנייה</a>
+<a class="tool" href="../lec7.2.html">AI Studio</a>
+<a class="tool" href="../lec7.4.html">כספת מפתחות ו-MCP</a>
+<a class="tool" href="../lec8.1.html">תכנון סוכן</a>
+<a class="tool" href="../lec9.html">מודלים מקומיים</a>
+<a class="tool" href="../lec9.1.html">זיכרון ו-RAG</a>
+<a class="tool" href="../lec10part4-15.6.2026.html">אימות Text-to-SQL</a>
+</p>
+<p><b>הלאה:</b> <a class="tool" href="part6.html">חלק 6: הפרויקט, לעקוב, להחליט, למסור</a> <a class="tool" href="part4.html">חלק 4: מנתונים לדוחות שאפשר לסמוך עליהם</a></p>
+
+<div class="teach"><b>🎓 למרצה:</b> סיימו בשאלה פתוחה: מה ה-AI עשה הכי טוב בחלק הזה, ומה אסור היה להשאיר לו? ברוב הכיתות התשובות מתכנסות לאותו מקום: הוא מצוין בניסוח ובמהירות, ואסור להשאיר לו הגדרות, החלטות וסודות. רשמו את התשובות על הלוח ושמרו אותן לחלק האחרון.</div>
+</section>
+
+<div class="pager"><a href="part4.html">→ חלק 4: מנתונים לדוחות שאפשר לסמוך עליהם</a><a href="part6.html">חלק 6: הפרויקט: לעקוב, להחליט, למסור ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · המפגש המסכם · כל דוגמאות הנתונים בדף בדויות</footer>
+</body>
+</html>

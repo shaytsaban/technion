@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חלק 6: הפרויקט: לעקוב, להחליט, למסור · המפגש המסכם · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=6;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+<script src="fl-data.js?v=1"></script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="fl-map.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">🍽️ המסע המלא</a>
+    <div class="parts"><a id="part1" href="part1.html" title="מרעיון לטבלאות">1<small></small></a><a id="part2" href="part2.html" title="SQL: לשאול את הנתונים">2<small></small></a><a id="part3" href="part3.html" title="איך המערכת עובדת מאחורי הקלעים">3<small></small></a><a id="part4" href="part4.html" title="מנתונים לדוחות שאפשר לסמוך עליהם">4<small></small></a><a id="part5" href="part5.html" title="AI: מה נותנים לו ומה בודקים">5<small></small></a><a id="part6" href="part6.html" title="הפרויקט: לעקוב, להחליט, למסור" class=on>6<small></small></a></div>
+    <span class="ppct" id="ppct"></span><span class="chipst" id="eng">⏳ SQL</span></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · המפגש המסכם</div>
+  <h1>הפרויקט:<br><span>לעקוב, להחליט, למסור</span></h1>
+  <p>הפרויקט של המערכת החדשה בשבוע 8 מתוך 12, ושלושה מספרים לא מסכימים אחד עם השני. בחלק הזה בונים פרוסה אחת שעובדת, הופכים את הפרויקט לטבלאות, בודקים את המספרים, מחשבים תחזית, מגדירים התראות ומחליטים. בסוף יש אתגר אחד שמחבר את כל הקורס.</p>
+  <div class="chips"><span>🧪 מעבדות SQL על מסד הפרויקט</span><span>🎞️ הנפשות</span><span>📊 לוח בקרה חי</span><span>🎛️ סימולציות של החלטות</span><span>🧭 מה אתם כבר יודעים לעשות</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף. בהן: מה לומר, איפה לעצור לדיון ומה לבדוק לפני המעבר הלאה.</div>
+<style>
+.p6-note{color:var(--muted);font-size:.9rem}
+.p6-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.p6-tbl{border-collapse:collapse;width:100%;font-size:.9rem;background:#fff}
+.p6-tbl th,.p6-tbl td{border:1px solid var(--line);padding:6px 9px;vertical-align:middle;unicode-bidi:plaintext;text-align:start}
+.p6-tbl th{background:#f1f5f9;color:var(--navy);font-weight:700}
+.p6-c{display:inline-block;min-width:26px;text-align:center;border-radius:8px;padding:1px 8px;font-weight:800;font-size:.85rem}
+.p6-c.ok{background:var(--green-light);color:#065f46}.p6-c.no{background:var(--red-light);color:#991b1b}.p6-c.na{background:#e2e8f0;color:#64748b}.p6-c.wr{background:var(--amber-light);color:#92400e}
+.p6-btn{font:inherit;font-size:.82rem;font-weight:700;border:0;border-radius:8px;padding:3px 10px;cursor:pointer;background:var(--primary);color:#fff;margin:2px}
+.p6-btn:hover{background:var(--primary-dark)}
+.p6-btn.g{background:#e2e8f0;color:var(--ink-soft)}
+.p6-sum{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-top:8px;font-weight:600}
+.p6-gantt{direction:ltr;display:grid;grid-template-columns:150px 1fr;gap:3px 8px;font-size:.8rem;margin:8px 0}
+.p6-gl{display:flex;align-items:center;justify-content:flex-end;text-align:right;unicode-bidi:plaintext;color:var(--ink-soft);cursor:pointer;padding:2px 4px;border-radius:6px}
+.p6-gl:hover,.p6-gl.sel{background:var(--primary-light)}
+.p6-gt{position:relative;display:grid;grid-template-columns:repeat(12,1fr);height:26px;background:repeating-linear-gradient(90deg,#f1f5f9 0,#f1f5f9 calc(100%/12 - 1px),#e2e8f0 calc(100%/12 - 1px),#e2e8f0 calc(100%/12))}
+.p6-gt.hd{height:20px;background:none;color:var(--muted);text-align:center;font-weight:700}
+.p6-gt.hd span.t{color:var(--red);font-weight:900}
+.p6-gb{position:absolute;top:3px;height:20px;border-radius:6px;overflow:hidden;border:2px solid;cursor:pointer;background:#fff}
+.p6-gb i{display:block;height:100%}
+.p6-gb b{position:absolute;top:-1px;width:3px;height:20px;background:#0f172a;border-radius:2px}
+.p6-today{position:absolute;top:0;bottom:0;width:2px;background:var(--red);opacity:.7;pointer-events:none}
+.p6-tag{display:inline-block;border-radius:999px;padding:0 9px;font-size:.78rem;font-weight:800}
+.p6-ctrl{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:6px 0}
+.p6-bar{display:flex;align-items:center;gap:8px;margin:5px 0;direction:ltr}
+.p6-bar .lb{width:112px;text-align:right;font-size:.85rem;unicode-bidi:plaintext;direction:rtl}
+.p6-bar .tr{flex:1;height:20px;background:#e2e8f0;border-radius:999px;overflow:hidden}
+.p6-bar .tr i{display:block;height:100%;border-radius:999px;transition:width .5s}
+.p6-bar .v{width:78px;font-weight:800;font-size:.88rem;text-align:left}
+.p6-big{font-size:1.6rem;font-weight:900;color:var(--navy);line-height:1.2}
+.p6-svg{display:block;width:100%;height:auto;direction:ltr;background:#fff;border:1px solid var(--line);border-radius:12px}
+.p6-heat{display:grid;grid-template-columns:30px repeat(5,1fr);gap:3px;direction:ltr;max-width:420px;margin:8px 0}
+.p6-hc{height:38px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:900;cursor:pointer;border:2px solid transparent;color:#0f172a}
+.p6-hc.r{background:#fecaca}.p6-hc.y{background:#fde68a}.p6-hc.g{background:#bbf7d0}.p6-hc.sel{border-color:var(--navy)}
+.p6-hl{display:flex;align-items:center;justify-content:center;font-size:.78rem;color:var(--muted);font-weight:700}
+.p6-sent{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:6px 0;cursor:pointer}
+.p6-sent:hover{background:var(--primary-light)}
+.p6-sent.sel{border-color:var(--primary);background:var(--primary-light)}
+.p6-sent.right{background:var(--green-light);border-color:#6ee7b7}
+.p6-sent.wrong{background:var(--red-light);border-color:#fca5a5}
+.p6-sent small{display:block;color:var(--ink-soft);margin-top:4px}
+.p6-alert{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:7px 12px;margin:5px 0}
+.p6-alert small{display:block;color:var(--muted)}
+.p6-verdict{border-radius:12px;padding:8px 14px;font-weight:700;margin:8px 0}
+.p6-verdict.g{background:var(--green-light);color:#065f46}.p6-verdict.y{background:var(--amber-light);color:#92400e}.p6-verdict.r{background:var(--red-light);color:#991b1b}
+.p6-opt{display:flex;gap:8px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin:6px 0;cursor:pointer}
+.p6-opt.on{border-color:var(--primary);background:var(--primary-light)}
+.p6-opt input{margin-top:6px}
+.p6-st{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin:10px 0}
+.p6-stn{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.p6-stn h4{margin:0 0 4px;font-size:1rem}
+.p6-ck{display:flex;gap:8px;align-items:flex-start;margin:4px 0;font-size:.93rem}
+.p6-ck input{margin-top:6px}
+.p6-pill{display:inline-block;border-radius:999px;padding:1px 12px;font-weight:700;font-size:.85rem}
+@media(max-width:700px){.anim .stage{overflow-x:auto}.anim .stage svg{min-width:660px}}
+@media(max-width:640px){.p6-gantt{grid-template-columns:96px 1fr;font-size:.72rem}.p6-bar .lb{width:84px}.p6-tbl{font-size:.8rem}}
+</style>
+<script>
+window.P6=(function(){
+'use strict';
+var W=8,TOT=12;
+function rows(sql,db,o){var r=FL.exec(sql,db||'proj',o);if(!r)return[];return r.values.map(function(v){var x={};r.columns.forEach(function(c,i){x[c]=v[i];});return x;});}
+function scalar(sql,db,o){var r=FL.exec(sql,db||'proj',o);return(r&&r.values.length)?r.values[0][0]:null;}
+function nis(n){return Math.round(n).toLocaleString('en-US');}
+function f1(n){return(Math.round(n*10)/10).toFixed(1);}
+function expected(t,w){var len=t.end_week-t.start_week+1;return 100*Math.min(len,Math.max(0,w-t.start_week+1))/len;}
+function planned(tasks,w){var s=0;tasks.forEach(function(t){var len=t.end_week-t.start_week+1;s+=t.budget*Math.min(len,Math.max(0,w-t.start_week+1))/len;});return s;}
+function lamp(v,y,r){return v>=r?'r':(v>=y?'y':'g');}
+function metrics(pre){
+  var p=pre?pre+';':'';
+  var tasks=rows(p+'SELECT t.*,m.name AS owner FROM tasks t JOIN team m ON m.id=t.owner_id ORDER BY t.id');
+  var risks=rows(p+'SELECT r.*,m.name AS owner,r.severity*r.probability AS exposure FROM risks r JOIN team m ON m.id=r.owner_id ORDER BY exposure DESC,r.id');
+  var spent=scalar(p+'SELECT COALESCE(SUM(amount),0) FROM costs')||0;
+  var budget=0,earned=0;tasks.forEach(function(t){budget+=t.budget;earned+=t.budget*t.pct_done/100;});
+  tasks.forEach(function(t){t.exp=expected(t,W);t.behind=(t.pct_done<100)?Math.max(0,t.exp-t.pct_done):0;});
+  var m={tasks:tasks,risks:risks,budget:budget,spent:spent,earned:earned,week:W,total:TOT,planned:planned(tasks,W)};
+  m.pm=100*spent/budget;m.pw=100*earned/budget;m.pt=100*W/TOT;m.gap=m.pm-m.pw;m.tgap=m.pt-m.pw;
+  return m;
+}
+function forecast(m,o){o=o||{};var rem=m.budget-m.earned-(o.cut||0);var rate=m.earned/m.week,cpw=m.spent/m.earned;
+  return{end:m.week+rem/(rate*(1+(o.speed||0))),cost:m.spent+rem*cpw*(1-(o.save||0))+(o.extra||0),rem:rem,rate:rate,cpw:cpw};}
+function ready(fn){FL.onReady(function(ok){if(ok)fn();});}
+return{W:W,TOT:TOT,rows:rows,scalar:scalar,nis:nis,f1:f1,expected:expected,planned:planned,lamp:lamp,metrics:metrics,forecast:forecast,ready:ready};
+})();
+</script>
+
+<div class="box note">
+  <p>בחלק הזה עובדים עם שני מסדי נתונים בדפדפן. אחד הוא המסעדה של יבגני (כתוב בכותרת המעבדה ״מסד המסעדה״). השני הוא מסד הפרויקט (״מסד הפרויקט״): פרויקט שבונה את מערכת ההזמנות החדשה, עם ארבע טבלאות: צוות, משימות, עלויות וסיכונים. הפרויקט עכשיו בשבוע 8 מתוך 12, התקציב הוא 640,000 ש״ח, וכל הנתונים בדויים.</p>
+  <p>כל מעבדה מתחילה ממצב נקי. אפשר לטעות, למחוק ולנסות שוב, שום דבר לא נשבר.</p>
+</div>
+
+<section class="sec" id="s6-1" data-t="פרוסה אחת שעובדת">
+  <div class="sec-h"><div class="sec-n">1</div><h2>מתחילים מפרוסה אחת שעובדת</h2></div>
+  <p class="lead">יבגני רוצה הכול: הזמנות באפליקציה, מסך למטבח, מעקב אחרי שליחים ודוחות. הצוות אומר ״כן״ לכל דבר. אחרי חודש יש מסד נתונים יפה ואין אף כפתור שאפשר ללחוץ עליו. מאיפה מתחילים?</p>
+
+  <div class="defline"><b>פרוסה דקה (thin vertical slice):</b> תכונה אחת קטנה שבונים עד הסוף, דרך כל השכבות: מסך, API, מסד נתונים ובדיקה. בסוף אפשר ללחוץ ולראות שהיא עובדת. דוגמה: ״הלקוח מזמין מנה ורואה אישור״. זהו, בלי שום דבר נוסף.</div>
+
+  <div class="anim" data-id="p6-anim-slice" data-auto="1" data-speed="3200">
+    <div class="stage"><svg viewBox="0 0 800 350" role="img" aria-label="שתי דרכים למלא רשת של ארבע תכונות וארבע שכבות: פרוסות מול שכבות">
+      <defs></defs><text x="200" y="30" text-anchor="middle" font-size="16" font-weight="800" fill="#047857">פרוסות: תכונה אחת דרך כל השכבות</text><text x="610" y="30" text-anchor="middle" font-size="16" font-weight="800" fill="#b45309">שכבות: שכבה אחת לכל התכונות</text><line x1="400" y1="14" x2="400" y2="340" stroke="#e2e8f0" stroke-width="2"/><text x="68.0" y="94" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">הזמנה</text><text x="154.0" y="94" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">מטבח</text><text x="240.0" y="94" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">שליח</text><text x="326.0" y="94" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">דוחות</text><rect x="28" y="104" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="114" y="104" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="200" y="104" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="286" y="104" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="28" y="154" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="114" y="154" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="200" y="154" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="286" y="154" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="28" y="204" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="114" y="204" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="200" y="204" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="286" y="204" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="28" y="254" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="114" y="254" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="200" y="254" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="286" y="254" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><g data-s="2"><rect x="28" y="104" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="68.0" y="131.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">מסך</text></g><g data-s="3"><rect x="114" y="104" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="154.0" y="131.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">מסך</text></g><g data-s="4"><rect x="200" y="104" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="240.0" y="131.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">מסך</text></g><g data-s="5"><rect x="286" y="104" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="326.0" y="131.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">מסך</text></g><g data-s="2"><rect x="28" y="154" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="68.0" y="181.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">API</text></g><g data-s="3"><rect x="114" y="154" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="154.0" y="181.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">API</text></g><g data-s="4"><rect x="200" y="154" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="240.0" y="181.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">API</text></g><g data-s="5"><rect x="286" y="154" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="326.0" y="181.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">API</text></g><g data-s="2"><rect x="28" y="204" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="68.0" y="231.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">מסד</text></g><g data-s="3"><rect x="114" y="204" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="154.0" y="231.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">מסד</text></g><g data-s="4"><rect x="200" y="204" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="240.0" y="231.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">מסד</text></g><g data-s="5"><rect x="286" y="204" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="326.0" y="231.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">מסד</text></g><g data-s="2"><rect x="28" y="254" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="68.0" y="281.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">בדיקה</text></g><g data-s="3"><rect x="114" y="254" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="154.0" y="281.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">בדיקה</text></g><g data-s="4"><rect x="200" y="254" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="240.0" y="281.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">בדיקה</text></g><g data-s="5"><rect x="286" y="254" width="80" height="44" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="326.0" y="281.0" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">בדיקה</text></g><text x="478.0" y="94" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">הזמנה</text><text x="564.0" y="94" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">מטבח</text><text x="650.0" y="94" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">שליח</text><text x="736.0" y="94" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">דוחות</text><rect x="438" y="104" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="524" y="104" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="610" y="104" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="696" y="104" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="438" y="154" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="524" y="154" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="610" y="154" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="696" y="154" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="438" y="204" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="524" y="204" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="610" y="204" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="696" y="204" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="438" y="254" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="524" y="254" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="610" y="254" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><rect x="696" y="254" width="80" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 4"/><g data-s="4"><rect x="438" y="104" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="478.0" y="131.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">מסך</text></g><g data-s="4"><rect x="524" y="104" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="564.0" y="131.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">מסך</text></g><g data-s="4"><rect x="610" y="104" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="650.0" y="131.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">מסך</text></g><g data-s="4"><rect x="696" y="104" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="736.0" y="131.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">מסך</text></g><g data-s="3"><rect x="438" y="154" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="478.0" y="181.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">API</text></g><g data-s="3"><rect x="524" y="154" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="564.0" y="181.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">API</text></g><g data-s="3"><rect x="610" y="154" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="650.0" y="181.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">API</text></g><g data-s="3"><rect x="696" y="154" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="736.0" y="181.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">API</text></g><g data-s="2"><rect x="438" y="204" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="478.0" y="231.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">מסד</text></g><g data-s="2"><rect x="524" y="204" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="564.0" y="231.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">מסד</text></g><g data-s="2"><rect x="610" y="204" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="650.0" y="231.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">מסד</text></g><g data-s="2"><rect x="696" y="204" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="736.0" y="231.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">מסד</text></g><g data-s="5"><rect x="438" y="254" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="478.0" y="281.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">בדיקה</text></g><g data-s="5"><rect x="524" y="254" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="564.0" y="281.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">בדיקה</text></g><g data-s="5"><rect x="610" y="254" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="650.0" y="281.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">בדיקה</text></g><g data-s="5"><rect x="696" y="254" width="80" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="736.0" y="281.0" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">בדיקה</text></g><g data-s="2"><rect x="30" y="314" width="150" height="28" rx="14" fill="#10b981"/><text x="105" y="333" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">כבר אפשר להזמין</text></g><g data-only="2,3,4"><rect x="440" y="314" width="190" height="28" rx="14" fill="#94a3b8"/><text x="535" y="333" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">עדיין אין מה להראות</text></g><g data-s="5"><rect x="440" y="314" width="230" height="28" rx="14" fill="#ef4444"/><text x="555" y="333" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">החיבור נבדק לראשונה</text></g><g data-s="4"><rect x="190" y="314" width="190" height="28" rx="14" fill="#0f766e"/><text x="285" y="333" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">פערים נתפסו מוקדם</text></g>
+    </svg></div>
+    <ol class="caps">
+      <li>לפרויקט יש ארבע תכונות (הזמנה, מטבח, שליח, דוחות) וארבע שכבות (מסך, API, מסד, בדיקה). אפשר למלא את הרשת בשתי דרכים.</li>
+      <li>בצד ימין בונים שכבה אחת לכל התכונות, וקודם כל את המסד. בצד שמאל בונים תכונה אחת דרך כל השכבות: ״הלקוח מזמין מנה״. כבר עכשיו משמאל יש משהו שעובד.</li>
+      <li>מימין הוספנו את ה-API, ועדיין אין מסך, אז אי אפשר להראות ליבגני כלום. משמאל הוספנו את המטבח, ושתי תכונות כבר עובדות.</li>
+      <li>מימין הוספנו מסך, ורק עכשיו אפשר ללחוץ על כפתור. משמאל שלוש תכונות עובדות, וכל תקלה בין השכבות כבר נתפסה כשהיא עוד קטנה.</li>
+      <li>בסוף שתי הדרכים מגיעות לאותה רשת. ההבדל הוא מתי גילינו בעיות. מימין בדקנו את החיבור בין השכבות בפעם הראשונה בסוף, אחרי שכל הקוד כבר נכתב.</li>
+    </ol>
+  </div>
+
+  <p>את הרעיון הזה ראינו כבר ב<a href="../lec8.1.html">תדריך הפרויקט</a>: קודם פרוסה אחת שעובדת מקצה לקצה, ורק אחר כך מרחיבים.</p>
+
+  <div class="defline"><b>עקיבות (traceability):</b> אפשר לעקוב מכל חלק במערכת אחורה, עד לצורך העסקי שבגללו בנינו אותו. דוגמה: הטבלה <code>order_items</code> קיימת כי הלקוח צריך להזמין כמה מנות בהזמנה אחת.</div>
+  <p>למה זה חשוב? כי כשבונים מהר, גם עם AI, צריך לדעת על כל חלק שני דברים: למה הוא קיים, ואיך יודעים שהוא עובד. הנה השרשרת.</p>
+
+  <div class="anim" data-id="p6-anim-chain" data-speed="3000">
+    <div class="stage"><svg viewBox="0 0 800 262" role="img" aria-label="שרשרת העקיבות: סיפור, Use Case, סכמה, SQL, תכונה, בדיקה">
+      <defs><marker id="tr-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker><marker id="tr-ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#be123c"/></marker></defs><g data-s="1" data-pulse><rect x="668" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#be123c" stroke-width="3"/><text x="724.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#be123c">סיפור</text><text x="724.0" y="112" text-anchor="middle" font-size="14" fill="#334155">הלקוח מזמין מנה</text></g><g data-s="2"><path d="M664 93.0 L660 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#tr-ar)"/></g><g data-s="2" data-pulse><rect x="540" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#7c3aed" stroke-width="3"/><text x="596.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#7c3aed">Use Case</text><text x="596.0" y="112" text-anchor="middle" font-size="14" fill="#334155">הזמנת משלוח</text></g><g data-s="3"><path d="M536 93.0 L532 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#tr-ar)"/></g><g data-s="3" data-pulse><rect x="412" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#4f46e5" stroke-width="3"/><text x="468.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#4f46e5">סכמה</text><text x="468.0" y="112" text-anchor="middle" font-size="14" fill="#334155">order_items</text></g><g data-s="4"><path d="M408 93.0 L404 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#tr-ar)"/></g><g data-s="4" data-pulse><rect x="284" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#0369a1" stroke-width="3"/><text x="340.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#0369a1">SQL</text><text x="340.0" y="112" text-anchor="middle" font-size="14" fill="#334155">INSERT</text></g><g data-s="5"><path d="M280 93.0 L276 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#tr-ar)"/></g><g data-s="5" data-pulse><rect x="156" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#0f766e" stroke-width="3"/><text x="212.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#0f766e">תכונה</text><text x="212.0" y="112" text-anchor="middle" font-size="14" fill="#334155">כפתור הזמן</text></g><g data-s="6"><path d="M152 93.0 L148 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#tr-ar)"/></g><g data-s="6" data-pulse><rect x="28" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#b45309" stroke-width="3"/><text x="84.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#b45309">בדיקה</text><text x="84.0" y="112" text-anchor="middle" font-size="14" fill="#334155">נוצרה שורה</text></g><g data-s="7"><path d="M84.0 140 C84.0 190 724.0 190 724.0 140" stroke="#be123c" stroke-width="3" stroke-dasharray="7 6" fill="none" marker-end="url(#tr-ar2)"/><text x="400" y="222" text-anchor="middle" font-size="16" font-weight="800" fill="#be123c">מי ביקש אותך? מכל רכיב חזרה לצורך</text></g><circle r="11" cx="724.0" cy="156" fill="#d8b862" stroke="#142a45" stroke-width="2" data-move="1:0,0|2:-128,0|3:-256,0|4:-384,0|5:-512,0|6:-640,0|7:-640,0"/><text x="400" y="252" text-anchor="middle" font-size="15" fill="#64748b" data-s="1">כל חוליה נבנית כדי לשרת את החוליה שלפניה</text>
+    </svg></div>
+    <ol class="caps">
+      <li>סיפור משתמש: ״כלקוח אני רוצה להזמין מנה, כדי לאכול בלי לצאת מהבית״. זה הצורך העסקי. כל מה שנבנה אחר כך צריך להצביע עליו.</li>
+      <li><dfn data-d="תיאור קצר של מה המערכת עושה, בשביל מי ובאילו תנאים, כולל מה קורה כשמשהו נכשל">Use Case</dfn>: מי עושה, מה מתחיל את זה, מה צריך להיות נכון לפני, איך זה הולך כשהכול תקין, ומה קורה כשמשהו משתבש.</li>
+      <li><dfn data-d="התיאור של הטבלאות, העמודות והקשרים ביניהן במסד נתונים">סכמה</dfn>: כל תנאי שצריך להיות נכון לפני הופך לטבלה או לעמודה. ״הלקוח קיים״ הופך ל<dfn data-d="עמודה שמצביעה על שורה בטבלה אחרת, ולכן אי אפשר להצביע על משהו שלא קיים">מפתח זר</dfn>, ו״כמה מנות מכל סוג״ הופך לטבלה order_items.</li>
+      <li>SQL: הפעולה עצמה, הוספת שורת הזמנה ושורות של מנות, ב<dfn data-d="כמה פעולות שמתבצעות יחד: או שכולן הצליחו או שאף אחת לא נשמרה">טרנזקציה</dfn> אחת, כדי שלא תישאר הזמנה חצי-שמורה.</li>
+      <li>תכונה: הכפתור והמסך שהלקוח רואה, וה-<dfn data-d="הדלת שדרכה תוכנה אחת פונה לתוכנה אחרת, כמו המלצר שמעביר הזמנה למטבח">API</dfn> שמפעיל את ה-SQL מאחורי הקלעים.</li>
+      <li>בדיקה: משהו שאפשר להריץ, למשל ״אחרי הלחיצה נוספה בדיוק שורת הזמנה אחת״. אם הבדיקה נכשלת, יודעים לאיזו חוליה לחזור.</li>
+      <li>עקיבות זה ללכת בכיוון ההפוך: על כל חלק שואלים ״מי ביקש אותך?״. חלק בלי סיפור הוא עלות בלי סיבה. סיפור בלי בדיקה הוא הבטחה בלי הוכחה.</li>
+    </ol>
+  </div>
+
+  <h3>מסיפור לטבלאות: כל תנאי קדם הוא בדיקה</h3>
+  <div class="defline"><b>Use Case:</b> תיאור קצר של מה המערכת עושה, בשביל מי ובאילו תנאים, כולל מה קורה כשמשהו נכשל. דוגמה: ״הזמנת משלוח״, עם לקוח, שליח ורשימת מנות.</div>
+  <div class="defline"><b>תנאי קדם (precondition):</b> משהו שחייב להיות נכון לפני שהפעולה מתחילה. דוגמה: לפני שמקבלים הזמנה, הלקוח שמזמין חייב להיות בטבלת הלקוחות.</div>
+  <p>כל תנאי קדם הוא טבלה, עמודה או בדיקה במסד.</p>
+  <div class="tw"><table class="tbl">
+    <tr><th>תנאי קדם ב-Use Case</th><th>איפה הוא נמצא במסד</th><th>איך בודקים</th></tr>
+    <tr><td>הלקוח קיים</td><td>מפתח זר <code>orders.customer_id</code></td><td>LEFT JOIN ל-<code>customers</code>, ובודקים שלא חסר לקוח</td></tr>
+    <tr><td>המנה קיימת בתפריט</td><td>מפתח זר <code>order_items.dish_id</code></td><td>אותה בדיקה מול <code>dishes</code></td></tr>
+    <tr><td>הכמות חיובית</td><td>אילוץ על <code>order_items.qty</code></td><td>שאילתה על ערכים קטנים מ-1</td></tr>
+    <tr><td>ההזמנה נשמרת כולה או לא נשמרת בכלל</td><td>טרנזקציה</td><td>בדיקה של כשל באמצע (חלק 3)</td></tr>
+  </table></div>
+
+  <div class="lab" data-id="p6-lab-precond" data-title="תנאי קדם: הלקוח קיים" data-ordered="0">
+    <div class="q-src">התנאי ״הלקוח קיים״ אמור להתקיים בכל הזמנה. כתבו שאילתה שמוצאת הזמנות שיש בהן <code>customer_id</code> אבל אין לקוח כזה. הציגו <code>order_id</code> ו-<code>customer_id</code>.</div>
+    <pre class="start">SELECT o.id, o.customer_id
+FROM orders o
+LEFT JOIN customers c ON c.id = o.customer_id
+-- השלימו את התנאי</pre>
+    <pre class="check">SELECT o.id, o.customer_id FROM orders o LEFT JOIN customers c ON c.id = o.customer_id WHERE o.customer_id IS NOT NULL AND c.id IS NULL</pre>
+    <pre class="solution">SELECT o.id, o.customer_id
+FROM orders o
+LEFT JOIN customers c ON c.id = o.customer_id
+WHERE o.customer_id IS NOT NULL
+  AND c.id IS NULL</pre>
+    <ol class="hints"><li>LEFT JOIN משאיר גם הזמנות בלי לקוח מתאים. איך רואים אותן בעמודות של <code>c</code>?</li><li>כשאין התאמה, <code>c.id</code> הוא NULL. אבל גם להזמנות הליכה אין לקוח בכלל, ואותן לא רוצים.</li></ol>
+    <div class="why-src">נמצאה הזמנה אחת, מספר 85, שמצביעה על לקוח 99, שלא קיים. זה מה שקורה כשתנאי קדם לא נאכף: המערכת קיבלה הזמנה ואין למי לשלוח אותה. בחלק 1 ראיתם איך מפתח זר מונע את זה. כאן אנחנו משתמשים באותו רעיון כבדיקה לפני שמפרסמים מספרים.</div>
+  </div>
+
+  <h3>אותה דרישה, שלוש משימות</h3>
+  <p>Use Case אחד מתפרק בדרך כלל לשלוש משימות בצוות. כל אחת היא <dfn data-d="משימה קטנה אחת ברשימת העבודה של הצוות, עם אחראי ועם הגדרה ברורה מתי היא גמורה">טיקט</dfn>.</p>
+  <div class="cols3">
+    <div class="card"><h4>🖥️ צד לקוח</h4><p>כפתור ״הזמן״, רשימת המנות, הודעת אישור והודעת שגיאה. גמור כש: לחיצה אחת שולחת את ההזמנה ומציגה אישור.</p></div>
+    <div class="card"><h4>🗄️ צד שרת ו-SQL</h4><p>בודק את תנאי הקדם, מוסיף את ההזמנה ואת המנות בטרנזקציה אחת, ומחזיר מספר הזמנה. גמור כש: אין הזמנה חצי-שמורה, גם אם השרת נופל באמצע.</p></div>
+    <div class="card"><h4>⏱️ דרישה לא פונקציונלית</h4><p><dfn data-d="דרישה על איכות ולא על פעולה, למשל מהירות, זמינות או אבטחה">דרישה לא פונקציונלית</dfn> היא למשל ״אישור תוך שתי שניות״. גמור כש: מדדנו והיא מתקיימת. תחושה לא נחשבת.</p></div>
+  </div>
+
+  <div class="sim" data-id="p6-sim-trace"><div class="sh">טבלת עקיבות חיה</div>
+    <p class="p6-note">כל תא בטבלה נבדק באמת על מסד המסעדה: הסכמה קיימת? ה-SQL רץ? הבדיקה עוברת? בכמה שורות יש חוליה שבורה. מצאו אותן ותקנו, עד שכל הסיפורים מחוברים מקצה לקצה ואין תכונה שאף אחד לא ביקש.</p>
+    <div class="out"></div>
+  </div>
+
+  <div class="box meaning"><p>הטבלה הזאת היא לא מסמך. אפשר לשאול אותה בכל רגע: אילו תכונות נבנו בלי בדיקה? אילו נבנו בלי שמישהו ביקש אותן? כשבונים מהר, עם AI או בלי, זה מה שמונע ״עשר תכונות חצי-גמורות״ ומשאיר לכם פרוסה אחת שבאמת עובדת.</p></div>
+
+  <div class="box real">
+    <p>במערכות לניהול משימות (issue trackers) אפשר לקשור כל משימה לשינוי בקוד ולבדיקות שרצות לבד, ואז שואלים ״לאילו דרישות אין בדיקה?״. בכמה תחומים מפוקחים, כמו תוכנה רפואית, דורשים את השרשרת הזאת במפורש. בהאקתון ובצוותים קטנים משתמשים בגרסה פשוטה: טבלה אחת, ובה סיפור, טבלה, שאילתה, תכונה ובדיקה.</p>
+  </div>
+
+  <div class="box try" data-id="p6-try-trace">
+    <ol>
+      <li>פתחו כלי AI (למשל claude.ai או AI Studio) והדביקו את הפרומפט שלמטה.</li>
+      <li>תקבלו שורה אחת של טבלת עקיבות לסיפור ״הלקוח מזמין מנה״.</li>
+      <li>בדקו אותה כמו ארכיטקט. כל טבלה ועמודה שהוא כתב קיימות בסכמה שנתתם לו? הבדיקה שהוא הציע היא שאילתה שאפשר להריץ? סמנו כל דבר שהוא המציא.</li>
+    </ol>
+    <pre class="prompt">הקשר: אני בונה מערכת הזמנות למסעדה. הסכמה: orders(id, customer_id, courier_id, order_ts, channel, delivery_min, rating, tip, status), order_items(order_id, dish_id, qty), dishes(id, name, category, price, cost), customers(id, name, city, joined, email).
+משימה: כתוב שורה אחת של טבלת עקיבות לסיפור ״כלקוח אני רוצה להזמין מנה, כדי לאכול בלי לצאת מהבית״, עם העמודות: סיפור, Use Case, טבלאות ועמודות, פקודת SQL, תכונה, בדיקה.
+אילוצים: השתמש רק בטבלאות ובעמודות שמופיעות בסכמה. אם דרוש רכיב שחסר בסכמה, כתוב ״חסר בסכמה״ ואל תמציא אותו. הבדיקה חייבת להיות שאילתה שמחזירה אמת או שקר.
+פורמט: טבלה אחת בעברית, ואחריה שורה אחת שמסבירה מה הכי פחות בטוח בתשובה.</pre>
+    <p class="tools"><a class="tool" href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a><a class="tool" href="https://aistudio.google.com" target="_blank" rel="noopener">AI Studio</a></p>
+  </div>
+
+  <div class="box think" data-id="p6-th-slice">
+    <p>לצוות יש יום עבודה אחד. אפשר להתחיל בעשר תכונות ולבנות כל אחת עד חצי, או לבנות תכונה אחת עד הסוף. מה תראו בסוף היום למנהל? ומה הצוות יודע בסוף היום שלא ידע בבוקר?</p>
+    <div class="ans">עם פרוסה אחת מראים משהו שאפשר ללחוץ עליו, ורואים שהוא עובד. הצוות כבר יודע שהשכבות מתחברות, שהסכמה מספיקה ושאפשר לבדוק. עם עשר חצאי תכונות יש רק תוכנית יפה. תוכנית מצוינת עם חדר אחד בנוי ומרוהט שווה יותר מתוכנית מצוינת בלי חדר.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-slice" data-a="2"><p class="qq">מה ההבדל בין פרוסה דקה לבנייה לפי שכבות?</p>
+    <button class="opt">בפרוסה בונים פחות תכונות בסך הכול, אז זה יותר מהיר</button>
+    <button class="opt">בפרוסה בונים תכונה אחת דרך כל השכבות ומפעילים אותה, ולכן בודקים את החיבור בין השכבות מוקדם</button>
+    <button class="opt">בפרוסה מפתח אחד בונה הכול לבד, אז אין בעיות תיאום</button>
+    <div class="why">הנכונה היא השנייה. הפרוסה לא באה לקצר את המוצר אלא לשנות את סדר הלמידה: אם החיבור בין השכבות לא עובד, מגלים את זה מוקדם. התשובה הראשונה מבלבלת בין סדר הבנייה לבין גודל המוצר. השלישית לא נכונה: דווקא בפרוסה צריך שמי שכותב מסך, שרת ומסד יעבדו יחד.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-orphan" data-a="3"><p class="qq">בטבלת העקיבות יש תכונה שכבר נבנתה, ואין סיפור משתמש שביקש אותה. מה עושים?</p>
+    <button class="opt">משאירים, כי עוד תכונה תמיד טובה</button>
+    <button class="opt">כותבים לה בדיקה, ואז זה בסדר</button>
+    <button class="opt">שואלים מי צריך אותה: או שמוצאים לה סיפור וצורך אמיתי, או שמורידים אותה</button>
+    <div class="why">הנכונה היא השלישית. תכונה בלי צורך מתועד עולה תחזוקה ומוסיפה סיכון, ואף אחד לא יודע מה מרוויחים ממנה. בדיקה לא מצדיקה תכונה, היא רק מוכיחה שהיא עושה מה שהיא עושה. ״עוד תכונה תמיד טובה״ זו בדיוק ההנחה שעקיבות באה לבדוק.</div>
+  </div>
+
+  <div class="teach"><b>🎓 למרצה:</b> להתחיל בשאלה לכיתה: ״מה בונים קודם?״ ולאסוף כמה תשובות לפני ההנפשה. את הטבלה כדאי לעשות בזוגות. שורה 4 (שדה שולחן שלא קיים בסכמה) היא הרגע לומר: כש-Use Case מבקש נתון שאין לו מקום, זה הסיבה הכי נפוצה לשינוי סכמה באמצע פרויקט. בשורה 6 לשאול ״מי ביקש את זה?״ ולחכות.</div>
+
+  <script>(function(){FL.dom(function(){
+    var box=FL.$('[data-id="p6-sim-trace"]');if(!box)return;var out=FL.$('.out',box);
+    var S={mig:false,t5:false,b5:false,rm6:false};
+    var MIG="ALTER TABLE orders ADD COLUMN table_no INTEGER";
+    var INS="INSERT INTO orders (id, customer_id, courier_id, order_ts, channel, status) VALUES (900, 1, 1, '2026-06-01 19:00', 'app', 'delivered'); INSERT INTO order_items (order_id, dish_id, qty) VALUES (900, 3, 2); ";
+    var REV="SELECT o.channel, SUM(oi.qty * d.price) AS revenue FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id GROUP BY o.channel";
+    var CRT="SELECT c.name, ROUND(AVG(o.delivery_min), 1) AS avg_min FROM orders o JOIN couriers c ON c.id = o.courier_id GROUP BY c.name";
+    var SLOW="SELECT id, delivery_min FROM orders WHERE delivery_min > 45";
+    var PRAG=function(t,names){return "SELECT COUNT(*) FROM pragma_table_info('"+t+"') WHERE name IN ("+names.map(function(n){return "'"+n+"'";}).join(',')+")";};
+    var R=[
+      {k:1,story:'כלקוח באפליקציה אני רוצה להזמין מנות',feat:'כפתור ״הזמן״',schema:PRAG('order_items',['order_id','dish_id','qty']),need:3,sql:INS+"SELECT COUNT(*) AS items FROM order_items WHERE order_id = 900",test:function(){return INS+"SELECT COUNT(*) = 1 FROM order_items WHERE order_id = 900";}},
+      {k:2,story:'כמנהל אני רוצה לראות הכנסות לפי ערוץ',feat:'דוח ערוצים',schema:PRAG('dishes',['price']),need:1,sql:REV,test:function(){return "SELECT ABS((SELECT SUM(revenue) FROM ("+REV+")) - (SELECT SUM(oi.qty * d.price) FROM order_items oi JOIN dishes d ON d.id = oi.dish_id)) < 0.01";}},
+      {k:3,story:'כמנהל אני רוצה לדעת כמה זמן לוקח משלוח לכל שליח',feat:'מסך שליחים',schema:PRAG('orders',['delivery_min','courier_id']),need:2,sql:CRT,test:function(){return "SELECT COUNT(*) = 3 FROM ("+CRT+")";}},
+      {k:4,story:'כמלצרית אני רוצה לרשום מספר שולחן בהזמנה',feat:'שדה שולחן',schema:PRAG('orders',['table_no']),need:1,sql:"SELECT table_no, COUNT(*) AS orders FROM orders GROUP BY table_no",test:function(){return "SELECT COUNT(table_no) = 0 FROM orders";}},
+      {k:5,story:'כמנהל אני רוצה התראה על משלוח שעבר 45 דקות',feat:'התראת עיכוב',schema:PRAG('orders',['delivery_min']),need:1,sql:SLOW,test:function(){return S.t5?"SELECT COUNT(*) = 6 FROM ("+SLOW+")":null;}},
+      {k:6,story:null,feat:'מסך ״כוכבי נאמנות״',schema:null}
+    ];
+    function pre(){return S.mig?MIG+'; ':'';}
+    function state(r){
+      var o={};
+      if(r.k===6){o.story='no';o.schema=o.sql=o.test='na';o.built=!S.rm6;return o;}
+      o.story='ok';
+      try{o.schema=(FL.exec(pre()+r.schema,'rest').values[0][0]>=r.need)?'ok':'no';}catch(e){o.schema='no';}
+      try{var x=FL.exec(pre()+r.sql,'rest');o.sql=x?'ok':'no';}catch(e){o.sql='no';}
+      var tq=r.test();
+      if(tq===null)o.test='none';else{try{var y=FL.exec(pre()+tq,'rest');o.test=(y&&y.values[0][0]===1)?'ok':'no';}catch(e){o.test='no';}}
+      o.built=(r.k===5)?S.b5:true;
+      return o;
+    }
+    function cell(v,lab){var t={ok:'✓',no:'✗',na:'·',none:'חסרה'}[v];var c={ok:'ok',no:'no',na:'na',none:'wr'}[v];return '<span class="p6-c '+c+'">'+(lab||t)+'</span>';}
+    function verdict(r,o){
+      if(r.k===6)return o.built?['wr','תכונה בלי סיפור: עלות בלי סיבה']:['ok','הוסרה, אין לה צורך'];
+      var up=(o.schema==='ok'&&o.sql==='ok'&&o.test==='ok');
+      if(o.built&&!up)return['no','נבנתה כשחוליה חסרה'];
+      if(up&&o.built)return['ok','מחוברת מקצה לקצה'];
+      if(up&&!o.built)return['wr','מוכנה לבנייה'];
+      return['wr','עדיין חסרה בדיקה'];
+    }
+    function actions(r,o){
+      var h='';
+      if(r.k===4&&!S.mig)h+='<button class="p6-btn" data-a="mig">להוסיף עמודה (ALTER TABLE)</button>';
+      if(r.k===5&&!S.t5)h+='<button class="p6-btn" data-a="t5">כתיבת בדיקה</button>';
+      if(r.k===5&&S.t5&&!S.b5)h+='<button class="p6-btn" data-a="b5">בנייה</button>';
+      if(r.k===6&&!S.rm6)h+='<button class="p6-btn g" data-a="rm6">הסרת התכונה</button>';
+      return h||'<span class="p6-note">אין מה לעשות</span>';
+    }
+    function render(){
+      var traced=0,orph=0,gap=0,h='<div class="tw"><table class="p6-tbl"><tr><th>סיפור</th><th>סכמה</th><th>SQL</th><th>בדיקה</th><th>תכונה</th><th>מצב</th><th>פעולה</th></tr>';
+      R.forEach(function(r){
+        var o=state(r),v=verdict(r,o);
+        if(v[1]==='מחוברת מקצה לקצה')traced++;if(r.k===6&&o.built)orph++;if(v[1]==='נבנתה כשחוליה חסרה')gap++;
+        h+='<tr><td>'+(r.story?FL.esc(r.story):'<span class="p6-c no">אין סיפור</span>')+'</td><td>'+cell(o.schema)+'</td><td>'+cell(o.sql)+'</td><td>'+cell(o.test)+'</td><td>'+FL.esc(r.feat)+' '+(o.built?'<span class="p6-c ok">נבנתה</span>':'<span class="p6-c na">טרם</span>')+'</td><td><span class="p6-c '+v[0]+'">'+v[1]+'</span></td><td>'+actions(r,o)+'</td></tr>';
+      });
+      h+='</table></div><div class="p6-sum">חוברו מקצה לקצה: '+traced+' מתוך 5 סיפורים. תכונות בלי סיפור: '+orph+'. תכונות שנבנו כשחוליה חסרה: '+gap+'.</div>';
+      if(traced===5&&!orph){h+='<div class="p6-verdict g">כל הסיפורים מחוברים מקצה לקצה ואין תכונות יתומות. עכשיו אפשר לבנות פרוסה ראשונה.</div>';FL.done('p6-sim-trace');}
+      h+='<p><button class="p6-btn g" data-a="reset">איפוס</button></p>';
+      out.innerHTML=h;
+    }
+    box.addEventListener('click',function(e){var b=e.target.closest('[data-a]');if(!b)return;var a=b.dataset.a;
+      if(a==='mig')S.mig=true;if(a==='t5')S.t5=true;if(a==='b5')S.b5=true;if(a==='rm6')S.rm6=true;
+      if(a==='reset')S={mig:false,t5:false,b5:false,rm6:false};render();});
+    FL.onReady(function(ok){if(ok)render();else out.textContent='מנוע ה-SQL לא נטען.';});
+  });})();</script>
+</section>
+
+<section class="sec" id="s6-2" data-t="הפרויקט כטבלאות">
+  <div class="sec-h"><div class="sec-n">2</div><h2>הפרויקט עצמו הוא סתם עוד נתונים</h2></div>
+  <p class="lead">אלון הוא מנהל הפרויקט. יש לו קובץ אקסל עם משימות, קובץ אחר עם חשבוניות ומסמך עם סיכונים. יבגני שואל אותו: ״כמה כסף כבר יצא, וכמה מהעבודה בוצעה?״ כדי לענות אלון צריך לפתוח שלושה קבצים, לסנן ביד ולסכם בראש.</p>
+
+  <div class="defline"><b>בקרת פרויקט:</b> משווים כל הזמן בין מה שתכננו למה שקורה בפועל, כדי להגיב בזמן. דוגמה: אפליקציית ניווט משווה את המסלול לשעת ההגעה, ומתריעה כשהפער גדל.</div>
+  <p>הנה הכלל: מסמך שאי אפשר לשאול אותו שאלה הוא לא כלי בקרה. טבלה אפשר לשאול. אז הצעד הראשון הוא להפוך את הפרויקט לכמה טבלאות מקושרות, בדיוק כמו שעשינו למסעדה. את הגישה הזאת למדנו ב<a href="../lecture14.html">שיעור הראשון על בקרת פרויקט</a>.</p>
+
+  <div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span class="url">הדמיה סכמטית: איך הפרויקט מנוהל היום</span></div>
+    <div class="mk-body">
+      <div class="tw"><table class="p6-tbl" style="direction:rtl">
+        <tr><th>משימה</th><th>סטטוס (הוקלד ביד)</th><th>הערה</th></tr>
+        <tr><td>שרת ו-API</td><td style="background:#fee2e2">קצת באיחור</td><td>״כמעט גמור, נשאר ליטוש״</td></tr>
+        <tr><td>ממשק מטבח</td><td style="background:#dbeafe">במסלול</td><td>״אצלי זה עובד״</td></tr>
+        <tr><td>סה״כ הוצאות</td><td colspan="2">נמצא בקובץ אחר, בגיליון ״חשבוניות 2״</td></tr>
+      </table></div>
+      <p class="p6-note">אין קשר בין הקבצים, אין בדיקה שהסכום נכון, והסטטוס הוא מה שמישהו הקליד. אי אפשר לשאול את זה ״מי באיחור של יותר משבוע?״.</p>
+    </div>
+  </div>
+
+  <h3>ארבע טבלאות במקום שלושה קבצים</h3>
+  <p>הפרויקט של המערכת החדשה מתועד בארבע טבלאות: <b>צוות</b> (מי עובד), <b>משימות</b> (מה צריך לעשות, באילו שבועות ובאיזה תקציב), <b>עלויות</b> (כל הוצאה בפועל, לפי משימה ושבוע) ו<b>סיכונים</b> (מה עלול להשתבש). כמו במסעדה, יש ביניהן מפתחות: <code>owner_id</code> במשימות מצביע על מספר בטבלת הצוות, ו-<code>task_id</code> בעלויות מצביע על משימה.</p>
+  <div class="schema" data-db="proj"></div>
+  <div class="flow"><span class="nd">team</span><span class="ar">1:N ←</span><span class="nd g">tasks</span><span class="ar">1:N ←</span><span class="nd a">costs</span><span class="ar">·</span><span class="nd">team</span><span class="ar">1:N ←</span><span class="nd r">risks</span></div>
+  <p class="p6-note">שימו לב: בטבלת העלויות אין מפתח ראשי. זה נראה לא חשוב, אבל בסעיף הבא נראה מה זה מאפשר.</p>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-late" data-title="מי באיחור לפי הסטטוס" data-ordered="0">
+    <div class="q-src">הציגו את השם ואת אחוז הביצוע של כל המשימות שהסטטוס שלהן <code>late</code>.</div>
+    <pre class="start">SELECT name, pct_done
+FROM tasks
+-- השלימו</pre>
+    <pre class="check">SELECT name, pct_done FROM tasks WHERE status = 'late'</pre>
+    <pre class="solution">SELECT name, pct_done
+FROM tasks
+WHERE status = 'late'</pre>
+    <ol class="hints"><li>איזו מילה מסננת שורות?</li><li>טקסט כותבים בגרשיים בודדים.</li></ol>
+    <div class="why-src">שתי משימות מסומנות ״באיחור״: שרת ו-API, ואפליקציית הזמנות. באקסל זו שאלה שצריך לסנן בשבילה. כאן זו שורה אחת. אבל שימו לב: הסטטוס הוקלד ביד, ובהמשך נבדוק אם אפשר לסמוך עליו.</div>
+  </div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-owners" data-title="כמה עבודה על כל אחד" data-ordered="0">
+    <div class="q-src">הציגו לכל אחראי את השם שלו (<code>name</code> מטבלת הצוות), כמה משימות יש לו וסך התקציב של המשימות שלו. קראו לעמודות <code>owner</code>, <code>tasks</code>, <code>budget</code>.</div>
+    <pre class="start">SELECT m.name AS owner,
+       -- כמה משימות?
+       -- סך תקציב?
+FROM tasks t
+-- השלימו את החיבור והקיבוץ</pre>
+    <pre class="check">SELECT m.name AS owner, COUNT(*) AS tasks, SUM(t.budget) AS budget FROM tasks t JOIN team m ON m.id = t.owner_id GROUP BY m.name</pre>
+    <pre class="solution">SELECT m.name AS owner,
+       COUNT(*) AS tasks,
+       SUM(t.budget) AS budget
+FROM tasks t
+JOIN team m ON m.id = t.owner_id
+GROUP BY m.name</pre>
+    <ol class="hints"><li>במשימות יש רק מספר אחראי. מאיפה מביאים את השם?</li><li>כל קבוצה היא אחראי אחד, אז GROUP BY על השם.</li></ol>
+    <div class="why-src">שישה אנשים, ושניים מהם (אלון ומיה) מחזיקים שלוש משימות כל אחד. שימו לב שהשתמשנו בשלושה כלים: סינון (WHERE), קיבוץ (GROUP BY) וחיבור (JOIN). זה כל מה שצריך כדי לשאול על פרויקט.</div>
+  </div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-phase" data-title="תקציב לפי שלב" data-ordered="0">
+    <div class="q-src">הציגו לכל שלב (<code>phase</code>) את סך התקציב המתוכנן שלו. קראו לעמודה <code>budget</code>.</div>
+    <pre class="start">SELECT phase, SUM(budget) AS budget
+FROM tasks
+-- השלימו</pre>
+    <pre class="check">SELECT phase, SUM(budget) AS budget FROM tasks GROUP BY phase</pre>
+    <pre class="solution">SELECT phase, SUM(budget) AS budget
+FROM tasks
+GROUP BY phase</pre>
+    <ol class="hints"><li>סיכום לפי קבוצה צריך GROUP BY על עמודת הקבוצה.</li></ol>
+    <div class="why-src">חמישה שלבים. שלב הבנייה הכי גדול: 410,000 מתוך 640,000. חמשת הסכומים יחד נותנים את התקציב הכולל, וזו כבר בדיקה ראשונה שהנתונים סגורים.</div>
+  </div>
+
+  <h3>גאנט חי: מה הטבלה אומרת על כל משימה</h3>
+  <p>התרשים הבא נבנה ישר משאילתה על טבלת המשימות. הפס הוא טווח השבועות של המשימה, המילוי הוא אחוז הביצוע, והקו השחור בתוך הפס הוא כמה היה אמור להיות גמור היום לפי התכנון (בהנחה שהמשימה מתקדמת באותו קצב בכל שבוע). הקו האדום הוא סוף שבוע 8.</p>
+
+  <div class="sim" data-id="p6-sim-gantt"><div class="sh">גאנט חי מנתוני הפרויקט</div>
+    <div class="p6-ctrl">
+      <label><input type="radio" name="p6-gm" value="manual" checked> צבע לפי הסטטוס שהוקלד ביד</label>
+      <label><input type="radio" name="p6-gm" value="derived"> צבע לפי מה שהנתונים מראים</label>
+      <label>פער מינימלי לסימון איחור: <b class="n" id="p6-gthv">25</b> נקודות <input type="range" id="p6-gth" min="5" max="40" value="25"></label>
+    </div>
+    <div class="out"></div>
+  </div>
+
+  <div class="box meaning"><p>תחליפו בין שני מצבי הצבע ותראו משהו מעניין: משימות שמסומנות ידנית ״במסלול״ מתגלות כמאחרות לפי הנתונים. בפער של 25 נקודות זו משימה אחת (ממשק מטבח). אם מורידים את הסף ל-20, מצטרף גם לוח המחוונים. הסטטוס הוא דעה. אחוז הביצוע והתאריכים הם נתונים. לכן מחשבים את הסטטוס מהנתונים, והדעה נשארת כהערה.</p></div>
+
+  <div class="box real"><p>בכלי לניהול משימות ופרויקטים כל משימה היא שורה עם שדות, ולכן אפשר לראות אותה כרשימה, כלוח או כגאנט. מאחורי כל התצוגות האלה יש בדרך כלל אותו דבר: טבלה עם מפתחות. מי שמבין טבלאות ושאילתות יכול לשאול גם שאלות שהתצוגות המוכנות לא מכסות.</p></div>
+
+  <div class="box think" data-id="p6-th-table">
+    <p>למה קל יותר לשאול ״מי באיחור?״ בטבלה מאשר במסמך? ומתי דווקא מסמך עדיף?</p>
+    <div class="ans">בטבלה כל עובדה נמצאת במקום אחד ובשדה מוגדר, אז אפשר לסנן, לקבץ ולחבר אוטומטית, ובכל פעם באותה צורה. מסמך מתאים למה שאין לו מבנה קבוע: הסבר, החלטה, הקשר. הכי טוב לשלב: טבלה בשביל הנתונים, ומסמך בשביל ההסברים.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-owner" data-a="1"><p class="qq">בטבלת <code>tasks</code>, בשורה ״ממשק מטבח״ כתוב <code>owner_id = 3</code>. מה זה אומר?</p>
+    <button class="opt">שהאחראי הוא מי שיש לו מספר 3 בטבלת הצוות (עומר)</button>
+    <button class="opt">שהמשימה היא השלישית ברשימה</button>
+    <button class="opt">שיש למשימה שלושה אחראים</button>
+    <div class="why">הנכונה היא הראשונה. <code>owner_id</code> הוא מפתח זר שמצביע על <code>team.id</code>, ושם מספר 3 הוא עומר. לא שומרים את השם בכל משימה כדי שאם הוא ישתנה, נשנה במקום אחד. מספר המשימה הוא <code>id</code> ולא <code>owner_id</code>. ולכל משימה יש אחראי אחד.</div>
+  </div>
+
+  <div class="teach"><b>🎓 למרצה:</b> לפני הגאנט לשאול את הכיתה: ״איך אתם יודעים היום שפרויקט בצרות?״ ולאסוף תשובות. אחר כך להחליף את מצב הצבע ולתת להם לראות לבד איזו משימה התהפכה. מזה עוברים לסעיף הבא: מה בנתונים אפשר לסמוך עליו.</div>
+
+  <script>(function(){FL.dom(function(){
+    var box=FL.$('[data-id="p6-sim-gantt"]');if(!box)return;var out=FL.$('.out',box);var thr=25,mode='manual',sel=null;
+    var LAB={done:'הושלם',late:'באיחור','on track':'במסלול','not started':'טרם התחיל'};
+    var COL={done:'#10b981',late:'#ef4444','on track':'#3b82f6','not started':'#94a3b8',behind:'#ef4444',onplan:'#3b82f6'};
+    var m=null;
+    function dstat(t){if(t.pct_done>=100)return'done';if(t.pct_done===0&&t.start_week>P6.W)return'not started';return t.behind>=thr?'behind':'onplan';}
+    function render(){
+      if(!m)return;
+      var h='<div class="p6-gantt"><div></div><div class="p6-gt hd">';
+      for(var w=1;w<=12;w++)h+='<span'+(w===P6.W?' class="t"':'')+'>'+w+'</span>';
+      h+='</div>';
+      var mism=0;
+      m.tasks.forEach(function(t){
+        var ds=dstat(t),ms=t.status;var key=mode==='manual'?ms:(ds==='not started'?'not started':ds);var c=COL[key];
+        if(ms!=='late'&&ds==='behind')mism++;
+        var len=t.end_week-t.start_week+1;
+        h+='<div class="p6-gl'+(sel===t.id?' sel':'')+'" data-tk="'+t.id+'">'+FL.esc(t.name)+'</div><div class="p6-gt"><div class="p6-gb" data-tk="'+t.id+'" style="left:'+((t.start_week-1)/12*100)+'%;width:'+(len/12*100)+'%;border-color:'+c+'"><i style="width:'+t.pct_done+'%;background:'+c+'"></i><b style="left:'+Math.min(99,t.exp)+'%"></b></div><div class="p6-today" style="left:'+(P6.W/12*100)+'%"></div></div>';
+      });
+      h+='</div>';
+      h+='<div class="p6-sum">משימות שהסטטוס שלהן לא ״באיחור״, אבל לפי הנתונים הן מאחרות ב-'+thr+' נקודות או יותר: <b>'+mism+'</b></div>';
+      if(sel){var t=m.tasks.filter(function(x){return x.id===sel;})[0];
+        h+='<div class="out"><b>'+FL.esc(t.name)+'</b> · אחראי: '+FL.esc(t.owner)+' · שבועות '+t.start_week+' עד '+t.end_week+' · תקציב '+P6.nis(t.budget)+' ש״ח<br>בוצע '+t.pct_done+'%, לפי התכנון היה אמור להיות גמור היום '+Math.round(t.exp)+'%, פער '+Math.round(t.behind)+' נקודות. סטטוס ידני: '+LAB[t.status]+'.</div>';}
+      out.innerHTML=h;
+    }
+    box.addEventListener('click',function(e){var x=e.target.closest('[data-tk]');if(x){sel=+x.dataset.tk;render();FL.done('p6-sim-gantt');}});
+    box.addEventListener('change',function(e){if(e.target.name==='p6-gm'){mode=e.target.value;render();FL.done('p6-sim-gantt');}});
+    box.addEventListener('input',function(e){if(e.target.id==='p6-gth'){thr=+e.target.value;FL.$('#p6-gthv').textContent=thr;render();}});
+    P6.ready(function(){m=P6.metrics();render();});
+  });})();</script>
+</section>
+
+<section class="sec" id="s6-3" data-t="בדיקת נתונים">
+  <div class="sec-h"><div class="sec-n">3</div><h2>מספר בלי בדיקה הוא סתם דעה</h2></div>
+  <p class="lead">לפני ועדת ההיגוי אלון מסכם את טבלת העלויות ומקבל מספר. המספר נראה סביר, והוא נכנס למצגת. רק אחר כך מישהו שם לב שחשבונית אחת הוזנה פעמיים. אף אחד לא קיבל הודעת שגיאה, כי שאילתה מושלמת על נתונים שגויים נותנת תשובה שגויה, בלי שום אזהרה.</p>
+
+  <div class="defline"><b>איכות נתונים:</b> עד כמה מה שכתוב בטבלה באמת מתאים למציאות. דוגמה: כל חשבונית נכונה בפני עצמה, אבל אחת נרשמה פעמיים, אז הסכום הכולל גדול מדי.</div>
+  <p>הכלל שלנו: <b>מספר בלי בדיקה הוא דעה.</b> לפני שמדווחים מספר, מריצים עליו כמה בדיקות קבועות. יש ארבע תקלות שחוזרות בכל פרויקט נתונים, וכבר פגשנו אותן במסעדה (חלק 4 ו<a href="../lec10part11-15.6.2026.html">שיעור איכות הנתונים</a>):</p>
+  <div class="cols2">
+    <div class="card"><h4>♊ כפילות</h4><p>אותה שורה פעמיים. בעלויות: אותה חשבונית, באותו שבוע, באותו סכום, פעמיים.</p></div>
+    <div class="card"><h4>🕳️ ערך חסר</h4><p>שדה ריק. ב-<code>SUM</code> פשוט מדלגים על הריק, ולכן הסכום יוצא נמוך וזה לא נראה.</p></div>
+    <div class="card"><h4>🚫 ערך שלא יכול להיות</h4><p>שבוע 13 בפרויקט של 12 שבועות, או הוצאה בשבוע שעוד לא הגיע.</p></div>
+    <div class="card"><h4>👻 יתום</h4><p>שורה שמצביעה על משהו שלא קיים. עלות של משימה מספר 99, כשיש רק 12 משימות.</p></div>
+  </div>
+  <p>בטבלת העלויות אין מפתח ראשי ואין אילוץ שמונע כפילות, אז שום דבר לא מונע את ארבעתן. בואו נראה את זה על עותק של הפרויקט שבו שתלנו ארבע תקלות, אחת מכל סוג.</p>
+
+  <div class="sim" data-id="p6-sim-dq"><div class="sh">בדיקות איכות על מסד מלוכלך</div>
+    <p class="p6-note">במסד הזה שתלנו ארבע תקלות. לחצו ״הרצת בדיקה״ בכל שורה, ראו מה נמצא, ורק אז לחצו ״תיקון״. סכום הביקורת מהנהלת החשבונות (בדוי) הוא 462,150 ש״ח.</p>
+    <div class="out"></div>
+  </div>
+
+  <div class="box trap"><p>שימו לב לשורה החמישית, ההתאמה בין שני מקורות (reconciliation). מחשבים אותו סכום בשתי דרכים: אחת על כל טבלת העלויות, ואחת אחרי חיבור למשימות. שני המספרים אמורים להיות שווים. אם הם שונים, יש יתום. הבדיקה הזאת עובדת גם כשאין לכם מושג איפה התקלה.</p></div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-dup" data-title="מצאו חשבונית כפולה" data-ordered="0">
+    <pre class="setup">INSERT INTO costs (task_id, week, amount) VALUES (9, 8, 5400)</pre>
+    <div class="q-src">שתלנו במסד שורת עלות כפולה. מצאו אילו שורות מופיעות יותר מפעם אחת: הציגו <code>task_id</code>, <code>week</code>, <code>amount</code> וכמה פעמים הן מופיעות (<code>n</code>).</div>
+    <pre class="start">SELECT task_id, week, amount, COUNT(*) AS n
+FROM costs
+-- השלימו קיבוץ וסינון קבוצות</pre>
+    <pre class="check">SELECT task_id, week, amount, COUNT(*) AS n FROM costs GROUP BY task_id, week, amount HAVING COUNT(*) > 1</pre>
+    <pre class="solution">SELECT task_id, week, amount, COUNT(*) AS n
+FROM costs
+GROUP BY task_id, week, amount
+HAVING COUNT(*) > 1</pre>
+    <ol class="hints"><li>כפילות היא קבוצה של שורות זהות. לפי אילו עמודות מקבצים?</li><li>כדי לסנן קבוצות אחרי הקיבוץ משתמשים ב-HAVING, לא ב-WHERE.</li></ol>
+    <div class="why-src">נמצאה קבוצה אחת: משימה 9, שבוע 8, 5,400 ש״ח, פעמיים. בלי הבדיקה הסכום הכולל היה גבוה ב-5,400 ואף אחד לא היה מבין למה.</div>
+  </div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-orphan" data-title="מצאו עלות יתומה" data-ordered="0">
+    <pre class="setup">INSERT INTO costs (task_id, week, amount) VALUES (99, 7, 7500)</pre>
+    <div class="q-src">שתלנו עלות של משימה שלא קיימת. הציגו את <code>task_id</code>, <code>week</code> ו-<code>amount</code> של כל עלות שאין לה משימה בטבלת <code>tasks</code>.</div>
+    <pre class="start">SELECT c.task_id, c.week, c.amount
+FROM costs c
+LEFT JOIN tasks t ON t.id = c.task_id
+-- השלימו</pre>
+    <pre class="check">SELECT c.task_id, c.week, c.amount FROM costs c LEFT JOIN tasks t ON t.id = c.task_id WHERE t.id IS NULL</pre>
+    <pre class="solution">SELECT c.task_id, c.week, c.amount
+FROM costs c
+LEFT JOIN tasks t ON t.id = c.task_id
+WHERE t.id IS NULL</pre>
+    <ol class="hints"><li>LEFT JOIN שומר גם עלויות בלי משימה. איך מזהים אותן בצד של <code>t</code>?</li></ol>
+    <div class="why-src">זו אותה תבנית של ״מי חסר״ מחלק 2: LEFT JOIN ואז IS NULL, הפעם על פרויקט. משימה 99 לא קיימת, אז העלות שלה לא תופיע בשום דוח שמחבר עלויות למשימות. אבל היא כן תופיע בסכום הכולל. בגלל זה נוצר פער בבדיקת ההתאמה.</div>
+  </div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-fixdup" data-title="מחיקה בטוחה של הכפילות" data-ordered="0" data-require="WHERE" data-require-msg="מחיקה בלי WHERE מוחקת את כל הטבלה. הוסיפו תנאי שבוחר שורה אחת.">
+    <pre class="setup">INSERT INTO costs (task_id, week, amount) VALUES (9, 8, 5400)</pre>
+    <pre class="show">SELECT task_id, week, amount FROM costs WHERE task_id = 9</pre>
+    <div class="q-src">עכשיו יש שתי שורות זהות למשימה 9. מחקו רק אחת מהן, כך שתישאר שורה אחת. טיפ: ב-SQLite לכל שורה יש מספר פנימי, <code>rowid</code>.</div>
+    <pre class="start">-- כתבו DELETE עם WHERE שמוחק שורה אחת בלבד
+DELETE FROM costs
+WHERE rowid = -1</pre>
+    <pre class="check">DELETE FROM costs WHERE rowid = (SELECT MAX(rowid) FROM costs WHERE task_id = 9 AND week = 8)</pre>
+    <pre class="solution">DELETE FROM costs
+WHERE rowid = (
+  SELECT MAX(rowid) FROM costs
+  WHERE task_id = 9 AND week = 8
+)</pre>
+    <ol class="hints"><li>תת-שאילתה שמחזירה ערך אחד, המקסימלי, בוחרת שורה אחת.</li><li>הוסיפו לתת-השאילתה תנאי על <code>task_id</code> ועל <code>week</code>.</li></ol>
+    <div class="why-src">קודם הסתכלנו ורק אחר כך מחקנו, וה-WHERE הגביל את המחיקה לשורה אחת. בעבודה אמיתית תמיד עושים SELECT לפני DELETE, ובדרך כלל גם שואלים את מי שהזין את הנתון. ואם רוצים שהתקלה לא תחזור, מוסיפים אילוץ ייחודיות על משימה ושבוע.</div>
+  </div>
+
+  <h3>הסטטוס הוא דעה: בודקים אותו מול הנתונים</h3>
+  <p>בגאנט ראינו שהסטטוס שהוקלד ביד לא תמיד מסתדר עם אחוז הביצוע. זו עוד בדיקה שכדאי להריץ לפני כל דוח: האם התווית מתאימה למספרים?</p>
+  <div class="lab" data-db="proj" data-id="p6-lab-statusdata" data-title="תווית מול מדידה" data-ordered="0">
+    <div class="q-src">נקודת הייחוס היא סוף שבוע 8. כמה אחוז מכל משימה אמור להיות גמור עד אז, אם היא מתקדמת באותו קצב בכל שבוע? הציגו משימות שהסטטוס שלהן <code>on track</code> אבל הן מאחרות ב-15 נקודות אחוז או יותר. הציגו <code>name</code>, <code>pct_done</code>, <code>expected_pct</code> ו-<code>behind</code>.</div>
+    <pre class="start">WITH x AS (
+  SELECT name, status, pct_done,
+         ROUND(100.0 * MIN(end_week - start_week + 1, MAX(0, 8 - start_week + 1))
+               / (end_week - start_week + 1)) AS expected_pct
+  FROM tasks
+)
+SELECT name, pct_done, expected_pct, expected_pct - pct_done AS behind
+FROM x
+-- השלימו את התנאי</pre>
+    <pre class="check">WITH x AS (SELECT name, status, pct_done, ROUND(100.0 * MIN(end_week - start_week + 1, MAX(0, 8 - start_week + 1)) / (end_week - start_week + 1)) AS expected_pct FROM tasks) SELECT name, pct_done, expected_pct, expected_pct - pct_done AS behind FROM x WHERE status = 'on track' AND expected_pct - pct_done >= 15</pre>
+    <pre class="solution">WITH x AS (
+  SELECT name, status, pct_done,
+         ROUND(100.0 * MIN(end_week - start_week + 1, MAX(0, 8 - start_week + 1))
+               / (end_week - start_week + 1)) AS expected_pct
+  FROM tasks
+)
+SELECT name, pct_done, expected_pct, expected_pct - pct_done AS behind
+FROM x
+WHERE status = 'on track'
+  AND expected_pct - pct_done >= 15</pre>
+    <ol class="hints"><li>שני תנאים: הסטטוס הידני, והפער לפחות 15.</li><li>הפער כבר מחושב בעמודה <code>behind</code>, אבל לא אפשר להשתמש בה ב-WHERE של אותה שאילתה. תחזרו על הביטוי.</li></ol>
+    <div class="why-src">שלוש משימות מסומנות ״במסלול״ ובפועל מאחרות: ממשק מטבח (35 מול 60), לוח מחוונים (40 מול 60) ובדיקות מערכת (10 מול 25). הפונקציה <code>MIN</code> עם שני ערכים בוחרת את הקטן מביניהם, וכך חותכים את ההתקדמות המתוכננת לטווח של המשימה.</div>
+  </div>
+
+  <div class="box meaning"><p>בדיקה שמחזירה אפס שורות היא גם מידע: היא אומרת שהתקלה הזאת לא קיימת היום. לכן כותבים את הבדיקות פעם אחת, שומרים אותן, ומריצים לפני כל דיווח. מי שמדווח מספר צריך להיות מסוגל לומר גם מה בדק.</p></div>
+
+  <div class="box real"><p>התאמה בין שני מקורות היא דבר בסיסי בחשבונאות: משווים את דף הבנק לספר החשבונות, ואם הסכומים שונים מחפשים את ההפרש. יש מקרים מתועדים של נתונים שגויים בלי הודעת שגיאה: חללית של נאס״א שאבדה ב-1999 אחרי ששתי מערכות חישבו ביחידות מידה שונות, ורשומות שנחתכו בשקט בגלל מגבלת שורות בגיליון אלקטרוני. לא היתה שם תקלה מסובכת. פשוט לא הריצו בדיקה.</p></div>
+
+  <div class="box think" data-id="p6-th-dq">
+    <p>מצאתם עלות יתומה של 7,500 ש״ח. אתם מוחקים אותה בעצמכם או שואלים את מי שהזין אותה? ומה אם הוא לא זמין והדוח צריך לצאת בעוד שעה?</p>
+    <div class="ans">מי שרשם את הנתון יודע אם זו טעות בהקלדת מספר משימה או הוצאה אמיתית שנרשמה לא נכון. אם מוחקים, אפשר להעלים כסף אמיתי. כשהדוח דחוף, מציגים אותו עם הערה: ״462,150 ש״ח, ועוד 7,500 ש״ח של עלות יתומה שעדיין בבירור״. מי שחותם על הדוח צריך להיות מסוגל להגיד מה הוא לא יודע.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-null" data-a="2"><p class="qq">בטבלת העלויות יש שורה עם <code>amount</code> ריק. מה יעשה <code>SELECT SUM(amount)</code>?</p>
+    <button class="opt">יחזיר שגיאה, כי אי אפשר לסכם ערך ריק</button>
+    <button class="opt">ידלג על השורה הריקה ויחזיר סכום נמוך מהאמת, בלי שום אזהרה</button>
+    <button class="opt">יחשיב את הריק כ-0, ולכן הסכום יהיה נכון</button>
+    <div class="why">הנכונה היא השנייה. פונקציות סיכום מדלגות על NULL, אז אין שגיאה ואין אזהרה: הסכום פשוט נמוך מהמציאות. לכן בודקים ערכים חסרים במפורש. ואם ריק אמור להיות אפס, אומרים את זה עם COALESCE.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-dedup" data-a="3"><p class="qq">איך מונעים מחשבונית כפולה להיכנס שוב לטבלת העלויות?</p>
+    <button class="opt">מבקשים מכל מי שמזין להיזהר</button>
+    <button class="opt">מוסיפים עמודת הערות וכותבים בה ״כפול״</button>
+    <button class="opt">מגדירים אילוץ ייחודיות על משימה ושבוע, כך שהמסד עצמו דוחה כפילות</button>
+    <div class="why">הנכונה היא השלישית. כלל שהמסד אוכף עובד גם כשמישהו מפספס, והוא נבדק בכל הוספה. בקשה להיזהר ועמודת הערות לא עוצרות כלום. נשאר לחשוב מה נחשב ״אותה שורה״: כאן, משימה ושבוע. ואם מותר כמה חשבוניות בשבוע, צריך לשמור גם מספר חשבונית.</div>
+  </div>
+
+  <div class="teach"><b>🎓 למרצה:</b> לפני הסימולציה לשאול: ״כמה שילמנו עד היום?״ ולתת להם לחשב בשאילתה אחת על המסד המלוכלך. אחר כך מריצים את הבדיקות. נקודת עצירה: מי מוחק את היתום, ומי חותם על ההחלטה.</div>
+
+  <script>(function(){FL.dom(function(){
+    var box=FL.$('[data-id="p6-sim-dq"]');if(!box)return;var out=FL.$('.out',box);
+    var DIRTY="INSERT INTO costs VALUES (9, 8, 5400); INSERT INTO costs VALUES (99, 7, 7500); INSERT INTO costs VALUES (6, 13, 3000); INSERT INTO costs VALUES (4, 6, NULL)";
+    var CONTROL=462150;
+    var CK=[
+      {k:'dup',name:'כפילות',q:"SELECT task_id, week, amount, COUNT(*) AS n FROM costs GROUP BY task_id, week, amount HAVING COUNT(*) > 1",fix:"DELETE FROM costs WHERE rowid = (SELECT MAX(rowid) FROM costs WHERE task_id = 9 AND week = 8)"},
+      {k:'nul',name:'ערך חסר',q:"SELECT rowid, task_id, week FROM costs WHERE amount IS NULL",fix:"DELETE FROM costs WHERE amount IS NULL"},
+      {k:'imp',name:'ערך בלתי אפשרי',q:"SELECT rowid, task_id, week, amount FROM costs WHERE week > 8 OR amount <= 0",fix:"DELETE FROM costs WHERE week > 8"},
+      {k:'orp',name:'יתום',q:"SELECT c.rowid, c.task_id, c.week, c.amount FROM costs c LEFT JOIN tasks t ON t.id = c.task_id WHERE t.id IS NULL",fix:"DELETE FROM costs WHERE task_id = 99"},
+      {k:'rec',name:'התאמה בין שני מקורות',q:"SELECT (SELECT SUM(amount) FROM costs) AS all_costs, (SELECT SUM(c.amount) FROM costs c JOIN tasks t ON t.id = c.task_id) AS joined_to_tasks, (SELECT SUM(amount) FROM costs) - (SELECT SUM(c.amount) FROM costs c JOIN tasks t ON t.id = c.task_id) AS difference",fix:null}
+    ];
+    var ran={},applied=[];
+    function pre(){return DIRTY+(applied.length?'; '+applied.join('; '):'');}
+    function run(c){try{var r=FL.exec(pre()+'; '+c.q,'proj');return r||{columns:[],values:[]};}catch(e){return{columns:['error'],values:[[e.message]]};}}
+    function bad(c,r){if(c.k==='rec'){return r.values.length&&Math.abs(r.values[0][2])>0.001;}return r.values.length>0;}
+    function render(){
+      var m=P6.metrics(pre());
+      var h='<div class="kpis"><div class="kpi '+(Math.abs(m.spent-CONTROL)<1?'g':'r')+'"><b>'+P6.nis(m.spent)+'</b><span>הוצאה לפי הטבלה (ש״ח)</span></div><div class="kpi"><b>'+P6.nis(CONTROL)+'</b><span>סכום ביקורת מהנהלת החשבונות</span></div><div class="kpi '+(Math.abs(m.spent-CONTROL)<1?'g':'a')+'"><b>'+P6.f1(m.pm)+'%</b><span>מהתקציב (640,000 ש״ח)</span></div></div>';
+      h+='<div class="tw"><table class="p6-tbl"><tr><th>בדיקה</th><th>שאילתה</th><th>מצב</th><th>פעולה</th></tr>';
+      var allGreen=true;
+      CK.forEach(function(c){
+        var r=ran[c.k]?run(c):null,st='na',txt='טרם הורצה';
+        if(r){st=bad(c,r)?'no':'ok';txt=st==='no'?(c.k==='rec'?'פער':r.values.length+' שורות'):'נקי';}
+        if(st!=='ok')allGreen=false;
+        h+='<tr><td><b>'+c.name+'</b></td><td><code style="font-size:.74rem;white-space:pre-wrap;display:block">'+FL.esc(c.q)+'</code></td><td><span class="p6-c '+st+'">'+txt+'</span></td><td><button class="p6-btn" data-run="'+c.k+'">הרצת בדיקה</button>'+(c.fix&&st==='no'?'<button class="p6-btn g" data-fix="'+c.k+'">תיקון</button><code style="font-size:.72rem;display:block">'+FL.esc(c.fix)+'</code>':'')+'</td></tr>';
+        if(r&&st==='no'){h+='<tr><td colspan="4"><div class="res" style="margin:0;direction:ltr">'+FL.tableHTML(r)+'</div></td></tr>';}
+      });
+      h+='</table></div>';
+      if(allGreen&&Math.abs(m.spent-CONTROL)<1){h+='<div class="p6-verdict g">כל הבדיקות נקיות והסכום מתאים לסכום הביקורת. עכשיו אפשר לדווח: שולם '+P6.f1(m.pm)+'% מהתקציב.</div>';FL.done('p6-sim-dq');}
+      else if(Object.keys(ran).length)h+='<div class="p6-verdict y">הסכום שמופיע למעלה עדיין לא נקי. כל מספר שיצא בדוח עכשיו הוא דעה.</div>';
+      h+='<p><button class="p6-btn g" data-reset="1">איפוס</button></p>';
+      out.innerHTML=h;
+    }
+    box.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+      if(b.dataset.run){ran[b.dataset.run]=true;}
+      if(b.dataset.fix){var c=CK.filter(function(x){return x.k===b.dataset.fix;})[0];applied.push(c.fix);}
+      if(b.dataset.reset){ran={};applied=[];}
+      render();});
+    P6.ready(render);
+  });})();</script>
+</section>
+
+<section class="sec" id="s6-4" data-t="שלושה מספרים">
+  <div class="sec-h"><div class="sec-n">4</div><h2>שלושה מספרים במשפט אחד</h2></div>
+  <p class="lead">יבגני שואל את אלון: ״אנחנו בסדר?״ אלון עונה: ״הכול בשליטה, אנחנו ב-90%״. 90% של מה? של הזמן, של הכסף או של העבודה? שלושת המספרים האלה לא חייבים להיות שווים, והפער ביניהם הוא כל הסיפור.</p>
+
+  <p>תחשבו על נסיעה של 12 שעות. אחרי 8 שעות עבר שני שלישים מהזמן. אם הדלק שנשרף כבר מגיע לשלושה רבעים, והדרך שעברתם היא רק חצי, מבינים שיש בעיה, גם אם כל מספר לבד נראה בסדר. בפרויקט אלה שלושת המדדים:</p>
+  <div class="cols3">
+    <div class="card"><h4>⏱️ זמן</h4><p>כמה שבועות עברו: שבוע 8 מתוך 12, כלומר 66.7%.</p></div>
+    <div class="card"><h4>💰 כסף</h4><p>כמה מהתקציב שולם: 462,150 מתוך 640,000, כלומר 72.2%.</p></div>
+    <div class="card"><h4>🔧 עבודה</h4><p>כמה מהעבודה בוצעה, כשמתחשבים בגודל של כל משימה: 57.3%.</p></div>
+  </div>
+
+  <div class="defline"><b>אחוז ביצוע משוקלל:</b> לוקחים את אחוז הביצוע של כל משימה, מכפילים בתקציב שלה, מסכמים, ומחלקים בתקציב הכולל. דוגמה: משימה של 1,000 ש״ח שהושלמה ומשימה של 99,000 ש״ח שעוד לא התחילה הן יחד 1% ביצוע, ולא 50%.</div>
+  <div class="defline"><b>שווי העבודה שבוצעה:</b> כמה שווה, בשקלים, העבודה שכבר נעשתה, לפי התקציב המקורי שלה. כאן: 367,000 ש״ח. אנשי מקצוע קוראים לזה ״ערך מזוכה״ (earned value). את הרעיון ראינו ב<a href="../lecture14-2.html">שיעור על מדידה ובקרה</a>.</div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-weighted" data-title="ממוצע פשוט מול משוקלל" data-ordered="0">
+    <div class="q-src">הציגו שני מספרים, מעוגלים לספרה אחת אחרי הנקודה: <code>simple</code>, הממוצע הרגיל של <code>pct_done</code> על פני כל 12 המשימות, ו-<code>weighted</code>, הממוצע המשוקלל לפי התקציב.</div>
+    <pre class="start">SELECT ROUND(AVG(pct_done), 1) AS simple,
+       -- השלימו: אחוז הביצוע המשוקלל לפי budget
+FROM tasks</pre>
+    <pre class="check">SELECT ROUND(AVG(pct_done), 1) AS simple, ROUND(100.0 * SUM(budget * pct_done / 100.0) / SUM(budget), 1) AS weighted FROM tasks</pre>
+    <pre class="solution">SELECT ROUND(AVG(pct_done), 1) AS simple,
+       ROUND(100.0 * SUM(budget * pct_done / 100.0) / SUM(budget), 1) AS weighted
+FROM tasks</pre>
+    <ol class="hints"><li>שווי העבודה של משימה הוא <code>budget * pct_done / 100.0</code>.</li><li>מסכמים את השווי, מחלקים בסך התקציב, וכופלים ב-100.</li></ol>
+    <div class="why-src">הממוצע הרגיל הוא 50.8% והמשוקלל 57.3%. הממוצע הרגיל מתייחס לבדיקות של 45,000 ש״ח כאילו הן שוות לשרת של 110,000. המשוקלל נותן לכל משימה משקל לפי הכסף שמושקע בה, ולכן אותו משווים לכסף ששולם.</div>
+  </div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-three" data-title="שלושה מספרים בשאילתה אחת" data-ordered="0">
+    <div class="q-src">כתבו שאילתה אחת שמחזירה שלוש עמודות, כולן מעוגלות לספרה אחת אחרי הנקודה: <code>pct_money</code> (כמה מהתקציב שולם), <code>pct_time</code> (שבוע 8 מתוך 12) ו-<code>pct_work</code> (הביצוע המשוקלל).</div>
+    <pre class="start">SELECT ROUND(100.0 * (SELECT SUM(amount) FROM costs) / SUM(budget), 1) AS pct_money,
+       -- זמן: 8 מתוך 12
+       -- עבודה משוקללת
+FROM tasks</pre>
+    <pre class="check">SELECT ROUND(100.0 * (SELECT SUM(amount) FROM costs) / SUM(budget), 1) AS pct_money, ROUND(100.0 * 8 / 12, 1) AS pct_time, ROUND(100.0 * SUM(budget * pct_done / 100.0) / SUM(budget), 1) AS pct_work FROM tasks</pre>
+    <pre class="solution">SELECT ROUND(100.0 * (SELECT SUM(amount) FROM costs) / SUM(budget), 1) AS pct_money,
+       ROUND(100.0 * 8 / 12, 1) AS pct_time,
+       ROUND(100.0 * SUM(budget * pct_done / 100.0) / SUM(budget), 1) AS pct_work
+FROM tasks</pre>
+    <ol class="hints"><li>את הכסף לוקחים מטבלת העלויות בתת-שאילתה, כדי לא לחבר את שתי הטבלאות ולא להכפיל שורות.</li><li>הזמן לא נמצא בטבלה: זה פשוט 8 חלקי 12.</li></ol>
+    <div class="why-src">התוצאה: 72.2%, 66.7%, 57.3%. ואפשר לומר את זה במשפט אחד: ״עבר 67% מהזמן, שולם 72% מהתקציב, ובוצע 57% מהעבודה״. הכסף מוביל, הזמן אחריו, והעבודה מאחור. כך יודעים בשורה אחת שהפרויקט גם מאחר וגם יקר.</div>
+  </div>
+
+  <div class="sim" data-id="p6-sim-three"><div class="sh">שלושת המספרים, חיים מהמסד</div>
+    <label class="p6-ck"><input type="checkbox" id="p6-three-simple"> לחשב ביצוע כממוצע רגיל של אחוזי המשימות, במקום משוקלל</label>
+    <div class="out"></div>
+  </div>
+
+  <div class="mk mk-phone"><div class="notch"></div><div class="mk-body">
+    <p style="margin:0;font-size:.74rem;color:#64748b;direction:rtl;text-align:right">הדמיה סכמטית · הודעת סטטוס שבועית ליבגני</p>
+    <div style="direction:rtl;text-align:right;margin-top:8px;font-size:.88rem;line-height:1.5">
+      <b>שבוע 8 מתוך 12</b><br>
+      עבר 67% מהזמן, שולם 72% מהתקציב, ובוצע 57% מהעבודה.<br>
+      <span class="p6-pill" style="background:#fee2e2;color:#991b1b">מאחרים ויקרים</span><br>
+      <span style="color:#64748b">הסיכון הגדול: עיכוב בשרת ה-API.<br>צריך להחליט: להקטין תכולה או להזיז מועד.</span>
+    </div>
+  </div></div>
+
+  <h3>עקומת S: תכנון, מציאות ושווי העבודה</h3>
+  <p>הגרף הבא מראה את שלושת המספרים הכספיים לאורך הזמן. <b>התכנון המצטבר</b> מחושב מהתקציב של כל משימה, בהנחה שהיא מתקדמת באותו קצב בכל שבוע שלה. <b>ההוצאה המצטברת</b> היא סכום העלויות בפועל. <b>שווי העבודה</b> הוא הנקודה הירוקה. כל הקווים מחושבים עכשיו בשאילתות על המסד.</p>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-planned" data-title="עקומת התכנון בשאילתה" data-ordered="0">
+    <div class="q-src">לכל שבוע מ-1 עד 12, חשבו את התכנון המצטבר בשקלים: סכום, על פני כל המשימות, של <code>budget</code> כפול החלק שאמור להיות גמור עד אותו שבוע. החלק הוא <code>MIN(אורך המשימה, MAX(0, שבוע - start_week + 1))</code> חלקי אורך המשימה. עגלו לשקל והציגו <code>week</code> ו-<code>planned</code>.</div>
+    <pre class="start">WITH RECURSIVE w(n) AS (
+  SELECT 1 UNION ALL SELECT n + 1 FROM w WHERE n &lt; 12
+)
+SELECT n AS week,
+       0 AS planned  -- החליפו בסכום המצטבר
+FROM w, tasks
+GROUP BY n</pre>
+    <pre class="check">WITH RECURSIVE w(n) AS (SELECT 1 UNION ALL SELECT n + 1 FROM w WHERE n &lt; 12) SELECT n AS week, ROUND(SUM(budget * MIN(end_week - start_week + 1, MAX(0, n - start_week + 1)) * 1.0 / (end_week - start_week + 1))) AS planned FROM w, tasks GROUP BY n</pre>
+    <pre class="solution">WITH RECURSIVE w(n) AS (
+  SELECT 1 UNION ALL SELECT n + 1 FROM w WHERE n &lt; 12
+)
+SELECT n AS week,
+       ROUND(SUM(budget * MIN(end_week - start_week + 1, MAX(0, n - start_week + 1)) * 1.0
+                 / (end_week - start_week + 1))) AS planned
+FROM w, tasks
+GROUP BY n</pre>
+    <ol class="hints"><li><code>FROM w, tasks</code> מכפיל כל שבוע בכל משימה, וכאן זה בדיוק מה שצריך.</li><li>כפלו ב-<code>1.0</code> כדי שהחילוק לא יהיה שלם.</li></ol>
+    <div class="why-src">כאן יש חיבור בלי תנאי ON, בכוונה: מכפלה של שבועות ומשימות, כדי לקבל שורה לכל זוג. בשבוע 8 התכנון המצטבר הוא 464,250, ובשבוע 12 הוא 640,000, הסכום המלא. שימו לב שזה מודל פשוט: הוא לא יודע שלמשימות אמיתיות יש קצב לא אחיד.</div>
+  </div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-actualcum" data-title="הוצאה מצטברת לפי שבוע" data-ordered="0">
+    <div class="q-src">הציגו לכל שבוע שיש בו עלויות את סכום ההוצאה באותו שבוע ואת ההוצאה המצטברת עד אליו. עמודות: <code>week</code>, <code>spent</code>, <code>cumulative</code>.</div>
+    <pre class="start">SELECT week, SUM(amount) AS spent
+-- הוסיפו עמודת סכום מצטבר
+FROM costs
+GROUP BY week</pre>
+    <pre class="check">SELECT week, SUM(amount) AS spent, SUM(SUM(amount)) OVER (ORDER BY week) AS cumulative FROM costs GROUP BY week</pre>
+    <pre class="solution">SELECT week,
+       SUM(amount) AS spent,
+       SUM(SUM(amount)) OVER (ORDER BY week) AS cumulative
+FROM costs
+GROUP BY week</pre>
+    <ol class="hints"><li>סכום מצטבר הוא <dfn data-d="חישוב שרץ על קבוצת שורות קשורות, בלי לצמצם אותן לשורה אחת">פונקציית חלון</dfn>: <code>SUM(...) OVER (ORDER BY week)</code>.</li><li>הסכום הפנימי הוא סכום השבוע, והחיצוני מצטבר על פני השבועות.</li></ol>
+    <div class="why-src">ההוצאה המצטברת בשבוע 8 היא 462,150. ב-PostgreSQL וב-BigQuery הפקודה זהה. כך בונים כל גרף של ״סך הכול עד היום״.</div>
+  </div>
+
+  <div class="sim" data-id="p6-sim-scurve"><div class="sh">עקומת S חיה</div>
+    <div class="p6-ctrl">
+      <label class="p6-ck"><input type="checkbox" data-l="plan" checked> תכנון מצטבר</label>
+      <label class="p6-ck"><input type="checkbox" data-l="act" checked> הוצאה בפועל</label>
+      <label class="p6-ck"><input type="checkbox" data-l="earn" checked> שווי העבודה שבוצעה</label>
+      <label class="p6-ck"><input type="checkbox" data-l="fc"> תחזית (הסעיף הבא)</label>
+    </div>
+    <div class="out"></div>
+  </div>
+
+  <div class="box meaning"><p>ההוצאה בפועל (462,150) כמעט זהה לתכנון עד היום (464,250). מי שבודק רק ״הוצאנו לפי התוכנית?״ יגיד שהכול בסדר. אבל שווי העבודה הוא 367,000. שילמנו כמעט כמו שתכננו, וקיבלנו בערך 79% ממה שתכננו לקבל. כסף שיצא זה עוד לא ביצוע. בגלל זה מודדים שלושה דברים ולא אחד.</p></div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-fanout" data-title="התקציב שהוכפל" data-ordered="0">
+    <div class="q-src">מנהל חיבר משימות לעלויות כדי להציג לכל שלב תקציב והוצאה. יצא לו סך תקציב של 1,890,000 ולא 640,000, ושלב ההפעלה (<code>rollout</code>) נעלם. תקנו: לכל שלב הציגו <code>phase</code>, <code>budget</code> ו-<code>spent</code> (0 לשלב בלי הוצאות).</div>
+    <pre class="start">SELECT t.phase, SUM(t.budget) AS budget, SUM(c.amount) AS spent
+FROM tasks t
+JOIN costs c ON c.task_id = t.id
+GROUP BY t.phase</pre>
+    <pre class="check">WITH s AS (SELECT task_id, SUM(amount) AS spent FROM costs GROUP BY task_id) SELECT t.phase, SUM(t.budget) AS budget, COALESCE(SUM(s.spent), 0) AS spent FROM tasks t LEFT JOIN s ON s.task_id = t.id GROUP BY t.phase</pre>
+    <pre class="solution">WITH s AS (
+  SELECT task_id, SUM(amount) AS spent
+  FROM costs
+  GROUP BY task_id
+)
+SELECT t.phase,
+       SUM(t.budget) AS budget,
+       COALESCE(SUM(s.spent), 0) AS spent
+FROM tasks t
+LEFT JOIN s ON s.task_id = t.id
+GROUP BY t.phase</pre>
+    <ol class="hints"><li>לכל משימה יש כמה שורות עלות (אחת לכל שבוע), ולכן חיבור ישיר מכפיל את התקציב שלה בכל שורה.</li><li>סכמו את העלויות לשורה אחת למשימה לפני החיבור, בתת-שאילתה או ב-<dfn data-d="שאילתה זמנית עם שם, שמגדירים בראש הפקודה ואפשר להשתמש בה אחר כך">CTE</dfn>.</li><li>כדי לשמור שלבים בלי הוצאות, חברו עם LEFT JOIN ועטפו ב-COALESCE.</li></ol>
+    <div class="why-src">זו אותה <dfn data-d="מצב שבו חיבור מכפיל שורות, ולכן סכום יוצא גדול מהאמת">בועת הכפלה</dfn> (fan-out) מחלק 2: משימה עם חמש שורות עלות הכפילה את התקציב שלה פי חמישה. התיקון הוא לצמצם את הצד ״הרבים״ לשורה אחת לפני החיבור. ובדיקת שפיות פשוטה: סך התקציב חייב להישאר 640,000. ההוצאה לפי שלב: 44,800, 327,950, 84,000, 0 ו-5,400, ויחד 462,150.</div>
+  </div>
+
+  <div class="box real"><p>בלוחות בקרה בכלי BI ובכלי ניהול פרויקטים רואים בדרך כלל את אותם שלושה צירים: לוח זמנים, עלות וכמה בוצע. כשבונים אותם מכמה טבלאות, הבעיה הכי נפוצה היא בדיוק החיבור שמכפיל. כלי מוכן לא יתפוס את זה בשבילכם, ולכן גם בכלי מוכן בודקים שהסך הכול שווה למספר שאתם מכירים.</p></div>
+
+  <div class="box think" data-id="p6-th-ninety">
+    <p>אלון אומר ״אנחנו ב-90%״. אילו שתי שאלות תשאלו אותו כדי להבין מה המספר באמת מודד?</p>
+    <div class="ans">שואלים ״90% של מה, ומשוקלל לפי מה?״, כדי לדעת אם זה ממוצע רגיל של משימות או לפי תקציב. ושואלים ״מה בדיוק נשאר, וכמה ימים זה ייקח?״, כי ה-10% האחרונים של משימה הם לפעמים הכי ארוכים. אחוז בלי מכנה הוא הערכה. רשימה של מה שנשאר היא מדידה.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-three" data-a="3"><p class="qq">שולם 72% מהתקציב, עבר 67% מהזמן, ובוצע 57% מהעבודה. איזה משפט נכון?</p>
+    <button class="opt">הפרויקט בשליטה, כי 72% ו-67% קרובים</button>
+    <button class="opt">הפרויקט מתקדם יפה, כי הוצאנו כסף בקצב טוב</button>
+    <button class="opt">הפרויקט מאחר ויקר: שילמנו יותר ממה שבוצע, ועבר יותר זמן ממה שבוצע</button>
+    <div class="why">הנכונה היא השלישית. משווים את העבודה שבוצעה לכסף ולזמן. מה שחשוב זה לא שהכסף והזמן קרובים אחד לשני, אלא שהם שניהם רחוקים מהעבודה. ״הוצאנו כסף בקצב טוב״ מבלבל בין פעילות לבין תוצאה.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-weight" data-a="1"><p class="qq">בפרויקט יש שתי משימות: אחת של 1,000 ש״ח שהושלמה, ואחת של 99,000 ש״ח שעוד לא התחילה. מה אחוז הביצוע המשוקלל?</p>
+    <button class="opt">1%</button>
+    <button class="opt">50%</button>
+    <button class="opt">99%</button>
+    <div class="why">הנכונה היא 1%: שווי העבודה שבוצעה הוא 1,000 מתוך 100,000. ממוצע רגיל של 100% ו-0% היה נותן 50% ומטעה לגמרי. 99% מבלבל בין המשקל של המשימה הגדולה לבין הביצוע שלה.</div>
+  </div>
+
+  <div class="teach"><b>🎓 למרצה:</b> לפני העקומה לשאול: ״אם הוצאנו כמעט כמו שתכננו, למה אנחנו בבעיה?״ לתת להם רגע לחשוב, ואז להפעיל את שווי העבודה. הנקודה: ״מתחת לתקציב״ יכולה להיות חדשה רעה.</div>
+
+  <script>(function(){FL.dom(function(){
+    var box=FL.$('[data-id="p6-sim-three"]');if(box){var out=FL.$('.out',box);
+    P6.ready(function(){
+      var m=P6.metrics();
+      function bar(lb,v,c){return '<div class="p6-bar"><span class="lb">'+lb+'</span><div class="tr"><i style="width:'+Math.min(100,v)+'%;background:'+c+'"></i></div><span class="v">'+P6.f1(v)+'%</span></div>';}
+      function render(){
+        var simple=FL.$('#p6-three-simple').checked,w=simple?(m.tasks.reduce(function(s,t){return s+t.pct_done;},0)/m.tasks.length):m.pw;
+        var late=m.pt-w>3,cost=m.pm-w>3,v=late&&cost?['r','מאחר ויקר: שילמנו יותר ממה שבוצע, ועבר יותר זמן ממה שבוצע']:late?['y','מאחר, אבל העלות מתיישבת עם העבודה']:cost?['y','בלוח הזמנים אבל יקר']:['g','במסלול'];
+        out.innerHTML=bar('זמן',m.pt,'#6366f1')+bar('כסף',m.pm,'#ef4444')+bar('עבודה',w,'#10b981')+'<p class="p6-big" style="font-size:1.1rem;margin-top:8px">עבר '+Math.round(m.pt)+'% מהזמן, שולם '+Math.round(m.pm)+'% מהתקציב, ובוצע '+Math.round(w)+'% מהעבודה.</p><div class="p6-verdict '+v[0]+'">'+v[1]+(simple?'. שימו לב: ממוצע פשוט מתעלם מגודל המשימות ולכן נותן מספר אחר, '+P6.f1(w)+'% במקום '+P6.f1(m.pw)+'%.':'')+'</div>';
+        FL.done('p6-sim-three');
+      }
+      FL.$('#p6-three-simple').addEventListener('change',render);render();
+    });}
+
+    var sb=FL.$('[data-id="p6-sim-scurve"]');if(sb){var so=FL.$('.out',sb);
+    P6.ready(function(){
+      var m=P6.metrics();var cum=P6.rows('SELECT week, SUM(SUM(amount)) OVER (ORDER BY week) AS c FROM costs GROUP BY week');
+      var fc=P6.forecast(m,{});
+      var Wd=560,Ht=330,L=64,R=14,T=16,Bm=36,pw=Wd-L-R,ph=Ht-T-Bm,XM=14,YM=850000;
+      function X(w){return L+pw*w/XM;}function Y(v){return T+ph*(1-v/YM);}
+      var on={plan:true,act:true,earn:true,fc:false};
+      function render(){
+        var s='<svg class="p6-svg" viewBox="0 0 '+Wd+' '+Ht+'" role="img" aria-label="עקומת S של הפרויקט">';
+        for(var v=0;v<=800000;v+=200000){s+='<line x1="'+L+'" x2="'+(Wd-R)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="#e2e8f0"/><text x="'+(L-6)+'" y="'+(Y(v)+5)+'" text-anchor="end" font-size="15" fill="#64748b">'+(v/1000)+'K</text>';}
+        for(var w=0;w<=14;w+=2){s+='<text x="'+X(w)+'" y="'+(Ht-12)+'" text-anchor="middle" font-size="15" fill="#64748b">'+w+'</text>';}
+        s+='<line x1="'+L+'" x2="'+(Wd-R)+'" y1="'+Y(m.budget)+'" y2="'+Y(m.budget)+'" stroke="#94a3b8" stroke-dasharray="6 5"/><text x="'+(L+6)+'" y="'+(Y(m.budget)-6)+'" font-size="14" fill="#64748b">640K</text>';
+        s+='<line x1="'+X(8)+'" x2="'+X(8)+'" y1="'+T+'" y2="'+(T+ph)+'" stroke="#ef4444" stroke-dasharray="4 4"/>';
+        if(on.plan){var pts=[];for(var k=0;k<=12;k++)pts.push(X(k)+','+Y(P6.planned(m.tasks,k)));s+='<polyline points="'+pts.join(' ')+'" fill="none" stroke="#4f46e5" stroke-width="3"/>';}
+        if(on.act){var p2=[X(0)+','+Y(0)];cum.forEach(function(r){p2.push(X(r.week)+','+Y(r.c));});s+='<polyline points="'+p2.join(' ')+'" fill="none" stroke="#ef4444" stroke-width="3"/>';}
+        if(on.earn){s+='<circle cx="'+X(8)+'" cy="'+Y(m.earned)+'" r="8" fill="#10b981" stroke="#fff" stroke-width="2"/>';}
+        if(on.fc){s+='<line x1="'+X(8)+'" y1="'+Y(m.spent)+'" x2="'+X(fc.end)+'" y2="'+Y(fc.cost)+'" stroke="#7c3aed" stroke-width="3" stroke-dasharray="7 5"/><circle cx="'+X(fc.end)+'" cy="'+Y(fc.cost)+'" r="7" fill="#7c3aed"/>';}
+        s+='</svg>';
+        var legend='<div class="p6-row"><span class="chip b">תכנון מצטבר</span><span class="chip r">הוצאה בפועל</span><span class="chip g">שווי עבודה</span><span class="chip" style="background:#ede9fe;color:#5b21b6">תחזית</span><span class="p6-note">ציר אופקי: שבוע. אנכי: אלפי ש״ח.</span></div>';
+        var k='<div class="kpis"><div class="kpi"><b>'+P6.nis(m.planned)+'</b><span>תוכנן לשלם עד היום</span></div><div class="kpi r"><b>'+P6.nis(m.spent)+'</b><span>שולם בפועל</span></div><div class="kpi g"><b>'+P6.nis(m.earned)+'</b><span>שווי העבודה שבוצעה</span></div></div>';
+        so.innerHTML=legend+s+k+'<p>שילמנו '+P6.nis(m.spent)+' ש״ח וקיבלנו עבודה בשווי '+P6.nis(m.earned)+' ש״ח. הפער בין מה ששולם למה שבוצע הוא '+P6.nis(m.spent-m.earned)+' ש״ח.</p>';
+      }
+      sb.addEventListener('change',function(e){var l=e.target.dataset.l;if(l){on[l]=e.target.checked;render();FL.done('p6-sim-scurve');}});
+      render();
+    });}
+  });})();</script>
+</section>
+
+<section class="sec" id="s6-5" data-t="תחזית ורמזור">
+  <div class="sec-h"><div class="sec-n">5</div><h2>תחזית ורמזור: מתי מתערבים</h2></div>
+  <p class="lead">יבגני לא שואל ״כמה אחוז״. הוא שואל ״מתי תסיימו וכמה זה יעלה לי?״ ובשבוע 8 התכנון (שבוע 12, 640,000 ש״ח) כבר לא מחזיק. צריך תחזית, וצריך דרך להחליט מתי היא מספיק גרועה כדי להתערב.</p>
+
+  <div class="defline"><b>תחזית (forecast):</b> הערכה של מתי וכמה נגמור, לפי הקצב שראינו עד היום, אם שום דבר לא ישתנה. דוגמה: נסעתם 100 ק״מ בשעתיים, נשארו 150 ק״מ, ובקצב הזה זה עוד שלוש שעות.</div>
+  <p>שלושה מספרים מהמסד מספיקים: שווי העבודה שבוצעה (367,000), כמה שבועות עברו (8), וכמה שולם (462,150). מהם מחשבים קצב ועלות לכל שקל של עבודה.</p>
+  <div class="tw"><table class="p6-tbl">
+    <tr><th>מה מחשבים</th><th>איך</th><th>אצלנו</th></tr>
+    <tr><td>קצב</td><td>שווי העבודה שבוצעה לחלק לשבועות שעברו</td><td><bdi dir="ltr">367,000 / 8 = 45,875</bdi> בשבוע</td></tr>
+    <tr><td>עלות לכל שקל של עבודה</td><td>מה ששולם לחלק לשווי העבודה שבוצעה</td><td><bdi dir="ltr">462,150 / 367,000 = 1.26</bdi></td></tr>
+    <tr><td>נשאר לבצע</td><td>תקציב פחות שווי העבודה שבוצעה</td><td><bdi dir="ltr">640,000 - 367,000 = 273,000</bdi></td></tr>
+    <tr><td>סיום צפוי</td><td>השבוע הנוכחי ועוד מה שנשאר לחלק בקצב (עם האצה, אם יש)</td><td><bdi dir="ltr">8 + 273,000 / 45,875 = 13.95</bdi></td></tr>
+    <tr><td>עלות צפויה</td><td>מה ששולם ועוד מה שנשאר כפול העלות לכל שקל (עם חיסכון, אם יש)</td><td><bdi dir="ltr">462,150 + 273,000 * 1.26 = 805,929</bdi></td></tr>
+  </table></div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-forecast" data-title="תחזית בשאילתה" data-ordered="0">
+    <div class="q-src">חשבו בשאילתה אחת את <code>end_week</code> (שבוע הסיום הצפוי) ואת <code>cost</code> (העלות הצפויה), בהנחה שהקצב והעלות לכל שקל נשארים כמו עד היום. השבוע הנוכחי הוא 8. אין צורך בעיגול.</div>
+    <pre class="start">WITH m AS (
+  SELECT (SELECT SUM(amount) FROM costs) AS spent,
+         SUM(budget * pct_done / 100.0) AS earned,
+         SUM(budget) AS budget
+  FROM tasks
+)
+SELECT 0 AS end_week,  -- חשבו
+       0 AS cost       -- חשבו
+FROM m</pre>
+    <pre class="check">WITH m AS (SELECT (SELECT SUM(amount) FROM costs) AS spent, SUM(budget * pct_done / 100.0) AS earned, SUM(budget) AS budget FROM tasks) SELECT 8 + (budget - earned) / (earned / 8.0) AS end_week, spent + (budget - earned) * spent / earned AS cost FROM m</pre>
+    <pre class="solution">WITH m AS (
+  SELECT (SELECT SUM(amount) FROM costs) AS spent,
+         SUM(budget * pct_done / 100.0) AS earned,
+         SUM(budget) AS budget
+  FROM tasks
+)
+SELECT 8 + (budget - earned) / (earned / 8.0) AS end_week,
+       spent + (budget - earned) * spent / earned AS cost
+FROM m</pre>
+    <ol class="hints"><li>הקצב הוא <code>earned / 8.0</code>. מה שנשאר הוא <code>budget - earned</code>.</li><li>שבועות שנשארו: מה שנשאר לחלק לקצב. מוסיפים לשבוע 8.</li><li>עלות צפויה: מה ששולם, ועוד מה שנשאר כפול <code>spent / earned</code>.</li></ol>
+    <div class="why-src">הפרויקט צפוי להסתיים בערך בשבוע 14 (13.95), ולעלות בערך 805,900 ש״ח, כלומר כ-166,000 מעל התקציב. התחזית היא לא נבואה: היא מראה לאן מגיעים אם ממשיכים בדיוק כמו עד היום. היא נקודת מוצא להשוואה בין חלופות.</div>
+  </div>
+
+  <div class="sim" data-id="p6-sim-forecast"><div class="sh">מה צריך לקרות כדי לחזור לתכנון?</div>
+    <p class="p6-note">הזיזו את המחוונים. האצה היא תוספת בקצב (למשל עוד אנשים). חיסכון הוא ירידה בעלות לכל שקל של עבודה שנשארה.</p>
+    <div class="p6-ctrl"><label>האצה בקצב: <b class="n" id="p6-f-sv">0</b>% <input type="range" id="p6-f-s" min="0" max="100" value="0"></label>
+      <label>חיסכון בעלות: <b class="n" id="p6-f-vv">0</b>% <input type="range" id="p6-f-v" min="0" max="30" value="0"></label>
+      <button class="p6-btn g" id="p6-f-need">הציבו את ההאצה שצריך כדי לסיים בשבוע 12</button></div>
+    <div class="out"></div>
+  </div>
+
+  <div class="box meaning"><p>המחוון מראה שאפשר לסגור את פער הזמן עם האצה של כמעט 50% בקצב. אבל פער העלות לא נסגר, כי האצה לבד לא מורידה את העלות לכל שקל של עבודה. כדי לחזור גם לתקציב צריך להקטין את מה שנשאר לבצע, כלומר להחליט על תכולה. על זה בסעיף על החלטות. ועוד כמה כללים לתחזית טובה: מחשבים אותה כל שבוע, מציגים אותה ליד התכנון, ולא משנים אותה ביד כדי שתיראה טוב יותר.</p></div>
+
+  <h3>רמזור: מתי מתערבים</h3>
+  <div class="defline"><b>מדד (KPI):</b> מספר שאם הוא משתנה, מישהו צריך לעשות משהו. דוגמה: ״כמה משימות מאחרות ב-20 נקודות או יותר״. אם הוא קופץ מ-1 ל-4, יושבים ומטפלים.</div>
+  <div class="defline"><b>סף (threshold):</b> הערך שבו מדד עובר מירוק לצהוב, ומצהוב לאדום. דוגמה: פער של 8 נקודות בין כסף לעבודה הוא צהוב, ופער של 15 הוא אדום.</div>
+  <p>רמזור בלי סף מוסכם הוא סתם קישוט. את הספים קובעים מראש, מנהל הפרויקט יחד עם נותן החסות, ולא אחרי שרואים את המספר ורוצים שייראה טוב. כלל נוסף: לוח בקרה טוב עונה על שאלה אחת, ״צריך להתערב או לא?״. לכן הוא קטן.</p>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-exposure" data-title="חשיפה לסיכון" data-ordered="1">
+    <div class="q-src">לכל סיכון בטבלה יש חומרה וסבירות (1 עד 5). הציגו את <code>title</code> ואת <code>exposure</code>, שהיא חומרה כפול סבירות, מהגבוה לנמוך.</div>
+    <pre class="start">SELECT title, severity * probability AS exposure
+FROM risks
+-- הוסיפו מיון</pre>
+    <pre class="check">SELECT title, severity * probability AS exposure FROM risks ORDER BY exposure DESC, id</pre>
+    <pre class="solution">SELECT title, severity * probability AS exposure
+FROM risks
+ORDER BY exposure DESC, id</pre>
+    <ol class="hints"><li>ORDER BY מקבל גם שם של עמודה מחושבת.</li><li>שני סיכונים שווים בחשיפה 12. מיון שני לפי <code>id</code> נותן סדר קבוע.</li></ol>
+    <div class="why-src">הראשון הוא ״עיכוב בשרת ה-API״ בחשיפה 16, ואחריו שני סיכונים בחשיפה 12. חשיפה היא סתם מספר מחושב שאפשר למיין ולשים עליו סף.</div>
+  </div>
+
+  <div class="sim" data-id="p6-sim-board"><div class="sh">לוח בקרה עם ספים שאפשר לשנות</div>
+    <p class="p6-note">כל שורה היא מדד שחושב עכשיו מהמסד. שנו את ספי הצהוב והאדום, וראו איך הצבע משתנה בלי שהמספר זז. אחר כך לחצו על משבצת במפה כדי לראות איזה סיכונים יש בה.</p>
+    <div class="out"></div>
+  </div>
+
+  <div class="box real"><p>בכלי <dfn data-d="כלים שמציגים נתונים כגרפים וכלוחות, כמו Looker Studio ו-Tableau">BI</dfn> כמו Looker Studio ו-Tableau אפשר לצבוע מספר לפי סף שהגדרתם (עיצוב מותנה). גם בניטור של מערכות תוכנה זה אותו רעיון, והסף נקבע מראש: זמן תגובה מעל ערך מסוים נצבע באדום. בכל הכלים השאלה החשובה היא לא איך מציירים רמזור, אלא מי קבע את הסף ומה עושים כשהוא נדלק.</p></div>
+
+  <div class="box think" data-id="p6-th-threshold">
+    <p>הפער בין כסף לעבודה הוא 14.9 נקודות. הסף האדום הוא 15, אז הרמזור צהוב. מישהו מציע להוריד את הסף האדום ל-14 ״כדי להיות זהירים״. מה תשאלו קודם?</p>
+    <div class="ans">מי קבע את הסף, ומתי. ספים שמסכימים עליהם מראש מונעים מצב שבו מזיזים אותם כדי שהצבע יתאים לתחושה. אם משנים סף, עושים את זה בהחלטה שנרשמת, לא בכל שבוע. והמטרה היא שהצבע יגרום לפעולה שסיכמנו עליה. אם אין פעולה מוגדרת לצבע האדום, הרמזור לא עוזר.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-forecast" data-a="2"><p class="qq">התחזית אומרת שבוע 14 במקום 12. מה המנוף הכי חזק?</p>
+    <button class="opt">להוסיף שעות נוספות לכל הצוות בלי להגדיר על מה</button>
+    <button class="opt">לשנות את היקף העבודה שנשארה (להקטין תכולה), או את המועד, כי אלה שני הדברים שמזיזים את המספרים באמת</button>
+    <button class="opt">להעריך מחדש את התקציב כדי שהתחזית תיראה טוב יותר</button>
+    <div class="why">הנכונה היא השנייה. בתחזית יש שני דברים: מה שנשאר לבצע, והקצב. קשה לשנות קצב בשבוע, אז מה שנשאר לבצע והמועד שמוכנים לקבל הם המנופים האמיתיים. שעות נוספות בלי יעד לא מבטיחות קצב גבוה יותר. ושינוי מספרים כדי שייראו טוב לא משנה את המציאות.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-light" data-a="1"><p class="qq">מה ההבדל בין רמזור לקישוט?</p>
+    <button class="opt">לרמזור יש ספים שסיכמנו עליהם מראש ופעולה מוגדרת לכל צבע</button>
+    <button class="opt">לרמזור יש שלושה צבעים, לקישוט צבע אחד</button>
+    <button class="opt">רמזור מחושב אוטומטית, קישוט קובעים ביד</button>
+    <div class="why">הנכונה היא הראשונה. אפשר לחשב רמזור אוטומטית ועדיין שיהיה קישוט, אם אף אחד לא הסכים מה הסף ומה עושים כשהוא נדלק. מספר הצבעים לא משנה. מה שחשוב זה ההסכמה מראש.</div>
+  </div>
+
+  <div class="teach"><b>🎓 למרצה:</b> לבקש מכל אחד לבחור, לפני שרואים, סף אדום לפער בין כסף לעבודה, ואז להראות שהפער 14.9 נמצא ממש ליד כל סף הגיוני. זה מחזק את הנקודה: קובעים ספים מראש, כי בדיעבד תמיד אפשר להצדיק צבע.</div>
+
+  <script>(function(){FL.dom(function(){
+    var fb=FL.$('[data-id="p6-sim-forecast"]');
+    if(fb){var fo=FL.$('.out',fb);
+      P6.ready(function(){
+        var m=P6.metrics(),base=P6.forecast(m,{});var need=Math.round((P6.forecast(m,{}).rem/(base.rate*(P6.TOT-P6.W))-1)*1000)/10;
+        function render(){
+          var sp=+FL.$('#p6-f-s').value,sv=+FL.$('#p6-f-v').value;FL.$('#p6-f-sv').textContent=sp;FL.$('#p6-f-vv').textContent=sv;
+          var f=P6.forecast(m,{speed:sp/100,save:sv/100});
+          var lateW=f.end-12,over=f.cost-m.budget;
+          var pos=function(w){return Math.min(100,w/16*100);};
+          fo.innerHTML='<div class="kpis"><div class="kpi '+(lateW>0.05?'r':'g')+'"><b>שבוע '+P6.f1(f.end)+'</b><span>סיום צפוי (תכנון: 12)</span></div><div class="kpi '+(over>1?'r':'g')+'"><b>'+P6.nis(f.cost)+'</b><span>עלות צפויה (תקציב: '+P6.nis(m.budget)+')</span></div><div class="kpi a"><b>'+P6.f1(need)+'%</b><span>האצה הדרושה לסיום בשבוע 12</span></div></div>'
+            +'<div class="p6-bar"><span class="lb">ציר זמן</span><div class="tr" style="position:relative"><i style="width:'+pos(8)+'%;background:#6366f1"></i><span style="position:absolute;left:'+pos(12)+'%;top:0;bottom:0;width:3px;background:#0f172a"></span><span style="position:absolute;left:'+pos(f.end)+'%;top:-3px;bottom:-3px;width:5px;background:#ef4444;border-radius:3px"></span></div><span class="v">0 עד 16</span></div>'
+            +'<p class="p6-note">הפס הכחול הוא שבוע 8, הקו השחור הוא שבוע 12 (התכנון), והסימון האדום הוא הסיום הצפוי.</p>'
+            +'<p>קצב נוכחי: '+P6.nis(base.rate)+' ש״ח בשבוע. עלות בפועל לכל שקל של עבודה: '+(Math.round(base.cpw*100)/100)+'. נשאר לבצע: '+P6.nis(base.rem)+' ש״ח.</p>';
+          if(sp>0||sv>0)FL.done('p6-sim-forecast');
+        }
+        FL.$('#p6-f-s').addEventListener('input',render);FL.$('#p6-f-v').addEventListener('input',render);
+        FL.$('#p6-f-need').addEventListener('click',function(){FL.$('#p6-f-s').value=Math.ceil(need);render();});
+        render();
+      });}
+
+    var bb=FL.$('[data-id="p6-sim-board"]');
+    if(bb){var bo=FL.$('.out',bb);
+      P6.ready(function(){
+        var m=P6.metrics(),f=P6.forecast(m,{});
+        var behind=m.tasks.filter(function(t){return t.behind>=20;}).length;
+        var topExp=m.risks[0].exposure;
+        var K=[
+          {k:'gap',n:'פער בין כסף לעבודה (נקודות)',v:m.gap,fmt:P6.f1,y:8,r:15},
+          {k:'tgap',n:'פער בין זמן לעבודה (נקודות)',v:m.tgap,fmt:P6.f1,y:5,r:10},
+          {k:'late',n:'משימות שמאחרות ב-20 נקודות או יותר',v:behind,fmt:String,y:1,r:3},
+          {k:'risk',n:'החשיפה הגבוהה ביותר בסיכונים',v:topExp,fmt:String,y:10,r:15},
+          {k:'delay',n:'איחור צפוי בסיום (שבועות)',v:f.end-12,fmt:P6.f1,y:1,r:3},
+          {k:'over',n:'חריגה צפויה מהתקציב (%)',v:100*(f.cost-m.budget)/m.budget,fmt:P6.f1,y:5,r:15}
+        ];
+        var DEF=K.map(function(x){return[x.y,x.r];}),sel=null;
+        function heat(){
+          var yy=K[3].y,rr=K[3].r;var h='<div class="p6-heat"><div></div>';
+          for(var p=1;p<=5;p++)h+='<div class="p6-hl">'+p+'</div>';
+          for(var s=5;s>=1;s--){h+='<div class="p6-hl">'+s+'</div>';
+            for(var p2=1;p2<=5;p2++){var n=m.risks.filter(function(r){return r.severity===s&&r.probability===p2;}).length,e=s*p2,c=P6.lamp(e,yy,rr);
+              h+='<div class="p6-hc '+c+((sel&&sel[0]===s&&sel[1]===p2)?' sel':'')+'" data-s="'+s+'" data-p="'+p2+'">'+(n||'')+'</div>';}}
+          h+='</div><p class="p6-note">שורות: חומרה (5 למעלה). עמודות: סבירות. הצבע נקבע לפי ספי המדד ״החשיפה הגבוהה ביותר״.</p>';
+          if(sel){var li=m.risks.filter(function(r){return r.severity===sel[0]&&r.probability===sel[1];});
+            h+='<div class="out"><b>חומרה '+sel[0]+' כפול סבירות '+sel[1]+' שווה חשיפה '+(sel[0]*sel[1])+'.</b> '+(li.length?li.map(function(r){return '״'+FL.esc(r.title)+'״ ('+FL.esc(r.owner)+')';}).join(' · '):'אין סיכונים במשבצת הזו.')+'</div>';}
+          return h;}
+        function render(){
+          var worst='g',reds=0;
+          var h='<div class="tw"><table class="p6-tbl"><tr><th>מדד</th><th>ערך</th><th>סף צהוב</th><th>סף אדום</th><th>רמזור</th></tr>';
+          K.forEach(function(x){var c=P6.lamp(x.v,x.y,x.r);if(c==='r')reds++;if(c==='r'||(c==='y'&&worst!=='r'))worst=c;
+            h+='<tr><td>'+x.n+'</td><td><b>'+x.fmt(x.v)+'</b></td><td><input type="number" style="width:64px" data-k="'+x.k+'" data-t="y" value="'+x.y+'"></td><td><input type="number" style="width:64px" data-k="'+x.k+'" data-t="r" value="'+x.r+'"></td><td><span class="lamp '+c+'"></span></td></tr>';});
+          h+='</table></div>';
+          var msg={g:['g','כל המדדים ירוקים: אין צורך בהתערבות.'],y:['y','יש מדדים צהובים: עוקבים ומכינים תגובה.'],r:['r','יש '+reds+' מדדים אדומים: נדרשת התערבות והחלטה בוועדת ההיגוי.']}[worst];
+          h+='<div class="p6-verdict '+msg[0]+'">'+msg[1]+'</div><p><button class="p6-btn g" id="p6-b-reset">איפוס ספים</button></p>';
+          h+=heat();
+          bo.innerHTML=h;
+        }
+        bb.addEventListener('change',function(e){var i=e.target;if(i.dataset.k){var x=K.filter(function(q){return q.k===i.dataset.k;})[0];x[i.dataset.t]=+i.value;render();FL.done('p6-sim-board');}});
+        bb.addEventListener('click',function(e){var c=e.target.closest('.p6-hc');if(c){sel=[+c.dataset.s,+c.dataset.p];render();FL.done('p6-sim-board');}
+          if(e.target.id==='p6-b-reset'){K.forEach(function(x,i){x.y=DEF[i][0];x.r=DEF[i][1];});sel=null;render();}});
+        render();
+      });}
+  });})();</script>
+</section>
+
+<section class="sec" id="s6-6" data-t="AI כותב, אדם חותם">
+  <div class="sec-h"><div class="sec-n">6</div><h2>ה-AI כותב את הדוח, ואתם חותמים</h2></div>
+  <p class="lead">ביום חמישי אלון צריך להכין דוח סטטוס לוועדת ההיגוי. הנתונים כבר מוכנים, ויש לו כלי AI שכותב בעברית טובה תוך שניות. השאלה היא לא אם להשתמש בו. השאלה היא מה בודקים לפני שחותמים.</p>
+
+  <div class="defline"><b>דוח סטטוס:</b> מסמך קצר שמגיע כל שבוע ואומר מה המצב במספרים, מה הסיכון הגדול ומה ההחלטה שמבקשים מהוועדה. דוגמה: שלוש שורות, ובכל אחת מספר שאפשר לבדוק.</div>
+  <p>התהליך נראה ככה: שולפים את הנתונים בשאילתות, מכניסים לפרומפט, ה-AI כותב טיוטה, אדם בודק, ורק אז חותמים. מי שחותם אחראי לדוח. לא ה-AI. את ההיגיון הזה כבר ראינו ב<a href="../lecture14-3.html">שיעור על AI, התראות והחלטות</a>.</p>
+
+  <div class="anim" data-id="p6-anim-status" data-speed="3000">
+    <div class="stage"><svg viewBox="0 0 800 250" role="img" aria-label="תהליך דוח הסטטוס: נתונים, פרומפט, טיוטה, ביקורת, חתימה">
+      <defs><marker id="st-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker><marker id="st-ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0f766e"/></marker></defs><g data-s="1" data-pulse><rect x="668" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#0369a1" stroke-width="3"/><text x="724.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#0369a1">נתונים</text><text x="724.0" y="112" text-anchor="middle" font-size="14" fill="#334155">שאילתות על המסד</text></g><g data-s="2"><path d="M664 93.0 L638 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#st-ar)"/></g><g data-s="2" data-pulse><rect x="518" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#7c3aed" stroke-width="3"/><text x="574.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#7c3aed">פרומפט</text><text x="574.0" y="112" text-anchor="middle" font-size="14" fill="#334155">ארבעה חלקים</text></g><g data-s="3"><path d="M514 93.0 L488 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#st-ar)"/></g><g data-s="3" data-pulse><rect x="368" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#b45309" stroke-width="3"/><text x="424.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#b45309">טיוטה</text><text x="424.0" y="112" text-anchor="middle" font-size="14" fill="#334155">ה-AI מנסח</text></g><g data-s="4"><path d="M364 93.0 L338 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#st-ar)"/></g><g data-s="4" data-pulse><rect x="218" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#be123c" stroke-width="3"/><text x="274.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#be123c">ביקורת</text><text x="274.0" y="112" text-anchor="middle" font-size="14" fill="#334155">אדם בודק</text></g><g data-s="5"><path d="M214 93.0 L188 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#st-ar)"/></g><g data-s="5" data-pulse><rect x="68" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#0f766e" stroke-width="3"/><text x="124.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#0f766e">חתימה</text><text x="124.0" y="112" text-anchor="middle" font-size="14" fill="#334155">אלון אחראי</text></g><g data-s="6"><path d="M724.0 140 C724.0 200 124.0 200 124.0 140" stroke="#0f766e" stroke-width="3" stroke-dasharray="7 6" fill="none" marker-end="url(#st-ar2)"/><text x="400" y="224" text-anchor="middle" font-size="16" font-weight="800" fill="#0f766e">גיבוי: הלוח והשאילתות נשארים מקור האמת</text></g><circle r="11" cx="724.0" cy="156" fill="#d8b862" stroke="#142a45" stroke-width="2" data-move="1:0,0|2:-150,0|3:-300,0|4:-450,0|5:-600,0|6:-600,0"/>
+    </svg></div>
+    <ol class="caps">
+      <li>נתונים: הבדיקות מהסעיפים הקודמים רצות ומחזירות את שלושת המספרים, את המשימות המאחרות, את הסיכונים ואת התחזית.</li>
+      <li>פרומפט: ארבעה חלקים (הקשר, משימה, אילוצים ופורמט), והנתונים עצמם מצורפים בסוף. ה-AI רואה רק מה ששלחתם לו.</li>
+      <li>טיוטה: המודל כותב. הוא לא ״יודע״ מה נכון, הוא כותב טקסט שנשמע הגיוני לפי מה שקיבל.</li>
+      <li>ביקורת: אדם עובר על הטיוטה: מספרים מול המסד, סיבות מול מקור, וטון מול המציאות.</li>
+      <li>חתימה: אלון חותם ושולח. אם משהו בדוח שגוי, זה באחריותו.</li>
+      <li>גיבוי: אם ה-AI לא זמין או טועה, שולחים את הלוח עם שלושה משפטים בכתב יד. הנתונים והשאילתות הם מקור האמת, לא הטיוטה.</li>
+    </ol>
+  </div>
+
+  <h3>שלוש מלכודות שחוזרות בכל דוח כזה</h3>
+  <div class="cols3">
+    <div class="card"><h4>🎭 המצאה</h4><p>המודל מוסיף סיבה, מספר או עובדה בביטחון מלא, כי משפט כזה נשמע טבעי. בסוף חלק 5 ראינו איך מזהים את זה.</p></div>
+    <div class="card"><h4>🗑️ נתונים לא נקיים</h4><p>זבל נכנס, זבל יוצא. אם הסכום מנופח בגלל כפילות, הדוח המנוסח יפה יציג את אותו מספר מנופח בשפה יפה.</p></div>
+    <div class="card"><h4>🤝 הסכמת יתר</h4><p>המודל נוטה לרכך בשורות רעות ולכתוב ״מתקדם כמתוכנן״. צריך לתת לו רשות מפורשת להיות ישיר.</p></div>
+  </div>
+
+  <h3>כותבים את הפרומפט: ארבעה חלקים ונתונים חיים</h3>
+  <p>הפרומפט למטה בנוי כאן, בזמן אמת: ההקשר, המשימה והפורמט כבר כתובים, ואתם כותבים את האילוצים. גוש הנתונים נשלף עכשיו ממסד הפרויקט. כל אילוץ נבדק מול ארבעה סימנים של פרומפט שמצמצם את המלכודות.</p>
+
+  <div class="sim" data-id="p6-sim-prompt"><div class="sh">בונים פרומפט לדוח סטטוס</div>
+    <label><b>הקשר</b><textarea id="p6-pc" class="mine" style="width:100%;min-height:54px;border:1px solid #cbd5e1;border-radius:10px;padding:8px;font:inherit">אני מנהל הפרויקט של מערכת ההזמנות של מסעדת יבגני. הנה נתוני הפרויקט נכון להיום, כפי שנשלפו ממסד הנתונים.</textarea></label>
+    <label><b>משימה</b><textarea id="p6-pt" class="mine" style="width:100%;min-height:54px;border:1px solid #cbd5e1;border-radius:10px;padding:8px;font:inherit">כתוב דוח סטטוס שבועי לוועדת ההיגוי: מצב כללי, תקציב, לוח זמנים, שלושת הסיכונים המובילים, והחלטה אחת שאני מבקש מהוועדה.</textarea></label>
+    <label><b>אילוצים (את זה אתם כותבים)</b><textarea id="p6-pk" class="mine" placeholder="למשל: על מה מותר לו להסתמך, מה אסור לו להמציא, ומה לעשות כשחסר מידע" style="width:100%;min-height:74px;border:1px solid #cbd5e1;border-radius:10px;padding:8px;font:inherit"></textarea></label>
+    <p><button class="p6-btn g" id="p6-pex">להכניס אילוץ לדוגמה</button></p>
+    <label><b>פורמט</b><textarea id="p6-pf" class="mine" style="width:100%;min-height:54px;border:1px solid #cbd5e1;border-radius:10px;padding:8px;font:inherit">עברית, עד 8 שורות, בנקודות קצרות. בסוף שורה נפרדת שמתחילה במילים ״החלטה נדרשת:״.</textarea></label>
+    <div class="out"></div>
+  </div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-top3" data-title="שלושת הסיכונים לדוח" data-ordered="0">
+    <div class="q-src">בפרומפט יש שלושה סיכונים מובילים. כתבו את השאילתה שמחזירה אותם: <code>title</code> ו-<code>exposure</code> (חומרה כפול סבירות), שלושת הסיכונים עם החשיפה הכי גבוהה.</div>
+    <pre class="start">SELECT title, severity * probability AS exposure
+FROM risks
+-- השלימו מיון והגבלה</pre>
+    <pre class="check">SELECT title, severity * probability AS exposure FROM risks ORDER BY exposure DESC LIMIT 3</pre>
+    <pre class="solution">SELECT title, severity * probability AS exposure
+FROM risks
+ORDER BY exposure DESC
+LIMIT 3</pre>
+    <ol class="hints"><li>קודם ממיינים מהגבוה לנמוך, ואחר כך חותכים.</li></ol>
+    <div class="why-src">התוצאה: עיכוב בשרת ה-API (16), חריגה מתקציב פיתוח (12) ודרישות חדשות מהמסעדה (12). ככה נותנים ל-AI נתון שאפשר לבדוק. אם המודל כותב ״הסיכון המרכזי הוא אבטחת מפתחות״, מריצים שוב את השאילתה ורואים שהוא טעה.</div>
+  </div>
+
+  <h3>הביקורת: שלוש דקות עם עט אדום</h3>
+  <p>הנה טיוטה שכלי AI כתב לדוח של שבוע 8. היא נראית מקצועית. הנתונים שבדקנו: הוצאה 462,150 ש״ח (72%), ביצוע 57%, זמן 67%, שתי משימות מסומנות באיחור, סיכון מוביל בחשיפה 16 (עיכוב בשרת ה-API), תחזית שבוע 14 ועלות של כ-805,900 ש״ח. סמנו את המשפטים שאסור שיצאו לוועדה, ואז בדקו.</p>
+
+  <div class="sim" data-id="p6-sim-audit"><div class="sh">ביקורת על טיוטה של AI</div>
+    <div class="out"></div>
+  </div>
+
+  <div class="box try" data-id="p6-try-status">
+    <ol>
+      <li>בנו את הפרומפט בבונה שלמעלה, ודאו שיש לפחות שלושה סימנים ירוקים, והעתיקו אותו.</li>
+      <li>הדביקו בכלי AI לבחירתכם. הנתונים כאן בדויים. בארגון אמיתי לא מדביקים נתונים רגישים בכלי ציבורי בלי אישור.</li>
+      <li>עברו על התשובה בשלוש בדיקות. סמנו כל מספר ובדקו אותו מול המסד. סמנו כל ״כי״ ושאלו מאיפה ה-AI יודע. ובדקו אם השורה הראשונה והאחרונה מרככות.</li>
+    </ol>
+    <p class="tools"><a class="tool" href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a><a class="tool" href="https://aistudio.google.com" target="_blank" rel="noopener">AI Studio</a></p>
+  </div>
+
+  <h3>פרקליט השטן, ועוד סיכון בטבלה</h3>
+  <p>עוד דבר ששווה לבקש מה-AI: שיתנגד. תגידו לו במפורש שאתם רוצים ביקורת ולא נימוס.</p>
+  <pre class="prompt">שחק פרקליט השטן. על סמך אותם נתונים: אילו שני סיכונים חשובים חסרים בטבלת הסיכונים שלי? ואיזו הערכת סבירות בטבלה נראית לך אופטימית מדי לאור הנתונים? היה ביקורתי וישיר, אל תסכים איתי רק כדי לרצות.</pre>
+  <p>אצלנו ״חריגה מתקציב פיתוח״ מוגדר בסבירות 3, אבל חמש משימות כבר חרגו מהתקציב שלהן. אם ה-AI יצביע על זה, הוא צודק, ואפשר לאמת בשאילתה. עכשיו תוסיפו לטבלה סיכון שעלה בדיון.</p>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-addrisk" data-title="הוספת סיכון לטבלה" data-ordered="0" data-require="INSERT" data-require-msg="הפקודה צריכה להיות INSERT.">
+    <pre class="show">SELECT COUNT(*) AS risks, MAX(severity * probability) AS top_exposure, SUM(severity * probability) AS total_exposure FROM risks</pre>
+    <div class="q-src">הוסיפו סיכון חדש בשם חופשי (למשל ״אין זמן להדרכת המלצרים״) עם חומרה 3, סבירות 4, אחראי מספר 1 (אלון) וסטטוס <code>open</code>. אחרי הפקודה צריכים להיות 9 סיכונים.</div>
+    <pre class="start">INSERT INTO risks (title, severity, probability, owner_id, status)
+VALUES ('...', 0, 0, 0, 'open')</pre>
+    <pre class="check">INSERT INTO risks (title, severity, probability, owner_id, status) VALUES ('אין זמן להדרכת המלצרים', 3, 4, 1, 'open')</pre>
+    <pre class="solution">INSERT INTO risks (title, severity, probability, owner_id, status)
+VALUES ('אין זמן להדרכת המלצרים', 3, 4, 1, 'open')</pre>
+    <ol class="hints"><li>מחליפים את הערכים בשורת VALUES לפי הסדר של העמודות.</li><li>לא צריך לכתוב <code>id</code>, הוא נוצר לבד.</li></ol>
+    <div class="why-src">הסיכון נכנס בחשיפה 12, וסך החשיפות עלה ל-91. שימו לב להבדל בין ״מה ה-AI אמר?״ ל״מה נכנס לטבלה?״. רק מה שאתם מכניסים משנה את מקור האמת, ולכן את ההכנסה עושים ביד ובאחריות שלכם.</div>
+  </div>
+
+  <div class="box trap"><p>דוח שכתוב יפה משכנע יותר מדוח שכתוב גרוע, גם כשהוא שגוי. לכן בודקים תוכן ולא סגנון. אם משפט נשמע טוב, זו עוד לא הוכחה שהוא נכון.</p></div>
+
+  <div class="box meaning"><p>אין צורך להחליט ״סומכים על ה-AI״ או ״לא סומכים עליו״. בונים תהליך: כל מספר בטיוטה נבדק מול המסד, כל סיבה מול מקור, ואדם בודק לפני חתימה. ככה ה-AI חוסך את זמן הכתיבה, והבקרה נשארת אצלכם. הזמן שנחסך הוא בשביל ההחלטות: מה לדחות, למי להתקשר ומה להגיד לוועדה.</p></div>
+
+  <div class="box real"><p>ארגונים שמשתמשים במודלי שפה לדוחות עושים בדרך כלל שלושה דברים: מחברים את המודל לנתונים מסודרים במקום להדביק טקסט, בודקים אוטומטית שכל מספר בטיוטה באמת מופיע בנתונים, ומשאירים אדם שמאשר. בבתי דין כבר נקבע, במקרים מתועדים, שארגון אחראי למה שהצ׳אט שלו מפרסם. כשרוצים שזה ירוץ כל שבוע, השרת מריץ את השאילתות, שולח אותן למודל עם מפתח ששמור במשתנה סביבה (כמו שלמדנו בחלק 3), ושולח את הטיוטה לאישור.</p></div>
+
+  <div class="box think" data-id="p6-th-ai">
+    <p>ה-AI כתב ״ההאטה נובעת מעומס בצוות הבקאנד״. בנתונים שנתתם לו אין שום מידע על עומס. מה עושים עם המשפט? ואם הוא במקרה נכון, זה משנה?</p>
+    <div class="ans">מוחקים אותו, או מסמנים ״לא מופיע בנתונים״. גם אם הוא נכון, בדוח צריך להיות רק מה שיש לו מקור, ומי שחותם צריך להיות מסוגל להגיד מאיפה הוא יודע. אפשר להפוך את המשפט לשאלה למנהל הצוות. ״נכון במקרה״ זה לא הוכחה.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-halluc" data-a="1"><p class="qq">ה-AI כתב ״הפיגור נובע משביתה אצל ספק הענן״. בנתונים אין שום מידע על זה. איך קוראים לכשל הזה?</p>
+    <button class="opt">המצאה (hallucination): הוא הוסיף סיבה שאין לה מקור</button>
+    <button class="opt">חוסר הקשר: לא נתנו לו מספיק נתונים, אז זו לא אשמתו</button>
+    <button class="opt">הסכמת יתר: הוא רצה לרצות את המשתמש</button>
+    <div class="why">הנכונה היא הראשונה. הוא כתב סיבה שלא קיימת בנתונים, בביטחון מלא. אפשר לטעון שחסר הקשר, אבל הפתרון הוא לא להוסיף נתונים אלא לאסור המצאה ולדרוש ״לא מופיע בנתונים״. הסכמת יתר היא נטייה לרכך בשורות רעות, וזה לא המקרה כאן.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-sign" data-a="3"><p class="qq">מי אחראי לדוח סטטוס שנכתב בעזרת AI ונשלח לוועדה?</p>
+    <button class="opt">ספק הכלי, כי הוא יצר את הטקסט</button>
+    <button class="opt">אף אחד, כי זו טיוטה אוטומטית</button>
+    <button class="opt">מי שחתם ושלח אותו</button>
+    <div class="why">הנכונה היא השלישית. הדוח הוא של מי ששלח אותו, ולכן הביקורת היא חלק מהעבודה ולא תוספת. כלי AI הוא עוזר בניסוח. הוא לא חותם על עובדות.</div>
+  </div>
+
+  <div class="teach"><b>🎓 למרצה:</b> בביקורת על הטיוטה כדאי לתת לסטודנטים לסמן לבד ורק אחר כך לבדוק. אחרי כל משפט לשאול: ״איך הייתם בודקים את זה בשאילתה?״ נקודת עצירה: משפט שנכון בעובדות אבל מטעה בהקשר (״אין צורך בהחלטות״). האם זו טעות או סתם ניסוח?</div>
+
+  <script>(function(){FL.dom(function(){
+    var pb=FL.$('[data-id="p6-sim-prompt"]');
+    if(pb){var po=FL.$('.out',pb);
+      P6.ready(function(){
+        var m=P6.metrics(),f=P6.forecast(m,{});
+        var L=['פרויקט: מערכת ההזמנות של יבגני. שבוע '+m.week+' מתוך '+m.total+'.','תקציב כולל: '+P6.nis(m.budget)+' ש״ח. הוצאה בפועל: '+P6.nis(m.spent)+' ש״ח ('+P6.f1(m.pm)+'% מהתקציב).','זמן שעבר: '+P6.f1(m.pt)+'%. עבודה שבוצעה (משוקלל לפי תקציב): '+P6.f1(m.pw)+'%.'];
+        m.tasks.filter(function(t){return t.behind>=20;}).forEach(function(t){L.push('משימה שמאחרת: '+t.name+' | אחראי: '+t.owner+' | בוצע: '+t.pct_done+'% | אמור להיות גמור: '+Math.round(t.exp)+'%');});
+        m.risks.slice(0,3).forEach(function(r){L.push('סיכון: '+r.title+' | חומרה '+r.severity+' | סבירות '+r.probability+' | חשיפה '+r.exposure);});
+        L.push('תחזית אם שום דבר לא ישתנה: סיום בשבוע '+P6.f1(f.end)+', עלות '+P6.nis(f.cost)+' ש״ח.');
+        var DATA=L.join('\n');
+        var EX='השתמש אך ורק במספרים ובעובדות שמופיעים בנתונים למטה. אל תמציא סיבות או הסברים. אם חסר מידע, כתוב במפורש ״לא מופיע בנתונים״. אל תרכך: אם הפרויקט באיחור או בחריגה, אמור זאת בשורה הראשונה.';
+        var CH=[['רק מהנתונים',/רק|אך ורק|בלבד/],['אסור להמציא סיבות',/אל תמציא|לא להמציא|אסור להמציא/],['להודות כשחסר מידע',/לא מופיע בנתונים|חסר מידע|אם חסר|אין מידע/],['מותר להיות ישיר',/ישיר|אל תרכך|בלי לרכך|בלי ריכוך/]];
+        var last='';
+        function render(){
+          var c=FL.$('#p6-pk').value.trim();
+          var txt='הקשר: '+FL.$('#p6-pc').value.trim()+'\n\nמשימה: '+FL.$('#p6-pt').value.trim()+'\n\nאילוצים: '+(c||'[כתבו אילוצים]')+'\n\nפורמט: '+FL.$('#p6-pf').value.trim()+'\n\nהנתונים:\n'+DATA;
+          last=txt;var sc=0;
+          var h='<div class="p6-row">'+CH.map(function(x){var ok=x[1].test(c);if(ok)sc++;return '<span class="chip '+(ok?'g':'')+'">'+(ok?'✓ ':'○ ')+x[0]+'</span>';}).join('')+'</div>';
+          h+='<div class="meter"><i style="width:'+(sc*25)+'%"></i></div><p class="p6-note">סימני ביקורת: '+sc+' מתוך 4</p>';
+          h+='<pre style="white-space:pre-wrap;direction:rtl;text-align:right;background:#1e1b4b;color:#e2e8f0;border-radius:12px;padding:12px 14px;font:inherit;font-size:.92rem;line-height:1.6;margin:8px 0">'+FL.esc(txt)+'</pre><button class="p6-btn" id="p6-pcopy">העתקת הפרומפט</button>';
+          po.innerHTML=h;
+          if(sc>=3)FL.done('p6-sim-prompt');
+        }
+        pb.addEventListener('input',render);
+        pb.addEventListener('click',function(e){if(e.target.id==='p6-pex'){FL.$('#p6-pk').value=EX;render();}if(e.target.id==='p6-pcopy'){FL.copyText(last,e.target,'הועתק ✓');}});
+        render();
+      });}
+
+    var ab=FL.$('[data-id="p6-sim-audit"]');
+    if(ab){var ao=FL.$('.out',ab);
+      var S=[
+        {t:'הפרויקט מתקדם באופן כללי כמתוכנן.',bad:true,w:'הסכמת יתר. עבר 67% מהזמן, בוצע 57% מהעבודה, ותחזית הסיום היא שבוע 14. ״כמתוכנן״ אינו נכון.'},
+        {t:'בוצעו 57% מהעבודה לפי משקל התקציב, ונוצלו 72% מהתקציב.',bad:false,w:'נכון ומאומת. 57.3% ביצוע משוקלל ו-72.2% הוצאה, שניהם מהשאילתה של סעיף 4.'},
+        {t:'ההוצאה עד כה היא 520,000 ש״ח, כ-81% מהתקציב.',bad:true,w:'מספר שגוי. ההוצאה היא 462,150 ש״ח, כ-72%. כל מספר בדוח נבדק מול המסד.'},
+        {t:'העיכוב בשרת ה-API נובע מעזיבה זמנית של מפתח בכיר.',bad:true,w:'המצאה. אין בנתונים שום מידע על הסיבה לעיכוב. סיבות אוספים מאנשים ולא מהמודל.'},
+        {t:'שתי משימות מסומנות באיחור: שרת ו-API ואפליקציית הזמנות.',bad:false,w:'נכון. זה בדיוק מה שמופיע בעמודת הסטטוס. (ואפשר להוסיף שהנתונים מראים עוד משימות מאחרות.)'},
+        {t:'הסיכון המרכזי הוא אבטחת מפתחות.',bad:true,w:'קריאה שגויה של הנתונים. לאבטחת מפתחות חשיפה 8. הסיכון המוביל הוא עיכוב בשרת ה-API, בחשיפה 16.'},
+        {t:'אין צורך בהחלטות מיוחדות מוועדת ההיגוי.',bad:true,w:'מטעה. התחזית היא סיום בשבוע 14 ועלות חריגה של כ-166,000 ש״ח, ולכן יש החלטה לקבל: תכולה או מועד.'}
+      ];
+      var sel={},checked=false;
+      function render(){
+        var h='<p class="p6-note">לחצו על כל משפט שאסור שיצא לוועדה בצורתו הנוכחית.</p>';
+        S.forEach(function(s,i){var cl='p6-sent';var show='';
+          if(checked){var ok=!!sel[i]===s.bad;cl+=ok?' right':' wrong';show='<small>'+(ok?'✓ ':'✗ ')+(s.bad?'לא יוצא: ':'יוצא: ')+s.w+'</small>';}
+          else if(sel[i])cl+=' sel';
+          h+='<button class="'+cl+'" data-i="'+i+'">'+(i+1)+'. '+FL.esc(s.t)+show+'</button>';});
+        if(!checked)h+='<p><button class="p6-btn" data-chk="1">בדיקה</button></p>';
+        else{var good=S.filter(function(s,i){return !!sel[i]===s.bad;}).length;h+='<div class="p6-verdict '+(good===7?'g':'y')+'">זיהיתם נכון '+good+' מתוך 7. חמישה משפטים נפסלים ושניים יוצאים. <button class="p6-btn g" data-again="1">שוב</button></div>';}
+        ao.innerHTML=h;
+      }
+      ab.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+        if(b.dataset.i&&!checked){var i=+b.dataset.i;sel[i]=!sel[i];}
+        if(b.dataset.chk){checked=true;FL.done('p6-sim-audit');}
+        if(b.dataset.again){sel={};checked=false;}
+        render();});
+      render();}
+  });})();</script>
+</section>
+
+<section class="sec" id="s6-7" data-t="התראות והחלטות">
+  <div class="sec-h"><div class="sec-n">7</div><h2>מהתראה להחלטה</h2></div>
+  <p class="lead">לוח בקרה עוזר רק אם מישהו מסתכל עליו. אלון לא יכול לפתוח אותו כל שעה, אז צריך שהמספרים יגיעו אליו כשהם עוברים סף. ואחרי שהגיעו, מישהו צריך להחליט מה עושים. שני הדברים האלה סוגרים את הלולאה של הבקרה.</p>
+
+  <h3>התראה: שאילתה, סף ושעון</h3>
+  <div class="defline"><b>התראה (alert):</b> הודעה אוטומטית שנשלחת לאדם מסוים כשמדד עובר סף. יש בה שלושה חלקים: שאילתה, סף ושעון. דוגמה: כל בוקר ב-7:00 בודקים אם יש משימה שמאחרת ב-20 נקודות אחוז או יותר, ושולחים הודעה לאחראי שלה.</div>
+
+  <div class="anim" data-id="p6-anim-alert" data-speed="3000">
+    <div class="stage"><svg viewBox="0 0 800 250" role="img" aria-label="צינור התראה: שאילתה, סף, שעון, הודעה, פעולה">
+      <defs><marker id="al-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker><marker id="al-ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b45309"/></marker></defs><g data-s="1" data-pulse><rect x="668" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#0369a1" stroke-width="3"/><text x="724.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#0369a1">שאילתה</text><text x="724.0" y="112" text-anchor="middle" font-size="14" fill="#334155">משימות מאחרות</text></g><g data-s="2"><path d="M664 93.0 L638 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#al-ar)"/></g><g data-s="2" data-pulse><rect x="518" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#b45309" stroke-width="3"/><text x="574.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#b45309">סף</text><text x="574.0" y="112" text-anchor="middle" font-size="14" fill="#334155">20 נקודות</text></g><g data-s="3"><path d="M514 93.0 L488 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#al-ar)"/></g><g data-s="3" data-pulse><rect x="368" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#7c3aed" stroke-width="3"/><text x="424.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#7c3aed">שעון</text><text x="424.0" y="112" text-anchor="middle" font-size="14" fill="#334155">כל בוקר 07:00</text></g><g data-s="4"><path d="M364 93.0 L338 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#al-ar)"/></g><g data-s="4" data-pulse><rect x="218" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#be123c" stroke-width="3"/><text x="274.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#be123c">הודעה</text><text x="274.0" y="112" text-anchor="middle" font-size="14" fill="#334155">לבעל המשימה</text></g><g data-s="5"><path d="M214 93.0 L188 93.0" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#al-ar)"/></g><g data-s="5" data-pulse><rect x="68" y="60" width="112" height="66" rx="14" fill="#fff" stroke="#0f766e" stroke-width="3"/><text x="124.0" y="88" text-anchor="middle" font-size="17" font-weight="800" fill="#0f766e">פעולה</text><text x="124.0" y="112" text-anchor="middle" font-size="14" fill="#334155">בירור תוך יום</text></g><g data-s="6"><path d="M124.0 140 C124.0 200 574.0 200 574.0 140" stroke="#b45309" stroke-width="3" stroke-dasharray="7 6" fill="none" marker-end="url(#al-ar2)"/><text x="349.0" y="224" text-anchor="middle" font-size="16" font-weight="800" fill="#b45309">כיול חודשי של הספים</text></g><circle r="11" cx="724.0" cy="156" fill="#d8b862" stroke="#142a45" stroke-width="2" data-move="1:0,0|2:-150,0|3:-300,0|4:-450,0|5:-600,0|6:-600,0"/>
+    </svg></div>
+    <ol class="caps">
+      <li>שאילתה: אותה שאילתה שכבר כתבנו, למשל המשימות שמאחרות לפי הנתונים ולא לפי הסטטוס שהוקלד ביד.</li>
+      <li>סף: מתי המספר חשוב מספיק כדי להפריע למישהו. כאן, פיגור של 20 נקודות אחוז או יותר.</li>
+      <li>שעון: מתי בודקים. פעם ביום בבוקר, כל שעה, או כשקורה משהו. בלי שעון אין התראה, יש רק שאילתה.</li>
+      <li>הודעה: מגיעה לאדם אחד ברור, בדרך כלל בעל המשימה, ולא לכולם.</li>
+      <li>פעולה: לכל התראה מוגדרת פעולה. התראה בלי פעולה היא סתם רעש.</li>
+      <li>כיול: פעם בחודש בודקים אילו התראות גרמו לפעולה ואילו התעלמו מהן, ומעדכנים את הספים.</li>
+    </ol>
+  </div>
+
+  <div class="mk mk-term"><div class="mk-bar"><i></i><i></i><i></i><span class="url">הדמיה סכמטית: הרצה יומית של כללי ההתראה</span></div>
+    <div class="mk-body"><span class="p">$</span> python alerts.py
+[07:00] rule gap_money_work  value 14.9   limit 12  ALERT  to: alon, yevgeni
+[07:00] rule task_behind     task 5 (30)  limit 20  ALERT  to: maya, alon
+[07:00] rule task_behind     task 6 (25)  limit 20  ALERT  to: omer, alon
+[07:00] rule task_behind     task 7 (25)  limit 20  ALERT  to: omer, alon
+[07:00] rule task_behind     task 8 (20)  limit 20  ALERT  to: sapir, alon
+[07:00] rule risk_exposure   risk 1 (16)  limit 15  ALERT  to: maya, alon
+[07:00] done: 6 alerts sent</div>
+  </div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-alertq" data-title="שאילתת התראה" data-ordered="0">
+    <div class="q-src">כתבו את השאילתה של הכלל ״משימה שמאחרת״. הציגו משימות שבוצעו בהן פחות מ-100% והן מאחרות לפי התכנון ב-20 נקודות אחוז או יותר (נכון לסוף שבוע 8). עמודות: <code>name</code>, <code>owner</code> (שם האחראי) ו-<code>behind</code>.</div>
+    <pre class="start">WITH x AS (
+  SELECT t.name, m.name AS owner, t.pct_done,
+         ROUND(100.0 * MIN(t.end_week - t.start_week + 1, MAX(0, 8 - t.start_week + 1))
+               / (t.end_week - t.start_week + 1)) AS expected_pct
+  FROM tasks t
+  JOIN team m ON m.id = t.owner_id
+)
+SELECT name, owner, expected_pct - pct_done AS behind
+FROM x
+-- השלימו את התנאי</pre>
+    <pre class="check">WITH x AS (SELECT t.name, m.name AS owner, t.pct_done, ROUND(100.0 * MIN(t.end_week - t.start_week + 1, MAX(0, 8 - t.start_week + 1)) / (t.end_week - t.start_week + 1)) AS expected_pct FROM tasks t JOIN team m ON m.id = t.owner_id) SELECT name, owner, expected_pct - pct_done AS behind FROM x WHERE pct_done &lt; 100 AND expected_pct - pct_done &gt;= 20</pre>
+    <pre class="solution">WITH x AS (
+  SELECT t.name, m.name AS owner, t.pct_done,
+         ROUND(100.0 * MIN(t.end_week - t.start_week + 1, MAX(0, 8 - t.start_week + 1))
+               / (t.end_week - t.start_week + 1)) AS expected_pct
+  FROM tasks t
+  JOIN team m ON m.id = t.owner_id
+)
+SELECT name, owner, expected_pct - pct_done AS behind
+FROM x
+WHERE pct_done &lt; 100
+  AND expected_pct - pct_done &gt;= 20</pre>
+    <ol class="hints"><li>שני תנאים: עוד לא הושלמה, והפער לפחות 20.</li></ol>
+    <div class="why-src">ארבע משימות: שרת ו-API (30), אפליקציית הזמנות (25), ממשק מטבח (25) ולוח מחוונים (20). שתיים מהן מסומנות ידנית ״במסלול״. זו בדיוק התראה שהסטטוס הידני לא היה שולח. והסף 20 הוא החלטה של בני אדם, לא של ה-SQL.</div>
+  </div>
+
+  <div class="sim" data-id="p6-sim-alerts"><div class="sh">מכווננים ספי התראה</div>
+    <p class="p6-note">שלושה כללים רצים כל בוקר. מי מקבל כל התראה נקבע מראש. שנו את הספים וראו מה קורה כשיש יותר מדי התראות, או אפס.</p>
+    <div class="p6-ctrl">
+      <label>פער כסף ועבודה מעל <b class="n" id="p6-al-xv">12</b> נקודות <input type="range" id="p6-al-x" min="0" max="30" value="12"></label>
+      <label>פיגור משימה מעל <b class="n" id="p6-al-yv">20</b> נקודות <input type="range" id="p6-al-y" min="0" max="50" value="20"></label>
+      <label>חשיפת סיכון מעל <b class="n" id="p6-al-zv">15</b> <input type="range" id="p6-al-z" min="0" max="25" value="15"></label>
+    </div>
+    <div class="out"></div>
+  </div>
+
+  <div class="mk mk-phone"><div class="notch"></div><div class="mk-body">
+    <p style="margin:0;font-size:.74rem;color:#64748b;direction:rtl;text-align:right">הדמיה סכמטית · הודעה בטלפון של מיה</p>
+    <div style="direction:rtl;text-align:right;margin-top:8px;background:#fef3c7;border-radius:12px;padding:10px;font-size:.86rem;line-height:1.5">
+      <b>⏰ משימה מאחרת</b><br>״שרת ו-API״: בוצע 70%, לפי התכנון אמור להיות 100%. פער של 30 נקודות.<br><span style="color:#92400e">מה צריך: לעדכן סטטוס ולהעריך מתי נסיים, עד סוף היום.</span>
+    </div>
+  </div></div>
+
+  <div class="box meaning"><p>רשימת ההתראות היא בעצם הסכמה על מה חשוב. לכל כלל יש שאילתה, סף, מקבל ופעולה. כלל בלי מקבל נשכח, כלל בלי פעולה מתעלמים ממנו, וכלל עם סף נמוך מדי מטביע את כל השאר. יש שני כשלים הפוכים: עייפות התראות (כל כך הרבה הודעות שמשתיקים את הערוץ), ושומר ישן (ספים כל כך גבוהים שלא נדלק כלום, גם כשהפרויקט בבעיה).</p></div>
+
+  <div class="box real"><p>מערכות ניטור של תשתיות ושל אפליקציות בנויות בדיוק ככה: כלל, סף ושעון, ויש בהן דרך לנתב את ההתראה לאדם התורן. כלים כמו Grafana ו-PagerDuty עושים את זה. את אותו רעיון אפשר להריץ לבד בכלי פשוט: שאילתה על מסד, ושעון שמריץ אותה (למשל <dfn data-d="הגדרה שמריצה פונקציה אוטומטית בשעה או במרווח קבוע">טריגר מבוסס זמן</dfn> ב-Apps Script) ושולח מייל. יש הרבה מקרים מתועדים שבהם התראה נשלחה בזמן ואף אחד לא קרא אותה, ולכן ההגדרה של מי קורא ומה הוא עושה חשובה כמו הסף.</p></div>
+
+  <div class="box try" data-id="p6-try-alert">
+    <ol>
+      <li>פתחו פרויקט חדש ב-Apps Script.</li>
+      <li>כתבו פונקציה קצרה שמחשבת מספר ומשווה אותו לסף, ושולחת מייל לעצמכם כשהסף נחצה (שירות המיילים של Apps Script).</li>
+      <li>בתפריט הטריגרים (סמל השעון) הוסיפו טריגר מבוסס זמן שמריץ את הפונקציה כל בוקר.</li>
+      <li>תחליטו מראש: מי מקבל את ההודעה, ומה הפעולה שמצפים ממנו לעשות.</li>
+    </ol>
+    <p class="tools"><a class="tool" href="https://script.google.com" target="_blank" rel="noopener">Apps Script</a></p>
+  </div>
+
+  <h3>ההחלטה: מדמים לפני שקובעים</h3>
+  <p>בישיבת ההיגוי התחזית אומרת שבוע 14 ועלות של כ-805,900 ש״ח, מול תכנון של שבוע 12 ו-640,000. יבגני, נותן החסות, צריך להחליט. יש לפניו שלוש אפשרויות ושאלה אחת על המועד. הסימולטור משווה חלופות לפי נתוני הפרויקט. הוא לא בוחר: ההחלטה נשארת של בני אדם.</p>
+
+  <div class="sim" data-id="p6-sim-decide"><div class="sh">סימולטור החלטות</div>
+    <label class="p6-opt"><input type="checkbox" data-o="A"><span><b>א. לדחות את לוח המחוונים למנהל לגרסה 2.</b> זה מוריד 30,000 ש״ח של עבודה שנשארה בלוח, בלי עלות נוספת.</span></label>
+    <label class="p6-opt"><input type="checkbox" data-o="B"><span><b>ב. להוסיף מפתח זמני.</b> עולה 12,000 ש״ח ומאיץ את הקצב ב-25% (ההנחה: יש עלות הטמעה).</span></label>
+    <label class="p6-opt"><input type="checkbox" data-o="C"><span><b>ג. להקדים את בדיקות החיבור של ה-API למסד.</b> עולה 6,000 ש״ח ומורידה את הסבירות של הסיכון המוביל מ-4 ל-2.</span></label>
+    <div class="p6-ctrl"><label>המועד שהוועדה מוכנה לקבל: שבוע <select id="p6-d-t"><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option></select></label></div>
+    <div class="out"></div>
+  </div>
+
+  <div class="box trap"><p>הסימולטור הוא מודל פשוט בכוונה: הוא מניח שהקצב והעלות לכל שקל של עבודה ימשיכו כמו עד היום. הוא לא יודע שמפתח חדש צריך זמן להתאקלם, ולכן ההנחה של 25% היא משהו שאתם יכולים לשנות. המטרה היא להשוות חלופות באותם כללים, לא לנבא את העתיד.</p></div>
+
+  <div class="box meaning"><p>רואים שאף שילוב של שלוש ההחלטות לא מחזיר את הפרויקט גם לשבוע 12 וגם ל-640,000. כלומר, ההחלטה האמיתית היא לא ״איך עומדים בתכנון״ אלא ״איזה חלק מהתכנון מוכנים לשנות״: תכולה, מועד או תקציב. התכולה היא המנוף שבאמת זז. ואחרי שמחליטים, רושמים את ההחלטה ומעדכנים את הטבלאות, כדי שהבקרה תמדוד מול התכנון החדש.</p></div>
+
+  <div class="box think" data-id="p6-th-decide">
+    <p>לפי הסימולטור: איזה שילוב היה מרגיע אתכם אם המועד נשאר 12? ומה אם המועד זז לשבוע 14?</p>
+    <div class="ans">למועד 12 אין שילוב שעומד בו. הכי קרוב מסיים ב-12.2. אם הוועדה מוכנה להזיז למועד 13, אפשר להסתפק בפחות: מפתח זמני לבדו מסיים בשבוע 12.8 ועומד במועד, ודחיית הלוח לבדה (13.3) עדיין לא. ובשבוע 14 הפרויקט עומד בלוח הזמנים אפילו בלי שום החלטה, ונשאר רק הכסף. השאלה היא לא מה אפשר, אלא על מה מוכנים לוותר.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-fatigue" data-a="2"><p class="qq">כל בוקר מגיעות 40 התראות, ואחרי שבוע הצוות משתיק את הערוץ. מה האבחנה?</p>
+    <button class="opt">שומר ישן: הספים גבוהים מדי</button>
+    <button class="opt">עייפות התראות: הספים נמוכים מדי ואין ניתוב לפי אחריות</button>
+    <button class="opt">הכול תקין, הצוות פשוט צריך להקשיב יותר</button>
+    <div class="why">הנכונה היא השנייה. 40 הודעות ביום מלמדות להתעלם מכולן, גם מהחשובה. הפתרון: ספים מכוילים, פעולה לכל התראה ומקבל אחד. ״שומר ישן״ הוא הכשל ההפוך, כשלא נדלקת אף התראה. ומי שמאשים את הצוות מתעלם מזה שהמערכת היא שהכשילה אותו.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-route" data-a="3"><p class="qq">התראה: התחזית מראה חריגה של 26% מהתקציב. למי היא צריכה להגיע?</p>
+    <button class="opt">לכל חברי הצוות, כדי שכולם ידעו</button>
+    <button class="opt">למפתח של המשימה שעודכנה אחרונה</button>
+    <button class="opt">למנהל הפרויקט ולנותן החסות, כי רק הם יכולים להחליט על תכולה או תקציב</button>
+    <div class="why">הנכונה היא השלישית. התראה צריכה להגיע למי שיכול לפעול. חריגה צפויה בתקציב דורשת החלטה על תכולה או על כסף, וזה של מנהל הפרויקט ושל נותן החסות. התראה על משימה מאחרת עוברת לבעלים שלה. שליחה לכולם היא הדרך הקצרה לעייפות התראות.</div>
+  </div>
+
+  <div class="teach"><b>🎓 למרצה:</b> להריץ את הסימולטור בלי לסמן כלום ולשאול: ״מה קורה אם לא מחליטים?״ התשובה בשורת הבסיס: גם ״לא להחליט״ היא החלטה. אחר כך לתת לשלוש קבוצות לבחור שילוב ולהציג נימוק. הנקודה: מי שמחליט הוא האחראי, והסימולטור רק מצמצם ניחושים.</div>
+
+  <script>(function(){FL.dom(function(){
+    var ab=FL.$('[data-id="p6-sim-alerts"]');
+    if(ab){var ao=FL.$('.out',ab);
+      P6.ready(function(){
+        var m=P6.metrics();
+        function render(){
+          var X=+FL.$('#p6-al-x').value,Y=+FL.$('#p6-al-y').value,Z=+FL.$('#p6-al-z').value;
+          FL.$('#p6-al-xv').textContent=X;FL.$('#p6-al-yv').textContent=Y;FL.$('#p6-al-zv').textContent=Z;
+          var A=[];
+          if(m.gap>X)A.push(['💸','פער של '+P6.f1(m.gap)+' נקודות: שולם '+P6.f1(m.pm)+'% מהתקציב ובוצע '+P6.f1(m.pw)+'% מהעבודה','אלון ויבגני (נותן החסות)']);
+          m.tasks.forEach(function(t){if(t.pct_done<100&&t.behind>=Y&&t.behind>0)A.push(['⏰','״'+t.name+'״ מאחרת ב-'+Math.round(t.behind)+' נקודות (בוצע '+t.pct_done+'%, אמור '+Math.round(t.exp)+'%)',t.owner+' ואלון']);});
+          m.risks.forEach(function(r){if(r.exposure>=Z&&r.exposure>0)A.push(['⚠️','סיכון בחשיפה '+r.exposure+': '+r.title,r.owner+' ואלון']);});
+          var n=A.length,v=n===0?['y','שומר ישן: אף כלל לא נדלק למרות שהפרויקט באיחור ובחריגה. הספים גבוהים מדי.']:n<=6?['g','מאוזן: '+n+' התראות, מספר שאדם באמת קורא, ולכל אחת יש מקבל ופעולה.']:['r','עייפות התראות: '+n+' הודעות בבוקר אחד. אחרי שבוע ישתיקו את הערוץ.'];
+          var h='<h4>נדלקו '+n+' התראות</h4><div class="p6-verdict '+v[0]+'">'+v[1]+'</div>';
+          A.forEach(function(a){h+='<div class="p6-alert"><span>'+a[0]+'</span><div>'+FL.esc(a[1])+'<small>נשלח אל: '+FL.esc(a[2])+'</small></div></div>';});
+          ao.innerHTML=h;
+        }
+        ab.addEventListener('input',function(e){if(e.target.type==='range'){render();FL.done('p6-sim-alerts');}});
+        render();
+      });}
+
+    var db=FL.$('[data-id="p6-sim-decide"]');
+    if(db){var dout=FL.$('.out',db);
+      P6.ready(function(){
+        var m=P6.metrics(),t8=m.tasks.filter(function(t){return t.id===8;})[0],cutA=t8.budget*(1-t8.pct_done/100);
+        var base=P6.forecast(m,{});
+        function render(){
+          var A=db.querySelector('[data-o=A]').checked,B=db.querySelector('[data-o=B]').checked,C=db.querySelector('[data-o=C]').checked,T=+FL.$('#p6-d-t').value;
+          var f=P6.forecast(m,{cut:A?cutA:0,speed:B?0.25:0,extra:(B?12000:0)+(C?6000:0)});
+          var top0=m.risks[0],r1=m.risks.map(function(r){return{t:r.title,e:r.severity*((C&&r.id===1)?2:r.probability)};}).sort(function(a,b){return b.e-a.e;})[0];
+          function row(l,a,b){return '<tr><td>'+l+'</td><td>'+a+'</td><td><b>'+b+'</b></td></tr>';}
+          var okT=f.end<=T+0.05,okB=f.cost<=m.budget+1;
+          var h='<div class="tw"><table class="p6-tbl"><tr><th>מדד</th><th>אם לא מחליטים כלום</th><th>עם ההחלטות שסימנתם</th></tr>'
+            +row('סיום צפוי','שבוע '+P6.f1(base.end),'שבוע '+P6.f1(f.end))
+            +row('עלות צפויה (ש״ח)',P6.nis(base.cost),P6.nis(f.cost))
+            +row('חריגה מהתקציב (ש״ח)',P6.nis(base.cost-m.budget),P6.nis(f.cost-m.budget))
+            +row('עמידה במועד היעד (שבוע '+T+')',base.end<=T+0.05?'כן':'לא (איחור של '+P6.f1(base.end-T)+' שבועות)',okT?'כן':'לא (איחור של '+P6.f1(f.end-T)+' שבועות)')
+            +row('הסיכון המוביל',FL.esc(top0.title)+' ('+top0.exposure+')',FL.esc(r1.t)+' ('+r1.e+')')+'</table></div>';
+          var v=okT&&okB?['g','עומד גם במועד וגם בתקציב.']:okT?['y','עומד במועד אבל חורג מהתקציב ב-'+P6.nis(f.cost-m.budget)+' ש״ח. צריך לבקש תוספת תקציב או להקטין עוד תכולה.']:['r','לא עומד במועד שנקבע ('+P6.f1(f.end-T)+' שבועות איחור). נדרשת החלטה על תכולה, מועד או שניהם.'];
+          h+='<div class="p6-verdict '+v[0]+'">'+v[1]+'</div>';
+          dout.innerHTML=h;
+          if(A||B||C)FL.done('p6-sim-decide');
+        }
+        db.addEventListener('change',render);render();
+      });}
+  });})();</script>
+</section>
+
+<section class="sec" id="s6-8" data-t="תוצר מול תוצאה">
+  <div class="sec-h"><div class="sec-n">8</div><h2>עלינו לאוויר. עכשיו, האם זה עבד?</h2></div>
+  <p class="lead">המערכת עלתה. כל מה שהבטחנו נמסר, הבדיקות עברו, והצוות חוגג. שלושה חודשים אחר כך יבגני שואל שאלה שאין בה מילה על מה שנמסר: ״מישהו משתמש בזה? זה עזר לעסק?״</p>
+
+  <div class="defline"><b>תוצר (output):</b> מה שהפרויקט מסר. <b>תוצאה (outcome):</b> מה שהשתנה בעולם בזכות התוצר. דוגמה: מנוי לחדר כושר הוא תוצר, וירידה במשקל היא תוצאה. פרויקט יכול לעמוד בכל היעדים שלו ובכל זאת להיכשל, אם אף אחד לא משתמש במה שנבנה.</div>
+  <div class="defline"><b>אימוץ (adoption):</b> כמה מהאנשים שאמורים להשתמש במערכת באמת משתמשים בה. דוגמה: מתוך שישה מלצרים, כמה מקלידים הזמנות בטאבלט ולא על פתק.</div>
+  <p>בגלל זה קובעים מדד הצלחה לפני הפרויקט ולא אחריו. והמדדים הם תוצאות: איזה חלק מההזמנות עובר במערכת, כמה זמן ההזמנה מגיעה למטבח, כמה טעויות יש. את זה למדנו ב<a href="../lecture14-4.html">שיעור על מה קורה אחרי העלייה לאוויר</a>.</p>
+
+  <h3>קודם כל: הממוצע של מי?</h3>
+  <p>נניח שהאפליקציה של יבגני עלתה בתחילת מרץ. בשלושת החודשים של מסד המסעדה היא קיבלה 42 מתוך 87 הזמנות, כלומר 48.3%. מספר סביר. אבל ממוצע אחד יכול להסתיר מגמה.</p>
+
+  <div class="lab" data-id="p6-lab-appshare" data-title="חלק האפליקציה לפי חודש" data-ordered="1">
+    <div class="q-src">הציגו לכל חודש (<code>month</code> בפורמט <code>2026-03</code>) את אחוז ההזמנות שהגיעו מהאפליקציה (<code>app_pct</code>, מעוגל לספרה אחת).</div>
+    <pre class="start">SELECT strftime('%Y-%m', order_ts) AS month,
+       -- אחוז ההזמנות מהערוץ app
+FROM orders
+GROUP BY month
+ORDER BY month</pre>
+    <pre class="check">SELECT strftime('%Y-%m', order_ts) AS month, ROUND(100.0 * SUM(channel = 'app') / COUNT(*), 1) AS app_pct FROM orders GROUP BY month ORDER BY month</pre>
+    <pre class="solution">SELECT strftime('%Y-%m', order_ts) AS month,
+       ROUND(100.0 * SUM(channel = 'app') / COUNT(*), 1) AS app_pct
+FROM orders
+GROUP BY month
+ORDER BY month</pre>
+    <ol class="hints"><li>ב-SQLite הביטוי <code>channel = 'app'</code> שווה 1 או 0, אז אפשר לסכום אותו.</li><li>ב-BigQuery יש <code>COUNTIF</code>, וב-PostgreSQL אפשר <code>COUNT(*) FILTER (WHERE channel = 'app')</code>. הצורה <code>SUM(CASE WHEN ... THEN 1 ELSE 0 END)</code> עובדת בכל המסדים.</li></ol>
+    <div class="why-src">החלק יורד כל חודש: 58.6% במרץ, 46.7% באפריל, 39.3% במאי (17 מתוך 29, 14 מתוך 30 ו-11 מתוך 28). הממוצע של 48.3% הסתיר מגמה. זו עדיין לא אבחנה, כי יש מעט הזמנות. אבל זה בדיוק סוג המספר שאפשר להציג כ״הצלחה״ או לגלות כבעיה. לכן אחרי כל ממוצע שואלים: ״הממוצע של מי, ובאיזה זמן?״</div>
+  </div>
+
+  <h3>אימוץ אצל שישה מלצרים</h3>
+  <p>עכשיו מקרה פשוט יותר: המסעדה הכניסה טאבלט להקלדת הזמנות בשולחן. לכל מלצר ספרנו כמה הזמנות הוא הקליד בטאבלט מתוך כל ההזמנות שלו. בטבלה <code>waiters</code> יש גם וותק, והאם המלצר הודרך מוקדם (<code>trained_early</code>, 1 או 0).</p>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-adopt" data-title="אימוץ לפי מלצר" data-ordered="0">
+    <pre class="setup">CREATE TABLE waiters (id INTEGER PRIMARY KEY, name TEXT, seniority_years INTEGER, trained_early INTEGER, orders_total INTEGER, orders_tablet INTEGER);
+INSERT INTO waiters VALUES (1,'יוסי',22,1,24,2),(2,'רחל',15,1,24,7),(3,'אבי',8,0,24,15),(4,'שרון',4,0,24,19),(5,'עידו',2,0,24,22),(6,'מאיה',1,0,24,22)</pre>
+    <div class="q-src">הציגו לכל מלצר את השם שלו ואת אחוז ההזמנות שהקליד בטאבלט (<code>tablet_pct</code>, מעוגל לספרה אחת).</div>
+    <pre class="start">SELECT name,
+       -- אחוז ההזמנות בטאבלט
+FROM waiters</pre>
+    <pre class="check">SELECT name, ROUND(100.0 * orders_tablet / orders_total, 1) AS tablet_pct FROM waiters</pre>
+    <pre class="solution">SELECT name,
+       ROUND(100.0 * orders_tablet / orders_total, 1) AS tablet_pct
+FROM waiters</pre>
+    <ol class="hints"><li>האחוז הוא הזמנות הטאבלט מתוך כל ההזמנות. הכפלה ב-100.0 גורמת לחילוק להיות עשרוני.</li></ol>
+    <div class="why-src">התוצאה: יוסי 8.3%, רחל 29.2%, אבי 62.5%, שרון 79.2%, עידו ומאיה 91.7%. בסך הכול 87 מתוך 144 הזמנות, כלומר 60.4%. הממוצע הזה מסתיר שתי קבוצות: ארבעה שמשתמשים בטאבלט היטב, ושניים שכמעט לא.</div>
+  </div>
+
+  <div class="sim" data-id="p6-sim-adopt"><div class="sh">אימוץ, משפך, והסבר שאי אפשר להוכיח</div>
+    <div class="out"></div>
+  </div>
+
+  <div class="box trap">
+    <p>כשהסימולטור שואל ״מה הסיבה לאימוץ הנמוך?״ מפתה לבחור את ההסבר שמתאים לסיפור. שימו לב להסבר הנאיבי: המלצרים שהודרכו מוקדם הקלידו בטאבלט רק 18.8% מההזמנות, ואלה שהודרכו מאוחר 81.3%. ״אז הדרכה מוקדמת פוגעת באימוץ?״ לא בהכרח. שני המלצרים שהודרכו מוקדם הם בדיוק שני הוותיקים ביותר, עם 22 ו-15 שנות ניסיון. בנתונים האלה הדרכה מוקדמת וותק הם אותה קבוצה, ולכן אי אפשר לדעת מי משפיע. זה שני מספרים שזזים יחד, וזה לא מוכיח שאחד גורם לשני.</p>
+  </div>
+
+  <div class="lab" data-db="proj" data-id="p6-lab-confound" data-title="תאים ריקים" data-ordered="0">
+    <pre class="setup">CREATE TABLE waiters (id INTEGER PRIMARY KEY, name TEXT, seniority_years INTEGER, trained_early INTEGER, orders_total INTEGER, orders_tablet INTEGER);
+INSERT INTO waiters VALUES (1,'יוסי',22,1,24,2),(2,'רחל',15,1,24,7),(3,'אבי',8,0,24,15),(4,'שרון',4,0,24,19),(5,'עידו',2,0,24,22),(6,'מאיה',1,0,24,22)</pre>
+    <div class="q-src">בדקו אם אפשר להפריד בין הדרכה מוקדמת לוותק. קבצו לפי <code>trained_early</code> ולפי <code>veteran</code> (שווה 1 כשהוותק לפחות 10 שנים). הציגו <code>trained_early</code>, <code>veteran</code>, <code>waiters</code> (כמה מלצרים בקבוצה) ו-<code>tablet_pct</code> (מעוגל לספרה אחת, מתוך כל ההזמנות בקבוצה).</div>
+    <pre class="start">SELECT trained_early,
+       seniority_years &gt;= 10 AS veteran,
+       COUNT(*) AS waiters
+       -- הוסיפו tablet_pct
+FROM waiters
+GROUP BY trained_early, veteran</pre>
+    <pre class="check">SELECT trained_early, seniority_years &gt;= 10 AS veteran, COUNT(*) AS waiters, ROUND(100.0 * SUM(orders_tablet) / SUM(orders_total), 1) AS tablet_pct FROM waiters GROUP BY trained_early, veteran</pre>
+    <pre class="solution">SELECT trained_early,
+       seniority_years &gt;= 10 AS veteran,
+       COUNT(*) AS waiters,
+       ROUND(100.0 * SUM(orders_tablet) / SUM(orders_total), 1) AS tablet_pct
+FROM waiters
+GROUP BY trained_early, veteran</pre>
+    <ol class="hints"><li>אחוז של קבוצה מחשבים מהסכומים: סכום הזמנות הטאבלט חלקי סכום כל ההזמנות.</li></ol>
+    <div class="why-src">יוצאות רק שתי שורות: (לא הודרך מוקדם, לא ותיק) עם ארבעה מלצרים ו-81.3%, ו-(הודרך מוקדם, ותיק) עם שניים ו-18.8%. שני תאים נוספים, ותיקים שהודרכו מאוחר וצעירים שהודרכו מוקדם, ריקים לגמרי. כשאין תאים כאלה אי אפשר להשוות בין ההסברים. הפתרון הוא לא לנסח מחדש את המסקנה, אלא לשנות את הנתונים: למשל להדריך ותיק מאוחר, או צעיר מוקדם.</div>
+  </div>
+
+  <div class="box meaning"><p>המסקנה הנכונה כאן נאמרת בזהירות: ״התוצאה מתאימה לכך שוותק או הדרכה משפיעים, אבל הנתונים לא מפרידים ביניהם״. זה לא חולשה, זה דיוק. מי שמסיק סיבה מנתונים שבהם שני דברים תלויים זה בזה עלול לקבל החלטה שגויה, למשל לבטל את ההדרכה המוקדמת. מה אפשר לעשות: להמשיך לעקוב, לשנות את התנאים בכוונה, ולמדוד שוב.</p></div>
+
+  <div class="box real"><p>כדי להפריד בין סיבה לצירוף מקרים, אנשי נתונים עושים ניסויים מבוקרים: מחלקים אנשים לתנאים באופן אקראי, כך שוותק, למשל, מתפזר בין הקבוצות. בעסקים זה נקרא בדרך כלל ניסוי A/B. כשאי אפשר לנסות, משווים רק קבוצות שדומות בשאר המאפיינים. ולפעמים התשובה הכי טובה היא פשוט: ״לא ידוע, וזה מה שצריך כדי לדעת״.</p></div>
+
+  <h3>הקולות: משוב כתוב, ובדיקה של ה-AI</h3>
+  <p>המספרים אומרים כמה, והמשוב אומר למה. בעסק קטן אפשר לקרוא עשרות הערות. כשיש מאות, כלי AI יכול למיין אותן לנושאים, אבל צריך לבדוק אותו בדגימה. החולשה המוכרת שלו היא ציניות וסלנג.</p>
+  <div class="tw"><table class="p6-tbl">
+    <tr><th>ציטוט של מלצר (בדוי)</th><th>סיווג של ה-AI</th><th>נכון?</th></tr>
+    <tr><td>״בשישי בערב אין לי זמן להקליד. פתק זה שתי שניות.״</td><td>קושי טכני</td><td>לא ממש: זו תלונה על מהירות, לא על תקלה</td></tr>
+    <tr><td>״נהדר, עוד מסך להסתכל עליו במקום על הלקוח.״</td><td>מרוצה</td><td>לא: זו ציניות, והמשפט הוא ביקורת</td></tr>
+    <tr><td>״אי אפשר לפצל חשבון בין שלושה אנשים.״</td><td>חסרה תכונה</td><td>כן</td></tr>
+  </table></div>
+
+  <div class="box think" data-id="p6-th-outcome">
+    <p>פרויקט הסתיים שבועיים באיחור ו-26% מעל התקציב. שלושה חודשים אחר כך 60% מההזמנות עוברות בו והטעויות ירדו. הצלחה או כישלון? ובמה אתם מודדים?</p>
+    <div class="ans">תלוי מה קבענו מראש כמדד הצלחה. ביחס לתוכנית הוא חרג בזמן ובכסף. ביחס לתוצאה העסקית הוא עובד. כדאי להפריד בין שני השיפוטים: בקרת הפרויקט שואלת אם עמדנו בתוכנית, ובקרת התוצאה שואלת אם זה היה שווה. ושניהם הופכים ללקחים: כל לקח צריך להיות שורה בתוכנית של הפרויקט הבא, כסיכון, כבדיקה או כמשימה.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-outcome" data-a="2"><p class="qq">מה מהבאים הוא תוצאה (outcome) ולא תוצר (output)?</p>
+    <button class="opt">הותקנו 6 טאבלטים בשולחנות</button>
+    <button class="opt">הזמן שלוקח להזמנה להגיע למטבח ירד מ-6 דקות ל-2</button>
+    <button class="opt">הצוות עבר יומיים של הדרכה</button>
+    <div class="why">הנכונה היא השנייה: זה מה שהשתנה בעולם. התקנת הטאבלטים וההדרכה הן דברים שהפרויקט עשה, כלומר תוצרים. אפשר להתקין שישה טאבלטים ולהדריך את כולם, ובסוף שום דבר לא ישתנה אם אף אחד לא משתמש בהם.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-sarcasm" data-a="1"><p class="qq">ה-AI סיווג את המשפט ״נהדר, עוד מסך להסתכל עליו במקום על הלקוח״ כמשוב מרוצה. מה עושים?</p>
+    <button class="opt">בודקים דגימה של סיווגים ביד, כי ציניות היא חולשה מוכרת, ומתקנים את ההנחיה או את הסיווג</button>
+    <button class="opt">סומכים על המודל, כי רוב הסיווגים נכונים</button>
+    <button class="opt">מוחקים את המשפטים הבעייתיים מהדוח</button>
+    <div class="why">הנכונה היא הראשונה. מודל מסווג נכון את רוב המקרים וטועה דווקא בקשים, והדגימה היא מה שחושף את זה. מי שסומך על הרוב בלי לבדוק מפספס בדיוק את הביקורת החשובה. ומחיקה מעלימה את הסימן שהמערכת לא נקלטה.</div>
+  </div>
+
+  <div class="teach"><b>🎓 למרצה:</b> לפני שהסימולטור חושף את הטבלה, לבקש מכל אחד לבחור הסבר ולכתוב שורה של נימוק. אחרי החשיפה לשאול: ״איזה נתון חסר לכם כדי להכריע?״ הנקודה: לא מצאנו את התשובה, מצאנו מה צריך למדוד.</div>
+
+  <script>(function(){FL.dom(function(){
+    var b=FL.$('[data-id="p6-sim-adopt"]');if(!b)return;var out=FL.$('.out',b);
+    var SETUP="CREATE TABLE waiters (id INTEGER PRIMARY KEY, name TEXT, seniority_years INTEGER, trained_early INTEGER, orders_total INTEGER, orders_tablet INTEGER); INSERT INTO waiters VALUES (1,'יוסי',22,1,24,2),(2,'רחל',15,1,24,7),(3,'אבי',8,0,24,15),(4,'שרון',4,0,24,19),(5,'עידו',2,0,24,22),(6,'מאיה',1,0,24,22);";
+    var pick=null;
+    P6.ready(function(){
+      var W=P6.rows(SETUP+"SELECT name, seniority_years, trained_early, orders_total, orders_tablet, 100.0*orders_tablet/orders_total AS pct FROM waiters ORDER BY pct");
+      var F=P6.rows(SETUP+"SELECT COUNT(*) AS everyone, SUM(orders_tablet>0) AS tried, SUM(100.0*orders_tablet/orders_total>50) AS majority, SUM(100.0*orders_tablet/orders_total>=90) AS nearly_all, 100.0*SUM(orders_tablet)/SUM(orders_total) AS overall FROM waiters")[0];
+      var X=P6.rows(SETUP+"SELECT trained_early AS e, seniority_years>=10 AS v, COUNT(*) AS n FROM waiters GROUP BY e, v");
+      function cell(e,v){var r=X.filter(function(x){return x.e===e&&x.v===v;})[0];return r?'<span class="p6-c ok">'+r.n+' מלצרים</span>':'<span class="p6-c no">אין נתון</span>';}
+      function render(){
+        var h='<div class="kpis"><div class="kpi a"><b>'+P6.f1(F.overall)+'%</b><span>הזמנות בטאבלט (יעד בדוי: 80%)</span></div><div class="kpi"><b>'+F.everyone+'</b><span>מלצרים</span></div><div class="kpi g"><b>'+F.nearly_all+'</b><span>כמעט כולם בטאבלט (90% ומעלה)</span></div></div>';
+        h+='<h4>אחוז ההזמנות בטאבלט, לפי מלצר</h4>';
+        W.forEach(function(w){h+='<div class="p6-bar"><span class="lb">'+FL.esc(w.name)+' ('+(w.seniority_years===1?'שנה':w.seniority_years+' שנים')+(w.trained_early?', הודרך מוקדם':'')+')</span><div class="tr"><i style="width:'+w.pct+'%;background:'+(w.pct>=50?'#10b981':'#ef4444')+'"></i></div><span class="v">'+P6.f1(w.pct)+'%</span></div>';});
+        h+='<h4>משפך האימוץ</h4><div class="p6-bar"><span class="lb">כל המלצרים</span><div class="tr"><i style="width:100%;background:#6366f1"></i></div><span class="v">'+F.everyone+'</span></div><div class="p6-bar"><span class="lb">ניסו טאבלט</span><div class="tr"><i style="width:'+(100*F.tried/F.everyone)+'%;background:#6366f1"></i></div><span class="v">'+F.tried+'</span></div><div class="p6-bar"><span class="lb">רוב ההזמנות בטאבלט</span><div class="tr"><i style="width:'+(100*F.majority/F.everyone)+'%;background:#6366f1"></i></div><span class="v">'+F.majority+'</span></div><div class="p6-bar"><span class="lb">כמעט תמיד</span><div class="tr"><i style="width:'+(100*F.nearly_all/F.everyone)+'%;background:#6366f1"></i></div><span class="v">'+F.nearly_all+'</span></div>';
+        h+='<p class="p6-note">כל ירידה במשפך היא שיחה אחרת: מי שלא ניסה צריך הדרכה, מי שניסה ונשר נתקל במכשול.</p>';
+        h+='<h4>מה הסיבה לאימוץ הנמוך אצל שניים מהמלצרים?</h4>';
+        [['early','ההדרכה המוקדמת גרמה לאימוץ נמוך'],['senior','הוותק הוא הסיבה'],['unknown','אי אפשר לדעת מהנתונים האלה']].forEach(function(o){h+='<button class="p6-sent'+(pick===o[0]?' sel':'')+'" data-p="'+o[0]+'">'+o[1]+'</button>';});
+        if(pick){
+          h+='<div class="tw"><table class="p6-tbl"><tr><th></th><th>לא ותיק (פחות מ-10 שנים)</th><th>ותיק (10 שנים ומעלה)</th></tr><tr><td>הודרך מוקדם</td><td>'+cell(1,0)+'</td><td>'+cell(1,1)+'</td></tr><tr><td>הודרך מאוחר</td><td>'+cell(0,0)+'</td><td>'+cell(0,1)+'</td></tr></table></div>';
+          h+=pick==='unknown'?'<div class="p6-verdict g">נכון. שני תאים ריקים, ולכן אי אפשר להפריד בין ההסברים.</div>':'<div class="p6-verdict y">שימו לב לטבלה: ההסבר שבחרתם אפשרי, אבל גם ההסבר השני מתאים בדיוק לאותם נתונים. שני תאים ריקים, ולכן אין דרך להכריע. הניסוח הנכון הוא ״אי אפשר לדעת״.</div>';
+        }
+        out.innerHTML=h;
+      }
+      b.addEventListener('click',function(e){var x=e.target.closest('[data-p]');if(x){pick=x.dataset.p;render();FL.done('p6-sim-adopt');}});
+      render();
+    });
+  });})();</script>
+</section>
+
+<section class="sec" id="s6-9" data-t="אתגר הגמר">
+  <div class="sec-h"><div class="sec-n">9</div><h2>אתגר הגמר: משאלה אחת להחלטה</h2></div>
+  <p class="lead">יבגני פותח את הרבעון הבא עם שאלה חדשה: ״כדאי לי להשקיע באפליקציה?״ אין פרויקט פתוח ואין הוראות שלב אחרי שלב. יש שאלה, מסד נתונים ושמונה תחנות שכבר הכרתם. המטרה: לעבור את כולן ולהגיע להחלטה שאפשר לחתום עליה.</p>
+
+  <div class="anim" data-id="p6-anim-capstone" data-speed="2800">
+    <div class="stage"><svg viewBox="0 0 800 230" role="img" aria-label="שמונה תחנות מהשאלה העסקית ועד ההחלטה">
+      <defs><marker id="cp-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs><g data-s="1" data-pulse><rect x="704" y="60" width="84" height="74" rx="14" fill="#fff" stroke="#4f46e5" stroke-width="3"/><text x="746" y="92" text-anchor="middle" font-size="17" font-weight="800" fill="#4f46e5">שאלה</text><text x="746" y="118" text-anchor="middle" font-size="14" fill="#64748b">חלק 1</text></g><g data-s="2"><path d="M702 97 L696 97" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#cp-ar)"/></g><g data-s="2" data-pulse><rect x="604" y="60" width="84" height="74" rx="14" fill="#fff" stroke="#4f46e5" stroke-width="3"/><text x="646" y="92" text-anchor="middle" font-size="17" font-weight="800" fill="#4f46e5">טבלאות</text><text x="646" y="118" text-anchor="middle" font-size="14" fill="#64748b">חלק 1</text></g><g data-s="3"><path d="M602 97 L596 97" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#cp-ar)"/></g><g data-s="3" data-pulse><rect x="504" y="60" width="84" height="74" rx="14" fill="#fff" stroke="#0f766e" stroke-width="3"/><text x="546" y="92" text-anchor="middle" font-size="17" font-weight="800" fill="#0f766e">SQL</text><text x="546" y="118" text-anchor="middle" font-size="14" fill="#64748b">חלק 2</text></g><g data-s="4"><path d="M502 97 L496 97" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#cp-ar)"/></g><g data-s="4" data-pulse><rect x="404" y="60" width="84" height="74" rx="14" fill="#fff" stroke="#b45309" stroke-width="3"/><text x="446" y="92" text-anchor="middle" font-size="17" font-weight="800" fill="#b45309">שרת</text><text x="446" y="118" text-anchor="middle" font-size="14" fill="#64748b">חלק 3</text></g><g data-s="5"><path d="M402 97 L396 97" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#cp-ar)"/></g><g data-s="5" data-pulse><rect x="304" y="60" width="84" height="74" rx="14" fill="#fff" stroke="#0369a1" stroke-width="3"/><text x="346" y="92" text-anchor="middle" font-size="17" font-weight="800" fill="#0369a1">מחסן</text><text x="346" y="118" text-anchor="middle" font-size="14" fill="#64748b">חלק 4</text></g><g data-s="6"><path d="M302 97 L296 97" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#cp-ar)"/></g><g data-s="6" data-pulse><rect x="204" y="60" width="84" height="74" rx="14" fill="#fff" stroke="#0369a1" stroke-width="3"/><text x="246" y="92" text-anchor="middle" font-size="17" font-weight="800" fill="#0369a1">לוח</text><text x="246" y="118" text-anchor="middle" font-size="14" fill="#64748b">חלק 4</text></g><g data-s="7"><path d="M202 97 L196 97" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#cp-ar)"/></g><g data-s="7" data-pulse><rect x="104" y="60" width="84" height="74" rx="14" fill="#fff" stroke="#7c3aed" stroke-width="3"/><text x="146" y="92" text-anchor="middle" font-size="17" font-weight="800" fill="#7c3aed">AI</text><text x="146" y="118" text-anchor="middle" font-size="14" fill="#64748b">חלק 5</text></g><g data-s="8"><path d="M102 97 L96 97" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#cp-ar)"/></g><g data-s="8" data-pulse><rect x="4" y="60" width="84" height="74" rx="14" fill="#fff" stroke="#be123c" stroke-width="3"/><text x="46" y="92" text-anchor="middle" font-size="17" font-weight="800" fill="#be123c">החלטה</text><text x="46" y="118" text-anchor="middle" font-size="14" fill="#64748b">חלק 6</text></g><circle r="11" cx="746" cy="160" fill="#d8b862" stroke="#142a45" stroke-width="2" data-move="1:0,0|2:-100,0|3:-200,0|4:-300,0|5:-400,0|6:-500,0|7:-600,0|8:-700,0"/><text x="400" y="212" text-anchor="middle" font-size="15" fill="#64748b" data-s="1">שמונה תחנות, שאלה עסקית אחת</text>
+    </svg></div>
+    <ol class="caps">
+      <li>שאלה: הופכים שאלה כללית לשאלה שאפשר למדוד, עם מדדים והגדרות. (חלק 1)</li>
+      <li>טבלאות: מזהים אילו טבלאות צריך, ובודקים סכום ידוע לפני שמתחילים. (חלק 1)</li>
+      <li>SQL: שאילתות שעונות על המדדים, בלי לאבד ערוצים ובלי להכפיל שורות. (חלק 2)</li>
+      <li>שרת: אותן תוצאות יוצאות כ-<dfn data-d="טקסט במבנה קבוע של שמות וערכים, שתוכנות מעבירות ביניהן">JSON</dfn> דרך <dfn data-d="כתובת בשרת שמחזירה נתונים כשפונים אליה">נקודת קצה</dfn>, כדי שאפליקציה או לוח יוכלו לקרוא אותן. (חלק 3)</li>
+      <li>מחסן: מגדירים תצוגה אחת שמחזיקה את ההגדרה של המדד, כדי שכולם ישתמשו באותו מספר. (חלק 4)</li>
+      <li>לוח: שאלה אחת, קהל אחד, ולא יותר ממה שצריך. (חלק 4)</li>
+      <li>AI: מבקשים עזרה בכתיבה, ובודקים כל שאילתה כמו שבודקים קבלן. (חלק 5)</li>
+      <li>החלטה: מרכיבים את הראיות, רואים מה חסר, ומחליטים אם ממשיכים ובאילו תנאים. (חלק 6)</li>
+    </ol>
+  </div>
+
+  <h3>תחנה 1: מנסחים את השאלה</h3>
+  <div class="quiz" data-id="p6-q-cap1" data-a="2"><p class="qq">איזו שאלה מתאימה ליבגני כנקודת פתיחה?</p>
+    <button class="opt">״כמה כסף האפליקציה מכניסה?״</button>
+    <button class="opt">״בכל ערוץ, מה ההכנסה הממוצעת להזמנה שנמסרה, כמה זמן לוקח משלוח וכמה הזמנות מבוטלות, ואיך כל זה השתנה לפי חודש?״</button>
+    <button class="opt">״האם האפליקציה טובה?״</button>
+    <div class="why">הנכונה היא השנייה: היא אומרת מה סופרים (הזמנות שנמסרו), לפי מה מפצלים (ערוץ וחודש) ומה המדדים. הראשונה לא מבדילה בין סכום כולל להכנסה להזמנה, ולא משווה לערוצים אחרים. השלישית היא דעה ולא שאלה: אין לה מספר שאפשר לבדוק.</div>
+  </div>
+
+  <h3>תחנה 2: הטבלאות ומספר עוגן</h3>
+  <p>הטבלאות שצריך: <code>orders</code>, <code>order_items</code> ו-<code>dishes</code> (וכל המסד מוצג כאן).</p>
+  <div class="schema" data-db="rest" data-tables="orders,order_items,dishes"></div>
+  <p>לפני כל שאילתה מסובכת מחשבים מספר עוגן פשוט שאפשר לסמוך עליו, כדי להשוות אליו אחר כך. הכנסה לא נשמרת בטבלה (בכוונה), ולכן מחשבים אותה מהפריטים.</p>
+  <div class="lab" data-id="p6-lab-cap-total" data-title="מספר עוגן: ההכנסה הכוללת" data-ordered="0">
+    <div class="q-src">חשבו את ההכנסה הכוללת מכל הפריטים בכל ההזמנות: סכום של <code>qty * price</code>. עמודה אחת בשם <code>total_revenue</code>.</div>
+    <pre class="start">SELECT SUM(oi.qty * d.price) AS total_revenue
+FROM order_items oi
+-- חברו למחירים</pre>
+    <pre class="check">SELECT SUM(oi.qty * d.price) AS total_revenue FROM order_items oi JOIN dishes d ON d.id = oi.dish_id</pre>
+    <pre class="solution">SELECT SUM(oi.qty * d.price) AS total_revenue
+FROM order_items oi
+JOIN dishes d ON d.id = oi.dish_id</pre>
+    <ol class="hints"><li>המחיר נמצא ב-<code>dishes</code>, והכמות ב-<code>order_items</code>.</li></ol>
+    <div class="why-src">13,592 ש״ח. זה מספר העוגן. כל פירוק אחר (לפי ערוץ, חודש או שליח) חייב להסתכם בו, או שאתם יודעים בדיוק למה לא.</div>
+  </div>
+
+  <h3>תחנה 3: השאילתות</h3>
+  <div class="lab" data-id="p6-lab-cap-ops" data-title="מדדי תפעול לפי ערוץ" data-ordered="0">
+    <div class="q-src">לכל ערוץ הציגו: <code>orders</code> (כל ההזמנות), <code>cancelled</code> (כמה בוטלו), <code>avg_min</code> (זמן משלוח ממוצע של הזמנות שנמסרו, מעוגל לספרה אחת) ו-<code>cancel_pct</code> (אחוז הביטולים, מעוגל לספרה אחת).</div>
+    <pre class="start">SELECT channel,
+       COUNT(*) AS orders
+       -- cancelled, avg_min, cancel_pct
+FROM orders
+GROUP BY channel</pre>
+    <pre class="check">SELECT channel, COUNT(*) AS orders, SUM(status = 'cancelled') AS cancelled, ROUND(AVG(CASE WHEN status = 'delivered' THEN delivery_min END), 1) AS avg_min, ROUND(100.0 * SUM(status = 'cancelled') / COUNT(*), 1) AS cancel_pct FROM orders GROUP BY channel</pre>
+    <pre class="solution">SELECT channel,
+       COUNT(*) AS orders,
+       SUM(status = 'cancelled') AS cancelled,
+       ROUND(AVG(CASE WHEN status = 'delivered' THEN delivery_min END), 1) AS avg_min,
+       ROUND(100.0 * SUM(status = 'cancelled') / COUNT(*), 1) AS cancel_pct
+FROM orders
+GROUP BY channel</pre>
+    <ol class="hints"><li>להזמנה שבוטלה אין זמן משלוח. מה AVG עושה עם NULL?</li><li><code>CASE WHEN status = 'delivered' THEN delivery_min END</code> משאיר NULL לכל השאר.</li></ol>
+    <div class="why-src">באפליקציה 42 הזמנות, 3 בוטלו (7.1%) וזמן המשלוח הממוצע 35.0. בטלפון 20 הזמנות, אפס ביטולים ו-36.2 דקות. בישיבה במקום 25 הזמנות ו-2 ביטולים, ובלי זמן משלוח, כי אין משלוח. שימו לב: ״אין זמן משלוח״ הוא NULL ולא אפס, ולכן הממוצע לא יורד בגללו.</div>
+  </div>
+
+  <h3>תחנה 4: השרת מחזיר JSON</h3>
+  <p>הלוח או האפליקציה לא מריצים SQL בעצמם. הם פונים לשרת, והשרת מריץ את השאילתה ומחזיר JSON (כמו שראינו בחלק 3). ב-SQLite אפשר לראות את צורת התשובה כבר בתוך השאילתה.</p>
+  <pre class="code" data-lang="js">app.get('/api/channel-summary', async (req, res) => {
+  const { rows } = await pool.query(CHANNEL_SQL); // השאילתה מהתחנה הקודמת
+  res.json(rows);                                  // JSON לדפדפן
+});</pre>
+  <div class="lab" data-id="p6-lab-cap-json" data-title="מתוצאה ל-JSON" data-require="json_object" data-require-msg="הפקודה צריכה להשתמש ב-json_object כדי לבנות אובייקט.">
+    <div class="q-src">הפכו את סיכום הערוצים למסמך JSON אחד: רשימה של אובייקטים, אחד לכל ערוץ, עם <code>channel</code> ו-<code>orders</code>. אפשר להשתמש ב-<code>json_group_array</code> וב-<code>json_object</code>.</div>
+    <pre class="start">SELECT json_group_array(
+         json_object('channel', channel, 'orders', n)
+       ) AS payload
+FROM (
+  SELECT channel, COUNT(*) AS n
+  FROM orders
+  GROUP BY channel
+)</pre>
+    <pre class="solution">SELECT json_group_array(
+         json_object('channel', channel, 'orders', n)
+       ) AS payload
+FROM (
+  SELECT channel, COUNT(*) AS n
+  FROM orders
+  GROUP BY channel
+)</pre>
+    <ol class="hints"><li>הוסיפו לאובייקט עוד מפתחות, למשל <code>'cancelled'</code>, ותראו איך הצורה גדלה.</li></ol>
+    <div class="why-src">התוצאה היא מחרוזת JSON אחת שדפדפן יכול לקרוא ולצייר ממנה גרף. ב-PostgreSQL יש <code>json_agg</code> ו-<code>json_build_object</code>, וב-BigQuery <code>TO_JSON_STRING</code>. הרעיון זהה: השרת קובע את הצורה, והלקוח לא נוגע במסד.</div>
+  </div>
+
+  <h3>תחנה 5: תצוגה במחסן, עם הגדרה אחת למדד</h3>
+  <p>כדי שלא יהיו שלוש הגדרות של ״הכנסה״ בשלושה דוחות, מגדירים אותה פעם אחת ב<dfn data-d="שאילתה שמורה שמתנהגת כמו טבלה, וכל דוח יכול לקרוא ממנה">תצוגה (view)</dfn>. כל דוח קורא ממנה. זו הדרך הכי פשוטה להיות עקביים, והיא קיימת בכל מחסן נתונים.</p>
+  <div class="lab" data-id="p6-lab-cap-view" data-title="תצוגה: סיכום ערוצים" data-ordered="0">
+    <div class="q-src">צרו תצוגה בשם <code>v_channel_summary</code> שמחזירה לכל ערוץ: <code>channel</code>, <code>orders</code> (כמה הזמנות שנמסרו, עם <code>COUNT(DISTINCT ...)</code>), <code>revenue</code> (הכנסה מהזמנות שנמסרו) ו-<code>per_order</code> (הכנסה להזמנה). עגלו הכנסות לשתי ספרות. אחר כך הריצו <code>SELECT * FROM v_channel_summary</code>.</div>
+    <pre class="start">CREATE VIEW v_channel_summary AS
+SELECT o.channel
+       -- orders, revenue, per_order
+FROM orders o
+-- חיבורים, סינון וקיבוץ
+;
+SELECT * FROM v_channel_summary</pre>
+    <pre class="check">CREATE VIEW v_channel_summary AS SELECT o.channel, COUNT(DISTINCT o.id) AS orders, ROUND(SUM(oi.qty * d.price), 2) AS revenue, ROUND(SUM(oi.qty * d.price) / COUNT(DISTINCT o.id), 2) AS per_order FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status = 'delivered' GROUP BY o.channel; SELECT * FROM v_channel_summary</pre>
+    <pre class="solution">CREATE VIEW v_channel_summary AS
+SELECT o.channel,
+       COUNT(DISTINCT o.id) AS orders,
+       ROUND(SUM(oi.qty * d.price), 2) AS revenue,
+       ROUND(SUM(oi.qty * d.price) / COUNT(DISTINCT o.id), 2) AS per_order
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+JOIN dishes d ON d.id = oi.dish_id
+WHERE o.status = 'delivered'
+GROUP BY o.channel;
+SELECT * FROM v_channel_summary</pre>
+    <ol class="hints"><li>הכנסה היא <code>SUM(qty * price)</code> על פני הפריטים. מספר הזמנות הוא <code>COUNT(DISTINCT o.id)</code>, כי לכל הזמנה יש כמה פריטים.</li><li>רק הזמנות שנמסרו: <code>WHERE o.status = 'delivered'</code>.</li></ol>
+    <div class="why-src">אפליקציה: 39 הזמנות שנמסרו, 6,180 ש״ח, 158.46 להזמנה. טלפון: 20, 3,492, 174.60. ישיבה במקום: 23, 3,212, 139.65. ההכנסה להזמנה באפליקציה נמוכה מזו של הטלפון. סכום ההכנסות של הזמנות שנמסרו הוא 6,180 + 3,492 + 3,212 = 12,884. ההפרש של 708 ש״ח מהעוגן 13,592 הוא הכנסות של הזמנות שבוטלו, ולא טעות. ככה המספר מסתדר מול העוגן.</div>
+  </div>
+
+  <h3>תחנה 6: לוח שעונה על שאלה אחת</h3>
+  <div class="sim" data-id="p6-sim-cap-dash"><div class="sh">לוח הערוצים של יבגני</div>
+    <div class="p6-ctrl"><label>איזה מדד להציג: <select id="p6-cd-m"><option value="per_order">הכנסה להזמנה שנמסרה</option><option value="avg_min">זמן משלוח ממוצע (דקות)</option><option value="cancel_pct">אחוז ביטולים</option><option value="orders">מספר הזמנות</option></select></label></div>
+    <div class="mk mk-dash"><div class="mk-bar"><i></i><i></i><i></i><span class="url">הדמיה סכמטית: שאלה אחת (איפה להשקיע?) וקהל אחד (יבגני)</span></div><div class="mk-body" id="p6-cd"></div></div>
+  </div>
+
+  <div class="box try" data-id="p6-try-cap-dash">
+    <ol>
+      <li>הורידו את הקובץ <code>orders.csv</code> מחבילת הנתונים של הקורס.</li>
+      <li>פתחו Looker Studio או Tableau Public, חברו את הקובץ ובנו גרף של מספר ההזמנות לפי ערוץ וחודש.</li>
+      <li>הוסיפו מדד אחד (אחוז ביטולים), וכתבו מעל הלוח משפט אחד: על איזו שאלה הלוח עונה, ולמי.</li>
+    </ol>
+    <p>ללימוד מעמיק של כלי הוויזואליזציה, ראו את דף ה-Tableau בחומרי הקורס.</p>
+    <p class="tools"><a class="tool" href="https://lookerstudio.google.com" target="_blank" rel="noopener">Looker Studio</a><a class="tool" href="https://public.tableau.com" target="_blank" rel="noopener">Tableau Public</a><a class="tool" href="../tableau-4h/tableau-4h.html">שיעור Tableau</a></p>
+  </div>
+
+  <h3>תחנה 7: ה-AI הוא הקבלן, ואתם הארכיטקטים</h3>
+  <p>ביקשתם מכלי AI שאילתה של הכנסה לפי ערוץ. הוא החזיר את הקוד שלמטה. הקוד רץ בלי שגיאה ומחזיר מספרים שנראים הגיוניים. הפרומפט ששלחתם לו היה בארבעה חלקים: הקשר (הסכמה), משימה (הכנסה לפי ערוץ), אילוצים (כל הערוצים, בלי לאבד שורות) ופורמט (שאילתה אחת). בדקו אותה מול מספר העוגן.</p>
+  <div class="lab" data-id="p6-lab-cap-audit" data-title="בודקים שאילתה של AI" data-ordered="0">
+    <div class="q-src">השאילתה של ה-AI מחזירה סך הכול 9,998 ש״ח, ומספר העוגן הוא 13,592. מצאו מה נעלם ותקנו, כך שיוחזרו שלושת הערוצים עם <code>channel</code> ו-<code>revenue</code> (מעוגל לשתי ספרות).</div>
+    <pre class="start">SELECT o.channel, ROUND(SUM(oi.qty * d.price), 2) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+JOIN dishes d ON d.id = oi.dish_id
+JOIN couriers c ON c.id = o.courier_id
+GROUP BY o.channel</pre>
+    <pre class="check">SELECT o.channel, ROUND(SUM(oi.qty * d.price), 2) AS revenue FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id GROUP BY o.channel</pre>
+    <pre class="solution">SELECT o.channel, ROUND(SUM(oi.qty * d.price), 2) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+JOIN dishes d ON d.id = oi.dish_id
+GROUP BY o.channel</pre>
+    <ol class="hints"><li>איזה ערוץ אין לו שליח?</li><li>JOIN רגיל זורק שורות בלי התאמה. צריך בכלל את טבלת השליחים כאן?</li></ol>
+    <div class="why-src">הערוץ ״ישיבה במקום״ נעלם: להזמנות הליכה אין שליח, ו-INNER JOIN לשליחים זרק אותן, יחד עם 3,594 ש״ח. השאילתה לא נכשלה, היא פשוט החזירה מספרים נמוכים מהאמת. מי שאין לו מספר עוגן לא היה מגלה. התיקון: להוריד את החיבור שלא צריך (או להפוך אותו ל-LEFT JOIN).</div>
+  </div>
+
+  <h3>תחנה 8: מחליטים, עם ראיות</h3>
+  <p>הנה מה שהנתונים אומרים, ומה שהם לא אומרים. האפליקציה היא 48.3% מההזמנות, וחלקה ירד מחודש לחודש: 58.6%, 46.7%, 39.3%. ההכנסה להזמנה שנמסרה באפליקציה היא 158.46 ש״ח מול 174.60 בטלפון, זמן המשלוח דומה (35.0 מול 36.2 דקות), ושלוש הזמנות באפליקציה בוטלו. מה לא ידוע: המדגם קטן, שלושה חודשים בלבד, ואין נתון על העלות של הפעלת האפליקציה.</p>
+  <p>אפשר לחתום על ״כן, להשקיע״? לפני שמחליטים, בדקו שהראיות עצמן במצב טוב. בחרו לכל פריט עד כמה הוא מתקיים אצלכם.</p>
+
+  <div class="sim" data-id="p6-sim-gate"><div class="sh">שער החלטה: ראיות לפני חתימה</div>
+    <div class="out"></div>
+  </div>
+
+  <div class="box meaning"><p>החלטה טובה היא לא תמיד החלטה בטוחה. אחרי שמודדים מגלים שחלק מהתשובות חסרות, ו״החלטה מותנית״ היא תוצאה לגיטימית לגמרי: ממשיכים בתנאי שסוגרים פערים עד מועד שסיכמנו עליו. מי שחותם צריך לדעת בדיוק מה הוא לא יודע. זה מה שהחזיק את כל הפרויקט הזה: מספרים עם בדיקה, תהליך עם אחראי, ובני אדם שמחליטים.</p></div>
+
+  <div class="box think" data-id="p6-th-gate">
+    <p>על סמך הנתונים בתחנה 8, כתבו ליבגני שלושה משפטים: מה המצב, מה הסיכון הגדול, ומה ההחלטה שאתם מבקשים ממנו.</p>
+    <div class="ans">דוגמה: ״האפליקציה מביאה כמעט חצי מההזמנות, אבל החלק שלה יורד כל חודש, וההכנסה להזמנה בה נמוכה בכ-16 ש״ח מזו של הטלפון. הסיכון הגדול הוא החלטה על סמך שלושה חודשים בלבד, בלי נתון על העלות. אני מבקש החלטה מותנית: לא להגדיל תקציב עכשיו, למדוד עוד רבעון, ולבדוק את שלוש ההזמנות המבוטלות באפליקציה.״ שימו לב: כל מספר כאן הגיע מהתחנות הקודמות, והטענה לא מנסה להסביר למה החלק יורד.</div>
+  </div>
+
+  <h2 style="margin-top:34px">מה אתם כבר יודעים לעשות</h2>
+  <p>עברנו הרבה. הטבלה למטה מכילה את כל נושאי הקורס, מכל ששת החלקים. סמנו ליד כל נושא אם אתם יודעים לעשות אותו לבד, בלי עזרה. מה שלא סימנתם יעלה אוטומטית לרשימת ״כדאי לחזור״, עם קישור לשיעור המתאים. ההתקדמות נשמרת רק בדפדפן שלכם. מה שמסומן אצלכם לא עובר לאף אחד.</p>
+  <div class="cmap" data-mode="self"></div>
+
+  <div class="teach"><b>🎓 למרצה:</b> אפשר להריץ את האתגר כעבודה בקבוצות: כל קבוצה מקבלת תחנה ומציגה במה נתקלה. במיוחד לעצור בתחנה 7 ובשער ההחלטה: מי חתם על המספר, ומה אמרתם ליבגני על מה שלא ידוע. את המפה בסוף כדאי להשאיר להם לסמן בשקט.</div>
+
+  <script>(function(){FL.dom(function(){
+    var cd=FL.$('[data-id="p6-sim-cap-dash"]');
+    if(cd){var box=FL.$('#p6-cd');
+      P6.ready(function(){
+        var V=P6.rows("SELECT o.channel, COUNT(DISTINCT o.id) AS n, ROUND(SUM(oi.qty*d.price)/COUNT(DISTINCT o.id),2) AS per_order FROM orders o JOIN order_items oi ON oi.order_id=o.id JOIN dishes d ON d.id=oi.dish_id WHERE o.status='delivered' GROUP BY o.channel",'rest');
+        var O=P6.rows("SELECT channel, COUNT(*) AS orders, ROUND(AVG(CASE WHEN status='delivered' THEN delivery_min END),1) AS avg_min, ROUND(100.0*SUM(status='cancelled')/COUNT(*),1) AS cancel_pct FROM orders GROUP BY channel",'rest');
+        var NM={app:'אפליקציה',phone:'טלפון','walk-in':'ישיבה במקום'};
+        var T={per_order:['הכנסה להזמנה שנמסרה (ש״ח)',''],avg_min:['זמן משלוח ממוצע (דקות)',''],cancel_pct:['אחוז ביטולים','%'],orders:['מספר הזמנות','']};
+        function render(){
+          var k=FL.$('#p6-cd-m').value,rows=O.map(function(o){var v=V.filter(function(x){return x.channel===o.channel;})[0];return{ch:o.channel,val:(k==='per_order')?(v?v.per_order:null):o[k]};});
+          var mx=Math.max.apply(null,rows.map(function(r){return r.val||0;}).concat([1]));
+          var h='<p style="direction:rtl;text-align:right;font-weight:800;margin:0 0 6px">'+T[k][0]+'</p>';
+          rows.forEach(function(r){h+='<div class="p6-bar"><span class="lb">'+NM[r.ch]+'</span><div class="tr"><i style="width:'+(r.val===null?0:100*r.val/mx)+'%;background:#6366f1"></i></div><span class="v">'+(r.val===null?'אין משלוח':(k==='per_order'?r.val.toFixed(2):P6.f1(r.val))+T[k][1])+'</span></div>';});
+          box.innerHTML=h;FL.done('p6-sim-cap-dash');
+        }
+        FL.$('#p6-cd-m').addEventListener('change',render);render();
+      });}
+
+    var gb=FL.$('[data-id="p6-sim-gate"]');
+    if(gb){var go=FL.$('.out',gb);
+      var G=['השאלה והמדדים הוגדרו בכתב לפני כתיבת השאילתות','נבדקו כפילויות, יתומים, ערכים חסרים וערכים שלא יכולים להיות','כל פירוק מסתכם במספר עוגן ידוע (13,592 ש״ח)','כל שאילתה שה-AI כתב נבדקה על ידי אדם','הלוח עונה על שאלה אחת עבור קהל אחד','מוגדרים סף, אחראי ופעולה לכל צבע ולכל התראה','יש גיבוי אם ה-AI או הלוח אינם זמינים','הוגדר מדד אימוץ ותוצאה לבדיקה אחרי ההחלטה'];
+      var V2={};
+      function render(){
+        var h='';G.forEach(function(g,i){h+='<div class="p6-ck"><select data-g="'+i+'"><option value="">בחרו</option><option value="y"'+(V2[i]==='y'?' selected':'')+'>מתקיים</option><option value="p"'+(V2[i]==='p'?' selected':'')+'>חלקית</option><option value="n"'+(V2[i]==='n'?' selected':'')+'>לא מתקיים</option></select><span>'+(i+1)+'. '+g+'</span></div>';});
+        var cnt=Object.keys(V2).filter(function(k){return V2[k];}).length;
+        if(cnt===G.length){
+          var no=Object.keys(V2).filter(function(k){return V2[k]==='n';}).map(Number),pa=Object.keys(V2).filter(function(k){return V2[k]==='p';}).length;
+          var crit=no.filter(function(i){return i===1||i===2||i===3;}).length;
+          var v;
+          if(crit)v=['r','לא חותמים עדיין. חסרה בדיקה שבלעדיה המספר הוא דעה: '+no.filter(function(i){return i===1||i===2||i===3;}).map(function(i){return (i+1);}).join(', ')+'. סוגרים ואז מפרסמים.'];
+          else if(no.length||pa)v=['y','החלטה מותנית: אפשר להציג את המספרים עם הסתייגויות מפורשות, ולהגדיר מי סוגר כל פער ועד מתי ('+((no.length+pa)===1?'פריט אחד פתוח':(no.length+pa)+' פריטים פתוחים')+').'];
+          else v=['g','כל הראיות במקומן. אפשר לחתום, ועדיין לציין במפורש מה הנתונים אינם מראים.'];
+          h+='<div class="p6-verdict '+v[0]+'">'+v[1]+'</div>';FL.done('p6-sim-gate');
+        }else h+='<p class="p6-note">נשארו '+(G.length-cnt)+' פריטים לבחירה.</p>';
+        go.innerHTML=h;
+      }
+      gb.addEventListener('change',function(e){var s=e.target;if(s.dataset.g!==undefined){V2[s.dataset.g]=s.value;render();}});
+      render();}
+
+  });})();</script>
+</section>
+
+<section class="sec" id="s6-10" data-t="סיכום ומה הלאה">
+  <div class="sec-h"><div class="sec-n">10</div><h2>סיכום: מה עברנו בחלק הזה</h2></div>
+
+  <div class="box recap">
+    <ul>
+      <li>מתחילים מפרוסה אחת שבנויה עד הסוף ועובדת באמת, ושומרים עקיבות: מכל חלק אפשר לחזור לסיפור שביקש אותו, לכל סיפור יש בדיקה.</li>
+      <li>גם פרויקט הוא נתונים. ארבע טבלאות (צוות, משימות, עלויות, סיכונים) מאפשרות לשאול כל שאלה בבקרה, והסטטוס שמחושב מהנתונים אמין יותר מזה שמישהו הקליד.</li>
+      <li>מספר בלי בדיקה הוא דעה. לפני כל דיווח בודקים כפילות, ערך חסר, ערך שלא יכול להיות, יתום, והתאמה למספר ידוע.</li>
+      <li>שלושה מספרים במשפט אחד: זמן, כסף ועבודה משוקללת. הפער ביניהם והתחזית שיוצאת מהם הם מה שמחליט אם להתערב, לפי ספים שקבענו מראש.</li>
+      <li>ה-AI כותב, האדם חותם: בודקים מספרים, סיבות וטון. התראה היא שאילתה, סף ושעון, עם מקבל ופעולה. ולפני החלטה מריצים סימולציה.</li>
+      <li>מודדים הצלחה בתוצאה ולא בתוצר, ונזהרים מלהסיק סיבה כשהנתונים מערבבים שני דברים.</li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-id="p6-q-final1" data-a="3"><p class="qq">בדשבורד של הפרויקט כתוב שהוצאנו 470,000 ש״ח, והנהלת החשבונות אומרת 462,150. מה עושים קודם?</p>
+    <button class="opt">לוקחים את המספר הגבוה, כי עדיף להיזהר</button>
+    <button class="opt">מבקשים מ-AI לנסח הסבר לפער</button>
+    <button class="opt">מריצים בדיקות איכות על טבלת העלויות ומחפשים מאיפה בא ההפרש: כפילות, יתום או ערך שלא יכול להיות</button>
+    <div class="why">הנכונה היא השלישית. פער בין שני מקורות הוא סימן לתקלה בנתונים, וצריך למצוא אותה ולא לבחור צד. הסבר שה-AI יכתוב יישמע משכנע ועלול להיות מומצא. והמספר הגבוה הוא לא ״זהיר״, הוא פשוט מספר שלא נבדק.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-final2" data-a="1"><p class="qq">מנהל חדש רוצה להקים לוח בקרה לפרויקט. מה הדבר הראשון שהוא צריך להגדיר?</p>
+    <button class="opt">איזו החלטה הלוח אמור לשרת, ומי מקבל אותה</button>
+    <button class="opt">כמה גרפים וצבעים יהיו בו</button>
+    <button class="opt">באיזה כלי BI להשתמש</button>
+    <div class="why">הנכונה היא הראשונה. לוח טוב עונה על שאלה אחת, ״צריך להתערב או לא?״, בשביל קהל אחד. אחר כך בוחרים מדדים, ספים וכלי. הכלי והצבעים באים אחרונים, כי הם לא עוזרים אם השאלה לא ברורה.</div>
+  </div>
+
+  <div class="quiz" data-id="p6-q-final3" data-a="2"><p class="qq">שאילתה ש-AI כתב רצה בלי שגיאה והחזירה מספרים שנראים הגיוניים. אפשר לסמוך עליה?</p>
+    <button class="opt">כן, אם היא רצה בלי שגיאה סימן שהיא נכונה</button>
+    <button class="opt">רק אחרי שבדקתם אותה מול מספר ידוע, מול כמות שורות שציפיתם לה ומול ההיגיון העסקי</button>
+    <button class="opt">לא, אף פעם לא סומכים על שאילתות של AI</button>
+    <div class="why">הנכונה היא השנייה. שאילתה יכולה לרוץ ולהחזיר מספר שגוי בלי להרעיש, כמו החיבור שזרק את ההזמנות בלי שליח. לכן בודקים מול עוגן. התשובה האחרונה קיצונית: בהחלט אפשר להשתמש ב-AI, בתנאי שבודקים אותו.</div>
+  </div>
+
+  <h3>ארגז הכלים לפי שכבה</h3>
+  <p>הכלים שהכרתם, מסודרים לפי השכבה שבה הם עובדים. אפשר לנסות את כולם, ולרובם יש גרסה חינמית. את התעריף והתנאים העדכניים בודקים באתר של כל כלי.</p>
+  <div class="tw"><table class="p6-tbl">
+    <tr><th>שכבה</th><th>מה עושים בה</th><th>כלים</th></tr>
+    <tr><td>תכנון נתונים</td><td>ERD וסכמה</td><td><a class="tool" href="https://dbdiagram.io" target="_blank" rel="noopener">dbdiagram.io</a><a class="tool" href="https://app.diagrams.net" target="_blank" rel="noopener">diagrams.net</a></td></tr>
+    <tr><td>מסד נתונים</td><td>טבלאות ו-SQL</td><td><a class="tool" href="https://supabase.com" target="_blank" rel="noopener">Supabase</a><a class="tool" href="https://neon.tech" target="_blank" rel="noopener">Neon</a><a class="tool" href="https://postgresql.org" target="_blank" rel="noopener">PostgreSQL</a><a class="tool" href="https://sqlite.org" target="_blank" rel="noopener">SQLite</a></td></tr>
+    <tr><td>שרת</td><td>API ולוגיקה</td><td><a class="tool" href="https://script.google.com" target="_blank" rel="noopener">Apps Script</a><a class="tool" href="https://nodejs.org" target="_blank" rel="noopener">Node.js</a><a class="tool" href="https://expressjs.com" target="_blank" rel="noopener">Express</a></td></tr>
+    <tr><td>פריסה</td><td>קוד, ענן ואירוח</td><td><a class="tool" href="https://github.com" target="_blank" rel="noopener">GitHub</a><a class="tool" href="https://render.com" target="_blank" rel="noopener">Render</a><a class="tool" href="https://shell.cloud.google.com" target="_blank" rel="noopener">Cloud Shell</a></td></tr>
+    <tr><td>מחסן וניתוח</td><td>שאילתות על נתונים גדולים</td><td><a class="tool" href="https://console.cloud.google.com/bigquery" target="_blank" rel="noopener">BigQuery</a></td></tr>
+    <tr><td>לוחות מחוונים</td><td>מנתונים להחלטה</td><td><a class="tool" href="https://lookerstudio.google.com" target="_blank" rel="noopener">Looker Studio</a><a class="tool" href="https://public.tableau.com" target="_blank" rel="noopener">Tableau Public</a></td></tr>
+    <tr><td>AI</td><td>עזרה בכתיבה ובבניית קוד, תחת ביקורת</td><td><a class="tool" href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a><a class="tool" href="https://aistudio.google.com" target="_blank" rel="noopener">AI Studio</a><a class="tool" href="https://lmstudio.ai" target="_blank" rel="noopener">LM Studio</a><a class="tool" href="https://ollama.com" target="_blank" rel="noopener">Ollama</a></td></tr>
+  </table></div>
+
+  <div class="box try" data-id="p6-try-publish">
+    <ol>
+      <li>פתחו מאגר חדש ב-GitHub לפרויקט הגמר שלכם.</li>
+      <li>כתבו קובץ README קצר: השאלה העסקית, ההגדרות של המדדים, הבדיקות שהרצתם ומה יצא בהן, ההחלטה שביקשתם, ומה לא ידוע.</li>
+      <li>צרפו את קובצי ה-SQL ואת הקישור ללוח. מי שקורא את ה-README צריך להצליח לשחזר כל מספר.</li>
+    </ol>
+    <p class="tools"><a class="tool" href="https://github.com" target="_blank" rel="noopener">GitHub</a></p>
+  </div>
+
+  <div class="box think" data-id="p6-th-final">
+    <p>בחרו מערכת או תהליך שאתם מכירים מהעבודה או מהלימודים. מה הדבר הראשון שהייתם עושים ביום ראשון בבוקר ממה שלמדתם בקורס? ומה הייתם מודדים אחרי חודש כדי לדעת שזה עבד?</p>
+    <div class="ans">תשובה לדוגמה: הייתי מפרק קובץ אקסל שמנהלים בו משהו לכמה טבלאות עם מפתחות, וכותב שלוש בדיקות איכות לפני כל דוח. אחרי חודש הייתי מודד כמה פעמים הבדיקות מצאו בעיה לפני שהמספר הגיע למנהל, והאם היה מספר שאף אחד לא ידע להסביר. תשובה טובה כוללת משהו שאפשר למדוד, ולא רק פעולה.</div>
+  </div>
+
+  <h3>חומר המקור וחלקי הקורס</h3>
+  <p class="p6-row"><b>חומר המקור:</b>
+    <a class="tool" href="../lec8.1.html">תדריך הפרויקט: עקיבות ופרוסה דקה</a>
+    <a class="tool" href="../lec4part1-11.5.2026.html">Use Case ו-SQL</a>
+    <a class="tool" href="../lecture14.html">חדר הבקרה: הפרויקט כנתונים</a>
+    <a class="tool" href="../lecture14-2.html">חדר הבקרה: מודדים ורואים</a>
+    <a class="tool" href="../lecture14-3.html">חדר הבקרה: AI, התראות והחלטות</a>
+    <a class="tool" href="../lecture14-4.html">אחרי העלייה לאוויר</a></p>
+  <p class="p6-row"><b>לחזור אל:</b>
+    <a class="tool" href="index.html">מפת הקורס</a>
+    <a class="tool" href="part1.html">חלק 1</a>
+    <a class="tool" href="part2.html">חלק 2</a>
+    <a class="tool" href="part3.html">חלק 3</a>
+    <a class="tool" href="part4.html">חלק 4</a>
+    <a class="tool" href="part5.html">חלק 5</a></p>
+
+  <div class="box note"><p>הקורס התחיל בשאלה מי האדריכל ומי הקבלן, והוא נגמר באותה שאלה. הכלים משתנים, וה-AI מהיר יותר מתמיד. מה שנשאר אצלכם הוא לשאול את השאלה הנכונה, לבדוק את התשובה ולחתום עליה.</p></div>
+</section>
+
+
+<section class="sec" id="s6-table" data-t="טבלת כל השיעורים"><div class="sec-h"><div class="sec-n">📚</div><h2>טבלה מרוכזת: כל השיעורים הקודמים</h2></div><p>כל שיעור בקורס, לפי הסדר. בעמודה הימנית הקישור לשיעור עצמו, ובעמודה האחרונה איפה הנושא חוזר בסיכום הזה. אפשר לשמור את הדף הזה כמראה מקום.</p><div class="cmap" data-mode="table"></div></section>
+<div class="pager"><a href="part5.html">→ חלק 5: AI: מה נותנים לו ומה בודקים</a><a href="index.html">חזרה למפת המסע ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · המפגש המסכם · כל דוגמאות הנתונים בדף בדויות</footer>
+</body>
+</html>

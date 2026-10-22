@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חלק 4: מנתונים לדוחות שאפשר לסמוך עליהם · המפגש המסכם · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=4;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+<script src="fl-data.js?v=1"></script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="fl-map.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">🍽️ המסע המלא</a>
+    <div class="parts"><a id="part1" href="part1.html" title="מרעיון לטבלאות">1<small></small></a><a id="part2" href="part2.html" title="SQL: לשאול את הנתונים">2<small></small></a><a id="part3" href="part3.html" title="איך המערכת עובדת מאחורי הקלעים">3<small></small></a><a id="part4" href="part4.html" title="מנתונים לדוחות שאפשר לסמוך עליהם" class=on>4<small></small></a><a id="part5" href="part5.html" title="AI: מה נותנים לו ומה בודקים">5<small></small></a><a id="part6" href="part6.html" title="הפרויקט: לעקוב, להחליט, למסור">6<small></small></a></div>
+    <span class="ppct" id="ppct"></span><span class="chipst" id="eng">⏳ SQL</span></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · המפגש המסכם</div>
+  <h1>מנתונים לדוחות<br><span>שאפשר לסמוך עליהם</span></h1>
+  <p>יבגני רוצה דוחות בלי להאט את המטבח, ורוצה לסמוך על המספרים. נפריד בין המערכת החיה למערכת הדיווח, נבנה מבנה כוכב, נבדוק איכות והגדרות, ונגיע לדשבורד שעוזר להחליט. בסוף תוכלו לבנות צינור קטן ולהסביר למה מספר אחד נכון ואחר לא.</p>
+  <div class="chips"><span>🧪 מעבדות SQL אמיתיות</span><span>🎞️ הנפשות</span><span>🎛️ הדמיות אינטראקטיביות</span><span>📱 מוקאפים של דשבורד</span><span>📊 התנסות ב-Looker Studio וב-Tableau</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף. בהן: מה לומר, איפה לעצור לדיון ומה לבדוק לפני המעבר הלאה.</div>
+<style>
+.p4-bar{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:.9rem}
+.p4-bar>span:first-child{min-width:130px}
+.p4-bar .tr{flex:1;height:16px;background:#e2e8f0;border-radius:999px;overflow:hidden}
+.p4-bar .tr i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),#818cf8);width:0;transition:width .45s}
+.p4-bar .tr i.o{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.p4-bar .tr i.g{background:linear-gradient(90deg,#10b981,#34d399)}
+.p4-bar .tr i.r{background:linear-gradient(90deg,#ef4444,#f87171)}
+.p4-bar>b{min-width:92px;text-align:end;direction:ltr;unicode-bidi:isolate}
+.p4-btns{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.p4-btns button,.p4-pick{font:inherit;font-weight:700;border:1px solid #c7d2fe;background:var(--primary-light);color:var(--primary-dark);border-radius:10px;padding:5px 12px;cursor:pointer}
+.p4-btns button:hover,.p4-pick:hover{background:#e0e7ff}
+.p4-btns button.on,.p4-pick.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.p4-btns button.ok{background:var(--green-light);border-color:#6ee7b7;color:#065f46}
+.p4-btns button.no{background:var(--red-light);border-color:#fca5a5;color:#991b1b}
+.p4-tbl{border-collapse:collapse;width:100%;font-size:.88rem;direction:ltr;text-align:left}
+.p4-tbl th,.p4-tbl td{border:1px solid var(--line);padding:3px 8px;unicode-bidi:plaintext;white-space:nowrap}
+.p4-tbl th{background:#f1f5f9}
+.p4-tbl tr.bad td{background:var(--red-light)}
+.p4-tbl tr.warn td{background:var(--amber-light)}
+.p4-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.p4-two>*{min-width:0}
+@media(max-width:640px){.p4-two{grid-template-columns:1fr}.p4-bar>span:first-child{min-width:96px}}
+.p4-svgwrap{overflow-x:auto}
+@media(max-width:700px){.p4-svgwrap svg{min-width:640px}}
+.p4-node{cursor:pointer}
+.p4-node rect{transition:fill .3s,stroke .3s}
+.p4-node:hover rect{stroke-width:3}
+.p4-tile{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 10px;position:relative}
+.p4-tile h5{margin:0 0 4px;font-size:.82rem;color:var(--muted)}
+.p4-tile .big{font-size:1.5rem;font-weight:900;color:var(--navy);direction:ltr;unicode-bidi:isolate;display:block}
+.p4-tile .x{position:absolute;top:4px;inset-inline-end:6px;border:0;background:none;color:var(--muted);cursor:pointer;font-size:1rem}
+.p4-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:10px 0}
+.p4-card-s{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;padding:8px 12px}
+</style>
+<div class="box note">
+<p>בחלק 3 ראינו איך הזמנה נכנסת למסד הנתונים. כאן שואלים את השאלה ההפוכה: איך מוציאים מהמסד דוחות בלי להפיל את המטבח, ואיך יודעים שהמספרים נכונים. כל מעבדה מתחילה ממסד המסעדה כמו שהוא, אז אפשר לנסות ולטעות בלי לשבור כלום.</p>
+</div>
+<section class="sec" id="s4-1" data-t="מערכת חיה ומערכת דיווח">
+<div class="sec-h"><div class="sec-n">1</div><h2>מסך המטבח ודוחות של דנה: למה לא על אותה מערכת</h2></div>
+<p class="lead">יום שישי בערב. דנה, האנליסטית של יבגני, מריצה דוח על שלושה חודשי הזמנות. ברגע הזה מסך ההזמנות במטבח מתחיל להיתקע. יבגני שואל: מי עצר לי את הפיצה?</p>
+<p>את ההבדל בין שני סוגי העבודה כבר ראיתם <a href="../lec10part2-15.6.2026.html">בשיעור על OLTP ו-OLAP</a>. כאן נראה אותו על המסעדה של יבגני.</p>
+
+<div class="defline"><b>מערכת תפעולית (OLTP):</b> מערכת שעושה פעולות קטנות ומהירות, וכל פעולה נוגעת בכמה שורות בודדות. דוגמה: מסך המטבח שמציג את הזמנה 42 ושומר הזמנה חדשה.</div>
+<div class="defline"><b>מערכת אנליטית (OLAP):</b> מערכת שנבנתה לשאלות גדולות על הרבה היסטוריה. היא קוראת המון שורות ולא משנה אותן. דוגמה: הכנסות לפי חודש.</div>
+<div class="defline"><b>מחסן נתונים (data warehouse):</b> מסד נפרד שנבנה לדוחות, עם נתונים מסודרים והיסטוריה. דוגמה: BigQuery, שם דנה מריצה דוחות בלי לגעת במסד של המטבח.</div>
+<p>בואו נראה את ההבדל בשתי שאילתות על אותו מסד. הראשונה היא פעולה של המטבח. השנייה היא שאלה של דנה.</p>
+
+<div class="lab" data-id="p4-lab-oltp" data-title="שאילתה תפעולית: הזמנה אחת" data-require="JOIN" data-require-msg="צריך לחבר את שורות הפריט לשמות המנות.">
+  <div class="q-src">מסך המטבח מציג את הזמנה 42. כתבו שאילתה שמחזירה את שמות המנות ואת הכמויות של הזמנה 42, בשתי עמודות: <code>name</code> ו-<code>qty</code>.</div>
+  <pre class="start">SELECT d.name, oi.qty
+FROM order_items oi
+-- השלימו חיבור לטבלת המנות
+WHERE oi.order_id = 42</pre>
+  <pre class="check">SELECT d.name, oi.qty FROM order_items oi JOIN dishes d ON d.id = oi.dish_id WHERE oi.order_id = 42</pre>
+  <pre class="solution">SELECT d.name, oi.qty
+FROM order_items oi
+JOIN dishes d ON d.id = oi.dish_id
+WHERE oi.order_id = 42</pre>
+  <ol class="hints"><li>בשורות הפריט יש רק מספר מנה. את השם מחזיקה הטבלה <code>dishes</code>.</li><li>החיבור הוא <code>ON d.id = oi.dish_id</code>.</li></ol>
+  <div class="why-src">קיבלתם שלוש שורות. השאילתה הגיעה להזמנה דרך המפתח, בלי לקרוא את שאר ההיסטוריה. ככה עובדת מערכת תפעולית: מפתח אחד, מעט שורות, תשובה מיידית.</div>
+</div>
+
+<div class="lab" data-id="p4-lab-olap" data-title="שאילתה אנליטית: הכנסות לפי חודש" data-require="GROUP BY" data-require-msg="שאלה על חודשים דורשת קיבוץ.">
+  <div class="q-src">דנה רוצה את ההכנסה של כל חודש, מהזמנות שנמסרו בלבד. החזירו את העמודות <code>month</code> (בפורמט <code>2026-03</code>) ו-<code>revenue</code>. הכנסה של שורה היא <code>qty * price</code>.</div>
+  <pre class="start">SELECT strftime('%Y-%m', o.order_ts) AS month,
+       -- השלימו את ההכנסה
+FROM orders o
+-- השלימו חיבורים, סינון וקיבוץ</pre>
+  <pre class="check">SELECT strftime('%Y-%m', o.order_ts) AS month, SUM(oi.qty * d.price) AS revenue FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status = 'delivered' GROUP BY month</pre>
+  <pre class="solution">SELECT strftime('%Y-%m', o.order_ts) AS month,
+       SUM(oi.qty * d.price) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+JOIN dishes d ON d.id = oi.dish_id
+WHERE o.status = 'delivered'
+GROUP BY month</pre>
+  <ol class="hints"><li>צריך שלוש טבלאות: הזמנות, שורות פריט ומנות.</li><li>את הסינון לפי סטטוס כותבים ב-<code>WHERE</code>, לפני הקיבוץ.</li></ol>
+  <div class="why-src">שלושה חודשים: 4,631 במרץ, 4,701 באפריל ו-3,552 במאי. סך הכול 12,884. כדי לענות, השאילתה קראה את כל ההזמנות ואת כל שורות הפריטים. אצלנו זה קטן. במערכת אמיתית אלה מיליוני שורות, ושאילתה כזו מתחרה על אותם משאבים שמשרתים את המטבח.</div>
+</div>
+
+<h3>הדמיה: מה קורה למטבח כשדוחות כבדים רצים על המסד החי</h3>
+<div class="sim" data-id="p4-sim-oltp"><div class="sh">מסך ההזמנות מול דוחות כבדים</div>
+  <p>מסך ההזמנות והדוחות משתמשים באותו שרת. הזיזו את המחוון והחליפו בין מסד חי לעותק לדיווח. שימו לב, זה מודל פשוט: כל דוח כבד מוסיף זמן קבוע לשמירת הזמנה. המספרים להמחשה בלבד, לא מדידה של מערכת אמיתית.</p>
+  <div class="row"><label>דוחות כבדים שרצים עכשיו: <b class="n" id="p4o-n">0</b></label><input type="range" min="0" max="6" value="0" id="p4o-r" aria-label="מספר דוחות כבדים"></div>
+  <div class="row"><label><input type="radio" name="p4o-mode" value="live" checked> הדוחות רצים על המסד החי</label><label><input type="radio" name="p4o-mode" value="copy"> הדוחות רצים על עותק לדיווח</label></div>
+  <div class="out">
+    <div>זמן שמירת הזמנה במסך המטבח: <b class="n" id="p4o-ms">40 ms</b> <span class="lamp g" id="p4o-l"></span></div>
+    <div class="meter" style="margin:8px 0"><i id="p4o-m" style="width:8%"></i></div>
+    <div id="p4o-q" style="min-height:28px"></div>
+    <div id="p4o-msg" style="font-weight:700;margin-top:6px">המטבח עובד כרגיל.</div>
+  </div>
+</div>
+<script>(function(){ FL.dom(function(){
+  const box = FL.$('[data-id="p4-sim-oltp"]'); if (!box) return;
+  const r = FL.$('#p4o-r', box), n = FL.$('#p4o-n', box), ms = FL.$('#p4o-ms', box), l = FL.$('#p4o-l', box), m = FL.$('#p4o-m', box), q = FL.$('#p4o-q', box), msg = FL.$('#p4o-msg', box);
+  let sawLiveBad = false, sawCopy = false;
+  function upd(){
+    const k = +r.value, mode = (box.querySelector('input[name=p4o-mode]:checked')||{}).value || 'live';
+    n.textContent = k;
+    const t = mode === 'live' ? 40 + 150 * k : 40;
+    ms.textContent = t + ' ms';
+    m.style.width = Math.min(100, Math.round(t / 10)) + '%';
+    l.className = 'lamp ' + (t < 200 ? 'g' : t < 400 ? 'y' : 'r');
+    const waiting = Math.floor((t - 40) / 150);
+    q.innerHTML = Array.from({length: waiting}).map(()=>'<span class="chip a">הזמנה מחכה</span> ').join('');
+    if (mode === 'live' && k >= 3) sawLiveBad = true;
+    if (mode === 'copy' && k >= 3) sawCopy = true;
+    msg.textContent = mode === 'copy'
+      ? (k ? 'הדוחות רצים בנפרד והמטבח לא מרגיש אותם.' : 'המטבח עובד כרגיל.')
+      : (k >= 4 ? 'המסך כמעט תקוע. המלצרים מחכים לאישור הזמנה.' : k >= 2 ? 'המסך מאט, וכבר מרגישים את זה בשירות.' : k === 1 ? 'יש עיכוב קטן.' : 'המטבח עובד כרגיל.');
+    if (sawLiveBad && sawCopy) FL.done('p4-sim-oltp');
+  }
+  r.addEventListener('input', upd);
+  box.querySelectorAll('input[name=p4o-mode]').forEach(i=>i.addEventListener('change', upd));
+  upd();
+}); })();</script>
+
+<h3>ארבע סיבות להפריד</h3>
+<div class="cols2">
+  <div class="card"><h4>1. ביצועים</h4><p>דוח כבד וקליטת הזמנות מתחרים על אותו מעבד, זיכרון ודיסק. ראיתם בהדמיה: כל דוח נוסף מאריך את ההמתנה של המטבח.</p></div>
+  <div class="card"><h4>2. אבטחה</h4><p>אנליסט צריך לקרוא נתונים, לא למחוק אותם. בעותק לדיווח נותנים הרשאת קריאה בלבד, ושדות רגישים, כמו אימייל, לא עוברים לשם בכלל. אז פקודה כמו <code>DELETE FROM orders</code> פשוט לא תעבוד שם.</p></div>
+  <div class="card"><h4>3. מבנה</h4><p>המסד החי מפוצל לטבלאות קטנות, כדי לשמור כל עובדה פעם אחת. שאלה עסקית אחת דורשת כמה חיבורים. במחסן מכינים צורה שנוחה לשאילתות. נבנה אותה בסעיף 4.</p></div>
+  <div class="card"><h4>4. היסטוריה</h4><p>המסד החי מחזיק את המצב הנוכחי. כששינו מחיר, הישן נעלם. בלי עותק נפרד אי אפשר לדעת מה היה נכון בעבר. המעבדה הבאה מראה את הבעיה.</p></div>
+</div>
+
+<div class="lab" data-id="p4-lab-history" data-title="מה קורה להיסטוריה כשמשנים מחיר" data-db="rest">
+  <div class="q-src">יבגני מעלה את מחיר ההמבורגר (מנה 3) מ-68 ל-72. הריצו <code>UPDATE</code> מתאים. בטבלת ״אחרי״ תראו את סך ההכנסה ההיסטורית מכל ההזמנות, כשהיא מחושבת מהמחירים שבטבלת המנות.</div>
+  <pre class="show">SELECT SUM(oi.qty * d.price) AS revenue_all_time FROM order_items oi JOIN dishes d ON d.id = oi.dish_id</pre>
+  <pre class="start">UPDATE dishes
+SET price = 72
+-- הוסיפו תנאי כדי לשנות רק את ההמבורגר</pre>
+  <pre class="check">UPDATE dishes SET price = 72 WHERE id = 3</pre>
+  <ol class="hints"><li>בלי <code>WHERE</code> כל המחירים בתפריט יהפכו ל-72.</li><li>המבורגר בקר הוא מנה מספר 3.</li></ol>
+  <div class="why-src">ההכנסה ההיסטורית עלתה ב-88 שקלים: 22 המבורגרים כפול 4 שקלים. לא נמכרה אף מנה נוספת. ההזמנות הישנות פשוט התומחרו מחדש. בגלל זה מחסן שומר את המחיר שהיה בזמן המכירה, ולא מחשב אותו שוב מהטבלה החיה.</div>
+</div>
+
+<div class="anim" data-id="p4-anim-copy" data-speed="3200">
+  <div class="stage"><svg viewBox="0 0 800 320" role="img" aria-label="נתונים זורמים מהמסד החי דרך העתקה מתוזמנת למחסן ולדשבורד">
+    <defs><marker id="p4a1-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <rect x="590" y="60" width="190" height="130" rx="16" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="685" y="98" text-anchor="middle" font-size="20" font-weight="800" fill="#3730a3">המסד החי</text>
+    <text x="685" y="122" text-anchor="middle" font-size="15" fill="#4f46e5">OLTP</text>
+    <text x="685" y="150" text-anchor="middle" font-size="15" fill="#334155">הזמנות נשמרות</text>
+    <text x="685" y="172" text-anchor="middle" font-size="15" fill="#334155">כל הערב</text>
+    <circle cx="610" cy="82" r="8" fill="#22c55e" data-s="4"/>
+    <text x="685" y="208" text-anchor="middle" font-size="15" font-weight="700" fill="#047857" data-s="4">המטבח רגוע</text>
+    <g data-s="2"><path d="M580 125 L500 125" stroke="#64748b" stroke-width="3" marker-end="url(#p4a1-ar)" fill="none"/>
+    <rect x="310" y="85" width="180" height="80" rx="14" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="400" y="118" text-anchor="middle" font-size="18" font-weight="800" fill="#92400e">העתקה מתוזמנת</text>
+    <text x="400" y="144" text-anchor="middle" font-size="15" fill="#92400e">ETL</text></g>
+    <g data-s="3"><path d="M300 125 L220 125" stroke="#64748b" stroke-width="3" marker-end="url(#p4a1-ar)" fill="none"/>
+    <rect x="20" y="60" width="190" height="130" rx="16" fill="#ccfbf1" stroke="#0f766e" stroke-width="2"/>
+    <text x="115" y="98" text-anchor="middle" font-size="20" font-weight="800" fill="#0f766e">המחסן</text>
+    <text x="115" y="122" text-anchor="middle" font-size="15" fill="#0f766e">OLAP</text>
+    <text x="115" y="150" text-anchor="middle" font-size="15" fill="#334155">נקי, מסודר,</text>
+    <text x="115" y="172" text-anchor="middle" font-size="15" fill="#334155">עם היסטוריה</text></g>
+    <g data-s="4"><path d="M115 195 L115 240" stroke="#64748b" stroke-width="3" marker-end="url(#p4a1-ar)" fill="none"/>
+    <rect x="20" y="245" width="190" height="55" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="115" y="270" text-anchor="middle" font-size="17" font-weight="800" fill="#5b21b6">דשבורד של דנה</text>
+    <text x="115" y="290" text-anchor="middle" font-size="14" fill="#5b21b6">שאילתות כבדות כאן</text></g>
+    <circle r="10" cx="595" cy="125" fill="#d8b862" data-move="1:0,0|2:-115,0|3:-375,0"/>
+    <g data-s="1" data-pulse><rect x="600" y="225" width="170" height="40" rx="10" fill="#fff" stroke="#cbd5e1"/><text x="685" y="251" text-anchor="middle" font-size="15" fill="#334155">הזמנה חדשה נכנסת</text></g>
+  </svg></div>
+  <ol class="caps"><li>1. הזמנות נשמרות במסד החי כל הערב. זו העבודה שלו.</li><li>2. בשעה קבועה, תהליך העתקה מתוזמן (ETL, נסביר אותו בסעיף 3) לוקח את הנתונים החדשים.</li><li>3. הנתונים מסודרים ונשמרים במחסן, עם היסטוריה.</li><li>4. דנה מריצה דוחות כבדים על המחסן, והמטבח לא מרגיש אותם.</li></ol>
+</div>
+
+<div class="box meaning"><p>ההפרדה היא החלטה ניהולית, לא רק טכנית. אפשר לשאול שאלות גדולות בלי לסכן את השירות, לתת לאנליסטים גישה בלי סיכון למחיקה, ולשמור היסטוריה שאפשר לסמוך עליה. המחיר: צריך לתחזק תהליך העתקה, והדוח משקף את רגע ההעתקה האחרון ולא את השנייה הזו.</p></div>
+
+<div class="box real"><p>בכל ארגון תפגשו את ההבחנה הזו. המערכת התפעולית היא בדרך כלל מסד כמו PostgreSQL או MySQL. מערכת הדיווח היא מחסן כמו BigQuery, Snowflake או Redshift, ולפעמים סתם עותק קריאה של אותו מסד. כלי <dfn data-d="כלי שמתחבר למקור נתונים ומציג אותו בגרפים ובמדדים, כך שאפשר לענות על שאלות בלי לכתוב SQL.">BI</dfn> כמו Looker Studio, Tableau ו-Power BI מתחברים בדרך כלל לצד הדיווח, ולא למערכת שמשרתת את הלקוחות. בחלק 3 ראינו עותק קריאה (read replica) כדרך להקל על המסד החי. כאן אותו רעיון משמש לדיווח.</p></div>
+
+<div class="box think" data-id="p4-th-warehouse"><p>במסעדה של יבגני יש פחות ממאה הזמנות. צריך בכלל מחסן נתונים נפרד?</p>
+<div class="ans">לא תמיד. בנפח כזה אין בעיית ביצועים, ואפשר להריץ דוחות על המסד עצמו. העיקרון חשוב יותר מהמוצר: היסטוריה, הרשאות והגדרות אחידות כדאי להפריד מוקדם, כי קשה לסדר אותם אחרי שהמערכת גדלה. פתרון זול מתחיל בייצוא לילי לקובץ או בעותק קריאה. מחסן מלא מצדיק את עצמו כשהנפח או מספר הצרכנים גדלים.</div></div>
+
+<div class="quiz" data-id="p4-q-oltp" data-a="2"><p class="qq">אנליסט חיבר כלי BI ישירות למסד החי, ובכל ריענון של הדשבורד המטבח מתעכב. מה הפתרון?</p>
+<button class="opt">להוסיף עובדים למטבח כדי לספוג את העיכוב</button>
+<button class="opt">להעביר את הדיווח לעותק או למחסן שמתעדכנים בהעתקה מתוזמנת</button>
+<button class="opt">לבקש מהאנליסט שאילתות קצרות יותר, ישירות על המסד החי</button>
+<button class="opt">להפסיק לשמור היסטוריה כדי שהמסד יהיה קטן</button>
+<div class="why">הבעיה היא שני סוגי עבודה שמתחרים על אותם משאבים. הפרדה פותרת אותה מהשורש. עובדים נוספים לא קשורים לשרת. שאילתות קצרות לא מבטיחות שהדוח לא ייכבד. ומחיקת היסטוריה פוגעת בדיוק ביכולת לנתח.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> תתחילו מהסיפור של יום שישי ותשאלו את הכיתה מי אשם. אחרי שתי המעבדות, השוו כמה שורות כל אחת קראה. תעצרו על מעבדת ההיסטוריה: רוב הסטודנטים מופתעים שהכנסה של חודש שעבר יכולה להשתנות בלי מכירה אחת. תזכירו שמודל ההדמיה פשוט.</div>
+</section>
+<section class="sec" id="s4-2" data-t="שורות ועמודות">
+<div class="sec-h"><div class="sec-n">2</div><h2>למה המחסן מהיר: קורא רק את העמודות שצריך</h2></div>
+<p class="lead">דנה שואלת: מה זמן המשלוח הממוצע בכל ערוץ? בטבלת ההזמנות יש תשע עמודות, ובשביל התשובה צריך רק שתיים.</p>
+
+<div class="defline"><b>אחסון שורות:</b> שומרים את כל התאים של שורה אחת ביחד. זה מתאים למסך שצריך הזמנה שלמה. דוגמה: הזמנה 42 עם כל תשעת השדות שלה, במקום אחד.</div>
+<div class="defline"><b>אחסון עמודות:</b> שומרים כל עמודה בנפרד, כל הערכים שלה ברצף. זה מתאים לשאלות שמסכמות עמודה אחת על הרבה שורות. דוגמה: כל זמני המשלוח ברצף אחד.</div>
+
+<div class="sim" data-id="p4-sim-cols"><div class="sh">כמה תאים כל שיטה צריכה לקרוא</div>
+  <p>בחרו שאלה. ההדמיה סופרת כמה תאים כל שיטה קוראת בטבלת <code>orders</code> האמיתית, שיש בה <b class="n" id="p4c-r">87</b> שורות ו-<b class="n" id="p4c-c">9</b> עמודות.</p>
+  <div class="p4-btns" id="p4c-q"></div>
+  <div class="row"><label><input type="checkbox" id="p4c-star"> כתבתי <code>SELECT *</code>, כלומר ביקשתי את כל העמודות</label></div>
+  <div id="p4c-cols" style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0"></div>
+  <div class="out">
+    <div class="p4-bar"><span>אחסון שורות</span><div class="tr"><i id="p4c-b1"></i></div><b id="p4c-n1"></b></div>
+    <div class="p4-bar"><span>אחסון עמודות</span><div class="tr"><i class="g" id="p4c-b2"></i></div><b id="p4c-n2"></b></div>
+    <div id="p4c-msg" style="font-weight:700;margin-top:6px"></div>
+  </div>
+</div>
+<script>(function(){ FL.dom(function(){
+  const box = FL.$('[data-id="p4-sim-cols"]'); if (!box) return;
+  const Q = [
+    {t:'זמן משלוח ממוצע לפי ערוץ', cols:['channel','delivery_min'], one:false},
+    {t:'כמה הזמנות בכל יום', cols:['order_ts'], one:false},
+    {t:'דירוג ממוצע לכל שליח', cols:['courier_id','rating'], one:false},
+    {t:'כל הפרטים של הזמנה 42', cols:null, one:true}
+  ];
+  let ALL = ['id','customer_id','courier_id','order_ts','channel','delivery_min','rating','tip','status'], N = 87, cur = 0; const tried = {}; let starUsed = false;
+  const qb = FL.$('#p4c-q', box);
+  Q.forEach((q,i)=>{ const b = document.createElement('button'); b.type = 'button'; b.textContent = q.t; b.addEventListener('click', ()=>{ cur = i; tried[i] = 1; render(); }); qb.appendChild(b); });
+  FL.onReady(function(ok){
+    if (!ok) return;
+    try { N = FL.exec('SELECT COUNT(*) FROM orders').values[0][0]; ALL = FL.exec("SELECT name FROM pragma_table_info('orders')").values.map(r=>r[0]); } catch(e){}
+    FL.$('#p4c-r', box).textContent = N; FL.$('#p4c-c', box).textContent = ALL.length; render();
+  });
+  FL.$('#p4c-star', box).addEventListener('change', ()=>{ starUsed = true; render(); });
+  function render(){
+    const q = Q[cur], star = FL.$('#p4c-star', box).checked, C = ALL.length;
+    const need = q.cols && !star ? q.cols : ALL, rows = q.one ? 1 : N, total = N * C;
+    const rowCells = rows * C, colCells = rows * need.length;
+    FL.$$('button', qb).forEach((b,i)=>b.classList.toggle('on', i === cur));
+    FL.$('#p4c-cols', box).innerHTML = ALL.map(c=>'<span class="chip '+(need.indexOf(c) >= 0 ? 'b' : '')+'">'+FL.esc(c)+'</span>').join('');
+    function bar(i, n){ FL.$('#p4c-b'+i, box).style.width = Math.max(2, Math.round(100 * n / total)) + '%'; FL.$('#p4c-n'+i, box).textContent = n + ' תאים'; }
+    bar(1, rowCells); bar(2, colCells);
+    const m = FL.$('#p4c-msg', box);
+    if (q.one) m.textContent = 'שולפים שורה אחת: שתי השיטות קוראות אותו מספר תאים, אבל אחסון עמודות צריך להביא אותם מ-' + C + ' מקומות שונים. לכן מערכת תפעולית מעדיפה שורות.';
+    else if (star) m.textContent = 'הכוכבית מבטלת את היתרון. המחסן קורא את כל העמודות, בדיוק כמו אחסון שורות.';
+    else m.textContent = 'אחסון עמודות קורא ' + Math.round(100 * colCells / rowCells) + '% ממה שאחסון שורות קורא. השאלה צריכה ' + need.length + ' עמודות מתוך ' + C + '.';
+    if (Object.keys(tried).length >= 4 && starUsed) FL.done('p4-sim-cols');
+  }
+  render();
+}); })();</script>
+
+<div class="lab" data-id="p4-lab-cols" data-title="שאלה אחת, שתי עמודות" data-require="^(?![\s\S]*\*)" data-require-msg="בלי כוכבית. תבחרו רק את העמודות שהשאלה צריכה.">
+  <div class="q-src">כתבו את השאילתה של דנה: זמן משלוח ממוצע לכל ערוץ (<code>channel</code>, <code>delivery_min</code>), בלי עיגול ובלי כוכבית.</div>
+  <pre class="start">SELECT channel, AVG(delivery_min) AS avg_min
+FROM orders
+-- הוסיפו קיבוץ</pre>
+  <pre class="check">SELECT channel, AVG(delivery_min) FROM orders GROUP BY channel</pre>
+  <ol class="hints"><li>כל ערוץ הוא קבוצה.</li><li>גם <code>COUNT(*)</code> מכיל כוכבית. לא צריך אותו כאן.</li></ol>
+  <div class="why-src">הערוצים: app עם בערך 35 דקות, phone עם 36.2 דקות, ו-walk-in בלי ערך, כי אין שם משלוח. השאילתה נגעה בשתי עמודות, וזה מה שהמחסן גובה עליו: שתיים ולא תשע. אגב, ההדמיה סופרת תאים. במחסן אמיתי הסריקה נמדדת בבתים, ועמודת טקסט ארוכה שוקלת יותר מעמודת מספרים.</div>
+</div>
+
+<h3>כמה זה עולה: סריקה</h3>
+<div class="defline"><b>סריקה (bytes scanned):</b> כמות הנתונים שהמחסן קורא כדי לענות על שאילתה. דוגמה: שאילתה על עמודה אחת סורקת רק אותה, ושאילתה עם כוכבית סורקת הכול.</div>
+<p>במחסנים כמו BigQuery, בתמחור לפי דרישה, משלמים לפי כמות הנתונים שנסרקה. את התעריף העדכני בדקו באתר. אז שלושה הרגלים חוסכים כסף ומזרזים:</p>
+<div class="cols3">
+  <div class="card"><h4>בוחרים עמודות</h4><p>כותבים רק מה שהשאלה צריכה. כוכבית על טבלה רחבה סורקת את כולה.</p></div>
+  <div class="card"><h4>מסננים לפי החלוקה</h4><p>טבלה <dfn data-d="טבלה שמחולקת לחלקים, בדרך כלל לפי תאריך, כך שהמחסן יכול לדלג על חלקים שהשאילתה לא צריכה.">מחולקת</dfn> לפי תאריך מאפשרת לדלג על חודשים שלמים כשמסננים לפי תאריך.</p></div>
+  <div class="card"><h4>מסתכלים לפני שמריצים</h4><p>העורך מציג הערכת סריקה לפני ההרצה. בטבלה רגילה (לא מקובצת), הוספת <code>LIMIT</code> לבדה לא מקטינה את הסריקה ב-BigQuery.</p></div>
+</div>
+<p>ויש גם רשת ביטחון: בהגדרות השאילתה אפשר לקבוע תקרה לכמות הנתונים שמחויבת (maximum bytes billed). אם ההערכה גבוהה מהתקרה, השאילתה נכשלת לפני שהיא רצה, ובלי חיוב.</p>
+
+<div class="mk rtl"><div class="mk-bar"><i></i><i></i><i></i><span class="url">console.cloud.google.com/bigquery</span></div>
+<div class="mk-body">
+  <div style="font-size:.8rem;color:var(--muted);margin-bottom:8px">הדמיה סכמטית. את X ו-Y תחליפו בערכים האמיתיים שתראו בעורך.</div>
+  <div class="p4-two">
+    <div class="p4-card-s"><pre class="code" data-lang="sql">SELECT *
+FROM `bigquery-public-data.thelook_ecommerce.order_items`</pre><span class="chip a">✓ This query will process X when run.</span></div>
+    <div class="p4-card-s"><pre class="code" data-lang="sql">SELECT sale_price
+FROM `bigquery-public-data.thelook_ecommerce.order_items`</pre><span class="chip g">✓ This query will process Y when run.</span></div>
+  </div>
+  <div style="margin-top:8px;font-size:.88rem">מה צפוי: Y קטן מ-X, כי עמודה אחת היא רק חלק מהטבלה.</div>
+</div></div>
+
+<div class="box try" data-id="p4-try-bq-scan">
+  <p>בדקו בעצמכם את הערכת הסריקה ב-BigQuery. בסביבת sandbox לא צריך כרטיס אשראי, ולא תריצו שאילתה יקרה.</p>
+  <ol>
+    <li>היכנסו לקונסולת BigQuery עם חשבון Google. אם מציעים לכם סביבת sandbox, תשתמשו בה.</li>
+    <li>פתחו שאילתה חדשה והדביקו את הראשונה (עם <code>SELECT *</code>). אל תריצו. תסתכלו בפינת העורך על ההערכה ״This query will process ...״ ותרשמו אותה.</li>
+    <li>החליפו ל-<code>SELECT sale_price</code> ותסתכלו שוב על ההערכה. השוו.</li>
+    <li>הוסיפו <code>LIMIT 10</code> לשאילתה עם הכוכבית ובדקו אם ההערכה השתנתה.</li>
+  </ol>
+  <pre class="code" data-lang="sql">SELECT *
+FROM `bigquery-public-data.thelook_ecommerce.order_items`;
+
+SELECT sale_price
+FROM `bigquery-public-data.thelook_ecommerce.order_items`;</pre>
+  <p class="tools"><a class="tool" href="https://console.cloud.google.com/bigquery" target="_blank" rel="noopener">קונסולת BigQuery</a><a class="tool" href="https://cloud.google.com/bigquery/docs/sandbox" target="_blank" rel="noopener">מידע על sandbox</a></p>
+</div>
+
+<div class="box meaning"><p>אחסון שורות ואחסון עמודות מתאימים לשני סוגי עבודה. מסך הזמנה צריך שורה שלמה במהירות. דוח צריך עמודה אחת על כל ההיסטוריה. מי שכותב שאילתות במחסן משפיע ישר על החשבון: שאילתה בזבזנית היא לא רק איטית, היא גם יקרה.</p></div>
+
+<div class="box real"><p>מחסני נתונים מודרניים בנויים סביב אחסון עמודות. גם <dfn data-d="פורמט קובץ לנתונים אנליטיים ששומר כל עמודה בנפרד.">Parquet</dfn>, פורמט קבצים לניתוח, שומר כל עמודה בנפרד מאותה סיבה. מסדים תפעוליים כמו PostgreSQL שומרים שורות. אותו מידע נשמר אחרת, לפי מה שצריך לעשות איתו.</p></div>
+
+<div class="box think" data-id="p4-th-cols"><p>למה מסך המטבח מעדיף אחסון שורות, ודנה מעדיפה אחסון עמודות?</p>
+<div class="ans">המסך צריך את כל השדות של הזמנה אחת: מי הלקוח, מה הוזמן, מתי. אם הם שמורים ביחד, שליפה אחת מספיקה. דנה מסכמת עמודה אחת (למשל זמן משלוח) על כל ההזמנות. אם העמודה שמורה ברצף, אפשר לקרוא אותה בלי לגעת בשאר. בוחרים שיטה לפי השאלה הנפוצה.</div></div>
+
+<div class="quiz" data-id="p4-q-limit" data-a="3"><p class="qq">מוסיפים <code>LIMIT 10</code> לשאילתה <code>SELECT *</code> על טבלה גדולה ורגילה (לא מקובצת) במחסן שמחייב לפי סריקה. מה קורה לכמות הנסרקת?</p>
+<button class="opt">היא יורדת לעשר שורות</button>
+<button class="opt">היא יורדת בחצי</button>
+<button class="opt">היא נשארת בערך אותו דבר, כי כל העמודות עדיין נקראות</button>
+<button class="opt">היא עולה, כי צריך למיין את התוצאה</button>
+<div class="why">בטבלה רגילה LIMIT מקצר את מה שמוחזר, לא את מה שהמחסן קורא. (בטבלה מקובצת יש מקרים שבהם הוא כן עוזר, ולכן לא סומכים עליו כדרך לחסוך.) כדי להקטין סריקה בוחרים פחות עמודות או מסננים לפי עמודת החלוקה. האפשרות על מיון לא נכונה, כי מיון לא משנה את העלות כאן.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> אחרי ההדמיה תבקשו מהכיתה לנחש מה יצא בשאלה הרביעית לפני הלחיצה. נקודה חשובה: אחסון עמודות הוא לא ״טוב יותר״, הוא מתאים לעבודה אחרת. ההתנסות ב-BigQuery דורשת חשבון Google, כדאי לוודא מראש שלכולם יש.</div>
+</section>
+<section class="sec" id="s4-3" data-t="ETL ו-ELT">
+<div class="sec-h"><div class="sec-n">3</div><h2>איך מנקים נתונים לפני שמכניסים אותם למחסן</h2></div>
+<p class="lead">הטלפניות של יבגני רושמות לקוחות חדשים בקובץ CSV, ביד. בקובץ יש רווחים מיותרים, אותיות גדולות, שורות כפולות ואימייל אחד שהוא לא אימייל. לפני שהקובץ נכנס למחסן, מישהו צריך לסדר אותו. על זה בדיוק מדבר <a href="../lec10part3-15.6.2026.html">השיעור על ETL</a>.</p>
+
+<div class="defline"><b>ETL:</b> שלושה שלבים בהעברת נתונים: חילוץ מהמקור (Extract), ניקוי והתאמה (Transform), וטעינה ליעד (Load). דוגמה: שורות הקובץ יוצאות מה-CSV, מתנקות ונכנסות לטבלת הלקוחות במחסן.</div>
+
+<div class="anim" data-id="p4-anim-etl" data-speed="3400">
+  <div class="stage"><svg viewBox="0 0 800 350" role="img" aria-label="שמונה שורות גולמיות עוברות ניקוי: שתי כפילויות ממוזגות, שתי שורות נדחות וארבע נטענות">
+    <defs><marker id="p4a2-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <rect x="585" y="20" width="205" height="250" rx="14" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+    <text x="687" y="46" text-anchor="middle" font-size="17" font-weight="800" fill="#334155">קובץ ההרשמות (CSV)</text>
+    <g font-size="14" fill="#0f172a">
+      <rect x="597" y="62" width="181" height="22" rx="5" fill="#e2e8f0"/><text x="687" y="78" text-anchor="middle">1 · שלמה בן דוד</text>
+      <rect x="597" y="88" width="181" height="22" rx="5" fill="#e2e8f0"/><text x="687" y="104" text-anchor="middle">2 · שלמה בן דוד</text>
+      <rect x="597" y="114" width="181" height="22" rx="5" fill="#e2e8f0"/><text x="687" y="130" text-anchor="middle">3 · מיה אלון</text>
+      <rect x="597" y="140" width="181" height="22" rx="5" fill="#e2e8f0"/><text x="687" y="156" text-anchor="middle">4 · בדיקה בדיקה</text>
+      <rect x="597" y="166" width="181" height="22" rx="5" fill="#e2e8f0"/><text x="687" y="182" text-anchor="middle">5 · עומר ניר</text>
+      <rect x="597" y="192" width="181" height="22" rx="5" fill="#e2e8f0"/><text x="687" y="208" text-anchor="middle">6 · לינוי חן</text>
+      <rect x="597" y="218" width="181" height="22" rx="5" fill="#e2e8f0"/><text x="687" y="234" text-anchor="middle">7 · לינוי חן</text>
+      <rect x="597" y="244" width="181" height="22" rx="5" fill="#e2e8f0"/><text x="687" y="260" text-anchor="middle">8 · אמיר סער</text>
+    </g>
+    <g data-s="2">
+      <rect x="597" y="88" width="181" height="22" rx="5" fill="none" stroke="#f97316" stroke-width="3"/>
+      <rect x="597" y="218" width="181" height="22" rx="5" fill="none" stroke="#f97316" stroke-width="3"/>
+      <path d="M575 140 L500 140" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a2-ar)"/>
+      <rect x="290" y="60" width="205" height="150" rx="14" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="392" y="88" text-anchor="middle" font-size="18" font-weight="800" fill="#92400e">Transform</text>
+      <text x="392" y="116" text-anchor="middle" font-size="15" fill="#92400e">חיתוך רווחים</text>
+      <text x="392" y="140" text-anchor="middle" font-size="15" fill="#92400e">אימייל באותיות קטנות</text>
+      <text x="392" y="164" text-anchor="middle" font-size="15" fill="#92400e">איחוד כפילויות</text>
+      <text x="392" y="188" text-anchor="middle" font-size="15" fill="#92400e">עיר ריקה = ״לא ידוע״</text>
+    </g>
+    <g data-s="3">
+      <rect x="597" y="140" width="181" height="22" rx="5" fill="none" stroke="#ef4444" stroke-width="3"/>
+      <rect x="597" y="166" width="181" height="22" rx="5" fill="none" stroke="#ef4444" stroke-width="3"/>
+      <path d="M392 215 L392 262" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#p4a2-ar)"/>
+      <rect x="290" y="268" width="205" height="62" rx="12" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+      <text x="392" y="294" text-anchor="middle" font-size="16" font-weight="800" fill="#991b1b">הסגר: 2 שורות נדחו</text>
+      <text x="392" y="316" text-anchor="middle" font-size="14" fill="#991b1b">חשבון בדיקה, אימייל לא תקין</text>
+    </g>
+    <g data-s="4">
+      <path d="M280 120 L215 120" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a2-ar)"/>
+      <rect x="15" y="40" width="195" height="190" rx="14" fill="#ccfbf1" stroke="#0f766e" stroke-width="2"/>
+      <text x="112" y="68" text-anchor="middle" font-size="17" font-weight="800" fill="#0f766e">Load: לקוחות במחסן</text>
+      <rect x="27" y="82" width="171" height="24" rx="6" fill="#fff"/><text x="112" y="99" text-anchor="middle" font-size="14" fill="#0f172a">שלמה בן דוד · חיפה</text>
+      <rect x="27" y="112" width="171" height="24" rx="6" fill="#fff"/><text x="112" y="129" text-anchor="middle" font-size="14" fill="#0f172a">מיה אלון · לא ידוע</text>
+      <rect x="27" y="142" width="171" height="24" rx="6" fill="#fff"/><text x="112" y="159" text-anchor="middle" font-size="14" fill="#0f172a">לינוי חן · תל אביב</text>
+      <rect x="27" y="172" width="171" height="24" rx="6" fill="#fff"/><text x="112" y="189" text-anchor="middle" font-size="14" fill="#0f172a">אמיר סער · לא ידוע</text>
+      <text x="112" y="218" text-anchor="middle" font-size="14" font-weight="700" fill="#0f766e">4 שורות נקיות</text>
+    </g>
+  </svg></div>
+  <ol class="caps"><li>1. חילוץ: קוראים את הקובץ כמו שהוא. שמונה שורות, וכולן נראות תקינות.</li><li>2. ניקוי: אחרי חיתוך רווחים ואותיות קטנות רואים ששורה 2 היא כפילות של שורה 1, ושורה 7 של שורה 6. מאחדים אותן.</li><li>3. שורה 4 היא חשבון בדיקה ושורה 5 היא אימייל לא תקין. מעבירים אותן לטבלה נפרדת לשורות שנדחו (קוראים לה הסגר), ולא מוחקים אותן, כדי שאפשר יהיה לבדוק.</li><li>4. טעינה: ארבע שורות נקיות נכנסות לטבלת הלקוחות. החשבון: <bdi dir="ltr">8 = 4</bdi> נטענו + 2 אוחדו + 2 נדחו.</li></ol>
+</div>
+
+<h3>הדמיה: מנקים בעצמכם ורואים מה קורה למספר</h3>
+<div class="sim" data-id="p4-sim-etl"><div class="sh">כללי ניקוי ומספר הלקוחות בדשבורד</div>
+  <p>סמנו כללי Transform. הם רצים לפי הסדר שבו הם כתובים. הטבלה מראה מה ייטען, והמונים מראים אילו בעיות נשארו. המטרה: דשבורד שמראה את מספר הלקוחות האמיתי, 4, בלי שום בעיה פתוחה.</p>
+  <div class="p4-btns" id="p4e-rules"></div>
+  <div class="tw"><table class="p4-tbl" id="p4e-tbl"></table></div>
+  <div class="out">
+    <div class="kpis" style="margin:0">
+      <div class="kpi" id="p4e-k1"><b>8</b><span>שורות שייטענו</span></div>
+      <div class="kpi" id="p4e-k2"><b>0</b><span>כפילויות שנשארו</span></div>
+      <div class="kpi" id="p4e-k3"><b>0</b><span>אימיילים לא תקינים</span></div>
+      <div class="kpi" id="p4e-k4"><b>0</b><span>חשבונות בדיקה</span></div>
+      <div class="kpi" id="p4e-k5"><b>0</b><span>ערים ריקות</span></div>
+      <div class="kpi" id="p4e-k6"><b>0</b><span>שורות עם רווחים מיותרים</span></div>
+    </div>
+    <div id="p4e-msg" style="font-weight:700;margin-top:8px"></div>
+  </div>
+</div>
+<script>(function(){ FL.dom(function(){
+  const box = FL.$('[data-id="p4-sim-etl"]'); if (!box) return;
+  const RAW = [
+    [1,' שלמה בן דוד ','Shlomo.BD@example.com','חיפה'],
+    [2,'שלמה בן דוד','shlomo.bd@example.com ','חיפה'],
+    [3,'מיה אלון','maya.alon@example.com',''],
+    [4,'בדיקה בדיקה','test@test.com','תל אביב'],
+    [5,'עומר ניר','omer.nir(at)example.com','רמת גן'],
+    [6,'לינוי חן','linoy.chen@example.com','תל אביב'],
+    [7,'לינוי חן','LINOY.CHEN@EXAMPLE.COM','תל אביב '],
+    [8,'אמיר סער','amir.saar@example.com',null]
+  ].map(r=>({id:r[0],name:r[1],email:r[2],city:r[3]}));
+  const RULES = [
+    {k:'trim', t:'1. חיתוך רווחים'},
+    {k:'lower', t:'2. אימייל באותיות קטנות'},
+    {k:'valid', t:'3. דחיית אימייל לא תקין'},
+    {k:'test', t:'4. הסרת חשבונות בדיקה'},
+    {k:'dedupe', t:'5. איחוד כפילויות לפי אימייל'},
+    {k:'city', t:'6. עיר ריקה = לא ידוע'}
+  ];
+  const on = {}; const rb = FL.$('#p4e-rules', box);
+  RULES.forEach(r=>{ const b = document.createElement('button'); b.type = 'button'; b.textContent = r.t; b.addEventListener('click', ()=>{ on[r.k] = !on[r.k]; b.classList.toggle('on', on[r.k]); render(); }); rb.appendChild(b); });
+  const okMail = e => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e.trim());
+  const norm = e => e.trim().toLowerCase();
+  const q = v => "'" + v + "'";
+  const hasWs = v => v != null && v !== v.trim();
+  function run(){
+    let rows = RAW.map(r=>({id:r.id, name:r.name, email:r.email, city:r.city}));
+    if (on.trim) rows.forEach(r=>{ r.name = r.name.trim(); r.email = r.email.trim(); r.city = r.city == null ? null : r.city.trim(); });
+    if (on.lower) rows.forEach(r=>{ r.email = r.email.toLowerCase(); });
+    if (on.valid) rows = rows.filter(r=>okMail(r.email));
+    if (on.test) rows = rows.filter(r=>!/@test\.com$/.test(norm(r.email)));
+    if (on.dedupe){ const seen = {}; rows = rows.filter(r=>{ if (seen[r.email]) return false; seen[r.email] = 1; return true; }); }
+    if (on.city) rows.forEach(r=>{ if (r.city == null || r.city.trim() === '') r.city = 'לא ידוע'; });
+    return rows;
+  }
+  function render(){
+    const rows = run(); const seen = {}; let dup = 0, bad = 0, tst = 0, cty = 0, ws = 0;
+    const html = '<tr><th>id</th><th>name</th><th>email</th><th>city</th></tr>' + rows.map(r=>{
+      const n = norm(r.email); let cls = '';
+      const isDup = !!seen[n]; seen[n] = 1;
+      const isBad = !okMail(r.email), isT = /@test\.com$/.test(n), isC = (r.city == null || r.city.trim() === ''), isW = hasWs(r.name) || hasWs(r.email) || hasWs(r.city);
+      if (isDup) dup++; if (isBad) bad++; if (isT) tst++; if (isC) cty++; if (isW) ws++;
+      cls = (isBad || isT) ? 'bad' : (isDup || isC || isW) ? 'warn' : '';
+      return '<tr class="'+cls+'"><td>'+r.id+'</td><td>'+FL.esc(q(r.name))+'</td><td>'+FL.esc(q(r.email))+'</td><td>'+(r.city == null ? '<i>NULL</i>' : FL.esc(q(r.city)))+'</td></tr>';
+    }).join('');
+    FL.$('#p4e-tbl', box).innerHTML = html;
+    const set = (id, v, bad) => { const k = FL.$(id, box); k.querySelector('b').textContent = v; k.className = 'kpi' + (bad === undefined ? '' : bad ? ' r' : ' g'); };
+    set('#p4e-k1', rows.length, rows.length !== 4); set('#p4e-k2', dup, dup > 0); set('#p4e-k3', bad, bad > 0); set('#p4e-k4', tst, tst > 0); set('#p4e-k5', cty, cty > 0); set('#p4e-k6', ws, ws > 0);
+    const m = FL.$('#p4e-msg', box);
+    if (rows.length === 4 && !dup && !bad && !tst && !cty && !ws){ m.textContent = 'הדשבורד יספור 4 לקוחות, וזה המספר הנכון. שימו לב: כלל 5 עובד רק כי כללים 1 ו-2 רצים לפניו.'; FL.done('p4-sim-etl'); }
+    else m.textContent = 'הדשבורד יספור ' + rows.length + ' לקוחות. האמת היא 4.';
+  }
+  render();
+}); })();</script>
+<p>הערה על הסדר: אם מדליקים את כלל 5 בלי כללים 1 ו-2, האיחוד לא מזהה את הכפילויות, כי ״Shlomo.BD@example.com״ ו-״shlomo.bd@example.com ״ נראות לו כשתי כתובות שונות. בניקוי נתונים, הסדר הוא חלק מהלוגיקה.</p>
+
+<div class="lab" data-id="p4-lab-etl-find" data-title="מי כפול אחרי ניקוי" data-require="GROUP BY" data-require-msg="כפילות מחפשים בקיבוץ לפי אימייל אחרי ניקוי.">
+  <pre class="setup">CREATE TABLE raw_signups (id INTEGER, name TEXT, email TEXT, city TEXT, joined TEXT);
+INSERT INTO raw_signups VALUES
+(1, ' שלמה בן דוד ', 'Shlomo.BD@example.com', 'חיפה', '2026-06-01'),
+(2, 'שלמה בן דוד', 'shlomo.bd@example.com ', 'חיפה', '2026-06-01'),
+(3, 'מיה אלון', 'maya.alon@example.com', '', '2026-06-02'),
+(4, 'בדיקה בדיקה', 'test@test.com', 'תל אביב', '2026-06-02'),
+(5, 'עומר ניר', 'omer.nir(at)example.com', 'רמת גן', '2026-06-03'),
+(6, 'לינוי חן', 'linoy.chen@example.com', 'תל אביב', '2026-06-03'),
+(7, 'לינוי חן', 'LINOY.CHEN@EXAMPLE.COM', 'תל אביב ', '2026-06-04'),
+(8, 'אמיר סער', 'amir.saar@example.com', NULL, '2026-06-04');</pre>
+  <div class="q-src">בטבלה <code>raw_signups</code> יש שמונה שורות גולמיות. החזירו את האימיילים הכפולים אחרי ניקוי (חיתוך רווחים ואותיות קטנות) ואת מספר השורות של כל אחד, בעמודות <code>email_norm</code> ו-<code>n</code>. תנסו קודם לקבץ לפי העמודה הגולמית <code>email</code> ותראו מה קורה.</div>
+  <pre class="start">SELECT LOWER(TRIM(email)) AS email_norm, COUNT(*) AS n
+FROM raw_signups
+-- הוסיפו קיבוץ ותנאי על הקבוצות</pre>
+  <pre class="check">SELECT LOWER(TRIM(email)) AS email_norm, COUNT(*) AS n FROM raw_signups GROUP BY LOWER(TRIM(email)) HAVING COUNT(*) &gt; 1</pre>
+  <ol class="hints"><li>תנאי על קבוצות כותבים ב-<code>HAVING</code>.</li><li>הקיבוץ צריך להשתמש באותו ביטוי מנוקה: <code>LOWER(TRIM(email))</code>. אם כותבים <code>GROUP BY email</code>, SQLite מקבץ לפי העמודה הגולמית ולא לפי הכינוי.</li></ol>
+  <div class="why-src">מצאתם שני אימיילים שמופיעים פעמיים. אם מקבצים לפי העמודה הגולמית אין שום כפילות, כי רווח או אות גדולה הופכים כל כתובת לשונה. בדיקת כפילות בלי ניקוי מחזירה ״הכול תקין״ על נתונים לא תקינים.</div>
+</div>
+
+<div class="defline"><b>CREATE TABLE ... AS SELECT:</b> פקודה שיוצרת טבלה חדשה מתוצאה של שאילתה. דוגמה: <code>CREATE TABLE t AS SELECT id FROM dishes</code> יוצרת טבלה בשם t עם עמודת id של המנות.</div>
+<div class="defline"><b>ELT:</b> אותו רעיון בסדר אחר: קודם טוענים את הנתונים הגולמיים למחסן, ואז מנקים אותם שם בפקודות SQL. דוגמה: <code>raw_signups</code> נטענת כמו שהיא, וטבלה נקייה נבנית ממנה בשאילתה אחת.</div>
+<p>במחסן בענן הכוח החישובי קרוב לנתונים וגדל לפי הצורך, ולכן נהוג לטעון גולמי ולהמיר בתוך המחסן. יתרון נוסף: הגולמי נשמר, ואם כלל הניקוי היה שגוי אפשר לבנות מחדש. המעבדה הבאה היא בדיוק ELT: הנתונים הגולמיים כבר בטבלה, ואתם בונים ממנה את הנקייה.</p>
+
+<div class="lab" data-id="p4-lab-elt-load" data-title="ELT: בונים את הטבלה הנקייה" data-require="CREATE TABLE" data-require-msg="הטבלה הנקייה נוצרת בפקודת CREATE TABLE ... AS SELECT.">
+  <pre class="setup">CREATE TABLE raw_signups (id INTEGER, name TEXT, email TEXT, city TEXT, joined TEXT);
+INSERT INTO raw_signups VALUES
+(1, ' שלמה בן דוד ', 'Shlomo.BD@example.com', 'חיפה', '2026-06-01'),
+(2, 'שלמה בן דוד', 'shlomo.bd@example.com ', 'חיפה', '2026-06-01'),
+(3, 'מיה אלון', 'maya.alon@example.com', '', '2026-06-02'),
+(4, 'בדיקה בדיקה', 'test@test.com', 'תל אביב', '2026-06-02'),
+(5, 'עומר ניר', 'omer.nir(at)example.com', 'רמת גן', '2026-06-03'),
+(6, 'לינוי חן', 'linoy.chen@example.com', 'תל אביב', '2026-06-03'),
+(7, 'לינוי חן', 'LINOY.CHEN@EXAMPLE.COM', 'תל אביב ', '2026-06-04'),
+(8, 'אמיר סער', 'amir.saar@example.com', NULL, '2026-06-04');</pre>
+  <div class="q-src">צרו טבלה <code>clean_signups</code> מ-<code>raw_signups</code> לפי הכללים: אימייל מנוקה ותקין (יש בו <code>@</code> ונקודה אחריה), בלי חשבונות <code>@test.com</code>, שורה אחת לכל אימייל (עם ה-<code>id</code> הקטן ביותר), ועיר ריקה הופכת ל-״לא ידוע״. סיימו ב-<code>SELECT</code> שמציג את הטבלה. אמורות להיטען 4 שורות.</div>
+  <pre class="start">CREATE TABLE clean_signups AS
+SELECT MIN(id) AS id,
+       MIN(TRIM(name)) AS name,
+       LOWER(TRIM(email)) AS email
+       -- השלימו עיר ותאריך
+FROM raw_signups
+-- השלימו סינון וקיבוץ
+;
+SELECT * FROM clean_signups;</pre>
+  <pre class="check">CREATE TABLE clean_signups AS SELECT MIN(id) AS id, MIN(TRIM(name)) AS name, LOWER(TRIM(email)) AS email, COALESCE(MAX(NULLIF(TRIM(city), '')), 'לא ידוע') AS city, MIN(joined) AS joined FROM raw_signups WHERE TRIM(email) LIKE '%_@_%._%' AND LOWER(TRIM(email)) NOT LIKE '%@test.com' GROUP BY LOWER(TRIM(email)); SELECT * FROM clean_signups;</pre>
+  <pre class="solution">CREATE TABLE clean_signups AS
+SELECT MIN(id) AS id,
+       MIN(TRIM(name)) AS name,
+       LOWER(TRIM(email)) AS email,
+       COALESCE(MAX(NULLIF(TRIM(city), '')), 'לא ידוע') AS city,
+       MIN(joined) AS joined
+FROM raw_signups
+WHERE TRIM(email) LIKE '%_@_%._%'
+  AND LOWER(TRIM(email)) NOT LIKE '%@test.com'
+GROUP BY LOWER(TRIM(email));
+SELECT * FROM clean_signups;</pre>
+  <ol class="hints"><li>עיר ריקה היא טקסט ריק, לא תמיד NULL. <code>NULLIF(TRIM(city), '')</code> הופך טקסט ריק ל-NULL, ואז <code>COALESCE</code> ממלא ערך. כשמאחדים כמה שורות, <code>MAX</code> בוחר עיר אמיתית על פני NULL.</li><li>סינון תקינות: <code>TRIM(email) LIKE '%_@_%._%'</code>. סינון בדיקה: <code>NOT LIKE '%@test.com'</code>.</li><li>איחוד כפילויות הוא <code>GROUP BY LOWER(TRIM(email))</code>, עם פונקציות כמו <code>MIN</code> על שאר העמודות.</li></ol>
+  <div class="why-src">הטבלה הנקייה מכילה ארבע שורות. הגולמית לא נפגעה, ולכן אפשר לשנות כלל ולבנות מחדש. בפרויקטים אמיתיים מתחזקים רצף של שאילתות כאלה בכלים כמו dbt, אבל היסוד זהה: טבלה גולמית, שאילתת Transform, טבלה נקייה.</div>
+</div>
+
+<div class="tw"><table class="tbl"><thead><tr><th></th><th>ETL</th><th>ELT</th></tr></thead><tbody>
+<tr><th>איפה מנקים</th><td>בשרת ביניים, לפני הטעינה</td><td>בתוך המחסן, אחרי הטעינה</td></tr>
+<tr><th>מה נשמר בצד</th><td>לפעמים רק התוצאה הנקייה</td><td>גם הגולמי וגם הנקי</td></tr>
+<tr><th>מתי מתאים</th><td>כשצריך להסיר מידע רגיש לפני שהוא מגיע למחסן</td><td>כשהמחסן חזק ורוצים גמישות לשנות כללים</td></tr>
+<tr><th>איך מנקים</th><td>בדרך כלל בכלי ייעודי או בקוד</td><td>ב-SQL בתוך המחסן</td></tr>
+</tbody></table></div>
+
+<div class="defline"><b>טעינה מצטברת:</b> טעינה שמעבירה רק שורות חדשות או ששונו מאז הריצה האחרונה. דוגמה: במקום להעתיק את כל ההזמנות כל לילה, מעתיקים רק את ההזמנות שנוספו אתמול.</div>
+<pre class="code" data-lang="sql">-- טעינה מצטברת: רק מה שחדש מאז הריצה האחרונה
+SELECT * FROM orders
+WHERE order_ts &gt; '2026-05-30 00:00';   -- את התאריך מחליף הפרמטר last_run</pre>
+<p>רשימת המנות קטנה, אז טוענים אותה מחדש במלואה בכל ריצה. טבלת ההזמנות גדולה, אז טוענים אותה בצורה מצטברת. יש כאן מלכודת: הזמנה שהסטטוס שלה השתנה אחרי שנוצרה (נמסרה או בוטלה) לא תיתפס לפי תאריך יצירה. לכן בטבלאות שמשתנות מסננים לפי עמודת ״עודכן ב״ (<code>updated_at</code>), שאין אצלנו.</p>
+
+<div class="box meaning"><p>דשבורד טוב רק כמו ה-Transform שמאחוריו. הכללים שנכתבו שם, מה נחשב חשבון בדיקה ומה נחשב אימייל תקין, הם החלטות עסקיות שמשפיעות על כל מספר שיוצג. לכן הם צריכים להיות כתובים, מוסכמים ומוגדרים במקום אחד.</p></div>
+<div class="box real"><p>בפרויקטים אמיתיים לכל שלב יש כלים משלו. כלים כמו Airbyte ו-Fivetran מעבירים נתונים ממערכות המקור למחסן. כלי כמו dbt מנהל שאילתות Transform כקבצי SQL עם בדיקות. כלי תזמון כמו Airflow מריצים את הרצף בשעה קבועה. אלה סוגי כלים, והיסוד שלמדתם כאן נמצא מאחורי כולם.</p></div>
+
+<div class="box think" data-id="p4-th-etl-rule"><p>את הכלל ״הסר חשבונות בדיקה״ אפשר לכתוב בצינור הנתונים, או כמסנן בכל דשבורד בנפרד. איפה עדיף?</p>
+<div class="ans">בצינור, פעם אחת. אם הכלל כתוב בכל דשבורד, מספיק ששניים מהם ישכחו אותו, וכבר יש שני מספרי לקוחות שונים. כלל בצינור נבדק ומתועד במקום אחד, וכל מי שמשתמש בנתונים מקבל אותה תוצאה.</div></div>
+
+<div class="quiz" data-id="p4-q-etl-order" data-a="1"><p class="qq">הפעלתם איחוד כפילויות לפי אימייל, אבל שתי השורות ״Linoy.Chen@x.com״ ו-״linoy.chen@x.com ״ נשארו. מה הסיבה הכי סבירה?</p>
+<button class="opt">חיתוך הרווחים והאותיות הקטנות רץ אחרי האיחוד, ולכן האיחוד ראה שתי כתובות שונות</button>
+<button class="opt">המחסן לא יודע לאחד כפילויות</button>
+<button class="opt">אחת השורות הייתה בעצם חשבון בדיקה</button>
+<button class="opt">צריך טעינה מצטברת במקום טעינה מלאה</button>
+<div class="why">איחוד משווה ערכים כמו שהם באותו רגע. כל עוד יש רווח או אות גדולה, שני הערכים שונים. לכן הניקוי רץ קודם. שאר ההסברים לא קשורים: כל מחסן יודע לאחד, שורה אחרת לא הייתה חשבון בדיקה, וסוג הטעינה לא משנה את ההשוואה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> תנו לכיתה לנסות את ההדמיה בלי הסבר. בדרך כלל מישהו מדליק את האיחוד לפני הניקוי ומופתע שהדשבורד עדיין שגוי. זו הנקודה. במעבדת ה-ELT יש כמה כללים בבת אחת, אז תתאימו את הקצב לכיתה, ויש רמז לכל כלל.</div>
+</section>
+<section class="sec" id="s4-4" data-t="סכמת כוכב">
+<div class="sec-h"><div class="sec-n">4</div><h2>סכמת כוכב: טבלה אחת באמצע וטבלאות תיאור מסביב</h2></div>
+<p class="lead">דנה רוצה הכנסות לפי חודש, קטגוריית מנה וערוץ. במסד החי המידע מפוזר בין הזמנות, שורות פריט ומנות. במחסן מסדרים אותו כך שכל שאלה כזו נראית אותו דבר. הרעיון הזה מוסבר גם <a href="../lec11-part2.1.html">בשיעור על OLTP, OLAP וסכמת כוכב</a>.</p>
+
+<div class="defline"><b>טבלת עובדות (fact):</b> טבלה שכל שורה בה היא אירוע עסקי אחד, עם המספרים שמודדים עליו. דוגמה: שורה אחת לכל מנה בהזמנה, עם הכמות, ההכנסה והרווח.</div>
+<div class="defline"><b>טבלת ממד (dimension):</b> טבלה שמתארת את ההקשר של האירועים: מה, מי, מתי. דוגמה: טבלת המנות, שבה לכל מנה יש שם וקטגוריה.</div>
+<div class="defline"><b>סכמת כוכב:</b> טבלת עובדות אחת באמצע וטבלאות ממד מסביב, מחוברות במפתחות. דוגמה: <code>fact_sales</code> באמצע, ומסביב <code>dim_dish</code>, <code>dim_date</code> ו-<code>dim_customer</code>.</div>
+
+<div class="anim" data-id="p4-anim-star" data-speed="3400">
+  <div class="stage"><svg viewBox="0 0 800 360" role="img" aria-label="טבלאות המסד החי הופכות לטבלת עובדות עם שלוש טבלאות ממד">
+    <defs><marker id="p4a3-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <g font-size="16" font-weight="700" fill="#3730a3">
+      <rect x="615" y="20" width="170" height="52" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="700" y="52" text-anchor="middle">orders</text>
+      <rect x="615" y="95" width="170" height="52" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="700" y="127" text-anchor="middle">order_items</text>
+      <rect x="615" y="170" width="170" height="52" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="700" y="202" text-anchor="middle">dishes</text>
+      <rect x="615" y="245" width="170" height="52" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="700" y="277" text-anchor="middle">customers</text>
+    </g>
+    <text x="700" y="330" text-anchor="middle" font-size="15" fill="#64748b">המסד החי: מפוצל לפי נושא</text>
+    <g data-s="2">
+      <path d="M605 160 L505 170" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a3-ar)"/>
+      <rect x="290" y="125" width="210" height="110" rx="14" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+      <text x="395" y="156" text-anchor="middle" font-size="19" font-weight="800" fill="#92400e">fact_sales</text>
+      <text x="395" y="180" text-anchor="middle" font-size="15" fill="#92400e">שורה = מנה בהזמנה</text>
+      <text x="395" y="202" text-anchor="middle" font-size="15" fill="#92400e">שורה לכל פריט</text>
+      <text x="395" y="224" text-anchor="middle" font-size="14" fill="#92400e">qty, revenue, margin</text>
+    </g>
+    <g data-s="3">
+      <path d="M395 120 L395 82" stroke="#0f766e" stroke-width="3" fill="none" marker-end="url(#p4a3-ar)"/>
+      <rect x="300" y="20" width="190" height="60" rx="12" fill="#ccfbf1" stroke="#0f766e" stroke-width="2"/>
+      <text x="395" y="46" text-anchor="middle" font-size="17" font-weight="800" fill="#0f766e">dim_dish</text>
+      <text x="395" y="68" text-anchor="middle" font-size="14" fill="#0f766e">שם מנה, קטגוריה</text>
+      <path d="M395 240 L395 278" stroke="#0f766e" stroke-width="3" fill="none" marker-end="url(#p4a3-ar)"/>
+      <rect x="300" y="282" width="190" height="60" rx="12" fill="#ccfbf1" stroke="#0f766e" stroke-width="2"/>
+      <text x="395" y="308" text-anchor="middle" font-size="17" font-weight="800" fill="#0f766e">dim_date</text>
+      <text x="395" y="330" text-anchor="middle" font-size="14" fill="#0f766e">חודש, סוג יום</text>
+      <path d="M280 180 L220 180" stroke="#0f766e" stroke-width="3" fill="none" marker-end="url(#p4a3-ar)"/>
+      <rect x="20" y="120" width="195" height="120" rx="12" fill="#ccfbf1" stroke="#0f766e" stroke-width="2"/>
+      <text x="117" y="148" text-anchor="middle" font-size="17" font-weight="800" fill="#0f766e">dim_customer</text>
+      <text x="117" y="172" text-anchor="middle" font-size="14" fill="#0f766e">שם, עיר</text>
+    </g>
+    <g data-s="4"><rect x="20" y="56" width="240" height="8" rx="4" fill="#d8b862"/><text x="140" y="46" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">SUM(revenue)</text><text x="140" y="84" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">GROUP BY month, category</text></g>
+    <g data-s="5">
+      <rect x="28" y="188" width="179" height="22" rx="5" fill="#fff" stroke="#f59e0b"/><text x="117" y="204" text-anchor="middle" font-size="13" fill="#92400e">0 · אורח במסעדה</text>
+      <rect x="28" y="214" width="179" height="22" rx="5" fill="#fff" stroke="#f59e0b"/><text x="117" y="230" text-anchor="middle" font-size="13" fill="#92400e">-1 · לקוח לא מזוהה</text>
+    </g>
+  </svg></div>
+  <ol class="caps"><li>1. המסד החי מחלק את המידע לטבלאות לפי נושא. זה טוב לשמירה נכונה, ופחות נוח לשאלות רחבות.</li><li>2. במחסן בונים טבלת עובדות אחת. כל שורה בה היא מנה אחת בהזמנה אחת, וההכנסה והרווח כבר מחושבים.</li><li>3. מסביב בונים טבלאות ממד: מנות, תאריכים ולקוחות. כל אחת נותנת הקשר לאירועים.</li><li>4. כל שאלה נראית אותו דבר: מחברים את העובדות לממדים שצריך, מקבצים ומסכמים.</li><li>5. הזמנות בלי לקוח מזוהה לא נעלמות. הן מצביעות על שורות ״לא ידוע״ מיוחדות בממד הלקוחות.</li></ol>
+</div>
+
+<h3>בונים את הכוכב בשלבים</h3>
+<p>כל מעבדה מתחילה ממסד חדש, אז המעבדות שאחרי הראשונה מכינות לעצמן את מה שקדם להן. נתחיל מטבלת העובדות. תשימו לב לשורה עם <code>CASE</code> בעמודת הלקוח: הזמנה בלי לקוח מקבלת מפתח 0, והזמנה שמצביעה על לקוח שלא קיים מקבלת מפתח -1.</p>
+
+<div class="lab" data-id="p4-lab-fact" data-title="בונים את טבלת העובדות" data-require="CREATE TABLE" data-require-msg="הטבלה נוצרת בפקודת CREATE TABLE ... AS SELECT.">
+  <div class="q-src">צרו <code>fact_sales</code> מהזמנות, שורות פריט ומנות: שורה לכל שורת פריט, עם <code>revenue = qty * price</code> ו-<code>margin = qty * (price - cost)</code>. בעמודה <code>customer_key</code> שימו 0 להזמנה בלי לקוח, ו-(-1) להזמנה עם לקוח שלא קיים בטבלת הלקוחות. סיימו בשאילתה על הטבלה החדשה, כמו בתבנית.</div>
+  <pre class="start">CREATE TABLE fact_sales AS
+SELECT oi.order_id,
+       date(o.order_ts) AS date_key,
+       CASE WHEN o.customer_id IS NULL THEN 0
+            -- השלימו: -1 כשהלקוח לא קיים בטבלת customers
+            ELSE o.customer_id END AS customer_key,
+       oi.dish_id AS dish_key,
+       o.channel,
+       o.status,
+       oi.qty,
+       d.price AS unit_price
+       -- הוסיפו revenue ו-margin
+FROM order_items oi
+JOIN orders o ON o.id = oi.order_id
+-- הוסיפו חיבור למנות
+;
+SELECT COUNT(*) AS lines, SUM(revenue) AS revenue, SUM(margin) AS margin,
+       SUM(customer_key = 0) AS guests, SUM(customer_key = -1) AS unknown
+FROM fact_sales;</pre>
+  <pre class="check">CREATE TABLE fact_sales AS
+SELECT oi.order_id,
+       date(o.order_ts) AS date_key,
+       CASE WHEN o.customer_id IS NULL THEN 0
+            WHEN o.customer_id NOT IN (SELECT id FROM customers) THEN -1
+            ELSE o.customer_id END AS customer_key,
+       oi.dish_id AS dish_key,
+       o.channel,
+       o.status,
+       oi.qty,
+       d.price AS unit_price,
+       oi.qty * d.price AS revenue,
+       oi.qty * (d.price - d.cost) AS margin
+FROM order_items oi
+JOIN orders o ON o.id = oi.order_id
+JOIN dishes d ON d.id = oi.dish_id; SELECT COUNT(*) AS lines, SUM(revenue) AS revenue, SUM(margin) AS margin, SUM(customer_key = 0) AS guests, SUM(customer_key = -1) AS unknown FROM fact_sales;</pre>
+  <pre class="solution">CREATE TABLE fact_sales AS
+SELECT oi.order_id,
+       date(o.order_ts) AS date_key,
+       CASE WHEN o.customer_id IS NULL THEN 0
+            WHEN o.customer_id NOT IN (SELECT id FROM customers) THEN -1
+            ELSE o.customer_id END AS customer_key,
+       oi.dish_id AS dish_key,
+       o.channel,
+       o.status,
+       oi.qty,
+       d.price AS unit_price,
+       oi.qty * d.price AS revenue,
+       oi.qty * (d.price - d.cost) AS margin
+FROM order_items oi
+JOIN orders o ON o.id = oi.order_id
+JOIN dishes d ON d.id = oi.dish_id;
+SELECT COUNT(*) AS lines, SUM(revenue) AS revenue, SUM(margin) AS margin,
+       SUM(customer_key = 0) AS guests, SUM(customer_key = -1) AS unknown
+FROM fact_sales;</pre>
+  <ol class="hints"><li>המחיר והעלות נמצאים בטבלת <code>dishes</code>, אז צריך <code>JOIN dishes d ON d.id = oi.dish_id</code>.</li><li>לקוח שלא קיים: <code>WHEN o.customer_id NOT IN (SELECT id FROM customers) THEN -1</code>.</li><li>בטבלת העובדות המחיר נשמר כמו שהיה ברגע הבנייה: <code>d.price AS unit_price</code>. הרווח: <code>oi.qty * (d.price - d.cost) AS margin</code>.</li></ol>
+  <div class="why-src">219 שורות, כמספר שורות הפריט. סך ההכנסה 13,592 והרווח 9,015. 44 שורות שייכות להזמנות בלי לקוח (מפתח 0), ושתי שורות שייכות להזמנה 85 עם הלקוח שלא קיים (מפתח -1). ההכנסה והרווח מחושבים פעם אחת בעת הטעינה, עם המחיר שהיה אז. מי ששינה מחיר בטבלת המנות לא ישנה את ההיסטוריה.</div>
+</div>
+
+<div class="defline"><b>שורת ״לא ידוע״ (unknown member):</b> שורה מיוחדת בטבלת ממד, שאליה מצביעות עובדות שאין להן ערך אמיתי. דוגמה: מפתח 0 הוא ״אורח במסעדה״, אז הזמנה בלי חשבון לקוח עדיין מתחברת ולא נופלת.</div>
+<div class="defline"><b>UNION ALL:</b> הדבקה של תוצאות כמה שאילתות, אחת מתחת לשנייה. דוגמה: <code>SELECT 1 UNION ALL SELECT 2</code> מחזיר שתי שורות.</div>
+<div class="lab" data-id="p4-lab-dimcust" data-title="ממד הלקוחות עם שורות ״לא ידוע״" data-require="UNION" data-require-msg="הוסיפו את שתי שורות ״לא ידוע״ עם UNION ALL.">
+  <pre class="setup">CREATE TABLE fact_sales AS
+SELECT oi.order_id,
+       date(o.order_ts) AS date_key,
+       CASE WHEN o.customer_id IS NULL THEN 0
+            WHEN o.customer_id NOT IN (SELECT id FROM customers) THEN -1
+            ELSE o.customer_id END AS customer_key,
+       oi.dish_id AS dish_key,
+       o.channel,
+       o.status,
+       oi.qty,
+       d.price AS unit_price,
+       oi.qty * d.price AS revenue,
+       oi.qty * (d.price - d.cost) AS margin
+FROM order_items oi
+JOIN orders o ON o.id = oi.order_id
+JOIN dishes d ON d.id = oi.dish_id;</pre>
+  <div class="q-src">הטבלה <code>fact_sales</code> כבר קיימת. צרו <code>dim_customer</code> שמכילה את כל הלקוחות (עיר ריקה הופכת ל-״לא ידוע״), ובנוסף שורה 0 (״אורח במסעדה״, עיר ״במקום״) ושורה -1 (״לקוח לא מזוהה״, עיר ״לא ידוע״). אחר כך החזירו הכנסה לפי עיר, מהזמנות שנמסרו בלבד, בעמודות <code>city</code> ו-<code>revenue</code>, עם <code>JOIN</code> רגיל.</div>
+  <pre class="start">CREATE TABLE dim_customer AS
+SELECT id AS customer_key, name, COALESCE(city, 'לא ידוע') AS city FROM customers
+-- הוסיפו שתי שורות UNION ALL
+;
+SELECT c.city, SUM(f.revenue) AS revenue
+FROM fact_sales f
+JOIN dim_customer c ON c.customer_key = f.customer_key
+WHERE f.status = 'delivered'
+GROUP BY c.city;</pre>
+  <pre class="check">CREATE TABLE dim_customer AS
+SELECT id AS customer_key, name, COALESCE(city, 'לא ידוע') AS city FROM customers
+UNION ALL SELECT 0, 'אורח במסעדה', 'במקום'
+UNION ALL SELECT -1, 'לקוח לא מזוהה', 'לא ידוע'; SELECT c.city, SUM(f.revenue) AS revenue FROM fact_sales f JOIN dim_customer c ON c.customer_key = f.customer_key WHERE f.status = 'delivered' GROUP BY c.city;</pre>
+  <pre class="solution">CREATE TABLE dim_customer AS
+SELECT id AS customer_key, name, COALESCE(city, 'לא ידוע') AS city FROM customers
+UNION ALL SELECT 0, 'אורח במסעדה', 'במקום'
+UNION ALL SELECT -1, 'לקוח לא מזוהה', 'לא ידוע';
+SELECT c.city, SUM(f.revenue) AS revenue
+FROM fact_sales f
+JOIN dim_customer c ON c.customer_key = f.customer_key
+WHERE f.status = 'delivered'
+GROUP BY c.city;</pre>
+  <ol class="hints"><li>כל שורה מיוחדת נכתבת כך: <code>UNION ALL SELECT 0, 'אורח במסעדה', 'במקום'</code>.</li><li>שני הערכים המיוחדים הם מפתחות שלא קיימים בטבלת הלקוחות: 0 ו-(-1).</li></ol>
+  <div class="why-src">סכום ההכנסות לפי עיר הוא 12,884, כל מה שנמסר. אם ה-JOIN היה מול טבלת הלקוחות בלבד, הזמנות של אורחים בלי חשבון והזמנה אחת עם לקוח שלא קיים היו נעלמות בשקט, והסכום היה 10,464. שורות ״לא ידוע״ הופכות את החיבור לבטוח.</div>
+</div>
+
+<div class="lab" data-id="p4-lab-starq" data-title="שאלה על הכוכב" data-require="JOIN\s+dim_date[\s\S]*JOIN\s+dim_dish|JOIN\s+dim_dish[\s\S]*JOIN\s+dim_date" data-require-msg="צריך לחבר גם את dim_date וגם את dim_dish.">
+  <pre class="setup">CREATE TABLE fact_sales AS
+SELECT oi.order_id,
+       date(o.order_ts) AS date_key,
+       CASE WHEN o.customer_id IS NULL THEN 0
+            WHEN o.customer_id NOT IN (SELECT id FROM customers) THEN -1
+            ELSE o.customer_id END AS customer_key,
+       oi.dish_id AS dish_key,
+       o.channel,
+       o.status,
+       oi.qty,
+       d.price AS unit_price,
+       oi.qty * d.price AS revenue,
+       oi.qty * (d.price - d.cost) AS margin
+FROM order_items oi
+JOIN orders o ON o.id = oi.order_id
+JOIN dishes d ON d.id = oi.dish_id;
+CREATE TABLE dim_date AS
+SELECT DISTINCT date(order_ts) AS date_key,
+       strftime('%Y-%m', order_ts) AS month,
+       CASE WHEN strftime('%w', order_ts) IN ('5', '6') THEN 'סוף שבוע' ELSE 'אמצע שבוע' END AS day_type
+FROM orders;
+CREATE TABLE dim_dish AS
+SELECT id AS dish_key, name AS dish, category FROM dishes;</pre>
+  <div class="q-src">בכוכב כבר קיימות <code>fact_sales</code>, <code>dim_date</code> ו-<code>dim_dish</code>. החזירו הכנסה ורווח לפי חודש וקטגוריה, מהזמנות שנמסרו: <code>month</code>, <code>category</code>, <code>revenue</code>, <code>margin</code>.</div>
+  <pre class="start">SELECT dd.month, dh.category,
+       SUM(f.revenue) AS revenue,
+       SUM(f.margin) AS margin
+FROM fact_sales f
+-- חברו ל-dim_date ול-dim_dish
+-- סננו מסירות וקבצו</pre>
+  <pre class="check">SELECT dd.month, dh.category, SUM(f.revenue) AS revenue, SUM(f.margin) AS margin FROM fact_sales f JOIN dim_date dd ON dd.date_key = f.date_key JOIN dim_dish dh ON dh.dish_key = f.dish_key WHERE f.status = 'delivered' GROUP BY dd.month, dh.category</pre>
+  <ol class="hints"><li><code>JOIN dim_date dd ON dd.date_key = f.date_key</code>.</li><li>אותו דבר לטבלת המנות: <code>dh.dish_key = f.dish_key</code>.</li><li>קבצו לפי שתי העמודות: <code>GROUP BY dd.month, dh.category</code>.</li></ol>
+  <div class="why-src">ככה נראית כל שאלה על הכוכב: עובדות, ממד לכל מאפיין שמבקשים, סינון, קיבוץ וסכום. הצורה לא משתנה כשהשאלה משתנה. בשאלה על ערוץ במקום קטגוריה לא צריך חיבור בכלל, כי הערוץ כבר עמודה בטבלת העובדות.</div>
+</div>
+
+<div class="defline"><b>רמת פירוט (grain):</b> ההגדרה של מה שורה אחת בטבלת העובדות מייצגת. דוגמה: אצלנו שורה היא מנה אחת בהזמנה אחת, אז אפשר לסכם עליה הכנסה, אבל לא טיפ של הזמנה שלמה.</div>
+<div class="lab" data-id="p4-lab-grain" data-title="רמת הפירוט והטיפ שהוכפל" data-require="tip" data-require-msg="הסכום צריך להיות של עמודת tip.">
+  <div class="q-src">דנה סיכמה טיפים וקיבלה 522. הטיפים שמורים ברמת ההזמנה, אבל היא חיברה אותם לשורות הפריט. תקנו את השאילתה כך שתחזיר את סך הטיפים התקינים (<code>tip &gt;= 0</code>) של הזמנות שנמסרו, בלי כפל.</div>
+  <pre class="start">SELECT SUM(o.tip) AS tips
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+WHERE o.status = 'delivered' AND o.tip &gt;= 0;
+-- המספר הזה גדול מדי. הסירו את מה שמכפיל אותו.</pre>
+  <pre class="check">SELECT SUM(tip) AS tips FROM orders WHERE status = 'delivered' AND tip &gt;= 0</pre>
+  <ol class="hints"><li>הטיפ שייך להזמנה. לכל הזמנה יש כמה שורות פריט, אז כל טיפ נספר כמספר שורות הפריט שלה.</li><li>לא צריך את טבלת הפריטים כדי לסכם טיפים.</li></ol>
+  <div class="why-src">הסכום התקין הוא 214. ה-522 נוצרו כי הטיפ של כל הזמנה נספר פעם לכל מנה בה. בדיוק את זה קובעת רמת הפירוט: בטבלת עובדות ברמת מנה בהזמנה אפשר לסכם הכנסה וכמות, אבל נתון ברמת הזמנה, כמו טיפ או זמן משלוח, כדאי לשמור בטבלת עובדות נפרדת ברמת הזמנה.</div>
+</div>
+
+<p>יש להודות: במסד הקטן של יבגני, בשאלה על חודש וקטגוריה מספר החיבורים זהה למסד החי, שניים בשני המקרים. היתרון לא בקיצור הקוד. היתרון הוא שההכנסה כבר מחושבת פעם אחת, שהמחיר נשמר כמו שהיה, שיש לתאריך שדות מוכנים, ושמפתח חסר לא מפיל חיבור.</p>
+
+<div class="box try" data-id="p4-try-dbdiagram">
+  <p>שרטטו את סכמת הכוכב. תרשים כזה הוא כלי העבודה של מי שמסביר מבנה נתונים לצוות.</p>
+  <ol>
+    <li>היכנסו ל-dbdiagram.io והדביקו את הקוד שלמטה בחלון הקוד.</li>
+    <li>ודאו שהקשר מצויר כקו בין טבלת העובדות לממד.</li>
+    <li>הוסיפו עוד ממד לבחירתכם, למשל <code>dim_courier</code>, הוסיפו <code>courier_key</code> לטבלת העובדות וחברו ביניהם. ואם בא לכם, עוד שני הממדים מהמעבדות.</li>
+  </ol>
+  <pre class="code" data-lang="sql">Table fact_sales {
+  order_id int
+  date_key date
+  customer_key int
+  dish_key int
+  revenue decimal
+}
+Table dim_dish {
+  dish_key int [pk]
+  dish varchar
+  category varchar
+}
+Ref: fact_sales.dish_key &gt; dim_dish.dish_key</pre>
+  <p class="tools"><a class="tool" href="https://dbdiagram.io" target="_blank" rel="noopener">dbdiagram.io</a><a class="tool" href="https://app.diagrams.net" target="_blank" rel="noopener">diagrams.net</a></p>
+</div>
+
+<div class="box meaning"><p>מבנה הכוכב עושה את הדוחות יציבים: אותה צורת שאילתה, אותן הגדרות ואותה היסטוריה. לרוב מספיק להוסיף ממד כדי לענות על שאלה חדשה. והוא מחייב להחליט מראש על רמת הפירוט, החלטה שמונעת את הטעות שראיתם עם הטיפים.</p></div>
+<div class="box real"><p>זו צורה מקובלת מאוד לבניית מחסני נתונים, והיא מוכרת גם בכלי BI: Power BI ו-Tableau עובדים בצורה טבעית עם טבלת עובדות וממדים מסביב. בפרויקטים אמיתיים מוסיפים גם ממד זמן מלא, ממד מוצר ועוד, אבל העיקרון זהה. ממדים כמו ״לקוח״ ו״מוצר״ משתנים עם הזמן, ויש טכניקות לשמור גם את הגרסאות הישנות שלהם.</p></div>
+
+<div class="box think" data-id="p4-th-grain"><p>יבגני רוצה להוסיף למחסן את הדירוג של ההזמנה (1 עד 5) ואת זמן המשלוח. להוסיף אותם ל-<code>fact_sales</code>?</p>
+<div class="ans">לא. שני הנתונים שייכים להזמנה כולה, לא למנה בודדת. בטבלה ברמת מנה הם יחזרו בכל שורה של אותה הזמנה, וסכום או ממוצע יתנפחו. הפתרון: טבלת עובדות נוספת ברמת הזמנה, <code>fact_orders</code>, עם דירוג, זמן משלוח וטיפ, שמשתמשת באותם ממדים.</div></div>
+
+<div class="quiz" data-id="p4-q-star" data-a="4"><p class="qq">מה התפקיד של שורת הלקוח ״אורח במסעדה״ (מפתח 0) בממד הלקוחות?</p>
+<button class="opt">להסתיר מידע על לקוחות אמיתיים</button>
+<button class="opt">להאיץ את החיבור, כי מפתח 0 מהיר יותר</button>
+<button class="opt">לשמש כלקוח הראשון בטבלה</button>
+<button class="opt">לאפשר להזמנות בלי חשבון להתחבר לממד ולהישאר בדוח, במקום להיעלם בשקט</button>
+<div class="why">בלי שורת ״לא ידוע״, JOIN רגיל מול הממד זורק הזמנות שהמפתח שלהן חסר. ההכנסה בדוח נראית נמוכה, בלי שום הודעת שגיאה. מפתח 0 לא מהיר יותר ולא מסתיר מידע. הוא שומר על שלמות הסכום.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> טבלת העובדות נבנית עם אותו JOIN שהסטודנטים כבר מכירים מחלק 2. מה שחדש הוא ההחלטה על רמת הפירוט. במעבדת הטיפים כדאי לשאול את הכיתה לפני ההרצה: מה לדעתכם יצא?</div>
+</section>
+<section class="sec" id="s4-5" data-t="איכות נתונים">
+<div class="sec-h"><div class="sec-n">5</div><h2>אפשר לסמוך על המספר? ארבע תקלות שמשבשות אותו</h2></div>
+<p class="lead">יבגני שואל: כמה לקוחות יש לי? בטבלת הלקוחות 18 שורות. מי שעונה ״18״ טועה, גם אם השאילתה שלו מושלמת. הבעיה בנתונים ולא בקוד. כמו שראיתם גם <a href="../lec10part11-15.6.2026.html">בשיעור על איכות נתונים</a>.</p>
+
+<div class="defline"><b>ערך חסר:</b> שדה שלא נרשם בו כלום (NULL). הוא משבש ממוצעים וספירות. דוגמה: העיר של לקוח 14 ריקה, ולכן בדוח לפי עיר הוא יופיע תחת ריק או ייעלם, תלוי בשאילתה.</div>
+<div class="defline"><b>כפילות:</b> אותו דבר רשום פעמיים, ולכן נספר פעמיים. דוגמה: רונית מלכה רשומה כלקוחה 17 וגם כלקוחה 18, עם אותו אימייל.</div>
+<div class="defline"><b>יתום:</b> שורה שמצביעה, דרך מפתח זר, על שורה שלא קיימת. דוגמה: הזמנה 85 מצביעה על לקוח 99, ואין לקוח כזה.</div>
+<div class="defline"><b>ערך בלתי אפשרי:</b> ערך שלא יכול להיות במציאות. דוגמה: טיפ של מינוס 5 שקלים בהזמנה 86.</div>
+
+<div class="kpis">
+  <div class="kpi r"><b><span class="n">18 → 17</span></b><span>שורות לקוח מול אנשים אמיתיים</span></div>
+  <div class="kpi a"><b>104</b><span>הכנסה מהזמנה שמצביעה על לקוח 99</span></div>
+  <div class="kpi"><b><span class="n">214 → 209</span></b><span>סך טיפים בלי הערך השלילי ועם הערך השלילי</span></div>
+</div>
+
+<h3>כרטיס בריאות: בדיקה אחת לכל חשד</h3>
+<p>במקום לחכות שמישהו ישים לב לתקלה, מריצים בדיקות קבועות. כל בדיקה היא שאילתה שמחזירה את השורות החשודות. שאילתה שמחזירה 0 שורות היא בדיקה שעברה. לחצו על ״הצג״ כדי לראות מי נתפס.</p>
+<div class="sim" data-id="p4-sim-health"><div class="sh">כרטיס בריאות על מסד המסעדה</div>
+  <div class="kpis" style="margin:0 0 8px">
+    <div class="kpi g"><b id="p4h-ok">0</b><span>בדיקות שעברו</span></div>
+    <div class="kpi r"><b id="p4h-bad">0</b><span>בדיקות שנכשלו</span></div>
+    <div class="kpi a"><b id="p4h-warn">0</b><span>אזהרות</span></div>
+  </div>
+  <div class="tw"><table class="tbl" id="p4h-tbl"></table></div>
+  <div class="out" id="p4h-out" style="display:none"></div>
+</div>
+<script>(function(){ FL.dom(function(){
+  const box = FL.$('[data-id="p4-sim-health"]'); if (!box) return;
+  const CK = [
+    ['שלמות','לקוחות בלי עיר','SELECT id, name, email FROM customers WHERE city IS NULL','w'],
+    ['ייחודיות','אימייל שמופיע יותר מפעם אחת','SELECT email, COUNT(*) AS rows_n, group_concat(id) AS ids FROM customers GROUP BY email HAVING COUNT(*) > 1','e'],
+    ['ייחודיות','שורות פריט כפולות באותה הזמנה','SELECT order_id, dish_id, COUNT(*) AS n FROM order_items GROUP BY order_id, dish_id HAVING COUNT(*) > 1','e'],
+    ['קשרים','הזמנה עם לקוח שלא קיים','SELECT o.id, o.customer_id FROM orders o LEFT JOIN customers c ON c.id = o.customer_id WHERE o.customer_id IS NOT NULL AND c.id IS NULL','e'],
+    ['קשרים','שורת פריט עם מנה שלא קיימת','SELECT oi.order_id, oi.dish_id FROM order_items oi LEFT JOIN dishes d ON d.id = oi.dish_id WHERE d.id IS NULL','e'],
+    ['תקינות','טיפ שלילי','SELECT id, tip FROM orders WHERE tip < 0','e'],
+    ['תקינות','דירוג מחוץ לטווח 1 עד 5','SELECT id, rating FROM orders WHERE rating < 1 OR rating > 5','e'],
+    ['תקינות','זמן משלוח אפס או שלילי','SELECT id, delivery_min FROM orders WHERE delivery_min <= 0','e'],
+    ['עקביות','משלוח שנמסר בלי שליח','SELECT id, channel FROM orders WHERE channel <> \'walk-in\' AND status = \'delivered\' AND courier_id IS NULL','e'],
+    ['אזהרה','הזמנה שקדמה לתאריך ההצטרפות של הלקוח','SELECT o.id, o.order_ts, c.joined FROM orders o JOIN customers c ON c.id = o.customer_id WHERE date(o.order_ts) < c.joined','w'],
+    ['שינוי במבנה','אירוע שבו השדה device ריק','SELECT order_id, payload FROM app_events WHERE json_extract(payload, \'$.device\') IS NULL','e']
+  ];
+  const seen = {};
+  FL.onReady(function(ok){
+    if (!ok){ box.insertAdjacentHTML('beforeend','<p>מנוע ה-SQL לא נטען.</p>'); return; }
+    let okN = 0, bad = 0, warn = 0, h = '<thead><tr><th>סוג</th><th>הבדיקה</th><th></th><th>שורות</th></tr></thead><tbody>';
+    CK.forEach((c,i)=>{
+      let n = 0; try { n = FL.exec('SELECT COUNT(*) FROM (' + c[2] + ')').values[0][0]; } catch(e){ n = -1; }
+      c.n = n; const lamp = n === 0 ? 'g' : (c[3] === 'w' ? 'y' : 'r');
+      if (n === 0) okN++; else if (c[3] === 'w') warn++; else bad++;
+      h += '<tr><td>'+c[0]+'</td><td>'+c[1]+'</td><td><span class="lamp '+lamp+'"></span></td><td><span class="n">'+n+'</span>'+(n ? ' <button type="button" class="btn sec2" data-i="'+i+'">הצג</button>' : '')+'</td></tr>';
+    });
+    FL.$('#p4h-tbl', box).innerHTML = h + '</tbody>';
+    FL.$('#p4h-ok', box).textContent = okN; FL.$('#p4h-bad', box).textContent = bad; FL.$('#p4h-warn', box).textContent = warn;
+    FL.$('#p4h-tbl', box).addEventListener('click', function(e){
+      const b = e.target.closest('button[data-i]'); if (!b) return; const c = CK[+b.dataset.i]; seen[b.dataset.i] = 1;
+      const out = FL.$('#p4h-out', box); out.style.display = 'block';
+      let r = null; try { r = FL.exec(c[2]); } catch(x){}
+      out.innerHTML = '<b>' + c[1] + '</b><div class="tw">' + FL.tableHTML(r, 16) + '</div><pre class="code" style="font-size:.8rem">' + FL.esc(c[2]) + '</pre>';
+      if (Object.keys(seen).length >= 3) FL.done('p4-sim-health');
+    });
+  });
+}); })();</script>
+
+<h3>ארבע בדיקות שכדאי להכיר ביד</h3>
+<div class="lab" data-id="p4-lab-q-missing" data-title="בדיקת ערך חסר" data-require="IS NULL" data-require-msg="ערך חסר בודקים עם IS NULL, לא עם = NULL.">
+  <div class="q-src">החזירו את הלקוחות שאין להם עיר: <code>id</code> ו-<code>name</code>.</div>
+  <pre class="start">SELECT id, name
+FROM customers
+-- השלימו תנאי</pre>
+  <pre class="check">SELECT id, name FROM customers WHERE city IS NULL</pre>
+  <ol class="hints"><li>השוואה <code>= NULL</code> אף פעם לא נכונה. משתמשים ב-<code>IS NULL</code>.</li></ol>
+  <div class="why-src">תוצאה אחת: גיל נחום. לקוח אחד מתוך 18, אבל בדוח לפי עיר הוא נעלם או מופיע תחת ריק. כל שורה כזו היא שאלה: המידע באמת חסר, או שפשוט לא נאסף?</div>
+</div>
+<div class="lab" data-id="p4-lab-q-dup" data-title="בדיקת כפילות" data-require="HAVING" data-require-msg="כפילות בודקים עם GROUP BY ו-HAVING COUNT(*) &gt; 1.">
+  <div class="q-src">החזירו אימיילים שמופיעים יותר מפעם אחת בטבלת הלקוחות, עם מספר השורות שלהם: <code>email</code> ו-<code>n</code>.</div>
+  <pre class="start">SELECT email, COUNT(*) AS n
+FROM customers
+-- השלימו קיבוץ ותנאי על הקבוצה</pre>
+  <pre class="check">SELECT email, COUNT(*) AS n FROM customers GROUP BY email HAVING COUNT(*) &gt; 1</pre>
+  <ol class="hints"><li>מקבצים לפי האימייל, ומסננים קבוצות עם יותר משורה אחת ב-<code>HAVING</code>.</li></ol>
+  <div class="why-src">רונית מלכה: שתי שורות עם אותו אימייל. בטבלת ההזמנות לכל אחד משני המספרים יש שתי הזמנות, ולכן כל אחד נראה כלקוח עם שתי הזמנות, ולא כלקוחה אחת עם ארבע. ספירת לקוחות וממוצע הזמנות ללקוח שגויים עד שמאחדים. תנסו גם <code>LOWER(TRIM(email))</code>: כאן התוצאה זהה, אבל בטעינה חדשה היא כבר לא תהיה.</div>
+</div>
+<div class="lab" data-id="p4-lab-q-orphan" data-title="בדיקת יתום" data-require="LEFT JOIN" data-require-msg="יתומים מוצאים עם LEFT JOIN ובדיקת IS NULL בצד הימני.">
+  <div class="q-src">החזירו הזמנות שמצביעות על לקוח שלא קיים: <code>id</code> ו-<code>customer_id</code>. שימו לב: הזמנות walk-in רגילות הן בלי לקוח (NULL), וזה תקין.</div>
+  <pre class="start">SELECT o.id, o.customer_id
+FROM orders o
+LEFT JOIN customers c ON c.id = o.customer_id
+-- השלימו תנאי</pre>
+  <pre class="check">SELECT o.id, o.customer_id FROM orders o LEFT JOIN customers c ON c.id = o.customer_id WHERE o.customer_id IS NOT NULL AND c.id IS NULL</pre>
+  <ol class="hints"><li>אין התאמה בצד הימני: <code>c.id IS NULL</code>.</li><li>כדי לא לתפוס הזמנות בלי לקוח בכלל, הוסיפו <code>o.customer_id IS NOT NULL</code>.</li></ol>
+  <div class="why-src">הזמנה 85, עם לקוח 99. בלי התנאי הראשון הייתם מקבלים 20 שורות, כי 19 מההזמנות הן הזמנות במקום, בלי לקוח מזוהה. הן לא תקלה.</div>
+</div>
+<div class="lab" data-id="p4-lab-q-impossible" data-title="בדיקת ערך בלתי אפשרי" data-require="&lt;" data-require-msg="חפשו ערך קטן מאפס.">
+  <div class="q-src">החזירו הזמנות עם טיפ שלילי: <code>id</code> ו-<code>tip</code>.</div>
+  <pre class="start">SELECT id, tip
+FROM orders
+-- השלימו תנאי</pre>
+  <pre class="check">SELECT id, tip FROM orders WHERE tip &lt; 0</pre>
+  <ol class="hints"><li>תנאי פשוט על עמודת הטיפ.</li></ol>
+  <div class="why-src">הזמנה 86 עם טיפ של מינוס 5. סך הטיפים של הזמנות שנמסרו הוא 209 עם הערך השלילי ו-214 בלעדיו. זו תקלה שקל להחמיץ, כי אף שורה לא נראית ריקה או כפולה.</div>
+</div>
+
+<div class="box trap"><p>לא כל NULL הוא תקלה. 19 הזמנות בטבלה מופיעות בלי לקוח, וזה בסדר: מי שאוכל במסעדה לא נרשם. בדיקה שתסמן אותן כתקלה תלמד את הצוות להתעלם מהבדיקות. לכן כותבים בדיקה לפי כלל עסקי: ״הזמנת משלוח חייבת לקבל שליח״, ולא ״אסור NULL״.</p></div>
+
+<div class="mk mk-term"><div class="mk-bar"><i></i><i></i><i></i><span>הדמיה סכמטית · psql על מסד PostgreSQL</span></div>
+<div class="mk-body"><span class="p">restaurant=&gt;</span> ALTER TABLE orders ADD CONSTRAINT orders_customer_fk FOREIGN KEY (customer_id) REFERENCES customers(id);
+<span class="e">ERROR:  insert or update on table "orders" violates foreign key constraint "orders_customer_fk"
+DETAIL:  Key (customer_id)=(99) is not present in table "customers".</span></div></div>
+<p>ככה מסד נתונים אמיתי מסרב: הוא מגלה את היתום בעצמו, ולא נותן להוסיף את הכלל עד שמתקנים. המעבדה הבאה היא הגרסה של SQLite לאותה בדיקה. היא מבקשת מהמסד לדווח אילו שורות מפרות מפתח זר.</p>
+
+<div class="lab" data-id="p4-lab-fkcheck" data-title="המסד מדווח על שורות שמפרות מפתח זר">
+  <pre class="setup">PRAGMA foreign_keys = OFF;
+CREATE TABLE orders_fk (id INTEGER PRIMARY KEY, customer_id INTEGER REFERENCES customers(id));
+INSERT INTO orders_fk SELECT id, customer_id FROM orders;</pre>
+  <div class="q-src">הטבלה <code>orders_fk</code> הוגדרה עם מפתח זר ללקוחות, אבל נטענה כשהאכיפה כבויה. הריצו <code>PRAGMA foreign_key_check(orders_fk)</code> ותראו מה המסד מוצא. (זו מעבדת הסתכלות: הפקודה כבר כתובה.)</div>
+  <pre class="start">PRAGMA foreign_key_check(orders_fk);</pre>
+  <pre class="solution">PRAGMA foreign_key_check(orders_fk);</pre>
+  <ol class="hints"><li>הפקודה כבר כתובה. מריצים וקוראים את העמודות.</li></ol>
+  <div class="why-src">שורה אחת: orders_fk, מספר שורה 85, הטבלה ההורה customers. המסד מצא לבד את אותו יתום שמצאתם ב-LEFT JOIN. כשהאכיפה דולקת, הוא לא היה נותן להכניס אותו מלכתחילה.</div>
+</div>
+
+<div class="defline"><b>הסגר (quarantine):</b> טבלה שבה שומרים שורות שנדחו בטעינה, יחד עם הסיבה. דוגמה: הזמנה 85 נשמרת שם עם הסיבה ״לקוח לא קיים״ ולא נמחקת בשקט.</div>
+<div class="lab" data-id="p4-lab-quarantine" data-title="מעבירים שורות פגומות להסגר" data-require="INSERT" data-require-msg="העברה להסגר נעשית ב-INSERT ... SELECT.">
+  <pre class="setup">CREATE TABLE rejects (order_id INTEGER, reason TEXT);</pre>
+  <pre class="show">SELECT order_id, reason FROM rejects ORDER BY order_id</pre>
+  <div class="q-src">הטבלה <code>rejects</code> ריקה. הכניסו אליה את ההזמנות היתומות עם הסיבה <code>'orphan_customer'</code> ואת ההזמנות עם הטיפ השלילי עם הסיבה <code>'negative_tip'</code>. אחר כך ספרו כמה הזמנות נשארו אחרי ההסגר (עמודה <code>clean_orders</code>, זה מספר שורות ולא מספר הזמנה).</div>
+  <pre class="start">INSERT INTO rejects
+SELECT o.id, 'orphan_customer'
+FROM orders o
+LEFT JOIN customers c ON c.id = o.customer_id
+WHERE o.customer_id IS NOT NULL AND c.id IS NULL;
+-- הוסיפו INSERT שני לטיפ שלילי
+SELECT COUNT(*) AS clean_orders FROM orders WHERE id NOT IN (SELECT order_id FROM rejects);</pre>
+  <pre class="check">INSERT INTO rejects SELECT o.id, 'orphan_customer' FROM orders o LEFT JOIN customers c ON c.id = o.customer_id WHERE o.customer_id IS NOT NULL AND c.id IS NULL; INSERT INTO rejects SELECT id, 'negative_tip' FROM orders WHERE tip &lt; 0; SELECT COUNT(*) AS clean_orders FROM orders WHERE id NOT IN (SELECT order_id FROM rejects);</pre>
+  <ol class="hints"><li>אותו מבנה: <code>INSERT INTO rejects SELECT id, 'negative_tip' FROM orders WHERE tip &lt; 0</code>.</li></ol>
+  <div class="why-src">בהסגר שתי שורות, 85 ו-86, כל אחת עם סיבה, ונשארו 85 הזמנות נקיות. השורות הפגומות לא נמחקו ולא נכנסו לדוח. מי שאחראי על הנתונים יכול לטפל בהן, ואם הכלל שגוי אפשר להחזיר אותן.</div>
+</div>
+
+<pre class="code" data-lang="sql">-- חסימה קבועה של ערך בלתי אפשרי (PostgreSQL). נכשל כל עוד קיים הטיפ השלילי.
+ALTER TABLE orders ADD CONSTRAINT orders_tip_nonneg CHECK (tip &gt;= 0);</pre>
+
+<div class="box try" data-id="p4-try-supabase-fk">
+  <p>אם בניתם מסד ב-Supabase או ב-Neon בחלק 1, תנסו את הבדיקה על מסד אמיתי.</p>
+  <ol>
+    <li>פתחו את עורך ה-SQL של הפרויקט והריצו את ה-<code>ALTER TABLE ... FOREIGN KEY</code> מהמוקאפ. תראו את השגיאה.</li>
+    <li>הריצו את שאילתת היתומים מהמעבדה (בפוסטגרס היא זהה).</li>
+    <li>תחליטו מה עושים עם הזמנה 85. היא הזמנה מהאפליקציה, אז היא לא אורח במסעדה. אפשר ליצור שורת לקוח חדשה עם id 99 ולהשלים את הפרטים אחר כך, או להעביר את ההזמנה להסגר. אחרי שתיקנתם, הריצו שוב את ה-<code>ALTER TABLE</code> וודאו שהוא עובר.</li>
+    <li>נסו להוסיף הזמנה עם <code>customer_id = 98</code> (לקוח שלא קיים) ותראו את הודעת השגיאה.</li>
+  </ol>
+  <p class="tools"><a class="tool" href="https://supabase.com" target="_blank" rel="noopener">Supabase</a><a class="tool" href="https://neon.tech" target="_blank" rel="noopener">Neon</a></p>
+</div>
+
+<div class="box meaning"><p>בדיקות איכות הן מה שמצדיק מספר. כשמציגים ״הכנסות 12,884״, צריך לדעת שאין כפילויות, שאין יתומים, ושהערכים אפשריים. יש שלוש רמות טיפול: לדווח על הבעיה, לבודד אותה בהסגר, או לחסום אותה במסד עם מפתח זר ו-CHECK. כל רמה מתאימה לבעיה אחרת, ולפעמים צריך את שלושתן.</p></div>
+<div class="box real"><p>בצוותי נתונים הופכים בדיקות כאלה לקוד שרץ בכל טעינה. כלי כמו dbt כולל בדיקות מובנות: לא ריק (not_null), ייחודי (unique), קשר למפתח (relationships) וערכים מותרים (accepted_values). כשבדיקה נכשלת, הצינור יכול לעצור או להתריע לפני שהדשבורד מתעדכן. הסיבה: דשבורד שנראה תקין והוא שגוי גרוע מדשבורד שלא התעדכן.</p></div>
+
+<div class="box think" data-id="p4-th-dq"><p>בדיקה 10 בכרטיס הבריאות מצאה 15 הזמנות שקדמו לתאריך ההצטרפות של הלקוח. זו תקלה? ומה עושים?</p>
+<div class="ans">אי אפשר לדעת מהשאילתה. זו שאלה ולא פסק דין. אולי לקוחות הזמינו בטלפון לפני שנרשמו במערכת, ותאריך ההצטרפות נרשם בדיעבד. אולי יש טעות הקלדה. התשובה תלויה בכלל העסקי, ולכן מסמנים אזהרה, שואלים את יבגני, וכותבים את התשובה כהגדרה בתיעוד.</div></div>
+
+<div class="quiz" data-id="p4-q-dq-zero" data-a="2"><p class="qq">בדיקת כפילויות על אימיילים החזירה 0 שורות. מה אפשר להסיק?</p>
+<button class="opt">שאין שום כפילות בנתונים</button>
+<button class="opt">שאין כפילות לפי הכלל שנבדק, אבל כפילויות עם רווח או אות גדולה אולי עדיין קיימות</button>
+<button class="opt">שהטבלה נקייה מכל סוגי התקלות</button>
+<button class="opt">שאפשר למחוק את הבדיקה, כי היא כבר לא נחוצה</button>
+<div class="why">בדיקה מוכיחה רק את מה שהיא בודקת. כמו שראיתם בסעיף 3, כפילות בלי ניקוי לא נתפסת בהשוואה פשוטה. בדיקה שעברה נותנת סיבה לסמוך, אבל לא הוכחה לניקיון מוחלט. לכן משאירים אותה לרוץ בכל טעינה.</div></div>
+
+<div class="quiz" data-id="p4-q-dq-null" data-a="3"><p class="qq">הזמנה 83 היא הזמנה במקום, בלי <code>customer_id</code>. מה עושים איתה בכרטיס הבריאות?</p>
+<button class="opt">מוחקים אותה, כי חסר בה לקוח</button>
+<button class="opt">ממלאים לה לקוח כלשהו כדי שהבדיקה תעבור</button>
+<button class="opt">משאירים אותה: זה NULL תקין לפי כלל עסקי, ובממד הלקוחות היא מצביעה על ״אורח במסעדה״</button>
+<button class="opt">מסמנים אותה כיתומה</button>
+<div class="why">יתום הוא מפתח שמצביע על שורה שלא קיימת. כאן אין מפתח בכלל, אז אין שורה יתומה. מחיקה תקטין את ההכנסות, ומילוי לקוח בדוי יזייף נתון. הפתרון הנכון: כלל עסקי ברור ושורת ״לא ידוע״.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> תתחילו מהשאלה ״כמה לקוחות יש ליבגני?״ ותבקשו מהכיתה לענות לפני שפותחים את כרטיס הבריאות. אחרי הכרטיס, עצרו על אזהרה 10 ועל מה שבדיקה שנכשלת אומרת בפועל. ההתנסות ב-Supabase מתאימה לסטודנטים שבנו מסד בחלק 1.</div>
+</section>
+<section class="sec" id="s4-6" data-t="הגדרה אחת לכל מדד">
+<div class="sec-h"><div class="sec-n">6</div><h2>שלושה אנשים, שלושה מספרים להכנסות. מי צודק?</h2></div>
+<p class="lead">בסוף החודש יבגני שואל שלושה אנשים מה ההכנסות. המטבח עונה 13,592. הנהלת החשבונות עונה 12,884. השיווק עונה 10,464. אף אחד לא טעה בחישוב. כל אחד השתמש בהגדרה אחרת.</p>
+
+<div class="lab" data-id="p4-lab-defs" data-title="שלוש הגדרות של הכנסה" data-require="CASE" data-require-msg="השתמשו ב-CASE כדי לסכם כל הגדרה בעמודה משלה.">
+  <div class="q-src">החזירו שורה אחת עם שלוש עמודות: <code>kitchen</code> (כל הזמנה שהסתיימה, נמסרה או בוטלה. כאן זה כל סטטוס שקיים), <code>finance</code> (רק הזמנות שנמסרו) ו-<code>marketing</code> (רק הזמנות שנמסרו ללקוחות שמופיעים בטבלת הלקוחות). הכנסה של שורה היא <code>qty * price</code>.</div>
+  <pre class="start">SELECT SUM(CASE WHEN o.status IN ('delivered', 'cancelled') THEN oi.qty * d.price END) AS kitchen,
+       -- finance: רק status = 'delivered'
+       -- marketing: נמסרו, ולקוח קיים
+FROM order_items oi
+JOIN orders o ON o.id = oi.order_id
+JOIN dishes d ON d.id = oi.dish_id
+LEFT JOIN customers c ON c.id = o.customer_id</pre>
+  <pre class="check">SELECT SUM(CASE WHEN o.status IN ('delivered', 'cancelled') THEN oi.qty * d.price END) AS kitchen, SUM(CASE WHEN o.status = 'delivered' THEN oi.qty * d.price END) AS finance, SUM(CASE WHEN o.status = 'delivered' AND c.id IS NOT NULL THEN oi.qty * d.price END) AS marketing FROM order_items oi JOIN orders o ON o.id = oi.order_id JOIN dishes d ON d.id = oi.dish_id LEFT JOIN customers c ON c.id = o.customer_id</pre>
+  <pre class="solution">SELECT SUM(CASE WHEN o.status IN ('delivered', 'cancelled') THEN oi.qty * d.price END) AS kitchen,
+       SUM(CASE WHEN o.status = 'delivered' THEN oi.qty * d.price END) AS finance,
+       SUM(CASE WHEN o.status = 'delivered' AND c.id IS NOT NULL THEN oi.qty * d.price END) AS marketing
+FROM order_items oi
+JOIN orders o ON o.id = oi.order_id
+JOIN dishes d ON d.id = oi.dish_id
+LEFT JOIN customers c ON c.id = o.customer_id</pre>
+  <ol class="hints"><li>עמודת <code>finance</code>: <code>SUM(CASE WHEN o.status = 'delivered' THEN oi.qty * d.price END)</code>.</li><li>עמודת <code>marketing</code> מוסיפה תנאי שהלקוח קיים: <code>c.id IS NOT NULL</code>.</li></ol>
+  <div class="why-src">13,592, 12,884 ו-10,464, בדיוק כמו שאמרו שלושת האנשים. ההפרש בין הראשון לשני הוא 708: הזמנות שבוטלו. ההפרש בין השני לשלישי הוא 2,420: הזמנות של אורחים בלי חשבון, והזמנה אחת של לקוח שלא קיים. שלוש הגדרות לגיטימיות, ושלושה מספרים שאי אפשר להציג באותו דוח בלי להסביר.</div>
+</div>
+
+<div class="defline"><b>ממשל נתונים (data governance):</b> הכללים, התפקידים והתיעוד שקובעים מה כל נתון אומר, מי אחראי עליו ומי רשאי לגעת בו. דוגמה: מילון שמגדיר ״הכנסות״ פעם אחת, עם שם של אחראי. עוד על זה אפשר לקרוא <a href="../lecture10part2-15.6.2026.html">בשיעור על ממשל נתונים ו-BI</a>.</div>
+<div class="defline"><b>הגדרת מדד:</b> ניסוח כתוב וחד-משמעי של מה נספר, מאיפה, ומה לא נכלל. דוגמה: ״הכנסות הן סכום qty כפול price בהזמנות במצב delivered, בלי טיפים״.</div>
+
+<div class="mk rtl"><div class="mk-bar"><i></i><i></i><i></i><span class="url">מילון המדדים של המסעדה · הדמיה סכמטית</span></div>
+<div class="mk-body">
+  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><b style="font-size:1.1rem">הכנסות</b><span class="chip g">מדד רשמי</span></div>
+  <div class="tw"><table class="tbl">
+    <tr><th style="width:120px">הגדרה</th><td>סכום ההכנסות ממנות בהזמנות שנמסרו, בכל הערוצים. בלי טיפים ובלי הזמנות שבוטלו.</td></tr>
+    <tr><th>חישוב</th><td><code>SUM(qty * price)</code> מתוך <code>fact_sales</code>, כאשר <code>status = 'delivered'</code></td></tr>
+    <tr><th>בעל המדד</th><td>יבגני</td></tr>
+    <tr><th>מקור</th><td>טבלת <code>fact_sales</code>, מתעדכנת מהמסד החי בהעתקה הלילית</td></tr>
+    <tr><th>שמות נוספים</th><td>״מכירות נטו״ (לא להשתמש), ״הכנסות כולל ביטולים״ (מדד נפרד, שם נפרד)</td></tr>
+  </table></div>
+</div></div>
+<p>כרטיס כזה עושה את ההבדל בין מחסן שסתם מוסיפים אליו נתונים למחסן שאפשר לסמוך עליו. מי שמצא מספר שונה יודע איפה לחפש. מי שרוצה מדד חדש יודע שצריך להוסיף אותו לכרטיסים, ולא לחשב אותו מחדש בכל דשבורד.</p>
+
+<div class="defline"><b>תצוגה (view):</b> שאילתה ששמורה בשם בתוך המסד ומתנהגת כמו טבלה. דוגמה: <code>official_revenue</code>, שמחזירה הכנסה ליום לפי ההגדרה הרשמית.</div>
+<div class="lab" data-id="p4-lab-view" data-title="מגדירים את ההכנסה פעם אחת" data-require="CREATE VIEW" data-require-msg="ההגדרה נשמרת בפקודת CREATE VIEW.">
+  <div class="q-src">צרו תצוגה <code>official_revenue</code> עם <code>day</code> (התאריך) ו-<code>revenue</code> לפי ההגדרה הרשמית: הזמנות שנמסרו. אחר כך תשאלו אותה: <code>SELECT SUM(revenue) AS total FROM official_revenue</code>.</div>
+  <pre class="start">CREATE VIEW official_revenue AS
+SELECT date(o.order_ts) AS day,
+       SUM(oi.qty * d.price) AS revenue
+FROM orders o
+-- השלימו חיבורים, סינון וקיבוץ
+;
+SELECT SUM(revenue) AS total FROM official_revenue;</pre>
+  <pre class="check">CREATE VIEW official_revenue AS SELECT date(o.order_ts) AS day, SUM(oi.qty * d.price) AS revenue FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status = 'delivered' GROUP BY date(o.order_ts); SELECT SUM(revenue) AS total FROM official_revenue;</pre>
+  <ol class="hints"><li>צריך את הזמנות, שורות פריט ומנות, וסינון <code>status = 'delivered'</code>.</li><li>הקיבוץ הוא לפי <code>date(o.order_ts)</code>.</li></ol>
+  <div class="why-src">12,884, ההגדרה של הנהלת החשבונות. מעכשיו כל דשבורד, כל דוח וכל שאילתה ש-AI כותב פונים לתצוגה, ולא כותבים הגדרה משלהם. אם יבגני ישנה את ההגדרה, משנים במקום אחד.</div>
+</div>
+
+<div class="tw"><table class="tbl"><caption style="caption-side:top;text-align:start;font-weight:700;padding:4px 0">גם ״לקוח פעיל״ הוא מדד, ויש לו כמה הגדרות (הזמנות שנמסרו, לקוחות שקיימים בטבלה)</caption>
+<thead><tr><th>ההגדרה</th><th>מספרי לקוח</th><th>אנשים אמיתיים</th></tr></thead><tbody>
+<tr><td>הזמין אי פעם</td><td class="n">18</td><td class="n">17</td></tr>
+<tr><td>הזמין במאי 2026</td><td class="n">12</td><td class="n">11</td></tr>
+<tr><td>הזמין שלוש פעמים לפחות</td><td class="n">11</td><td class="n">12</td></tr>
+</tbody></table></div>
+<p>שימו לב לשורה האחרונה: אחרי איחוד הכפילות יש <b>יותר</b> לקוחות עם שלוש הזמנות, כי רונית מלכה מצטברת לארבע הזמנות. איחוד כפילויות מזיז ספירות לשני הכיוונים.</p>
+
+<h3>גם הנתונים האישיים בתוך הכללים</h3>
+<div class="defline"><b>הסתרת מידע אישי (masking):</b> מחליפים ערך רגיש בגרסה חלקית, כך שאפשר לעבוד עם הנתונים בלי לחשוף אותם. דוגמה: <code>dana.levi@example.com</code> הופך ל-<code>d***@example.com</code>.</div>
+<p>דנה צריכה לספור לקוחות לפי עיר, לא לקרוא כתובות אימייל. אז הצינור מעביר למחסן רק את מה שצריך, ומסתיר את השאר. המעבדה הבאה עושה את זה.</p>
+<div class="lab" data-id="p4-lab-mask" data-title="מסתירים אימיילים" data-require="substr" data-require-msg="השתמשו ב-substr (או substring) כדי לחתוך את האימייל.">
+  <div class="q-src">החזירו <code>id</code>, <code>city</code> ו-<code>email_masked</code> לכל לקוח: האות הראשונה של האימייל, אחריה <code>***</code>, ואז הסימן <code>@</code> והדומיין.</div>
+  <pre class="start">SELECT id, city,
+       substr(email, 1, 1) || '***@' || -- השלימו את הדומיין
+       AS email_masked
+FROM customers</pre>
+  <pre class="check">SELECT id, city, substr(email, 1, 1) || '***@' || substr(email, instr(email, '@') + 1) AS email_masked FROM customers</pre>
+  <ol class="hints"><li><code>instr(email, '@')</code> מחזיר את המיקום של ה-@.</li><li>הדומיין הוא מה שאחרי ה-@: <code>substr(email, instr(email, '@') + 1)</code>.</li></ol>
+  <div class="why-src">קיבלתם 18 שורות בלי אף כתובת מלאה, וכל מה שדנה צריכה לספירה לפי עיר עדיין שם. בפוסטגרס וב-BigQuery כותבים פונקציות דומות, וגם יש הרשאות שמונעות מראש גישה לעמודה.</div>
+</div>
+
+<div class="box trap"><p>כשמבקשים מ-AI שאילתה על ״הכנסות״ בלי להגדיר, הוא עלול לנחש הגדרה, לרוב הפשוטה ביותר. השאילתה תרוץ והמספר ייראה סביר. הפתרון: להדביק לפרומפט את הגדרת המדד מהמילון, ולבדוק את התוצאה מול המספר הרשמי. נעמיק בבדיקה כזו בחלק 5.</p></div>
+<pre class="prompt">הקשר: מסד SQLite של מסעדה. טבלאות: orders(id, customer_id, order_ts, channel, status), order_items(order_id, dish_id, qty), dishes(id, name, price).
+הגדרת המדד הרשמי: הכנסות = סכום qty כפול price בהזמנות במצב delivered, בלי טיפים.
+משימה: כתוב שאילתה שמחזירה הכנסות לכל ערוץ מכירה.
+אילוצים: השתמש רק בטבלאות שצוינו, אל תמציא עמודות, ואל תחבר טבלאות שלא צריך.
+פורמט: שאילתת SQL אחת, ובהערה קצרה את ההגדרה שהשתמשת בה.</pre>
+
+<h3>מי עושה מה בצוות הנתונים</h3>
+<p>התפקידים משתנים בין ארגונים, אבל החלוקה הזו מופיעה בצורה כזו או אחרת כמעט בכל מקום. במסעדה קטנה אדם אחד יכול למלא כמה תפקידים.</p>
+<div class="cols2">
+  <div class="card"><h4>מהנדס נתונים</h4><p>בונה ומתחזק את הצינורות שמעבירים נתונים מהמקורות למחסן.</p></div>
+  <div class="card"><h4>אנליסט BI</h4><p>הופך שאלה עסקית לשאילתה, למדד ולדשבורד, ומסביר את התוצאה.</p></div>
+  <div class="card"><h4>אחראי נתונים (steward)</h4><p>שומר על איכות, הגדרות ותיעוד של נתונים בתחום מסוים.</p></div>
+  <div class="card"><h4>בעל המדד</h4><p>איש עסקי שמחליט מה המדד אומר. אצלנו, יבגני.</p></div>
+</div>
+<div class="sim" data-id="p4-sim-roles"><div class="sh">מי מטפל בזה</div>
+  <p id="p4r-q" style="font-weight:700"></p>
+  <div class="p4-btns" id="p4r-b"></div>
+  <div id="p4r-f" class="out" style="display:none"></div>
+  <div style="margin-top:6px;color:var(--muted)"><span id="p4r-i">1</span> מתוך 5</div>
+</div>
+<script>(function(){ FL.dom(function(){
+  const box = FL.$('[data-id="p4-sim-roles"]'); if (!box) return;
+  const ROLES = ['מהנדס נתונים','אנליסט BI','אחראי נתונים','בעל המדד'];
+  const S = [
+    ['הצינור הלילי לא רץ, ובדשבורד אין נתוני אתמול.',0,'תקלה בצינור היא עבודה של מי שבנה ומתחזק אותו.'],
+    ['צריך להחליט אם הזמנה שבוטלה אחרי שהמנה כבר הוכנה נספרת בהכנסות.',3,'זו החלטה עסקית על מה המדד אומר. טכנאי לא מחליט על זה, ואנליסט רק מיישם.'],
+    ['יבגני רוצה דשבורד חדש לשליחים, עם זמן משלוח ודירוג לכל שליח.',1,'להפוך שאלה עסקית לשאילתה, למדד ולתצוגה זה עיקר העבודה של אנליסט BI.'],
+    ['הוחלט איך מזהים לקוח כפול (אותו אימייל אחרי ניקוי). מישהו צריך לכתוב את קוד האיחוד.',0,'הכלל כבר הוחלט, ונשאר ליישם אותו בצינור. זו עבודה של מהנדס נתונים.'],
+    ['שני מספרי לקוח משויכים לאותו אדם, ומישהו צריך לקבוע ולתעד את הכלל שמאחד אותם.',2,'לשמור על איכות ועל תיעוד של כללי נתונים זה התפקיד של האחראי על הנתונים, בהסכמה עם בעל המדד.']
+  ];
+  let i = 0, right = 0;
+  const q = FL.$('#p4r-q', box), b = FL.$('#p4r-b', box), f = FL.$('#p4r-f', box);
+  function show(){
+    if (i >= S.length){ q.textContent = 'סיימתם: ' + right + ' תשובות נכונות מתוך ' + S.length + '.'; b.innerHTML = ''; f.style.display = 'none'; FL.done('p4-sim-roles'); return; }
+    FL.$('#p4r-i', box).textContent = i + 1; q.textContent = S[i][0]; f.style.display = 'none';
+    b.innerHTML = ''; ROLES.forEach((r,k)=>{ const x = document.createElement('button'); x.type = 'button'; x.textContent = r; x.addEventListener('click', ()=>pick(k, x)); b.appendChild(x); });
+  }
+  function pick(k, btn){
+    const ok = k === S[i][1]; if (ok) right++;
+    FL.$$('button', b).forEach((x,j)=>{ x.disabled = true; if (j === S[i][1]) x.classList.add('ok'); else if (j === k) x.classList.add('no'); });
+    f.style.display = 'block'; f.innerHTML = (ok ? '<b>נכון.</b> ' : '<b>לא בדיוק.</b> התשובה: ' + ROLES[S[i][1]] + '. ') + S[i][2] + ' <button type="button" class="btn" id="p4r-n">הבא</button>';
+    FL.$('#p4r-n', box).addEventListener('click', ()=>{ i++; show(); });
+  }
+  show();
+}); })();</script>
+
+<div class="box meaning"><p>ממשל נתונים נשמע כמו ביורוקרטיה, אבל המטרה פשוטה: שאף אחד לא יצטרך להתווכח מי צודק. כשיש הגדרה אחת, בעלים אחד ותיעוד אחד, דיון ארוך על ״מי טעה״ הופך לשאלה קצרה: באיזו הגדרה הוא השתמש. וזה גם מה שמאפשר לתת ל-AI לכתוב שאילתות בלי שינחש.</p></div>
+<div class="box real"><p>בארגונים גדולים יש קטלוג נתונים (data catalog): מערכת שבה כל טבלה, עמודה ומדד מתועדים, עם בעלים ותיאור. בכלי BI ובכלי המרה יש שכבה סמנטית: מקום אחד שמגדירים בו מדד, וכל הדשבורדים משתמשים בו. מה שבניתם כאן, תצוגה עם שם ומילון, הוא אותו רעיון בקטן.</p></div>
+
+<div class="box think" data-id="p4-th-metrics"><p>בדשבורד אחד יבגני רוצה להציג גם ״הכנסות כולל ביטולים״ וגם ״הכנסות״. מותר?</p>
+<div class="ans">מותר, בתנאי ששני המדדים נקראים בשמות שונים ומוגדרים בנפרד בכרטיס. הבעיה היא לא בקיום של שני מספרים. הבעיה היא ששניהם נקראים ״הכנסות״. שם ברור והגדרה שנגישה בלחיצה מונעים את הוויכוח.</div></div>
+
+<div class="quiz" data-id="p4-q-defs" data-a="3"><p class="qq">הנהלת החשבונות והשיווק מציגות מספרי הכנסות שונים. מה הצעד הראשון?</p>
+<button class="opt">להציג בדשבורד את המספר הגבוה, כדי להיות זהירים</button>
+<button class="opt">להציג את הממוצע של שני המספרים</button>
+<button class="opt">להשוות את ההגדרות של שתי השאילתות ולהחליט, עם בעל המדד, על הגדרה אחת</button>
+<button class="opt">לבקש מ-AI להכריע מי צודק</button>
+<div class="why">ההבדל מגיע מהגדרות ולא מטעות בחישוב, אז צריך להחליט מי מוסמך להגדיר. מספר גבוה או ממוצע יוצרים מספר שאף אחד לא הגדיר. AI לא יכול לדעת למה בעל העסק התכוון.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> תציגו את שלושת המספרים לפני המעבדה ותבקשו מהכיתה לנחש מי צודק. התשובה ״כולם״ היא הנקודה. המעבדה השנייה מראה איך ממשל נראה בקוד, ומעבדת ההסתרה מראה שממשל זה גם מה מעבירים למחסן. בשיחה על התפקידים תזכירו שבעסק קטן אדם אחד ממלא כמה תפקידים.</div>
+</section>
+<section class="sec" id="s4-7" data-t="שושלת נתונים">
+<div class="sec-h"><div class="sec-n">7</div><h2>מאיפה המספר הגיע: מוצאים את מקור התקלה</h2></div>
+<p class="lead">בדשבורד של דנה יש אריח ״מכשירים בהזמנות״. ב-13 מתוך 42 האירועים כתוב ״לא ידוע״. אין הודעת שגיאה והשאילתה תקינה. איפה הבעיה נולדה? בלי מפה מחפשים בכל מקום.</p>
+
+<div class="defline"><b>שושלת נתונים (lineage):</b> מפה של מאיפה מספר הגיע: מהמקור, דרך כל שלב עיבוד, ועד האריח בדשבורד. דוגמה: ״מכשירים בהזמנות״ נבנה מ-<code>stg_events</code>, שנבנה מ-<code>app_events</code>. על זה דיברנו גם <a href="../lecture10part2-15.6.2026.html">בשיעור על מחזור החיים של נתונים</a>.</div>
+<div class="defline"><b>מעלה הזרם ומורד הזרם:</b> מעלה הזרם (upstream) הוא כל מה שהנקודה נבנתה ממנו. מורד הזרם (downstream) הוא כל מה שנבנה ממנה. דוגמה: מעלה הזרם של האריח הוא <code>app_events</code>, ומורד הזרם של <code>app_events</code> הוא האריח.</div>
+
+<h3>הדמיה: מאתרים את מקור התקלה</h3>
+<p>לחצו על הצמתים. כל צומת מריץ בדיקה אמיתית על מסד המסעדה ומראה אם הוא תקין. תתחילו מהאריח החשוד ותלכו אחורה, מעלה הזרם, עד שתמצאו איפה התקלה נולדה. הכפתורים מדגישים מעלה או מורד.</p>
+<div class="sim" data-id="p4-sim-lineage"><div class="sh">גרף שושלת של הדשבורד</div>
+  <div class="p4-btns"><button type="button" data-m="up">הדגש מעלה הזרם של הצומת שנבחר</button><button type="button" data-m="down">הדגש מורד הזרם (מי יושפע)</button><button type="button" data-m="clear">נקה הדגשה</button></div>
+  <div class="p4-svgwrap"><svg viewBox="0 0 800 330" id="p4l-svg" role="img" aria-label="גרף שושלת: שלושה מקורות, שני שלבי עיבוד, שלושה אריחים בדשבורד" style="width:100%;height:auto;direction:ltr;display:block;background:linear-gradient(180deg,#f8fafc,#eef2f7);border-radius:12px">
+    <defs><marker id="p4l-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <text x="705" y="16" text-anchor="middle" font-size="14" font-weight="700" fill="#4f46e5">מקורות</text>
+    <text x="400" y="16" text-anchor="middle" font-size="14" font-weight="700" fill="#b45309">עיבוד</text>
+    <text x="95" y="16" text-anchor="middle" font-size="14" font-weight="700" fill="#7c3aed">דשבורד</text>
+    <g stroke="#94a3b8" stroke-width="2.5" fill="none" marker-end="url(#p4l-ar)">
+      <path class="p4-e" data-f="src_events" data-t="m_events" d="M630 62 L480 62"/>
+      <path class="p4-e" data-f="src_orders" data-t="m_fact" d="M630 160 L480 188"/>
+      <path class="p4-e" data-f="src_items" data-t="m_fact" d="M630 262 L480 222"/>
+      <path class="p4-e" data-f="m_events" data-t="t_device" d="M325 62 L175 62"/>
+      <path class="p4-e" data-f="m_fact" data-t="t_rev" d="M325 188 L175 150"/>
+      <path class="p4-e" data-f="m_fact" data-t="t_cat" d="M325 222 L175 262"/>
+    </g>
+    <g class="p4-node" data-n="src_events" tabindex="0" role="button"><rect x="630" y="30" width="150" height="64" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2.5"/><text x="705" y="58" text-anchor="middle" font-size="16" font-weight="800" fill="#3730a3">app_events</text><text x="705" y="80" text-anchor="middle" font-size="14" fill="#4f46e5">JSON מהאפליקציה</text></g>
+    <g class="p4-node" data-n="src_orders" tabindex="0" role="button"><rect x="630" y="128" width="150" height="64" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2.5"/><text x="705" y="156" text-anchor="middle" font-size="16" font-weight="800" fill="#3730a3">orders</text><text x="705" y="178" text-anchor="middle" font-size="14" fill="#4f46e5">הזמנות</text></g>
+    <g class="p4-node" data-n="src_items" tabindex="0" role="button"><rect x="630" y="230" width="150" height="64" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2.5"/><text x="705" y="258" text-anchor="middle" font-size="16" font-weight="800" fill="#3730a3">order_items</text><text x="705" y="280" text-anchor="middle" font-size="14" fill="#4f46e5">שורות פריט ומנות</text></g>
+    <g class="p4-node" data-n="m_events" tabindex="0" role="button"><rect x="325" y="30" width="155" height="64" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/><text x="402" y="58" text-anchor="middle" font-size="16" font-weight="800" fill="#92400e">stg_events</text><text x="402" y="80" text-anchor="middle" font-size="14" fill="#92400e">חילוץ device</text></g>
+    <g class="p4-node" data-n="m_fact" tabindex="0" role="button"><rect x="325" y="160" width="155" height="90" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/><text x="402" y="196" text-anchor="middle" font-size="16" font-weight="800" fill="#92400e">fact_sales</text><text x="402" y="220" text-anchor="middle" font-size="14" fill="#92400e">הכנסה לכל שורה</text></g>
+    <g class="p4-node" data-n="t_device" tabindex="0" role="button"><rect x="20" y="30" width="155" height="64" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2.5"/><text x="97" y="58" text-anchor="middle" font-size="15" font-weight="800" fill="#5b21b6">מכשירים</text><text x="97" y="80" text-anchor="middle" font-size="14" fill="#5b21b6">בהזמנות</text></g>
+    <g class="p4-node" data-n="t_rev" tabindex="0" role="button"><rect x="20" y="118" width="155" height="64" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2.5"/><text x="97" y="146" text-anchor="middle" font-size="15" font-weight="800" fill="#5b21b6">הכנסות</text><text x="97" y="168" text-anchor="middle" font-size="14" fill="#5b21b6">סך הכול</text></g>
+    <g class="p4-node" data-n="t_cat" tabindex="0" role="button"><rect x="20" y="230" width="155" height="64" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2.5"/><text x="97" y="258" text-anchor="middle" font-size="15" font-weight="800" fill="#5b21b6">הכנסות לפי</text><text x="97" y="280" text-anchor="middle" font-size="14" fill="#5b21b6">קטגוריה</text></g>
+  </svg></div>
+  <div class="p4-btns" id="p4l-list" aria-label="בחירת צומת מהרשימה"></div>
+  <div class="out" id="p4l-panel"><b>לחצו על צומת.</b> האריח ״מכשירים בהזמנות״ הוא נקודת התחלה טובה.</div>
+</div>
+<script>(function(){ FL.dom(function(){
+  const box = FL.$('[data-id="p4-sim-lineage"]'); if (!box) return;
+  const UP = {t_device:['m_events'], m_events:['src_events'], t_rev:['m_fact'], t_cat:['m_fact'], m_fact:['src_orders','src_items'], src_events:[], src_orders:[], src_items:[]};
+  const DOWN = {}; Object.keys(UP).forEach(k=>{ DOWN[k] = DOWN[k] || []; UP[k].forEach(u=>{ (DOWN[u] = DOWN[u] || []).push(k); }); });
+  const fmt = x => Number(x).toLocaleString('en-US');
+  const one = sql => { try { const r = FL.exec(sql); return r && r.values.length ? r.values[0] : null; } catch(e){ return null; } };
+  const TOTAL = "SELECT SUM(x) FROM (SELECT SUM(oi.qty * d.price) AS x FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status = 'delivered' GROUP BY o.id)";
+  const N = {
+    t_device:{t:'אריח: מכשירים בהזמנות', sql:"SELECT COALESCE(json_extract(payload, '$.device'), 'לא ידוע') AS device, COUNT(*) AS events\nFROM app_events GROUP BY 1",
+      judge:r=>{ let unk = 0, tot = 0; r.values.forEach(v=>{ tot += v[1]; if (v[0] === 'לא ידוע') unk = v[1]; }); return unk > 0 ? {v:'bad', say:'חשוד: ' + unk + ' מתוך ' + tot + ' אירועים מסומנים ״לא ידוע״. האריח רק מציג את מה שקיבל, אז ממשיכים מעלה הזרם.'} : {v:'ok', say:'תקין: אין אירועים בלי מכשיר.'}; }},
+    m_events:{t:'עיבוד: stg_events', sql:"SELECT COUNT(*) AS events,\n       SUM(json_extract(payload, '$.device') IS NULL) AS device_null\nFROM app_events",
+      judge:r=>{ const e = r.values[0][0], n = r.values[0][1], p = Math.round(100 * n / e); return p > 10 ? {v:'bad', say:'חשוד: ' + n + ' מתוך ' + e + ' (' + p + '%) נכנסו בלי device. צריך להבין אם החילוץ שגוי או שהמקור השתנה, ולכן ממשיכים אל המקור.'} : {v:'ok', say:'תקין: רוב האירועים נכנסו עם device.'}; }},
+    src_events:{t:'מקור: app_events', sql:"SELECT CASE WHEN json_extract(payload, '$.device') IS NOT NULL THEN 'device'\n            WHEN json_extract(payload, '$.device_type') IS NOT NULL THEN 'device_type'\n            ELSE 'none' END AS field_name,\n       COUNT(*) AS events, MIN(order_id) AS first_order, MAX(order_id) AS last_order\nFROM app_events GROUP BY 1",
+      judge:r=>{ const k = (one("SELECT COUNT(*) FROM app_events WHERE json_extract(payload, '$.device') IS NULL AND json_extract(payload, '$.device_type') IS NOT NULL") || [0])[0]; let last = '', first = ''; r.values.forEach(v=>{ if (v[0] === 'device') last = v[3]; if (v[0] === 'device_type') first = v[2]; });
+        return k > 0 ? {v:'root', say:'מצאנו את מקור התקלה: ' + k + ' אירועים שומרים את אותו מידע בשם אחר. עד הזמנה ' + last + ' השדה נקרא device, ומהזמנה ' + first + ' הוא נקרא device_type (להזמנות שביניהן אין אירועים). החילוץ ממשיך לחפש את השם הישן ומחזיר NULL, בלי שום שגיאה.'} : {v:'ok', say:'תקין: שם השדה לא השתנה.'}; }},
+    t_rev:{t:'אריח: הכנסות', sql:"SELECT SUM(oi.qty * d.price) AS revenue\nFROM order_items oi JOIN orders o ON o.id = oi.order_id JOIN dishes d ON d.id = oi.dish_id\nWHERE o.status = 'delivered'",
+      judge:r=>{ const a = r.values[0][0], b = (one(TOTAL) || [null])[0]; return Math.abs(a - b) < 0.005 ? {v:'ok', say:'תקין: ' + fmt(a) + ', וזהה לסכום שחושב בדרך אחרת (הזמנה אחרי הזמנה). אין סיבה לחפש כאן.'} : {v:'bad', say:'חשוד: ' + fmt(a) + ' מול ' + fmt(b) + ' בחישוב אחר.'}; }},
+    t_cat:{t:'אריח: הכנסות לפי קטגוריה', sql:"SELECT d.category, SUM(oi.qty * d.price) AS revenue\nFROM order_items oi JOIN orders o ON o.id = oi.order_id JOIN dishes d ON d.id = oi.dish_id\nWHERE o.status = 'delivered' GROUP BY d.category",
+      judge:r=>{ let s = 0; r.values.forEach(v=>{ s += v[1]; }); const b = (one(TOTAL) || [null])[0]; return Math.abs(s - b) < 0.005 ? {v:'ok', say:'תקין: הקטגוריות מסתכמות ל-' + fmt(s) + ', כמו הסכום הכולל. האריח הזה לא תלוי בשדה device.'} : {v:'bad', say:'חשוד: הקטגוריות מסתכמות ל-' + fmt(s) + ' ולא ל-' + fmt(b) + '.'}; }},
+    m_fact:{t:'עיבוד: fact_sales', sql:"SELECT COUNT(*) AS lines, SUM(oi.qty * d.price) AS revenue_all_orders,\n       (SELECT COUNT(*) FROM order_items) AS source_lines\nFROM order_items oi JOIN dishes d ON d.id = oi.dish_id",
+      judge:r=>{ const v = r.values[0]; return v[0] === v[2] ? {v:'ok', say:'תקין: מספר השורות (' + v[0] + ') זהה למקור, ואף שורה לא נעלמה בחיבור.'} : {v:'bad', say:'חשוד: ' + v[0] + ' שורות מול ' + v[2] + ' במקור.'}; }},
+    src_orders:{t:'מקור: orders', sql:"SELECT COUNT(*) AS orders, MAX(order_ts) AS last_order,\n       SUM(tip < 0) AS negative_tips,\n       (SELECT COUNT(*) FROM orders o2 LEFT JOIN customers c ON c.id = o2.customer_id\n        WHERE o2.customer_id IS NOT NULL AND c.id IS NULL) AS orphan_orders\nFROM orders",
+      judge:r=>{ const v = r.values[0]; return (v[2] > 0 || v[3] > 0) ? {v:'warn', say:'יש כאן שורות בעייתיות מסעיף 5 (' + v[3] + ' יתומה, ' + v[2] + ' עם טיפ שלילי), אבל הן לא משפיעות על האריחים האלה. ההזמנה האחרונה היא מ-' + String(v[1]).slice(0, 10) + '.'} : {v:'ok', say:'תקין: ' + v[0] + ' הזמנות.'}; }},
+    src_items:{t:'מקור: order_items', sql:"SELECT COUNT(*) AS lines, SUM(qty) AS units,\n       (SELECT COUNT(*) FROM order_items oi LEFT JOIN dishes d ON d.id = oi.dish_id WHERE d.id IS NULL) AS missing_dish\nFROM order_items",
+      judge:r=>{ const v = r.values[0]; return v[2] === 0 ? {v:'ok', say:'תקין: ' + v[0] + ' שורות, ולכל אחת יש מנה קיימת.'} : {v:'bad', say:'חשוד: ' + v[2] + ' שורות עם מנה שלא קיימת.'}; }}
+  };
+  const seen = {}; let sel = null;
+  const svg = FL.$('#p4l-svg', box), panel = FL.$('#p4l-panel', box), list = FL.$('#p4l-list', box);
+  const COL = {ok:'#10b981', bad:'#ef4444', root:'#dc2626', warn:'#f59e0b'};
+  function paint(){
+    FL.$$('.p4-node', svg).forEach(g=>{ const id = g.dataset.n, r = FL.$('rect', g); if (seen[id]) r.setAttribute('stroke', COL[seen[id]]); r.setAttribute('stroke-width', id === sel ? '5' : '2.5'); });
+  }
+  function click(id){
+    sel = id; const n = N[id]; let res = null;
+    try { res = FL.exec(n.sql); } catch(e){}
+    const j = res ? n.judge(res) : {v:'bad', say:'השאילתה נכשלה.'};
+    seen[id] = j.v;
+    const chip = j.v === 'ok' ? '<span class="chip g">תקין</span>' : j.v === 'root' ? '<span class="chip r">מקור התקלה</span>' : j.v === 'warn' ? '<span class="chip b">תקלה אחרת, לא קשורה לאריחים</span>' : '<span class="chip a">חשוד</span>';
+    panel.innerHTML = '<b>' + n.t + '</b> ' + chip + '<div class="tw">' + FL.tableHTML(res, 10) + '</div><pre class="code" data-lang="sql" style="font-size:.8rem">' + FL.esc(n.sql) + '</pre><p style="font-weight:700">' + FL.esc(j.say) + '</p>';
+    paint();
+    if (seen.src_events === 'root' && seen.t_device && seen.m_events) FL.done('p4-sim-lineage');
+  }
+  function mark(ids){ FL.$$('.p4-node', svg).forEach(g=>g.style.opacity = !ids || ids.indexOf(g.dataset.n) >= 0 ? 1 : .3); FL.$$('.p4-e', svg).forEach(e=>e.style.opacity = !ids || (ids.indexOf(e.dataset.f) >= 0 && ids.indexOf(e.dataset.t) >= 0) ? 1 : .15); }
+  function walk(id, M, acc){ (M[id] || []).forEach(x=>{ if (acc.indexOf(x) < 0){ acc.push(x); walk(x, M, acc); } }); return acc; }
+  Object.keys(N).forEach(k=>{ const b = document.createElement('button'); b.type = 'button'; b.textContent = N[k].t; b.addEventListener('click', ()=>{ if (FL.ok()) click(k); }); list.appendChild(b); });
+  FL.onReady(function(ok){
+    if (!ok){ panel.textContent = 'מנוע ה-SQL לא נטען.'; return; }
+    FL.$$('.p4-node', svg).forEach(g=>{ g.addEventListener('click', ()=>click(g.dataset.n)); g.addEventListener('keydown', e=>{ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); click(g.dataset.n); } }); });
+    FL.$$('[data-m]', box).forEach(b=>b.addEventListener('click', ()=>{
+      const m = b.dataset.m; if (m === 'clear' || !sel){ mark(null); if (!sel && m !== 'clear') panel.insertAdjacentHTML('afterbegin', '<p><b>בחרו קודם צומת.</b></p>'); return; }
+      mark([sel].concat(walk(sel, m === 'up' ? UP : DOWN, [])));
+    }));
+  });
+}); })();</script>
+
+<div class="lab" data-id="p4-lab-lineage-fix" data-title="בדיקת איכות שתופסת את התקלה" data-require="GROUP BY" data-require-msg="הבדיקה מקבצת את האירועים לטווחים של 20 הזמנות.">
+  <div class="q-src">את התיקון של השדה כבר עשיתם בחלק 2. עכשיו תכתבו בדיקה שהייתה תופסת את התקלה לבד. לכל טווח של 20 הזמנות (<code>(order_id - 1) / 20</code>, חילוק שלמים) החזירו את הטווח (<code>bucket</code>), את מספר האירועים (<code>events</code>) ואת מספר האירועים בלי <code>device</code> (<code>nulls</code>).</div>
+  <pre class="start">SELECT (order_id - 1) / 20 AS bucket,
+       COUNT(*) AS events
+       -- הוסיפו את מספר האירועים בלי device
+FROM app_events
+-- הוסיפו קיבוץ</pre>
+  <pre class="check">SELECT (order_id - 1) / 20 AS bucket, COUNT(*) AS events, SUM(json_extract(payload, '$.device') IS NULL) AS nulls FROM app_events GROUP BY bucket</pre>
+  <ol class="hints"><li><code>json_extract(payload, '$.device') IS NULL</code> הוא 1 כשהשדה חסר ו-0 כשהוא קיים, אז אפשר לסכם אותו.</li><li>מקבצים לפי <code>bucket</code>.</li></ol>
+  <div class="why-src">בשני הטווחים הראשונים אפס אירועים בלי device. בשלישי יש 2, ברביעי 8 ובחמישי 3. זה בדיוק הרגע שבו האפליקציה החליפה שם. בדיקה כזו, שרצה בכל טעינה ומתריעה כשהחלק של ה-NULL קופץ, תופסת את התקלה ביום הראשון ולא אחרי שהדשבורד הציג 13 ״לא ידוע״.</div>
+</div>
+
+<div class="box trap"><p>תקלה שקטה: אין הודעת שגיאה, אין סימן אדום, והשאילתה עברה. אפשר לגלות אותה רק בבדיקה שבודקת את התוצאה (למשל שהחלק של ״לא ידוע״ לא קפץ). ורק מי שמבין את השושלת יודע איפה לחפש.</p></div>
+
+<div class="box meaning"><p>שושלת עוזרת בשני דברים. בחקירה, היא מקצרת את החיפוש מ״בכל מקום״ לנתיב אחד: מהאריח אחורה, עם בדיקה בכל צעד. ובשליטה, ניתוח מורד הזרם עונה על השאלה ״אם אני משנה את השדה הזה, מי יישבר?״ לפני שמשנים, ולא אחרי שהלקוח מתקשר.</p></div>
+<div class="box real"><p>כלי המרה כמו dbt בונים את גרף השושלת לבד מההפניות בין השאילתות, ומציגים אותו כגרף שאפשר ללחוץ עליו. בקטלוגי נתונים אפשר לראות שושלת גם ברמת עמודה, ויש גם תקנים פתוחים לדיווח שושלת מכלי הצינור. התרגיל שעשיתם, ללכת אחורה צעד אחר צעד ולבדוק בכל צומת, הוא בדיוק מה שהכלים האלה חוסכים.</p></div>
+
+<div class="box think" data-id="p4-th-lineage"><p>צוות האפליקציה החליף שם של שדה והודיע על זה רק בקבוצת ווטסאפ של המפתחים. איך היה אפשר למנוע מהדשבורד להישבר בשקט?</p>
+<div class="ans">שלושה דברים שמשלימים זה את זה. ראשית, בדיקת איכות על שלב החילוץ שמתריעה כשחלק ה-NULL בשדה קופץ, כמו במעבדה. שנית, הסכם עם צוות האפליקציה להודיע על שינוי במבנה לפני שהוא יוצא, והשושלת מראה מי תלוי בשדה. שלישית, לכתוב את החילוץ כך שיקרא גם שמות ישנים וגם חדשים עד שהמעבר נגמר.</div></div>
+
+<div class="quiz" data-id="p4-q-lineage" data-a="2"><p class="qq">מספר בדשבורד נראה שגוי. מה סדר החקירה הנכון?</p>
+<button class="opt">לשכתב את שאילתת האריח עד שהמספר ייראה סביר</button>
+<button class="opt">לבדוק את האריח, אחר כך כל שלב מעלה הזרם עד המקור, ולתקן במקום שבו התקלה נולדה</button>
+<button class="opt">לבדוק קודם את כל המקורות במקביל, בלי להסתכל על השושלת</button>
+<button class="opt">למחוק את האריח עד שמישהו יתלונן</button>
+<div class="why">שכתוב האריח מסתיר את הבעיה ולא מתקן אותה. בדיקה שיטתית מעלה הזרם מוצאת את השלב הראשון שבו המספר כבר שגוי, ושם מתקנים. בדיקת כל המקורות בלי מפה סתם מבזבזת זמן.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> תנו לכיתה ללחוץ על האריח השגוי ולהתקדם לבד. כדאי לעצור כשמישהו מגיע ל-stg_events ולשאול: האם הבעיה כאן? אחרי שמצאו את המקור, הפעילו את כפתור מורד הזרם ושאלו מי עוד היה נשבר אילו התקלה הייתה בהזמנות. שימו לב ללחיצה על orders: יש שם תקלות מסעיף 5, אבל הן לא משפיעות על האריחים האלה.</div>
+</section>
+<section class="sec" id="s4-8" data-t="אגם, מחסן, זמן אמת">
+<div class="sec-h"><div class="sec-n">8</div><h2>איפה שומרים ומתי מעדכנים</h2></div>
+<p class="lead">יבגני מתחיל לאסוף עוד דברים: תמונות של חשבוניות, אירועי אפליקציה בפורמט JSON וקבצי הרשמה. והשותף שלו מבקש דבר אחד: ״אני רוצה לראות את ההכנסות בזמן אמת״. כדאי להבין קודם איפה כל דבר שייך, ומה זה בכלל ״זמן אמת״.</p>
+
+<div class="defline"><b>אגם נתונים (data lake):</b> מקום זול לשמור בו קבצים כמו שהם, בכל פורמט, ולהחליט על המבנה רק כשקוראים אותם (קוראים לזה schema on read). דוגמה: תיקייה אחת עם תמונות חשבוניות, קובצי JSON וקובצי CSV.</div>
+<div class="defline"><b>מחסן נתונים:</b> כמו שהגדרנו בסעיף 1: טבלאות מסודרות עם מבנה שנקבע מראש, שנבנו לשאילתות. דוגמה: <code>fact_sales</code> שבנינו בסעיף 4.</div>
+<div class="defline"><b>לייקהאוס (lakehouse):</b> אגם שמוסיפים לו שכבת טבלאות, כך שאפשר להריץ עליו SQL ולעדכן אותו בצורה אמינה כמו במחסן, כולל לחזור למצב קודם של הטבלה. דוגמה: אותם קבצים באגם, עם טבלה מעליהם ששואלים בשאילתה רגילה.</div>
+
+<div class="anim" data-id="p4-anim-lake" data-speed="3400">
+  <div class="stage"><svg viewBox="0 0 800 350" role="img" aria-label="קבצים נכנסים לאזור גולמי באגם, עוברים לאזור מנוקה ואז לאזור מוכן, ומקטלוג מלווה אותם">
+    <defs><marker id="p4a4-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <rect x="560" y="40" width="230" height="250" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+    <text x="675" y="68" text-anchor="middle" font-size="18" font-weight="800" fill="#334155">אזור גולמי</text>
+    <g font-size="15" fill="#0f172a">
+      <rect x="580" y="90" width="190" height="34" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="675" y="112" text-anchor="middle">receipt_0412.jpg</text>
+      <rect x="580" y="136" width="190" height="34" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="675" y="158" text-anchor="middle">events.json</text>
+      <rect x="580" y="182" width="190" height="34" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="675" y="204" text-anchor="middle">signups.csv</text>
+    </g>
+    <text x="675" y="250" text-anchor="middle" font-size="14" fill="#64748b">נשמר כמו שהגיע</text>
+    <g data-s="2">
+      <path d="M552 165 L528 165" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a4-ar)"/>
+      <rect x="290" y="40" width="230" height="250" rx="16" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="405" y="68" text-anchor="middle" font-size="18" font-weight="800" fill="#92400e">אזור מנוקה</text>
+      <rect x="310" y="136" width="190" height="34" rx="8" fill="#fff" stroke="#f59e0b"/><text x="405" y="158" text-anchor="middle" font-size="15" fill="#0f172a">events (טבלה)</text>
+      <rect x="310" y="182" width="190" height="34" rx="8" fill="#fff" stroke="#f59e0b"/><text x="405" y="204" text-anchor="middle" font-size="15" fill="#0f172a">signups (נקי)</text>
+      <text x="405" y="250" text-anchor="middle" font-size="14" fill="#92400e">סוגים ותאריכים מתוקנים</text>
+    </g>
+    <g data-s="3">
+      <path d="M282 165 L258 165" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a4-ar)"/>
+      <rect x="20" y="40" width="230" height="250" rx="16" fill="#ccfbf1" stroke="#0f766e" stroke-width="2"/>
+      <text x="135" y="68" text-anchor="middle" font-size="18" font-weight="800" fill="#0f766e">אזור מוכן</text>
+      <rect x="40" y="90" width="190" height="34" rx="8" fill="#fff" stroke="#0f766e"/><text x="135" y="112" text-anchor="middle" font-size="15" fill="#0f172a">fact_sales</text>
+      <rect x="40" y="136" width="190" height="34" rx="8" fill="#fff" stroke="#0f766e"/><text x="135" y="158" text-anchor="middle" font-size="15" fill="#0f172a">dim_dish, dim_date</text>
+      <rect x="40" y="182" width="190" height="34" rx="8" fill="#fff" stroke="#0f766e"/><text x="135" y="204" text-anchor="middle" font-size="15" fill="#0f172a">מדדים רשמיים</text>
+      <text x="135" y="250" text-anchor="middle" font-size="14" fill="#0f766e">כאן מדווחים ומחליטים</text>
+    </g>
+    <g data-s="4">
+      <text x="135" y="28" text-anchor="middle" font-size="15" font-weight="800" fill="#5b21b6">דנה וכלי ה-BI קוראים מכאן</text>
+      <rect x="20" y="304" width="770" height="36" rx="10" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+      <text x="405" y="328" text-anchor="middle" font-size="16" font-weight="700" fill="#5b21b6">קטלוג: מה יש כאן, מאיפה זה הגיע ומי אחראי</text>
+    </g>
+  </svg></div>
+  <ol class="caps"><li>1. קבצים נשמרים באזור הגולמי כמו שהגיעו: תמונה, JSON, CSV. לא צריך להחליט מראש מה יעשו איתם.</li><li>2. אזור מנוקה: הקבצים שמועילים לדיווח הופכים לטבלאות עם סוגים ותאריכים תקינים. החשבונית נשארת קובץ.</li><li>3. אזור מוכן: עובדות, ממדים ומדדים רשמיים, בצורה שאפשר לשאול.</li><li>4. דנה וכלי ה-BI קוראים מהאזור המוכן. הקטלוג מתעד מה יש בכל אזור. בלי קטלוג האגם הופך ל״ביצת נתונים״ (data swamp): תיקייה שאף אחד לא יודע מה יש בה.</li></ol>
+</div>
+
+<div class="sim" data-id="p4-sim-store"><div class="sh">איפה זה שייך</div>
+  <p>לכל פריט, בחרו את המקום המתאים.</p>
+  <div id="p4s-item" style="font-weight:800;font-size:1.05rem;min-height:2.6em"></div>
+  <div class="p4-btns" id="p4s-b"><button type="button" data-k="0">מסד חי (תפעולי)</button><button type="button" data-k="1">אגם נתונים</button><button type="button" data-k="2">מחסן נתונים</button></div>
+  <div id="p4s-f" class="out" style="display:none"></div>
+  <div style="margin-top:6px;color:var(--muted)"><span id="p4s-i">1</span> מתוך 6</div>
+</div>
+<script>(function(){ FL.dom(function(){
+  const box = FL.$('[data-id="p4-sim-store"]'); if (!box) return;
+  const S = [
+    ['שמירת הזמנה חדשה מהאפליקציה',0,'פעולה קטנה ומהירה, שורה אחת. זה מסד תפעולי.'],
+    ['צילומי חשבוניות סרוקות',1,'קבצים בלי מבנה של טבלה. אגם שומר אותם כמו שהם, בזול.'],
+    ['טבלת הכנסות לפי חודש, שנבנתה לדשבורד',2,'נתון מסודר ומוגדר מראש ששואלים עליו שוב ושוב: מחסן.'],
+    ['מיליוני אירועי לחיצה גולמיים ב-JSON, שעוד לא ברור מה יעשו איתם',1,'כשעוד לא ידוע מה ישאלו, שומרים גולמי באגם ומחליטים על מבנה כשקוראים.'],
+    ['מסך המטבח שמציג את ההזמנות הפתוחות עכשיו',0,'מידע עדכני, ממוקד וקצר: מסד תפעולי.'],
+    ['תמונות חשבוניות וגם טבלה מסודרת של החשבוניות, באותו מקום',1,'שני הדברים יושבים באגם: הקבצים הגולמיים כמו שהם, והטבלה המסודרת מעליהם. כשהטבלה יושבת על קבצי האגם, זה כבר לייקהאוס.']
+  ];
+  const names = ['מסד חי','אגם','מחסן'];
+  let i = 0, right = 0;
+  const it = FL.$('#p4s-item', box), f = FL.$('#p4s-f', box), bs = FL.$$('#p4s-b button', box);
+  function show(){
+    if (i >= S.length){ it.textContent = 'סיימתם: ' + right + ' מתוך ' + S.length + ' נכונות. בעולם האמיתי חלק מהפריטים יכולים לשבת בכמה מקומות, ולכן הלייקהאוס קיים.'; bs.forEach(b=>b.style.display = 'none'); f.style.display = 'none'; FL.done('p4-sim-store'); return; }
+    FL.$('#p4s-i', box).textContent = i + 1; it.textContent = S[i][0]; f.style.display = 'none'; bs.forEach(b=>{ b.disabled = false; b.className = ''; });
+  }
+  bs.forEach(b=>b.addEventListener('click', ()=>{
+    const k = +b.dataset.k, ok = k === S[i][1]; if (ok) right++;
+    bs.forEach(x=>{ x.disabled = true; if (+x.dataset.k === S[i][1]) x.classList.add('ok'); else if (x === b) x.classList.add('no'); });
+    f.style.display = 'block'; f.innerHTML = (ok ? '<b>נכון.</b> ' : '<b>לא בדיוק.</b> התשובה: ' + names[S[i][1]] + '. ') + S[i][2] + ' <button type="button" class="btn" id="p4s-n">הבא</button>';
+    FL.$('#p4s-n', box).addEventListener('click', ()=>{ i++; show(); });
+  }));
+  show();
+}); })();</script>
+
+<div class="tw"><table class="tbl"><thead><tr><th></th><th>מחסן</th><th>אגם</th><th>לייקהאוס</th></tr></thead><tbody>
+<tr><th>מה שומרים</th><td>טבלאות מסודרות</td><td>קבצים בכל פורמט</td><td>קבצים באגם, עם שכבת טבלאות</td></tr>
+<tr><th>מתי קובעים מבנה</th><td>לפני השמירה</td><td>כשקוראים</td><td>לפי הצורך, עם אפשרות לאכוף</td></tr>
+<tr><th>מי משתמש</th><td>אנליסטים וכלי BI</td><td>מהנדסי נתונים ומדעני נתונים</td><td>שני הקהלים</td></tr>
+<tr><th>הסיכון העיקרי</th><td>נוקשות כשצריך לשנות</td><td>ביצת נתונים בלי קטלוג</td><td>מורכבות בהקמה</td></tr>
+</tbody></table></div>
+
+<h3>״בזמן אמת״: כמה זה באמת חשוב</h3>
+<div class="defline"><b>עיבוד באצוות (batch):</b> עיבוד שרץ בשעות קבועות על כל מה שהצטבר מאז הפעם הקודמת. דוגמה: ההעתקה הלילית של ההזמנות למחסן.</div>
+<div class="defline"><b>זרימה (streaming):</b> עיבוד של כל אירוע ברגע שהוא קורה, בדרך כלל תוך שניות. דוגמה: הזמנה שמופיעה בדשבורד של יבגני ברגע שנשמרה.</div>
+<p>הזיזו את השעון ובחרו שיטת עדכון. ההדמיה משתמשת בהזמנות האמיתיות של השבוע האחרון בנתונים (25 עד 31 במאי), ומחשבת את ההכנסות מתחילת השבוע שהדשבורד מציג, מול מה שבאמת נכנס עד אותו רגע.</p>
+<div class="sim" data-id="p4-sim-fresh"><div class="sh">כמה הדשבורד מאחר</div>
+  <div class="row"><label>עד השעה: <b class="n" id="p4f-t"></b></label><input type="range" min="0" max="156" value="117" id="p4f-r" aria-label="שעה"></div>
+  <div class="row">
+    <label><input type="radio" name="p4f-m" value="rt"> זרימה: כל הזמנה מיד</label>
+    <label><input type="radio" name="p4f-m" value="h"> אצווה כל שעה</label>
+    <label><input type="radio" name="p4f-m" value="n" checked> אצווה לילית (בשעה 02:00)</label>
+  </div>
+  <div class="kpis" style="margin:0">
+    <div class="kpi"><b id="p4f-dash">0</b><span>מה שהדשבורד מציג</span></div>
+    <div class="kpi"><b id="p4f-true">0</b><span>מה שבאמת נכנס</span></div>
+    <div class="kpi a"><b id="p4f-gap">0</b><span>הפער</span></div>
+  </div>
+  <div id="p4f-msg" style="font-weight:700;margin-top:8px"></div>
+</div>
+<script>(function(){ FL.dom(function(){
+  const box = FL.$('[data-id="p4-sim-fresh"]'); if (!box) return;
+  let orders = [];
+  const base = Date.UTC(2026, 4, 25, 0, 0);
+  const pad = n => (n < 10 ? '0' : '') + n;
+  const fmt = ms => { const d = new Date(ms); return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate()) + ' ' + pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes()); };
+  const touched = {};
+  function upd(){
+    const h = +FL.$('#p4f-r', box).value, mode = box.querySelector('input[name=p4f-m]:checked').value;
+    touched[mode] = 1;
+    const nowMs = base + h * 3600000 + 59 * 60000;
+    const now = fmt(nowMs); FL.$('#p4f-t', box).textContent = fmt(base + h * 3600000).slice(0, 13) + ':59';
+    let cut;
+    if (mode === 'rt') cut = now;
+    else if (mode === 'h') cut = fmt(base + h * 3600000);
+    else { const d = new Date(nowMs); let c = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 2, 0); if (c > nowMs) c -= 86400000; cut = fmt(c); }
+    let dash = 0, tru = 0, missing = 0;
+    orders.forEach(o=>{ if (o.ts <= now) tru += o.rev; if (o.ts <= cut) dash += o.rev; else if (o.ts <= now) missing++; });
+    FL.$('#p4f-dash', box).textContent = dash; FL.$('#p4f-true', box).textContent = tru; FL.$('#p4f-gap', box).textContent = tru - dash;
+    FL.$('#p4f-msg', box).textContent = (tru - dash) === 0 ? 'הדשבורד מעודכן. ההכנסות עד עכשיו כבר נספרו.' : (missing === 1 ? 'חסרה בדשבורד הזמנה אחת שנמסרה. ' : 'חסרות בדשבורד ' + missing + ' הזמנות שנמסרו. ') + 'הדשבורד נכון ל-' + cut + '. לכן כדאי לכתוב עליו ״נכון ל...״.';
+    if (Object.keys(touched).length >= 3) FL.done('p4-sim-fresh');
+  }
+  FL.onReady(function(ok){
+    if (!ok) return;
+    const r = FL.exec("SELECT o.order_ts, SUM(oi.qty * d.price) FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status = 'delivered' AND o.order_ts >= '2026-05-25 00:00' GROUP BY o.id");
+    orders = r.values.map(v=>({ts: v[0], rev: v[1]}));
+    FL.$('#p4f-r', box).addEventListener('input', upd);
+    box.querySelectorAll('input[name=p4f-m]').forEach(i=>i.addEventListener('change', upd));
+    upd();
+  });
+}); })();</script>
+
+<div class="lab" data-id="p4-lab-fresh" data-title="ההכנסות של השבוע האחרון, יום אחרי יום" data-require="GROUP BY" data-require-msg="הכנסה ליום דורשת קיבוץ לפי תאריך.">
+  <div class="q-src">זה מה שההדמיה חישבה. כתבו את זה ב-SQL: הכנסה לכל יום (<code>day</code>, <code>revenue</code>) מהזמנות שנמסרו בין 25 במאי לסוף הנתונים (<code>order_ts &gt;= '2026-05-25'</code>).</div>
+  <pre class="start">SELECT date(o.order_ts) AS day,
+       SUM(oi.qty * d.price) AS revenue
+FROM orders o
+-- השלימו חיבורים, סינון וקיבוץ</pre>
+  <pre class="check">SELECT date(o.order_ts) AS day, SUM(oi.qty * d.price) AS revenue FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status = 'delivered' AND o.order_ts &gt;= '2026-05-25' GROUP BY date(o.order_ts)</pre>
+  <ol class="hints"><li>אותה שאילתה כמו הכנסה לפי חודש, אבל קיבוץ לפי <code>date(o.order_ts)</code>.</li></ol>
+  <div class="why-src">שישה ימים עם הזמנות, מ-307 ב-25 במאי ועד 118 ב-31 במאי. אלה המספרים שההדמיה סכמה. אצווה לילית מציגה אותם באיחור של עד יום, וזרימה מציגה אותם ברגע שהזמנה נשמרת.</div>
+</div>
+
+<div class="tw"><table class="tbl"><thead><tr><th>שיטה</th><th>אורך העיכוב</th><th>מתאימה ל...</th></tr></thead><tbody>
+<tr><td>אצווה לילית</td><td>עד יום</td><td>דוחות ניהול חודשיים ורבעוניים</td></tr>
+<tr><td>אצווה תכופה</td><td>דקות עד שעות</td><td>דשבורד תפעולי שמתעדכן במהלך היום</td></tr>
+<tr><td>זרימה</td><td>שניות</td><td>החלטות שדורשות תגובה מיידית, כמו התראת תקלה</td></tr>
+</tbody></table></div>
+<p>כל צעד לכיוון זרימה עולה בעוד מורכבות וכסף. לכן שואלים קודם: איזו החלטה משתנה אם המספר ישן בשעה? בהכנסות חודשיות כמעט אף אחת. בעומס במטבח אולי כן, אבל זה בדיוק המסך התפעולי מסעיף 1, לא הדשבורד של יבגני.</p>
+
+<div class="defline"><b>Data mesh (רשת נתונים):</b> גישה לארגון גדול, שבה כל תחום אחראי על הנתונים שלו ומפרסם אותם כמוצר, על פלטפורמה וכללים משותפים. דוגמה: צוות המשלוחים מפרסם טבלת זמני משלוח מתועדת, וצוות הכספים מפרסם טבלת הכנסות רשמית.</div>
+<p>יש להודות: מסעדה אחת לא צריכה רשת נתונים. הגישה נולדה בארגונים גדולים, שבהם צוות מרכזי אחד הפך לצוואר בקבוק כי כל התחומים מחכים לו. בעסק קטן, מחסן אחד ובעלים לכל מדד מספיקים.</p>
+
+<div class="box meaning"><p>בוחרים ארכיטקטורה לפי סוג הנתונים, מי שואל ומה דחוף. לא לפי מה שנשמע מתקדם. נתונים מסודרים ששואלים עליהם שוב ושוב שייכים למחסן. נתונים גולמיים ומגוונים, שעוד לא ברור מה יעשו בהם, שייכים לאגם. ו״בזמן אמת״ הוא מחיר שמשלמים רק כשהחלטה תלויה בו.</p></div>
+<div class="box real"><p>בענן יש מוצר לכל אחד מהשלבים: אחסון קבצים לאגם, מחסנים כמו BigQuery ו-Snowflake, פורמטי טבלה פתוחים כמו Delta Lake ו-Iceberg ללייקהאוס, ותשתית אירועים כמו Kafka לזרימה. השאלות חוזרות בכל פרויקט: מה נשמר, באיזה מבנה, ובאיזה קצב מתעדכן.</p></div>
+
+<div class="box think" data-id="p4-th-realtime"><p>השותף של יבגני מבקש ״הכנסות בזמן אמת״. אילו שאלות שואלים אותו לפני שמתחילים לבנות?</p>
+<div class="ans">איזו החלטה הוא מקבל על סמך המספר, ואיך היא משתנה אם המספר ישן בשעה או ביום? כל כמה זמן הוא מסתכל עליו? אולי מספיק לכתוב על המסך ״נכון ל...״? ברוב המקרים ״זמן אמת״ מתברר כצורך בעדכון תכוף, לא בזרימה.</div></div>
+
+<div class="quiz" data-id="p4-q-lake" data-a="1"><p class="qq">יבגני רוצה לשמור מיליוני אירועי אפליקציה גולמיים, בלי שהחליטו עדיין איך ינתחו אותם. איפה כדאי לשמור?</p>
+<button class="opt">באגם נתונים, כקבצים גולמיים, ולהחליט על מבנה כשקוראים</button>
+<button class="opt">במסד התפעולי, בטבלה שמתאימה לכל אפשרות עתידית</button>
+<button class="opt">רק במחסן, אחרי שמגדירים עשרות עמודות</button>
+<button class="opt">לא לשמור, כי אי אפשר לנתח נתונים שאינם טבלאיים</button>
+<div class="why">כשלא ברור מה ישאלו, גמישות חשובה יותר ממבנה. אגם שומר גולמי בזול. מסד תפעולי לא נועד להיסטוריה אנליטית גדולה, ומחסן דורש לדעת את המבנה מראש. ואפשר לנתח נתונים חצי מובנים כמו JSON, כמו שעשינו בסעיף 7.</div></div>
+
+<div class="quiz" data-id="p4-q-stream" data-a="4"><p class="qq">דשבורד ההכנסות החודשיות של יבגני מתעדכן פעם בלילה. השותף מבקש לעבור לזרימה. מה השאלה הכי חשובה?</p>
+<button class="opt">איזה כלי זרימה הכי פופולרי</button>
+<button class="opt">כמה שרתים צריך</button>
+<button class="opt">אפשר לעבור לזרימה בלי לשנות את המחסן?</button>
+<button class="opt">איזו החלטה משתנה אם המספר ישן ביום, ומה מחיר צמצום הפער</button>
+<div class="why">זרימה עולה במורכבות ובכסף. היא מוצדקת כשהחלטה תלויה בעיכוב קצר. אם בודקים את ההכנסות החודשיות פעם בשבוע, אין מה לקנות. שאלות על כלים ושרתים באות אחרי שמבררים מה הצורך.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> במשחק ״איפה זה שייך״ יש פריטים שאפשר להתווכח עליהם, וזה בסדר. בהדמיית העדכון תבקשו מהכיתה למצוא שעה שבה הפער גדול, ותשאלו אם היא הייתה משנה החלטה. תדגישו שרשת נתונים לא מיועדת לעסק קטן.</div>
+</section>
+<section class="sec" id="s4-9" data-t="דשבורד והחלטה">
+<div class="sec-h"><div class="sec-n">9</div><h2>מנתונים לדשבורד ולהחלטה</h2></div>
+<p class="lead">הנתונים נקיים, המבנה נכון וההגדרות סגורות. נשארו שלוש שאלות: מי הולך להסתכל, מה הוא רוצה לדעת, ומה יעשה אחרי שיראה. דשבורד שלא מוביל להחלטה לא שווה את המקום שהוא תופס.</p>
+
+<div class="defline"><b>דשבורד:</b> מסך אחד עם כמה מדדים וגרפים שעונים על שאלה אחת של קהל מסוים. דוגמה: מסך הבוקר של יבגני, עם הכנסות, הזמנות ומגמה חודשית.</div>
+<div class="defline"><b>מדד (KPI):</b> מספר אחד שמסכם משהו חשוב, עם הגדרה קבועה. דוגמה: ״הזמנות שנמסרו״, שערכו 82.</div>
+<div class="tw"><table class="tbl"><thead><tr><th>קהל</th><th>מה הוא רוצה לדעת</th><th>מה יראה</th><th>ההחלטה</th></tr></thead><tbody>
+<tr><td>יבגני, בבוקר</td><td>איך הולך העסק?</td><td>הכנסות, הזמנות, מגמה חודשית</td><td>להגביר שיווק או לצמצם</td></tr>
+<tr><td>מנהל משמרת</td><td>מי איטי ומה דורש טיפול?</td><td>זמן משלוח לפי שליח, רשימת משלוחים איטיים</td><td>למי להתקשר ואיפה לחזק</td></tr>
+</tbody></table></div>
+
+<h3>משחק: איזה גרף עונה על השאלה</h3>
+<div class="sim" data-id="p4-sim-chart"><div class="sh">בחירת גרף לפי שאלה</div>
+  <p id="p4c2-q" style="font-weight:800;font-size:1.05rem;min-height:2.6em"></p>
+  <div class="p4-btns" id="p4c2-b"></div>
+  <div id="p4c2-f" class="out" style="display:none"></div>
+  <div style="margin-top:6px;color:var(--muted)"><span id="p4c2-i">1</span> מתוך 5</div>
+</div>
+<script>(function(){ FL.dom(function(){
+  const box = FL.$('[data-id="p4-sim-chart"]'); if (!box) return;
+  const T = {line:'📈 קו', bar:'📊 עמודות', scatter:'⚪ פיזור', table:'📋 טבלה', num:'🔢 מספר גדול', pie:'🥧 עוגה'};
+  const S = [
+    ['איך ההכנסות משתנות משבוע לשבוע לאורך שלושה חודשים?','line',['line','pie','scatter','num'],'שינוי לאורך זמן רואים בקו, כי העין עוקבת אחרי המגמה.'],
+    ['איזה ערוץ מכניס יותר: אפליקציה, טלפון או הזמנה במקום?','bar',['line','bar','pie','num'],'השוואה בין קטגוריות רואים בעמודות, כי אפשר להשוות את האורכים במבט. עוגה מקשה להשוות בין שלוש פרוסות קרובות.'],
+    ['מה ההכנסה של אתמול? יבגני מסתכל בטלפון בבוקר ורוצה תשובה אחת.','num',['scatter','bar','num','line'],'מספר אחד שחשוב כל בוקר מציגים כמספר גדול, אולי עם השוואה קטנה.'],
+    ['האם הזמנות גדולות יותר, בסכום, לוקחות יותר זמן להגיע?','scatter',['table','line','scatter','pie'],'קשר בין שני מספרים בודקים בפיזור: כל נקודה היא הזמנה, והכיוון של הענן מראה אם יש קשר.'],
+    ['אילו משלוחים איחרו ביותר מ-45 דקות, כדי שיבגני יתקשר ללקוחות?','table',['bar','table','line','pie'],'כשצריך לפעול על פריטים בודדים, רשימה (טבלה) עדיפה על גרף. אפשר לשפר אותה עם צבע.']
+  ];
+  let i = 0, right = 0;
+  const q = FL.$('#p4c2-q', box), b = FL.$('#p4c2-b', box), f = FL.$('#p4c2-f', box);
+  function show(){
+    if (i >= S.length){ q.textContent = 'סיימתם: ' + right + ' מתוך ' + S.length + '. השאלה קובעת את הגרף, לא להפך.'; b.innerHTML = ''; f.style.display = 'none'; FL.done('p4-sim-chart'); return; }
+    FL.$('#p4c2-i', box).textContent = i + 1; q.textContent = S[i][0]; f.style.display = 'none'; b.innerHTML = '';
+    S[i][2].forEach(k=>{ const x = document.createElement('button'); x.type = 'button'; x.dataset.k = k; x.textContent = T[k]; x.addEventListener('click', ()=>pick(k)); b.appendChild(x); });
+  }
+  function pick(k){
+    const ok = k === S[i][1]; if (ok) right++;
+    FL.$$('button', b).forEach(x=>{ x.disabled = true; if (x.dataset.k === S[i][1]) x.classList.add('ok'); else if (x.dataset.k === k) x.classList.add('no'); });
+    f.style.display = 'block'; f.innerHTML = (ok ? '<b>נכון.</b> ' : '<b>לא בדיוק.</b> התשובה: ' + T[S[i][1]] + '. ') + S[i][3] + ' <button type="button" class="btn" id="p4c2-n">הבא</button>';
+    FL.$('#p4c2-n', box).addEventListener('click', ()=>{ i++; show(); });
+  }
+  show();
+}); })();</script>
+
+<h3>בונים דשבורד מנתונים אמיתיים</h3>
+<p>בחרו קהל, ואז הוסיפו אריחים מהתפריט. כל אריח מריץ שאילתה אמיתית על מסד המסעדה. ההדמיה בודקת אם מה שבחרתם עונה על השאלה של הקהל. זו דעה של מי שכתב את התרגיל, לא חוק, אז אם אתם חושבים אחרת, תתווכחו.</p>
+<div class="sim" data-id="p4-sim-builder"><div class="sh">בונה דשבורדים</div>
+  <div class="p4-btns" id="p4b-aud"></div>
+  <p id="p4b-q" style="font-weight:700"></p>
+  <div class="p4-btns" id="p4b-pal"></div>
+  <div class="out" style="background:#f1f5f9">
+    <div class="p4-grid" id="p4b-can"></div>
+    <div id="p4b-fb" style="font-weight:700;margin-top:8px"></div>
+  </div>
+</div>
+<script>(function(){ FL.dom(function(){
+  const box = FL.$('[data-id="p4-sim-builder"]'); if (!box) return;
+  const BASE = "FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status = 'delivered'";
+  const TILES = {
+    k_rev:{n:'הכנסות (נמסרו)', kind:'kpi', sql:'SELECT SUM(oi.qty * d.price) ' + BASE},
+    k_orders:{n:'הזמנות שנמסרו', kind:'kpi', sql:"SELECT COUNT(*) FROM orders WHERE status = 'delivered'"},
+    k_basket:{n:'ממוצע להזמנה', kind:'kpi', sql:"SELECT ROUND(AVG(rev), 2) FROM (SELECT SUM(oi.qty * d.price) AS rev " + BASE + " GROUP BY o.id)"},
+    k_deliv:{n:'זמן משלוח ממוצע (דקות)', kind:'kpi', sql:"SELECT ROUND(AVG(delivery_min), 1) FROM orders WHERE status = 'delivered'"},
+    c_channel:{n:'הכנסות לפי ערוץ', kind:'bars', sql:'SELECT o.channel, SUM(oi.qty * d.price) ' + BASE + ' GROUP BY o.channel ORDER BY 2 DESC'},
+    c_month:{n:'הכנסות לפי חודש', kind:'bars', sql:"SELECT strftime('%Y-%m', o.order_ts), SUM(oi.qty * d.price) " + BASE + ' GROUP BY 1 ORDER BY 1'},
+    c_dow:{n:'הזמנות לפי יום בשבוע', kind:'bars', sql:"SELECT CASE strftime('%w', order_ts) WHEN '0' THEN 'א' WHEN '1' THEN 'ב' WHEN '2' THEN 'ג' WHEN '3' THEN 'ד' WHEN '4' THEN 'ה' WHEN '5' THEN 'ו' ELSE 'ש' END AS day, COUNT(*) FROM orders WHERE status = 'delivered' GROUP BY strftime('%w', order_ts) ORDER BY strftime('%w', order_ts)"},
+    c_courier:{n:'זמן משלוח לפי שליח', kind:'bars', sql:"SELECT c.name, ROUND(AVG(o.delivery_min), 1) FROM orders o JOIN couriers c ON c.id = o.courier_id WHERE o.status = 'delivered' GROUP BY c.name ORDER BY 2 DESC"},
+    t_slow:{n:'משלוחים מעל 45 דקות', kind:'table', sql:"SELECT o.id AS order_id, c.name AS courier, o.delivery_min FROM orders o JOIN couriers c ON c.id = o.courier_id WHERE o.status = 'delivered' AND o.delivery_min > 45 ORDER BY o.delivery_min DESC"}
+  };
+  const AUD = [
+    {n:'יבגני, מסך הבוקר', q:'השאלה: איך הולך העסק? מה בונים: הכנסות, מגמה והרכב.', must:['k_rev','k_orders','c_month','c_channel'], bad:['t_slow','c_courier','k_deliv']},
+    {n:'מנהל משמרת', q:'השאלה: מי איטי ומה דורש טיפול עכשיו? מה בונים: זמני משלוח ורשימה לפעולה.', must:['k_deliv','c_courier','t_slow'], bad:['c_month','k_basket','c_channel','k_rev','c_dow']}
+  ];
+  let aud = 0, chosen = [];
+  const cache = {};
+  const audB = FL.$('#p4b-aud', box), pal = FL.$('#p4b-pal', box), can = FL.$('#p4b-can', box), fb = FL.$('#p4b-fb', box);
+  AUD.forEach((a,i)=>{ const x = document.createElement('button'); x.type = 'button'; x.textContent = a.n; x.addEventListener('click', ()=>{ aud = i; chosen = []; render(); }); audB.appendChild(x); });
+  Object.keys(TILES).forEach(k=>{ const x = document.createElement('button'); x.type = 'button'; x.className = 'p4-pick'; x.dataset.k = k; x.textContent = '+ ' + TILES[k].n; x.addEventListener('click', ()=>{ if (chosen.indexOf(k) < 0) chosen.push(k); render(); }); pal.appendChild(x); });
+  function data(k){ if (!cache[k]){ try { cache[k] = FL.exec(TILES[k].sql); } catch(e){ cache[k] = null; } } return cache[k]; }
+  function tile(k){
+    const t = TILES[k], r = data(k); let body = '';
+    if (!r) body = '<i>שגיאה</i>';
+    else if (t.kind === 'kpi') body = '<span class="big">' + Number(r.values[0][0]).toLocaleString('en-US') + '</span>';
+    else if (t.kind === 'bars'){ const mx = Math.max.apply(null, r.values.map(v=>v[1])); body = r.values.map(v=>'<div class="p4-bar"><span>' + FL.esc(v[0]) + '</span><div class="tr"><i style="width:' + Math.round(100 * v[1] / mx) + '%"></i></div><b>' + Number(v[1]).toLocaleString('en-US') + '</b></div>').join(''); }
+    else body = '<div class="tw">' + FL.tableHTML(r, 8) + '</div>';
+    return '<div class="p4-tile" style="' + (t.kind === 'kpi' ? '' : 'grid-column:1/-1') + '"><h5>' + t.n + '</h5>' + body + '<button type="button" class="x" data-r="' + k + '" aria-label="הסר">×</button></div>';
+  }
+  function render(){
+    const a = AUD[aud];
+    FL.$$('button', audB).forEach((b,i)=>b.classList.toggle('on', i === aud));
+    FL.$('#p4b-q', box).textContent = a.q;
+    FL.$$('button', pal).forEach(b=>b.disabled = chosen.indexOf(b.dataset.k) >= 0);
+    can.innerHTML = chosen.length ? chosen.map(tile).join('') : '<i>הוסיפו אריחים מהתפריט.</i>';
+    FL.$$('.x', can).forEach(x=>x.addEventListener('click', ()=>{ chosen.splice(chosen.indexOf(x.dataset.r), 1); render(); }));
+    const miss = a.must.filter(k=>chosen.indexOf(k) < 0), noise = chosen.filter(k=>a.bad.indexOf(k) >= 0);
+    let m = [];
+    if (miss.length) m.push('חסר: ' + miss.map(k=>TILES[k].n).join(', ') + '.');
+    if (noise.length) m.push('ייתכן שלא עונה על השאלה של הקהל הזה: ' + noise.map(k=>TILES[k].n).join(', ') + '.');
+    if (!m.length && chosen.length){ m.push('דשבורד טוב: ' + chosen.length + ' אריחים, וכולם עונים על השאלה.'); FL.done('p4-sim-builder'); }
+    fb.textContent = m.join(' ');
+  }
+  FL.onReady(function(ok){ if (ok) render(); else fb.textContent = 'מנוע ה-SQL לא נטען.'; });
+}); })();</script>
+
+<div class="lab" data-id="p4-lab-kpis" data-title="ארבעה מדדים בשאילתה אחת" data-require="WITH" data-require-msg="כדי למנוע כפל, חשבו קודם הכנסה לכל הזמנה בשלב נפרד (WITH).">
+  <div class="q-src">החזירו שורה אחת עם <code>orders</code> (הזמנות שנמסרו), <code>revenue</code>, <code>avg_basket</code> (הכנסה ממוצעת להזמנה) ו-<code>avg_delivery</code> (זמן משלוח ממוצע). זהירות: אם תחברו את שורות הפריט ותחשבו ממוצע של זמן המשלוח, הזמנות עם הרבה מנות ישפיעו יותר.</div>
+  <pre class="start">WITH ord AS (
+  SELECT o.id, o.delivery_min,
+         SUM(oi.qty * d.price) AS rev
+  FROM orders o
+  -- השלימו חיבורים וסינון
+  GROUP BY o.id
+)
+SELECT COUNT(*) AS orders
+       -- השלימו את שלושת המדדים האחרים
+FROM ord</pre>
+  <pre class="check">WITH ord AS (SELECT o.id, o.delivery_min, SUM(oi.qty * d.price) AS rev FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status = 'delivered' GROUP BY o.id) SELECT COUNT(*) AS orders, SUM(rev) AS revenue, AVG(rev) AS avg_basket, AVG(delivery_min) AS avg_delivery FROM ord</pre>
+  <pre class="solution">WITH ord AS (
+  SELECT o.id, o.delivery_min,
+         SUM(oi.qty * d.price) AS rev
+  FROM orders o
+  JOIN order_items oi ON oi.order_id = o.id
+  JOIN dishes d ON d.id = oi.dish_id
+  WHERE o.status = 'delivered'
+  GROUP BY o.id
+)
+SELECT COUNT(*) AS orders,
+       SUM(rev) AS revenue,
+       AVG(rev) AS avg_basket,
+       AVG(delivery_min) AS avg_delivery
+FROM ord</pre>
+  <ol class="hints"><li>השלב <code>ord</code> מחזיר שורה אחת לכל הזמנה. אחר כך מחשבים עליו את המדדים.</li><li>ממוצע זמן המשלוח על <code>ord</code> סופר כל הזמנה פעם אחת.</li></ol>
+  <div class="why-src">82 הזמנות, הכנסה 12,884, ממוצע להזמנה בערך 157.12, וזמן משלוח ממוצע בערך 35.39 דקות (על ההזמנות שיש בהן משלוח). בשלב הביניים כל הזמנה נספרת פעם אחת, אז אין כפל. זו אותה בעיית רמת פירוט מסעיף 4, בתוך שאילתה אחת.</div>
+</div>
+
+<div class="mk mk-dash"><div class="mk-bar"><i></i><i></i><i></i><span class="url">הדמיה סכמטית · מסך הבוקר של יבגני</span></div>
+<div class="mk-body">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+    <div class="mk-tile"><small>הכנסות</small><b>12,884</b></div>
+    <div class="mk-tile"><small>הזמנות</small><b>82</b></div>
+    <div class="mk-tile"><small>ממוצע להזמנה</small><b>157</b></div>
+  </div>
+  <div class="mk-tile"><small>הכנסות לפי חודש</small><div class="bars"><i style="height:98%"></i><i style="height:100%"></i><i style="height:76%"></i></div><small>מרץ · אפריל · מאי</small></div>
+</div></div>
+
+<div class="box try" data-id="p4-try-looker">
+  <p>בנו דשבורד קטן ב-Looker Studio. זה הצעד האחרון בשרשרת: נתון נקי הופך לתמונה. הפעם יש לכם קובץ שטוח מוכן, <code>fact_sales.csv</code>, וכך אפשר להציג את ההכנסות עצמן.</p>
+  <ol>
+    <li>הורידו את <code>fact_sales.csv</code> מחבילת הנתונים של הקורס. שורה אחת לכל שורת פריט, אותה צורה של הטבלה שבניתם בסעיף 4, עם שם הלקוח, העיר, השליח והמנה כבר מצורפים. פתחו אותו ב-Google Sheets (ייבוא קובץ). אפשר גם להעלות את הקובץ ישירות, אם יש לכם ב-Looker Studio את המחבר להעלאת קבצים.</li>
+    <li>צרו דוח חדש ב-Looker Studio וחברו אליו את הגיליון.</li>
+    <li><b>לפני שמציירים, בודקים</b>: 219 שורות, <code>line_revenue</code> הוא מספר, ו-<code>order_date</code> הוא תאריך. סכום <code>line_revenue</code> בלי שום סינון צריך להיות 13,592.</li>
+    <li>בנו כרטיס ״הכנסות״: סכום <code>line_revenue</code> עם סינון <code>status = delivered</code>. אמור לצאת 12,884, בדיוק המדד הרשמי מסעיף 6. אם יצא משהו אחר, זו הבדיקה הראשונה שלכם.</li>
+    <li>הוסיפו: הכנסות לפי חודש (לפי <code>order_date</code>), הכנסות לפי קטגוריה, ומספר הזמנות (ספירה ייחודית של <code>order_id</code>, שצריכה לתת 82 להזמנות שנמסרו).</li>
+    <li>הוסיפו בקרת סינון לפי <code>channel</code> או <code>city</code>, וכותרת שאומרת עד איזה תאריך הנתונים נכונים.</li>
+  </ol>
+  <p class="tools"><a class="tool" href="https://lookerstudio.google.com" target="_blank" rel="noopener">Looker Studio</a></p>
+</div>
+<div class="box try" data-id="p4-try-tableau">
+  <p>אותו דשבורד, בכלי אחר. Tableau Public חינמי ועובד עם קבצים. העיקרון זהה: מתחברים, בודקים, מציירים, מפרסמים.</p>
+  <ol>
+    <li>התקינו את Tableau Public והתחברו ל-<code>fact_sales.csv</code> כקובץ טקסט.</li>
+    <li>בדקו שיש 219 שורות ושה-<code>order_date</code> מזוהה כתאריך.</li>
+    <li>בנו גיליון: קטגוריה בציר אחד וסכום <code>line_revenue</code> בציר השני, עם צבע לפי ערוץ. סננו <code>status</code> ל-delivered, והסכום הכולל יהיה 12,884.</li>
+    <li>לפני פרסום: כל מה שמתפרסם ב-Tableau Public פומבי. נתוני המסעדה בדויים, אבל תתרגלו את השאלה ״הייתי מוכן לתלות את זה על לוח מודעות?״.</li>
+  </ol>
+  <p>מדריך מלא, צעד אחר צעד, עם קבצי תרגול ובדיקות, יש <a href="../tableau-4h/tableau-4h.html">בדף המקור על Tableau Public</a>.</p>
+  <p class="tools"><a class="tool" href="https://public.tableau.com" target="_blank" rel="noopener">Tableau Public</a></p>
+</div>
+
+<div class="box meaning"><p>דשבורד הוא טענה: ״אלה המספרים שצריך כדי להחליט״. כל אריח שלא עונה על שאלה מחליש את הטענה. כלל פשוט לפני שמוסיפים אריח: איזו שאלה הוא עונה, ואיזו פעולה אפשרית אחריה? אם אין תשובה, האריח מיותר.</p></div>
+<div class="box real"><p>כלי BI כמו Looker Studio, Tableau ו-Power BI מתחברים למחסן או לקובץ, מגדירים שדות ומדדים, ומציירים. בשלושתם אפשר גם לחשב בתוך הכלי, אבל נהוג לבנות את המדדים במחסן ולתת לכלי רק להציג. ככה המספר זהה בכל כלי, וכשעוברים מכלי לכלי לא צריך לשחזר את הלוגיקה. עוד דבר: כל ריענון של דשבורד שמחובר ישירות למחסן הוא שאילתה, ובמחסן שמחייב לפי סריקה מאה צופים הם מאה שאילתות. לכן נהוג לרענן לפי לוח זמנים.</p></div>
+
+<div class="box think" data-id="p4-th-dash"><p>שותף של יבגני מבקש להוסיף למסך הבוקר עוד 12 אריחים ״כי זה מעניין״. מה עונים?</p>
+<div class="ans">שואלים לאיזו החלטה כל אריח משרת. אריח שלא מוביל לפעולה שייך לדוח אחר, שמי שרוצה יכול לפתוח כשהוא שואל שאלה. מסך הבוקר נשאר קצר, כדי שמי שמסתכל בו יראה תוך שנייה אם יש משהו לטפל בו.</div></div>
+
+<div class="quiz" data-id="p4-q-dash" data-a="2"><p class="qq">מה זה ״דשבורד אחד, קהל אחד״?</p>
+<button class="opt">שצריך לבנות דשבורד נפרד לכל משתמש בארגון</button>
+<button class="opt">שכל דשבורד בנוי סביב שאלה אחת של קהל מוגדר, וכל אריח בו משרת אותה</button>
+<button class="opt">שמותר להציג רק גרף אחד בכל מסך</button>
+<button class="opt">שבונים את הדשבורד אחרי שהקהל כבר ראה את הנתונים</button>
+<div class="why">העיקרון לא מגביל את מספר הגרפים או המשתמשים. הוא דורש בהירות: מי מסתכל, מה הוא שואל, ומה יעשה. דשבורד שמנסה לשרת את כולם בבת אחת לא משרת אף אחד.</div></div>
+
+<div class="quiz" data-id="p4-q-avg" data-a="1"><p class="qq">חיברתם הזמנות לשורות פריט וחישבתם <code>AVG(delivery_min)</code> ישר על התוצאה. מה הבעיה?</p>
+<button class="opt">הזמנות עם הרבה מנות נספרות יותר פעמים, והממוצע מוטה</button>
+<button class="opt">אין בעיה: ממוצע לא מושפע מכפילות</button>
+<button class="opt">הממוצע תמיד יהיה גבוה מדי</button>
+<button class="opt">SQL לא מאפשר ממוצע אחרי JOIN</button>
+<div class="why">כל הזמנה מופיעה בשורה אחת לכל מנה, אז זמן המשלוח שלה נספר כמספר המנות. כיוון ההטיה תלוי בנתונים: לא תמיד גבוה ולא תמיד נמוך. הפתרון: לחשב ברמת הזמנה לפני הממוצע.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> במשחק הגרפים עצרו אחרי כל שאלה ושאלו מה היה קורה אילו נבחרה עוגה. בבונה הדשבורדים תנו לשני צוותים לבנות לאותו קהל ולהשוות. שאלו כל אחד: איזו החלטה האריח שלו משרת? המספרים בדוגמת המסך מחושבים מהנתונים של היום, ואם הנתונים משתנים צריך לעדכן אותם.</div>
+</section>
+<section class="sec" id="s4-10" data-t="סיכום">
+<div class="sec-h"><div class="sec-n">10</div><h2>סיכום: מה עברנו בחלק הזה</h2></div>
+<p class="lead">הזמנה נכנסת למטבח ונגמרת בהחלטה של יבגני. בדרך היא עוברת שישה שלבים, ובכל אחד מהם אפשר לטעות בלי שאף אחד ישים לב. מה שלמדתם הוא איך מוודאים בכל שלב שהמספר עדיין נכון.</p>
+
+<div class="anim" data-id="p4-anim-chain" data-speed="3200">
+  <div class="stage"><svg viewBox="0 0 800 300" role="img" aria-label="שרשרת: מסד חי, העתקה, בדיקות, מחסן, דשבורד והחלטה">
+    <defs><marker id="p4a5-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <g font-size="16" font-weight="800" text-anchor="middle">
+      <g data-s="1"><rect x="690" y="80" width="100" height="90" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="2.5"/><text x="740" y="120" fill="#3730a3">מסד חי</text><text x="740" y="146" font-size="14" font-weight="500" fill="#4f46e5">הזמנות</text></g>
+      <g data-s="2"><path d="M684 125 L646 125" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a5-ar)"/><rect x="540" y="80" width="100" height="90" rx="14" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/><text x="590" y="120" fill="#92400e">העתקה</text><text x="590" y="146" font-size="14" font-weight="500" fill="#92400e">ETL</text></g>
+      <g data-s="3"><path d="M534 125 L496 125" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a5-ar)"/><rect x="390" y="80" width="100" height="90" rx="14" fill="#fee2e2" stroke="#ef4444" stroke-width="2.5"/><text x="440" y="120" fill="#991b1b">בדיקות</text><text x="440" y="146" font-size="14" font-weight="500" fill="#991b1b">איכות והסגר</text></g>
+      <g data-s="4"><path d="M384 125 L346 125" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a5-ar)"/><rect x="240" y="80" width="100" height="90" rx="14" fill="#ccfbf1" stroke="#0f766e" stroke-width="2.5"/><text x="290" y="120" fill="#0f766e">מחסן</text><text x="290" y="146" font-size="14" font-weight="500" fill="#0f766e">כוכב ומדדים</text></g>
+      <g data-s="5"><path d="M234 125 L196 125" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a5-ar)"/><rect x="90" y="80" width="100" height="90" rx="14" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2.5"/><text x="140" y="120" fill="#5b21b6">דשבורד</text><text x="140" y="146" font-size="14" font-weight="500" fill="#5b21b6">אריח וגרף</text></g>
+      <g data-s="6"><path d="M84 125 L56 125" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a5-ar)"/><circle cx="30" cy="125" r="28" fill="#d8b862" stroke="#b45309" stroke-width="2.5"/><text x="30" y="131" font-size="15" fill="#0e1b2e">יבגני</text></g>
+    </g>
+    <g data-s="6"><path d="M140 190 Q440 270 740 190" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#p4a5-ar)"/><text x="440" y="262" text-anchor="middle" font-size="15" font-weight="700" fill="#475569">שושלת: כשמספר חשוד, חוזרים אחורה שלב אחרי שלב</text></g>
+    <circle r="9" cx="740" cy="60" fill="#d8b862" data-move="1:0,0|2:-150,0|3:-300,0|4:-450,0|5:-600,0|6:-710,0"/>
+  </svg></div>
+  <ol class="caps"><li>1. הזמנה נשמרת במסד החי, וזו העבודה היחידה שלו בזמן שירות.</li><li>2. תהליך העתקה מוציא ממנו את הנתונים החדשים ומנקה אותם.</li><li>3. בדיקות איכות מחפשות ערכים חסרים, כפולים, יתומים ובלתי אפשריים. שורות פגומות הולכות להסגר.</li><li>4. הנתונים נכנסים למחסן במבנה כוכב, עם מדדים שמוגדרים פעם אחת.</li><li>5. הדשבורד מציג את המדדים הרשמיים לקהל מוגדר, עם זמן ברור של עדכון.</li><li>6. יבגני מחליט. בנתוני הדוגמה, 47 מתוך 82 ההזמנות שנמסרו הן בשישי ובשבת, ולכן שם כדאי לחזק את המטבח והשליחים. אם מספר נראה חשוד, חוזרים אחורה לפי השושלת.</li></ol>
+</div>
+
+<div class="box recap">
+<ul>
+<li>מערכת תפעולית ומערכת דיווח הן שתי מערכות לאותם נתונים. מפרידים בגלל ביצועים, אבטחה, מבנה והיסטוריה. מחסן קורא רק את העמודות שצריך, אז בוחרים עמודות.</li>
+<li>ETL או ELT מעבירים נתונים ומנקים אותם: חיתוך, ניקוי אותיות, איחוד כפילויות, ושורות פגומות הולכות להסגר. הסדר חשוב. מידע אישי מסתירים בדרך.</li>
+<li>סכמת כוכב היא עובדות באמצע וממדים מסביב. רמת הפירוט קובעת מה בטוח לסכם, ושורות ״לא ידוע״ שומרות על הסכום.</li>
+<li>איכות נתונים נבדקת בארבע בדיקות: חסר, כפול, יתום ובלתי אפשרי. בדיקה שעברה נותנת סיבה לסמוך, לא הוכחה.</li>
+<li>הגדרה אחת לכל מדד, בעלים אחד ותיעוד אחד. שלוש הגדרות של הכנסה נתנו שלושה מספרים: 13,592, 12,884 ו-10,464.</li>
+<li>שושלת נתונים מקצרת חקירה ומראה מי יושפע משינוי. בוחרים אחסון לפי סוג הנתונים ומי שואל, ועדכון בזמן אמת רק כשהחלטה תלויה בו. דשבורד טוב עונה על שאלה אחת של קהל אחד ומוביל להחלטה.</li>
+</ul>
+</div>
+<div class="cmap" data-part="4" data-mini="1"></div>
+
+<div class="box think" data-id="p4-th-final"><p>בחרו מספר אחד מהדשבורד של יבגני וסמנו, בכל אחד משישה שלבי השרשרת, איך הוא יכול להיות שגוי בלי שאף אחד ישים לב. איזו בדיקה תתפוס כל אחד?</p>
+<div class="ans">דוגמה להכנסות: במסד החי, מחיר ששונה בדיעבד (בדיקה: מחיר שנשמר בעובדות). בהעתקה, כפילות לקוח (ניקוי ואיחוד). באיכות, יתום או ערך שלילי (בדיקות והסגר). במחסן, JOIN שמכפיל שורות (רמת פירוט ובדיקת סכום). בדשבורד, הגדרה אחרת מהרשמית (תצוגה אחת). בהחלטה, נתון ישן שלא מסומן (״נכון ל...״).</div></div>
+
+<div class="quiz" data-id="p4-q-final1" data-a="3"><p class="qq">שני דשבורדים בארגון מציגים הכנסות שונות, אף שהנתונים זהים. מה הכי יקדם פתרון קבוע?</p>
+<button class="opt">להחליף את כלי ה-BI באחר</button>
+<button class="opt">לרענן את הדשבורדים לעתים קרובות יותר</button>
+<button class="opt">להגדיר את המדד פעם אחת, במקום אחד, ולחבר אליו את שני הדשבורדים</button>
+<button class="opt">להסיר את אחד הדשבורדים</button>
+<div class="why">הפער בא מהגדרות שונות. החלפת כלי או רענון תכוף לא יפתרו אותו, והסרת דשבורד רק מסתירה את הבעיה. הגדרה אחת שכולם מחוברים אליה מונעת אותה מראש.</div></div>
+
+<div class="quiz" data-id="p4-q-final2" data-a="1"><p class="qq">בצינור ETL, מה הסדר הנכון?</p>
+<button class="opt">חילוץ, ניקוי ובדיקות, טעינה למחסן, דשבורד</button>
+<button class="opt">דשבורד, טעינה למחסן, ניקוי, חילוץ</button>
+<button class="opt">חילוץ, דשבורד, ניקוי, טעינה</button>
+<button class="opt">ניקוי, דשבורד, חילוץ, בדיקות</button>
+<div class="why">אי אפשר לנקות מה שלא חולץ, ולא כדאי להציג לפני שבדקו. ב-ELT הניקוי והבדיקות רצים אחרי הטעינה, בתוך המחסן. בשני המקרים הדשבורד הוא האחרון, כי הוא צורך את הנתונים אחרי שנוקו ונבדקו.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> השתמשו באנימציה כמפה שחוזרים אליה: בכל פעם שמישהו שואל ״איפה זה נכנס?״, הצביעו על השלב. שאלת המחשבה האחרונה מתאימה לעבודה בקבוצות קטנות. הגשר לחלק 5: AI יכול לכתוב כל שאילתה בשרשרת הזו, ולכן צריך לדעת לבדוק אותה.</div>
+</section>
+
+<div class="pager"><a href="part3.html">→ חלק 3: איך המערכת עובדת מאחורי הקלעים</a><a href="part5.html">חלק 5: AI: מה נותנים לו ומה בודקים ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · המפגש המסכם · כל דוגמאות הנתונים בדף בדויות</footer>
+</body>
+</html>

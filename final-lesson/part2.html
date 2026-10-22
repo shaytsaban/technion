@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חלק 2: SQL: לשאול את הנתונים · המפגש המסכם · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=2;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+<script src="fl-data.js?v=1"></script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="fl-map.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">🍽️ המסע המלא</a>
+    <div class="parts"><a id="part1" href="part1.html" title="מרעיון לטבלאות">1<small></small></a><a id="part2" href="part2.html" title="SQL: לשאול את הנתונים" class=on>2<small></small></a><a id="part3" href="part3.html" title="איך המערכת עובדת מאחורי הקלעים">3<small></small></a><a id="part4" href="part4.html" title="מנתונים לדוחות שאפשר לסמוך עליהם">4<small></small></a><a id="part5" href="part5.html" title="AI: מה נותנים לו ומה בודקים">5<small></small></a><a id="part6" href="part6.html" title="הפרויקט: לעקוב, להחליט, למסור">6<small></small></a></div>
+    <span class="ppct" id="ppct"></span><span class="chipst" id="eng">⏳ SQL</span></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · המפגש המסכם</div>
+  <h1>SQL<br><span>לשאול את הנתונים</span></h1>
+  <p>יבגני רוצה לדעת איזה ערוץ מכניס יותר, איזה שליח איטי ומי הלקוחות הטובים. בחלק הזה כותבים את השאילתות, מחברים טבלאות ומסכמים. ולומדים גם לזהות מספר שנראה נכון ואינו נכון. בסוף אתם יכולים לשאול את מסד המסעדה כמעט כל שאלה, ולדעת אם אפשר לסמוך על התשובה.</p>
+  <div class="chips"><span>🧪 מעבדות SQL אמיתיות</span><span>🎞️ הנפשות</span><span>🎛️ הדמיות</span><span>📱 מוקאפים</span><span>☁️ BigQuery בפועל</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף. בהן: מה לומר, איפה לעצור לדיון ומה לבדוק לפני המעבר הלאה.</div>
+<style>
+.p2-q3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0}
+.p2-q3 .card{border-top:4px solid var(--gold)}
+.p2-q3 .card b{color:var(--navy)}
+.p2-q3 .card small{color:var(--muted);display:block;margin-top:4px}
+.p2-strip{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0;direction:ltr}
+.p2-strip .c{flex:1 1 150px;border-radius:12px;padding:8px 12px;color:#fff;font-family:ui-monospace,Menlo,Consolas,monospace}
+.p2-strip .c b{display:block;font-size:1rem;letter-spacing:.3px}
+.p2-strip .c span{display:block;font-family:'Heebo',Arial,sans-serif;font-size:.84rem;opacity:.92;direction:rtl;text-align:right}
+.p2-c1{background:linear-gradient(135deg,#4f46e5,#6366f1)}.p2-c2{background:linear-gradient(135deg,#0f766e,#14b8a6)}.p2-c3{background:linear-gradient(135deg,#b45309,#f59e0b)}.p2-c4{background:linear-gradient(135deg,#7c3aed,#a78bfa)}.p2-c5{background:linear-gradient(135deg,#be123c,#f43f5e)}.p2-c6{background:linear-gradient(135deg,#334155,#64748b)}.p2-c7{background:linear-gradient(135deg,#047857,#10b981)}
+.p2-tbl{border-collapse:collapse;width:100%;font-size:.88rem;direction:ltr;background:#fff}
+.p2-tbl th,.p2-tbl td{border:1px solid var(--line);padding:4px 9px;text-align:left;unicode-bidi:plaintext}
+.p2-tbl th{background:#f1f5f9;color:var(--navy)}
+.p2-tbl tr.hit td{background:#d1fae5;font-weight:600}
+.p2-tbl tr.miss td{color:#94a3b8}
+.p2-tbl tr.bad td{background:#fee2e2}
+.p2-tbl td.nl,.p2-tbl i{color:#94a3b8;font-style:italic}
+.p2-vs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+@media(max-width:640px){.p2-vs{grid-template-columns:1fr}}
+.p2-vs>div{border:1px solid var(--line);border-radius:14px;padding:10px 14px;background:#fff}
+.p2-vs>div.bad{border-color:#fca5a5;background:linear-gradient(180deg,#fef2f2,#fff)}
+.p2-vs>div.good{border-color:#6ee7b7;background:linear-gradient(180deg,#ecfdf5,#fff)}
+.p2-vs h4{margin:0 0 6px}
+.p2-big{font-size:2rem;font-weight:900;line-height:1.1}
+.p2-big.bad{color:#b91c1c}.p2-big.good{color:#047857}
+.p2-funnel{display:grid;gap:6px;margin:10px 0}
+.p2-funnel .st{display:grid;grid-template-columns:130px 1fr 90px;gap:10px;align-items:center;direction:ltr;font-size:.9rem}
+.p2-funnel .st .nm{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;color:var(--navy)}
+.p2-funnel .st .bar{height:22px;border-radius:6px;background:#e2e8f0;overflow:hidden}
+.p2-funnel .st .bar i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#14b8a6);transition:width .5s;min-width:3px}
+.p2-funnel .st .ct{font-weight:800;color:var(--navy);text-align:right;direction:rtl}
+.p2-funnel .st.off{opacity:.35}
+.p2-gal{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:12px 0;background:#fff}
+.p2-gal .gq{font-weight:700;margin:0 0 6px}
+.p2-gal pre{margin:6px 0}
+.p2-gal .gb{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
+.p2-gal .gres{margin-top:8px;display:none}
+.p2-gal.shown .gres{display:block}
+.p2-gal .verdict{font-weight:800;margin:6px 0}
+.p2-gal .verdict.ok{color:#047857}.p2-gal .verdict.no{color:#b91c1c}
+.p2-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:640px){.p2-two{grid-template-columns:1fr}}
+.p2-two .res table{border-collapse:collapse;font-size:.85rem;direction:ltr}
+.p2-two .res th,.p2-two .res td{border:1px solid var(--line);padding:3px 8px;text-align:left;unicode-bidi:plaintext}
+.p2-two .res th{background:#f1f5f9}
+.p2-two .res .cnt{font-size:.8rem;color:var(--muted)}
+#p2b-res table,.p2-gal .res table{border-collapse:collapse;font-size:.85rem;direction:ltr;background:#fff;margin:4px 0}
+#p2b-res th,#p2b-res td,.p2-gal .res th,.p2-gal .res td{border:1px solid var(--line);padding:3px 8px;text-align:left;unicode-bidi:plaintext}
+#p2b-res th,.p2-gal .res th{background:#f1f5f9}
+#p2b-res .cnt,.p2-gal .res .cnt{font-size:.8rem;color:var(--muted)}
+#p2g-sel,#p2f-sel{max-width:100%;width:100%}
+@media(max-width:640px){.p2-funnel .st{grid-template-columns:78px 1fr 84px;gap:6px}}
+.p2-score{font-weight:800;color:var(--navy)}
+.p2-tog{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.p2-tog label{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:3px 12px;cursor:pointer;font-weight:600;font-size:.9rem}
+.p2-tog label.on{background:var(--primary-light);border-color:var(--primary)}
+.p2-code{direction:ltr;text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86rem;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:10px 12px;white-space:pre-wrap;margin:8px 0;unicode-bidi:plaintext}
+.p2-dial td:first-child{font-weight:700}
+.p2-dial td code{white-space:normal}
+.p2-bq{background:#fff}
+.p2-bq .side{background:#f8fafc;border-right:1px solid var(--line);padding:8px 10px;font-size:.8rem;min-width:140px}
+.p2-bq .main{padding:8px 12px;flex:1}
+.p2-bq .row2{display:flex}
+.p2-bq .tab{display:inline-block;background:#e8f0fe;color:#1a56c4;border-radius:6px 6px 0 0;padding:2px 10px;font-size:.78rem;font-weight:700}
+.p2-bq .runbtn{display:inline-block;background:#1a73e8;color:#fff;border-radius:6px;padding:2px 12px;font-size:.78rem;font-weight:700}
+.p2-bq .gridv{margin-top:8px;border:1px solid var(--line);font-size:.8rem}
+.p2-bq .gridv div{display:flex;border-bottom:1px solid var(--line)}
+.p2-bq .gridv div span{flex:1;padding:2px 8px}
+.p2-bq .gridv div.hh{background:#f1f5f9;font-weight:700}
+.anim .stage{overflow-x:auto;direction:ltr}
+.anim .stage svg{min-width:560px}
+.p2-bq .main{min-width:0;overflow-x:auto}
+.p2-bq .side{min-width:110px}
+</style>
+<div class="box note">
+<p>בחלק 1 בנינו את הטבלאות של המסעדה. עכשיו יבגני רוצה תשובות, והמסד צריך לתת אותן. כל מעבדה בדף רצה על מסד המסעדה האמיתי, בתוך הדפדפן, ותמיד מתחילה ממסד נקי. אפשר לטעות, למחוק ולשבור הכול: בהרצה הבאה הכול חוזר למקום.</p>
+<div class="p2-q3">
+<div class="card"><b>שאלה 1: איזה ערוץ מכניס יותר?</b><small>אפליקציה, טלפון או הזמנה במקום. התשובה בסעיף 3.</small></div>
+<div class="card"><b>שאלה 2: איזה שליח איטי?</b><small>אורי, נועה או דימה. התשובה בסעיף 3.</small></div>
+<div class="card"><b>שאלה 3: מי הלקוחות הטובים?</b><small>לפי הכנסה ולפי מספר הזמנות. התשובה בסעיף 3, ובסעיף 4 נבדוק אם אפשר לסמוך עליה.</small></div>
+</div>
+<div class="schema" data-db="rest"></div>
+</div>
+
+<section class="sec" id="s2-1" data-t="SELECT">
+<div class="sec-h"><div class="sec-n">1</div><h2>SELECT: שואלים טבלה אחת</h2></div>
+<p class="lead">יבגני שואל: ״אילו מנות עולות פחות מ-40 שקלים?״ זו שאלה על טבלה אחת, ולכן מתחילים ממנה.</p>
+
+<div class="defline"><b>שאילתה (query):</b> שאלה שכתובה בשפה שהמסד מבין, והוא עונה עליה בטבלה. דוגמה: ״תראה לי שם ומחיר של כל המנות״ נכתבת <code>SELECT name, price FROM dishes</code> ומחזירה 10 שורות. המסד שאנחנו עובדים איתו כאן נקרא <dfn data-d="SQLite: מסד נתונים קטן וקל, שרץ אצלנו ישר בדפדפן ולא צריך להתקין אותו.">SQLite</dfn>.</div>
+
+<p>שאילתה בנויה מחלקים, ולכל חלק יש תפקיד אחד. כל חלק כזה (SELECT, FROM, WHERE ו-ORDER BY) נקרא <b>פסוקית</b>. הסדר קבוע:</p>
+<div class="p2-strip">
+<div class="c p2-c1"><b>SELECT</b><span>אילו עמודות להציג</span></div>
+<div class="c p2-c2"><b>FROM</b><span>מאיזו טבלה</span></div>
+<div class="c p2-c3"><b>WHERE</b><span>אילו שורות מתאימות</span></div>
+<div class="c p2-c4"><b>ORDER BY</b><span>באיזה סדר</span></div>
+<div class="c p2-c5"><b>LIMIT</b><span>כמה שורות להחזיר</span></div>
+</div>
+<pre class="code" data-lang="sql">SELECT name, price      -- אילו עמודות
+FROM dishes             -- מאיזו טבלה
+WHERE price &lt; 40        -- אילו שורות
+ORDER BY price          -- באיזה סדר
+LIMIT 3;                -- כמה שורות</pre>
+
+<div class="mk mk-term"><div class="mk-bar"><i></i><i></i><i></i><span class="url">sqlite3 yevgeni.sqlite · הדמיה סכמטית</span></div><div class="mk-body"><span class="p">sqlite&gt;</span> SELECT name, price FROM dishes WHERE price &lt; 40 ORDER BY price LIMIT 3;
+לימונדה&lrm;|18.0
+בירה מקומית&lrm;|29.0
+מרק עגבניות&lrm;|32.0</div></div>
+<p>ככה אותה שאילתה נראית בשורת הפקודה של SQLite. במעבדות שלמטה התוצאה מופיעה כטבלה.</p>
+
+<h3>ארגז המסננים: מה כל תנאי עושה</h3>
+<p>התנאי ב-WHERE הוא כלל, וכל שורה נבדקת מולו: עוברת או לא עוברת. בחרו תנאי למטה. השורות שעברו יסומנו בירוק.</p>
+<div class="defline"><b>האופרטורים של סינון:</b> <code>=</code> שווה, <code>&lt;</code> קטן מ-, <code>BETWEEN</code> בין שני ערכים (כולל הקצוות), <code>IN</code> אחד מתוך רשימה, <code>LIKE</code> דומה לתבנית (<code>%</code> זה ״כל מה שבא אחרי״), <code>AND</code> שני התנאים יחד, <code>OR</code> לפחות אחד מהם, <code>NOT</code> ההפך. הדוגמה: כל אחד מהם בארגז למטה, על טבלת המנות.</div>
+
+<div class="sim" data-id="p2-sim-filters"><div class="sh">ארגז המסננים</div>
+<div class="row"><label for="p2f-sel"><b>תנאי:</b></label>
+<select id="p2f-sel" aria-label="בחירת תנאי"></select></div>
+<div class="out"><div class="p2-code" id="p2f-sql"></div><div id="p2f-exp" style="margin:6px 0;font-weight:600"></div><div id="p2f-tbl" class="tw"></div><div id="p2f-cnt" class="chip b"></div></div>
+</div>
+<script>(function(){ FL.dom(function(){ FL.onReady(function(ok){
+  const box = FL.$('[data-id="p2-sim-filters"]'); if (!box) return;
+  const sel = FL.$('#p2f-sel'), sqlEl = FL.$('#p2f-sql'), exp = FL.$('#p2f-exp'), tbl = FL.$('#p2f-tbl'), cnt = FL.$('#p2f-cnt');
+  const OPTS = [
+    ["price < 40", "מחיר קטן מ-40, בלי 40 עצמו."],
+    ["category = 'main'", "שווה בדיוק. טקסט כותבים בגרשיים בודדים."],
+    ["price >= 60 AND category = 'main'", "AND: שני התנאים חייבים להתקיים באותה שורה. פסטה (59) ופיצה (52) הן מנות עיקריות, אבל נופלות על המחיר."],
+    ["category = 'dessert' OR price < 30", "OR: מספיק שתנאי אחד מתקיים. טירמיסו עובר בגלל הקטגוריה, והמשקאות עוברים בגלל המחיר."],
+    ["category IN ('starter', 'dessert')", "IN: אחד מהערכים ברשימה. קצר יותר מ-OR ארוך."],
+    ["price BETWEEN 30 AND 60", "BETWEEN: בין שני ערכים. 30 ו-60 עצמם נכללים."],
+    ["name LIKE 'ס%'", "LIKE עם % בסוף: השם מתחיל באות ס."],
+    ["name LIKE '%פ%'", "LIKE עם % משני הצדדים: האות פ מופיעה איפשהו בשם."],
+    ["NOT (category = 'main')", "NOT הופך את התנאי: כל מה שאינו מנה עיקרית."],
+    ["price - cost >= 40", "אפשר גם לחשב בתוך התנאי: רווח של 40 שקלים לפחות (מחיר פחות עלות)."]
+  ];
+  sel.innerHTML = OPTS.map(function(o,i){ return '<option value="'+i+'">'+FL.esc(o[0])+'</option>'; }).join('');
+  let used = {};
+  function render(){
+    const o = OPTS[+sel.value];
+    sqlEl.textContent = 'SELECT * FROM dishes\nWHERE ' + o[0] + ';';
+    exp.textContent = o[1];
+    if (!ok){ tbl.textContent = 'מנוע ה-SQL לא נטען.'; return; }
+    const r = FL.exec('SELECT id, name, category, price, cost, CASE WHEN ('+o[0]+') THEN 1 ELSE 0 END AS m FROM dishes ORDER BY id');
+    let h = '<table class="p2-tbl"><thead><tr><th>id</th><th>name</th><th>category</th><th>price</th><th>cost</th></tr></thead><tbody>', n = 0;
+    r.values.forEach(function(v){ if (v[5]) n++; h += '<tr class="'+(v[5]?'hit':'miss')+'"><td>'+v[0]+'</td><td>'+FL.esc(v[1])+'</td><td>'+v[2]+'</td><td>'+v[3]+'</td><td>'+v[4]+'</td></tr>'; });
+    tbl.innerHTML = h + '</tbody></table>';
+    cnt.textContent = n + ' מתוך 10 מנות עוברות';
+    used[sel.value] = 1; if (Object.keys(used).length >= 4) FL.done('p2-sim-filters');
+  }
+  sel.addEventListener('change', render); render();
+}); }); })();</script>
+
+<div class="lab" data-id="p2-lab-sel1" data-title="מנות זולות" data-ordered="1">
+<div class="q-src">יבגני רוצה לראות מנות שעולות פחות מ-40 שקלים. תחזירו <code>name</code> ו-<code>price</code>, מהזולה ליקרה.</div>
+<pre class="start">SELECT name, price
+FROM dishes
+-- השלימו תנאי וסדר</pre>
+<pre class="check">SELECT name, price FROM dishes WHERE price &lt; 40 ORDER BY price</pre>
+<pre class="solution">SELECT name, price
+FROM dishes
+WHERE price &lt; 40
+ORDER BY price</pre>
+<ol class="hints"><li>איזו מילה פותחת תנאי על שורות?</li><li>ORDER BY מסדר מהקטן לגדול כברירת מחדל, וזה בדיוק מה שביקשנו.</li></ol>
+<div class="why-src">שלושה חלקים עבדו יחד: WHERE בחר חמש מנות, ORDER BY סידר אותן, ו-SELECT הציג רק שתי עמודות. שימו לב שכתבנו שמות עמודות ולא <code>*</code>. כך התוצאה קטנה וברורה.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-sel2" data-title="IN ו-LIMIT" data-ordered="1" data-require="IN\s*\(" data-require-msg="במשימה הזו צריך IN עם רשימת ערוצים.">
+<div class="q-src">הצוות רוצה את חמש ההזמנות האחרונות שנמסרו (<code>status = 'delivered'</code>) בערוצים <code>app</code> או <code>phone</code>. תחזירו <code>id</code>, <code>channel</code> ו-<code>order_ts</code>, מהחדשה לישנה, ותעצרו אחרי חמש שורות.</div>
+<pre class="start">SELECT id, channel, order_ts
+FROM orders
+-- WHERE ... IN (...) AND ...
+-- ORDER BY ...
+-- LIMIT ...</pre>
+<pre class="check">SELECT id, channel, order_ts FROM orders WHERE channel IN ('app','phone') AND status = 'delivered' ORDER BY order_ts DESC LIMIT 5</pre>
+<pre class="solution">SELECT id, channel, order_ts
+FROM orders
+WHERE channel IN ('app', 'phone')
+  AND status = 'delivered'
+ORDER BY order_ts DESC
+LIMIT 5</pre>
+<ol class="hints"><li>IN מקבל רשימה בסוגריים: <code>IN ('app', 'phone')</code>.</li><li>DESC הופך את הסדר, ככה החדשה ביותר ראשונה.</li><li>LIMIT נכתב אחרון.</li></ol>
+<div class="why-src">הסדר חשוב: קודם מסננים (WHERE), אחר כך ממיינים (ORDER BY), ורק בסוף חותכים (LIMIT). אם חותכים לפני המיון, מקבלים חמש שורות כלשהן ולא את חמש האחרונות.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-sel3" data-title="LIKE" data-require="LIKE" data-require-msg="במשימה הזו צריך LIKE.">
+<div class="q-src">תמצאו לקוחות ששמם מתחיל באות <b>ר</b>. תחזירו <code>id</code> ו-<code>name</code>.</div>
+<pre class="start">SELECT id, name
+FROM customers
+WHERE name -- השלימו</pre>
+<pre class="check">SELECT id, name FROM customers WHERE name LIKE 'ר%'</pre>
+<pre class="solution">SELECT id, name
+FROM customers
+WHERE name LIKE 'ר%'</pre>
+<ol class="hints"><li>את התבנית כותבים בגרשיים. התו % אומר ״כל מה שבא אחרי״.</li></ol>
+<div class="why-src">קיבלתם שלוש שורות: רועי כהן ושתי שורות של רונית מלכה. הכפילות של רונית היא לא טעות שלכם. זו תקלה בנתונים, ונחזור אליה בהמשך.</div>
+</div>
+
+<div class="box trap">
+<p><b>BETWEEN עם תאריך ושעה.</b> בעמודה <code>order_ts</code> כתוב גם הזמן, למשל <code>2026-04-30 12:15</code>. המסד משווה טקסטים, והטקסט <code>2026-04-30 12:15</code> ארוך יותר וגדול יותר מהטקסט <code>2026-04-30</code>. לכן <code>BETWEEN '2026-04-01' AND '2026-04-30'</code> מפספס את כל ה-30 באפריל. הכלל: סוף הטווח הוא ״קטן מהיום הראשון של החודש הבא״. זה לא ייחודי ל-SQLite: גם ב-PostgreSQL וב-BigQuery עמודת חותמת זמן נחתכת בחצות של התאריך האחרון. בשיעור הראשון על SQL ראיתם סינונים פשוטים, ו<a href="../lec1_part4.html">בשיעור על UPDATE וסינונים</a> ראיתם BETWEEN. כאן רואים את הצד המסוכן שלו.</p>
+</div>
+
+<div class="lab" data-id="p2-lab-sel4" data-title="חודש אפריל, בלי לפספס יום">
+<div class="q-src">כמה הזמנות נרשמו באפריל 2026, כולל ה-30 באפריל (וכולל הזמנות שבוטלו)? השאילתה למטה משתמשת ב-BETWEEN ומחזירה מספר נמוך מדי. תתקנו אותה כך שתחזיר את המספר הנכון, בעמודה אחת.</div>
+<pre class="start">SELECT COUNT(*) AS april_orders
+FROM orders
+WHERE order_ts BETWEEN '2026-04-01' AND '2026-04-30'</pre>
+<pre class="check">SELECT COUNT(*) FROM orders WHERE order_ts &gt;= '2026-04-01' AND order_ts &lt; '2026-05-01'</pre>
+<pre class="solution">SELECT COUNT(*) AS april_orders
+FROM orders
+WHERE order_ts &gt;= '2026-04-01'
+  AND order_ts &lt; '2026-05-01'</pre>
+<ol class="hints"><li>קודם תריצו את המקור. אין שגיאה, יש סתם מספר שקט.</li><li>תבחרו תנאי ״גדול או שווה לתחילת אפריל וקטן מתחילת מאי״.</li></ol>
+<div class="why-src">הגרסה השגויה החזירה 29 והנכונה 30. ההזמנה שחסרה היא מספר 59, מה-30 באפריל. זה מספר שנראה סביר ואינו נכון. נראה עוד כאלה לאורך כל החלק.</div>
+</div>
+
+<div class="quiz" data-id="p2-q-prec" data-a="2"><p class="qq">מה מחזירה <code>SELECT name FROM dishes WHERE category = 'drink' OR category = 'dessert' AND price &lt; 20</code>?</p>
+<button class="opt">רק לימונדה, כי היא המשקה היחיד שעולה פחות מ-20</button>
+<button class="opt">את שני המשקאות (לימונדה ובירה)</button>
+<button class="opt">את שני המשקאות ואת הטירמיסו</button>
+<button class="opt">שגיאה, כי אי אפשר לערבב AND ו-OR</button>
+<div class="why">AND קודם ל-OR, כמו כפל לפני חיבור. השאילתה אומרת: משקה, או (קינוח וגם מתחת ל-20). כל המשקאות עוברים, ואין קינוח מתחת ל-20, ולכן מקבלים שני משקאות. מי שרצה ״משקה או קינוח, ובנוסף מתחת ל-20״ צריך סוגריים: <code>(category = 'drink' OR category = 'dessert') AND price &lt; 20</code>.</div></div>
+
+<div class="quiz" data-id="p2-q-between" data-a="3"><p class="qq">הזמנה 59 נרשמה ב-<code>2026-04-30 12:15</code>. האם היא נכללת ב-<code>WHERE order_ts BETWEEN '2026-04-01' AND '2026-04-30'</code>?</p>
+<button class="opt">כן, כי BETWEEN כולל את הקצוות</button>
+<button class="opt">כן, כי המסד מתעלם מהשעה</button>
+<button class="opt">לא, כי הטקסט עם השעה גדול מהטקסט של היום לבדו</button>
+<button class="opt">המסד יחזיר שגיאה על הצורה הזו</button>
+<div class="why">BETWEEN באמת כולל את הקצוות, אבל הקצה הוא הטקסט <code>2026-04-30</code> בלי שעה. הטקסט <code>2026-04-30 12:15</code> מתחיל באותם תווים והוא ארוך יותר, ולכן הוא גדול יותר ונשאר מחוץ לטווח. המסד לא מתעלם מהשעה ולא מתריע.</div></div>
+
+<div class="box meaning">
+<p>כל תנאי ב-WHERE הוא הגדרה עסקית, לא רק טכנית. ״הזמנות של אפריל״, ״הזמנות שנמסרו״, ״מנות זולות״: בכל אחת מהן מישהו החליט מה נספר ומה לא. טעות בתנאי משנה את המספר שההנהלה רואה, וההנהלה לא תדע שהוא השתנה.</p>
+</div>
+<div class="box real">
+<p>במערכות <dfn data-d="כלי BI (בינה עסקית): תוכנות שמציגות נתונים כגרפים ודשבורדים כדי לעזור לקבל החלטות.">BI</dfn> כמו Looker Studio ו-Tableau (נגיע אליהן בחלק 4), מסנן בדשבורד הופך בדרך כלל לתנאי WHERE בשאילתה שנשלחת למסד. מי שמבין WHERE מבין מה כפתור הסינון עושה באמת. ובדוחות מקצועיים כותבים שמות עמודות ולא <code>*</code>, כדי שהדוח לא ישתנה כשמישהו מוסיף עמודה לטבלה.</p>
+</div>
+<div class="box think" data-id="p2-th-star"><p>למה בדוח שנשלח להנהלה כותבים <code>SELECT name, price</code> ולא <code>SELECT *</code>? תנו שתי סיבות לפחות.</p>
+<div class="ans">(1) יציבות: אם מישהו מוסיף או מסדר מחדש עמודות בטבלה, דוח עם <code>*</code> משתנה בלי שאף אחד התכוון. (2) בטיחות: ב-<code>*</code> עלולות לצאת החוצה עמודות רגישות, כמו אימייל של לקוחות. (3) ביצועים: במחסני נתונים שקוראים רק את העמודות שביקשתם, בקשה לכל העמודות עולה יותר (נחזור לזה בחלק 4). (4) קריאות: מי שפותח את הקוד רואה מה הדוח מכיל.</div></div>
+<div class="teach"><b>🎓 למרצה:</b> אחרי ארגז המסננים בקשו מהכיתה לנחש כמה שורות יעברו לפני שבוחרים תנאי. תנאי 3 (AND) ותנאי 4 (OR) טובים לוויכוח על הסדר. הזמנה 59 היא הוכחה חיה שמספר ״סביר״ יכול להיות שגוי. שאלו: מי היה מגלה את ההבדל בין 29 ל-30 בלי להשוות?</div>
+</section>
+<section class="sec" id="s2-2" data-t="JOIN">
+<div class="sec-h"><div class="sec-n">2</div><h2>JOIN: מחברים טבלאות לפי מפתח</h2></div>
+<p class="lead">יבגני רוצה לראות ליד כל הזמנה את שם הלקוח. אבל בטבלת ההזמנות יש רק מספר לקוח, כי את השם שומרים פעם אחת, בטבלת הלקוחות. מה עושים?</p>
+
+<div class="defline"><b>מפתח זר (foreign key):</b> עמודה שמכילה מספר של שורה בטבלה אחרת. דוגמה: בהזמנה 1 כתוב <code>customer_id = 13</code>, וזה מצביע ללקוח מספר 13, מיכל סבן.</div>
+<div class="defline"><b>JOIN:</b> חיבור של שורות משתי טבלאות לפי עמודה משותפת, כמו לחפש מספר בספר טלפונים. דוגמה: הזמנה 1 ולקוח 13 מתחברים לשורה אחת שמראה גם את ההזמנה וגם את השם. את הרעיון הזה ראיתם <a href="../lec2.1.html">בשיעור על JOIN</a>, כאן אנחנו מפעילים אותו על המסעדה.</div>
+<p>לפעמים להזמנה אין מספר לקוח בכלל. אז הערך בעמודה הוא <dfn data-d="NULL: ערך שאומר ״אין מידע״. הוא לא אפס ולא טקסט ריק. דוגמה: לקוח שלא נרשם, אז אין לו שם במערכת.">NULL</dfn>. תראו מה קורה לשורות כאלה בהנפשה.</p>
+
+<div class="anim" data-id="p2-anim-join" data-auto="1" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 420" role="img" aria-label="הנפשה: חיבור הזמנות ללקוחות, INNER מול LEFT">
+<defs><marker id="p2aj-ar" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#4f46e5"/></marker></defs>
+<text x="170" y="34" text-anchor="middle" font-size="20" font-weight="800" fill="#3730a3">orders</text>
+<text x="630" y="34" text-anchor="middle" font-size="20" font-weight="800" fill="#0f766e">customers</text>
+<!-- left rows -->
+<g font-size="16" font-weight="700" fill="#1e293b">
+<rect x="40" y="52" width="260" height="42" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="56" y="79" text-anchor="start">order 1 · customer_id 13</text>
+<rect x="40" y="104" width="260" height="42" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="56" y="131" text-anchor="start">order 2 · customer_id NULL</text>
+<rect x="40" y="156" width="260" height="42" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="56" y="183" text-anchor="start">order 3 · customer_id 2</text>
+<rect x="40" y="208" width="260" height="42" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="56" y="235" text-anchor="start">order 4 · customer_id 11</text>
+<rect x="40" y="260" width="260" height="42" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="56" y="287" text-anchor="start">order 85 · customer_id 99</text>
+</g>
+<!-- right rows -->
+<g font-size="16" font-weight="700" fill="#1e293b">
+<rect x="500" y="52" width="260" height="42" rx="10" fill="#f0fdfa" stroke="#14b8a6" stroke-width="2"/><text x="516" y="79" text-anchor="start">id 1</text><text x="680" y="79" text-anchor="middle" direction="rtl">דנה לוי</text>
+<rect x="500" y="104" width="260" height="42" rx="10" fill="#f0fdfa" stroke="#14b8a6" stroke-width="2"/><text x="516" y="131" text-anchor="start">id 2</text><text x="680" y="131" text-anchor="middle" direction="rtl">רועי כהן</text>
+<rect x="500" y="156" width="260" height="42" rx="10" fill="#f0fdfa" stroke="#14b8a6" stroke-width="2"/><text x="516" y="183" text-anchor="start">id 11</text><text x="680" y="183" text-anchor="middle" direction="rtl">הילה אבני</text>
+<rect x="500" y="208" width="260" height="42" rx="10" fill="#f0fdfa" stroke="#14b8a6" stroke-width="2"/><text x="516" y="235" text-anchor="start">id 13</text><text x="680" y="235" text-anchor="middle" direction="rtl">מיכל סבן</text>
+</g>
+<!-- matches -->
+<g data-s="2" data-pulse fill="none" stroke="#4f46e5" stroke-width="3" marker-end="url(#p2aj-ar)">
+<path d="M300,73 C400,73 400,229 496,229"/>
+<path d="M300,177 C400,177 400,125 496,125"/>
+<path d="M300,229 C400,229 400,177 496,177"/>
+</g>
+<!-- unmatched -->
+<g data-s="3" data-pulse>
+<rect x="40" y="104" width="260" height="42" rx="10" fill="none" stroke="#ef4444" stroke-width="4"/>
+<rect x="40" y="260" width="260" height="42" rx="10" fill="none" stroke="#ef4444" stroke-width="4"/>
+<text x="420" y="131" text-anchor="middle" font-size="26" font-weight="900" fill="#ef4444">?</text>
+<text x="420" y="287" text-anchor="middle" font-size="26" font-weight="900" fill="#ef4444">?</text>
+</g>
+<!-- results -->
+<g data-only="4">
+<rect x="40" y="322" width="720" height="82" rx="14" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+<text x="400" y="352" text-anchor="middle" font-size="19" font-weight="800" fill="#991b1b">INNER JOIN: 3 שורות (הזמנות 1, 3, 4)</text>
+<text x="400" y="384" text-anchor="middle" font-size="17" font-weight="700" fill="#b91c1c" direction="rtl">הזמנות 2 ו-85 נעלמו בשקט, בלי שום הודעה</text>
+</g>
+<g data-only="5">
+<rect x="40" y="322" width="720" height="82" rx="14" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+<text x="400" y="352" text-anchor="middle" font-size="19" font-weight="800" fill="#047857">LEFT JOIN: 5 שורות (כל ההזמנות נשארות)</text>
+<text x="400" y="384" text-anchor="middle" font-size="17" font-weight="700" fill="#047857" direction="rtl">בהזמנות 2 ו-85 עמודת השם היא NULL, כלומר ״לא ידוע״</text>
+</g>
+</svg></div>
+<ol class="caps">
+<li>שתי טבלאות. בטבלת ההזמנות יש רק מספר לקוח, ובטבלת הלקוחות יש מספר ושם.</li>
+<li>לכל הזמנה המסד מחפש בטבלת הלקוחות שורה עם אותו מספר. שלוש הזמנות מצאו זוג.</li>
+<li>להזמנה 2 אין מספר לקוח (מישהו ישב במסעדה ולא נרשם). להזמנה 85 יש מספר 99, ואין לקוח כזה.</li>
+<li>INNER JOIN משאיר רק זוגות. שתי ההזמנות הבעייתיות נעלמות, ואף אחד לא מקבל הודעה.</li>
+<li>LEFT JOIN שומר את כל שורות הטבלה השמאלית (זו שאחרי FROM). איפה שאין זוג, העמודות מהטבלה השנייה הן NULL.</li>
+</ol>
+</div>
+
+<h3>הקוד, מילה אחר מילה</h3>
+<pre class="code" data-lang="sql">SELECT o.id, c.name          -- העמודות שרוצים, עם קידומת הטבלה
+FROM orders o                -- הטבלה הראשית, עם כינוי קצר o
+JOIN customers c             -- הטבלה שמצטרפת, עם כינוי c
+  ON c.id = o.customer_id;   -- הגשר: איזו עמודה שווה לאיזו</pre>
+<div class="defline"><b>כינוי (alias):</b> שם קצר שנותנים לטבלה או לעמודה בתוך השאילתה. דוגמה: אחרי <code>FROM orders o</code> אפשר לכתוב <code>o.id</code> במקום <code>orders.id</code>.</div>
+<div class="defline"><b>ON:</b> התנאי שאומר למסד אילו שורות לחבר. בלי ON אין גשר. דוגמה: <code>ON c.id = o.customer_id</code> אומר ״תחבר הזמנה ללקוח שהמספר שלו כתוב בהזמנה״.</div>
+
+<div class="lab" data-id="p2-lab-join1" data-title="JOIN ראשון" >
+<div class="q-src">לכל הזמנה מהאפליקציה (<code>channel = 'app'</code>) תציגו את <code>id</code> של ההזמנה, את שם הלקוח (<code>name</code>) ואת זמן ההזמנה (<code>order_ts</code>).</div>
+<pre class="start">SELECT o.id, c.name, o.order_ts
+FROM orders o
+-- השלימו את החיבור</pre>
+<pre class="check">SELECT o.id, c.name, o.order_ts FROM orders o JOIN customers c ON c.id = o.customer_id WHERE o.channel = 'app'</pre>
+<pre class="solution">SELECT o.id, c.name, o.order_ts
+FROM orders o
+JOIN customers c ON c.id = o.customer_id
+WHERE o.channel = 'app'</pre>
+<ol class="hints"><li>איזו עמודה בהזמנות מצביעה על לקוח?</li><li>JOIN, שם הטבלה, כינוי, ואז ON.</li></ol>
+<div class="why-src">קיבלתם 41 שורות ולא 42. ההזמנה היתומה (85, לקוח 99) לא מצאה זוג ונעלמה. עוד מעט נדבר על זה.</div>
+</div>
+
+<h3>INNER מול LEFT: מה קורה לשורה בלי זוג</h3>
+<div class="defline"><b>INNER JOIN:</b> משאיר רק שורות שמצאו זוג בשתי הטבלאות. דוגמה: מ-87 ההזמנות רק 67 מוצאות לקוח, אז התוצאה היא 67 שורות.</div>
+<div class="defline"><b>LEFT JOIN:</b> שומר את כל השורות של הטבלה הראשונה, ובמקום זוג שלא נמצא שם NULL. דוגמה: אותן 87 הזמנות נותנות 87 שורות, ובעשרים מהן <code>name = NULL</code>.</div>
+<div class="p2-vs">
+<div class="bad"><h4>INNER JOIN</h4><div class="p2-big bad">67</div><div>שורות. 20 הזמנות נעלמו: 19 בלי לקוח, ועוד ההזמנה היתומה 85.</div></div>
+<div class="good"><h4>LEFT JOIN</h4><div class="p2-big good">87</div><div>שורות. כל ההזמנות נשארות, ובעשרים מהן השם הוא NULL.</div></div>
+</div>
+<p>יש גם RIGHT JOIN, שהוא פשוט LEFT בסדר הפוך (שומר את הטבלה השנייה), ו-FULL JOIN, ששומר את שני הצדדים. בשאילתות של כל יום משתמשים בעיקר ב-INNER וב-LEFT, ולכן נתמקד בהם. את כל ארבעת הסוגים ראיתם <a href="../lec10part10-15.6.2026.html">בשיעור על סוגי JOIN</a>.</p>
+
+<div class="lab" data-id="p2-lab-join3" data-title="LEFT JOIN: לא מאבדים הזמנות" data-require="LEFT" data-require-msg="במשימה הזו צריך LEFT JOIN.">
+<div class="q-src">תחזירו את <code>id</code> של כל 87 ההזמנות ואת שם הלקוח (<code>name</code>), גם כשאין לקוח. מי שאין לו שם יופיע כ-NULL.</div>
+<pre class="start">SELECT o.id, c.name
+FROM orders o
+-- השלימו</pre>
+<pre class="check">SELECT o.id, c.name FROM orders o LEFT JOIN customers c ON c.id = o.customer_id</pre>
+<pre class="solution">SELECT o.id, c.name
+FROM orders o
+LEFT JOIN customers c ON c.id = o.customer_id</pre>
+<ol class="hints"><li>תחליפו JOIN ב-LEFT JOIN. הטבלה שאחרי FROM היא ״השמאלית״.</li></ol>
+<div class="why-src">בתחתית התוצאה כתוב 87 שורות. ההזמנות בלי לקוח עכשיו נראות לעין, אז אפשר לחפש אותן. תחפשו את 2, 14 ו-85.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-join2" data-title="שלוש טבלאות בשרשרת">
+<div class="q-src">בהזמנות 1 עד 5 תציגו, לכל פריט שהוזמן: שם הלקוח (<code>customers.name</code>), שם המנה (<code>dishes.name</code>) והכמות (<code>qty</code>). הציגו רק פריטים של לקוחות מזוהים. החיבור עובר דרך <code>orders</code>, <code>order_items</code> ו-<code>dishes</code>.</div>
+<pre class="start">SELECT c.name AS customer, d.name AS dish, i.qty
+FROM orders o
+-- JOIN customers ...
+-- JOIN order_items ...
+-- JOIN dishes ...
+WHERE o.id &lt;= 5</pre>
+<pre class="check">SELECT c.name, d.name, i.qty FROM orders o JOIN customers c ON c.id = o.customer_id JOIN order_items i ON i.order_id = o.id JOIN dishes d ON d.id = i.dish_id WHERE o.id &lt;= 5</pre>
+<pre class="solution">SELECT c.name AS customer, d.name AS dish, i.qty
+FROM orders o
+JOIN customers c   ON c.id = o.customer_id
+JOIN order_items i ON i.order_id = o.id
+JOIN dishes d      ON d.id = i.dish_id
+WHERE o.id &lt;= 5</pre>
+<ol class="hints"><li>לכל JOIN צריך ON משלו.</li><li>הכינויים c, i ו-d רק מקצרים את הכתיבה.</li></ol>
+<div class="why-src">קיבלתם 9 שורות. הזמנה 2 חסרה, כי מישהו ישב במסעדה בלי להירשם. שרשרת של INNER JOIN מאבדת שורה ברגע שחוליה אחת חסרה. אם הייתם צריכים את כל הפריטים, גם של לקוחות לא מזוהים, החוליה הראשונה הייתה צריכה להיות LEFT JOIN (וזו גם תשובה הגיונית, אבל לא זו שביקשנו כאן).</div>
+</div>
+
+<h3>שכחתם ON? מכפלה קרטזית</h3>
+<div class="defline"><b>מכפלה קרטזית (Cartesian product):</b> חיבור של כל שורה בטבלה אחת עם כל שורה בטבלה השנייה, בלי תנאי. דוגמה: 3 שליחים ו-10 מנות נותנים 30 זוגות, כאילו כל שליח הזמין כל מנה. אין בזה שום משמעות.</div>
+<div class="tw"><table class="tbl"><thead><tr><th>החיבור</th><th>שורות בתוצאה</th></tr></thead><tbody>
+<tr><td><code>couriers, dishes</code> (<bdi dir="ltr">3 × 10</bdi>)</td><td>30</td></tr>
+<tr><td><code>customers, dishes</code> (<bdi dir="ltr">18 × 10</bdi>)</td><td>180</td></tr>
+<tr><td><code>orders, customers</code> (<bdi dir="ltr">87 × 18</bdi>)</td><td>1,566</td></tr>
+</tbody></table></div>
+<p>המסד לא מתריע. הוא עושה בדיוק מה שביקשתם. במסד עם מיליוני שורות זו דרך טובה להפיל שרת. כלל ברזל: לכל JOIN יש ON.</p>
+
+<div class="lab" data-id="p2-lab-join5" data-title="תקנו את החיבור החסר" data-ordered="0">
+<div class="q-src">הצוות רוצה את ההזמנות בטלפון (<code>channel = 'phone'</code>) עם שם הלקוח. השאילתה למטה מחזירה 360 שורות במקום 20. תתקנו אותה כך שתחזיר <code>id</code> ו-<code>name</code>, שורה אחת לכל הזמנה.</div>
+<pre class="start">SELECT o.id, c.name
+FROM orders o
+JOIN customers c
+WHERE o.channel = 'phone'</pre>
+<pre class="check">SELECT o.id, c.name FROM orders o JOIN customers c ON c.id = o.customer_id WHERE o.channel = 'phone'</pre>
+<pre class="solution">SELECT o.id, c.name
+FROM orders o
+JOIN customers c ON c.id = o.customer_id
+WHERE o.channel = 'phone'</pre>
+<ol class="hints"><li>חסר ON. איזו עמודה משותפת לשתי הטבלאות?</li><li>ב-SQLite, JOIN בלי ON הופך למכפלה קרטזית: 20 כפול 18.</li></ol>
+<div class="why-src">360 זה 20 הזמנות כפול 18 לקוחות. עם ON חזרו 20 שורות. הדוח השגוי נראה ״מלא ועשיר״, וזה בדיוק מה שמסוכן בו. (ב-PostgreSQL וב-BigQuery שאילתה כזו בלי ON פשוט נכשלת בשגיאה.)</div>
+</div>
+
+<h3>מי לא הזמין? LEFT JOIN עם IS NULL</h3>
+<div class="defline"><b>Anti-join (חיבור שלילי):</b> דפוס שמוצא שורות בלי זוג. כותבים LEFT JOIN ובודקים שהעמודה מהצד הימני היא NULL. דוגמה: לקוחות שאין להם אפילו הזמנה אחת באפליקציה, כדי לשלוח להם הצעה להוריד אותה.</div>
+<p>יש כאן מלכודת. אם התנאי על ערוץ ההזמנה כתוב ב-WHERE ולא ב-ON, השורות בלי זוג נפסלות והתוצאה ריקה. אותו כלל תקף גם לתנאי על תאריך: תנאי על הטבלה הימנית (למשל ״רק הזמנות מאפריל״) כותבים ב-ON. את זה ראיתם גם <a href="../lec2.4.html">בשיעור על שיפוט בעידן ה-AI</a>.</p>
+
+<div class="lab" data-id="p2-lab-join4" data-title="לקוחות שלא הזמינו באפליקציה" data-require="LEFT\s+JOIN[\s\S]*IS\s+NULL" data-require-msg="צריך LEFT JOIN עם בדיקת IS NULL.">
+<div class="q-src">יבגני רוצה לשלוח הצעה ללקוחות שמעולם לא הזמינו באפליקציה. השאילתה למטה מחזירה תוצאה ריקה. תתקנו אותה כך שתחזיר <code>id</code> ו-<code>name</code> של הלקוחות הנכונים.</div>
+<pre class="start">SELECT c.id, c.name
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.id
+WHERE o.channel = 'app'
+  AND o.id IS NULL</pre>
+<pre class="check">SELECT c.id, c.name FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND o.channel = 'app' WHERE o.id IS NULL</pre>
+<pre class="solution">SELECT c.id, c.name
+FROM customers c
+LEFT JOIN orders o
+  ON o.customer_id = c.id
+ AND o.channel = 'app'
+WHERE o.id IS NULL</pre>
+<ol class="hints"><li>שורה בלי זוג מקבלת NULL בכל העמודות של הצד הימני, כולל <code>o.channel</code>. מה קורה לתנאי <code>o.channel = 'app'</code> עליה?</li><li>תעבירו את התנאי על הערוץ לתוך ה-ON.</li></ol>
+<div class="why-src">מצאתם את יוסי מזרחי ואת נועם ברק. תנאי ב-ON קובע מה נחשב ״זוג״. תנאי ב-WHERE מסנן את התוצאה אחרי החיבור, ושורה עם NULL נפסלת בו. ככה LEFT JOIN הופך בשקט ל-INNER JOIN.</div>
+</div>
+
+<h3>LEFT JOIN וספירה: COUNT(*) או COUNT(עמודה)</h3>
+<p>עוד מלכודת של LEFT JOIN. לקוח בלי הזמנות מקבל שורה אחת עם NULL. אם סופרים עם <code>COUNT(*)</code>, השורה הזו נספרת ויוצא 1. אם סופרים <code>COUNT(o.id)</code>, ה-NULL לא נספר ויוצא 0, וזה מה שרוצים.</p>
+<div class="lab" data-id="p2-lab-cnt" data-title="כמה הזמנות לכל לקוח, כולל אפס" data-require="COUNT\s*\(\s*o\.id\s*\)" data-require-msg="כדי לקבל 0 ללקוחות בלי הזמנות, סופרים עמודה מהטבלה הימנית: COUNT(o.id).">
+<div class="q-src">לכל לקוח (18 שורות) תחזירו <code>id</code>, <code>name</code> ומספר ההזמנות שלו באפליקציה שנמסרו, כולל 0 למי שאין לו. עמודות: <code>id</code>, <code>name</code>, <code>app_orders</code>.</div>
+<pre class="start">SELECT c.id, c.name, COUNT(*) AS app_orders
+FROM customers c
+LEFT JOIN orders o
+  ON o.customer_id = c.id
+ AND o.channel = 'app'
+ AND o.status = 'delivered'
+GROUP BY c.id, c.name</pre>
+<pre class="check">SELECT c.id, c.name, COUNT(o.id) FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND o.channel = 'app' AND o.status = 'delivered' GROUP BY c.id, c.name</pre>
+<pre class="solution">SELECT c.id, c.name, COUNT(o.id) AS app_orders
+FROM customers c
+LEFT JOIN orders o
+  ON o.customer_id = c.id
+ AND o.channel = 'app'
+ AND o.status = 'delivered'
+GROUP BY c.id, c.name</pre>
+<ol class="hints"><li>תריצו קודם את המקור ותראו שיוסי ונועם מקבלים 1.</li><li>מה אפשר לספור שהוא NULL רק כשאין הזמנה?</li></ol>
+<div class="why-src">עכשיו יוסי מזרחי (4) ונועם ברק (5) מקבלים 0, וכל השאר מקבלים את מספר ההזמנות האמיתי. <code>COUNT(*)</code> סופרת שורות, ו-<code>COUNT(עמודה)</code> סופרת רק שורות שבהן העמודה אינה NULL.</div>
+</div>
+
+<div class="quiz" data-id="p2-q-cart" data-a="2"><p class="qq">מריצים <code>SELECT * FROM couriers, dishes</code> בלי תנאי. כמה שורות מקבלים?</p>
+<button class="opt">13</button>
+<button class="opt">30</button>
+<button class="opt">10</button>
+<button class="opt">שגיאה, כי חסר ON</button>
+<div class="why">3 שליחים כפול 10 מנות זה 30 זוגות. 13 הוא חיבור במקום כפל, ו-10 הוא רק מספר המנות. שגיאה לא תהיה: SQLite עושה מכפלה קרטזית בלי להתלונן. בגלל זה הכלל הוא שלכל JOIN יש ON.</div></div>
+
+<div class="quiz" data-id="p2-q-inner" data-a="1"><p class="qq">מנהל שואל ״כמה הזמנות היו בסך הכול״ ואתם סופרים אחרי <code>orders JOIN customers</code>. מקבלים 67, ובמסד יש 87. מה קרה?</p>
+<button class="opt">INNER JOIN השמיט הזמנות בלי לקוח מזוהה, או עם לקוח שלא קיים</button>
+<button class="opt">20 הזמנות נמחקו מהמסד בזמן הריצה</button>
+<button class="opt">המסד ספר רק הזמנות שנמסרו</button>
+<button class="opt">זה מספר שגוי רק אם משתמשים ב-LEFT JOIN</button>
+<div class="why">INNER JOIN משאיר רק הזמנות שמצאו לקוח. 19 הזמנות בלי customer_id והזמנה אחת שמצביעה על לקוח 99 שלא קיים נשמטו. שום דבר לא נמחק, והמסד לא סינן לפי סטטוס. עם LEFT JOIN היה יוצא 87.</div></div>
+
+<div class="box think" data-id="p2-th-orphan"><p>הזמנה 85 מצביעה על לקוח 99, שלא קיים. ב-INNER JOIN היא נעלמת מדוח הכנסות לפי לקוח, וב-LEFT JOIN היא מופיעה עם NULL. מה אתם מעדיפים בדוח להנהלה, ולמי צריך לדווח על התקלה?</p>
+<div class="ans">אין תשובה אחת, אבל הכלל הוא לא לאבד כסף בשקט. בדוח הכנסות כולל עדיף LEFT JOIN, שמציג את ההזמנה בשורה ״לקוח לא מזוהה״, וככה הסכום הכולל נשאר נכון. את התקלה עצמה (מפתח שמצביע על שום דבר) מדווחים למי שאחראי על מערכת ההזמנות, וקובעים כלל שימנע אותה. נחזור לזה בחלק 4.</div></div>
+
+<div class="box meaning">
+<p>כשבוחרים סוג JOIN מחליטים מה קורה לשורה בלי זוג. INNER אומר ״אין זוג, אין שורה״. LEFT אומר ״אין זוג, עדיין יש שורה, עם תא ריק״. הדוח שונה והמספר שונה, ושום שגיאה לא מזהירה אתכם. לכן בכל JOIN שואלים: מה אמור לקרות לשורות בלי זוג?</p>
+</div>
+<div class="box real">
+<p>מסדי נתונים רלציוניים כמו PostgreSQL, MySQL ו-SQLite בנויים על הרעיון הזה: נתון נשמר פעם אחת, ומצביעים אליו במפתח. מערכות הזמנות וקופות מחברות כך הזמנות, לקוחות ומוצרים. JOIN הוא פעולה נפוצה מאוד בדוחות ניהוליים, ולכן טעות בו יכולה להשפיע על דוחות רבים.</p>
+</div>
+<div class="teach"><b>🎓 למרצה:</b> בהנפשה עצרו בשלב 3 ושאלו: מה יקרה להזמנה 2? ולמה זו תקלה בדוח ולא בנתונים? סכמו: INNER מוחק בשקט, LEFT משאיר NULL. במעבדת ה-anti-join הרבה אנשים יכתבו את התנאי ב-WHERE. תנו להם לקבל תוצאה ריקה ולהסביר בעצמם לפני שמראים את התיקון.</div>
+</section>
+<section class="sec" id="s2-3" data-t="GROUP BY">
+<div class="sec-h"><div class="sec-n">3</div><h2>GROUP BY: מ-87 שורות לתשובה אחת</h2></div>
+<p class="lead">יבגני לא רוצה לקרוא 87 הזמנות. הוא רוצה שלוש שורות, אחת לכל ערוץ. ואת השאלה ״איזה שליח איטי״ הוא רוצה לראות כמספר אחד לכל שליח.</p>
+
+<div class="defline"><b>GROUP BY:</b> מחלק את השורות לקבוצות לפי ערך משותף, ומחשב משהו אחד לכל קבוצה. דוגמה: 87 הזמנות מתחלקות לשלוש קבוצות לפי ערוץ (42 באפליקציה, 20 בטלפון, 25 במקום), והתוצאה היא שלוש שורות.</div>
+<div class="defline"><b>פונקציית צבירה (aggregate):</b> חישוב שמכווץ הרבה ערכים לערך אחד. הנפוצות: <code>COUNT</code> סופרת, <code>SUM</code> מסכמת, <code>AVG</code> ממוצע, <code>MIN</code> הקטן ביותר, <code>MAX</code> הגדול ביותר. דוגמה: <code>SUM(tip)</code> על כל ההזמנות נותן 209.</div>
+<div class="defline"><b>DISTINCT:</b> מסיר כפילויות ומשאיר כל ערך פעם אחת. דוגמה: <code>COUNT(DISTINCT customer_id)</code> סופרת כמה לקוחות שונים הזמינו, ולא כמה הזמנות היו.</div>
+<p>את GROUP BY ראיתם <a href="../lec2.2.html">בשיעור על GROUP BY ו-HAVING</a>. בואו נראה אותו על שש ההזמנות הראשונות:</p>
+
+<div class="anim" data-id="p2-anim-group" data-auto="1" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 340" role="img" aria-label="הנפשה: שש הזמנות ממוינות לערימות לפי ערוץ ואז מסוכמות">
+<g font-size="15" font-weight="700" fill="#1e293b">
+<g data-move="2:-5,115"><rect x="25" y="52" width="100" height="62" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="75" y="76" text-anchor="middle">order 1</text><text x="75" y="99" text-anchor="middle" fill="#3730a3">app · 37</text></g>
+<g data-move="2:470,115"><rect x="150" y="52" width="100" height="62" rx="10" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/><text x="200" y="76" text-anchor="middle">order 2</text><text x="200" y="99" text-anchor="middle" fill="#b45309" font-size="13">walk-in · NULL</text></g>
+<g data-move="2:-150,115"><rect x="275" y="52" width="100" height="62" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="325" y="76" text-anchor="middle">order 3</text><text x="325" y="99" text-anchor="middle" fill="#3730a3">app · 38</text></g>
+<g data-move="2:-170,115"><rect x="400" y="52" width="100" height="62" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="450" y="76" text-anchor="middle">order 4</text><text x="450" y="99" text-anchor="middle" fill="#3730a3">app · 33</text></g>
+<g data-move="2:-190,115"><rect x="525" y="52" width="100" height="62" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="575" y="76" text-anchor="middle">order 5</text><text x="575" y="99" text-anchor="middle" fill="#3730a3">app · 31</text></g>
+<g data-move="2:-170,115"><rect x="650" y="52" width="100" height="62" rx="10" fill="#f0fdfa" stroke="#14b8a6" stroke-width="2"/><text x="700" y="76" text-anchor="middle">order 6</text><text x="700" y="99" text-anchor="middle" fill="#0f766e">phone · 31</text></g>
+</g>
+<text x="400" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#64748b" direction="rtl">כל כרטיס: מספר הזמנה, ערוץ ודקות משלוח</text>
+<g data-s="2" font-size="18" font-weight="800">
+<text x="227" y="150" text-anchor="middle" fill="#3730a3">app</text>
+<text x="530" y="150" text-anchor="middle" fill="#0f766e">phone</text>
+<text x="670" y="150" text-anchor="middle" fill="#b45309">walk-in</text>
+</g>
+<g data-s="3" font-size="16" font-weight="800">
+<rect x="20" y="250" width="415" height="40" rx="10" fill="#e0e7ff"/><text x="227" y="276" text-anchor="middle" fill="#3730a3">COUNT = 4 · AVG = 34.75</text>
+<rect x="480" y="250" width="100" height="40" rx="10" fill="#ccfbf1"/><text x="530" y="276" text-anchor="middle" fill="#0f766e">1 · 31</text>
+<rect x="620" y="250" width="100" height="40" rx="10" fill="#fef3c7"/><text x="670" y="276" text-anchor="middle" fill="#92400e">1 · NULL</text>
+</g>
+<g data-s="4">
+<rect x="130" y="300" width="540" height="34" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+<text x="400" y="323" text-anchor="middle" font-size="17" font-weight="800" fill="#047857" direction="rtl">6 שורות נכנסו, 3 שורות יצאו: אחת לכל ערוץ</text>
+</g>
+</svg></div>
+<ol class="caps">
+<li>שש הזמנות ראשונות מהמסד. בכל אחת ערוץ ודקות משלוח. בהזמנה במקום אין משלוח, ולכן שם כתוב NULL.</li>
+<li>GROUP BY channel ממיין את הכרטיסים לערימה אחת לכל ערוץ.</li>
+<li>עכשיו החישוב: לכל ערימה מספר וממוצע. בערימת ה-walk-in אין אף ערך לממוצע, ולכן יוצא NULL ולא אפס.</li>
+<li>התוצאה היא שורה אחת לכל ערימה. GROUP BY רק מסדר לערימות, והפונקציות עושות את החישוב.</li>
+</ol>
+</div>
+
+<p><b>הכלל הזהב:</b> ברשימת ה-SELECT מותר לכתוב רק עמודות שנמצאות ב-GROUP BY, או פונקציות צבירה. כל דבר אחר לא מוגדר: על איזו הזמנה מהערימה של ארבע מדברים?</p>
+
+<div class="lab" data-id="p2-lab-agg" data-title="חקר: צבירות על כל ההזמנות">
+<div class="q-src">תריצו וקראו את הערכים: כמה הזמנות יש, כמה מהן עם דירוג, סך הטיפים, ממוצע זמן המשלוח, והטיפ הקטן והגדול ביותר. שימו לב ש-<code>COUNT(*)</code> ו-<code>COUNT(rating)</code> לא נותנים אותו דבר.</div>
+<pre class="start">SELECT COUNT(*)            AS all_orders,
+       COUNT(rating)       AS with_rating,
+       SUM(tip)            AS total_tips,
+       AVG(delivery_min)   AS avg_delivery,
+       MIN(tip)            AS min_tip,
+       MAX(tip)            AS max_tip
+FROM orders</pre>
+<ol class="hints"><li>רק להריץ. אחר כך תחליפו <code>COUNT(rating)</code> ב-<code>COUNT(*)</code> ותראו מה משתנה.</li></ol>
+<div class="why-src">יש 87 הזמנות אבל רק 55 דירוגים: COUNT(עמודה) מדלגת על NULL, ו-COUNT(*) סופרת שורות. ממוצע זמן המשלוח (בערך 35.4 דקות) מחושב רק על 59 ההזמנות שיש להן ערך. ועוד דבר: הטיפ הקטן ביותר הוא <b>-5</b>. זה ערך שאי אפשר שיהיה, ונטפל בו בהמשך.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-g1" data-title="כמה הזמנות בכל ערוץ" data-require="GROUP\s+BY" data-require-msg="צריך GROUP BY.">
+<div class="q-src">תחזירו לכל ערוץ (<code>channel</code>) את מספר ההזמנות, בעמודה בשם <code>orders</code>.</div>
+<pre class="start">SELECT channel, COUNT(*) AS orders
+FROM orders
+-- השלימו</pre>
+<pre class="check">SELECT channel, COUNT(*) AS orders FROM orders GROUP BY channel</pre>
+<pre class="solution">SELECT channel, COUNT(*) AS orders
+FROM orders
+GROUP BY channel</pre>
+<ol class="hints"><li>לפי איזו עמודה מחלקים לערימות?</li></ol>
+<div class="why-src">42 באפליקציה, 20 בטלפון, 25 במקום. סתם ספרנו הזמנות, עדיין לא הכנסה. כדי לדעת איזה ערוץ מכניס יותר צריך כמות כפול מחיר, והמחיר נמצא בטבלה אחרת.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-g7" data-title="GROUP BY על שתי עמודות" data-require="GROUP\s+BY\s+\w+(\.\w+)?\s*,\s*\w+" data-require-msg="צריך GROUP BY על שתי עמודות, מופרדות בפסיק.">
+<div class="q-src">אפשר לקבץ לפי יותר מעמודה אחת: כל צירוף של שני הערכים הוא קבוצה. תחזירו לכל צירוף של ערוץ (<code>channel</code>) וסטטוס (<code>status</code>) את מספר ההזמנות, בעמודה <code>orders</code>.</div>
+<pre class="start">SELECT channel, status, COUNT(*) AS orders
+FROM orders
+-- GROUP BY ...</pre>
+<pre class="check">SELECT channel, status, COUNT(*) FROM orders GROUP BY channel, status</pre>
+<pre class="solution">SELECT channel, status, COUNT(*) AS orders
+FROM orders
+GROUP BY channel, status</pre>
+<ol class="hints"><li>שתי העמודות שבתוך SELECT (בלי הפונקציה) חייבות להופיע גם ב-GROUP BY.</li></ol>
+<div class="why-src">יש חמש שורות: אפליקציה (39 נמסרו ו-3 בוטלו), טלפון (20 נמסרו), במקום (23 נמסרו ו-2 בוטלו). כמה עמודות יש ב-GROUP BY, כך נפתחות קבוצות חדשות לפי כל צירוף. אותה שיטה מאפשרת, למשל, ערוץ לפי חודש.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-g6" data-title="שאלה 1: איזה ערוץ מכניס יותר" data-ordered="1" data-require="GROUP\s+BY" data-require-msg="צריך GROUP BY.">
+<div class="q-src"><b>השאלה הראשונה של יבגני.</b> תחזירו לכל ערוץ את מספר ההזמנות שנמסרו (<code>delivered</code>) ואת ההכנסה מהן. הכנסה היא <code>SUM(qty * price)</code>. סדרו מההכנסה הגדולה לקטנה. שמות העמודות: <code>channel</code>, <code>orders</code>, <code>revenue</code>. (בכל החלק הזה ״הכנסה״ היא הכנסה מהזמנות שנמסרו, בלי הזמנות שבוטלו.)</div>
+<pre class="start">SELECT o.channel,
+       COUNT(DISTINCT o.id)    AS orders,
+       SUM(i.qty * d.price)    AS revenue
+FROM orders o
+-- JOIN order_items ...
+-- JOIN dishes ...
+WHERE o.status = 'delivered'
+GROUP BY o.channel
+ORDER BY revenue DESC</pre>
+<pre class="check">SELECT o.channel, COUNT(DISTINCT o.id), SUM(i.qty * d.price) FROM orders o JOIN order_items i ON i.order_id = o.id JOIN dishes d ON d.id = i.dish_id WHERE o.status = 'delivered' GROUP BY o.channel ORDER BY 3 DESC</pre>
+<pre class="solution">SELECT o.channel,
+       COUNT(DISTINCT o.id)    AS orders,
+       SUM(i.qty * d.price)    AS revenue
+FROM orders o
+JOIN order_items i ON i.order_id = o.id
+JOIN dishes d      ON d.id = i.dish_id
+WHERE o.status = 'delivered'
+GROUP BY o.channel
+ORDER BY revenue DESC</pre>
+<ol class="hints"><li>קודם מחברים הזמנה לפריטים שלה, ואחר כך פריט למנה.</li><li>למה COUNT(DISTINCT o.id) ולא COUNT(*)? אחרי החיבור יש שורה לכל פריט ולא שורה לכל הזמנה. בסעיף 4 נעמיק.</li></ol>
+<div class="why-src"><b>התשובה:</b> האפליקציה מכניסה הכי הרבה, 6,180 ש״ח מ-39 הזמנות. הטלפון 3,492 ש״ח מ-20 הזמנות, וההזמנות במקום 3,212 ש״ח מ-23. אבל שימו לב: הכנסה ממוצעת להזמנה בטלפון (174.60) גבוהה מזו של האפליקציה (158.46). ״מי מכניס יותר״ ו״על מה כדאי לשים דגש בהזמנה אחת״ הן שתי שאלות שונות.</div>
+</div>
+
+<div class="kpis">
+<div class="kpi g"><b>6,180</b><span>אפליקציה · 39 הזמנות</span></div>
+<div class="kpi"><b>3,492</b><span>טלפון · 20 הזמנות</span></div>
+<div class="kpi"><b>3,212</b><span>במקום · 23 הזמנות</span></div>
+<div class="kpi a"><b>12,884</b><span>סך הכול, הזמנות שנמסרו</span></div>
+</div>
+
+<div class="lab" data-id="p2-lab-g3" data-title="שאלה 2: איזה שליח איטי" data-ordered="1" data-require="GROUP\s+BY" data-require-msg="צריך GROUP BY.">
+<div class="q-src"><b>השאלה השנייה.</b> תחזירו לכל שליח את שמו (<code>couriers.name</code>), מספר המשלוחים וממוצע זמן המשלוח בדקות, מעוגל לספרה אחת. סדרו מהאיטי לזריז. התחשבו רק בהזמנות שיש להן <code>delivery_min</code>.</div>
+<pre class="start">SELECT cr.name, COUNT(*) AS deliveries, ROUND(AVG(o.delivery_min), 1) AS avg_min
+FROM orders o
+-- JOIN couriers ...
+WHERE o.delivery_min IS NOT NULL
+-- GROUP BY ...
+-- ORDER BY ...</pre>
+<pre class="check">SELECT cr.name, COUNT(*), ROUND(AVG(o.delivery_min), 1) FROM orders o JOIN couriers cr ON cr.id = o.courier_id WHERE o.delivery_min IS NOT NULL GROUP BY cr.id, cr.name ORDER BY 3 DESC</pre>
+<pre class="solution">SELECT cr.name, COUNT(*) AS deliveries, ROUND(AVG(o.delivery_min), 1) AS avg_min
+FROM orders o
+JOIN couriers cr ON cr.id = o.courier_id
+WHERE o.delivery_min IS NOT NULL
+GROUP BY cr.id, cr.name
+ORDER BY avg_min DESC</pre>
+<ol class="hints"><li>מקבצים לפי השליח. עדיף לכלול את ה-id יחד עם השם.</li></ol>
+<div class="why-src"><b>התשובה:</b> דימה, בממוצע 41.8 דקות על 16 משלוחים. נועה 36.5 דקות על 22 משלוחים, ואורי 29.4 על 21. זו תשובה לשאלה ״מי איטי״, אבל לא ל״מי אשם״. שאלת המחשבה למטה מסבירה למה.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-g2" data-title="שאלה 3: הלקוחות הטובים" data-ordered="1" data-require="GROUP\s+BY" data-require-msg="צריך GROUP BY.">
+<div class="q-src"><b>השאלה השלישית.</b> חמשת הלקוחות עם ההכנסה הגבוהה ביותר מהזמנות שנמסרו. תחזירו שם לקוח והכנסה (<code>SUM(qty * price)</code>), מהגבוה לנמוך.</div>
+<pre class="start">SELECT c.name, SUM(i.qty * d.price) AS revenue
+FROM customers c
+-- JOIN orders ...
+-- JOIN order_items ...
+-- JOIN dishes ...
+WHERE o.status = 'delivered'
+-- GROUP BY ...
+-- ORDER BY ...
+-- LIMIT ...</pre>
+<pre class="check">SELECT c.name, SUM(i.qty * d.price) FROM customers c JOIN orders o ON o.customer_id = c.id JOIN order_items i ON i.order_id = o.id JOIN dishes d ON d.id = i.dish_id WHERE o.status = 'delivered' GROUP BY c.id, c.name ORDER BY 2 DESC LIMIT 5</pre>
+<pre class="solution">SELECT c.name, SUM(i.qty * d.price) AS revenue
+FROM customers c
+JOIN orders o      ON o.customer_id = c.id
+JOIN order_items i ON i.order_id = o.id
+JOIN dishes d      ON d.id = i.dish_id
+WHERE o.status = 'delivered'
+GROUP BY c.id, c.name
+ORDER BY revenue DESC
+LIMIT 5</pre>
+<ol class="hints"><li>שרשרת של שלושה JOIN, כמו קודם.</li><li>ORDER BY revenue DESC ואחריו LIMIT 5.</li></ol>
+<div class="why-src">תמר שפירא (1,042 ש״ח) בראש, אחריה אבי שרון (1,020), הילה אבני (990), רועי כהן (961) ואיתי רוזן (812). שימו לב: דירוג לפי הכנסה הוא לא דירוג לפי מספר הזמנות. הילה אבני הזמינה הכי הרבה פעמים (6 הזמנות שנמסרו), והיא רק שלישית בהכנסה.</div>
+</div>
+
+<h3>WHERE מסנן שורות. HAVING מסנן קבוצות</h3>
+<div class="tw"><table class="tbl"><thead><tr><th></th><th>WHERE</th><th>HAVING</th></tr></thead><tbody>
+<tr><td>מתי רץ</td><td>לפני הקיבוץ</td><td>אחרי הקיבוץ והחישוב</td></tr>
+<tr><td>על מה מסתכל</td><td>שורה אחת</td><td>קבוצה שלמה</td></tr>
+<tr><td>דוגמה</td><td><code>WHERE status = 'delivered'</code></td><td><code>HAVING COUNT(*) &gt;= 4</code></td></tr>
+<tr><td>אפשר פונקציית צבירה</td><td>לא</td><td>כן</td></tr>
+</tbody></table></div>
+
+<div class="lab" data-id="p2-lab-g4" data-title="WHERE או HAVING" data-ordered="0" data-require="HAVING" data-require-msg="התנאי על הספירה חייב לעבור ל-HAVING.">
+<div class="q-src">רוצים לקוחות עם לפחות 4 הזמנות שנמסרו. השאילתה למטה נכשלת. תריצו, תקראו את השגיאה ותתקנו. תחזירו <code>name</code> ו-<code>orders</code>.</div>
+<pre class="start">SELECT c.name, COUNT(*) AS orders
+FROM customers c
+JOIN orders o ON o.customer_id = c.id
+WHERE o.status = 'delivered'
+  AND COUNT(*) &gt;= 4
+GROUP BY c.id, c.name</pre>
+<pre class="check">SELECT c.name, COUNT(*) FROM customers c JOIN orders o ON o.customer_id = c.id WHERE o.status = 'delivered' GROUP BY c.id, c.name HAVING COUNT(*) &gt;= 4</pre>
+<pre class="solution">SELECT c.name, COUNT(*) AS orders
+FROM customers c
+JOIN orders o ON o.customer_id = c.id
+WHERE o.status = 'delivered'
+GROUP BY c.id, c.name
+HAVING COUNT(*) &gt;= 4</pre>
+<ol class="hints"><li>ספירה נולדת רק אחרי שהשורות התחלקו לקבוצות. איזו פסוקית רצה אחרי הקיבוץ?</li></ol>
+<div class="why-src">עשרה לקוחות עוברים את הסף. התנאי על הסטטוס נשאר ב-WHERE כי הוא על שורה אחת, והתנאי על הספירה עבר ל-HAVING כי הוא על קבוצה.</div>
+</div>
+
+<h3>באיזה סדר המסד באמת מבצע את השאילתה</h3>
+<p>כותבים SELECT ראשון, אבל המסד מבצע אותו חמישי. הסדר ההגיוני הוא: מאיפה לקחת (FROM), אילו שורות לשמור (WHERE), איך לקבץ (GROUP BY), אילו קבוצות לשמור (HAVING), מה להציג (SELECT), איך למיין (ORDER BY), וכמה להחזיר (LIMIT). מכאן יוצאים כללים שנראים שרירותיים: בתקן SQL, וגם ב-PostgreSQL וב-BigQuery, כינוי שהגדרתם ב-SELECT עוד לא קיים כש-WHERE רץ, ולכן אי אפשר להשתמש בו שם. SQLite סלחן ומאפשר את זה, אבל אל תסמכו על כך.</p>
+
+<div class="anim" data-id="p2-anim-order" data-auto="1" data-speed="2800">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="הנפשה: סדר הביצוע של שאילתה ומספר השורות בכל שלב">
+<g font-size="15" font-weight="800" text-anchor="middle" fill="#fff">
+<g data-s="1"><rect x="10" y="18" width="100" height="44" rx="10" fill="#4f46e5"/><text x="60" y="46">FROM</text></g>
+<g data-s="2"><rect x="120" y="18" width="100" height="44" rx="10" fill="#0f766e"/><text x="170" y="46">WHERE</text></g>
+<g data-s="3"><rect x="230" y="18" width="100" height="44" rx="10" fill="#b45309"/><text x="280" y="46">GROUP BY</text></g>
+<g data-s="4"><rect x="340" y="18" width="100" height="44" rx="10" fill="#7c3aed"/><text x="390" y="46">HAVING</text></g>
+<g data-s="5"><rect x="450" y="18" width="100" height="44" rx="10" fill="#be123c"/><text x="500" y="46">SELECT</text></g>
+<g data-s="6"><rect x="560" y="18" width="100" height="44" rx="10" fill="#334155"/><text x="610" y="46">ORDER BY</text></g>
+<g data-s="7"><rect x="670" y="18" width="100" height="44" rx="10" fill="#047857"/><text x="720" y="46">LIMIT</text></g>
+</g>
+<text x="400" y="92" text-anchor="middle" font-size="14" font-weight="600" fill="#64748b" font-family="monospace">SELECT channel, COUNT(*) FROM orders WHERE status='delivered' GROUP BY channel</text><text x="400" y="114" text-anchor="middle" font-size="14" font-weight="600" fill="#64748b" font-family="monospace">HAVING COUNT(*) &gt;= 22 ORDER BY 2 DESC LIMIT 1</text>
+<g data-only="1"><text x="400" y="170" text-anchor="middle" font-size="64" font-weight="900" fill="#4f46e5">87</text><text x="400" y="215" text-anchor="middle" font-size="19" font-weight="700" fill="#1e293b" direction="rtl">שורות: כל טבלת ההזמנות</text></g>
+<g data-only="2"><text x="400" y="170" text-anchor="middle" font-size="64" font-weight="900" fill="#0f766e">82</text><text x="400" y="215" text-anchor="middle" font-size="19" font-weight="700" fill="#1e293b" direction="rtl">שורות: נשארו רק הזמנות שנמסרו</text></g>
+<g data-only="3"><text x="400" y="170" text-anchor="middle" font-size="64" font-weight="900" fill="#b45309">3</text><text x="400" y="215" text-anchor="middle" font-size="19" font-weight="700" fill="#1e293b" direction="rtl">קבוצות: אפליקציה, טלפון, במקום</text></g>
+<g data-only="4"><text x="400" y="170" text-anchor="middle" font-size="64" font-weight="900" fill="#7c3aed">2</text><text x="400" y="215" text-anchor="middle" font-size="19" font-weight="700" fill="#1e293b" direction="rtl">קבוצות: רק אלה עם 22 הזמנות ומעלה</text></g>
+<g data-only="5"><text x="400" y="170" text-anchor="middle" font-size="64" font-weight="900" fill="#be123c">2</text><text x="400" y="215" text-anchor="middle" font-size="19" font-weight="700" fill="#1e293b" direction="rtl">שורות: עכשיו נבנות העמודות ומתקבלים הכינויים</text></g>
+<g data-only="6"><text x="400" y="170" text-anchor="middle" font-size="64" font-weight="900" fill="#334155">2</text><text x="400" y="215" text-anchor="middle" font-size="19" font-weight="700" fill="#1e293b" direction="rtl">שורות: ממוינות מהגדולה לקטנה</text></g>
+<g data-only="7"><text x="400" y="170" text-anchor="middle" font-size="64" font-weight="900" fill="#047857">1</text><text x="400" y="215" text-anchor="middle" font-size="19" font-weight="700" fill="#1e293b" direction="rtl">שורה: האפליקציה, עם 39 הזמנות</text></g>
+<text x="400" y="290" text-anchor="middle" font-size="15" font-weight="700" fill="#64748b" direction="rtl">מה שמופיע בקוד ראשון (SELECT) רץ חמישי</text>
+</svg></div>
+<ol class="caps">
+<li>FROM: המסד פותח את הטבלה. 87 שורות.</li>
+<li>WHERE: מסננים שורות. נשארות 82.</li>
+<li>GROUP BY: השורות מתחלקות לקבוצות לפי ערוץ. שלוש קבוצות.</li>
+<li>HAVING: מסננים קבוצות. נשארות רק שתיים, עם 22 הזמנות ומעלה.</li>
+<li>SELECT: עכשיו בוחרים את העמודות, ונוצרים הכינויים (AS).</li>
+<li>ORDER BY: ממיינים את התוצאה. כאן כבר מותר להשתמש בכינוי.</li>
+<li>LIMIT: חיתוך אחרון, שורה אחת.</li>
+</ol>
+</div>
+
+<h3>בונים שאילתה ורואים את מספר השורות יורד</h3>
+<p>תבחרו רכיבים. הסרגל מראה כמה שורות נשארות אחרי כל שלב, והמספרים מחושבים במסד המסעדה האמיתי. (הסרגל מציג את המספר ביחס ל-87, ולכן קבוצות נראות תמיד כפס קצר.)</p>
+<div class="sim" data-id="p2-sim-build"><div class="sh">בונה שאילתות</div>
+<div class="p2-tog" id="p2b-where">
+<label><input type="checkbox" data-w="o.status = 'delivered'"> WHERE: רק הזמנות שנמסרו</label>
+<label><input type="checkbox" data-w="o.order_ts &gt;= '2026-04-15'"> WHERE: מ-15 באפריל</label>
+</div>
+<div class="row"><b>GROUP BY:</b>
+<select id="p2b-group" aria-label="קיבוץ">
+<option value="o.channel">ערוץ</option>
+<option value="o.courier_id">שליח (courier_id)</option>
+<option value="strftime('%H', o.order_ts)">שעה ביום</option>
+<option value="o.status">סטטוס</option>
+</select>
+<b>HAVING:</b> לפחות <input type="range" id="p2b-having" min="0" max="30" value="0"> <span id="p2b-hv" class="chip b">0</span> שורות בקבוצה
+</div>
+<div class="row"><b>ORDER BY:</b>
+<select id="p2b-order" aria-label="מיון"><option value="n DESC">לפי כמות</option><option value="avg_min DESC">לפי זמן משלוח</option><option value="grp">לפי הקבוצה</option></select>
+<b>LIMIT:</b> <input type="range" id="p2b-limit" min="1" max="10" value="10"> <span id="p2b-lv" class="chip b">10</span>
+</div>
+<div class="out"><div class="p2-code" id="p2b-sql"></div>
+<div class="p2-funnel" id="p2b-fun"></div>
+<div id="p2b-res" class="tw"></div></div>
+</div>
+<script>(function(){ FL.dom(function(){ FL.onReady(function(ok){
+  const box = FL.$('[data-id="p2-sim-build"]'); if (!box) return;
+  const ws = FL.$$('#p2b-where input'), grp = FL.$('#p2b-group'), hv = FL.$('#p2b-having'), od = FL.$('#p2b-order'), lm = FL.$('#p2b-limit');
+  const hvl = FL.$('#p2b-hv'), lvl = FL.$('#p2b-lv'), sqlEl = FL.$('#p2b-sql'), fun = FL.$('#p2b-fun'), res = FL.$('#p2b-res');
+  let touched = 0;
+  function unesc(s){ return s.replace(/&gt;/g,'>').replace(/&lt;/g,'<'); }
+  function render(){
+    ws.forEach(function(w){ w.parentNode.classList.toggle('on', w.checked); });
+    const conds = ws.filter(function(w){ return w.checked; }).map(function(w){ return unesc(w.dataset.w); });
+    const W = conds.length ? ' WHERE ' + conds.join(' AND ') : '';
+    const G = grp.value, H = +hv.value, L = +lm.value;
+    hvl.textContent = H; lvl.textContent = L;
+    const hav = H > 0 ? ' HAVING COUNT(*) >= ' + H : '';
+    const ord = od.value;
+    const sql = 'SELECT ' + G + ' AS grp, COUNT(*) AS n, ROUND(AVG(o.delivery_min),1) AS avg_min\nFROM orders o' + (W ? '\n' + W.trim() : '') + '\nGROUP BY ' + G + (hav ? '\n' + hav.trim() : '') + '\nORDER BY ' + ord + '\nLIMIT ' + L + ';';
+    sqlEl.textContent = sql;
+    if (!ok){ res.textContent = 'מנוע ה-SQL לא נטען.'; return; }
+    function one(q){ const r = FL.exec(q); return r ? r.values[0][0] : 0; }
+    const nFrom = one('SELECT COUNT(*) FROM orders o');
+    const nWhere = one('SELECT COUNT(*) FROM orders o' + W);
+    const nGroup = one('SELECT COUNT(*) FROM (SELECT 1 FROM orders o' + W + ' GROUP BY ' + G + ')');
+    const nHav = one('SELECT COUNT(*) FROM (SELECT 1 FROM orders o' + W + ' GROUP BY ' + G + hav + ')');
+    const nLim = Math.min(L, nHav);
+    const rows = [['FROM', nFrom, 'שורות', 1], ['WHERE', nWhere, 'שורות', 1], ['GROUP BY', nGroup, 'קבוצות', 0], ['HAVING', nHav, 'קבוצות', 0], ['SELECT', nHav, 'שורות', 0], ['ORDER BY', nHav, 'שורות', 0], ['LIMIT', nLim, 'שורות', 0]];
+    const mx = Math.max(nFrom, 1);
+    fun.innerHTML = rows.map(function(r){ return '<div class="st"><span class="nm">'+r[0]+'</span><span class="bar"><i style="width:'+Math.max(2, Math.round(100*r[1]/mx))+'%"></i></span><span class="ct">'+r[1]+' '+r[2]+'</span></div>'; }).join('');
+    const out = FL.exec(sql);
+    res.innerHTML = out ? FL.tableHTML(out) : '<div class="chip a">אין שורות. התנאים שבחרתם סינו הכול.</div>';
+    touched++; if (touched >= 4) FL.done('p2-sim-build');
+  }
+  ws.forEach(function(w){ w.addEventListener('change', render); });
+  [grp, hv, od, lm].forEach(function(e){ e.addEventListener('input', render); });
+  touched = -1; render(); touched = 0;
+}); }); })();</script>
+
+<div class="lab" data-id="p2-lab-bare" data-title="חקר: עמודה שלא בקבוצה">
+<div class="q-src">תריצו. SQLite לא מתלונן, אבל תקראו מה כתוב בהסבר למטה.</div>
+<pre class="start">SELECT channel, delivery_min, COUNT(*) AS n
+FROM orders
+GROUP BY channel</pre>
+<div class="why-src">העמודה <code>delivery_min</code> לא בקבוצה ולא בפונקציית צבירה. SQLite בוחר שורה כלשהי מהערימה ומציג את הערך שלה, בלי אזהרה. ב-PostgreSQL וב-BigQuery אותה שאילתה נכשלת בשגיאה. אל תסמכו על הסלחנות הזו: הערך שמוצג הוא לא ממוצע ולא מייצג את הקבוצה.</div>
+</div>
+
+<div class="quiz" data-id="p2-q-hav" data-a="2"><p class="qq">רוצים ״ערוצים עם יותר מ-30 הזמנות שנמסרו״. איזו כתיבה נכונה?</p>
+<button class="opt"><code>WHERE COUNT(*) &gt; 30 GROUP BY channel</code></button>
+<button class="opt"><code>WHERE status = 'delivered' GROUP BY channel HAVING COUNT(*) &gt; 30</code></button>
+<button class="opt"><code>GROUP BY channel WHERE COUNT(*) &gt; 30</code></button>
+<button class="opt"><code>HAVING status = 'delivered' GROUP BY channel</code></button>
+<div class="why">הסינון לפי סטטוס הוא על שורה, ולכן ב-WHERE. הסינון לפי ספירה הוא על קבוצה, ולכן ב-HAVING אחרי GROUP BY. WHERE לא מכיר פונקציות צבירה כי הוא רץ לפני שהקבוצות נוצרו, והוא חייב להופיע לפני GROUP BY.</div></div>
+
+<div class="quiz" data-id="p2-q-avgnull" data-a="3"><p class="qq">מה מחזיר <code>AVG(delivery_min)</code> עבור ערוץ <code>walk-in</code>, שבו כל ערכי הזמן הם NULL?</p>
+<button class="opt">0</button>
+<button class="opt">שגיאה, כי אי אפשר לחשב ממוצע של ריק</button>
+<button class="opt">NULL</button>
+<button class="opt">הממוצע של כל המסעדה</button>
+<div class="why">פונקציות צבירה מדלגות על NULL. כשכל הערכים NULL אין על מה לחשב, והתוצאה NULL ולא 0. וזה נכון גם עסקית: ״אין משלוח״ זה לא ״משלוח של אפס דקות״.</div></div>
+
+<div class="quiz" data-id="p2-q-count" data-a="2"><p class="qq">בטבלת ההזמנות יש 87 שורות, ובעמודה <code>rating</code> 32 מהן NULL. מה מחזיר <code>SELECT COUNT(rating) FROM orders</code>?</p>
+<button class="opt">87</button>
+<button class="opt">55</button>
+<button class="opt">32</button>
+<button class="opt">0</button>
+<div class="why"><code>COUNT(עמודה)</code> סופרת רק שורות שהעמודה בהן אינה NULL: 87 פחות 32 זה 55. <code>COUNT(*)</code> היא זו שסופרת את כל 87 השורות.</div></div>
+
+<div class="box think" data-id="p2-th-dima"><p>דימה איטי בממוצע ב-12 דקות מאורי. אפשר לפטר אותו על סמך זה? מה עוד הייתם בודקים בנתונים לפני שמחליטים?</p>
+<div class="ans">לא. הממוצע עונה על ״מי איטי״ ולא על ״למה״. אפשר לבדוק: האם דימה מקבל הזמנות בשעות העומס? לאן הוא מחלק? באיזה כלי רכב הוא נוסע (בטבלה: דימה קטנוע, נועה אופניים חשמליים, אורי אופנוע)? האם יש הבדל בין חודשים? והאם 16 משלוחים מספיקים כדי להסיק משהו? מספר מהמסד הוא נקודת התחלה לשאלה, לא פסק דין.</div></div>
+
+<div class="box meaning">
+<p>GROUP BY הוא מה שהופך נתונים גולמיים לתשובה שאפשר להחליט לפיה: איזה ערוץ לחזק (האפליקציה, 6,180 ש״ח), למי צריך להסביר איך עובדים (דימה), ואילו לקוחות לפנק (תמר, אבי, הילה). כל גרף עמודות בדשבורד הוא GROUP BY מאחורי הקלעים.</p>
+</div>
+<div class="box real">
+<p>בכלי BI כמו Tableau ו-Looker Studio, כשגוררים שדה ל״שורות״ או ל״ממד״ נוצר בפועל GROUP BY, וכשגוררים מדד נוצרת פונקציית צבירה. בטבלת Pivot ב-Excel זה אותו רעיון: קבוצות בשורות, חישוב בתאים. SQL עושה את אותו דבר על מיליוני שורות.</p>
+</div>
+<div class="teach"><b>🎓 למרצה:</b> אחרי התשובה על דימה עצרו לדיון קצר: מה ההבדל בין סיבה למתאם (קורלציה)? שימו לב שמעבדת g6 משתמשת ב-COUNT(DISTINCT) כי ה-JOIN מכפיל שורות. שאלו את הכיתה למה, ואל תסבירו. הסעיף הבא עונה על זה.</div>
+</section>
+<section class="sec" id="s2-4" data-t="Fan-out">
+<div class="sec-h"><div class="sec-n">4</div><h2>Fan-out: המספר שהוכפל בשקט</h2></div>
+<p class="lead">בדשבורד של יבגני כתוב שהטיפים הם 517 ש״ח. בקופה ספרו 209. אין שגיאה, והמספר נראה סביר. מי צודק?</p>
+
+<div class="mk mk-dash"><div class="mk-bar"><i></i><i></i><i></i><span class="url">דשבורד המסעדה · הדמיה סכמטית</span></div>
+<div class="mk-body">
+<div class="kpis" style="margin:0">
+<div class="mk-tile"><small>הכנסה (app + phone, שנמסרו)</small><b>9,672 ₪</b></div>
+<div class="mk-tile" style="border-color:#fca5a5;background:#fef2f2"><small>טיפים מהמשלוחים</small><b style="color:#b91c1c">517 ₪</b></div>
+<div class="mk-tile"><small>הזמנות בערוצים app ו-phone</small><b>62</b></div>
+</div>
+</div></div>
+<p>המספר באמצע הוא הבעיה. הוא נוצר בשאילתה שחיברה הזמנות לפריטים שלהן וסיכמה טיפים. כדי להבין מה קרה צריך מושג אחד: גרנולריות.</p>
+
+<div class="defline"><b>גרנולריות (grain):</b> מה שורה אחת מייצגת בטבלה או בתוצאה. דוגמה: בטבלת <code>orders</code> שורה היא הזמנה, ובטבלת <code>order_items</code> שורה היא פריט בהזמנה. אחרי חיבור ביניהן שורה היא פריט, ו-87 הזמנות הופכות ל-219 שורות.</div>
+<div class="defline"><b>Fan-out (ניפוח):</b> חיבור שמשכפל שורה מצד ״אחד״ כמספר השורות שמתאימות לה בצד ״רבים״, ולכן סכום של עמודה מהצד הראשון מתנפח. דוגמה: טיפ של 10 ש״ח בהזמנה עם שלושה פריטים נספר שלוש פעמים ונהיה 30.</div>
+
+<div class="anim" data-id="p2-anim-fanout" data-auto="1" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 420" role="img" aria-label="הנפשה: טיפ אחד שמוכפל בשלוש אחרי JOIN לפריטי ההזמנה">
+<defs><marker id="p2af-ar" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#4f46e5"/></marker></defs>
+<text x="130" y="30" text-anchor="middle" font-size="18" font-weight="800" fill="#3730a3">orders</text>
+<text x="640" y="30" text-anchor="middle" font-size="18" font-weight="800" fill="#0f766e">order_items</text>
+<rect x="30" y="50" width="200" height="60" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+<text x="130" y="76" text-anchor="middle" font-size="16" font-weight="800">order 8</text><text x="130" y="98" text-anchor="middle" font-size="16" font-weight="800" fill="#b45309">tip = 10</text>
+<g font-size="15" font-weight="700">
+<rect x="520" y="46" width="240" height="38" rx="10" fill="#f0fdfa" stroke="#14b8a6" stroke-width="2"/><text x="535" y="71" text-anchor="start">dish 3 · qty 2 · price 68</text>
+<rect x="520" y="92" width="240" height="38" rx="10" fill="#f0fdfa" stroke="#14b8a6" stroke-width="2"/><text x="535" y="117" text-anchor="start">dish 8 · qty 2 · price 36</text>
+<rect x="520" y="138" width="240" height="38" rx="10" fill="#f0fdfa" stroke="#14b8a6" stroke-width="2"/><text x="535" y="163" text-anchor="start">dish 10 · qty 2 · price 29</text>
+</g>
+<g data-s="2" data-pulse fill="none" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#p2af-ar)">
+<path d="M232,70 C380,70 380,65 516,65"/><path d="M232,80 C380,80 380,111 516,111"/><path d="M232,90 C380,90 380,157 516,157"/>
+</g>
+<g data-s="2" font-size="15" font-weight="700">
+<rect x="120" y="205" width="560" height="38" rx="8" fill="#fff7ed" stroke="#f59e0b"/><text x="135" y="230" text-anchor="start">order 8 · tip 10 · dish 3</text>
+<rect x="120" y="247" width="560" height="38" rx="8" fill="#fff7ed" stroke="#f59e0b"/><text x="135" y="272" text-anchor="start">order 8 · tip 10 · dish 8</text>
+<rect x="120" y="289" width="560" height="38" rx="8" fill="#fff7ed" stroke="#f59e0b"/><text x="135" y="314" text-anchor="start">order 8 · tip 10 · dish 10</text>
+</g>
+<g data-only="3">
+<rect x="120" y="340" width="560" height="64" rx="12" fill="#fef2f2" stroke="#ef4444" stroke-width="3"/>
+<text x="400" y="368" text-anchor="middle" font-size="22" font-weight="900" fill="#b91c1c">SUM(tip) = 30</text>
+<text x="400" y="392" text-anchor="middle" font-size="16" font-weight="700" fill="#991b1b" direction="rtl">טיפ אחד של 10 נספר שלוש פעמים</text>
+</g>
+<g data-only="4">
+<rect x="120" y="340" width="560" height="64" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="3"/>
+<text x="400" y="368" text-anchor="middle" font-size="22" font-weight="900" fill="#047857">SUM(tip) = 10</text>
+<text x="400" y="392" text-anchor="middle" font-size="16" font-weight="700" fill="#047857" direction="rtl">קודם מצמצמים את הפריטים לשורה אחת להזמנה, ורק אז מחברים</text>
+</g>
+</svg></div>
+<ol class="caps">
+<li>הזמנה 8 היא שורה אחת עם טיפ של 10 ש״ח. בטבלת הפריטים יש לה שלושה פריטים.</li>
+<li>ה-JOIN מתאים את ההזמנה לכל אחד משלושת הפריטים. השורה מועתקת שלוש פעמים, ובכל עותק הטיפ הוא 10.</li>
+<li>SUM(tip) עובר על כל העותקים ומסכם 30. המסד עשה בדיוק מה שביקשו ממנו, והמספר שגוי.</li>
+<li>התיקון: קודם מצמצמים את הפריטים לשורה אחת לכל הזמנה, ורק אז מחברים. ככה הטיפ נספר פעם אחת.</li>
+</ol>
+</div>
+
+<h3>בדיקת גרנולריות: כמה שורות יש אחרי ה-JOIN?</h3>
+<p>הבדיקה הכי זולה להכפלה היא לספור שורות לפני ואחרי. בחרו חיבור ותראו מה קורה לשורות ולסכום הטיפים (הסכום הנכון הוא 209). הבדיקה כאן על כל ההזמנות.</p>
+<div class="sim" data-id="p2-sim-grain"><div class="sh">בדיקת גרנולריות: שורות וטיפים אחרי חיבור</div>
+<div class="row"><label for="p2g-sel"><b>חיבור:</b></label><select id="p2g-sel" aria-label="בחירת חיבור"></select></div>
+<div class="out"><div class="p2-code" id="p2g-sql"></div>
+<div class="kpis" id="p2g-k"></div>
+<div id="p2g-v" style="font-weight:700"></div></div>
+</div>
+<script>(function(){ FL.dom(function(){ FL.onReady(function(ok){
+  const box = FL.$('[data-id="p2-sim-grain"]'); if (!box) return;
+  const sel = FL.$('#p2g-sel'), sqlEl = FL.$('#p2g-sql'), k = FL.$('#p2g-k'), v = FL.$('#p2g-v');
+  const OPTS = [
+    ['orders o', 'הטבלה לבדה'],
+    ['orders o LEFT JOIN customers c ON c.id = o.customer_id', 'כל הזמנה מתחברת לכל היותר ללקוח אחד'],
+    ['orders o LEFT JOIN app_events e ON e.order_id = o.id', 'כל הזמנה מתחברת לכל היותר לאירוע אחד'],
+    ['orders o JOIN couriers cr ON cr.id = o.courier_id', 'INNER JOIN לשליחים: הזמנות בלי שליח נעלמות'],
+    ['customers c JOIN orders o ON o.customer_id = c.id', 'INNER JOIN ללקוחות: ההזמנה היתומה נעלמת'],
+    ['orders o JOIN order_items i ON i.order_id = o.id', 'כל הזמנה מתחברת לכל הפריטים שלה'],
+    ['orders o JOIN order_items i ON i.order_id = o.id JOIN dishes d ON d.id = i.dish_id', 'שרשרת עד המנות: עדיין שורה לכל פריט']
+  ];
+  sel.innerHTML = OPTS.map(function(o,i){ return '<option value="'+i+'">'+FL.esc(o[0])+'</option>'; }).join('');
+  const seen = {};
+  function render(){
+    const o = OPTS[+sel.value];
+    sqlEl.textContent = 'SELECT COUNT(*) AS rows_, COUNT(DISTINCT o.id) AS orders_, SUM(o.tip) AS tips\nFROM ' + o[0] + ';';
+    if (!ok){ v.textContent = 'מנוע ה-SQL לא נטען.'; return; }
+    const r = FL.exec('SELECT COUNT(*), COUNT(DISTINCT o.id), SUM(o.tip) FROM ' + o[0]).values[0];
+    const rows = r[0], ords = r[1], tips = r[2];
+    const bad = rows > ords, lost = rows === ords && ords < 87;
+    k.innerHTML = '<div class="kpi"><b>'+rows+'</b><span>שורות אחרי החיבור</span></div><div class="kpi"><b>'+ords+'</b><span>הזמנות שונות</span></div><div class="kpi '+(tips===209?'g':'r')+'"><b>'+tips+'</b><span>SUM(tip), הנכון: 209</span></div>';
+    if (bad) v.innerHTML = '<span class="chip r">הכפלה</span> כל הזמנה נספרת בממוצע ' + (rows/ords).toFixed(1) + ' פעמים, ולכן הסכום מנופח.';
+    else if (lost) v.innerHTML = '<span class="chip a">אין הכפלה, יש אובדן</span> ' + (87-ords) + ' הזמנות נעלמו מהחיבור' + (tips !== 209 ? ', והסכום ירד ל-' + tips + '.' : '. הסכום נשאר 209 כי הטיפים נמצאים רק בהזמנות שנשארו, אבל מספר ההזמנות כבר לא 87.');
+    else v.innerHTML = '<span class="chip g">בטוח</span> שורה אחת לכל הזמנה והסכום נכון.';
+    seen[sel.value] = 1; if (Object.keys(seen).length >= 4) FL.done('p2-sim-grain');
+  }
+  sel.addEventListener('change', render); render();
+}); }); })();</script>
+
+<div class="lab" data-id="p2-lab-f2" data-title="שורות לפני ואחרי">
+<div class="q-src">תחזירו בשורה אחת שתי עמודות: כמה שורות יש אחרי <code>orders JOIN order_items</code> (<code>COUNT(*)</code>), וכמה הזמנות אמיתיות נשארו (<code>COUNT(DISTINCT o.id)</code>).</div>
+<pre class="start">SELECT COUNT(*) AS rows_after_join,
+       -- עמודה שנייה: כמה הזמנות שונות
+FROM orders o
+JOIN order_items i ON i.order_id = o.id</pre>
+<pre class="check">SELECT COUNT(*), COUNT(DISTINCT o.id) FROM orders o JOIN order_items i ON i.order_id = o.id</pre>
+<pre class="solution">SELECT COUNT(*) AS rows_after_join,
+       COUNT(DISTINCT o.id) AS real_orders
+FROM orders o
+JOIN order_items i ON i.order_id = o.id</pre>
+<ol class="hints"><li>DISTINCT בתוך COUNT סופר רק ערכים שונים.</li></ol>
+<div class="why-src">219 שורות מול 87 הזמנות: בממוצע בערך 2.5 פריטים להזמנה. כל סכום של עמודה מטבלת ההזמנות (טיפ, זמן משלוח) יוכפל בערך פי 2.5.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-f1" data-title="תקנו את הדשבורד של יבגני" >
+<div class="q-src">השאילתה למטה מחזירה לכל ערוץ (רק <code>app</code> ו-<code>phone</code>, הזמנות שנמסרו) הכנסה וסך טיפים. ההכנסה נכונה, אבל הטיפים מנופחים (320 ו-197 במקום 135 ו-74). תתקנו כך שההכנסה תישאר אותו דבר והטיפים ייספרו פעם אחת לכל הזמנה. עמודות: <code>channel</code>, <code>revenue</code>, <code>tips</code>.</div>
+<pre class="start">SELECT o.channel,
+       SUM(i.qty * d.price) AS revenue,
+       SUM(o.tip)           AS tips
+FROM orders o
+JOIN order_items i ON i.order_id = o.id
+JOIN dishes d      ON d.id = i.dish_id
+WHERE o.channel IN ('app', 'phone')
+  AND o.status = 'delivered'
+GROUP BY o.channel</pre>
+<pre class="check">WITH rev AS (SELECT i.order_id, SUM(i.qty * d.price) AS revenue FROM order_items i JOIN dishes d ON d.id = i.dish_id GROUP BY i.order_id) SELECT o.channel, SUM(r.revenue), SUM(o.tip) FROM orders o JOIN rev r ON r.order_id = o.id WHERE o.channel IN ('app', 'phone') AND o.status = 'delivered' GROUP BY o.channel</pre>
+<pre class="solution">WITH rev AS (
+  SELECT i.order_id, SUM(i.qty * d.price) AS revenue
+  FROM order_items i
+  JOIN dishes d ON d.id = i.dish_id
+  GROUP BY i.order_id
+)
+SELECT o.channel,
+       SUM(r.revenue) AS revenue,
+       SUM(o.tip)     AS tips
+FROM orders o
+JOIN rev r ON r.order_id = o.id
+WHERE o.channel IN ('app', 'phone')
+  AND o.status = 'delivered'
+GROUP BY o.channel</pre>
+<ol class="hints"><li>צריך שורה אחת לכל הזמנה לפני החיבור עם orders. איך מצמצמים את הפריטים להזמנה?</li><li>WITH rev AS (...) יוצר טבלה זמנית: הכנסה לכל הזמנה. אחר כך מחברים אותה ל-orders.</li></ol>
+<div class="why-src">עכשיו app: הכנסה 6,180 וטיפים 135. phone: הכנסה 3,492 וטיפים 74. סך הטיפים 209, בדיוק כמו בקופה. הטריק: מצמצמים את צד ״הרבים״ לגרנולריות של צד ״האחד״ לפני החיבור.</div>
+</div>
+
+<div class="box trap">
+<p><b>רשימת בדיקה לפני שסומכים על JOIN:</b></p>
+<ol>
+<li>תגידו בקול מה הגרנולריות של כל טבלה: שורה היא הזמנה, פריט או לקוח?</li>
+<li>תספרו שורות לפני ואחרי כל חיבור. אם המספר גדל, אתם בתוך fan-out.</li>
+<li>אל תסכמו עמודה של טבלת ״האחד״ אחרי חיבור לטבלת ״הרבים״.</li>
+<li>תצמצמו את צד ״הרבים״ בתת-שאילתה או ב-<dfn data-d="CTE: שאילתה עם שם זמני שמגדירים בתחילת הפקודה עם WITH, ואפשר להשתמש בה כמו בטבלה. נפרט בסעיף 6.">CTE</dfn> לפני החיבור. <dfn data-d="תת-שאילתה: שאילתה קטנה שכתובה בתוך שאילתה אחרת, בתוך סוגריים. נפרט בסעיף 6.">תת-שאילתה</dfn> היא שאילתה בתוך סוגריים.</li>
+<li>תשוו את הסכום לגורם חיצוני שאתם סומכים עליו: הקופה, הנהלת החשבונות, ספירה ידנית.</li>
+</ol>
+</div>
+
+<div class="box try" data-id="p2-try-ai">
+<p>מבקשים מ-AI לכתוב את השאילתה, ובודקים אותו. תדביקו את הפרומפט בצ׳אט של כלי AI שאתם מכירים. את התוצאה בודקים במעבדה למעלה: אם הטיפים שהוא מחזיר הם לא 135 ו-74, השאילתה הכפילה.</p>
+<ol>
+<li>פתחו אחד הכלים. אל תדביקו נתונים רגישים (כאן הנתונים בדויים).</li>
+<li>הדביקו את הפרומפט.</li>
+<li>העתיקו את השאילתה שקיבלתם, הדביקו אותה בעורך של המעבדה <b>תקנו את הדשבורד של יבגני</b> והריצו.</li>
+<li>אם הטיפים שגויים, כתבו ל-AI: ״הטיפים מנופחים. מה הגרנולריות של כל טבלה?״ וראו אם הוא מתקן לבד.</li>
+</ol>
+<pre class="prompt">יש לי מסד SQLite עם הטבלאות הבאות:
+orders(id, customer_id, courier_id, order_ts, channel, delivery_min, rating, tip, status)
+order_items(order_id, dish_id, qty)
+dishes(id, name, category, price, cost)
+כתוב שאילתה שמחזירה לכל ערוץ (רק app ו-phone), מהזמנות עם status = 'delivered', את ההכנסה מהמנות (SUM של qty כפול price) ואת סך הטיפים מטבלת orders.
+הסבר בשורה אחת איך מנעת מצב שבו אחרי ה-JOIN הסכומים של orders מוכפלים.</pre>
+<p class="tools"><a class="tool" href="https://claude.ai" target="_blank" rel="noopener">Claude</a><a class="tool" href="https://aistudio.google.com" target="_blank" rel="noopener">Google AI Studio</a></p></div>
+
+<div class="quiz" data-id="p2-q-fan1" data-a="2"><p class="qq">מריצים <code>SELECT SUM(o.tip) FROM orders o JOIN order_items i ON i.order_id = o.id</code>. סך הטיפים האמיתי בטבלה הוא 209. מה תחזיר השאילתה?</p>
+<button class="opt">209, כי הטיפ נשמר בטבלת ההזמנות ולא בפריטים</button>
+<button class="opt">517, כי כל טיפ נספר פעם לכל פריט בהזמנה</button>
+<button class="opt">219, מספר השורות אחרי החיבור</button>
+<button class="opt">שגיאה, כי אי אפשר לסכם עמודה של טבלה אחת אחרי JOIN</button>
+<div class="why">אחרי החיבור יש שורה לכל פריט (219), והטיפ של כל הזמנה משוכפל בכל השורות שלה, ולכן הסכום מנופח ל-517. המסד לא מזהה את הבעיה כי השאילתה חוקית. 219 הוא מספר השורות ולא הסכום.</div></div>
+
+<div class="quiz" data-id="p2-q-fan2" data-a="3"><p class="qq">מחשבים אחרי <code>orders JOIN order_items</code> את <code>AVG(delivery_min)</code> לערוץ האפליקציה. יוצא 34.21, ובטבלת ההזמנות לבדה הממוצע הוא 34.97. מה נכון?</p>
+<button class="opt">אין בעיה: ממוצע של ערכים משוכפלים הוא אותו ממוצע</button>
+<button class="opt">הממוצע הוכפל פי 2.5</button>
+<button class="opt">הממוצע מוטה: הזמנות עם הרבה פריטים נספרות יותר פעמים, ולכן משפיעות יותר</button>
+<button class="opt">הממוצע נכון, והפער הוא עיגול</button>
+<div class="why">ממוצע לא מוכפל, אבל הוא משוקלל: הזמנה עם 4 פריטים נספרת 4 פעמים, והזמנה עם פריט אחד נספרת פעם אחת. יוצא מספר שהוא כבר לא ממוצע של הזמנות. הדרך הנכונה היא לחשב אותו בטבלת ההזמנות לבדה.</div></div>
+
+<div class="box think" data-id="p2-th-noerr"><p>למה המסד לא מתריע על fan-out? ומי כן יכול לתפוס אותו, ואיך?</p>
+<div class="ans">המסד לא מכיר את המשמעות העסקית של העמודות. מבחינתו השאילתה חוקית ועושה בדיוק מה שכתבתם. את הטעות תופסים אנשים ותהליכים: בדיקת גרנולריות, ספירת שורות לפני ואחרי, השוואה לסכום ידוע (הקופה, הנהלת החשבונות), ובצוותים גדולים גם בדיקות אוטומטיות על דוחות וסקירה של שאילתות. בגלל זה, כשה-AI כותב שאילתות, צריך מישהו שבודק: AI יכול לכתוב שאילתה חוקית לגמרי שמכפילה סכומים.</div></div>
+
+<div class="box meaning">
+<p>Fan-out הוא אחת הדרכים הנפוצות למספר שגוי שנראה אמין. הוא פוגע בכסף (הכנסה), בתפעול (זמני משלוח) ובשיווק (כמה לקוחות). הנזק הוא החלטה על בסיס מספר מנופח. ההגנה הכי טובה היא הרגל: לאמת כל סכום מול נקודת ייחוס מוכרת.</p>
+</div>
+<div class="box real">
+<p>צוותי כספים ונתונים מקפידים על ״התאמה״ (reconciliation): הסכום בדוח חייב להתאים לסכום במערכת המקור, ואם לא, הדוח לא יוצא. במחסני נתונים מקצועיים מגדירים מראש את הגרנולריות של כל טבלה, ובכלים כמו dbt אפשר להגדיר בדיקות אוטומטיות על ייחודיות של מפתח, כדי לתפוס חיבורים שמשכפלים שורות.</p>
+</div>
+<div class="teach"><b>🎓 למרצה:</b> בקשו מהכיתה לנחש לפני שמציגים את הסרגל: כמה יהיה הסכום אחרי ה-JOIN? מי שמנחש לא יצליח, ולכן חייבים למדוד. בהנפשה עצרו בשלב 3 ושאלו: מי בכיתה היה תופס את זה בלי להשוות לקופה?</div>
+</section>
+<section class="sec" id="s2-5" data-t="NULL ו-CASE">
+<div class="sec-h"><div class="sec-n">5</div><h2>NULL, COALESCE, CASE ותאריכים</h2></div>
+<p class="lead">יבגני שואל: מה הטיפ הממוצע? כמה משלוחים מהירים? באיזה יום עמוס? בכל אחת מהשאלות האלה צריך להחליט מה עושים עם ערך חסר, ועם זמן.</p>
+
+<div class="defline"><b>NULL:</b> ערך שאומר ״אין מידע״. הוא לא אפס ולא טקסט ריק. דוגמה: בהזמנה 1 הטיפ הוא NULL, כלומר אנחנו לא יודעים אם ניתן טיפ. 58 מתוך 87 ההזמנות הן כאלה.</div>
+<div class="defline"><b>COALESCE(a, b):</b> מחזירה את הערך הראשון ברשימה שהוא לא NULL. דוגמה: <code>COALESCE(tip, 0)</code> מחזירה את הטיפ, ואם הוא חסר מחזירה 0.</div>
+
+<p>ל-NULL יש שלוש התנהגויות שחוזרות בכל מסד. תריצו ותראו אותן. את הנושא הזה למדתם <a href="../lecture2.3.html">בשיעור על NULL, CASE ותאריכים</a>, ועכשיו נראה אותו על נתוני המסעדה:</p>
+<div class="lab" data-id="p2-lab-nullexp" data-title="חקר: איך NULL מתנהג">
+<div class="q-src">בכל עמודה תוצאה אחרת. נסו לנחש לפני ההרצה.</div>
+<pre class="start">SELECT NULL = NULL      AS equals_null,
+       NULL IS NULL     AS is_null,
+       5 + NULL         AS arithmetic,
+       COALESCE(NULL, 0) AS coalesced,
+       (SELECT COUNT(tip) FROM orders) AS count_tip,
+       (SELECT COUNT(*)   FROM orders) AS count_all</pre>
+<div class="why-src">(1) <code>NULL = NULL</code> לא נותן אמת אלא NULL: אי אפשר להשוות למשהו לא ידוע, ולכן בודקים עם <code>IS NULL</code>. (2) חישוב שיש בו NULL נותן NULL, ולכן ערך חסר אחד מוחק את השורה מהחישוב. (3) COUNT(עמודה) מדלגת על NULL: רק ב-29 מתוך 87 הזמנות רשום טיפ.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-n1" data-title="הזמנות בלי דירוג" data-require="IS\s+NULL" data-require-msg="בודקים ערך חסר עם IS NULL.">
+<div class="q-src">כמה הזמנות חסר בהן דירוג (<code>rating</code>)? השאילתה למטה מחזירה 0, בלי שגיאה. תתקנו אותה.</div>
+<pre class="start">SELECT COUNT(*) AS no_rating
+FROM orders
+WHERE rating = NULL</pre>
+<pre class="check">SELECT COUNT(*) FROM orders WHERE rating IS NULL</pre>
+<pre class="solution">SELECT COUNT(*) AS no_rating
+FROM orders
+WHERE rating IS NULL</pre>
+<ol class="hints"><li>השוואה עם = אף פעם לא אמת כשצד אחד NULL. יש אופרטור מיוחד בשביל זה.</li></ol>
+<div class="why-src">32 הזמנות בלי דירוג, כלומר 37% מכל ההזמנות. שימו לב לשקט: השאילתה השגויה הציגה 0, שנראה ״מצוין״. וגם: דירוג ממוצע שמבוסס רק על 55 ההזמנות המדורגות לא מייצג את כל הלקוחות.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-n2" data-title="הטיפ הממוצע: שתי שאלות שונות">
+<div class="q-src">בהזמנות שנמסרו באפליקציה, תחזירו שני ממוצעים: <code>avg_tip_given</code> (ממוצע הטיפ, רק בהזמנות שרשום בהן טיפ) ו-<code>avg_tip_per_order</code> (ממוצע שבו טיפ חסר נספר כ-0).</div>
+<pre class="start">SELECT AVG(tip) AS avg_tip_given,
+       -- ממוצע שבו טיפ חסר נספר כאפס
+FROM orders
+WHERE channel = 'app' AND status = 'delivered'</pre>
+<pre class="check">SELECT AVG(tip), AVG(COALESCE(tip, 0)) FROM orders WHERE channel = 'app' AND status = 'delivered'</pre>
+<pre class="solution">SELECT AVG(tip)               AS avg_tip_given,
+       AVG(COALESCE(tip, 0))  AS avg_tip_per_order
+FROM orders
+WHERE channel = 'app' AND status = 'delivered'</pre>
+<ol class="hints"><li>כדי לספור NULL כאפס, עוטפים את העמודה ב-COALESCE בתוך הפונקציה.</li></ol>
+<div class="why-src">יוצא 7.11 ו-3.46. הראשון מתאר מי שנתן טיפ (19 הזמנות), והשני את ההזמנה הממוצעת (39 הזמנות). אף אחד מהם לא טעות. הטעות היא להציג אחד מהם בלי להגיד לאיזו שאלה הוא עונה.</div>
+</div>
+
+<div class="defline"><b>CASE:</b> ביטוי שמחזיר ערך לפי תנאים, כמו ״אם... אז... אחרת״. דוגמה: <code>CASE WHEN delivery_min &lt;= 30 THEN 'מהיר' ELSE 'איטי' END</code> נותן לכל משלוח אחת משתי תוויות.</div>
+
+<div class="lab" data-id="p2-lab-n3" data-title="CASE: תוויות עסקיות" data-require="NOT\s+NULL|IS\s+NULL" data-require-msg="הזמנות בלי זמן משלוח צריכות טיפול מפורש: הוסיפו תנאי על delivery_min.">
+<div class="q-src">תסווגו משלוחים: עד 30 דקות <b>fast</b>, 31 עד 40 <b>normal</b>, מעל 40 <b>slow</b>. תחזירו עמודה אחת עם הסיווג (<code>speed</code>) ועמודה שנייה עם מספר ההזמנות. השאילתה למטה מציגה 45 משלוחים איטיים. תמצאו למה, ותתקנו כך שרק הזמנות עם <code>delivery_min</code> ייספרו.</div>
+<pre class="start">SELECT CASE WHEN delivery_min &lt;= 30 THEN 'fast'
+            WHEN delivery_min &lt;= 40 THEN 'normal'
+            ELSE 'slow' END AS speed,
+       COUNT(*) AS orders
+FROM orders
+GROUP BY speed</pre>
+<pre class="check">SELECT CASE WHEN delivery_min &lt;= 30 THEN 'fast' WHEN delivery_min &lt;= 40 THEN 'normal' ELSE 'slow' END, COUNT(*) FROM orders WHERE delivery_min IS NOT NULL GROUP BY 1</pre>
+<pre class="solution">SELECT CASE WHEN delivery_min &lt;= 30 THEN 'fast'
+            WHEN delivery_min &lt;= 40 THEN 'normal'
+            ELSE 'slow' END AS speed,
+       COUNT(*) AS orders
+FROM orders
+WHERE delivery_min IS NOT NULL
+GROUP BY speed</pre>
+<ol class="hints"><li>הזמנות במקום הן לא משלוחים: ה-delivery_min שלהן NULL. מה קורה לתנאי <code>NULL &lt;= 30</code>?</li></ol>
+<div class="why-src">השוואה עם NULL היא לא אמת, אז כל התנאים נכשלים והשורה נופלת ל-ELSE ומקבלת ״slow״. אלה 28 הזמנות שהן לא משלוחים. אחרי הסינון: 17 מהירים, 25 רגילים ו-17 איטיים. הכלל: בכל CASE שואלים מה קורה לשורה עם NULL.</div>
+</div>
+
+<h3>תאריכים: טקסט שאפשר למיין</h3>
+<div class="defline"><b>חותמת זמן כטקסט:</b> זמן שכתוב <code>YYYY-MM-DD HH:MM</code>, עם היחידה הגדולה (שנה) קודם. מסד משווה וממיין אותו כמו כל טקסט, והסדר יוצא נכון. דוגמה: <code>2026-04-30 12:15</code> גדול מ-<code>2026-04-29 23:59</code>.</div>
+<div class="defline"><b>strftime:</b> פונקציה של SQLite שמוציאה חלק מתאריך. דוגמה: <code>strftime('%m', '2026-04-30 12:15')</code> מחזירה <code>04</code> (החודש).</div>
+<div class="tw"><table class="tbl p2-dial"><thead><tr><th>קוד</th><th>מה מוציאים</th><th>דוגמה לזמן <bdi dir="ltr">2026-04-30</bdi> 12:15</th></tr></thead><tbody>
+<tr><td><code>%Y</code></td><td>שנה</td><td>2026</td></tr>
+<tr><td><code>%Y-%m</code></td><td>חודש עם שנה (דלי חודשי)</td><td><bdi dir="ltr">2026-04</bdi></td></tr>
+<tr><td><code>%d</code></td><td>יום בחודש</td><td>30</td></tr>
+<tr><td><code>%H</code></td><td>שעה (24 שעות)</td><td>12</td></tr>
+<tr><td><code>%w</code></td><td>יום בשבוע, 0 הוא יום ראשון</td><td>4 (חמישי)</td></tr>
+</tbody></table></div>
+<p>כלל חשוב: כשרוצים ״הכנסה לפי חודש״, קודם מעגלים כל זמן לדלי (למשל <code>%Y-%m</code>) ורק אז מקבצים. אם מקבצים לפי הזמן המדויק, כל דקה היא קבוצה נפרדת.</p>
+
+<div class="lab" data-id="p2-lab-dt1" data-title="חקר: חילוץ חלקי זמן">
+<div class="q-src">תריצו ותראו איך הזמן מתפרק לחלקים.</div>
+<pre class="start">SELECT order_ts,
+       strftime('%Y-%m', order_ts) AS month,
+       strftime('%w', order_ts)    AS weekday,
+       strftime('%H', order_ts)    AS hour
+FROM orders
+LIMIT 8</pre>
+<div class="why-src">היום בשבוע יוצא כמספר: 0 ראשון, 5 שישי, 6 שבת. ב-PostgreSQL וב-BigQuery הפונקציות כתובות אחרת (נראה השוואה בסעיף 7), אבל הרעיון זהה.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-n4" data-title="באיזה יום בשבוע עמוס?" data-ordered="1">
+<div class="q-src">בהזמנות שנמסרו, תחזירו את היום בשבוע (<code>strftime('%w', order_ts)</code>) ואת מספר ההזמנות, מהיום העמוס לפחות עמוס.</div>
+<pre class="start">SELECT strftime('%w', order_ts) AS weekday, COUNT(*) AS orders
+FROM orders
+WHERE status = 'delivered'
+-- השלימו</pre>
+<pre class="check">SELECT strftime('%w', order_ts), COUNT(*) FROM orders WHERE status = 'delivered' GROUP BY 1 ORDER BY 2 DESC</pre>
+<pre class="solution">SELECT strftime('%w', order_ts) AS weekday, COUNT(*) AS orders
+FROM orders
+WHERE status = 'delivered'
+GROUP BY weekday
+ORDER BY orders DESC</pre>
+<ol class="hints"><li>מקבצים לפי החלק שהוצאנו, וממיינים לפי הספירה.</li></ol>
+<div class="why-src">שבת (25) ושישי (22) מובילים בפער גדול. יחד הם 47 מתוך 82 ההזמנות שנמסרו, בערך 57%. זו תובנה שאפשר לפעול לפיה: סידור משמרות, כמה שליחים, מבצעים לימי ראשון עד חמישי.</div>
+</div>
+
+<div class="mk mk-dash"><div class="mk-bar"><i></i><i></i><i></i><span class="url">הזמנות שנמסרו לפי יום בשבוע · הדמיה סכמטית</span></div>
+<div class="mk-body">
+<div class="bars" style="height:100px;align-items:flex-end;direction:rtl">
+<i style="height:28px" title="ראשון 7"></i><i style="height:20px" title="שני 5"></i><i style="height:24px" title="שלישי 6"></i><i style="height:36px" title="רביעי 9"></i><i style="height:32px" title="חמישי 8"></i><i style="height:88px;background:linear-gradient(180deg,#f59e0b,#fbbf24)" title="שישי 22"></i><i style="height:100px;background:linear-gradient(180deg,#f59e0b,#fbbf24)" title="שבת 25"></i>
+</div>
+<div style="display:flex;gap:5px;font-size:.78rem;color:#64748b;direction:rtl;margin-top:2px"><span style="flex:1;text-align:center">א׳ 7</span><span style="flex:1;text-align:center">ב׳ 5</span><span style="flex:1;text-align:center">ג׳ 6</span><span style="flex:1;text-align:center">ד׳ 9</span><span style="flex:1;text-align:center">ה׳ 8</span><span style="flex:1;text-align:center;font-weight:800;color:#b45309">ו׳ 22</span><span style="flex:1;text-align:center;font-weight:800;color:#b45309">ש׳ 25</span></div>
+</div></div>
+<p>זו תוצאת המעבדה כדשבורד. דשבורד הוא בעצם GROUP BY עם עיצוב.</p>
+
+<div class="quiz" data-id="p2-q-eqnull" data-a="3"><p class="qq">מה מחזירה <code>SELECT COUNT(*) FROM orders WHERE rating = NULL</code>?</p>
+<button class="opt">32, מספר ההזמנות בלי דירוג</button>
+<button class="opt">87, כל ההזמנות</button>
+<button class="opt">0, בלי הודעת שגיאה</button>
+<button class="opt">שגיאת תחביר</button>
+<div class="why">השוואה עם NULL נותנת NULL ולא אמת, ולכן אף שורה לא עוברת את ה-WHERE. השאילתה חוקית, ולכן אין שגיאה. הצורה הנכונה היא <code>rating IS NULL</code>.</div></div>
+
+<div class="quiz" data-id="p2-q-casenull" data-a="1"><p class="qq">הזמנה במקום, עם <code>delivery_min = NULL</code>, עוברת דרך <code>CASE WHEN delivery_min &lt;= 30 THEN 'מהיר' ELSE 'איטי' END</code>. איזו תווית תקבל?</p>
+<button class="opt">איטי, כי התנאי לא אמת ולכן עוברים ל-ELSE</button>
+<button class="opt">מהיר, כי NULL נחשב קטן</button>
+<button class="opt">NULL, כי המסד לא יודע לסווג</button>
+<button class="opt">שגיאה בזמן הריצה</button>
+<div class="why">השוואה עם NULL היא לא אמת, ו-CASE עובר לענף ה-ELSE. בלי ELSE היה יוצא NULL, אבל עם ELSE השורה מקבלת ״איטי״, וזו טעות שקטה. התיקון הוא טיפול מפורש ב-NULL: סינון, או <code>WHEN delivery_min IS NULL THEN 'לא רלוונטי'</code>.</div></div>
+
+<div class="box think" data-id="p2-th-tip"><p>טיפ חסר: זה ״0 ש״ח״ או ״לא ידוע״? האם זה משנה אם מציגים 7.11 או 3.46 כטיפ הממוצע?</p>
+<div class="ans">אם המערכת רושמת טיפ רק כשהלקוח מזין סכום, חסר אומר ״לא ניתן טיפ״ וקרוב ל-0. אז 3.46 מתאר את ההזמנה הממוצעת, והוא גם מתאים להערכת הכנסה של שליחים. אם הטיפ נרשם רק בחלק מהמקרים בגלל תקלה, ״לא ידוע״ הוא התיאור הנכון, ו-7.11 מתאר רק מי שנרשם. ההחלטה מה ערך חסר אומר היא החלטה עסקית. מי שיודע אותה הוא בעל התהליך, לא ה-AI ולא מי שכותב את השאילתה.</div></div>
+
+<div class="box meaning">
+<p>ב-NULL וב-CASE נתון הופך להגדרה. ״משלוח מהיר״, ״לקוח פעיל״, ״טיפ ממוצע״: כל אחד תלוי בהחלטה מה עושים עם ערכים חסרים ואיפה חותכים. את ההגדרות האלה כותבים פעם אחת ומסכימים עליהן, אחרת שני דוחות יציגו שני מספרים. בחלק 4 נחזור לזה בתור ״הגדרה אחת לכל מדד״.</p>
+</div>
+<div class="box real">
+<p>טיפול ב-NULL הוא אחד הכללים הרגילים בשלב ההכנה של נתונים לדוחות (ETL, נראה בחלק 4): ממלאים ערך ברירת מחדל, משמיטים שורה או מסמנים אותה. התנהגות NULL זהה ב-SQLite, ב-PostgreSQL וב-BigQuery, כי היא חלק מהתקן של SQL. וסיווגים כמו ״לקוח גדול / קטן״ או ״משלוח מהיר / איטי״ נכתבים כמעט תמיד כ-CASE בשכבת הדוחות.</p>
+</div>
+<div class="teach"><b>🎓 למרצה:</b> לפני מעבדת n3 שאלו: מי יודע כמה משלוחים איטיים יהיו? רוב הכיתה לא תחשוד שהתוצאה 45 שגויה. תנו להם להריץ, להיתקל במספר, ולנסות לנחש אם הוא סביר. זו הדגמה של NULL שמייצר מספר סביר אבל שגוי.</div>
+</section>
+<section class="sec" id="s2-6" data-t="CTE וחלון">
+<div class="sec-h"><div class="sec-n">6</div><h2>CTE ופונקציות חלון: שאלות בשלבים</h2></div>
+<p class="lead">יש שאלות שאי אפשר לענות עליהן בשאילתה אחת פשוטה. ״אילו לקוחות מעל הממוצע?״ (קודם צריך את הממוצע). ״איך המכירות מצטברות?״ (צריך את כל השורות וגם סכום רץ). ״האם מאי טוב מאפריל?״ (צריך להשוות לשורה הקודמת). בשביל זה יש CTE וחלונות.</p>
+
+<div class="defline"><b>CTE (טבלה זמנית עם שם):</b> שאילתה שנותנים לה שם בתחילת הפקודה עם <code>WITH</code>, ואחר כך משתמשים בה כמו בטבלה. דוגמה: <code>WITH rev AS (...) SELECT * FROM rev</code> יוצרת טבלה זמנית בשם rev, שקיימת רק בזמן הפקודה.</div>
+<p>CTE מפרק שאלה מורכבת לשלבים שקוראים מלמעלה למטה, כמו מתכון: שלב 1 מכין הכנסה לכל הזמנה, שלב 2 משתמש בה. הנה דוגמה: הזמנות שההכנסה שלהן מעל ההכנסה הממוצעת להזמנה.</p>
+<pre class="code" data-lang="sql">WITH order_rev AS (                       -- שלב 1: הכנסה לכל הזמנה
+  SELECT o.id, SUM(i.qty * d.price) AS revenue
+  FROM orders o
+  JOIN order_items i ON i.order_id = o.id
+  JOIN dishes d      ON d.id = i.dish_id
+  WHERE o.status = 'delivered'
+  GROUP BY o.id
+)
+SELECT id, revenue                         -- שלב 2: השאלה על התוצאה
+FROM order_rev
+WHERE revenue &gt; (SELECT AVG(revenue) FROM order_rev);</pre>
+<p>ההכנסה הממוצעת להזמנה יוצאת בערך 157.12 ש״ח, ו-41 מתוך 82 ההזמנות שנמסרו עוברות אותה. עכשיו תעשו את אותה תבנית בעצמכם, אבל עם שאלה אחרת:</p>
+
+<div class="lab" data-id="p2-lab-c1" data-title="CTE: לקוחות מעל הממוצע">
+<div class="q-src">תחזירו שם לקוח (<code>name</code>) והכנסה שלו (<code>revenue</code>), מהזמנות שנמסרו, רק ללקוחות שההכנסה הכוללת שלהם גבוהה מההכנסה הממוצעת ללקוח.</div>
+<pre class="start">WITH cust_rev AS (
+  -- שלב 1: הכנסה לכל לקוח
+)
+SELECT name, revenue
+FROM cust_rev
+-- שלב 2: רק מי שמעל הממוצע</pre>
+<pre class="check">WITH cust_rev AS (SELECT c.id, c.name, SUM(i.qty * d.price) AS revenue FROM customers c JOIN orders o ON o.customer_id = c.id JOIN order_items i ON i.order_id = o.id JOIN dishes d ON d.id = i.dish_id WHERE o.status = 'delivered' GROUP BY c.id, c.name) SELECT name, revenue FROM cust_rev WHERE revenue &gt; (SELECT AVG(revenue) FROM cust_rev)</pre>
+<pre class="solution">WITH cust_rev AS (
+  SELECT c.id, c.name, SUM(i.qty * d.price) AS revenue
+  FROM customers c
+  JOIN orders o      ON o.customer_id = c.id
+  JOIN order_items i ON i.order_id = o.id
+  JOIN dishes d      ON d.id = i.dish_id
+  WHERE o.status = 'delivered'
+  GROUP BY c.id, c.name
+)
+SELECT name, revenue
+FROM cust_rev
+WHERE revenue &gt; (SELECT AVG(revenue) FROM cust_rev)</pre>
+<ol class="hints"><li>שלב 1 צריך להיות הכנסה לכל לקוח, ולא לכל הזמנה.</li><li>ובשלב 2: מאיזה מספר משווים?</li></ol>
+<div class="why-src">הממוצע ללקוח הוא בערך 581.33 ש״ח, ותשעה לקוחות עוברים אותו (תמר, אבי, הילה, רועי, איתי, שירה, עידו, אורן וגיל). השלב הראשון קיבץ לפי לקוח ולא לפי הזמנה: אותה תבנית, גרנולריות אחרת.</div>
+</div>
+
+<div class="defline"><b>תת-שאילתה (subquery):</b> שאילתה קטנה בתוך סוגריים, בתוך שאילתה אחרת. דוגמה: <code>(SELECT AVG(revenue) FROM cust_rev)</code> מחזירה מספר אחד, ואפשר להשוות אליו. תת-שאילתה יכולה גם להחזיר רשימה, ואז משתמשים בה עם <code>IN</code>:</div>
+<pre class="code" data-lang="sql">SELECT id, name
+FROM customers
+WHERE id IN (SELECT customer_id FROM orders WHERE channel = 'phone');  -- 13 לקוחות</pre>
+<p>כלל אצבע: שלב אחד פשוט, תת-שאילתה מספיקה. שני שלבים ומעלה, או צורך להשתמש באותה תוצאה פעמיים, עדיף CTE. הוא נקרא בסדר, ואפשר לתת לו שם.</p>
+
+<div class="defline"><b>פונקציית חלון (window function):</b> חישוב על קבוצת שורות קרובות שלא מכווץ אותן: כל שורה נשארת, ומקבלת עמודה חדשה. דוגמה: סכום מצטבר לאורך הזמן, שבו בכל שורה רואים גם את ההכנסה של אותו חודש וגם את הסכום עד אליו.</div>
+
+<div class="anim" data-id="p2-anim-window" data-auto="1" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 380" role="img" aria-label="הנפשה: GROUP BY מכווץ שורות, פונקציית חלון שומרת אותן ומוסיפה עמודה מצטברת">
+<text x="400" y="26" text-anchor="middle" font-size="16" font-weight="700" fill="#64748b" direction="rtl">חמש ההזמנות הראשונות והכנסה לכל אחת</text>
+<g font-size="17" font-weight="700">
+<rect x="150" y="44" width="170" height="36" rx="8" fill="#e0e7ff"/><text x="235" y="68" text-anchor="middle" fill="#3730a3">order_id</text>
+<rect x="324" y="44" width="170" height="36" rx="8" fill="#e0e7ff"/><text x="409" y="68" text-anchor="middle" fill="#3730a3">revenue</text>
+<g data-s="3"><rect x="498" y="44" width="170" height="36" rx="8" fill="#fef3c7"/><text x="583" y="68" text-anchor="middle" fill="#92400e">running_total</text></g>
+</g>
+<g font-size="17" font-weight="700" fill="#1e293b">
+<g data-only="1,3,4"><rect x="150" y="86" width="344" height="34" rx="6" fill="#fff" stroke="#cbd5e1"/><text x="235" y="109" text-anchor="middle">1</text><text x="409" y="109" text-anchor="middle">110</text></g>
+<g data-only="1,3,4"><rect x="150" y="124" width="344" height="34" rx="6" fill="#fff" stroke="#cbd5e1"/><text x="235" y="147" text-anchor="middle">2</text><text x="409" y="147" text-anchor="middle">210</text></g>
+<g data-only="1,3,4"><rect x="150" y="162" width="344" height="34" rx="6" fill="#fff" stroke="#cbd5e1"/><text x="235" y="185" text-anchor="middle">3</text><text x="409" y="185" text-anchor="middle">207</text></g>
+<g data-only="1,3,4"><rect x="150" y="200" width="344" height="34" rx="6" fill="#fff" stroke="#cbd5e1"/><text x="235" y="223" text-anchor="middle">4</text><text x="409" y="223" text-anchor="middle">56</text></g>
+<g data-only="1,3,4"><rect x="150" y="238" width="344" height="34" rx="6" fill="#fff" stroke="#cbd5e1"/><text x="235" y="261" text-anchor="middle">5</text><text x="409" y="261" text-anchor="middle">99</text></g>
+</g>
+<g data-only="2">
+<rect x="150" y="150" width="344" height="46" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="3"/>
+<text x="409" y="180" text-anchor="middle" font-size="22" font-weight="900" fill="#b91c1c">SUM(revenue) = 682</text>
+<text x="400" y="230" text-anchor="middle" font-size="17" font-weight="700" fill="#991b1b" direction="rtl">GROUP BY: חמש שורות כווצו לשורה אחת, ואיבדנו את הפרטים</text>
+</g>
+<g font-size="17" font-weight="800" fill="#92400e">
+<g data-s="3"><text x="583" y="109" text-anchor="middle">110</text><text x="583" y="147" text-anchor="middle">320</text></g>
+<g data-s="4"><text x="583" y="185" text-anchor="middle">527</text><text x="583" y="223" text-anchor="middle">583</text><text x="583" y="261" text-anchor="middle">682</text></g>
+</g>
+<g data-s="3"><text x="400" y="310" text-anchor="middle" font-size="17" font-weight="700" fill="#047857" direction="rtl">פונקציית חלון: כל שורה נשארת, ועמודה חדשה מצטברת</text></g>
+<g data-s="4"><text x="400" y="342" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b" font-family="monospace">SUM(revenue) OVER (ORDER BY order_id)</text></g>
+</svg></div>
+<ol class="caps">
+<li>חמש ההזמנות הראשונות מהמסד, ולכל אחת ההכנסה שלה.</li>
+<li>GROUP BY מכווץ הכול לשורה אחת: הסכום 682. אי אפשר לדעת איך הוא נבנה.</li>
+<li>פונקציית חלון: כל שורה נשארת. אחרי הזמנה 1 הסכום 110, ואחרי הזמנה 2 הוא 320.</li>
+<li>הסכום ממשיך לצבור עד 682 בשורה האחרונה, והנוסחה כתובה למטה: <code>SUM(...) OVER (ORDER BY ...)</code>.</li>
+</ol>
+</div>
+
+<pre class="code" data-lang="sql">פונקציה() OVER (
+   PARTITION BY עמודה    -- לאפס את החישוב בכל קבוצה (לא חובה)
+   ORDER BY עמודה        -- באיזה סדר מצטברים או מדרגים
+)</pre>
+<div class="defline"><b>PARTITION BY:</b> מחלק את השורות לקבוצות בתוך החלון, ומתחיל את החישוב מחדש בכל קבוצה. דוגמה: דירוג מנות שמתחיל מ-1 בכל קטגוריה.</div>
+<div class="defline"><b>LAG(x):</b> פונקציית חלון שמחזירה את הערך של <code>x</code> מהשורה הקודמת, לפי הסדר שקבעתם. דוגמה: כשאתם על השורה של מאי, היא מחזירה את ההכנסה של אפריל.</div>
+
+<div class="lab" data-id="p2-lab-w1" data-title="סכום מצטבר לפי חודש" data-ordered="1">
+<div class="q-src">בהזמנות שנמסרו, תחזירו לכל חודש (<code>month</code>, בפורמט <code>2026-04</code>) את ההכנסה (<code>revenue</code>) ואת ההכנסה המצטברת (<code>running_total</code>), לפי סדר החודשים.</div>
+<pre class="start">WITH monthly AS (
+  SELECT strftime('%Y-%m', o.order_ts) AS month,
+         SUM(i.qty * d.price)          AS revenue
+  FROM orders o
+  JOIN order_items i ON i.order_id = o.id
+  JOIN dishes d      ON d.id = i.dish_id
+  WHERE o.status = 'delivered'
+  GROUP BY month
+)
+SELECT month, revenue
+       -- הוסיפו עמודה מצטברת
+FROM monthly
+ORDER BY month</pre>
+<pre class="check">WITH monthly AS (SELECT strftime('%Y-%m', o.order_ts) AS month, SUM(i.qty * d.price) AS revenue FROM orders o JOIN order_items i ON i.order_id = o.id JOIN dishes d ON d.id = i.dish_id WHERE o.status = 'delivered' GROUP BY month) SELECT month, revenue, SUM(revenue) OVER (ORDER BY month) FROM monthly ORDER BY month</pre>
+<pre class="solution">WITH monthly AS (
+  SELECT strftime('%Y-%m', o.order_ts) AS month,
+         SUM(i.qty * d.price)          AS revenue
+  FROM orders o
+  JOIN order_items i ON i.order_id = o.id
+  JOIN dishes d      ON d.id = i.dish_id
+  WHERE o.status = 'delivered'
+  GROUP BY month
+)
+SELECT month, revenue,
+       SUM(revenue) OVER (ORDER BY month) AS running_total
+FROM monthly
+ORDER BY month</pre>
+<ol class="hints"><li>צריך עמודה חדשה אחרי revenue. איזו פונקציה מחשבת סכום, ואיזו פסוקית הופכת אותה למצטברת?</li></ol>
+<div class="why-src">מרץ 4,631, אפריל 4,701 (מצטבר 9,332), מאי 3,552 (מצטבר 12,884). הסכום המצטבר האחרון, 12,884, הוא בדיוק ההכנסה הכוללת שמצאנו קודם. זו בדיקה טובה: הפרטים מסתכמים לסך הכול.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-w3" data-title="LAG: השוואה לחודש הקודם" data-ordered="1" data-require="LAG" data-require-msg="במשימה הזו צריך LAG.">
+<div class="q-src">תוסיפו לכל חודש את השינוי בהכנסה לעומת החודש הקודם (<code>change</code> = ההכנסה פחות ההכנסה של החודש הקודם). בחודש הראשון השינוי יהיה NULL.</div>
+<pre class="start">WITH monthly AS (
+  SELECT strftime('%Y-%m', o.order_ts) AS month,
+         SUM(i.qty * d.price)          AS revenue
+  FROM orders o
+  JOIN order_items i ON i.order_id = o.id
+  JOIN dishes d      ON d.id = i.dish_id
+  WHERE o.status = 'delivered'
+  GROUP BY month
+)
+SELECT month, revenue
+       -- change = revenue - LAG(revenue) OVER (...)
+FROM monthly
+ORDER BY month</pre>
+<pre class="check">WITH monthly AS (SELECT strftime('%Y-%m', o.order_ts) AS month, SUM(i.qty * d.price) AS revenue FROM orders o JOIN order_items i ON i.order_id = o.id JOIN dishes d ON d.id = i.dish_id WHERE o.status = 'delivered' GROUP BY month) SELECT month, revenue, revenue - LAG(revenue) OVER (ORDER BY month) FROM monthly ORDER BY month</pre>
+<pre class="solution">WITH monthly AS (
+  SELECT strftime('%Y-%m', o.order_ts) AS month,
+         SUM(i.qty * d.price)          AS revenue
+  FROM orders o
+  JOIN order_items i ON i.order_id = o.id
+  JOIN dishes d      ON d.id = i.dish_id
+  WHERE o.status = 'delivered'
+  GROUP BY month
+)
+SELECT month, revenue,
+       revenue - LAG(revenue) OVER (ORDER BY month) AS change
+FROM monthly
+ORDER BY month</pre>
+<ol class="hints"><li>LAG מחזירה ערך מהשורה הקודמת. מה הסדר שמגדיר ״קודמת״?</li></ol>
+<div class="why-src">אפריל עלה ב-70 ש״ח (1.5%), ומאי ירד ב-1,149 ש״ח (24.4%). זו עובדה ראשונה. מה מאחוריה? מספר ההזמנות ירד מ-28 ל-25 (בערך 11%), וההכנסה הממוצעת להזמנה ירדה מ-167.89 ל-142.08 (בערך 15%). הירידה באה משניהם יחד.</div>
+</div>
+
+<div class="card" style="margin:14px 0"><h4>הכנסה חודשית והסכום המצטבר (מהמעבדות למעלה)</h4>
+<svg viewBox="0 0 700 250" role="img" aria-label="תרשים: הכנסה חודשית בעמודות והכנסה מצטברת בקו" style="width:100%;height:auto;direction:ltr">
+<line x1="60" y1="210" x2="660" y2="210" stroke="#cbd5e1"/>
+<g font-size="13" fill="#64748b" font-weight="700" text-anchor="middle"><text x="160" y="232">2026-03</text><text x="360" y="232">2026-04</text><text x="560" y="232">2026-05</text></g>
+<g>
+<rect x="120" y="125" width="80" height="85" rx="6" fill="#818cf8"/><rect x="320" y="124" width="80" height="86" rx="6" fill="#818cf8"/><rect x="520" y="145" width="80" height="65" rx="6" fill="#818cf8"/>
+</g>
+<g font-size="14" font-weight="800" text-anchor="middle" fill="#3730a3"><text x="160" y="118">4,631</text><text x="360" y="117">4,701</text><text x="560" y="138">3,552</text></g>
+<polyline points="160,142 360,73 560,21" fill="none" stroke="#f59e0b" stroke-width="3"/>
+<g fill="#f59e0b"><circle cx="160" cy="142" r="6"/><circle cx="360" cy="73" r="6"/><circle cx="560" cy="21" r="6"/></g>
+<g font-size="14" font-weight="800" fill="#b45309" text-anchor="middle"><text x="225" y="150">4,631</text><text x="425" y="76">9,332</text><text x="500" y="26">12,884</text></g>
+</svg>
+<small style="color:var(--muted)">עמודות: ההכנסה בחודש. קו כתום: סכום מצטבר. הקו תמיד עולה, ולכן הוא מסתיר את הירידה במאי שהעמודות מראות. לקו ולעמודות יש סולמות שונים, אז תקראו את המספרים ולא את הגובה.</small></div>
+
+<div class="defline"><b>ROW_NUMBER():</b> פונקציית חלון שנותנת לכל שורה מספר רץ לפי הסדר שקבעתם. דוגמה: במנות ממוינות לפי הכנסה, הראשונה מקבלת 1. <b>RANK</b> ו-<b>DENSE_RANK</b> עושות משהו דומה, אבל מטפלות אחרת בשוויון (תראו בהמשך).</div>
+
+<div class="lab" data-id="p2-lab-w2" data-title="המנה המובילה בכל קטגוריה" data-require="OVER" data-require-msg="במשימה הזו צריך פונקציית חלון (OVER).">
+<div class="q-src">בהזמנות שנמסרו, תמצאו בכל קטגוריה (<code>category</code>) את המנה עם ההכנסה הגבוהה ביותר. תחזירו <code>category</code>, <code>name</code> ו-<code>revenue</code>. הקטגוריות: starter, main, dessert, drink. רמז: <code>ROW_NUMBER() OVER (PARTITION BY ...)</code> בתוך CTE, ואז מסננים את השורה הראשונה.</div>
+<pre class="start">WITH dish_rev AS (
+  SELECT d.category, d.name, SUM(i.qty * d.price) AS revenue
+  FROM order_items i
+  JOIN dishes d ON d.id = i.dish_id
+  JOIN orders o ON o.id = i.order_id
+  WHERE o.status = 'delivered'
+  GROUP BY d.id, d.category, d.name
+),
+ranked AS (
+  SELECT category, name, revenue
+         -- הוסיפו ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...) AS rn
+  FROM dish_rev
+)
+SELECT category, name, revenue
+FROM ranked
+-- WHERE rn = 1</pre>
+<pre class="check">WITH dish_rev AS (SELECT d.category, d.name, SUM(i.qty * d.price) AS revenue FROM order_items i JOIN dishes d ON d.id = i.dish_id JOIN orders o ON o.id = i.order_id WHERE o.status = 'delivered' GROUP BY d.id, d.category, d.name), ranked AS (SELECT category, name, revenue, ROW_NUMBER() OVER (PARTITION BY category ORDER BY revenue DESC) AS rn FROM dish_rev) SELECT category, name, revenue FROM ranked WHERE rn = 1</pre>
+<pre class="solution">WITH dish_rev AS (
+  SELECT d.category, d.name, SUM(i.qty * d.price) AS revenue
+  FROM order_items i
+  JOIN dishes d ON d.id = i.dish_id
+  JOIN orders o ON o.id = i.order_id
+  WHERE o.status = 'delivered'
+  GROUP BY d.id, d.category, d.name
+),
+ranked AS (
+  SELECT category, name, revenue,
+         ROW_NUMBER() OVER (PARTITION BY category ORDER BY revenue DESC) AS rn
+  FROM dish_rev
+)
+SELECT category, name, revenue
+FROM ranked
+WHERE rn = 1</pre>
+<ol class="hints"><li>PARTITION BY category מתחיל ספירה חדשה בכל קטגוריה, ו-ORDER BY revenue DESC קובע שהגבוהה ביותר תהיה מספר 1.</li><li>את <code>rn = 1</code> מסננים בשאילתה החיצונית. אי אפשר לסנן אותו באותה שאילתה שבה הוא נוצר.</li></ol>
+<div class="why-src">סלמון בתנור (3,204) מובילה בעיקריות, סלט יווני (1,102) בראשונות, בירה (812) במשקאות וטירמיסו (684) בקינוחים. למה צריך CTE שני? חלון מחושב אחרי WHERE, ולכן אי אפשר לסנן עליו באותה שאילתה. ב-BigQuery יש לזה פסוקית <code>QUALIFY</code>, שחוסכת את השלב.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-share" data-title="אחוז מסך ההכנסה: OVER ריק" data-ordered="1" data-require="OVER" data-require-msg="במשימה הזו צריך פונקציית חלון (OVER).">
+<div class="q-src">לכל מנה (בהזמנות שנמסרו) תחזירו <code>name</code>, הכנסה (<code>revenue</code>) ואחוז מסך ההכנסה (<code>share_pct</code>, מעוגל לספרה אחת), מהמנה עם ההכנסה הגבוהה לנמוכה.</div>
+<pre class="start">WITH dish_rev AS (
+  SELECT d.name, SUM(i.qty * d.price) AS revenue
+  FROM order_items i
+  JOIN dishes d ON d.id = i.dish_id
+  JOIN orders o ON o.id = i.order_id
+  WHERE o.status = 'delivered'
+  GROUP BY d.id, d.name
+)
+SELECT name, revenue
+       -- share_pct = 100.0 * revenue / (סכום כל ההכנסות)
+FROM dish_rev
+ORDER BY revenue DESC</pre>
+<pre class="check">WITH dish_rev AS (SELECT d.name, SUM(i.qty * d.price) AS revenue FROM order_items i JOIN dishes d ON d.id = i.dish_id JOIN orders o ON o.id = i.order_id WHERE o.status = 'delivered' GROUP BY d.id, d.name) SELECT name, revenue, ROUND(100.0 * revenue / SUM(revenue) OVER (), 1) FROM dish_rev ORDER BY revenue DESC</pre>
+<pre class="solution">WITH dish_rev AS (
+  SELECT d.name, SUM(i.qty * d.price) AS revenue
+  FROM order_items i
+  JOIN dishes d ON d.id = i.dish_id
+  JOIN orders o ON o.id = i.order_id
+  WHERE o.status = 'delivered'
+  GROUP BY d.id, d.name
+)
+SELECT name, revenue,
+       ROUND(100.0 * revenue / SUM(revenue) OVER (), 1) AS share_pct
+FROM dish_rev
+ORDER BY revenue DESC</pre>
+<ol class="hints"><li><code>OVER ()</code> עם סוגריים ריקים אומר: החלון הוא כל הטבלה. בלי ORDER BY בפנים, זה הסכום הכולל, ובכל שורה אותו מספר.</li><li>אחוז = 100.0 כפול ההכנסה של המנה, חלקי הסכום הכולל.</li></ol>
+<div class="why-src">סלמון בתנור 24.9%, פסטה שמנת 13.7%, המבורגר בקר 11.6%, ועוד שבע מנות. כל הפרטים נשארו, והסכום הכולל זמין בכל שורה. את אותו רעיון נצטרך באתגר הסיכום, שם הסכום הכולל הוא סכום של סכומים: <code>SUM(SUM(revenue)) OVER ()</code>.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-rank" data-title="חקר: RANK, DENSE_RANK ו-ROW_NUMBER בשוויון">
+<div class="q-src">שתי מנות נמכרו באותה כמות (21 יחידות). תריצו ותראו מה כל פונקציה עושה בשוויון.</div>
+<pre class="start">SELECT d.name,
+       SUM(i.qty) AS units,
+       RANK()       OVER (ORDER BY SUM(i.qty) DESC) AS rnk,
+       DENSE_RANK() OVER (ORDER BY SUM(i.qty) DESC) AS dense,
+       ROW_NUMBER() OVER (ORDER BY SUM(i.qty) DESC) AS rownum
+FROM order_items i
+JOIN dishes d ON d.id = i.dish_id
+JOIN orders o ON o.id = i.order_id
+WHERE o.status = 'delivered'
+GROUP BY d.id, d.name
+ORDER BY units DESC</pre>
+<div class="why-src">בקציצות עוף ובפיצה (21 יחידות כל אחת): RANK נותנת 8 ו-8 ומדלגת ל-10 בטירמיסו. DENSE_RANK נותנת 8 ו-8 ואז 9, בלי חור. ROW_NUMBER מכריחה מספרים שונים (8 ו-9) ובוחרת בין השתיים באופן שרירותי. ועוד דבר: לימונדה שנייה בכמות (31) ואחרונה בהכנסה (558). הדירוג תלוי במדד.</div>
+</div>
+
+<div class="quiz" data-id="p2-q-win" data-a="2"><p class="qq">איזו שאילתה מחזירה את כל ההזמנות, ולצד כל אחת את ההכנסה המצטברת עד אליה?</p>
+<button class="opt"><code>SELECT SUM(revenue) FROM order_rev GROUP BY id</code></button>
+<button class="opt"><code>SELECT id, revenue, SUM(revenue) OVER (ORDER BY id) FROM order_rev</code></button>
+<button class="opt"><code>SELECT id, SUM(revenue) FROM order_rev HAVING SUM(revenue) &gt; 0</code></button>
+<button class="opt"><code>SELECT id, revenue, AVG(revenue) FROM order_rev</code></button>
+<div class="why">רק פונקציית חלון שומרת את כל השורות ומוסיפה עמודה מצטברת. GROUP BY id נותן סכום נפרד לכל id (בלי צבירה). HAVING בלי GROUP BY ו-AVG בלי חלון מכווצים הכול לשורה אחת.</div></div>
+
+<div class="quiz" data-id="p2-q-rank" data-a="3"><p class="qq">שתי מנות שוות במקום 8 לפי כמות. איזה דירוג תקבל המנה הבאה (טירמיסו, 19 יחידות) עם <code>RANK()</code>?</p>
+<button class="opt">9</button>
+<button class="opt">8</button>
+<button class="opt">10</button>
+<button class="opt">11</button>
+<div class="why">RANK מדלגת אחרי שוויון: שני מקומות 8, ואז 10. DENSE_RANK הייתה נותנת 9, כי היא לא משאירה חורים. ROW_NUMBER לא מכירה שוויון ונותנת 8 ו-9 לשתי המנות השוות.</div></div>
+
+<div class="box think" data-id="p2-th-lag"><p>הסכום המצטבר תמיד עולה, ובכל זאת מאי היה חלש. איזו עמודה הייתם מציגים להנהלה כדי שלא תפספס את הירידה, ומה הייתם בודקים לפני שאתם אומרים שהמסעדה בירידה?</p>
+<div class="ans">מציגים את השינוי מחודש לחודש (LAG), ולצדו את מספר ההזמנות ואת ההכנסה הממוצעת להזמנה. הירידה במאי באה גם מפחות הזמנות וגם מהזמנות קטנות יותר. לפני מסקנה בודקים: האם הנתונים שלמים (האם כל מאי נטען?), האם יש עונתיות או חג, האם נגמר מבצע, והאם אירוע חריג (תקלה באפליקציה) מסביר את החודש. הדוח מעלה שאלה, הוא לא נותן תשובה.</div></div>
+
+<div class="box meaning">
+<p>CTE עוזר לחשוב בסדר, ופונקציית חלון עונה על שאלות מסוג ״בהשוואה ל...״: מצטבר, דירוג, החודש הקודם, חלק מהסך הכול. ככה עוברים מ״כמה מכרנו״ ל״איפה אנחנו ביחס לחודש הקודם ולשאר המנות״. זה סוג השאלות שמקבלים לפיהן החלטות.</p>
+</div>
+<div class="box real">
+<p>פונקציות חלון קיימות בכל מסד נתונים גדול, ובמחסני נתונים כמו BigQuery הן כלי יומיומי של אנליסטים. התחביר כמעט זהה ב-SQLite, ב-PostgreSQL וב-BigQuery. בכלי BI כמו Tableau יש ״חישובי טבלה״ (table calculations) כמו סכום רץ ודירוג, שעושים בדיוק את אותו רעיון.</p>
+</div>
+<div class="teach"><b>🎓 למרצה:</b> בהנפשה עצרו בשלב 2 ושאלו: מה איבדנו? אחר כך בשלב 3: מה קיבלנו? חזרו על המשפט: GROUP BY מכווץ, חלון משמר. לפני מעבדת w2 שאלו איך הייתם כותבים ״המנה המובילה בכל קטגוריה״ בלי חלון. רוב הכיתה תיתקע, וזו הצדקה לכלי.</div>
+</section>
+<section class="sec" id="s2-7" data-t="JSON ו-BigQuery">
+<div class="sec-h"><div class="sec-n">7</div><h2>JSON ו-BigQuery: נתוני האפליקציה והמחסן</h2></div>
+<p class="lead">האפליקציה של יבגני שולחת אירוע קטן על כל הזמנה. יבגני שואל: מאילו מכשירים מזמינים? בגרף הוא רואה עמודה ריקה, בלי שום שגיאה. מה קרה?</p>
+
+<div class="defline"><b>JSON:</b> טקסט שמארגן נתונים כזוגות של שם וערך בתוך סוגריים מסולסלים. כל מכשיר וכל שפה יודעים לקרוא אותו. דוגמה: <code>{"device": "ios", "items": 2}</code> אומר שהמכשיר הוא ios והפריטים 2.</div>
+<div class="defline"><b>נתיב (path):</b> הכתובת של שדה בתוך JSON. דוגמה: <code>$.device</code> אומר ״השדה device ברמה העליונה״. הסימן <code>$</code> הוא המסמך כולו.</div>
+<p>בטבלה <code>app_events</code> העמודה <code>payload</code> היא JSON בתוך טקסט, אירוע אחד לכל הזמנה באפליקציה (42 אירועים). הפונקציה <code>json_extract</code> שולפת ממנה שדה. את הרעיון של JSON ו-BigQuery ראיתם <a href="../lec10part5-15.6.2026.html">בשיעור על JSON ו-BigQuery</a>.</p>
+
+<div class="anim" data-id="p2-anim-json" data-auto="1" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 360" role="img" aria-label="הנפשה: שליפת שדה מ-JSON, ושינוי שם שדה שמחזיר NULL בשקט">
+<defs><marker id="p2aj2-ar" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#4f46e5"/></marker></defs>
+<g data-only="1,2">
+<rect x="20" y="20" width="330" height="170" rx="12" fill="#0f172a"/>
+<text font-family="monospace" font-size="15" fill="#e2e8f0"><tspan x="36" y="48">{</tspan><tspan x="36" y="72">  "type": "order_placed",</tspan><tspan x="36" y="96" fill="#fcd34d">  "device": "android",</tspan><tspan x="36" y="120">  "items": 2,</tspan><tspan x="36" y="144">  "promo": null</tspan><tspan x="36" y="168">}</tspan></text>
+<text x="185" y="212" text-anchor="middle" font-size="14" font-weight="700" fill="#64748b" direction="rtl">אירוע מוקדם (הזמנה 1)</text>
+</g>
+<g data-only="3,4,5">
+<rect x="20" y="20" width="330" height="170" rx="12" fill="#0f172a"/>
+<text font-family="monospace" font-size="15" fill="#e2e8f0"><tspan x="36" y="48">{</tspan><tspan x="36" y="72">  "type": "order_placed",</tspan><tspan x="36" y="96" fill="#fca5a5">  "device_type": "web",</tspan><tspan x="36" y="120">  "items": 2,</tspan><tspan x="36" y="144">  "promo": null</tspan><tspan x="36" y="168">}</tspan></text>
+<text x="185" y="212" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c" direction="rtl">אחרי שהשדה שונה (הזמנה 56)</text>
+</g>
+<g data-only="2">
+<rect x="430" y="30" width="350" height="44" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+<text x="605" y="58" text-anchor="middle" font-size="14" font-weight="700" fill="#3730a3" font-family="monospace">json_extract(payload, '$.device')</text>
+<path d="M600,76 L600,110" stroke="#4f46e5" stroke-width="3" marker-end="url(#p2aj2-ar)"/>
+<rect x="500" y="116" width="210" height="50" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="3"/>
+<text x="605" y="148" text-anchor="middle" font-size="20" font-weight="900" fill="#047857">android</text>
+</g>
+<g data-only="4">
+<rect x="430" y="30" width="350" height="44" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+<text x="605" y="58" text-anchor="middle" font-size="14" font-weight="700" fill="#3730a3" font-family="monospace">json_extract(payload, '$.device')</text>
+<path d="M600,76 L600,110" stroke="#4f46e5" stroke-width="3" marker-end="url(#p2aj2-ar)"/>
+<rect x="500" y="116" width="210" height="50" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="3"/>
+<text x="605" y="148" text-anchor="middle" font-size="20" font-weight="900" fill="#b91c1c">NULL</text>
+<text x="605" y="196" text-anchor="middle" font-size="15" font-weight="700" fill="#991b1b" direction="rtl">אין שדה בשם הזה. אין שגיאה</text>
+</g>
+<g data-only="5">
+<rect x="380" y="30" width="410" height="68" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+<text x="585" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#3730a3" font-family="monospace">COALESCE(json_extract(payload,'$.device'),</text>
+<text x="585" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="#3730a3" font-family="monospace">         json_extract(payload,'$.device_type'))</text>
+<path d="M600,100 L600,128" stroke="#4f46e5" stroke-width="3" marker-end="url(#p2aj2-ar)"/>
+<rect x="500" y="134" width="210" height="50" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="3"/>
+<text x="605" y="166" text-anchor="middle" font-size="20" font-weight="900" fill="#047857">web</text>
+</g>
+<g data-s="1"><rect x="20" y="250" width="760" height="90" rx="14" fill="#f8fafc" stroke="#cbd5e1"/></g>
+<g data-only="1"><text x="400" y="302" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b" direction="rtl">אירוע JSON אחד. כל שדה הוא שם וערך</text></g>
+<g data-only="2"><text x="400" y="302" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b" direction="rtl">json_extract שולף לפי נתיב, והתוצאה היא android</text></g>
+<g data-only="3"><text x="400" y="302" text-anchor="middle" font-size="18" font-weight="700" fill="#991b1b" direction="rtl">מהזמנה 56 האפליקציה שולחת device_type במקום device</text></g>
+<g data-only="4"><text x="400" y="302" text-anchor="middle" font-size="18" font-weight="700" fill="#991b1b" direction="rtl">אותה שאילתה מחזירה NULL. הדוח מתרוקן בשקט</text></g>
+<g data-only="5"><text x="400" y="302" text-anchor="middle" font-size="18" font-weight="700" fill="#047857" direction="rtl">התיקון: לבדוק את שני השמות עם COALESCE</text></g>
+</svg></div>
+<ol class="caps">
+<li>אירוע מוקדם: השדה נקרא device.</li>
+<li>השאילתה שולפת $.device ומקבלת android.</li>
+<li>מהזמנה 56 מפתח האפליקציה שינה את שם השדה ל-device_type.</li>
+<li>אותה שאילתה לא מוצאת שדה בשם device, ומחזירה NULL. אין שגיאה, ולכן אף אחד לא מתריע.</li>
+<li>התיקון: COALESCE על שני השמות. ואחר כך בודקים שהספירה מסתכמת ל-42.</li>
+</ol>
+</div>
+
+<div class="lab" data-id="p2-lab-j1" data-title="חקר: מכשירים באירועים">
+<div class="q-src">תריצו ותקראו: כמה אירועים מכל מכשיר, וכמה בלי מכשיר.</div>
+<pre class="start">SELECT json_extract(payload, '$.device') AS device,
+       COUNT(*) AS events
+FROM app_events
+GROUP BY device
+ORDER BY events DESC</pre>
+<div class="why-src">ל-13 מתוך 42 האירועים (בערך 31%) יש device = NULL. מי שיבנה גרף ״מכשירים״ מהשאילתה הזו יראה עמודה נוספת בשם ״לא ידוע״, שהיא לא אמיתית. ה-NULL נוצר כי האפליקציה שינתה את השם.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-j2" data-title="תיקון הדוח: שני שמות לשדה" data-require="device_type" data-require-msg="הדוח צריך לבדוק גם את השדה device_type.">
+<div class="q-src">תתקנו את השאילתה כך שכל 42 האירועים ישויכו למכשיר. תחזירו <code>device</code> ו-<code>events</code>.</div>
+<pre class="start">SELECT json_extract(payload, '$.device') AS device,
+       COUNT(*) AS events
+FROM app_events
+GROUP BY device</pre>
+<pre class="check">SELECT COALESCE(json_extract(payload, '$.device'), json_extract(payload, '$.device_type')) AS device, COUNT(*) AS events FROM app_events GROUP BY device</pre>
+<pre class="solution">SELECT COALESCE(json_extract(payload, '$.device'),
+                json_extract(payload, '$.device_type')) AS device,
+       COUNT(*) AS events
+FROM app_events
+GROUP BY device</pre>
+<ol class="hints"><li>COALESCE מחזירה את הערך הראשון שאינו NULL. תנו לה את שני השדות.</li></ol>
+<div class="why-src">android 16, web 14, ios 12, ביחד 42. עכשיו אין שורת NULL. בדיקת השפיות: סכום הקבוצות שווה למספר האירועים, 42.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-j3" data-title="JSON מתחבר לטבלאות" data-ordered="1">
+<div class="q-src">האם המכשיר משפיע על זמן המשלוח? תחברו את <code>app_events</code> להזמנות (<code>order_id</code>), ותחזירו לכל מכשיר (בשם <code>device</code>, עם התיקון של שני השדות) את מספר ההזמנות ואת ממוצע זמן המשלוח מעוגל לספרה אחת. סדרו לפי מספר ההזמנות, מהגבוה לנמוך.</div>
+<pre class="start">SELECT COALESCE(json_extract(e.payload, '$.device'),
+                json_extract(e.payload, '$.device_type')) AS device,
+       COUNT(*)                         AS orders,
+       ROUND(AVG(o.delivery_min), 1)    AS avg_min
+FROM app_events e
+-- JOIN orders ...
+GROUP BY device
+ORDER BY orders DESC</pre>
+<pre class="check">SELECT COALESCE(json_extract(e.payload, '$.device'), json_extract(e.payload, '$.device_type')) AS device, COUNT(*), ROUND(AVG(o.delivery_min), 1) FROM app_events e JOIN orders o ON o.id = e.order_id GROUP BY device ORDER BY 2 DESC</pre>
+<pre class="solution">SELECT COALESCE(json_extract(e.payload, '$.device'),
+                json_extract(e.payload, '$.device_type')) AS device,
+       COUNT(*)                         AS orders,
+       ROUND(AVG(o.delivery_min), 1)    AS avg_min
+FROM app_events e
+JOIN orders o ON o.id = e.order_id
+GROUP BY device
+ORDER BY orders DESC</pre>
+<ol class="hints"><li>יש אירוע אחד לכל הזמנה, ולכן החיבור לא משכפל שורות.</li></ol>
+<div class="why-src">הממוצעים קרובים מאוד: android 34.5, web 35.2, ios 35.3 דקות. בנתונים האלה אין הבדל בולט בין המכשירים, ובמדגם קטן כזה (12 עד 16 הזמנות לכל מכשיר) זו עדיין לא הוכחה. ושימו לב: אין כאן fan-out, כי לכל הזמנה יש בדיוק אירוע אחד.</div>
+</div>
+
+<h3>רשימה בתוך JSON: מ-array לשורות</h3>
+<p>הזמנה אמיתית מגיעה מהאפליקציה כ-JSON שמכיל רשימת פריטים. כדי לחשב עליה צריך להפוך את הרשימה לשורות. ב-SQLite זה <code>json_each</code>, וב-BigQuery זה <code>UNNEST</code>.</p>
+<div class="defline"><b>UNNEST / json_each:</b> פעולה שפורקת רשימה שנמצאת בתוך תא לשורות נפרדות, שורה לכל איבר. דוגמה: הזמנה עם שלושה פריטים ברשימה הופכת לשלוש שורות שאפשר לסכם.</div>
+<div class="lab" data-id="p2-lab-j4" data-title="סכום הזמנה מתוך JSON">
+<div class="q-src">הזמנה חדשה הגיעה כטקסט JSON עם רשימת פריטים (השאילתה למטה מפרקת אותה). תחשבו את סך ההזמנה: <code>SUM(price * qty)</code> על האיברים. עמודה אחת בשם <code>total</code>.</div>
+<pre class="start">SELECT json_extract(value, '$.dish')  AS dish,
+       json_extract(value, '$.price') AS price,
+       json_extract(value, '$.qty')   AS qty
+FROM json_each(
+  '{"order_id": 901, "items": [
+     {"dish": "המבורגר בקר", "price": 68, "qty": 1},
+     {"dish": "לימונדה",     "price": 18, "qty": 2},
+     {"dish": "סלט יווני",   "price": 38, "qty": 1}]}',
+  '$.items')</pre>
+<pre class="check">SELECT SUM(json_extract(value, '$.price') * json_extract(value, '$.qty')) FROM json_each('{"order_id": 901, "items": [{"dish": "המבורגר בקר", "price": 68, "qty": 1}, {"dish": "לימונדה", "price": 18, "qty": 2}, {"dish": "סלט יווני", "price": 38, "qty": 1}]}', '$.items')</pre>
+<pre class="solution">SELECT SUM(json_extract(value, '$.price') * json_extract(value, '$.qty')) AS total
+FROM json_each(
+  '{"order_id": 901, "items": [
+     {"dish": "המבורגר בקר", "price": 68, "qty": 1},
+     {"dish": "לימונדה",     "price": 18, "qty": 2},
+     {"dish": "סלט יווני",   "price": 38, "qty": 1}]}',
+  '$.items')</pre>
+<ol class="hints"><li>תריצו קודם את המקור ותראו שלוש שורות. אחר כך תעטפו אותן ב-SUM.</li></ol>
+<div class="why-src"><bdi dir="ltr">68 + 18×2 + 38 = 142.</bdi> ב-BigQuery אותה מטרה נכתבת <code>FROM tbl, UNNEST(JSON_QUERY_ARRAY(j, '$.items')) AS item</code> ו-<code>SAFE_CAST(JSON_VALUE(item, '$.price') AS FLOAT64)</code>. JSON_VALUE מחזירה טקסט, ולכן צריך להמיר למספר לפני SUM.</div>
+</div>
+
+<h3>אותו רעיון בשלושה ניבים של SQL</h3>
+<p>עד עכשיו עבדנו ב-SQLite בדפדפן. במחסן נתונים כמו BigQuery (<dfn data-d="מחסן נתונים: מסד שמיועד לניתוח ודוחות על כמויות גדולות של נתונים, ולא להפעלה של המערכת עצמה. נפרט בחלק 4.">מחסן נתונים</dfn>), או במסד של מערכת כמו PostgreSQL, הרעיונות זהים, אבל חלק מהפונקציות כתובות אחרת.</p>
+<div class="tw"><table class="tbl p2-dial"><thead><tr><th>מה רוצים</th><th>SQLite (המעבדות)</th><th>BigQuery</th><th>PostgreSQL</th></tr></thead><tbody>
+<tr><td>דלי חודשי</td><td><code>strftime('%Y-%m', ts)</code></td><td><code>DATE_TRUNC(DATE(ts), MONTH)</code></td><td><code>DATE_TRUNC('month', ts)</code></td></tr>
+<tr><td>יום בשבוע</td><td><code>strftime('%w', ts)</code> (0 = ראשון)</td><td><code>EXTRACT(DAYOFWEEK FROM ts)</code> (1 = ראשון)</td><td><code>EXTRACT(DOW FROM ts)</code> (0 = ראשון)</td></tr>
+<tr><td>הפרש ימים</td><td><code>julianday(a) - julianday(b)</code></td><td><code>DATE_DIFF(a, b, DAY)</code></td><td><code>a::date - b::date</code></td></tr>
+<tr><td>שדה מ-JSON</td><td><code>json_extract(p, '$.device')</code></td><td><code>JSON_VALUE(p, '$.device')</code></td><td><code>p-&gt;&gt;'device'</code> (עמודת jsonb)</td></tr>
+<tr><td>רשימה לשורות</td><td><code>json_each(...)</code></td><td><code>UNNEST(JSON_QUERY_ARRAY(...))</code></td><td><code>jsonb_array_elements(...)</code></td></tr>
+<tr><td>ספירה מותנית</td><td><code>SUM(cond)</code> או <code>COUNT(*) FILTER (WHERE cond)</code></td><td><code>COUNTIF(cond)</code></td><td><code>COUNT(*) FILTER (WHERE cond)</code></td></tr>
+<tr><td>שם טבלה</td><td><code>orders</code></td><td><code>`project.dataset.orders`</code> (גרש הפוך)</td><td><code>orders</code></td></tr>
+<tr><td>עמודה שלא בקבוצה</td><td>מותר (שרירותי)</td><td>שגיאה</td><td>שגיאה</td></tr>
+<tr><td>CTE, חלון, CASE, COALESCE, JOIN</td><td colspan="3">אותו תחביר בשלושתם</td></tr>
+</tbody></table></div>
+
+<div class="mk p2-bq"><div class="mk-bar"><i></i><i></i><i></i><span class="url">console.cloud.google.com/bigquery · הדמיה סכמטית</span></div>
+<div class="mk-body" style="padding:0"><div class="row2">
+<div class="side"><b>Explorer</b><br>▾ bigquery-public-data<br>&nbsp;&nbsp;▾ thelook_ecommerce<br>&nbsp;&nbsp;&nbsp;&nbsp;order_items<br>&nbsp;&nbsp;&nbsp;&nbsp;orders<br>&nbsp;&nbsp;&nbsp;&nbsp;products<br>&nbsp;&nbsp;&nbsp;&nbsp;users</div>
+<div class="main"><span class="tab">Untitled query</span> &nbsp; <span class="runbtn">▶ RUN</span>
+<div class="p2-code" style="margin:6px 0">SELECT status, COUNT(*) AS items
+FROM `bigquery-public-data.thelook_ecommerce.order_items`
+GROUP BY status;</div>
+<div style="font-size:.78rem;color:#64748b">Query results · לפני ההרצה מופיעה הערכה של כמות הנתונים שהשאילתה תסרוק</div>
+<div class="gridv"><div class="hh"><span>status</span><span>items</span></div><div><span>…</span><span>…</span></div><div><span>…</span><span>…</span></div></div>
+</div></div></div></div>
+<p>ככה בערך נראה מסך העבודה: עץ הטבלאות משמאל, ומימינו עורך שאילתות ותוצאות. השם המדויק של הכפתורים והמיקום שלהם משתנים מדי פעם, ולכן הציור סכמטי, ואין בו נתונים אמיתיים.</p>
+
+<div class="box try" data-id="p2-try-bq1">
+<p>עכשיו מריצים שאילתות אמיתיות על מחסן נתונים ציבורי. צריך חשבון Google. עובדים ב-BigQuery במצב <dfn data-d="Sandbox: מצב של BigQuery שאפשר להשתמש בו בלי כרטיס אשראי, עם הגבלות. תנאים והגבלות מעודכנים תמצאו בתיעוד.">Sandbox</dfn>. תבדקו בתיעוד את התנאים ואת ההגבלות העדכניים.</p>
+<ol>
+<li>פתחו את הקישור לקונסולה של BigQuery, ופעלו לפי התיעוד של ה-Sandbox בקישור השני כדי להתחיל בלי חיוב.</li>
+<li>פתחו עורך שאילתות חדש (כפתור ״+״ או ״SQL query״ בעורך).</li>
+<li>הדביקו את השאילתה הראשונה למטה (כפתור ״העתק״). אם יש בעורך הערכה של כמות הנתונים שתיסרק, שימו לב אליה.</li>
+<li>הריצו. חשוב לכתוב את שם הטבלה בגרשיים הפוכים, כמו בדוגמה.</li>
+<li>עברו לשאילתה השנייה (JOIN ו-GROUP BY) ולשלישית (בדיקת fan-out), והשוו את שני המספרים בשלישית.</li>
+</ol>
+<p>ב-Sandbox אין פקודות DML (UPDATE, DELETE), ולכן כאן מריצים רק שאילתות קריאה וטעינה.</p>
+<pre class="code" data-lang="sql">-- 1. סיכום לפי סטטוס
+SELECT status, COUNT(*) AS items, ROUND(SUM(sale_price)) AS revenue
+FROM `bigquery-public-data.thelook_ecommerce.order_items`
+GROUP BY status
+ORDER BY revenue DESC;</pre>
+<pre class="code" data-lang="sql">-- 2. JOIN ו-GROUP BY: קטגוריות מובילות
+SELECT p.category, ROUND(SUM(oi.sale_price)) AS revenue
+FROM `bigquery-public-data.thelook_ecommerce.order_items` AS oi
+JOIN `bigquery-public-data.thelook_ecommerce.products` AS p
+  ON oi.product_id = p.id
+GROUP BY p.category
+ORDER BY revenue DESC
+LIMIT 5;</pre>
+<pre class="code" data-lang="sql">-- 3. בדיקת fan-out: שורות אחרי JOIN מול הזמנות אמיתיות
+SELECT COUNT(*) AS rows_after_join,
+       COUNT(DISTINCT o.order_id) AS real_orders
+FROM `bigquery-public-data.thelook_ecommerce.orders` AS o
+JOIN `bigquery-public-data.thelook_ecommerce.order_items` AS oi
+  ON oi.order_id = o.order_id;</pre>
+<p class="tools"><a class="tool" href="https://console.cloud.google.com/bigquery" target="_blank" rel="noopener">BigQuery Console</a><a class="tool" href="https://cloud.google.com/bigquery/docs/sandbox" target="_blank" rel="noopener">תיעוד Sandbox</a></p></div>
+
+<div class="box try" data-id="p2-try-bq2">
+<p>עוד שני דברים לנסות באותו חלון: דלי חודשי עם שינוי מחודש לחודש (חלון + CTE), ואחר כך להעלות את קובצי ה-CSV של המסעדה כטבלאות.</p>
+<pre class="code" data-lang="sql">WITH monthly AS (
+  SELECT DATE_TRUNC(DATE(created_at), MONTH) AS month,
+         SUM(sale_price) AS revenue
+  FROM `bigquery-public-data.thelook_ecommerce.order_items`
+  GROUP BY month
+)
+SELECT month,
+       ROUND(revenue) AS revenue,
+       ROUND(revenue - LAG(revenue) OVER (ORDER BY month)) AS change
+FROM monthly
+ORDER BY month;</pre>
+<ol>
+<li>צרו ב-BigQuery מערך נתונים (dataset) בשם <code>yevgeni</code> והעלו את <code>orders.csv</code> מחבילת הנתונים כטבלה (עם זיהוי אוטומטי של הסכמה).</li>
+<li>העמודה <code>order_ts</code> עלולה להיטען כטקסט. אם כן, תמירו אותה כך (תחליפו את שם הפרויקט בשם שלכם):</li>
+</ol>
+<pre class="code" data-lang="sql">SELECT FORMAT_DATE('%Y-%m', DATE(PARSE_TIMESTAMP('%Y-%m-%d %H:%M', order_ts))) AS month,
+       COUNT(*) AS orders
+FROM `YOUR_PROJECT.yevgeni.orders`
+GROUP BY month
+ORDER BY month;</pre>
+<p>בדקו: האם סך ההזמנות בשלושת החודשים הוא 87, כמו במעבדות?</p>
+<p class="tools"><a class="tool" href="https://console.cloud.google.com/bigquery" target="_blank" rel="noopener">BigQuery Console</a></p></div>
+
+<div class="box try" data-id="p2-try-pg">
+<p>אותה שאלה ב-PostgreSQL. אם בניתם בחלק 1 מסד ב-Supabase או ב-Neon עם <code>yevgeni-postgres.sql</code>, תריצו שם שלוש שאילתות ותשוו לתוצאות במעבדות.</p>
+<pre class="code" data-lang="sql">-- הזמנות שנמסרו לפי יום בשבוע (0 = ראשון)
+-- GROUP BY 1 = לקבץ לפי העמודה הראשונה ב-SELECT, ORDER BY 2 = למיין לפי השנייה
+SELECT EXTRACT(DOW FROM order_ts) AS weekday, COUNT(*) AS orders
+FROM orders WHERE status = 'delivered'
+GROUP BY 1 ORDER BY 2 DESC;
+
+-- מכשירים באירועים, עם תיקון שני השדות
+SELECT COALESCE(payload-&gt;&gt;'device', payload-&gt;&gt;'device_type') AS device, COUNT(*)
+FROM app_events GROUP BY 1;
+
+-- הכנסה חודשית
+SELECT DATE_TRUNC('month', o.order_ts) AS month, SUM(i.qty * d.price) AS revenue
+FROM orders o
+JOIN order_items i ON i.order_id = o.id
+JOIN dishes d ON d.id = i.dish_id
+WHERE o.status = 'delivered'
+GROUP BY 1 ORDER BY 1;</pre>
+<p>שימו לב: ב-PostgreSQL העמודה <code>payload</code> היא jsonb, ולכן משתמשים בחץ <code>-&gt;&gt;</code>. הערכים בשלוש השאילתות זהים לאלה שבמעבדות. רק עמודת החודש מוצגת כחותמת זמן (למשל <code>2026-03-01 00:00:00</code>) ולא כ-<code>2026-03</code>.</p>
+<p class="tools"><a class="tool" href="https://supabase.com" target="_blank" rel="noopener">Supabase</a><a class="tool" href="https://neon.tech" target="_blank" rel="noopener">Neon</a><a class="tool" href="https://www.postgresql.org" target="_blank" rel="noopener">PostgreSQL</a></p></div>
+
+<div class="quiz" data-id="p2-q-json" data-a="2"><p class="qq">אחרי עדכון של האפליקציה, עמודת ״מכשיר״ בדשבורד התרוקנה (NULL) בלי הודעת שגיאה. מה הסיבה הסבירה ביותר?</p>
+<button class="opt">הדשבורד איבד את החיבור למסד</button>
+<button class="opt">האפליקציה שינתה את שם השדה, והשאילתה עדיין מחפשת את השם הישן</button>
+<button class="opt">JSON לא נתמך במסדי נתונים</button>
+<button class="opt">המכשירים נמחקו מהאירועים</button>
+<div class="why">שליפה של שדה שלא קיים מחזירה NULL ולא שגיאה, ולכן שינוי שם באפליקציה מרוקן עמודה בשקט. אם הייתה בעיית חיבור, הייתה שגיאה. JSON נתמך כמעט בכל מסד מודרני, והאירועים לא נמחקו. הגנה: בדיקה אוטומטית שאחוז ה-NULL בעמודה לא קופץ.</div></div>
+
+<div class="quiz" data-id="p2-q-unnest" data-a="1"><p class="qq">למה משמש UNNEST ב-BigQuery?</p>
+<button class="opt">להפוך רשימה שבתוך תא לשורות נפרדות</button>
+<button class="opt">לחבר שתי טבלאות לפי מפתח</button>
+<button class="opt">למחוק שורות כפולות</button>
+<button class="opt">להמיר טקסט לתאריך</button>
+<div class="why">UNNEST פורק מערך לשורות, כמו json_each ב-SQLite. חיבור טבלאות זה JOIN, הסרת כפילויות זה DISTINCT או בדיקת איכות, והמרה לתאריך נעשית עם PARSE_TIMESTAMP או פונקציה דומה.</div></div>
+
+<div class="box think" data-id="p2-th-bq"><p>ב-BigQuery משלמים (בדרך כלל) לפי כמות הנתונים שהשאילתה סורקת, ואפשר לראות הערכה לפני ההרצה. מה זה אומר על ההרגל לכתוב <code>SELECT *</code>, ועל <code>LIMIT</code>?</p>
+<div class="ans">המחסן קורא עמודות, ולכן בקשה לכל העמודות סורקת יותר, והעלות עולה. LIMIT מקצר את התוצאה שמוצגת, אבל לא בהכרח מקטין את כמות הנתונים שנסרקת. ההרגל הנכון: לבחור רק עמודות שצריך, לסנן לפי עמודת החלוקה (partition) כשהטבלה מחולקת, ולהסתכל בהערכה לפני הרצה. את התעריף העדכני בודקים באתר של הספק. בחלק 4 נעמיק באחסון בשורות מול עמודות.</div></div>
+
+<div class="box meaning">
+<p>נתוני האירועים הם הגשר בין המוצר לניתוח: מה קורה באפליקציה, באילו מכשירים, עם אילו מבצעים. אבל המבנה של JSON משתנה בלי להודיע, ולכן הדוחות הכי מסוכנים הם אלה שנשענים עליו בלי בדיקה. כל פעם שמפתחים משנים אירוע, מישהו בצד הנתונים צריך לדעת.</p>
+</div>
+<div class="box real">
+<p>נתוני אירועים של אפליקציות ואתרים נשמרים בדרך כלל כ-JSON או כמבנה מקונן, ונטענים למחסן נתונים לצורך ניתוח. BigQuery, PostgreSQL וכלים דומים מציעים פונקציות JSON, ושינוי מבנה בנתוני המקור (<dfn data-d="schema drift: שינוי במבנה הנתונים של המקור, כמו שדה שמשנה שם, בלי שהדוחות מתעדכנים.">schema drift</dfn>) הוא סיבה מוכרת לדוחות שמתרוקנים או משתבשים. לכן בצנרת נתונים מקצועית יש בדיקות על אחוז ערכים חסרים.</p>
+</div>
+<div class="teach"><b>🎓 למרצה:</b> בהנפשה עצרו בשלב 4 ושאלו: מי יראה את הבעיה? מה היה קורה אילו הדשבורד הוצג למנכ״ל? בנו על זה את הנקודה של בדיקת איכות. לפני ה-try ב-BigQuery ודאו שלכל תלמיד יש חשבון Google, ושהוא מבין שהמסד הציבורי הוא לקריאה בלבד.</div>
+</section>
+<section class="sec" id="s2-8" data-t="UPDATE ו-DELETE">
+<div class="sec-h"><div class="sec-n">8</div><h2>לשנות נתונים בלי להרוס: UPDATE, DELETE וטרנזקציה</h2></div>
+<p class="lead">עד עכשיו רק שאלנו. אבל יבגני גם משנה דברים: מעלה מחיר למנה, מבטל הזמנה, מתקן טיפ שגוי. פקודה אחת בלי תנאי יכולה לשנות את כל הטבלה, והמסד לא יעצור אתכם.</p>
+
+<div class="defline"><b>DML (פקודות שינוי נתונים):</b> שלוש הפקודות שמשנות נתונים: <code>INSERT</code> מוסיפה שורה, <code>UPDATE</code> משנה ערכים בשורות קיימות, <code>DELETE</code> מוחקת שורות. דוגמה: <code>UPDATE dishes SET price = price + 2 WHERE id = 2</code> מייקרת רק את מרק העגבניות.</div>
+<p>יחד עם <code>SELECT</code> (קריאה), אלה ארבע הפעולות שכל אפליקציה עושה, והן נקראות <b>CRUD</b>: Create, Read, Update, Delete.</p>
+
+<div class="mk mk-term"><div class="mk-bar"><i></i><i></i><i></i><span class="url">sqlite3 · הדמיה סכמטית של טעות</span></div><div class="mk-body"><span class="p">sqlite&gt;</span> UPDATE dishes SET price = 0;
+<span class="p">sqlite&gt;</span> SELECT name, price FROM dishes LIMIT 3;
+סלט יווני&lrm;|0.0
+מרק עגבניות&lrm;|0.0
+המבורגר בקר&lrm;|0.0</div></div>
+<p>הפקודה חוקית לגמרי. שכחו WHERE, והמחיר של כל התפריט הפך לאפס. אין חלון אזהרה ואין כפתור ״בטל״.</p>
+
+<div class="lab" data-id="p2-lab-d0" data-title="חקר: מה קורה בלי WHERE (בטוח כאן)">
+<div class="q-src">תריצו ותראו את הטבלה לפני ואחרי. המסד נטען מחדש בכל הרצה, ולכן אין נזק.</div>
+<pre class="start">UPDATE dishes SET price = 0</pre>
+<pre class="show">SELECT id, name, price FROM dishes ORDER BY id</pre>
+<div class="why-src">כל עשר המנות קיבלו מחיר אפס. במסד אמיתי הנזק היה נשמר, והקופה הייתה מוכרת במחיר אפס עד שמישהו שם לב.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-d1" data-title="UPDATE עם WHERE, לפי מפתח">
+<div class="q-src">מרק העגבניות (<code>id = 2</code>) מתייקר ב-2 שקלים. תכתבו UPDATE שמשנה רק אותו, בחישוב יחסי (<code>price = price + 2</code>).</div>
+<pre class="start">UPDATE dishes
+SET price = price + 2
+-- השלימו תנאי</pre>
+<pre class="show">SELECT id, name, category, price FROM dishes WHERE category = 'starter' ORDER BY id</pre>
+<pre class="check">UPDATE dishes SET price = price + 2 WHERE id = 2</pre>
+<pre class="solution">UPDATE dishes
+SET price = price + 2
+WHERE id = 2</pre>
+<ol class="hints"><li>WHERE על המפתח הראשי משנה שורה אחת בלבד.</li></ol>
+<div class="why-src">בטבלת ״אחרי״ המחיר של מרק עגבניות עלה מ-32 ל-34, והסלט היווני נשאר 38. <dfn data-d="מפתח ראשי: עמודה שהערך שלה ייחודי בכל שורה ולא ריק, ולכן מזהה שורה אחת בלבד. דוגמה: dishes.id.">המפתח הראשי</dfn> (id) הוא הדרך הבטוחה לזהות שורה, כי הוא ייחודי.</div>
+</div>
+
+<div class="box trap">
+<p><b>הצעה של AI שנראית הגיונית.</b> איתי רוזן (לקוח 7) ביקש לבטל את ההזמנה מ-8 במאי בשעה 20:15. ה-AI כתב: <code>UPDATE orders SET status = 'cancelled' WHERE customer_id = 7</code>. מה לא בסדר? ללקוח 7 יש חמש הזמנות, והפקודה מבטלת את כולן.</p>
+</div>
+
+<div class="lab" data-id="p2-lab-d2" data-title="לזהות שורה בלי לפגוע באחרות">
+<div class="q-src">תתקנו את ה-UPDATE כך שיבטל רק את ההזמנה של איתי מ-8 במאי בשעה 20:15. קודם תבדקו מה מספרה: תריצו SELECT ותמצאו אותה. הפקודה המקורית מבטלת את כל ההזמנות של הלקוח.</div>
+<pre class="start">UPDATE orders
+SET status = 'cancelled'
+WHERE customer_id = 7</pre>
+<pre class="show">SELECT id, customer_id, order_ts, status FROM orders WHERE customer_id = 7 ORDER BY id</pre>
+<pre class="check">UPDATE orders SET status = 'cancelled' WHERE id = 66</pre>
+<pre class="solution">UPDATE orders
+SET status = 'cancelled'
+WHERE id = 66</pre>
+<ol class="hints"><li>מספר ההזמנה מופיע בטבלת ״לפני״: חפשו את השעה 20:15.</li><li>תשתמשו ב-id של ההזמנה, לא במספר הלקוח.</li></ol>
+<div class="why-src">רק הזמנה 66 עברה ל-cancelled. התנאי על customer_id היה תנאי על ״האדם״, והמשימה הייתה על ״הזמנה אחת״. שלוש שאלות שאפשר לשאול על כל פקודה ש-AI מציע: אילו שורות היא נוגעת בהן? איזה מפתח מזהה אותן? האם הסינון תואם למה שביקשו?</div>
+</div>
+
+<h3>הנוהל הבטוח: קודם SELECT</h3>
+<div class="flow">
+<span class="nd">1. SELECT עם אותו WHERE</span><span class="ar">←</span>
+<span class="nd a">2. סופרים: כמה שורות?</span><span class="ar">←</span>
+<span class="nd">3. BEGIN</span><span class="ar">←</span>
+<span class="nd">4. UPDATE / DELETE</span><span class="ar">←</span>
+<span class="nd a">5. בודקים שוב</span><span class="ar">←</span>
+<span class="nd g">COMMIT</span> <b>או</b> <span class="nd r">ROLLBACK</span>
+</div>
+<div class="defline"><b>טרנזקציה (transaction):</b> קבוצת פקודות שמתבצעות כמו פעולה אחת: או שכולן נשמרות (<code>COMMIT</code>) או שכולן מתבטלות (<code>ROLLBACK</code>). דוגמה: <code>BEGIN; DELETE FROM orders; ROLLBACK;</code> מוחקת הכול ומיד מבטלת את המחיקה, והטבלה חוזרת למצב שהייתה בו.</div>
+
+<div class="lab" data-id="p2-lab-d3" data-title="ROLLBACK מציל" data-require="ROLLBACK" data-require-msg="תוסיפו פקודה שמבטלת את המחיקה.">
+<div class="q-src">מישהו הריץ בטעות <code>DELETE FROM orders</code> בתוך טרנזקציה. תוסיפו פקודה אחת כך שבסוף כל 87 ההזמנות יחזרו למקומן (השאילתה האחרונה סופרת אותן).</div>
+<pre class="start">BEGIN;
+DELETE FROM orders;
+-- הוסיפו כאן פקודה
+SELECT COUNT(*) AS orders_left FROM orders;</pre>
+<pre class="check">SELECT COUNT(*) FROM orders</pre>
+<pre class="solution">BEGIN;
+DELETE FROM orders;
+ROLLBACK;
+SELECT COUNT(*) AS orders_left FROM orders;</pre>
+<ol class="hints"><li>איזו פקודה מבטלת את כל מה שנעשה מאז BEGIN?</li></ol>
+<div class="why-src">הספירה חזרה ל-87. בלי ROLLBACK (או עם COMMIT) המחיקה הייתה נשמרת והספירה הייתה 0. בחלק 3 נראה למה טרנזקציות חשובות כשמערכת עושה כמה שינויים ביחד, כמו הזמנה ופריטים שלה.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-d4" data-title="DELETE והיתומים שנשארו" data-ordered="0">
+<div class="q-src">תמחקו את שתי ההזמנות המבוטלות בערוץ walk-in (<code>status = 'cancelled' AND channel = 'walk-in'</code>). תסתכלו על הטבלה ״אחרי״ ועל מה שקורה לפריטים שלהן.</div>
+<pre class="start">DELETE FROM orders
+WHERE status = 'cancelled'
+-- AND ...</pre>
+<pre class="show">SELECT o.id, o.channel, o.status, (SELECT COUNT(*) FROM order_items i WHERE i.order_id = o.id) AS items FROM orders o WHERE o.status = 'cancelled' ORDER BY o.id</pre>
+<pre class="check">DELETE FROM orders WHERE status = 'cancelled' AND channel = 'walk-in'</pre>
+<pre class="solution">DELETE FROM orders
+WHERE status = 'cancelled'
+  AND channel = 'walk-in'</pre>
+<ol class="hints"><li>שני תנאים עם AND. תריצו קודם SELECT עם אותם תנאים ותוודאו שחוזרות שתי שורות.</li></ol>
+<div class="why-src">נמחקו הזמנות 73 ו-78, אבל ששת הפריטים שלהן נשארו בטבלת order_items בלי הזמנה: יתומים. מסד שבו מוגדר מפתח זר (חלק 1) היה חוסם את המחיקה או מוחק גם את הפריטים. כאן לא הוגדר מפתח כזה (וב-SQLite אכיפת מפתח זר מופעלת בנפרד, והיא כבויה כברירת מחדל), ולכן המסד שותק. עוד סיבה לעבוד לפי נוהל: מחיקה קשה לביטול, ולפעמים עדיף לסמן הזמנה כמבוטלת ולא למחוק אותה.</div>
+</div>
+
+<div class="lab" data-id="p2-lab-d5" data-title="INSERT עם שמות עמודות" data-require="INSERT\s+INTO\s+dishes\s*\(" data-require-msg="תכתבו את שמות העמודות בסוגריים אחרי שם הטבלה.">
+<div class="q-src">יבגני מוסיף לתפריט מנה חדשה: <b>חומוס</b>, קטגוריה <code>starter</code>, מחיר 29, עלות 8, <code>id = 11</code>. תכתבו INSERT עם שמות העמודות.</div>
+<pre class="start">INSERT INTO dishes
+-- השלימו עמודות וערכים</pre>
+<pre class="show">SELECT * FROM dishes WHERE id &gt;= 9 ORDER BY id</pre>
+<pre class="check">INSERT INTO dishes (id, name, category, price, cost) VALUES (11, 'חומוס', 'starter', 29, 8)</pre>
+<pre class="solution">INSERT INTO dishes (id, name, category, price, cost)
+VALUES (11, 'חומוס', 'starter', 29, 8)</pre>
+<ol class="hints"><li>רשמו בסוגריים את שמות העמודות לפי הסדר, ואחר כך VALUES עם הערכים באותו סדר.</li></ol>
+<div class="why-src">שורה חדשה בתחתית הטבלה. כשכותבים את שמות העמודות אתם מוגנים: אם יוסיפו עמודה לטבלה, ה-INSERT ימשיך לעבוד ולא ישים ערך בעמודה הלא נכונה.</div>
+</div>
+
+<div class="quiz" data-id="p2-q-upd" data-a="3"><p class="qq">מריצים <code>UPDATE dishes SET price = price * 1.1</code> בלי WHERE. מה קורה?</p>
+<button class="opt">רק המנה הראשונה מתייקרת</button>
+<button class="opt">המסד מחזיר שגיאה ודורש WHERE</button>
+<button class="opt">כל 10 המנות מתייקרות ב-10%</button>
+<button class="opt">הפקודה לא עושה כלום עד שמאשרים</button>
+<div class="why">בלי WHERE הפקודה חלה על כל השורות בטבלה. למסד אין חלון אישור והוא לא דורש WHERE. בגלל זה יש נוהל של SELECT קודם, וטרנזקציה שאפשר לבטל.</div></div>
+
+<div class="quiz" data-id="p2-q-tx" data-a="1"><p class="qq">מריצים <code>BEGIN; DELETE FROM orders WHERE channel = 'phone';</code> ואז מבינים שזו טעות. מה עושים?</p>
+<button class="opt">ROLLBACK, והשורות חוזרות</button>
+<button class="opt">COMMIT, כי המחיקה כבר בוצעה</button>
+<button class="opt">מריצים INSERT לכל שורה שנמחקה</button>
+<button class="opt">אין מה לעשות, המחיקה סופית</button>
+<div class="why">כל עוד לא עשיתם COMMIT, הטרנזקציה פתוחה ו-ROLLBACK מחזיר הכול. COMMIT היה הופך את המחיקה לקבועה, ואז צריך לשחזר מגיבוי. לכן לא סוגרים טרנזקציה לפני שבדקו.</div></div>
+
+<div class="box think" data-id="p2-th-dml"><p>אנליסט שמריץ דוחות צריך הרשאה למחוק שורות? איך מסדרים את המסד כך שטעות אחת לא תפגע בנתונים האמיתיים?</p>
+<div class="ans">לא. הכלל הוא הרשאה מינימלית: אנליסט מקבל קריאה בלבד, ושינויים נעשים רק על ידי מערכת ההזמנות או בתהליך מבוקר. בנוסף: עובדים על עותק או על מחסן נתונים (חלק 4) ולא על המסד החי, מגבים באופן קבוע, ומריצים שינויים בנתונים רק דרך סקריפט שנבדק, ולא בהקלדה חופשית.</div></div>
+
+<div class="box meaning">
+<p>ב-DML שאילתה כבר לא רק שואלת, היא משנה עובדות. ״אילו שורות?״ ו״איזה מפתח?״ הן שאלות הביקורת החשובות, כי הנזק מצטבר והשחזור יקר. כל עבודה של AI על נתונים חיים נבדקת כאן בחומרה גדולה יותר.</p>
+</div>
+<div class="box real">
+<p>מערכות רבות מסמנות שורות חשובות (״בוטל״, ״לא פעיל״) במקום למחוק אותן, ושומרות היסטוריה. שינויים בנתוני ייצור נעשים בדרך כלל דרך תהליך מסודר שנבדק לפני הרצה, ולא בהקלדה ידנית במסוף. ומסדים רציניים מגבים אוטומטית ומאפשרים שחזור לנקודת זמן.</p>
+</div>
+<div class="teach"><b>🎓 למרצה:</b> בקשו מהכיתה להריץ את מעבדת d0 בלי להסביר. הרגע שבו כל המחירים מתאפסים הוא הלקח. אחר כך שאלו: מי מכם הריץ פעם UPDATE בלי WHERE? שימו לב שמעבדת d4 מראה יתומים: אפשר לקשור את זה לחלק 1 (מפתח זר).</div>
+</section>
+<section class="sec" id="s2-9" data-t="מספרים שגויים בשקט">
+<div class="sec-h"><div class="sec-n">9</div><h2>מספרים שנראים נכון ואינם: גלריה</h2></div>
+<p class="lead">שאילתה שנכשלת עם שגיאה אדומה היא לא מסוכנת, כי רואים אותה ומתקנים. המסוכנת היא זו שרצה בהצלחה, מחזירה מספר מסודר, וטועה. לפניכם שמונה שאילתות, כולן כתובות נקי. חלקן נכונות. תקראו, תחליטו, ואז תריצו.</p>
+
+<div class="sim" data-id="p2-sim-gallery"><div class="sh">גלריית שאילתות: נכון או שגוי</div>
+<p>בכל כרטיס: קראו את השאלה העסקית ואת השאילתה. לחצו על מה שנראה לכם, ותקבלו את המספר שהשאילתה מחזירה, את המספר הנכון ואת ההסבר.</p>
+<div class="p2-score" id="p2gl-score">עוד לא ענית</div>
+<div id="p2gl-list"></div></div>
+<script>(function(){ FL.dom(function(){ FL.onReady(function(ok){
+  const list = FL.$('#p2gl-list'), score = FL.$('#p2gl-score'); if (!list) return;
+  const CASES = [
+    { q: 'מה זמן המשלוח הממוצע?',
+      sql: "SELECT ROUND(AVG(avg_min), 2) AS avg_delivery\nFROM (SELECT channel, AVG(delivery_min) AS avg_min\n      FROM orders\n      GROUP BY channel)",
+      truth: "SELECT ROUND(AVG(delivery_min), 2) AS avg_delivery FROM orders", ok: false,
+      why: 'זה ממוצע של ממוצעים. האפליקציה (39 משלוחים) והטלפון (20 משלוחים) נספרים באותו משקל, וערוץ walk-in נעלם כי הממוצע שלו NULL. הממוצע האמיתי של כל המשלוחים הוא 35.39, ולא 35.59. כשצריך ממוצע כולל, מחשבים אותו על השורות עצמן.' },
+    { q: 'מה ההכנסה מהזמנות שנמסרו?',
+      sql: "SELECT SUM(i.qty * d.price) AS revenue\nFROM order_items i\nJOIN dishes d ON d.id = i.dish_id",
+      truth: "SELECT SUM(i.qty * d.price) AS revenue FROM order_items i JOIN dishes d ON d.id = i.dish_id JOIN orders o ON o.id = i.order_id WHERE o.status = 'delivered'", ok: false,
+      why: 'השאילתה לא מסננת סטטוס, ולכן כוללת גם הזמנות שבוטלו. SUM בלי סינון סטטוס היא טעות נפוצה, והיא נראית נקייה לגמרי. ההפרש כאן הוא 708 ש״ח.' },
+    { q: 'מה ההכנסה לפי ערוץ, מהזמנות שנמסרו?',
+      sql: "SELECT o.channel, SUM(i.qty * d.price) AS revenue\nFROM orders o\nJOIN order_items i ON i.order_id = o.id\nJOIN dishes d ON d.id = i.dish_id\nWHERE o.status = 'delivered'\nGROUP BY o.channel",
+      truth: null, ok: true,
+      why: 'השאילתה נכונה. כל מה שמסוכם הוא על רמת פריט (כמות כפול מחיר), וסוכם לפי ערוץ. הסינון על הסטטוס קיים. לא כל שאילתה עם כמה JOIN שגויה.' },
+    { q: 'כמה הזמנות באפליקציה יש לכל לקוח? (תסתכלו על לקוחות 4, 5 ו-6)',
+      sql: "SELECT c.id, c.name, COUNT(*) AS app_orders\nFROM customers c\nLEFT JOIN orders o\n  ON o.customer_id = c.id AND o.channel = 'app'\nWHERE c.id IN (4, 5, 6)\nGROUP BY c.id, c.name",
+      truth: "SELECT c.id, c.name, COUNT(o.id) AS app_orders FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND o.channel = 'app' WHERE c.id IN (4, 5, 6) GROUP BY c.id, c.name", ok: false,
+      why: 'ללקוחות 4 ו-5 אין אף הזמנה באפליקציה, אבל LEFT JOIN נותן להם שורה אחת עם NULL, ו-COUNT(*) סופרת אותה. מקבלים 1 במקום 0. התיקון: COUNT(o.id), שמדלגת על NULL.' },
+    { q: 'מה דירוג הלקוחות הממוצע באפליקציה (הזמנות שנמסרו)?',
+      sql: "SELECT ROUND(AVG(COALESCE(rating, 0)), 2) AS avg_rating\nFROM orders\nWHERE channel = 'app' AND status = 'delivered'",
+      truth: "SELECT ROUND(AVG(rating), 2) AS avg_rating FROM orders WHERE channel = 'app' AND status = 'delivered'", ok: false,
+      why: 'ה-COALESCE הופך כל דירוג חסר לאפס, אבל חסר אומר שהלקוח לא דירג, לא שהוא נתן 0. הממוצע יורד מ-3.54 ל-2.54. עדיף להשאיר את ה-NULL, ולדווח ליד הממוצע כמה לקוחות דירגו.' },
+    { q: 'אילו לקוחות מעולם לא הזמינו באפליקציה?',
+      sql: "SELECT c.id, c.name\nFROM customers c\nLEFT JOIN orders o\n  ON o.customer_id = c.id AND o.channel = 'app'\nWHERE o.id IS NULL",
+      truth: null, ok: true,
+      why: 'השאילתה נכונה. התנאי על הערוץ נמצא ב-ON ולכן הוא מגדיר מה נחשב זוג, וה-WHERE מחפש רק שורות בלי זוג. מקבלים את יוסי מזרחי ואת נועם ברק.' },
+    { q: 'כמה לקוחות שונים הזמינו?',
+      sql: "SELECT COUNT(DISTINCT customer_id) AS customers\nFROM orders",
+      truth: "SELECT COUNT(DISTINCT c.email) AS customers FROM orders o JOIN customers c ON c.id = o.customer_id", ok: false,
+      why: 'התוצאה 19 כוללת את המספר 99 שהוא לא לקוח קיים, וסופרת פעמיים את רונית מלכה (לקוחות 17 ו-18, אותו אימייל). האנשים האמיתיים הם 17. DISTINCT מגן מכפילות של אותו מפתח, ולא מכפילות של אותו אדם בשני מפתחות.' },
+    { q: 'מה ההכנסה והטיפים לפי ערוץ (app ו-phone, הזמנות שנמסרו)?',
+      sql: "WITH rev AS (\n  SELECT i.order_id, SUM(i.qty * d.price) AS revenue\n  FROM order_items i\n  JOIN dishes d ON d.id = i.dish_id\n  GROUP BY i.order_id\n)\nSELECT o.channel, SUM(r.revenue) AS revenue, SUM(o.tip) AS tips\nFROM orders o\nJOIN rev r ON r.order_id = o.id\nWHERE o.channel IN ('app', 'phone') AND o.status = 'delivered'\nGROUP BY o.channel",
+      truth: null, ok: true,
+      why: 'השאילתה נכונה. ה-CTE מצמצם את הפריטים לשורה אחת לכל הזמנה, ולכן הטיפים לא מוכפלים: 135 ו-74. זה הפתרון של מעבדת הדשבורד.' }
+  ];
+  let answered = 0, right = 0; const fin = {};
+  function upd(){ score.textContent = answered ? ('ענית נכון על ' + right + ' מתוך ' + answered + ' (סה״כ ' + CASES.length + ' כרטיסים)') : 'עוד לא ענית'; if (answered === CASES.length) FL.done('p2-sim-gallery'); }
+  CASES.forEach(function(c, i){
+    const d = document.createElement('div'); d.className = 'p2-gal';
+    d.innerHTML = '<div class="gq">' + (i+1) + '. ' + FL.esc(c.q) + '</div><pre class="code" data-lang="sql">' + FL.hl(c.sql) + '</pre><div class="gb"><button type="button" class="btn sec2" data-v="ok">נראה נכון</button><button type="button" class="btn sec2" data-v="bad">נראה שגוי</button></div><div class="gres"></div>';
+    list.appendChild(d);
+    d.addEventListener('click', function(e){
+      const b = e.target.closest('button[data-v]'); if (!b || fin[i]) return;
+      fin[i] = 1; d.classList.add('shown'); answered++;
+      const choiceBad = b.dataset.v === 'bad';
+      const correct = (choiceBad === !c.ok); if (correct) right++;
+      FL.$$('button[data-v]', d).forEach(function(x){ x.disabled = true; });
+      const res = FL.$('.gres', d);
+      let h = '<div class="verdict ' + (correct ? 'ok' : 'no') + '">' + (correct ? '✓ צדקתם. ' : '✗ לא בדיוק. ') + (c.ok ? 'השאילתה נכונה.' : 'השאילתה שגויה.') + '</div>';
+      if (!ok) { h += 'מנוע ה-SQL לא נטען.'; }
+      else if (c.ok) { h += '<div class="res">' + FL.tableHTML(FL.exec(c.sql)) + '</div>'; }
+      else {
+        h += '<div class="p2-two"><div class="res"><b>מה שהשאילתה מחזירה</b>' + FL.tableHTML(FL.exec(c.sql)) + '</div><div class="res"><b>המספר הנכון</b>' + FL.tableHTML(FL.exec(c.truth)) + '</div></div>';
+      }
+      h += '<p>' + FL.esc(c.why) + '</p>';
+      res.innerHTML = h; upd();
+    });
+  });
+  upd();
+}); }); })();</script>
+
+<div class="box trap">
+<p><b>מה למדנו מהכרטיסים:</b> בחלק מהכרטיסים הבעיה היא ב-JOIN (ספירה אחרי LEFT JOIN), באחרים בשאלה עצמה (ממוצע של ממוצעים, סינון סטטוס חסר), ובאחרים בנתונים (ערך חסר שנהפך לאפס, לקוח כפול). הכרטיסים הנכונים מראים שלא צריך חשדנות כללית אלא בדיקות ממוקדות.</p>
+</div>
+
+<h3>הרגלי הבדיקה של מי שסומך על מספר</h3>
+<div class="cols3">
+<div class="card"><h4>1. ספרו שורות</h4><p>כמה שורות היו לפני ה-JOIN וכמה אחריו? עלייה היא fan-out. ירידה היא INNER JOIN שמשמיט.</p></div>
+<div class="card"><h4>2. השוו לסכום ידוע</h4><p>הקופה, הנהלת החשבונות, ספירה ידנית של כמה הזמנות. מספר בלי נקודת ייחוס הוא סתם דעה.</p></div>
+<div class="card"><h4>3. חפשו NULL</h4><p>כמה NULL יש בעמודות שהשאילתה נוגעת בהן? מה קורה להם: מדולגים, הופכים לאפס, או נפסלים?</p></div>
+<div class="card"><h4>4. בדקו את הקצוות</h4><p>היום הראשון והאחרון בטווח, השעה 23:59, המעבר בין חודשים, הזמנה מבוטלת.</p></div>
+<div class="card"><h4>5. בדקו שורה אחת ידנית</h4><p>תבחרו הזמנה אחת, תחשבו אותה בידיים, ותשוו לשורה בתוצאה.</p></div>
+<div class="card"><h4>6. שאלו מה ההנחה</h4><p>בכל מספר שמגיע מ-AI או מעמית: מה נספר ומה לא נספר? מי החליט?</p></div>
+</div>
+
+<div class="quiz" data-id="p2-q-check" data-a="3"><p class="qq">קיבלתם מ-AI שאילתה שמחזירה סך טיפים של 517 ש״ח לשלושת החודשים. בקופה יש 209. מה הבדיקה הראשונה והזולה ביותר?</p>
+<button class="opt">להריץ את השאילתה שוב ולראות אם התוצאה משתנה</button>
+<button class="opt">לבקש מה-AI להסביר למה הוא בטוח במספר</button>
+<button class="opt">לספור שורות לפני ואחרי כל JOIN, ולבדוק אם הן מתרבות</button>
+<button class="opt">להוסיף DISTINCT לכל העמודות בשאילתה</button>
+<div class="why">הפער המדויק (פי 2.5) מרמז על fan-out, וספירת שורות לפני ואחרי כל JOIN מגלה אותו מיד. הרצה חוזרת תחזיר אותו מספר שגוי. ה-AI עלול להסביר בביטחון מספר שגוי. DISTINCT על כל העמודות עלול להסיר שורות לגיטימיות, ולא יפתור את הבעיה.</div></div>
+
+<div class="box think" data-id="p2-th-gal"><p>מבין כל הכרטיסים, אילו שניים הכי קשה לגלות בלי להכיר את העסק, ולמה?</p>
+<div class="ans">כרטיס 5 (דירוג ממוצע עם COALESCE) וכרטיס 7 (ספירת לקוחות). בשניהם השאילתה תקינה טכנית והמספר סביר. כדי לגלות את הטעות צריך לדעת שדירוג חסר הוא לא אפס, ושלאותו אדם יש שני מזהים. את זה יודעים רק בעלי העסק והנתונים, לא המסד. בגלל זה ארכיטקט צריך להכיר את הנתונים, לא רק את התחביר.</div></div>
+
+<div class="box meaning">
+<p>מספר בדוח הוא לא עובדה. הוא תוצאה של שאילתה, ולשאילתה יש הנחות. הנהלה שסומכת על מספר שגוי מקבלת החלטות שגויות: מגייסת שליחים שלא צריך, או מתעלמת מירידה אמיתית. ההגנה היא לא פחד משאילתות אלא מערכת בדיקות קטנה וקבועה.</p>
+</div>
+<div class="box real">
+<p>בארגונים שמתייחסים לנתונים ברצינות יש תהליכים לבדיקת מספרים: השוואה למערכות המקור, בדיקות אוטומטיות על דוחות, וסקירה של שאילתות חשובות על ידי עמית. זו אחת הסיבות שכשעובדים עם AI על נתונים צריך מישהו שבודק. על זה נדבר בחלק 5.</p>
+</div>
+<div class="teach"><b>🎓 למרצה:</b> חלקו את הכיתה לזוגות. כל זוג עובר על הכרטיסים וצריך להסכים על תשובה לפני שלוחצים. שימו לב שהכרטיסים 3, 6 ו-8 נכונים: בקשו מזוג שאמר ״שגוי״ להסביר למה. זו הזדמנות לדבר על חשדנות יתר מול ביקורת ממוקדת.</div>
+</section>
+<section class="sec" id="s2-10" data-t="אתגר וסיכום">
+<div class="sec-h"><div class="sec-n">10</div><h2>אתגר הסיכום: דוח ערוצים להנהלה</h2></div>
+<p class="lead">יבגני רוצה דוח אחד להנהלה שעונה על שאלה 1 עד הסוף: לכל ערוץ, כמה הזמנות, כמה הכנסה, כמה גדולה ההזמנה הממוצעת, איזה חלק מההכנסה הערוץ מביא, כמה טיפים, והאם ההזמנה הממוצעת גדולה. זה אתגר שמשלב כמעט כל מה שלמדנו.</p>
+
+<div class="box note">
+<p><b>מה צריך להיות בשאילתה:</b> CTE שמצמצם את הפריטים לשורה אחת לכל הזמנה (כדי למנוע fan-out), סינון הזמנות שנמסרו, קיבוץ לפי ערוץ, חלון או חישוב של אחוז מסך ההכנסה, <code>COALESCE</code> לטיפים של הערוץ שאין בו טיפים, ו-<code>CASE</code> לתווית של גודל ההזמנה.</p>
+</div>
+
+<div class="lab" data-id="p2-lab-boss" data-title="אתגר: דוח הערוצים" data-ordered="1" data-require="WITH[\s\S]*CASE" data-require-msg="השאילתה צריכה CTE (WITH) ו-CASE.">
+<div class="q-src">תכתבו שאילתה שמחזירה לכל ערוץ, מהזמנות שנמסרו בלבד, בסדר העמודות הזה: <code>channel</code>; <code>orders</code> (מספר ההזמנות); <code>revenue</code> (סך ההכנסה); <code>avg_ticket</code> (הכנסה ממוצעת להזמנה, מעוגלת לשתי ספרות); <code>share_pct</code> (אחוז מסך ההכנסה, מעוגל לספרה אחת); <code>tips</code> (סך הטיפים, 0 כשאין); <code>ticket_level</code> (<code>'high'</code> כשההכנסה הממוצעת להזמנה 160 ומעלה, אחרת <code>'regular'</code>). מיון לפי ההכנסה, מהגבוה לנמוך.</div>
+<pre class="start">WITH order_rev AS (
+  -- שורה אחת להזמנה: id, channel, tip, revenue
+)
+SELECT channel
+       -- orders, revenue, avg_ticket, share_pct, tips, ticket_level
+FROM order_rev
+-- GROUP BY ...
+-- ORDER BY ...</pre>
+<pre class="check">WITH order_rev AS (SELECT o.id, o.channel, o.tip, SUM(i.qty * d.price) AS revenue FROM orders o JOIN order_items i ON i.order_id = o.id JOIN dishes d ON d.id = i.dish_id WHERE o.status = 'delivered' GROUP BY o.id, o.channel, o.tip) SELECT channel, COUNT(*), SUM(revenue), ROUND(AVG(revenue), 2), ROUND(100.0 * SUM(revenue) / SUM(SUM(revenue)) OVER (), 1), COALESCE(SUM(tip), 0), CASE WHEN AVG(revenue) &gt;= 160 THEN 'high' ELSE 'regular' END FROM order_rev GROUP BY channel ORDER BY 3 DESC</pre>
+<pre class="solution">WITH order_rev AS (
+  SELECT o.id, o.channel, o.tip,
+         SUM(i.qty * d.price) AS revenue
+  FROM orders o
+  JOIN order_items i ON i.order_id = o.id
+  JOIN dishes d      ON d.id = i.dish_id
+  WHERE o.status = 'delivered'
+  GROUP BY o.id, o.channel, o.tip
+)
+SELECT channel,
+       COUNT(*)                                   AS orders,
+       SUM(revenue)                               AS revenue,
+       ROUND(AVG(revenue), 2)                     AS avg_ticket,
+       ROUND(100.0 * SUM(revenue)
+             / SUM(SUM(revenue)) OVER (), 1)      AS share_pct,
+       COALESCE(SUM(tip), 0)                      AS tips,
+       CASE WHEN AVG(revenue) &gt;= 160 THEN 'high'
+            ELSE 'regular' END                    AS ticket_level
+FROM order_rev
+GROUP BY channel
+ORDER BY revenue DESC</pre>
+<ol class="hints"><li>הצעד הראשון הוא ה-CTE: מחברים הזמנות, פריטים ומנות, מסננים delivered, ו-GROUP BY ברמת ההזמנה. ככה הטיפ נשאר שורה אחת להזמנה.</li><li>בשאילתה החיצונית COUNT(*) סופרת הזמנות, כי כל שורה ב-order_rev היא הזמנה.</li><li>אחוז מסך ההכנסה: זוכרים את מעבדת ה-<code>OVER ()</code>? כאן סוכמים קודם לפי ערוץ, אז הסך הכולל הוא סכום של סכומים: <code>100.0 * SUM(revenue) / SUM(SUM(revenue)) OVER ()</code>. אפשר גם לחשב את הסך הכולל בתת-שאילתה נפרדת.</li></ol>
+<div class="why-src"><b>בדיקות שמאשרות שהדוח אמין:</b> סך ההזמנות <bdi dir="ltr">39 + 20 + 23 = 82,</bdi> כמו ספירת ההזמנות שנמסרו. סך ההכנסה <bdi dir="ltr">6,180 + 3,492 + 3,212 = 12,884,</bdi> כמו בסעיף 3. הטיפים <bdi dir="ltr">135 + 74 + 0 = 209,</bdi> כמו בקופה (ושימו לב שהם כוללים את הטיפ השלילי של הזמנה 86, שנטפל בו בחלק 4). האחוזים 48.0, 27.1 ו-24.9 מסתכמים ל-100. הטלפון הוא היחיד עם הזמנה ממוצעת גבוהה (174.60), והאפליקציה, למרות הממוצע הנמוך יותר (158.46), מובילה בהכנסה בגלל הנפח.</div>
+</div>
+
+<div class="kpis">
+<div class="kpi g"><b>82</b><span>הזמנות שנמסרו</span></div>
+<div class="kpi g"><b>12,884</b><span>הכנסה כוללת, ש״ח</span></div>
+<div class="kpi g"><b>209</b><span>טיפים, ש״ח</span></div>
+</div>
+<p>שלושת המספרים האלה הם בדיקות הפיקוח של הדוח. אם אחד מהם יוצא אחרת, משהו בשאילתה התנפח או נעלם.</p>
+
+<div class="lab" data-id="p2-lab-free" data-title="ארגז חול: שאלו שאלה משלכם">
+<div class="q-src">נסו שאלה משלכם על מסד המסעדה. כמה רעיונות: איזו מנה הכי רווחית (מחיר פחות עלות)? מי השליח עם הדירוגים הגבוהים ביותר? באיזה יום בשבוע הלקוחות נותנים טיפ גבוה? בכל תוצאה תשאלו את עצמכם: אפשר לאמת אותה?</div>
+<pre class="start">SELECT *
+FROM orders
+LIMIT 5</pre>
+<div class="why-src">שאלה טובה ל-SQL מתחילה בהגדרה: איזו שורה, איזה מדד, איזה טווח. אחר כך כותבים, ואחר כך בודקים.</div>
+</div>
+
+<div class="box recap">
+<ul>
+<li><b>SELECT, WHERE, ORDER BY, LIMIT:</b> כל תנאי הוא הגדרה עסקית. AND קודם ל-OR. בטווח תאריכים עם שעה מסיימים ב״קטן מהיום הראשון הבא״.</li>
+<li><b>JOIN:</b> חיבור לפי מפתח עם ON. INNER משמיט שורות בלי זוג, LEFT משאיר אותן עם NULL. בלי ON יש מכפלה קרטזית. LEFT JOIN עם IS NULL מוצא את החסרים, והתנאי על הטבלה הימנית שייך ל-ON. אחרי LEFT JOIN סופרים עם COUNT(עמודה) ולא COUNT(*).</li>
+<li><b>GROUP BY ו-HAVING:</b> קיבוץ וחישוב אחד לכל קבוצה, על עמודה אחת או יותר. WHERE מסנן שורות לפני, HAVING מסנן קבוצות אחרי. הסדר ההגיוני: FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY, LIMIT.</li>
+<li><b>Fan-out וגרנולריות:</b> חיבור ל״רבים״ משכפל שורות וסכומים. סופרים שורות לפני ואחרי, ומצמצמים את צד ״הרבים״ ב-CTE לפני החיבור.</li>
+<li><b>NULL, COALESCE, CASE, תאריכים, CTE וחלון:</b> NULL הוא לא אפס. בכל CASE מחליטים מה קורה ל-NULL. CTE מפרק שאלה לשלבים, וחלון מוסיף מצטבר, דירוג והשוואה לשורה הקודמת בלי לכווץ.</li>
+<li><b>JSON, BigQuery ו-DML בטוח:</b> שליפה משדה חסר מחזירה NULL בשקט. בין SQLite, BigQuery ו-PostgreSQL ההבדלים בעיקר בפונקציות תאריך ו-JSON. לפני UPDATE או DELETE עושים SELECT עם אותו WHERE, מזהים לפי מפתח, ועובדים בטרנזקציה.</li>
+</ul>
+</div>
+<div class="cmap" data-part="2" data-mini="1"></div>
+
+<div class="quiz" data-id="p2-q-end1" data-a="3"><p class="qq">לקוח בלי אף הזמנה באפליקציה עובר דרך <code>customers c LEFT JOIN orders o ON o.customer_id = c.id AND o.channel = 'app'</code>, ואז <code>GROUP BY c.id</code>. מה יחזיר <code>COUNT(*)</code> עבורו?</p>
+<button class="opt">0, כי אין לו הזמנות</button>
+<button class="opt">NULL, כי אין לו זוג</button>
+<button class="opt">1, כי נשארת שורה אחת עם NULL ו-COUNT(*) סופרת אותה</button>
+<button class="opt">שגיאה, כי אי אפשר לספור שורה עם NULL</button>
+<div class="why">LEFT JOIN משאיר שורה אחת ללקוח בלי זוג, עם NULL בעמודות של הטבלה הימנית. COUNT(*) סופרת שורות ולכן מחזירה 1. <code>COUNT(o.id)</code> מדלגת על NULL ומחזירה 0, וזה מה שרוצים.</div></div>
+
+<div class="quiz" data-id="p2-q-end2" data-a="2"><p class="qq">מה סדר הביצוע ההגיוני של חלקי השאילתה?</p>
+<button class="opt">SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY</button>
+<button class="opt">FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY, LIMIT</button>
+<button class="opt">FROM, SELECT, WHERE, GROUP BY, ORDER BY, HAVING</button>
+<button class="opt">WHERE, FROM, GROUP BY, SELECT, HAVING, LIMIT</button>
+<div class="why">האפשרות הראשונה היא סדר הכתיבה. הסדר ההגיוני מתחיל בטבלה, מסנן שורות, מקבץ, מסנן קבוצות, ורק אז בוחר עמודות, ממיין וחותך. מכאן יוצא שבתקן SQL (וגם ב-PostgreSQL וב-BigQuery) כינוי מ-SELECT לא קיים עדיין ב-WHERE, ושאי אפשר לסנן חלון באותה שאילתה שבה הוא מחושב.</div></div>
+
+<div class="quiz" data-id="p2-q-end3" data-a="1"><p class="qq">מתי INNER JOIN הוא הבחירה הנכונה?</p>
+<button class="opt">כשרוצים רק שורות שיש להן זוג, למשל מנות שנמכרו לפחות פעם</button>
+<button class="opt">כשרוצים לספור את כל ההזמנות, גם אלה בלי לקוח</button>
+<button class="opt">כשרוצים למצוא לקוחות שלא הזמינו</button>
+<button class="opt">אף פעם, כי הוא מוחק נתונים</button>
+<div class="why">INNER JOIN מתאים כשהשורה בלי זוג באמת לא רלוונטית לשאלה. כדי לספור את כל ההזמנות ולחפש חסרים צריך LEFT JOIN. INNER JOIN לא מוחק נתונים מהמסד, הוא רק משמיט אותם מהתוצאה.</div></div>
+
+<div class="box think" data-id="p2-th-end"><p>אילו שתי בדיקות תוסיפו מהיום לכל דוח שתוציאו, ולמה דווקא אותן?</p>
+<div class="ans">תשובה סבירה: (1) ספירת שורות לפני ואחרי כל JOIN, כי היא תופסת fan-out ואובדן שורות בזול. (2) השוואה לסכום חיצוני ידוע (הקופה, מערכת אחרת), כי היא תופסת כל שגיאה שלא חשבתם עליה. אפשר להוסיף גם בדיקת NULL ובדיקת תאריכי קצה. מה שחשוב: שהבדיקות כתובות וקבועות, ולא תלויות במצב רוח.</div></div>
+
+<div class="box meaning">
+<p>שאילתה אחת היא עוד לא דוח. דוח הוא שאילתה, הגדרות מוסכמות ובדיקות. כשיבגני מסתכל על שלוש שורות ורואה שהאפליקציה מובילה והטלפון משתלם יותר להזמנה, הוא מקבל החלטות: לחזק את האפליקציה בלי לזלזל בטלפון, לתזמן שליחים לשישי ושבת, ולעזור לדימה. כל זה נשען על מספרים שבדקתם.</p>
+</div>
+<div class="box real">
+<p>שאילתות כאלה הן הלב של שכבת הדוחות בארגון: הן מוזנות לכלי BI (חלק 4), מתוזמנות ללילה, ומוצגות בדשבורד. ובעידן ה-AI, כשמודל כותב את הטיוטה, התפקיד של האדם הוא מה שתרגלתם כאן: לשאול מה הגרנולריות, מה קרה לשורות, ומה הסכום מול נקודת ייחוס.</p>
+</div>
+<div class="teach"><b>🎓 למרצה:</b> אפשר להעמיד את אתגר הסיכום כמשימה בזוגות. בקשו מכל זוג להציג את שלוש בדיקות האמינות לפני שממשיכים: 82, 12,884, 209. זה סוגר מעגל על ההרגל שהחלק הזה בונה. אם נשאר זמן, הציגו את התוצאה כדשבורד בחלק 4.</div>
+</section>
+
+<div class="pager"><a href="part1.html">→ חלק 1: מרעיון לטבלאות</a><a href="part3.html">חלק 3: איך המערכת עובדת מאחורי הקלעים ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · המפגש המסכם · כל דוגמאות הנתונים בדף בדויות</footer>
+</body>
+</html>

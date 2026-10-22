@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חלק 1: מרעיון לטבלאות · המפגש המסכם · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=1;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+<script src="fl-data.js?v=1"></script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="fl-map.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">🍽️ המסע המלא</a>
+    <div class="parts"><a id="part1" href="part1.html" title="מרעיון לטבלאות" class=on>1<small></small></a><a id="part2" href="part2.html" title="SQL: לשאול את הנתונים">2<small></small></a><a id="part3" href="part3.html" title="איך המערכת עובדת מאחורי הקלעים">3<small></small></a><a id="part4" href="part4.html" title="מנתונים לדוחות שאפשר לסמוך עליהם">4<small></small></a><a id="part5" href="part5.html" title="AI: מה נותנים לו ומה בודקים">5<small></small></a><a id="part6" href="part6.html" title="הפרויקט: לעקוב, להחליט, למסור">6<small></small></a></div>
+    <span class="ppct" id="ppct"></span><span class="chipst" id="eng">⏳ SQL</span></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · המפגש המסכם</div>
+  <h1>מרעיון<br><span>לטבלאות</span></h1>
+  <p>יבגני מנהל את המסעדה באקסל, והקובץ כבר לא עומד בזה. בחלק הזה נהפוך שאלה של העסק לטבלאות, מפתחות וקשרים, נבנה אותם במסד נתונים אמיתי בענן, ונלמד לבדוק מה ש-AI בנה בשבילנו.</p>
+  <div class="chips"><span>🧪 מעבדות SQL אמיתיות</span><span>🎞️ הנפשות</span><span>📱 מוקאפים</span><span>🎛️ הדמיות אינטראקטיביות</span><span>☁️ בנייה ב-Supabase</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף. בהן: מה לומר, איפה לעצור לדיון ומה לבדוק לפני המעבר הלאה.</div>
+<style>
+.p1-note{color:var(--muted);font-size:.9rem;margin:.2em 0 .6em}
+.p1-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.p1-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:10px 0}
+.p1-panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.p1-panel h4{margin:0 0 4px;font-size:1rem}
+.p1-sheet{border-collapse:collapse;width:100%;font-size:.86rem;direction:ltr;background:#fff}
+.p1-sheet th{background:#e7ebf0;color:#475569;font-weight:600;border:1px solid #cbd5e1;padding:2px 8px;text-align:center}
+.p1-sheet td{border:1px solid #d5dbe3;padding:3px 8px;unicode-bidi:plaintext;text-align:start;white-space:nowrap}
+.p1-sheet td.rn{background:#e7ebf0;color:#64748b;text-align:center;width:28px}
+.p1-sheet td.bad{background:#fee2e2;color:#991b1b;font-weight:700}
+.p1-sheet td.tot{background:#ecfdf5;font-weight:800}
+.p1-pill{display:inline-block;border-radius:999px;padding:1px 12px;font-weight:700;font-size:.85rem}
+.p1-pill.r{background:var(--red-light);color:#991b1b}.p1-pill.g{background:var(--green-light);color:#065f46}.p1-pill.b{background:var(--primary-light);color:var(--primary-dark)}.p1-pill.a{background:var(--amber-light);color:#92400e}
+.p1-audit{list-style:none;margin:6px 0;padding:0}
+.p1-audit li{display:flex;gap:8px;align-items:flex-start;margin:4px 0}
+.p1-audit .lamp{flex:none;margin-top:5px}
+.p1-big{font-size:2.1rem;font-weight:900;color:var(--navy);line-height:1.1}
+.p1-ladder button{margin:3px}
+.p1-item{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px;margin:6px 0}
+.p1-item .t{flex:1 1 220px;font-weight:600;unicode-bidi:plaintext}
+.p1-item button{font:inherit;font-size:.85rem;font-weight:700;border:1px solid #cbd5e1;background:#f8fafc;border-radius:999px;padding:1px 12px;cursor:pointer}
+.p1-item button:hover{background:var(--primary-light)}
+.p1-item.ok{background:var(--green-light);border-color:#6ee7b7}
+.p1-item.no button.wrong{background:var(--red-light);border-color:#fca5a5}
+.p1-cell{display:inline-block;min-width:74px;text-align:center;border:2px solid var(--navy);border-radius:10px;padding:4px 10px;font-weight:900;font-size:1.4rem;background:#fff;direction:ltr}
+.p1-log{margin:8px 0 0;padding-inline-start:1.2em;font-size:.93rem}
+.p1-log li{margin:2px 0}
+.p1-tag{display:inline-block;border:1px dashed var(--primary);border-radius:8px;padding:0 6px;margin:0 1px;cursor:pointer;background:#fff}
+.p1-tag.sel{background:var(--amber-light);border-style:solid;border-color:var(--amber)}
+.p1-tag.good{background:var(--green-light);border-color:var(--green);border-style:solid}
+.p1-tag.miss{background:#e0f2fe;border-color:#0ea5e9;border-style:solid}
+.p1-tag.bad{background:var(--red-light);border-color:var(--red);border-style:solid}
+.p1-spec{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;line-height:2.1;font-size:1.02rem}
+.p1-colrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:4px 0;padding:3px 8px;border-radius:8px;border:1px solid var(--line);background:#fff}
+.p1-colrow code{flex:0 0 auto}
+.p1-colrow select{margin-inline-start:auto}
+.p1-colrow.ok{background:var(--green-light);border-color:#6ee7b7}
+.p1-colrow.no{background:var(--red-light);border-color:#fca5a5}
+.p1-chipbtn{font:inherit;font-weight:700;font-size:.88rem;border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:2px 12px;cursor:pointer;direction:ltr}
+.p1-chipbtn.sel{background:var(--primary-light);border-color:var(--primary);color:var(--primary-dark)}
+.p1-chipbtn.ok{background:var(--green-light);border-color:#34d399;color:#065f46}
+.p1-chipbtn.no{background:var(--red-light);border-color:#f87171;color:#991b1b}
+.p1-chipbtn.miss{background:#e0f2fe;border-color:#0ea5e9}
+.p1-roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0}
+.p1-role{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;text-align:center}
+.p1-role .ic{font-size:2rem}
+.p1-role code{display:block;margin:6px 0}
+.p1-fk{color:#7c3aed;font-weight:800}
+.p1-pk{color:#b91c1c;font-weight:800}
+.p1-grid>*{min-width:0}
+.p1-panel pre{overflow-x:auto;max-width:100%}
+.p1-swipe{display:none;color:var(--muted);font-size:.85rem;margin:-6px 0 10px;text-align:center}
+@media(max-width:640px){.anim .stage{overflow-x:auto}.anim .stage svg{min-width:620px;max-width:none}.anim[data-id="p1-anim-keys"] .stage svg{min-width:560px}.p1-grid{grid-template-columns:1fr}.p1-swipe{display:block}}
+</style>
+
+
+<div class="box note">
+<p>הדף הזה עובד כמו מעבדה. כל תיבת <dfn data-d="שפה לשאול ולשנות נתונים בטבלאות. היא נקראת כמעט כמו אנגלית. דוגמה: SELECT * FROM dishes אומרת ״תביא לי את כל העמודות מטבלת המנות״.">SQL</dfn> בדף מריצה <dfn data-d="מקום שמחזיק טבלאות ומאפשר להרבה אנשים לקרוא ולכתוב אליהן לפי כללים. דוגמה: כל ההזמנות של יבגני יושבות בטבלה אחת במסד.">מסד נתונים</dfn> אמיתי (<dfn data-d="מסד נתונים קטן שרץ בלי שרת נפרד, ולכן אפשר להפעיל אותו ישר בדפדפן.">SQLite</dfn>) ישר בדפדפן, עם הנתונים של מסעדת יבגני. כל הרצה מתחילה ממסד נקי, אז אפשר לשבור הכול בלי לפגוע בדבר.</p>
+<p>בכל סעיף יש קודם מצב מהמסעדה, אחר כך ההסבר, משהו לראות ומשהו לעשות. כל מונח חדש מוסבר במשפט אחד עם דוגמה. על מילה עם קו נקוד אפשר ללחוץ כדי לראות הגדרה.</p>
+</div>
+
+<section class="sec" id="s1-1" data-t="מי מחליט ומי בונה">
+<div class="sec-h"><div class="sec-n">1</div><h2>מי מחליט ומי בונה</h2></div>
+<p class="lead">יבגני מנהל את המסעדה בקובץ אקסל אחד. יש לו הזמנות מהאולם, מהטלפון ומהאפליקציה, ארבעה אנשים עורכים את הקובץ, והמספרים כבר לא מסתדרים. הוא רוצה מערכת אמיתית. מאיפה מתחילים?</p>
+
+<div class="mk">
+<div class="mk-bar"><i></i><i></i><i></i><span class="url">הזמנות_סופי_סופי2.xlsx</span></div>
+<div class="mk-body" style="padding:8px">
+<table class="p1-sheet">
+<tr><th></th><th>A תאריך</th><th>B לקוח</th><th>C מנה</th><th>D מחיר</th><th>E שליח</th><th>F הערות</th></tr>
+<tr><td class="rn">1</td><td>6.3</td><td>דנה</td><td>המבורגר</td><td>68</td><td>אורי</td><td></td></tr>
+<tr><td class="rn">2</td><td class="bad"><bdi dir="ltr">06/03/26</bdi></td><td class="bad">דנה לוי </td><td class="bad">המבורגר בקר</td><td class="bad">68 ש״ח</td><td>אורי</td><td>איחר</td></tr>
+<tr><td class="rn">3</td><td>7.3</td><td>רועי</td><td>פסטה</td><td class="bad">יקר</td><td>נועה</td><td></td></tr>
+<tr><td class="rn">4</td><td>7.3</td><td>רועי כהן</td><td>סלמון</td><td>89</td><td></td><td class="bad">נא לא לשלוח, ביטל?</td></tr>
+</table>
+</div>
+</div>
+<p class="p1-note">ככה נראה חלק מהקובץ של יבגני. דנה כתובה בשתי צורות, אותו מחיר כתוב בשלוש צורות, ובעמודת המחיר יש מילה.</p>
+
+<p>יבגני אומר: ״נבקש מ-AI שיבנה לנו הכול.״ אפשר, וזה מהיר. אבל מישהו צריך להחליט מה בונים, ומישהו צריך לבדוק שנבנה נכון. את זה כבר אמרנו <a href="../index.html">בהרצאה הראשונה</a>: ה-AI הוא הקבלן, ואתם האדריכלים. בדף הזה נראה מה זה אומר בפועל.</p>
+
+<div class="defline"><b>ארכיטקט נתונים:</b> מי שמחליט איזה מידע שומרים, באילו טבלאות ואיך הן מתחברות, ובודק שהמערכת באמת עונה על השאלות של העסק. דוגמה: יבגני שואל ״איזה שליח איטי?״. הארכיטקט בודק שיש טבלת שליחים ועמודה של זמן משלוח.</div>
+<div class="defline"><b>קבלן (ה-AI):</b> מי שמבצע מהר מה שמבקשים ממנו, בלי לדעת איזה בית צריך לבנות. דוגמה: מבקשים ״מערכת למסעדה״ ומקבלים טבלה אחת ענקית שרצה בלי שגיאה ולא עונה על אף שאלה.</div>
+
+<div class="sim" data-id="p1-sim-contractor">
+<div class="sh">אותו קבלן, שתי הוראות</div>
+<p class="p1-note">הפלטים מוכנים מראש, ומראים תוצאה אופיינית. זו לא הרצה של מודל אמיתי. לחצו על כל אחת מההוראות, ואז על ״בדיקת הארכיטקט״.</p>
+<div class="p1-row"><button type="button" class="btn sec2" data-k="a">הוראה כללית</button><button type="button" class="btn sec2" data-k="b">הוראה של ארכיטקט</button></div>
+<div class="p1-grid">
+<div class="p1-panel"><h4>ההוראה</h4><div data-o="prompt" style="min-height:3em">בחרו הוראה.</div></div>
+<div class="p1-panel"><h4>מה נבנה</h4>
+<pre class="code" data-lang="sql" data-v="a" hidden>CREATE TABLE orders (
+  details TEXT
+);
+-- example row
+-- 'דנה, המבורגר x2, 68 ש״ח, אורי'</pre>
+<pre class="code" data-lang="sql" data-v="b" hidden>CREATE TABLE customers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, city TEXT);
+CREATE TABLE couriers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, vehicle TEXT);
+CREATE TABLE dishes (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price REAL NOT NULL);
+CREATE TABLE orders (id INTEGER PRIMARY KEY,
+  customer_id INTEGER REFERENCES customers(id),
+  courier_id INTEGER REFERENCES couriers(id),
+  order_ts TEXT NOT NULL, channel TEXT NOT NULL);
+CREATE TABLE order_items (order_id INTEGER REFERENCES orders(id),
+  dish_id INTEGER REFERENCES dishes(id), qty INTEGER NOT NULL,
+  PRIMARY KEY (order_id, dish_id));</pre>
+<div data-o="empty" class="p1-note">עדיין לא בחרתם הוראה.</div>
+</div>
+</div>
+<div class="p1-row"><button type="button" class="btn" data-k="audit" disabled>בדיקת הארכיטקט</button></div>
+<ul class="p1-audit" data-o="audit"></ul>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p1-sim-contractor"]'); if(!box) return;
+const D={
+ a:{p:'״בנה לי מערכת למסעדה.״',audit:[[0,'אי אפשר לסכום מחירים, כי הם בתוך טקסט חופשי.'],[0,'פרטי הלקוח חוזרים בכל שורה. אם לקוח עובר עיר, מתקנים הרבה מקומות.'],[0,'אין מפתח ראשי, אז שתי שורות זהות לא נבדלות זו מזו.'],[0,'אין טבלת שליחים, אז אי אפשר לשאול איזה שליח איטי.']]},
+ b:{p:'״בנה חמש טבלאות: לקוחות, שליחים, מנות, הזמנות ופריטי הזמנה. לכל טבלה מפתח ראשי. מחיר הוא מספר. הזמנה מצביעה על לקוח ועל שליח. פריט הזמנה מצביע על הזמנה ועל מנה.״',audit:[[1,'חמש טבלאות, וכל אחת עוסקת בסוג אחד של דבר.'],[1,'בכל טבלה יש מפתח ראשי (בפריטי הזמנה זה צירוף של שתי עמודות).'],[1,'המחיר הוא מספר, אז אפשר לסכום ולהשוות.'],[1,'ההזמנה מצביעה על לקוח ועל שליח, ולא מעתיקה את הפרטים שלהם.'],[2,'עדיין חסר: סטטוס להזמנה (נמסרה או בוטלה), ובהזמנה באולם השליח צריך להיות מותר לריק. גם הוראה טובה צריכה בדיקה.']]}
+};
+let cur=null; const seen={};
+const ob=FL.$('[data-o=audit]',box), op=FL.$('[data-o=prompt]',box), emp=FL.$('[data-o=empty]',box), ab=FL.$('[data-k=audit]',box);
+const LAMP=['r','g','y'];
+function show(k){ cur=k; seen[k]=1; op.textContent=D[k].p; emp.hidden=true;
+ FL.$$('pre[data-v]',box).forEach(function(p){p.hidden=p.dataset.v!==k;}); ob.innerHTML=''; ab.disabled=false;
+ FL.$$('[data-k=a],[data-k=b]',box).forEach(function(b){b.classList.toggle('sec2',b.dataset.k!==k);}); }
+box.addEventListener('click',function(e){ const b=e.target.closest('button[data-k]'); if(!b) return; const k=b.dataset.k;
+ if(k==='a'||k==='b') show(k);
+ if(k==='audit'&&cur){ ob.innerHTML=D[cur].audit.map(function(r){return '<li><span class="lamp '+LAMP[r[0]]+'"></span><span>'+FL.esc(r[1])+'</span></li>';}).join('');
+  if(seen.a&&seen.b) FL.done('p1-sim-contractor'); } });
+});})();</script>
+
+<p>לפני שנכנסים לטבלאות, הנה המסלול של כל השיעור. אנחנו בחלק 1 מתוך 6. כל חלק עונה על שאלה אחרת של יבגני, ובסוף הוא מקבל מערכת שלמה.</p>
+
+<div class="anim" data-id="p1-anim-journey" data-auto="1" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 280" role="img" aria-label="מפת השיעור: שש תחנות, מימין לשמאל">
+<line x1="760" y1="150" x2="40" y2="150" stroke="#cbd5e1" stroke-width="6" stroke-linecap="round"/>
+<line data-s="2" x1="700" y1="150" x2="580" y2="150" stroke="#d8b862" stroke-width="6"/>
+<line data-s="3" x1="580" y1="150" x2="460" y2="150" stroke="#d8b862" stroke-width="6"/>
+<line data-s="4" x1="460" y1="150" x2="340" y2="150" stroke="#d8b862" stroke-width="6"/>
+<line data-s="5" x1="340" y1="150" x2="220" y2="150" stroke="#d8b862" stroke-width="6"/>
+<line data-s="6" x1="220" y1="150" x2="100" y2="150" stroke="#d8b862" stroke-width="6"/>
+<g font-family="Heebo,Arial,sans-serif" text-anchor="middle">
+<circle cx="700" cy="150" r="30" fill="#fff" stroke="#94a3b8" stroke-width="3"/><text x="700" y="159" font-size="24" font-weight="800" fill="#64748b">1</text>
+<circle cx="580" cy="150" r="30" fill="#fff" stroke="#94a3b8" stroke-width="3"/><text x="580" y="159" font-size="24" font-weight="800" fill="#64748b">2</text>
+<circle cx="460" cy="150" r="30" fill="#fff" stroke="#94a3b8" stroke-width="3"/><text x="460" y="159" font-size="24" font-weight="800" fill="#64748b">3</text>
+<circle cx="340" cy="150" r="30" fill="#fff" stroke="#94a3b8" stroke-width="3"/><text x="340" y="159" font-size="24" font-weight="800" fill="#64748b">4</text>
+<circle cx="220" cy="150" r="30" fill="#fff" stroke="#94a3b8" stroke-width="3"/><text x="220" y="159" font-size="24" font-weight="800" fill="#64748b">5</text>
+<circle cx="100" cy="150" r="30" fill="#fff" stroke="#94a3b8" stroke-width="3"/><text x="100" y="159" font-size="24" font-weight="800" fill="#64748b">6</text>
+
+<g data-s="1" data-pulse><circle cx="700" cy="150" r="30" fill="#eef2ff" stroke="#4f46e5" stroke-width="4"/><text x="700" y="159" font-size="24" font-weight="800" fill="#3730a3">1</text></g>
+<g data-s="2" data-pulse><circle cx="580" cy="150" r="30" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="4"/><text x="580" y="159" font-size="24" font-weight="800" fill="#0369a1">2</text></g>
+<g data-s="3" data-pulse><circle cx="460" cy="150" r="30" fill="#ccfbf1" stroke="#14b8a6" stroke-width="4"/><text x="460" y="159" font-size="24" font-weight="800" fill="#0f766e">3</text></g>
+<g data-s="4" data-pulse><circle cx="340" cy="150" r="30" fill="#fef3c7" stroke="#f59e0b" stroke-width="4"/><text x="340" y="159" font-size="24" font-weight="800" fill="#b45309">4</text></g>
+<g data-s="5" data-pulse><circle cx="220" cy="150" r="30" fill="#f3e8ff" stroke="#7c3aed" stroke-width="4"/><text x="220" y="159" font-size="24" font-weight="800" fill="#6d28d9">5</text></g>
+<g data-s="6" data-pulse><circle cx="100" cy="150" r="30" fill="#d1fae5" stroke="#10b981" stroke-width="4"/><text x="100" y="159" font-size="24" font-weight="800" fill="#047857">6</text></g>
+
+<text x="700" y="110" font-size="26">💡</text><text x="580" y="110" font-size="26">🔎</text><text x="460" y="110" font-size="26">🔌</text><text x="340" y="110" font-size="26">📊</text><text x="220" y="110" font-size="26">🤖</text><text x="100" y="110" font-size="26">🚚</text>
+
+<g font-size="15" font-weight="700" fill="#1e293b">
+<text x="700" y="206">מרעיון</text><text x="700" y="227">לטבלאות</text>
+<text x="580" y="206">SQL: לשאול</text><text x="580" y="227">את הנתונים</text>
+<text x="460" y="206">מאחורי</text><text x="460" y="227">הקלעים</text>
+<text x="340" y="206">מנתונים</text><text x="340" y="227">לדוחות</text>
+<text x="220" y="206">AI: מה נותנים</text><text x="220" y="227">ומה בודקים</text>
+<text x="100" y="206">לעקוב, להחליט</text><text x="100" y="227">ולמסור</text>
+</g>
+<text data-move="1:0,0|2:-120,0|3:-240,0|4:-360,0|5:-480,0|6:-600,0" x="700" y="62" font-size="36">🍽️</text>
+</g>
+</svg></div>
+<ol class="caps">
+<li>חלק 1, אנחנו כאן: מרעיון לטבלאות. מחליטים איזה מידע שומרים ואיך מחברים אותו.</li>
+<li>חלק 2, SQL: לשאול את הנתונים. איזה ערוץ מכניס יותר, איזה שליח איטי, מי הלקוחות הטובים.</li>
+<li>חלק 3, איך המערכת עובדת מאחורי הקלעים. מה קורה אחרי שלקוח לוחץ ״הזמן״ באפליקציה, ומה קורה כשיש אלף לקוחות.</li>
+<li>חלק 4, מנתונים לדוחות שאפשר לסמוך עליהם. הדוחות רצים על עותק נפרד, כדי שהמטבח לא יאט.</li>
+<li>חלק 5, AI: מה נותנים לו ומה בודקים. ה-AI בונה חלקים מהמערכת, ואנחנו בודקים כל מה שהוא מחזיר.</li>
+<li>חלק 6, הפרויקט: לעקוב, להחליט, למסור. בודקים אם הפרויקט בסדר, ומוסרים ליבגני את המערכת.</li>
+</ol>
+</div>
+<p class="p1-swipe">אפשר להחליק הצידה כדי לראות את כל האיור.</p>
+
+<div class="box try" data-id="p1-try-ask-ai">
+<ol>
+<li>פתחו כלי AI שאתם רגילים אליו (הקישורים למטה). אל תדביקו בו מידע אישי או נתונים של לקוחות אמיתיים.</li>
+<li>כתבו בדיוק את המשפט הזה, בלי שום הוראה נוספת: ״בנה לי מסד נתונים למסעדה עם משלוחים.״</li>
+<li>רשמו שלוש החלטות שהכלי קיבל בלי לשאול אתכם: אילו טבלאות, אילו עמודות, אילו סוגי נתונים.</li>
+<li>שאלו את עצמכם: אפשר לענות עם המבנה הזה על ״איזה שליח איטי?״ ועל ״איזה ערוץ מכניס יותר?״</li>
+<li>בקשו מהכלי לתקן לפי ההחלטות שלכם, ובדקו מה השתנה.</li>
+</ol>
+<p class="tools"><a class="tool" href="https://claude.ai" target="_blank" rel="noopener">Claude</a><a class="tool" href="https://aistudio.google.com" target="_blank" rel="noopener">Google AI Studio</a></p>
+</div>
+
+<div class="box meaning"><p>תכל׳ס: לשנות מבנה בזמן התכנון זה זול. לשנות אותו אחרי שנה של נתונים זה יקר. לכן מתחילים משאלות ומבנה, ורק אחר כך כותבים קוד. בגלל זה גם החלק הראשון של השיעור הוא תכנון הטבלאות.</p></div>
+
+<div class="quiz" data-id="p1-q-contractor" data-a="2"><p class="qq">יבגני כותב ל-AI: ״בנה לי מערכת למסעדה.״ מה הסיכון העיקרי?</p>
+<button type="button" class="opt">הקוד לא ירוץ, כי ל-AI חסר מידע על המסעדה</button>
+<button type="button" class="opt">הקוד ירוץ, אבל ה-AI יחליט לבד על המבנה, והוא אולי לא יתאים לשאלות של יבגני</button>
+<button type="button" class="opt">הקוד יתאים בדיוק, כי ה-AI יודע מה כל מסעדה צריכה</button>
+<div class="why">כתיבת SQL תקין היא בדיוק מה ש-AI עושה טוב, אז לא זה הסיכון. כשההוראה כללית, הכלי ממלא את החסר בהחלטות משלו, ורואים שהן לא מתאימות רק כשמנסים לשאול שאלה. האפשרות הראשונה שגויה כי הקוד כן ירוץ. השלישית שגויה כי ה-AI לא מכיר את המסעדה של יבגני.</div></div>
+
+<div class="box real"><p>מערכות הזמנות, מלאי ותשלומים בחנויות מקוונות, בבנקים ובמסעדות שומרות את הנתונים בטבלאות שמחוברות זו לזו. מפתחים רבים משתמשים היום ב-AI כדי לכתוב קוד מהר יותר, והאחריות לתכנון נשארת אצלם. בגלל זה לומדים כאן לקרוא ולבדוק, ולא רק להקליד.</p></div>
+
+<div class="box think" data-id="p1-th-architect"><p>ה-AI כותב SQL תקין בכמה שניות. אז למה עסק עדיין צריך מישהו שמבין במבנה של נתונים?</p>
+<div class="ans">כי ״רץ בלי שגיאה״ זה לא ״נכון לעסק״. ה-AI לא יודע אילו שאלות העסק ישאל מחר, אילו כללים חייבים להישמר ואילו נתונים רגישים. מי שלא יודע לקרוא את המבנה לא יכול לאשר אותו. וטעות במבנה מתגלה לפעמים רק אחרי חודשים, כשכבר קשה לתקן.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לפתוח בשאלה לכיתה: מי כבר ביקש מ-AI לבנות משהו שלם, ומה הוא החליט בלי לשאול? אחרי הסימולציה לעצור ולשאול איזו שורה בפלט הראשון הכי מפריעה. את המפה להפעיל בסוף הסעיף, ולהגיד שזה רק חלק 1 מתוך 6.</div>
+</section>
+
+<section class="sec" id="s1-2" data-t="מנתון להחלטה">
+<div class="sec-h"><div class="sec-n">2</div><h2>מנתון להחלטה</h2></div>
+<p class="lead">יבגני שואל: ״מתי אנחנו הכי עמוסים?״ התשובה נמצאת בהזמנות, אבל שורות גולמיות לא עונות על שום שאלה. כדי להגיע להחלטה עולים ארבע מדרגות, ובכל מדרגה מישהו עושה עבודה.</p>
+
+<div class="defline"><b>נתון:</b> ערך גולמי אחד, בלי הקשר. דוגמה: השורה <code>2026-03-06 13:05, app</code> בטבלת ההזמנות. לבד היא לא אומרת כלום.</div>
+<div class="defline"><b>מידע:</b> נתונים שאספו וסיכמו, ולכן יש להם משמעות. דוגמה: ״בימי שישי נרשמו 23 הזמנות.״</div>
+<div class="defline"><b>תובנה:</b> מה שמבינים מהמידע. דוגמה: שישי ושבת יחד מחזיקים 50 מתוך 87 הזמנות, כלומר 57%.</div>
+<div class="defline"><b>החלטה:</b> מה עושים בעקבות התובנה. דוגמה: מוסיפים טבח בשישי ובשבת.</div>
+
+<div class="anim" data-id="p1-anim-funnel" data-auto="1" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 360" role="img" aria-label="ארבע מדרגות: נתון, מידע, תובנה, החלטה, על הזמנות המסעדה">
+<defs><linearGradient id="p1fg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset="1" stop-color="#fde68a"/></linearGradient></defs>
+<g font-family="Heebo,Arial,sans-serif" text-anchor="middle" font-size="17" font-weight="800">
+<rect x="610" y="8" width="180" height="42" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="700" y="35" fill="#64748b">1 נתון</text>
+<rect x="410" y="8" width="180" height="42" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="500" y="35" fill="#64748b">2 מידע</text>
+<rect x="210" y="8" width="180" height="42" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="300" y="35" fill="#64748b">3 תובנה</text>
+<rect x="10" y="8" width="180" height="42" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="100" y="35" fill="#64748b">4 החלטה</text>
+<g data-only="1" data-pulse><rect x="610" y="8" width="180" height="42" rx="12" fill="url(#p1fg)" stroke="#d8b862" stroke-width="3"/><text x="700" y="35" fill="#78350f">1 נתון</text></g>
+<g data-only="2" data-pulse><rect x="410" y="8" width="180" height="42" rx="12" fill="url(#p1fg)" stroke="#d8b862" stroke-width="3"/><text x="500" y="35" fill="#78350f">2 מידע</text></g>
+<g data-only="3" data-pulse><rect x="210" y="8" width="180" height="42" rx="12" fill="url(#p1fg)" stroke="#d8b862" stroke-width="3"/><text x="300" y="35" fill="#78350f">3 תובנה</text></g>
+<g data-only="4" data-pulse><rect x="10" y="8" width="180" height="42" rx="12" fill="url(#p1fg)" stroke="#d8b862" stroke-width="3"/><text x="100" y="35" fill="#78350f">4 החלטה</text></g>
+</g>
+
+<g data-only="1" font-family="Heebo,Arial,sans-serif">
+<text x="400" y="86" text-anchor="middle" font-size="17" font-weight="700" fill="#334155">טבלת orders: חמש שורות מתוך 87</text>
+<rect x="150" y="100" width="500" height="30" fill="#e2e8f0"/>
+<g font-family="ui-monospace,Menlo,monospace" font-size="16" font-weight="700" fill="#334155"><text x="175" y="121">id</text><text x="260" y="121">order_ts</text><text x="500" y="121">channel</text></g>
+<g font-family="ui-monospace,Menlo,monospace" font-size="16" fill="#0f172a">
+<rect x="150" y="130" width="500" height="30" fill="#fff"/><text x="175" y="151">1</text><text x="260" y="151">2026-03-02 19:20</text><text x="500" y="151">app</text>
+<rect x="150" y="160" width="500" height="30" fill="#f8fafc"/><text x="175" y="181">2</text><text x="260" y="181">2026-03-04 13:05</text><text x="500" y="181">walk-in</text>
+<rect x="150" y="190" width="500" height="30" fill="#fff"/><text x="175" y="211">3</text><text x="260" y="211">2026-03-05 19:55</text><text x="500" y="211">app</text>
+<rect x="150" y="220" width="500" height="30" fill="#f8fafc"/><text x="175" y="241">4</text><text x="260" y="241">2026-03-06 13:05</text><text x="500" y="241">app</text>
+<rect x="150" y="250" width="500" height="30" fill="#fff"/><text x="175" y="271">5</text><text x="260" y="271">2026-03-06 21:15</text><text x="500" y="271">app</text>
+</g>
+<text x="400" y="326" text-anchor="middle" font-size="17" font-weight="700" fill="#b45309">מספרים גולמיים. שורה אחת לבד לא עונה על שום שאלה.</text>
+</g>
+
+<g data-only="2,3" font-family="Heebo,Arial,sans-serif" text-anchor="middle">
+<text x="400" y="86" font-size="17" font-weight="700" fill="#334155">מספר הזמנות לפי יום בשבוע (87 בסך הכול)</text>
+<line x1="70" y1="300" x2="790" y2="300" stroke="#94a3b8" stroke-width="2"/>
+<g fill="#818cf8">
+<rect x="700" y="252" width="60" height="48" rx="6"/><rect x="600" y="270" width="60" height="30" rx="6"/><rect x="500" y="264" width="60" height="36" rx="6"/><rect x="400" y="246" width="60" height="54" rx="6"/><rect x="300" y="246" width="60" height="54" rx="6"/><rect x="200" y="162" width="60" height="138" rx="6"/><rect x="100" y="138" width="60" height="162" rx="6"/>
+</g>
+<g font-size="17" font-weight="800" fill="#1e293b">
+<text x="730" y="244">8</text><text x="630" y="262">5</text><text x="530" y="256">6</text><text x="430" y="238">9</text><text x="330" y="238">9</text><text x="230" y="154">23</text><text x="130" y="130">27</text>
+</g>
+<g font-size="16" font-weight="700" fill="#475569">
+<text x="730" y="324">א׳</text><text x="630" y="324">ב׳</text><text x="530" y="324">ג׳</text><text x="430" y="324">ד׳</text><text x="330" y="324">ה׳</text><text x="230" y="324">ו׳</text><text x="130" y="324">ש׳</text>
+</g>
+<text x="400" y="348" font-size="14" fill="#64748b">מידע: ספירה לפי יום, בלי מסקנה בינתיים</text>
+</g>
+
+<g data-only="3" font-family="Heebo,Arial,sans-serif" text-anchor="middle">
+<rect x="200" y="162" width="60" height="138" rx="6" fill="#f59e0b"/><rect x="100" y="138" width="60" height="162" rx="6" fill="#f59e0b"/>
+<rect x="360" y="96" width="420" height="96" rx="16" fill="#fff" stroke="#d8b862" stroke-width="3"/>
+<text x="570" y="132" font-size="22" font-weight="900" fill="#78350f">שישי + שבת = 50 מתוך 87</text>
+<text x="570" y="166" font-size="19" font-weight="700" fill="#334155">57% מההזמנות, בשני ימים מתוך שבעה</text>
+</g>
+
+<g data-only="4" font-family="Heebo,Arial,sans-serif" text-anchor="middle">
+<rect x="150" y="82" width="500" height="240" rx="22" fill="#fff" stroke="#d8b862" stroke-width="3"/>
+<text x="400" y="172" font-size="60">👨‍🍳</text>
+<text x="400" y="228" font-size="24" font-weight="900" fill="#0e1b2e">שישי ושבת: טבח נוסף במטבח</text>
+<text x="400" y="266" font-size="17" fill="#475569">אחרי חודש בודקים אם זמן המשלוח התקצר</text>
+<text x="400" y="296" font-size="15" fill="#64748b">החלטה היא פעולה, לא עוד טבלה</text>
+</g>
+</svg></div>
+<ol class="caps">
+<li>מתחילים בנתונים: שורות בטבלת ההזמנות. שורה אחת לבד לא עונה על שום שאלה.</li>
+<li>מסכמים לפי יום בשבוע וזה כבר מידע: כמה הזמנות נרשמו בכל יום.</li>
+<li>מסתכלים על הדפוס וזו תובנה: שישי ושבת מחזיקים 50 מתוך 87 הזמנות, כלומר 57%.</li>
+<li>מחליטים: מוסיפים טבח בשישי ובשבת, ואחרי חודש בודקים אם זמן המשלוח התקצר.</li>
+</ol>
+</div>
+<p class="p1-swipe">אפשר להחליק הצידה כדי לראות את כל האיור.</p>
+
+<p>את שני הצעדים הראשונים עושה מסד הנתונים. את השלישי והרביעי עושה אדם, וה-AI יכול לעזור בשלישי. אלה הטבלאות של יבגני, ובהן נעבוד בכל חלקי השיעור. המספר בסוגריים הוא כמה שורות יש בטבלה.</p>
+<div class="schema" data-db="rest"></div>
+
+<p>בואו נריץ <dfn data-d="שאלה שכותבים ב-SQL כדי לקבל נתונים מהטבלאות. דוגמה: ״כמה הזמנות יש?״ כתובה ב-SQL כ-SELECT COUNT(*) FROM orders.">שאילתות</dfn>. <dfn data-d="פקודה שקוראת נתונים מטבלה. היא רק קוראת, ולא משנה את הנתונים.">SELECT</dfn> אומרת ״תביא לי״, ו-<code>FROM</code> אומרת ״מתוך איזו טבלה״.</p>
+
+<div class="lab" data-id="p1-lab-sel-dishes" data-title="SELECT ראשון: התפריט">
+<div class="q-src">יבגני רוצה לראות את כל התפריט. הציגו את כל העמודות של טבלת <code>dishes</code>.</div>
+<pre class="start">SELECT *
+FROM -- השלימו את שם הטבלה</pre>
+<pre class="check">SELECT * FROM dishes</pre>
+<pre class="solution">SELECT *
+FROM dishes</pre>
+<ol class="hints"><li>הכוכבית <code>*</code> אומרת ״כל העמודות״.</li><li>אחרי <code>FROM</code> כותבים את שם הטבלה. הוא כבר כתוב למעלה: dishes.</li></ol>
+<div class="why-src">קיבלתם עשר מנות. SELECT רק קורא, אז אפשר להריץ אותה בלי חשש. כוכבית נוחה לחקירה, אבל במערכת אמיתית כותבים את שמות העמודות.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-sel-cols" data-title="בחירת עמודות" data-ordered="1">
+<div class="q-src">הציגו את <code>id</code>, <code>order_ts</code> ו-<code>channel</code> של חמש ההזמנות הראשונות לפי מספר. <code>LIMIT 5</code> מגביל את התוצאה לחמש שורות.</div>
+<pre class="start">SELECT -- אילו עמודות
+FROM orders
+ORDER BY id
+LIMIT 5</pre>
+<pre class="check">SELECT id, order_ts, channel FROM orders ORDER BY id LIMIT 5</pre>
+<pre class="solution">SELECT id, order_ts, channel
+FROM orders
+ORDER BY id
+LIMIT 5</pre>
+<ol class="hints"><li>שמות העמודות מופרדים בפסיק.</li></ol>
+<div class="why-src">אלה בדיוק חמש השורות מההנפשה: נתונים גולמיים. <code>ORDER BY id</code> מסדר לפי מספר ההזמנה, ו-<code>LIMIT</code> חוסך לנו לראות את כל 87 השורות.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-count" data-title="מידע ראשון: כמה הזמנות">
+<div class="q-src">כמה הזמנות יש בטבלה? תשתמשו בפונקציה שסופרת שורות: <code>COUNT(*)</code>.</div>
+<pre class="start">SELECT -- פונקציה שסופרת שורות
+FROM orders</pre>
+<pre class="check">SELECT COUNT(*) FROM orders</pre>
+<pre class="solution">SELECT COUNT(*)
+FROM orders</pre>
+<ol class="hints"><li>בתוך הסוגריים של <code>COUNT</code> יש כוכבית: סופרים שורות שלמות.</li></ol>
+<div class="why-src">יצא 87. זה כבר מידע: מספר אחד שמסכם 87 שורות. ככה עוברים מנתונים למידע.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-weekday" data-title="מידע: הזמנות לפי יום בשבוע">
+<div class="q-src">הריצו את השאילתה כמו שהיא וקראו את התוצאה. לא צריך להבין כל מילה עכשיו. <code>GROUP BY</code> מקבצת שורות לערמות, ונלמד אותה בחלק הבא.</div>
+<pre class="start">-- strftime('%w', ...) returns the weekday:
+-- 0 = Sunday, 1 = Monday ... 5 = Friday, 6 = Saturday
+SELECT strftime('%w', order_ts) AS weekday,
+       COUNT(*) AS orders
+FROM orders
+GROUP BY weekday
+ORDER BY weekday</pre>
+<ol class="hints"><li>אין מה לתקן. לחצו הרצה, וחפשו את שני הימים עם המספרים הגבוהים.</li></ol>
+<div class="why-src">שבע שורות שהסכום שלהן 87. שימו לב לשני הימים הגבוהים: 5 (שישי) עם 23 הזמנות, ו-6 (שבת) עם 27. ב-PostgreSQL מקבלים את אותו מידע עם <code>EXTRACT(DOW FROM order_ts)</code>, וב-BigQuery עם <code>EXTRACT(DAYOFWEEK FROM order_ts)</code>, שבו ראשון הוא 1.</div>
+</div>
+
+<p>בשאילתה הבאה אנחנו צריכים <dfn data-d="החלק בשאילתה שמשאיר רק שורות שעומדות בתנאי. דוגמה: WHERE channel = 'app' משאיר רק הזמנות מהאפליקציה.">WHERE</dfn>. זה התנאי: רק שורות שמתאימות נכנסות לתוצאה.</p>
+
+<div class="lab" data-id="p1-lab-friday" data-title="תובנה: כמה הזמנות בשישי ושבת">
+<div class="q-src">כתבו תנאי שסופר רק הזמנות של שישי (5) ושבת (6). זו התובנה שמצדיקה את ההחלטה של יבגני.</div>
+<pre class="start">SELECT COUNT(*) AS fri_sat
+FROM orders
+WHERE -- weekday condition</pre>
+<pre class="check">SELECT COUNT(*) FROM orders WHERE strftime('%w', order_ts) IN ('5','6')</pre>
+<pre class="solution">SELECT COUNT(*) AS fri_sat
+FROM orders
+WHERE strftime('%w', order_ts) IN ('5', '6')</pre>
+<ol class="hints"><li>היום בשבוע מגיע מ-<code>strftime('%w', order_ts)</code>, והתוצאה היא טקסט.</li><li><code>IN ('5', '6')</code> בודק אם הערך הוא אחד משני אלה.</li></ol>
+<div class="why-src">יצא 50 מתוך 87, בערך 57%. שימו לב: השאילתה נתנה מספר. את המשפט ״שני ימים מחזיקים יותר ממחצית ההזמנות״ כתבנו אנחנו. התובנה היא פירוש של מספר, וההחלטה אחריה היא של יבגני.</div>
+</div>
+
+<div class="sim" data-id="p1-sim-ladder">
+<div class="sh">באיזו מדרגה זה נמצא?</div>
+<p class="p1-note">לכל משפט בחרו: נתון, מידע, תובנה או החלטה. אתם מקבלים תשובה מיד.</p>
+<div data-o="items"></div>
+<div class="out" data-o="score">0 מתוך 6</div>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p1-sim-ladder"]'); if(!box) return;
+const L=['נתון','מידע','תובנה','החלטה'];
+const Q=[['app',0],['בשישי נרשמו 23 הזמנות',1],['העומס מתרכז בסוף השבוע ולא מתפזר על כל השבוע',2],['מוסיפים טבח לשישי ולשבת',3],['2026-03-06 13:05',0],['בשבת נרשמו 27 הזמנות',1]];
+const host=FL.$('[data-o=items]',box), sc=FL.$('[data-o=score]',box); let ok=0, got={};
+host.innerHTML=Q.map(function(q,i){return '<div class="p1-item" data-i="'+i+'"><span class="t">'+FL.esc(q[0])+'</span>'+L.map(function(l,j){return '<button type="button" data-j="'+j+'">'+l+'</button>';}).join('')+'</div>';}).join('');
+host.addEventListener('click',function(e){ const b=e.target.closest('button[data-j]'); if(!b) return; const it=b.closest('.p1-item'), i=+it.dataset.i, j=+b.dataset.j; if(got[i]) return;
+ if(j===Q[i][1]){ got[i]=1; ok++; it.classList.add('ok'); b.style.background='#a7f3d0'; b.style.borderColor='#34d399'; sc.textContent=ok+' מתוך 6'; if(ok===6){ sc.innerHTML='6 מתוך 6. שימו לב: רק המשפט האחרון בסולם משנה משהו במסעדה.'; FL.done('p1-sim-ladder'); } }
+ else { b.classList.add('wrong'); b.disabled=true; it.classList.add('no'); } });
+});})();</script>
+
+<div class="box meaning"><p>כל מערכת נבנית כדי שמישהו יחליט משהו. אם אי אפשר להגיד איזו החלטה נתון מסוים משרת, כנראה אין סיבה לשמור אותו. לכן מתחילים מההחלטות של העסק, ורק אחר כך בוחרים איזה מידע לאסוף, ולא להפך.</p></div>
+
+<div class="box real"><p>כלי בינה עסקית (BI) ולוחות מחוונים, כמו Looker Studio או Tableau שנפגוש בחלק 4, עושים את מה שעשינו כאן, רק במסך אחד: מסכמים נתונים לפי יום, ערוץ או עיר, ומציגים אותם כך שרואים דפוס. המעבר מתובנה להחלטה הם לא עושים. הוא נשאר אצל האדם.</p></div>
+
+<div class="box think" data-id="p1-th-decision"><p>הנתונים מראים ששישי ושבת עמוסים. מה עוד צריך לדעת לפני שמחליטים להוסיף טבח?</p>
+<div class="ans">תובנה זה עדיין לא החלטה. צריך לדעת באילו שעות העומס מתרכז (בשעה אחת או מפוזר), כמה עולה טבח נוסף לעומת ההכנסה הנוספת, אם ההמתנה באמת פוגעת בדירוגים, ואם ערוץ מסוים גורם לעומס. כל אחד מאלה הוא עוד שאלה שאפשר לנסח ולהריץ.</div></div>
+
+<div class="quiz" data-id="p1-q-ladder" data-a="3"><p class="qq">איזה משפט הוא תובנה, ולא רק מידע?</p>
+<button type="button" class="opt">בשבת נרשמו 27 הזמנות.</button>
+<button type="button" class="opt">בטבלת ההזמנות יש 87 שורות.</button>
+<button type="button" class="opt">רוב ההזמנות מגיעות בשישי ובשבת, אז הלחץ במטבח מתרכז בסוף השבוע.</button>
+<div class="why">מידע הוא מספר מסוכם (27 הזמנות, 87 שורות). תובנה היא משפט על הדפוס ועל מה שהוא אומר על העסק. רק המשפט השלישי אומר משהו שאפשר לפעול לפיו.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> להריץ את ההנפשה ולעצור בכל שלב לשאלה: ״מי עשה כאן את העבודה, המסד או אדם?״. בשאילתת היום בשבוע לא נכנסים לפרטי GROUP BY, זה בחלק 2. אפשר לבקש מהכיתה לנחש לפני ההרצה איזה יום יהיה העמוס.</div>
+</section>
+
+<section class="sec" id="s1-3" data-t="למה לא אקסל">
+<div class="sec-h"><div class="sec-n">3</div><h2>למה לא להישאר באקסל</h2></div>
+<p class="lead">אקסל הוא כלי טוב, ויבגני לא טעה כשהתחיל איתו. השאלה היא מה קורה כשהמסעדה גדלה: יותר אנשים עורכים, יותר שורות נצברות, ויותר כללים צריכים להישמר. יש ארבע בעיות שחוזרות בכל עסק. בהרצאה הראשונה <a href="../index.html">כבר דיברנו עליהן</a>, ועכשיו נראה אותן בפועל. את הראשונה נריץ בסימולציה, ואת כולן אפשר לראות בטבלה בהמשך.</p>
+
+<div class="defline"><b>מסד נתונים:</b> מערכת שמחזיקה טבלאות מחוברות, ומאפשרת להרבה אנשים ולהרבה תוכנות לקרוא ולכתוב בו באותו זמן, לפי כללים. דוגמה: האפליקציה, הקופה והמטבח כותבים לאותן טבלאות, והמסד מסדר אותם בתור.</div>
+<div class="defline"><b>טרנזקציה:</b> כמה פעולות שמתבצעות יחד, או שאף אחת מהן לא מתבצעת. דוגמה: מכירת מנה מורידה מהמלאי וגם רושמת שורה בהזמנה. אם אחת הפעולות נכשלת, שתיהן מתבטלות.</div>
+<div class="defline"><b>שלמות נתונים:</b> הכללים שמונעים כניסה של נתונים לא הגיוניים. דוגמה: עמודת מחיר שמסרבת לקבל את המילה ״יקר״.</div>
+
+<h3>בעיה ראשונה: שניים כותבים באותו זמן</h3>
+<p>במלאי של יבגני יש 10 מנות סלמון. אלי עונה לטלפון ומקבל הזמנה, ובאותו רגע משה מוכר מנה בקופה. אחרי שתי המכירות צריכות להישאר 8. הריצו את שני המצבים צעד אחרי צעד. בפקודה <dfn data-d="פקודה ששונה ערך בשורה שכבר קיימת בטבלה. דוגמה: UPDATE stock SET qty = 9 משנה את הכמות ל-9.">UPDATE</dfn> שתראו בסימולציה, המסד מעדכן את המלאי בעצמו.</p>
+
+<div class="sim" data-id="p1-sim-collide">
+<div class="sh">שתי מכירות במקביל</div>
+<div class="p1-row"><button type="button" class="btn" data-m="sheet">קובץ משותף</button><button type="button" class="btn sec2" data-m="db">מסד נתונים</button></div>
+<div class="p1-grid">
+<div class="p1-panel" style="text-align:center"><h4>אלי רואה</h4><span class="p1-cell" data-o="a">?</span></div>
+<div class="p1-panel" style="text-align:center"><h4>התא האמיתי</h4><span class="p1-cell" data-o="c">10</span></div>
+<div class="p1-panel" style="text-align:center"><h4>משה רואה</h4><span class="p1-cell" data-o="b">?</span></div>
+</div>
+<ol class="p1-log" data-o="log"></ol>
+<div class="p1-row"><button type="button" class="btn" data-k="next">הצעד הבא</button><button type="button" class="btn sec2" data-k="reset">מההתחלה</button></div>
+<div class="out" data-o="res">לחצו ״הצעד הבא״ כדי להתחיל.</div>
+<pre class="code" data-lang="sql" data-o="sql" hidden>UPDATE stock SET qty = qty - 1 WHERE dish = 'סלמון בתנור';</pre>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p1-sim-collide"]'); if(!box) return;
+const A=FL.$('[data-o=a]',box), B=FL.$('[data-o=b]',box), C=FL.$('[data-o=c]',box), LOG=FL.$('[data-o=log]',box), RES=FL.$('[data-o=res]',box), SQL=FL.$('[data-o=sql]',box);
+let mode='sheet', step=0, used={};
+function dbQty(n){ if(!FL.ok()) return 10-n; try{ let sql="CREATE TABLE stock (dish TEXT, qty INTEGER); INSERT INTO stock VALUES ('סלמון בתנור', 10);"; for(let i=0;i<n;i++) sql+=" UPDATE stock SET qty = qty - 1 WHERE dish = 'סלמון בתנור';"; sql+=' SELECT qty FROM stock;'; return FL.exec(sql,'rest').values[0][0]; }catch(e){ return 10-n; } }
+const S={
+ sheet:[
+  function(){A.textContent='10'; return 'אלי פותח את הקובץ ורואה 10.';},
+  function(){B.textContent='10'; return 'משה פותח את אותו קובץ ורואה 10, כי אלי עוד לא שמר.';},
+  function(){C.textContent='9'; A.textContent='9'; return 'אלי מוכר מנה, מחשב 10 פחות 1 ושומר 9.';},
+  function(){C.textContent='9'; B.textContent='9'; return 'משה מוכר מנה, מחשב 10 פחות 1 ושומר 9. הוא לא ראה את מה שאלי שמר.';}
+ ],
+ db:[
+  function(){A.textContent='🔒'; return 'אלי שולח פקודת עדכון. המסד מטפל בה, והשורה נעולה עד שהיא נגמרת.';},
+  function(){B.textContent='⏳'; return 'משה שולח את אותה פקודה באותו רגע. המסד מחזיק אותו בתור.';},
+  function(){C.textContent=dbQty(1); A.textContent='✓'; return 'הפקודה של אלי נגמרת. המלאי: '+C.textContent+'.';},
+  function(){C.textContent=dbQty(2); B.textContent='✓'; return 'הפקודה של משה רצה עכשיו על 9, ומשאירה '+C.textContent+'.';}
+ ]
+};
+function reset(){ step=0; A.textContent='?'; B.textContent='?'; C.textContent='10'; LOG.innerHTML=''; RES.textContent='לחצו ״הצעד הבא״ כדי להתחיל.'; RES.style.background=''; SQL.hidden=(mode!=='db'); }
+function next(){ if(step>=4) return; const t=S[mode][step](); step++; const li=document.createElement('li'); li.textContent=t; LOG.appendChild(li);
+ if(step===4){ const v=+C.textContent; if(v===8){ RES.innerHTML='<b>נכון: 8.</b> נמכרו שתי מנות, והמלאי ירד בשתיים. אבל שימו לב לסיבה: זה לא קרה כי ״זה מסד נתונים״. זה קרה כי החישוב נעשה בתוך המסד, בפקודה אחת (<code>qty - 1</code>). אילו האפליקציה הייתה קוראת 10, מחשבת 9 ושולחת 9, גם כאן הייתה נשמרת שגיאה. בשביל זה יש טרנזקציות, ונראה אותן בחלק 3.'; RES.style.background='#ecfdf5'; }
+  else { RES.innerHTML='<b>שגוי: '+v+'.</b> נמכרו שתי מנות והמלאי ירד באחת. אף אחד לא קיבל אזהרה, והמספר נראה סביר, עד שהסלמון נגמר באמצע הערב.'; RES.style.background='#fef2f2'; }
+  used[mode]=1; if(used.sheet&&used.db) FL.done('p1-sim-collide'); } }
+box.addEventListener('click',function(e){ const b=e.target.closest('button'); if(!b) return;
+ if(b.dataset.m){ mode=b.dataset.m; FL.$$('[data-m]',box).forEach(function(x){x.classList.toggle('sec2',x!==b);}); reset(); }
+ else if(b.dataset.k==='next') next(); else if(b.dataset.k==='reset') reset(); });
+});})();</script>
+<p class="p1-note">כדי לדייק: גיליונות משותפים בענן כבר מטפלים בחלק מהמקרים האלה. הבעיה חוזרת כשכל אחד מחשב על עותק משלו, כשמחברים כמה קבצים, או כשצריך שפעולה של כמה שלבים תתבצע כולה או בכלל לא.</p>
+
+<h3>אקסל מול מסד נתונים</h3>
+<div class="tw"><table class="tbl">
+<tr><th></th><th>גיליון אקסל</th><th>מסד נתונים</th></tr>
+<tr><th>הרבה כותבים</th><td>עותקים שונים או דריסה: ״מי ששומר אחרון מנצח״</td><td>הפעולות רצות בתור, ומי שמחכה רואה את הערך המעודכן</td></tr>
+<tr><th>כללים על הנתונים</th><td>כל תא מקבל כל דבר, גם ״יקר״ בעמודת מחיר</td><td>סוג לכל עמודה, מפתחות וכללי תקינות</td></tr>
+<tr><th>גודל</th><td>עד 1,048,576 שורות בגיליון, וכבד הרבה לפני כן</td><td>אלפי שורות זה קל, ובמסד של מערכת חיה אפשר להחזיק מיליונים</td></tr>
+<tr><th>הרשאות</th><td>ברוב המקרים מי שפותח את הקובץ רואה את כולו</td><td>הרשאות לפי טבלה, ובמערכות רבות גם לפי שורה</td></tr>
+<tr><th>מתי זה הכלי הנכון</th><td>ניתוח אישי חד פעמי, טיוטה, הצגת תוצאה סופית</td><td>מערכת חיה שהרבה אנשים ותוכנות כותבים אליה</td></tr>
+</table></div>
+
+<div class="box meaning"><p>זה לא ״מקצועי מול חובבני״. אקסל מתאים לאדם אחד שעונה על שאלה אחת. מסד נתונים בנוי למצב שבו הרבה אנשים ותוכנות כותבים ושואלים באותו זמן, והנתונים צריכים להישאר נכונים בכל רגע. יבגני עבר אליו כי ההזמנות שלו מגיעות משלושה ערוצים בבת אחת.</p></div>
+
+<div class="box real"><p>מערכת להזמנת מושבים לא יכולה למכור את אותו מושב פעמיים, והעברה בנקאית חייבת לרדת מחשבון אחד ולעלות בשני, כולה או בכלל לא. מערכות כאלה בנויות על מסדי נתונים בגלל הדברים שראיתם כאן. אקסל לא נעלם: אנליסטים מייצאים נתונים מהמסד לגיליון כדי לחקור אותם לבד.</p></div>
+
+<div class="quiz" data-id="p1-q-needs-db" data-a="2"><p class="qq">באיזה מצב מסד נתונים נחוץ יותר מגיליון?</p>
+<button type="button" class="opt">דנה בודקת לבד, פעם אחת, מה ממוצע הטיפים באפריל</button>
+<button type="button" class="opt">חמישה עובדים ושתי אפליקציות מוסיפים הזמנות לאותה רשימה במשך כל היום</button>
+<button type="button" class="opt">יבגני מראה לשותפים סיכום רבעוני בשקף אחד</button>
+<div class="why">מסד נתונים מוכיח את עצמו כשיש הרבה כותבים באותו זמן ונתונים שחייבים להישאר נכונים. ניתוח חד פעמי של אדם אחד, או הצגת סיכום סופי, מתאימים לגיליון, ושם הוא אפילו נוח יותר.</div></div>
+
+<div class="box think" data-id="p1-th-excel"><p>דנה, האנליסטית, צריכה לבדוק פעם אחת מה הקשר בין טיפים לזמן משלוח, בשביל פגישה מחר. אקסל או מסד נתונים?</p>
+<div class="ans">אקסל, או כלי ניתוח דומה, אחרי שמייצאים את הנתונים מהמסד. זו עבודה של אדם אחד, חד פעמית, שלא כותבת בחזרה לשום מקום. המסד נשאר מקור האמת, והגיליון הוא שולחן עבודה. הבעיה מתחילה כשמישהו מתחיל לעדכן הזמנות בגיליון הזה ומחזיר אותו למערכת.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> להריץ את שני המצבים מול הכיתה, ולבקש מהם לנחש את התוצאה לפני הצעד האחרון. להגיד בפירוש שאקסל הוא לא ״רע״. לשאול: מי בכיתה מנהל משהו משותף בגיליון, ומה קרה כשמישהו דרס אותו?</div>
+</section>
+
+<section class="sec" id="s1-4" data-t="טבלאות וסוגים">
+<div class="sec-h"><div class="sec-n">4</div><h2>טבלאות, עמודות וסוגי נתונים</h2></div>
+<p class="lead">יבגני החליט לעבור למסד נתונים. עכשיו לכל פריט מידע צריך מקום וצריך תבנית. הטבלה נותנת את המקום, וסוג הנתונים נותן את התבנית: הוא קובע מה מותר להכניס. את הבסיס כבר ראינו <a href="../lec1_part2.html">בשיעור על CREATE, INSERT ו-SELECT</a>, ועכשיו נעשה את זה על המסעדה.</p>
+
+<div class="defline"><b>טבלה, עמודה ושורה:</b> טבלה מחזיקה סוג אחד של דבר, עמודה היא תכונה של הדבר, ושורה היא דבר אחד. דוגמה: בטבלת <code>dishes</code> העמודה <code>price</code> היא תכונה, והשורה עם id 3 היא ״המבורגר בקר״.</div>
+<div class="tw"><table class="tbl" dir="ltr">
+<tr><th>id</th><th>name</th><th>category</th><th>price</th><th>cost</th></tr>
+<tr><td>3</td><td>המבורגר בקר</td><td>main</td><td>68</td><td>27</td></tr>
+<tr><td>4</td><td>פסטה שמנת</td><td>main</td><td>59</td><td>18</td></tr>
+<tr><td>5</td><td>סלמון בתנור</td><td>main</td><td>89</td><td>38</td></tr>
+</table></div>
+<p class="p1-note">שלוש שורות מתוך עשר בטבלת dishes. כל שורה היא מנה, וכל עמודה היא תכונה של מנה.</p>
+
+<div class="defline"><b>סוג נתונים:</b> ההגדרה מראש של מה עמודה מקבלת: מספר שלם, מספר עם שבר, טקסט או תאריך. דוגמה: בעמודת <code>price</code> נכנסים רק מספרים. זה כמו תבנית אפייה: בלילת עוגה לא נכנסת לתבנית של קוביות קרח.</div>
+
+<div class="tw"><table class="tbl">
+<tr><th>מה שומרים</th><th>SQLite (במעבדות)</th><th>PostgreSQL</th><th>BigQuery</th></tr>
+<tr><td>מספר שלם (כמות)</td><td><code>INTEGER</code></td><td><code>integer</code></td><td><code>INT64</code></td></tr>
+<tr><td>מספר עם שבר (מחיר)</td><td><code>REAL</code></td><td><code>numeric(8,2)</code></td><td><code>NUMERIC</code></td></tr>
+<tr><td>טקסט (שם מנה)</td><td><code>TEXT</code></td><td><code>text</code></td><td><code>STRING</code></td></tr>
+<tr><td>תאריך ושעה</td><td><code>TEXT</code> בפורמט ISO</td><td><code>timestamp</code></td><td><code>TIMESTAMP</code></td></tr>
+<tr><td>כן או לא</td><td><code>INTEGER</code> (0 או 1)</td><td><code>boolean</code></td><td><code>BOOL</code></td></tr>
+</table></div>
+
+<h3>מה קורה כשאין סוג</h3>
+<p>בגיליון של יבגני עמודת המחיר מכילה מספרים, טקסט עם סימן מטבע ומילה אחת. הנוסחה מסכמת בשקט רק את מה שהיא הבינה.</p>
+<div class="mk">
+<div class="mk-bar"><i></i><i></i><i></i><span class="url">תפריט_מחירים.xlsx</span></div>
+<div class="mk-body" style="padding:8px">
+<table class="p1-sheet">
+<tr><th></th><th>A מנה</th><th>B מחיר</th></tr>
+<tr><td class="rn">1</td><td>סלט יווני</td><td>38</td></tr>
+<tr><td class="rn">2</td><td>מרק עגבניות</td><td>32</td></tr>
+<tr><td class="rn">3</td><td>המבורגר בקר</td><td class="bad">68 ש״ח</td></tr>
+<tr><td class="rn">4</td><td>פסטה שמנת</td><td class="bad">יקר</td></tr>
+<tr><td class="rn">5</td><td>סלמון בתנור</td><td>89</td></tr>
+<tr><td class="rn">6</td><td>פיצה מרגריטה</td><td class="bad">52 (בערך)</td></tr>
+<tr><td class="rn">7</td><td><b>סכום</b></td><td class="tot">159</td></tr>
+</table>
+</div></div>
+<p class="p1-note">המחשה. <span class="n">38 + 32 + 89 = 159</span>. שלושה מחירים לא נספרו, ולא הופיעה שום הודעה.</p>
+
+<div class="sim" data-id="p1-sim-pans">
+<div class="sh">נסו להכניס ערך לתבנית</div>
+<p class="p1-note">בצד אחד יש תבנית אמיתית: טבלה ב-SQLite במצב STRICT, שבודק סוגים. בצד השני יש גיליון, שמקבל הכול. בחרו סוג עמודה, הקלידו ערך או לחצו על אחת הדוגמאות. הערה: ב-PostgreSQL ערך עשרוני בעמודה של מספר שלם מעוגל ולא נדחה.</p>
+<div class="p1-row">
+<label>סוג העמודה: <select data-o="type"><option value="int">מספר שלם (כמות)</option><option value="real" selected>מספר עם שבר (מחיר)</option><option value="text">טקסט (שם מנה)</option><option value="date">תאריך (YYYY-MM-DD)</option></select></label>
+<label>ערך: <input type="text" data-o="val" value="יקר" style="min-width:140px"></label>
+<button type="button" class="btn" data-k="go">נסו</button>
+</div>
+<div class="p1-row" data-o="presets"></div>
+<div class="p1-grid">
+<div class="p1-panel"><h4>טבלה עם סוג</h4><div data-o="strict">לחצו ״נסו״.</div></div>
+<div class="p1-panel"><h4>גיליון</h4><div data-o="sheet">לחצו ״נסו״.</div></div>
+</div>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p1-sim-pans"]'); if(!box) return;
+const DDL={int:'v INTEGER',real:'v REAL',text:'v TEXT',date:'v TEXT CHECK (date(v) IS NOT NULL AND date(v) = v)'};
+const NAME={int:'מספר שלם',real:'מספר עם שבר',text:'טקסט',date:'תאריך'};
+const sel=FL.$('[data-o=type]',box), inp=FL.$('[data-o=val]',box), S=FL.$('[data-o=strict]',box), G=FL.$('[data-o=sheet]',box), P=FL.$('[data-o=presets]',box);
+const presets=[['יקר','real'],['42','int'],['42.5','int'],['42.5','real'],['2026-03-06','date'],['2026-13-45','date'],['6.3','date']];
+P.innerHTML=presets.map(function(p,i){return '<button type="button" class="p1-chipbtn" data-p="'+i+'">'+FL.esc(p[0])+' ← '+NAME[p[1]]+'</button>';}).join('');
+let tried={};
+function lit(t,v){ const s=v.trim(); if((t==='int'||t==='real')&&/^-?\d+(\.\d+)?$/.test(s)) return s; return "'"+v.replace(/'/g,"''")+"'"; }
+function go(){ const t=sel.value, v=inp.value;
+ if(!FL.ok()){ S.textContent='מנוע ה-SQL לא נטען.'; return; }
+ let ok=true, msg='';
+ try{ FL.exec('CREATE TABLE t ('+DDL[t]+') STRICT; INSERT INTO t VALUES ('+lit(t,v)+'); SELECT v FROM t;','rest'); }catch(e){ ok=false; msg=String(e.message||e); }
+ S.innerHTML= ok ? '<span class="p1-pill g">התקבל</span> הערך נשמר בעמודה מסוג <code>'+DDL[t].split(' ')[1]+'</code>.' : '<span class="p1-pill r">נדחה</span> <code>'+FL.esc(msg)+'</code><br>המסד עצר את הערך לפני שנכנס.';
+ G.innerHTML='<span class="p1-pill a">התקבל</span> התא מקבל כל דבר. הבעיה תתגלה רק כשמישהו ינסה לסכום.';
+ tried[ok?'ok':'bad']=1; if(tried.ok&&tried.bad) FL.done('p1-sim-pans'); }
+box.addEventListener('click',function(e){ const b=e.target.closest('button'); if(!b) return;
+ if(b.dataset.k==='go') go();
+ if(b.dataset.p!==undefined){ const p=presets[+b.dataset.p]; inp.value=p[0]; sel.value=p[1]; go(); } });
+});})();</script>
+
+<div class="lab" data-id="p1-lab-strict" data-title="טבלה שמסרבת ל״יקר״">
+<div class="q-src">יבגני בונה טבלת תפריט חדשה בשם <code>menu</code>, עם עמודת מחיר מסוג REAL. המילה <code>STRICT</code> בסוף מדליקה בדיקת סוגים. הפקודה השנייה נכשלת. הריצו, קראו את השגיאה ותקנו את הערך כך שהמחיר של הסביח יהיה 36.</div>
+<pre class="start">CREATE TABLE menu (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  price REAL NOT NULL
+) STRICT;
+
+INSERT INTO menu (id, name, price) VALUES (1, 'שקשוקה', 42);
+INSERT INTO menu (id, name, price) VALUES (2, 'סביח', 'יקר');
+
+SELECT * FROM menu</pre>
+<pre class="check">CREATE TABLE menu (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price REAL NOT NULL) STRICT;
+INSERT INTO menu (id, name, price) VALUES (1, 'שקשוקה', 42);
+INSERT INTO menu (id, name, price) VALUES (2, 'סביח', 36);
+SELECT * FROM menu</pre>
+<pre class="solution">CREATE TABLE menu (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  price REAL NOT NULL
+) STRICT;
+
+INSERT INTO menu (id, name, price) VALUES (1, 'שקשוקה', 42);
+INSERT INTO menu (id, name, price) VALUES (2, 'סביח', 36);
+
+SELECT * FROM menu</pre>
+<ol class="hints"><li>בהרצה הראשונה תקבלו הודעה באנגלית שמתחילה ב-cannot store TEXT. זו המילה ״יקר״ שנדחתה.</li><li>מספר כותבים בלי מרכאות.</li></ol>
+<div class="why-src">הטבלה סירבה לקבל טקסט בעמודה של מספרים, והפקודה נעצרה. SQLite במצב רגיל היה מקבל את המילה. PostgreSQL ו-BigQuery דוחים טקסט בעמודת מספר כברירת מחדל, ובשביל שהמעבדה תתנהג כמוהם הוספנו STRICT.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-textnum" data-title="מספר שנשמר כטקסט">
+<div class="q-src">מחיר שנראה כמו מספר אבל נשמר כטקסט מתנהג אחרת. הריצו ובדקו: האם 100 קטן מ-20?</div>
+<pre class="start">SELECT '100' &lt; '20' AS as_text,
+       100 &lt; 20     AS as_number</pre>
+<ol class="hints"><li>אין מה לתקן. 1 אומר ״נכון״ ו-0 אומר ״לא נכון״.</li></ol>
+<div class="why-src">כטקסט, ״100״ קטן מ-״20״, כי משווים תו אחרי תו, והתו ״1״ קטן מ-״2״. גם מיון וגם סכום משתבשים כשמספר נשמר כטקסט. בגלל זה מחיר, כמות וזמן משלוח נשמרים כמספרים.</div>
+</div>
+
+<div class="quiz" data-id="p1-q-phone" data-a="1"><p class="qq">באיזה סוג כדאי לשמור מספר טלפון של לקוח, למשל <span class="n">052-1234567</span>?</p>
+<button type="button" class="opt">טקסט: לא עושים חשבון על טלפון, ואפס בהתחלה חייב להישמר</button>
+<button type="button" class="opt">מספר שלם: זה מספר, אז זה הסוג הטבעי</button>
+<button type="button" class="opt">מספר שלם גדול: כדי שיהיה מקום לכל הספרות</button>
+<div class="why">שאלה אחת עוזרת להחליט: יש טעם לסכום, לחסר או להשוות את הערכים? טלפון, מספר זהות ומיקוד אף פעם לא מסכמים, ולפעמים הם מתחילים באפס. מספר שלם ימחק את האפס ואת המקף, וגם מספר שלם גדול ימחק אותם.</div></div>
+
+<h3>כללים נוספים: NOT NULL, CHECK</h3>
+<p>סוג נתונים הוא הכלל הראשון. יש עוד. <code>NOT NULL</code> אומר ״חובה למלא״. ויש כלל שמגדירים בעצמנו:</p>
+<div class="defline"><b>CHECK:</b> כלל על עמודה שהמסד בודק בכל הוספה או שינוי. דוגמה: <code>CHECK (tip &gt;= 0)</code> לא נותן להכניס טיפ שלילי.</div>
+<p>זה לא תיאורטי. בנתונים של יבגני יש הזמנה אחת, מספר 86, עם טיפ של מינוס 5. אין דבר כזה, אבל שום כלל לא חסם אותו. בטבלה החדשה למטה הוספנו כלל, וכך נראית הגנה אחרונה: גם אם האפליקציה שכחה לבדוק, המסד לא נותן לזה לעבור.</p>
+
+<div class="lab" data-id="p1-lab-check" data-title="כלל שחוסם טיפ שלילי">
+<div class="q-src">בטבלה <code>tips</code> הוגדר הכלל <code>CHECK (tip &gt;= 0)</code>. מישהו מנסה להכניס להזמנה 86 טיפ של מינוס 5. הריצו, קראו את השגיאה, ותקנו כך שהטיפ של הזמנה 86 יהיה 5.</div>
+<pre class="setup">CREATE TABLE tips (order_id INTEGER PRIMARY KEY, tip REAL CHECK (tip &gt;= 0)) STRICT</pre>
+<pre class="start">INSERT INTO tips (order_id, tip) VALUES (86, -5);
+
+SELECT * FROM tips</pre>
+<pre class="check">INSERT INTO tips (order_id, tip) VALUES (86, 5);
+SELECT * FROM tips</pre>
+<pre class="solution">INSERT INTO tips (order_id, tip) VALUES (86, 5);
+
+SELECT * FROM tips</pre>
+<ol class="hints"><li>בשגיאה כתוב CHECK constraint failed: זה הכלל שחסם את הערך.</li><li>כתבו טיפ שהוא לא שלילי.</li></ol>
+<div class="why-src">המסד דחה את הערך השלילי, ולכן הטיפ של מינוס 5 לא היה נכנס. בנתונים האמיתיים של יבגני הוא נכנס, כי לא הוגדר כלל. את זה נחפש ונתקן בחלק 4.</div>
+</div>
+
+<h3>NULL: ״לא ידוע״ זה לא אפס</h3>
+<div class="defline"><b>NULL:</b> סימן שאומר שאין ערך, או שהערך לא ידוע. הוא לא אפס ולא טקסט ריק. דוגמה: ללקוח מספר 14 (גיל נחום) אין עיר רשומה, אז <code>city</code> שלו הוא NULL.</div>
+<div class="p1-grid">
+<div class="p1-panel"><h4>NULL</h4><p>״לא יודעים״. עיר של לקוח שלא מילא אותה. טיפ שלא נרשם.</p></div>
+<div class="p1-panel"><h4>טקסט ריק <code>''</code></h4><p>״יודעים שאין מה לכתוב״. הערה שמישהו בחר להשאיר ריקה.</p></div>
+<div class="p1-panel"><h4>אפס <code>0</code></h4><p>״יודעים שהמספר הוא אפס״. הלקוח נתן טיפ של אפס.</p></div>
+</div>
+
+<div class="lab" data-id="p1-lab-null1" data-title="מי חסר עיר" data-require="IS\s+NULL" data-require-msg="בודקים NULL עם IS NULL, לא עם סימן שווה.">
+<div class="q-src">הציגו את <code>id</code> ואת <code>name</code> של כל לקוח שאין לו עיר רשומה.</div>
+<pre class="start">SELECT id, name
+FROM customers
+WHERE -- condition</pre>
+<pre class="check">SELECT id, name FROM customers WHERE city IS NULL</pre>
+<pre class="solution">SELECT id, name
+FROM customers
+WHERE city IS NULL</pre>
+<ol class="hints"><li>ב-SQL בודקים NULL בביטוי מיוחד ולא בסימן שווה. נסו קודם <code>city = NULL</code> ושימו לב מה מתקבל.</li><li>הנוסח הוא <code>עמודה IS NULL</code>.</li></ol>
+<div class="why-src">חזר לקוח אחד: גיל נחום. <code>city = NULL</code> לא מחזיר כלום, כי השוואה לערך לא ידוע היא לא ״נכון״ וגם לא ״לא נכון״, והשורה פשוט לא נבחרת. וגם: תוצאה ריקה היא לא שגיאה. שאילתה יכולה לרוץ בהצלחה ולהחזיר אפס שורות.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-null2" data-title="טיפ ידוע, לא ידוע ואפס">
+<div class="q-src">בעמודת <code>tip</code> יש שלושה מצבים. כתבו שאילתה אחת שמחזירה שלוש עמודות: כמה הזמנות עם טיפ ידוע (<code>known</code>), כמה עם טיפ לא ידוע (<code>unknown</code>), וכמה עם טיפ שהוא בדיוק 0 (<code>zero</code>).</div>
+<pre class="start">SELECT COUNT(tip) AS known,
+       -- how many NULL
+       -- how many zero
+FROM orders</pre>
+<pre class="check">SELECT COUNT(tip), SUM(tip IS NULL), SUM(tip = 0) FROM orders</pre>
+<pre class="solution">SELECT COUNT(tip)         AS known,
+       SUM(tip IS NULL)   AS unknown,
+       SUM(tip = 0)       AS zero
+FROM orders</pre>
+<ol class="hints"><li><code>COUNT(tip)</code> סופרת רק ערכים שהם לא NULL.</li><li>ב-SQLite התנאי <code>tip IS NULL</code> שווה 1 כשהוא נכון ו-0 כשהוא לא נכון, אז אפשר לסכום אותו.</li></ol>
+<div class="why-src">29 הזמנות עם טיפ ידוע, 58 בלי, ו-2 עם אפס: <bdi dir="ltr">29 + 58 = 87.</bdi> ההבחנה משנה מספרים. ממוצע הטיפ על ההזמנות שיש להן טיפ הוא בערך 7.21. אילו התייחסנו ל-NULL כאל אפס, הוא היה יורד לבערך 2.40. פונקציות כמו <code>AVG</code> מתעלמות מ-NULL, ולכן צריך לדעת מה הן סופרות.</div>
+</div>
+
+<div class="box trap"><p>שתי תקלות שקטות: מספר שנשמר כטקסט, ו-NULL שמתייחסים אליו כאל אפס. בשתיהן השאילתה רצה, התוצאה נראית סבירה, והמספר לא נכון. נחזור לזה בחלק 2.</p></div>
+
+<div class="quiz" data-id="p1-q-null" data-a="3"><p class="qq">מה תחזיר השאילתה <code>SELECT * FROM customers WHERE city = NULL</code>?</p>
+<button type="button" class="opt">את לקוח 14, כי העיר שלו חסרה</button>
+<button type="button" class="opt">הודעת שגיאה, כי אסור לכתוב NULL בתנאי</button>
+<button type="button" class="opt">אפס שורות, כי השוואה ל-NULL לא נכונה אף פעם</button>
+<div class="why">השוואה עם סימן שווה ל-NULL נחשבת ״לא ידוע״, וסינון משאיר רק שורות שהתנאי שלהן נכון. אין שגיאה, ואין תוצאה. זו מלכודת שקטה, כי השאילתה נראית תקינה. הדרך הנכונה היא <code>IS NULL</code>.</div></div>
+
+<div class="box meaning"><p>סוג הנתון אומר למי שקורא את העמודה מה יש בה. בלי זה, כל חישוב צריך לבדוק קודם אם הערך הוא מספר, ומי ששוכח מקבל סכום לא נכון בלי שום אזהרה. NULL אומר משהו אחר: ״כאן לא ידוע״. מי ששואל שאלות על הנתונים חייב לדעת להתייחס אליו.</p></div>
+
+<div class="box real"><p>PostgreSQL ו-BigQuery דוחים כברירת מחדל טקסט בעמודה של מספרים. SQLite גמיש יותר, ולכן במעבדות הוספנו STRICT. כשכלי AI מחזיר <dfn data-d="התיאור של הטבלאות והעמודות שלהן, בלי הנתונים. דוגמה: כל פקודות ה-CREATE TABLE של יבגני יחד הן הסכמה שלו.">סכמה</dfn>, סוגי העמודות הם הדבר הראשון שבודקים. מחיר, כמות וזמן שנשמרו כטקסט הם תקלה שכיחה, והקוד שמסביב לא חושף אותה.</p></div>
+
+<div class="box think" data-id="p1-th-pricetext"><p>מחיר שנשמר כטקסט נראה תקין בכל שורה. מה בכל זאת ישתבש, ומתי תגלו?</p>
+<div class="ans">הסכום יצא לא נכון או שתהיה שגיאה, מיון יסדר ״100״ לפני ״20״, וחישוב רווח (מחיר פחות עלות) לא יעבוד. את התקלה מגלים רק כשמישהו שואל שאלה עם מספרים, לפעמים אחרי חודשים. לכן הסוג נקבע כבר בהגדרת הטבלה, ולא בשאילתה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> להריץ את הסימולציה עם ״יקר״, ואחר כך עם ״42.5״ בעמודת מספר שלם. לשאול מי ציפה שהשני יידחה. במעבדת ה-NULL כדאי להריץ גם <code>= NULL</code>, כי זו הטעות הנפוצה ביותר של מתחילים (וגם של כלי AI).</div>
+</section>
+
+<section class="sec" id="s1-5" data-t="מפתחות">
+<div class="sec-h"><div class="sec-n">5</div><h2>מפתחות: איך טבלאות מכירות זו את זו</h2></div>
+<p class="lead">בקובץ של יבגני דנה לוי כתובה בשתי צורות, ואף אחד לא יודע אם זו אותה דנה. מחשב לא מזהה אנשים לפי שם, כי שמות חוזרים וגם משתנים. הוא צריך מזהה. ואת המזהה הזה צריך להגדיר נכון.</p>
+
+<div class="defline"><b>מפתח ראשי (PK):</b> עמודה, או כמה עמודות ביחד, שהערך בהן ייחודי בכל שורה ולעולם לא ריק. דוגמה: <code>customers.id</code>. אין שני לקוחות עם אותו מספר, ולכן אפשר להגיד בבירור ״ההזמנה הזאת היא של לקוח מספר 13״.</div>
+<div class="defline"><b>מפתח זר (FK):</b> עמודה בטבלה אחת שמחזיקה את המפתח הראשי של שורה בטבלה אחרת, וככה מצביעה עליה. דוגמה: <code>orders.customer_id = 13</code> אומר ״ההזמנה הזאת שייכת ללקוחה 13״, בלי להעתיק את השם שלה.</div>
+
+<div class="anim" data-id="p1-anim-keys" data-auto="1" data-speed="3600">
+<div class="stage"><svg viewBox="0 0 800 350" role="img" aria-label="טבלת הזמנות שמצביעה על טבלת לקוחות באמצעות מספר לקוח">
+<defs><marker id="p1k-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#7c3aed"/></marker>
+<marker id="p1k-ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ef4444"/></marker></defs>
+<g font-family="Heebo,Arial,sans-serif">
+<text x="625" y="22" text-anchor="middle" font-size="18" font-weight="800" fill="#0e1b2e">customers</text>
+<text x="175" y="22" text-anchor="middle" font-size="18" font-weight="800" fill="#0e1b2e">orders</text>
+
+<g data-s="1">
+<rect x="470" y="34" width="310" height="36" fill="#e2e8f0" stroke="#94a3b8"/>
+<rect x="470" y="70" width="310" height="36" fill="#fff" stroke="#cbd5e1"/><rect x="470" y="106" width="310" height="36" fill="#f8fafc" stroke="#cbd5e1"/><rect x="470" y="142" width="310" height="36" fill="#fff" stroke="#cbd5e1"/>
+<g font-size="16" font-weight="700" fill="#334155"><text x="485" y="58">id</text><text x="545" y="58">name</text><text x="680" y="58">city</text></g>
+<g font-size="16" fill="#0f172a">
+<text x="485" y="94">11</text><text x="545" y="94">הילה אבני</text><text x="680" y="94">תל אביב</text>
+<text x="485" y="130">13</text><text x="545" y="130">מיכל סבן</text>
+<text x="485" y="166">14</text><text x="545" y="166">גיל נחום</text><text x="680" y="166" font-style="italic" fill="#94a3b8">NULL</text>
+</g>
+</g>
+<g data-only="1,2,3"><text x="680" y="130" font-size="16" fill="#0f172a">רמת גן</text></g>
+<g data-only="4,5"><rect x="670" y="110" width="105" height="28" rx="6" fill="#fef3c7" stroke="#d8b862" stroke-width="2"/><text x="680" y="130" font-size="16" font-weight="800" fill="#78350f">חיפה</text></g>
+
+<g data-only="1" data-pulse><rect x="470" y="34" width="62" height="144" fill="none" stroke="#b91c1c" stroke-width="3" rx="4"/><rect x="470" y="190" width="170" height="30" rx="8" fill="#fee2e2"/><text x="555" y="211" text-anchor="middle" font-size="15" font-weight="800" fill="#991b1b">PK: ייחודי ולא ריק</text></g>
+
+<g data-s="2">
+<rect x="20" y="34" width="310" height="36" fill="#e2e8f0" stroke="#94a3b8"/>
+<rect x="20" y="70" width="310" height="36" fill="#fff" stroke="#cbd5e1"/><rect x="20" y="106" width="310" height="36" fill="#f8fafc" stroke="#cbd5e1"/><rect x="20" y="142" width="310" height="36" fill="#fff" stroke="#cbd5e1"/>
+<g font-size="16" font-weight="700" fill="#334155"><text x="35" y="58">id</text><text x="95" y="58">customer_id</text><text x="230" y="58">channel</text></g>
+<g font-size="16" fill="#0f172a">
+<text x="35" y="94">4</text><text x="95" y="94">11</text><text x="230" y="94">app</text>
+<text x="35" y="130">1</text><text x="95" y="130">13</text><text x="230" y="130">app</text>
+<text x="35" y="166">6</text><text x="95" y="166">14</text><text x="230" y="166">phone</text>
+</g>
+</g>
+<g data-only="2" data-pulse><rect x="90" y="34" width="120" height="144" fill="none" stroke="#7c3aed" stroke-width="3" rx="4"/><rect x="60" y="190" width="170" height="30" rx="8" fill="#f3e8ff"/><text x="145" y="211" text-anchor="middle" font-size="15" font-weight="800" fill="#6d28d9">FK: מצביע על לקוח</text></g>
+
+<g data-s="3" stroke="#7c3aed" stroke-width="3" fill="none">
+<path d="M330 88 L460 88" marker-end="url(#p1k-ar)"/><path d="M330 124 L460 124" marker-end="url(#p1k-ar)"/><path d="M330 160 L460 160" marker-end="url(#p1k-ar)"/>
+</g>
+
+<g data-s="5">
+<rect x="20" y="238" width="310" height="36" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+<g font-size="16" font-weight="700" fill="#991b1b"><text x="35" y="262">88</text><text x="95" y="262">99</text><text x="230" y="262">app</text></g>
+<rect x="470" y="238" width="310" height="36" fill="#fff" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="625" y="262" text-anchor="middle" font-size="16" fill="#991b1b">אין לקוח 99</text>
+<path d="M330 256 L460 256" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#p1k-ar2)"/>
+<text x="400" y="304" text-anchor="middle" font-size="26" font-weight="900" fill="#dc2626">✕ נדחה</text>
+</g>
+</g>
+</svg></div>
+<ol class="caps">
+<li>בטבלת הלקוחות העמודה id היא המפתח הראשי: כל ערך בה ייחודי ולא ריק.</li>
+<li>בטבלת ההזמנות אין שם ואין עיר של לקוח. יש רק מספר לקוח, וזה מפתח זר.</li>
+<li>המספר מצביע על שורה בטבלת הלקוחות. ככה כל הזמנה יודעת מי הזמין, בלי להעתיק מידע.</li>
+<li>מיכל עוברת לחיפה. מתקנים תא אחד בטבלת הלקוחות, וכל ההזמנות שלה כבר מצביעות על המידע החדש.</li>
+<li>ניסיון להוסיף הזמנה ללקוח 99 נדחה, כי אין לקוח כזה (בדיוק מה שקורה בהזמנה 85 בנתונים של יבגני). מפתח זר לא יכול להצביע על כלום.</li>
+</ol>
+</div>
+<p class="p1-swipe">אפשר להחליק הצידה כדי לראות את כל האיור.</p>
+
+<div class="lab" data-id="p1-lab-pk-dup" data-title="מפתח ראשי שמסרב לכפילות">
+<div class="q-src">בטבלת <code>couriers</code> יש שלושה שליחים: אורי (1), נועה (2) ודימה (3). יבגני מעסיק שליחה חדשה, מיה, עם אופניים חשמליים (<code>e-bike</code>). הפקודה למטה מנסה לתת לה מספר 3. הריצו, קראו את השגיאה, ותקנו כך שהשליחה תיכנס כשליחה מספר 4.</div>
+<pre class="start">INSERT INTO couriers (id, name, vehicle)
+VALUES (3, 'מיה', 'e-bike');
+
+SELECT * FROM couriers</pre>
+<pre class="check">INSERT INTO couriers (id, name, vehicle) VALUES (4, 'מיה', 'e-bike');
+SELECT * FROM couriers</pre>
+<pre class="solution">INSERT INTO couriers (id, name, vehicle)
+VALUES (4, 'מיה', 'e-bike');
+
+SELECT * FROM couriers</pre>
+<ol class="hints"><li>השגיאה אומרת UNIQUE constraint failed: couriers.id. המספר 3 כבר תפוס.</li><li>השתמשו במספר 4.</li></ol>
+<div class="why-src">המסד סירב לשורה שנייה עם אותו מפתח. ככה מונעים מצב ש״שליח 3״ הוא שני אנשים. בגיליון זה היה עובר בשקט. בפועל המערכת בדרך כלל נותנת מספרים לבד: אם משמיטים את העמודה id, SQLite נותן את המספר הפנוי הבא.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-fk" data-title="מפתח זר שמסרב להצביע על כלום" data-fk="1" data-require="INSERT\s+INTO\s+customers" data-require-msg="התיקון צריך לכלול הוספה של הלקוחה לטבלת customers לפני ההזמנה.">
+<div class="q-src">טבלה חדשה, <code>orders_fk</code>, מוגדרת עם מפתח זר: <code>customer_id</code> חייב להצביע על לקוח קיים. הזמנה ראשונה מגיעה מלקוחה חדשה, ספיר גבע (מספר 101, חיפה), אבל היא עדיין לא רשומה בטבלת הלקוחות. הריצו, קראו את השגיאה, והוסיפו את הלקוחה לפני ההזמנה.</div>
+<pre class="setup">CREATE TABLE orders_fk (
+  id INTEGER PRIMARY KEY,
+  customer_id INTEGER NOT NULL REFERENCES customers(id),
+  order_ts TEXT NOT NULL
+)</pre>
+<pre class="start">-- add Sapir to the customers table first
+INSERT INTO orders_fk (id, customer_id, order_ts)
+VALUES (1, 101, '2026-06-01 13:00');
+
+SELECT * FROM orders_fk</pre>
+<pre class="check">INSERT INTO customers (id, name, city) VALUES (101, 'ספיר גבע', 'חיפה');
+INSERT INTO orders_fk (id, customer_id, order_ts) VALUES (1, 101, '2026-06-01 13:00');
+SELECT * FROM orders_fk</pre>
+<pre class="solution">INSERT INTO customers (id, name, city)
+VALUES (101, 'ספיר גבע', 'חיפה');
+
+INSERT INTO orders_fk (id, customer_id, order_ts)
+VALUES (1, 101, '2026-06-01 13:00');
+
+SELECT * FROM orders_fk</pre>
+<ol class="hints"><li>השגיאה היא FOREIGN KEY constraint failed. אין לקוח 101.</li><li>הוסיפו שורה לטבלת customers עם id 101, ורק אחריה את ההזמנה.</li></ol>
+<div class="why-src">מפתח זר שומר על הסדר: קודם הלקוחה, ואחר כך ההזמנה. בלי הכלל, בטבלת ההזמנות היו מצטברות הזמנות של לקוחות שלא קיימים, ושאילתה שמחברת את שתי הטבלאות הייתה מאבדת אותן. בנתונים של יבגני יש הזמנה אחת כזו: הזמנה 85 מצביעה על לקוח 99 שלא קיים. שם אי אפשר פשוט להמציא לקוח, צריך לברר מי הלקוח האמיתי. נמצא אותה בחלק 4.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-twins" data-title="אותו אדם, שני מזהים">
+<div class="q-src">בטבלת הלקוחות יש שתי שורות של רונית מלכה: 17 ו-18. הציגו את כל העמודות של שתי השורות האלה והשוו ביניהן.</div>
+<pre class="start">SELECT *
+FROM customers
+WHERE id -- 17 or 18</pre>
+<pre class="check">SELECT * FROM customers WHERE id IN (17, 18)</pre>
+<pre class="solution">SELECT *
+FROM customers
+WHERE id IN (17, 18)</pre>
+<ol class="hints"><li>אפשר לכתוב <code>id = 17 OR id = 18</code>, או לקצר עם <code>IN (17, 18)</code>.</li></ol>
+<div class="why-src">השם, העיר והאימייל זהים, ורק המספר והתאריך שונים. שני המפתחות תקינים לגמרי, ובכל זאת זה אדם אחד. מפתח ראשי דואג שכל שורה תהיה ייחודית. הוא לא דואג שכל אדם יופיע בשורה אחת. את הכפילות הזאת נמצא ונטפל בה בחלק 4.</div>
+</div>
+
+<div class="box think" data-id="p1-th-twins"><p>אם המפתח הראשי דואג לייחודיות, איך נכנסו לטבלה שתי שורות של רונית? ומה היה מונע את זה?</p>
+<div class="ans">המפתח הראשי דואג שמספר לא יחזור, ולא שאדם לא יירשם פעמיים. רונית נרשמה פעמיים בהפרש של יום, וקיבלה שני מספרים. אפשר למנוע את זה עם כלל נוסף: אימייל ייחודי (<code>UNIQUE</code>), או בדיקה בהרשמה לפני שיוצרים שורה חדשה. נראה את זה בעבודה במעבדה הבאה.</div></div>
+
+<div class="lab" data-id="p1-lab-unique" data-title="UNIQUE: אותו אימייל פעמיים לא עובר" data-require="UPDATE" data-require-msg="במקום להוסיף שורה, עדכנו את השורה הקיימת עם UPDATE.">
+<div class="q-src">בטבלה <code>members</code> האימייל מוגדר <code>UNIQUE</code>, ורונית כבר רשומה בה כ״רונית״. היא נרשמה שוב, הפעם עם שם מלא. הריצו, קראו את השגיאה, ובמקום להוסיף שורה חדשה עדכנו את השורה הקיימת כך ששמה יהיה ״רונית מלכה״.</div>
+<pre class="setup">CREATE TABLE members (id INTEGER PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL UNIQUE);
+INSERT INTO members (id, name, email) VALUES (1, 'רונית', 'ronit.malka@example.com')</pre>
+<pre class="start">INSERT INTO members (id, name, email)
+VALUES (2, 'רונית מלכה', 'ronit.malka@example.com');
+
+SELECT * FROM members</pre>
+<pre class="check">UPDATE members SET name = 'רונית מלכה' WHERE id = 1;
+SELECT * FROM members</pre>
+<pre class="solution">UPDATE members
+SET name = 'רונית מלכה'
+WHERE id = 1;
+
+SELECT * FROM members</pre>
+<ol class="hints"><li>השגיאה אומרת UNIQUE constraint failed: members.email. האימייל הזה כבר קיים.</li><li>מחקו את ה-INSERT וכתבו UPDATE עם <code>WHERE id = 1</code>.</li></ol>
+<div class="why-src">הכלל חוסם את הכפילות עוד לפני שהיא נכנסת. בטבלת הלקוחות של יבגני הכלל הזה לא היה מוגדר, ולכן רונית נכנסה פעמיים.</div>
+</div>
+
+<h3>איך מפרקים גיליון ענק לטבלאות</h3>
+<p>בגיליון הישן של יבגני יש שורה לכל פריט בכל הזמנה: 219 שורות. בכל אחת חוזרים שם הלקוח, העיר, המחיר ושם השליח. אפשר לפרק את זה לטבלאות בשלושה שלבים, וכל שלב נבדק מיד.</p>
+
+<div class="sim" data-id="p1-sim-split">
+<div class="sh">מגיליון ענק לטבלאות</div>
+<p><b>שלב א.</b> לכל עמודה של הגיליון הישן בחרו את הטבלה שאליה היא שייכת. כלל עזר: עמודה שייכת לטבלה של הדבר שהיא מתארת. מחיר מתאר מנה, ולכן הוא שייך לטבלת המנות.</p>
+<div data-o="cols"></div>
+<div class="p1-row"><button type="button" class="btn" data-k="check">בדיקה</button><span data-o="msg"></span></div>
+<div data-o="step2" hidden>
+<p><b>שלב ב.</b> הטבלאות עדיין לא יודעות זו על זו. אילו עמודות מחברות ביניהן? סמנו אותן (יש ארבע נכונות).</p>
+<div class="p1-row" data-o="keys"></div>
+<div class="p1-row"><button type="button" class="btn" data-k="check2">בדיקה</button><span data-o="msg2"></span></div>
+</div>
+<div data-o="step3" hidden>
+<p><b>שלב ג.</b> לקוח עובר עיר. כמה שורות צריך לתקן בכל מבנה? בחרו לקוח:</p>
+<div class="p1-row"><select data-o="cust"></select></div>
+<div class="out" data-o="out"></div>
+</div>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p1-sim-split"]'); if(!box) return;
+const T=['customers','dishes','couriers','orders','order_items'];
+const C=[['order_date','orders'],['channel','orders'],['customer_name','customers'],['customer_email','customers'],['customer_city','customers'],['dish_name','dishes'],['dish_price','dishes'],['quantity','order_items'],['courier_name','couriers'],['courier_vehicle','couriers']];
+const KEYS=[['orders.customer_id',1],['orders.courier_id',1],['order_items.order_id',1],['order_items.dish_id',1],['customers.order_id',0],['dishes.customer_id',0],['couriers.dish_id',0]];
+const cols=FL.$('[data-o=cols]',box);
+cols.innerHTML=C.map(function(c,i){return '<div class="p1-colrow" data-i="'+i+'"><code>'+c[0]+'</code><select><option value="">בחרו טבלה</option>'+T.map(function(t){return '<option value="'+t+'">'+t+'</option>';}).join('')+'</select></div>';}).join('');
+const keys=FL.$('[data-o=keys]',box);
+keys.innerHTML=KEYS.map(function(k,i){return '<button type="button" class="p1-chipbtn" data-i="'+i+'">'+k[0]+'</button>';}).join('');
+const msg=FL.$('[data-o=msg]',box), msg2=FL.$('[data-o=msg2]',box), s2=FL.$('[data-o=step2]',box), s3=FL.$('[data-o=step3]',box);
+box.addEventListener('click',function(e){
+ const b=e.target.closest('button'); if(!b) return;
+ if(b.dataset.k==='check'){ let ok=0; FL.$$('.p1-colrow',cols).forEach(function(r){ const v=FL.$('select',r).value, good=C[+r.dataset.i][1]; r.classList.remove('ok','no'); if(v===good){ r.classList.add('ok'); ok++; } else if(v) r.classList.add('no'); });
+  if(ok===C.length){ msg.innerHTML='<span class="p1-pill g">כל העמודות במקום הנכון</span>'; s2.hidden=false; }
+  else msg.innerHTML='<span class="p1-pill a">'+ok+' מתוך '+C.length+'</span> טעויות מסומנות באדום. שאלו על כל עמודה: הערך הזה מתאר לקוח, מנה, שליח, הזמנה, או מנה בתוך הזמנה?'; }
+ if(b.dataset.i!==undefined && keys.contains(b)){ b.classList.toggle('sel'); b.classList.remove('ok','no'); }
+ if(b.dataset.k==='check2'){ let good=0, bad=0; FL.$$('.p1-chipbtn',keys).forEach(function(x){ const k=KEYS[+x.dataset.i], on=x.classList.contains('sel'); x.classList.remove('ok','no','miss'); if(on&&k[1]){ x.classList.add('ok'); good++; } else if(on&&!k[1]){ x.classList.add('no'); bad++; } else if(!on&&k[1]) x.classList.add('miss'); });
+  if(good===4&&!bad){ msg2.innerHTML='<span class="p1-pill g">נכון</span> ההזמנה מצביעה על לקוח ועל שליח, ופריט הזמנה מצביע על הזמנה ועל מנה.'; s3.hidden=false; fill(); }
+  else msg2.innerHTML='<span class="p1-pill a">עדיין לא</span> רמז: מפתח זר נמצא בטבלה של ״הרבים״, ומצביע על הטבלה של ״האחד״. נכונות: '+good+', שגויות: '+bad+'.'; }
+});
+const sel=FL.$('[data-o=cust]',box), out=FL.$('[data-o=out]',box); let filled=false;
+function calc(){ const id=+sel.value; let r1,r2; try{ r1=FL.exec('SELECT COUNT(*) FROM orders o JOIN order_items oi ON oi.order_id = o.id WHERE o.customer_id = '+id).values[0][0]; r2=FL.exec('SELECT COUNT(*) FROM orders WHERE customer_id = '+id).values[0][0]; }catch(e){ out.textContent='שגיאה בחישוב.'; return; }
+ out.innerHTML='<div class="p1-grid"><div class="p1-panel"><h4>בגיליון הענק</h4><div class="p1-big">'+r1+'</div><div>שורות לתקן (פריטים ב-'+r2+' הזמנות)</div></div><div class="p1-panel"><h4>אחרי הפיצול</h4><div class="p1-big">1</div><div>שורה בטבלת customers</div></div></div>'; FL.done('p1-sim-split'); }
+function fill(){ if(filled) return; filled=true; FL.onReady(function(ok){ if(!ok){ out.textContent='מנוע ה-SQL לא נטען.'; return; } const r=FL.exec('SELECT id, name FROM customers WHERE id <= 16 ORDER BY id'); sel.innerHTML=r.values.map(function(v){return '<option value="'+v[0]+'">'+FL.esc(v[1])+'</option>';}).join(''); sel.value='11'; calc(); }); }
+sel.addEventListener('change',calc);
+});})();</script>
+
+<p>עכשיו נראה איך נראה תיקון במקום אחד. שימו לב לפקודה <code>UPDATE</code> ולשורה <code>WHERE</code> שבתוכה.</p>
+<div class="lab" data-id="p1-lab-update-one" data-title="לתקן במקום אחד">
+<div class="q-src">גיל נחום (לקוח 14) אמר שהוא גר בחיפה, ובמערכת העיר שלו ריקה. עדכנו את העיר שלו בשורה אחת. מתחת לכפתור ההרצה יופיעו שתי טבלאות, ״לפני״ ו״אחרי״, כדי שתראו מה השתנה.</div>
+<pre class="show">SELECT id, name, city FROM customers WHERE id = 14</pre>
+<pre class="start">UPDATE customers
+SET city = 'חיפה'
+WHERE -- which customer</pre>
+<pre class="check">UPDATE customers SET city = 'חיפה' WHERE id = 14</pre>
+<pre class="solution">UPDATE customers
+SET city = 'חיפה'
+WHERE id = 14</pre>
+<ol class="hints"><li>את השורה בוחרים לפי המפתח הראשי: <code>id = 14</code>.</li></ol>
+<div class="why-src">שורה אחת השתנתה, וכל שלוש ההזמנות של גיל כבר ״רואות״ את העיר החדשה, כי הן מצביעות עליו. בגיליון הענק היו 11 שורות פריט לתקן. ושימו לב כמה חשוב ה-<code>WHERE id = 14</code>: בלי WHERE כל הלקוחות היו עוברים לחיפה.</div>
+</div>
+
+<div class="box meaning"><p>מפתחות הם הדרך לתקן במקום אחד ולראות את התיקון בכל מקום. בלי הפירוק, כל תיקון מוכפל במספר השורות, ובכל שורה אפשר לטעות. עם מפתחות, המסד גם שומר שהקישורים תקינים: אי אפשר להכניס הזמנה ללקוח שלא קיים.</p></div>
+
+<div class="box real"><p>מספר הזמנה, מספר לקוח, מספר מוצר ומספר חשבון בנק הם כולם מפתחות ראשיים. כשנציג שירות אומר ״תן לי את מספר ההזמנה״, הוא מבקש מפתח. במערכות רבות המפתח נוצר אוטומטית, כדי שאף אחד לא יצטרך להמציא אותו.</p></div>
+
+<div class="quiz" data-id="p1-q-keys" data-a="2"><p class="qq">איזה משפט מתאר נכון מפתח זר?</p>
+<button type="button" class="opt">עמודה בטבלת ההזמנות שמעתיקה את כל הפרטים של הלקוח</button>
+<button type="button" class="opt">עמודה בטבלת ההזמנות שמחזיקה את המפתח הראשי של לקוח</button>
+<button type="button" class="opt">עמודה שהערך בה ייחודי ולעולם לא ריק</button>
+<div class="why">מפתח זר הוא מצביע, לא עותק: הוא מחזיק רק את המספר, והפרטים נשארים במקום אחד. התיאור השלישי הוא של מפתח ראשי. התיאור הראשון הוא בדיוק מה שהפירוק לטבלאות בא למנוע.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> אחרי ההנפשה לבקש מהכיתה לנחש מה יקרה בשלב החמישי, לפני שמריצים אותו במעבדה. בסימולציה לתת לזוגות לבנות את החלוקה ולהשוות בין זוגות. את שאלת הכפילות של רונית לפתוח לדיון, ולהזכיר שחלק 4 יחזור אליה.</div>
+</section>
+
+<section class="sec" id="s1-6" data-t="מרעיון לתרשים">
+<div class="sec-h"><div class="sec-n">6</div><h2>מרעיון לתרשים: איך מוצאים את הטבלאות</h2></div>
+<p class="lead">יבגני לא מדבר בטבלאות. הוא מדבר במשפטים: ״הלקוח מזמין, השליח מוסר, ובהזמנה יש כמה מנות.״ התפקיד שלנו הוא לקרוא משפטים כאלה ולהוציא מהם טבלאות. השיטה פשוטה: מחפשים את שמות העצם. התוצאה היא <dfn data-d="ERD, תרשים של הדברים ששומרים עליהם מידע (ישויות) ושל הקשרים ביניהם. דוגמה: קופסה ללקוחות, קופסה להזמנות, וקו ביניהן.">תרשים ישויות וקשרים (ERD)</dfn>.</p>
+
+<div class="defline"><b>ישות (Entity):</b> דבר ששומרים עליו מידע, ושאפשר לשאול עליו ״כמה יש?״ או ״מה הפרטים שלו?״. דוגמה: ״לקוח״ היא ישות, כי אפשר לשאול כמה לקוחות יש ומה העיר של כל אחד. ״מזמין״ היא לא ישות, זו פעולה.</div>
+
+<div class="sim" data-id="p1-sim-nouns">
+<div class="sh">למצוא את הישויות במשפט של יבגני</div>
+<p class="p1-note">מילים עם מסגרת מקווקוות אפשר ללחוץ עליהן. לחצו על כל מילה שלדעתכם היא ישות (דבר שמקבל טבלה משלו), ואז על ״בדיקה״.</p>
+<div class="p1-spec">
+יבגני כתב: ״אני רוצה לשמור את
+<span class="p1-tag" data-w="c" data-t="e">הלקוחות</span> שלי ואת
+<span class="p1-tag" data-w="city" data-t="a">העיר</span> של כל אחד.
+כל <span class="p1-tag" data-w="c" data-t="e">לקוח</span>
+<span class="p1-tag" data-w="do" data-t="v">מבצע</span>
+<span class="p1-tag" data-w="o" data-t="e">הזמנה</span>.
+כל <span class="p1-tag" data-w="o" data-t="e">הזמנה</span> מתבצעת דרך
+<span class="p1-tag" data-w="ch" data-t="a">ערוץ</span> אחד: אפליקציה, טלפון או אולם.
+<span class="p1-tag" data-w="o" data-t="e">הזמנה</span>
+<span class="p1-tag" data-w="has" data-t="v">כוללת</span> כמה
+<span class="p1-tag" data-w="d" data-t="e">מנות</span>, ולכל
+<span class="p1-tag" data-w="d" data-t="e">מנה</span> יש
+<span class="p1-tag" data-w="p" data-t="a">מחיר</span> ו<span class="p1-tag" data-w="cat" data-t="a">קטגוריה</span>.
+<span class="p1-tag" data-w="o" data-t="e">הזמנה</span> למשלוח
+<span class="p1-tag" data-w="del" data-t="v">נמסרת</span> על ידי
+<span class="p1-tag" data-w="k" data-t="e">שליח</span> שיש לו
+<span class="p1-tag" data-w="veh" data-t="a">כלי רכב</span>.״
+</div>
+<div class="p1-row"><button type="button" class="btn" data-k="check">בדיקה</button></div>
+<div class="out" data-o="out">בחרו מילים ולחצו ״בדיקה״.</div>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p1-sim-nouns"]'); if(!box) return;
+const out=FL.$('[data-o=out]',box); const tags=FL.$$('.p1-tag',box);
+const EXP={a:'תכונה: בתכנון הזה היא תהיה עמודה בתוך טבלה. אם יש לה תכונות משלה (למשל ערוץ עם עמלה), אפשר להפוך אותה לטבלה.',v:'פועל: הוא מתאר קשר בין שתי ישויות. הוא יהפוך למפתח זר או לטבלת קישור, לא לטבלה.'};
+box.addEventListener('click',function(e){
+ const t=e.target.closest('.p1-tag'); if(t){ const on=!t.classList.contains('sel'); tags.forEach(function(x){ if(x.dataset.w===t.dataset.w){ x.classList.toggle('sel',on); x.classList.remove('good','bad','miss'); } }); return; }
+ if(!e.target.closest('[data-k=check]')) return;
+ const seen={}; let good=0,bad=[],miss=0; const eWords={};
+ tags.forEach(function(x){ const w=x.dataset.w, on=x.classList.contains('sel'), ent=x.dataset.t==='e'; x.classList.remove('good','bad','miss');
+  if(ent) eWords[w]=1; if(on&&ent){ x.classList.add('good'); if(!seen[w]){ seen[w]=1; good++; } } else if(on&&!ent){ x.classList.add('bad'); bad.push(x); } else if(!on&&ent){ x.classList.add('miss'); } });
+ const total=Object.keys(eWords).length; let h='<b>'+good+' מתוך '+total+' ישויות סומנו נכון.</b>';
+ if(bad.length){ h+='<ul>'+bad.map(function(x){return '<li>״'+FL.esc(x.textContent)+'״: '+EXP[x.dataset.t]+'</li>';}).join('')+'</ul>'; }
+ if(good<total) h+='<p>במסגרת תכלת: ישויות שפספסתם.</p>';
+ if(good===total&&!bad.length){ h+='<p>מצאתם ארבע ישויות: לקוח, הזמנה, מנה ושליח. חמישית, פריט הזמנה, לא כתובה במשפט. היא נולדת מהקשר בין הזמנה למנה, ועוד מעט נפגוש אותה.</p>'; FL.done('p1-sim-nouns'); }
+ out.innerHTML=h; });
+});})();</script>
+
+<h3>שלושה סוגי קשרים</h3>
+<p>אחרי שמצאנו ישויות, שואלים על כל זוג: כמה מכל צד יכולים להתחבר? התשובה קובעת איך בונים את הטבלאות.</p>
+<div class="defline"><b>אחד לרבים (1:N):</b> שורה אחת בצד אחד מתחברת להרבה שורות בצד השני, וכל שורה בצד השני שייכת לשורה אחת בלבד. דוגמה: דנה לוי (לקוחה 1) הזמינה 6 פעמים, וכל הזמנה שייכת רק לדנה. המפתח הזר יושב בצד של ״הרבים״: <code>orders.customer_id</code>.</div>
+<div class="defline"><b>רבים לרבים (N:M):</b> שורה בצד אחד מתחברת להרבה בצד השני, וגם להפך. דוגמה: הזמנה כוללת כמה מנות, ומנה אחת (סלמון בתנור) הופיעה ב-30 הזמנות שונות. פותרים את זה עם <dfn data-d="טבלה ששורה בה מחברת שורה אחת מטבלה אחת עם שורה אחת מטבלה אחרת. היא מפרקת קשר של רבים לרבים לשני קשרים של אחד לרבים.">טבלת קישור</dfn>: <code>order_items</code>, שכל שורה בה אומרת ״בהזמנה 2 יש 2 יחידות ממנה 5״. המפתח שלה הוא צירוף של שתי עמודות (<dfn data-d="מפתח ראשי שמורכב מכמה עמודות ביחד. הצירוף ייחודי, אבל כל עמודה לבד יכולה לחזור. דוגמה: הצירוף (הזמנה 2, מנה 5) מופיע פעם אחת.">מפתח מורכב</dfn>).</div>
+<div class="defline"><b>אחד לאחד (1:1):</b> לכל שורה בצד אחד יש בדיוק שורה אחת בצד השני. דוגמה: לקוח ופרטי תשלום שנשמרים בטבלה נפרדת, כדי לתת לכל אחת הרשאה אחרת. זה קשר נדיר, ובדרך כלל אפשר פשוט לאחד את הטבלאות.</div>
+
+<div class="anim" data-id="p1-anim-erd" data-auto="1" data-speed="3600">
+<div class="stage"><svg viewBox="0 0 800 450" role="img" aria-label="תרשים ישויות וקשרים של מסעדת יבגני" font-family="Heebo,Arial,sans-serif">
+<g data-s="1">
+<rect x="560" y="10" width="220" height="114" rx="10" fill="#fff" stroke="#4f46e5" stroke-width="2.5"/>
+<path d="M560 20 a10 10 0 0 1 10 -10 h200 a10 10 0 0 1 10 10 v16 h-220 z" fill="#4f46e5"/>
+<text x="670.0" y="29" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">customers</text>
+<text x="570" y="52" font-size="12" font-weight="900" fill="#b91c1c">PK</text>
+<text x="598" y="52" font-size="14" fill="#0f172a">id</text>
+<text x="598" y="74" font-size="14" fill="#0f172a">name</text>
+<text x="598" y="96" font-size="14" fill="#0f172a">city</text>
+<text x="598" y="118" font-size="14" fill="#0f172a">email</text>
+</g>
+<g data-s="1">
+<rect x="290" y="150" width="220" height="136" rx="10" fill="#fff" stroke="#0e1b2e" stroke-width="2.5"/>
+<path d="M290 160 a10 10 0 0 1 10 -10 h200 a10 10 0 0 1 10 10 v16 h-220 z" fill="#0e1b2e"/>
+<text x="400.0" y="169" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">orders</text>
+<text x="300" y="192" font-size="12" font-weight="900" fill="#b91c1c">PK</text>
+<text x="328" y="192" font-size="14" fill="#0f172a">id</text>
+<text x="300" y="214" font-size="12" font-weight="900" fill="#7c3aed">FK</text>
+<text x="328" y="214" font-size="14" fill="#0f172a">customer_id</text>
+<text x="300" y="236" font-size="12" font-weight="900" fill="#7c3aed">FK</text>
+<text x="328" y="236" font-size="14" fill="#0f172a">courier_id</text>
+<text x="328" y="258" font-size="14" fill="#0f172a">order_ts</text>
+<text x="328" y="280" font-size="14" fill="#0f172a">channel</text>
+</g>
+<g data-s="1"><path d="M560 66 C530 66 530 180 510 180" fill="none" stroke="#475569" stroke-width="2.5"/><text x="548" y="56" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">1</text><text x="524" y="172" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">N</text></g>
+<g data-s="2">
+<rect x="20" y="10" width="220" height="92" rx="10" fill="#fff" stroke="#14b8a6" stroke-width="2.5"/>
+<path d="M20 20 a10 10 0 0 1 10 -10 h200 a10 10 0 0 1 10 10 v16 h-220 z" fill="#14b8a6"/>
+<text x="130.0" y="29" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">couriers</text>
+<text x="30" y="52" font-size="12" font-weight="900" fill="#b91c1c">PK</text>
+<text x="58" y="52" font-size="14" fill="#0f172a">id</text>
+<text x="58" y="74" font-size="14" fill="#0f172a">name</text>
+<text x="58" y="96" font-size="14" fill="#0f172a">vehicle</text>
+</g>
+<g data-s="2"><path d="M240 50 C270 50 270 175 290 175" fill="none" stroke="#475569" stroke-width="2.5"/><text x="252" y="42" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">1</text><text x="274" y="168" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">N</text></g>
+<g data-s="3">
+<rect x="560" y="330" width="220" height="114" rx="10" fill="#fff" stroke="#d97706" stroke-width="2.5"/>
+<path d="M560 340 a10 10 0 0 1 10 -10 h200 a10 10 0 0 1 10 10 v16 h-220 z" fill="#d97706"/>
+<text x="670.0" y="349" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">dishes</text>
+<text x="570" y="372" font-size="12" font-weight="900" fill="#b91c1c">PK</text>
+<text x="598" y="372" font-size="14" fill="#0f172a">id</text>
+<text x="598" y="394" font-size="14" fill="#0f172a">name</text>
+<text x="598" y="416" font-size="14" fill="#0f172a">category</text>
+<text x="598" y="438" font-size="14" fill="#0f172a">price</text>
+</g>
+<g data-only="3"><path d="M510 272 L610 330" fill="none" stroke="#ef4444" stroke-width="3" stroke-dasharray="7 6"/><text x="590" y="296" text-anchor="middle" font-size="15" font-weight="800" fill="#dc2626">N : M ?</text></g>
+<g data-s="4">
+<rect x="290" y="330" width="220" height="92" rx="10" fill="#fff" stroke="#7c3aed" stroke-width="2.5"/>
+<path d="M290 340 a10 10 0 0 1 10 -10 h200 a10 10 0 0 1 10 10 v16 h-220 z" fill="#7c3aed"/>
+<text x="400.0" y="349" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">order_items</text>
+<text x="300" y="372" font-size="12" font-weight="900" fill="#7c3aed">FK</text>
+<text x="328" y="372" font-size="14" fill="#0f172a">order_id</text>
+<text x="300" y="394" font-size="12" font-weight="900" fill="#7c3aed">FK</text>
+<text x="328" y="394" font-size="14" fill="#0f172a">dish_id</text>
+<text x="328" y="416" font-size="14" fill="#0f172a">qty</text>
+</g>
+<g data-s="4"><text x="400" y="440" text-anchor="middle" font-size="13" font-weight="700" fill="#6d28d9">PK מורכב: order_id + dish_id</text><path d="M400 286 L400 330" fill="none" stroke="#475569" stroke-width="2.5"/><text x="412" y="304" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">1</text><text x="412" y="324" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">N</text><path d="M560 380 L510 380" fill="none" stroke="#475569" stroke-width="2.5"/><text x="548" y="372" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">1</text><text x="522" y="372" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">N</text></g>
+<g data-s="5">
+<rect x="20" y="190" width="220" height="92" rx="10" fill="#fff" stroke="#64748b" stroke-width="2.5"/>
+<path d="M20 200 a10 10 0 0 1 10 -10 h200 a10 10 0 0 1 10 10 v16 h-220 z" fill="#64748b"/>
+<text x="130.0" y="209" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">app_events</text>
+<text x="30" y="232" font-size="12" font-weight="900" fill="#b91c1c">PK</text>
+<text x="58" y="232" font-size="14" fill="#0f172a">id</text>
+<text x="30" y="254" font-size="12" font-weight="900" fill="#7c3aed">FK</text>
+<text x="58" y="254" font-size="14" fill="#0f172a">order_id</text>
+<text x="58" y="276" font-size="14" fill="#0f172a">payload</text>
+</g>
+<g data-s="5"><path d="M240 235 L290 235" fill="none" stroke="#475569" stroke-width="2.5"/><text x="252" y="226" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">N</text><text x="276" y="226" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">1</text></g>
+<g data-s="6" data-pulse><rect x="20" y="330" width="230" height="100" rx="12" fill="#fffbeb" stroke="#d8b862" stroke-width="2"/><text x="36" y="360" font-size="14" font-weight="900" fill="#b91c1c">PK</text><text x="66" y="360" font-size="14" fill="#0f172a">מפתח ראשי</text><text x="36" y="386" font-size="14" font-weight="900" fill="#7c3aed">FK</text><text x="66" y="386" font-size="14" fill="#0f172a">מפתח זר (מצביע)</text><text x="36" y="412" font-size="14" font-weight="900" fill="#334155">1 : N</text><text x="86" y="412" font-size="14" fill="#0f172a">אחד לרבים</text></g>
+</svg></div>
+<ol class="caps">
+<li>שתי ישויות ראשונות: לקוחות והזמנות. אחד לרבים: לקוח אחד, הרבה הזמנות. הקו נגמר ב-N בצד של ההזמנות.</li>
+<li>שליחים: גם כאן אחד לרבים. שליח אחד מוסר הרבה הזמנות, והזמנה אחת נמסרת על ידי שליח אחד.</li>
+<li>מנות. בין הזמנה למנה הקשר הוא רבים לרבים. אי אפשר לשמור אותו בעמודה אחת בטבלה.</li>
+<li>הפתרון: טבלת קישור order_items. כל שורה בה מחברת הזמנה למנה וקובעת כמות, ושני קשרים של אחד לרבים מחליפים את הקשר הבעייתי.</li>
+<li>אירועי האפליקציה (app_events): לכל הזמנה באפליקציה יש אירועים, שוב אחד לרבים.</li>
+<li>זה התרשים המלא. אדום הוא מפתח ראשי, סגול הוא מפתח זר, ו-N הוא ״הרבים״.</li>
+</ol>
+</div>
+<p class="p1-swipe">אפשר להחליק הצידה כדי לראות את כל האיור.</p>
+
+<div class="lab" data-id="p1-lab-structure" data-title="לקרוא את המבנה של טבלה">
+<div class="q-src">התרשים אומר שבטבלת <code>orders</code> יש מפתחות זרים. הריצו את השאילתה כמו שהיא וראו את העמודות והסוגים. אחר כך שנו אותה כך שתחזיר רק מספר אחד: כמה עמודות יש בטבלה.</div>
+<pre class="start">SELECT name, type
+FROM pragma_table_info('orders')</pre>
+<pre class="check">SELECT COUNT(*) FROM pragma_table_info('orders')</pre>
+<pre class="solution">SELECT COUNT(*)
+FROM pragma_table_info('orders')</pre>
+<ol class="hints"><li>כדי לספור שורות משתמשים ב-<code>COUNT(*)</code> במקום ברשימת העמודות.</li></ol>
+<div class="why-src">יש תשע עמודות. בתרשים הצגנו רק את העמודות החשובות לקשרים. שימו לב ש-<code>customer_id</code> ו-<code>courier_id</code> הן עמודות רגילות מסוג INTEGER: ההצבעה היא הסכם בינינו, אלא אם מצהירים על מפתח זר. בסעיף הבא נצהיר עליו בענן.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-1n" data-title="אחד לרבים: כמה הזמנות ללקוחה 1">
+<div class="q-src">כמה הזמנות שייכות ללקוחה מספר 1 (דנה לוי)? שאלו את טבלת ההזמנות לפי העמודה שמצביעה.</div>
+<pre class="start">SELECT COUNT(*)
+FROM orders
+WHERE -- condition</pre>
+<pre class="check">SELECT COUNT(*) FROM orders WHERE customer_id = 1</pre>
+<pre class="solution">SELECT COUNT(*)
+FROM orders
+WHERE customer_id = 1</pre>
+<ol class="hints"><li>ההזמנות מצביעות על הלקוחה בעמודה <code>customer_id</code>.</li></ol>
+<div class="why-src">יצא 6. לקוחה אחת ו-6 הזמנות: זה אחד לרבים, והמפתח הזר יושב בטבלה של ״הרבים״.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-junction" data-title="טבלת קישור בפעולה" data-ordered="1">
+<div class="q-src">באילו הזמנות הוזמן סלמון בתנור (מנה 5), ובאיזו כמות? החזירו <code>order_id</code> ו-<code>qty</code> מתוך <code>order_items</code>, ממוינות לפי מספר הזמנה.</div>
+<pre class="start">SELECT order_id, qty
+FROM order_items
+WHERE -- dish 5
+ORDER BY order_id</pre>
+<pre class="check">SELECT order_id, qty FROM order_items WHERE dish_id = 5 ORDER BY order_id</pre>
+<pre class="solution">SELECT order_id, qty
+FROM order_items
+WHERE dish_id = 5
+ORDER BY order_id</pre>
+<ol class="hints"><li>מנה 5 מזוהה בעמודה <code>dish_id</code>.</li></ol>
+<div class="why-src">30 שורות: אותה מנה בהרבה הזמנות. וגם בכל הזמנה יש כמה שורות, אחת לכל מנה. טבלת הקישור היא המקום היחיד ששני הכיוונים נפגשים בו.</div>
+</div>
+
+<h3>ממה שהלקוח עושה לטבלאות</h3>
+<p>בשיעור על <a href="../lec4part1-11.5.2026.html">SQL ו-Use Case</a> ראינו שכל שאילתה עונה על משהו שמשתמש עושה במערכת. עכשיו הכיוון ההפוך: מסתכלים מה הלקוח עושה, וכל צעד דורש נתון ששומרים.</p>
+<div class="defline"><b>תרחיש שימוש (Use Case):</b> תיאור של מה משתמש עושה במערכת, צעד אחרי צעד, ומה אמור לקרות. דוגמה: ״הלקוח בוחר מנות, לוחץ הזמן, והמערכת שומרת את ההזמנה ומציגה אישור.״</div>
+
+<div class="cols2">
+<div>
+<div class="mk mk-phone rtl"><div class="notch"></div>
+<div class="mk-body">
+<div style="font-weight:800;font-size:1.05rem;margin-bottom:6px">🍽️ המסעדה של יבגני</div>
+<div style="display:flex;justify-content:space-between;border-bottom:1px solid #e2e8f0;padding:5px 0"><span>סלמון בתנור</span><b>₪89</b></div>
+<div style="display:flex;justify-content:space-between;border-bottom:1px solid #e2e8f0;padding:5px 0"><span>לימונדה</span><b>₪18</b></div>
+<div style="display:flex;justify-content:space-between;border-bottom:1px solid #e2e8f0;padding:5px 0"><span>טירמיסו</span><b>₪36</b></div>
+<div style="display:flex;justify-content:space-between;padding:8px 0;font-weight:800"><span>סך הכול</span><span>₪143</span></div>
+<div style="background:var(--primary);color:#fff;text-align:center;border-radius:12px;padding:8px;font-weight:800">הזמן</div>
+</div></div>
+<p class="p1-note" style="text-align:center">המחשה של מסך ההזמנה. <span class="n">89 + 18 + 36 = 143</span>.</p>
+</div>
+<div>
+<div class="flow"><span class="nd">תרחיש</span><span class="ar">←</span><span class="nd g">טבלאות</span><span class="ar">←</span><span class="nd a">SQL</span></div>
+<div class="tw"><table class="tbl">
+<tr><th>צעד בתרחיש</th><th>מה צריך במסד</th></tr>
+<tr><td>הלקוח רשום</td><td>טבלת <code>customers</code> עם מפתח ראשי</td></tr>
+<tr><td>הוא בוחר מנה מהתפריט</td><td>טבלת <code>dishes</code> עם מחיר</td></tr>
+<tr><td>ההזמנה נשמרת עם זמן וערוץ</td><td><code>orders</code> עם <code>order_ts</code> ו-<code>channel</code></td></tr>
+<tr><td>כמה מכל מנה</td><td><code>order_items</code> עם <code>qty</code></td></tr>
+<tr><td>למשלוח: מי השליח</td><td><code>courier_id</code> בהזמנה</td></tr>
+</table></div>
+</div>
+</div>
+<p>באותה שיטה בנינו גם את אפליקציית ההיכרויות MatchMe: משפטי אפיון, ישויות, קשרים ותרשים. אפשר לראות אותה כדוגמה שנייה בהרצאות <a href="../lec5.html">5</a> ו-<a href="../lec6.html">6</a> (הדף של הרצאה 6 באנגלית).</p>
+
+<div class="box try" data-id="p1-try-erd">
+<ol>
+<li>היכנסו לאחד הכלים. ב-dbdiagram.io אפשר בדרך כלל להתחיל לצייר בלי להירשם. אם הוא מבקש חשבון, אפשר לפתוח אחד חינמי.</li>
+<li>הדביקו בעורך הטקסט את הקוד שלמטה. זו ההגדרה של התרשים שלנו בשפה שנקראת DBML. התרשים אמור להופיע ליד הקוד, עם קווים בין הטבלאות.</li>
+<li>הזיזו את הקופסאות, וזהו את ארבעת הקשרים של אחד לרבים ואת טבלת הקישור.</li>
+<li>הוסיפו טבלה חדשה, <code>customer_addresses</code>, ושורה בה שמצביעה על הלקוח. ננסה לענות: איזה סוג קשר זה?</li>
+<li>חלופה: ב-diagrams.net אפשר לצייר את אותו תרשים ביד, מספריית הצורות Entity Relation.</li>
+</ol>
+<pre class="code" data-lang="dbml">Table customers {
+  id integer [pk]
+  name text
+  city text
+  email text
+}
+Table couriers {
+  id integer [pk]
+  name text
+  vehicle text
+}
+Table dishes {
+  id integer [pk]
+  name text
+  category text
+  price decimal
+}
+Table orders {
+  id integer [pk]
+  customer_id integer [ref: &gt; customers.id]
+  courier_id integer [ref: &gt; couriers.id]
+  order_ts timestamp
+  channel text
+}
+Table order_items {
+  order_id integer [ref: &gt; orders.id]
+  dish_id integer [ref: &gt; dishes.id]
+  qty integer
+  indexes { (order_id, dish_id) [pk] }
+}</pre>
+<p class="tools"><a class="tool" href="https://dbdiagram.io" target="_blank" rel="noopener">dbdiagram.io</a><a class="tool" href="https://app.diagrams.net" target="_blank" rel="noopener">diagrams.net</a></p>
+<p class="p1-note">ב-DBML החץ <code>&gt;</code> בתוך <code>ref</code> אומר ״רבים לאחד״. אם הכלי מתלונן על תחביר, הדביקו טבלה אחת בכל פעם.</p>
+</div>
+
+<div class="box meaning"><p>תרשים הישויות הוא ההסכם בין העסק למפתחים. עוד לפני שנכתבה שורת קוד, יבגני ודנה יכולים להצביע על ציור ולהסכים: ״כן, לקוח אחד יכול להזמין הרבה פעמים״ או ״לא, הזמנה לא מגיעה משני שליחים״. לשנות תרשים זה למחוק ולצייר מחדש. לשנות טבלאות שכבר מלאות בנתונים זה הרבה יותר יקר.</p></div>
+
+<div class="box real"><p>בפרויקטי נתונים בדרך כלל מציירים תרשים ישויות לפני שבונים, והוא משמש אחר כך גם כתיעוד לצוות. כלים כמו dbdiagram.io ו-diagrams.net מאפשרים לצייר אותו, וב-Supabase יש תצוגה שמציירת את התרשים מתוך הטבלאות הקיימות (נפגוש אותה בסעיף הבא).</p></div>
+
+<div class="quiz" data-id="p1-q-relations" data-a="3"><p class="qq">מה הקשר בין הזמנות למנות, ואיך פותרים אותו?</p>
+<button type="button" class="opt">אחד לרבים: מוסיפים עמודה <code>dish_id</code> לטבלת ההזמנות</button>
+<button type="button" class="opt">אחד לאחד: מאחדים את ההזמנות והמנות לטבלה אחת</button>
+<button type="button" class="opt">רבים לרבים: מוסיפים טבלת קישור עם <code>order_id</code> ו-<code>dish_id</code></button>
+<div class="why">הזמנה כוללת כמה מנות, ומנה מופיעה בהרבה הזמנות, ולכן הקשר הוא רבים לרבים. עמודת <code>dish_id</code> בהזמנה הייתה מאפשרת רק מנה אחת בכל הזמנה. איחוד הטבלאות מחזיר אותנו לגיליון הענק.</div></div>
+
+<div class="box think" data-id="p1-th-address"><p>ללקוח של יבגני יש כמה מספרי טלפון: בית, נייד ועבודה. איך משנים את התרשים?</p>
+<div class="ans">מוסיפים טבלה <code>customer_phones</code> עם מפתח ראשי משלה ומפתח זר <code>customer_id</code>. לקוח אחד, הרבה טלפונים: אחד לרבים. אם נוסיף עמודות ״טלפון 1״ ו״טלפון 2״ לטבלת הלקוחות, כל לקוח שיבקש טלפון שלישי יחייב שינוי במבנה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> סימולציית ״מצאו את שמות העצם״ מתאימה לעבודה בזוגות. אחרי ההנפשה לבקש מהכיתה לצייר על הלוח את הקשר בין הזמנה למנה לפני שחושפים את טבלת הקישור. את הדוגמה של MatchMe רק להזכיר, בלי להיכנס אליה.</div>
+</section>
+
+<section class="sec" id="s1-7" data-t="בונים בענן">
+<div class="sec-h"><div class="sec-n">7</div><h2>בונים בענן: Supabase ו-PostgreSQL</h2></div>
+<p class="lead">יבגני רוצה שכל העובדים יתחברו מכל מכשיר, ושהנתונים לא יישארו על מחשב אחד. עד עכשיו עבדנו עם מסד שיושב בתוך הדפדפן. עכשיו נעביר את הטבלאות שלו לשירות ענן אמיתי.</p>
+<p>ככה בדרך כלל בונים: מאפיינים, מציירים תרשים, מקימים מסד בענן, טוענים נתונים, ובסוף מוציאים דוחות. את שני הצעדים הראשונים כבר עשינו. עכשיו הצעדים השלישי והרביעי. מי שרוצה את המדריך המלא של Supabase צעד אחרי צעד, הוא ב<a href="../lec6.html">הרצאה 6</a> (הדף באנגלית).</p>
+
+<div class="defline"><b>מסד נתונים מנוהל בענן:</b> מסד שרץ אצל ספק, והספק דואג לשרתים, לגיבויים ולעדכונים. דוגמה: ב-Supabase פותחים פרויקט חדש ומקבלים מסד PostgreSQL שאפשר להריץ בו SQL מיד, בלי להתקין כלום.</div>
+
+<div class="box try" data-id="p1-try-supabase">
+<ol>
+<li>היכנסו ל-Supabase והתחברו עם GitHub או עם אימייל, לפי האפשרויות שהדף מציע. לפני שמתחילים, בדקו באתר מה כוללת התוכנית החינמית היום.</li>
+<li>צרו פרויקט חדש (<code>New project</code>): שם כמו <code>yevgeni</code>, ואזור קרוב לישראל (למשל פרנקפורט). תתבקשו ליצור סיסמה למסד. שמרו אותה במקום בטוח, כי אי אפשר לשחזר אותה, רק לאפס. אל תדביקו אותה בצ׳אט או בפרומפט.</li>
+<li>בתפריט הצד פתחו <code>SQL Editor</code> ויצרו שאילתה חדשה.</li>
+<li>הורידו את הקובץ <a href="data/yevgeni-postgres.sql" download>yevgeni-postgres.sql</a> שמצורף לשיעור, פתחו אותו בעורך טקסט, העתיקו את כולו, הדביקו בעורך של Supabase והריצו (<code>Run</code>).</li>
+<li>עברו ל-<code>Table Editor</code>, פתחו את <code>orders</code> וודאו שיש 87 שורות. פתחו גם את <code>customers</code> וחפשו את גיל נחום, שאין לו עיר.</li>
+<li>אם קיבלתם <code>relation already exists</code>, הרצתם את הקובץ פעמיים. הריצו את פקודת הניקוי שלמטה, ואז את הקובץ מחדש. הפקודה מוחקת את שש הטבלאות, אז הריצו אותה רק בפרויקט הזה. ייתכן שהעורך יבקש אישור לפקודה שמוחקת. אשרו, זה הפרויקט שלכם.</li>
+<li>הנתונים מומצאים, ולכן אין כאן בעיה. בנתונים אמיתיים מפעילים הגנה על הטבלה מיד אחרי שיוצרים אותה (עוד מעט נראה איך).</li>
+</ol>
+<pre class="code" data-lang="sql">DROP TABLE IF EXISTS app_events, order_items, orders, couriers, dishes, customers CASCADE;</pre>
+<p class="tools"><a class="tool" href="https://supabase.com" target="_blank" rel="noopener">Supabase</a></p>
+</div>
+
+<p>ככה זה אמור להיראות. שימו לב לשני אזורים: רשימת הטבלאות משמאל, והנתונים באמצע.</p>
+<div class="mk">
+<div class="mk-bar"><i></i><i></i><i></i><span class="url">Table Editor · orders</span></div>
+<div class="mk-body" style="padding:0;display:grid;grid-template-columns:150px 1fr">
+<div style="background:#f1f5f9;padding:10px;border-inline-end:1px solid #e2e8f0;font-size:.82rem">
+<div style="font-weight:800;color:#64748b;margin-bottom:6px;font-size:.72rem">TABLES</div>
+<div style="padding:3px 6px">app_events</div><div style="padding:3px 6px">couriers</div><div style="padding:3px 6px">customers</div><div style="padding:3px 6px">dishes</div><div style="padding:3px 6px;background:#d1fae5;border-radius:6px;font-weight:700">orders</div><div style="padding:3px 6px">order_items</div>
+</div>
+<div style="min-width:0">
+<div style="display:flex;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid #e2e8f0;font-size:.8rem"><span style="background:#10b981;color:#fff;border-radius:6px;padding:2px 10px;font-weight:700">Insert row</span><span style="border:1px solid #cbd5e1;border-radius:6px;padding:2px 10px">Filter</span><span style="margin-inline-start:auto;color:#64748b">87 rows</span></div>
+<div class="tw" style="margin:0"><table class="p1-sheet" style="font-size:.78rem">
+<tr><th>id</th><th>customer_id</th><th>courier_id</th><th>order_ts</th><th>channel</th><th>status</th></tr>
+<tr><td>1</td><td>13</td><td>1</td><td><bdi dir="ltr">2026-03-02</bdi> 19:20</td><td>app</td><td>delivered</td></tr>
+<tr><td>2</td><td><i style="color:#94a3b8">NULL</i></td><td><i style="color:#94a3b8">NULL</i></td><td><bdi dir="ltr">2026-03-04</bdi> 13:05</td><td>walk-in</td><td>delivered</td></tr>
+<tr><td>3</td><td>2</td><td>1</td><td><bdi dir="ltr">2026-03-05</bdi> 19:55</td><td>app</td><td>delivered</td></tr>
+<tr><td>4</td><td>11</td><td>3</td><td><bdi dir="ltr">2026-03-06</bdi> 13:05</td><td>app</td><td>delivered</td></tr>
+</table></div>
+</div></div></div>
+<p class="p1-note">הדמיה סכמטית של עורך הטבלאות. הממשק האמיתי משתנה בין גרסאות, והמבנה הכללי (רשימת טבלאות, נתונים, ספירת שורות) נשאר דומה.</p>
+
+<div class="mk mk-term">
+<div class="mk-bar"><i></i><i></i><i></i><span class="url" style="background:#0f172a;color:#94a3b8">SQL Editor · הדמיה סכמטית</span></div>
+<div class="mk-body"><span class="p">1</span>  CREATE TABLE customers (id integer PRIMARY KEY, ...);
+<span class="p">2</span>  CREATE TABLE dishes (...);
+<span class="p">3</span>  INSERT INTO customers (id, name, city, ...) VALUES (1, 'דנה לוי', ...);
+<span class="p">4</span>  ...
+
+<span class="p">Results</span>  Success. No rows returned</div>
+</div>
+<p class="p1-note">ההודעה ״No rows returned״ היא הצלחה: פקודות שיוצרות טבלה או מכניסות שורות לא מחזירות טבלה.</p>
+
+<h3>מסד בענן צריך הרשאות</h3>
+<div class="defline"><b>RLS (אבטחה ברמת שורה):</b> כלל בתוך מסד הנתונים שקובע איזו שורה כל משתמש רשאי לראות או לשנות. דוגמה: לקוח שמחובר לאפליקציה יראה רק את ההזמנות שלו, ולא את ההזמנות של אחרים.</div>
+<pre class="code" data-lang="sql">ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+-- after enabling it, with no policy, a regular user sees no rows
+-- then add a policy: a row is visible only to the customer it belongs to</pre>
+<p>בשירותים שחושפים טבלאות דרך API, כמו Supabase, טבלה בלי הגנה היא טבלה שכל מי שמחזיק במפתח הציבורי של הפרויקט יכול לנסות לקרוא, ולפעמים גם לכתוב. ייתכן שטבלה שנוצרה ב-SQL Editor לא מוגנת כברירת מחדל, ולכן בודקים תמיד ב-Table Editor אם ההגנה פעילה עליה. בחלק 3 נראה גם איך שומרים מפתחות בצד השרת.</p>
+
+<div class="quiz" data-id="p1-q-rls" data-a="1"><p class="qq">מפעילים RLS על טבלת ההזמנות ועדיין לא הגדירו אף כלל. מה יקרה למשתמש רגיל (שהוא לא הבעלים של הטבלה) שמנסה לקרוא אותה?</p>
+<button type="button" class="opt">הוא לא יראה שום שורה. ברירת המחדל חוסמת, עד שמגדירים כלל שמתיר</button>
+<button type="button" class="opt">הוא יראה את כל השורות, כי עדיין לא אסרו עליו כלום</button>
+<button type="button" class="opt">הטבלה תימחק, כי היא נשארה בלי כללי הרשאה</button>
+<div class="why">ככה PostgreSQL מתנהג כשמפעילים RLS: מה שלא הותר במפורש, אסור. לכן כלל ששכחו להגדיר חוסם ולא חושף. הסכנה ההפוכה היא לשכוח להפעיל RLS בכלל.</div></div>
+
+<h3>הנתונים עצמם: לא מקלידים</h3>
+<p>הקובץ שהרצתם מכיל 379 פקודות INSERT. אף אחד לא הקליד אותן, הן נוצרו אוטומטית מתוך הנתונים. אילו יבגני היה צריך להקליד אותן ביד, הוא היה מוותר באמצע.</p>
+<div class="defline"><b>ייבוא נתונים:</b> העברה של נתונים מקובץ או ממערכת אחרת לטבלאות בפעולה אחת, במקום להקליד שורה אחרי שורה. דוגמה: הקובץ <code>orders.csv</code> נטען לטבלת ההזמנות בפעולה אחת, וכלי הייבוא בודק את הסוגים.</div>
+<div class="defline"><b>CSV:</b> קובץ טקסט פשוט, שבו כל שורה היא שורה בטבלה והערכים מופרדים בפסיקים. דוגמה: <code>14,גיל נחום,,2026-04-11,gil.nahum@example.com</code> היא שורת לקוח, ובין שני הפסיקים אחרי השם אין עיר.</div>
+<p>יש שלוש דרכים להכניס נתונים. אחת מהן היא דרך האפליקציה: הלקוח ממלא טופס, ו<dfn data-d="API הוא הדרך המסודרת שבה תוכנה אחת מבקשת משהו מתוכנה אחרת. דוגמה: האפליקציה שולחת לשרת ״הזמנה חדשה״, והשרת מדבר עם המסד.">ה-API</dfn> של השרת בונה פקודת INSERT ושולח אותה למסד.</p>
+
+<div class="anim" data-id="p1-anim-load" data-auto="1" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="שלוש דרכים להכניס נתונים אל מסד נתונים" font-family="Heebo,Arial,sans-serif">
+<defs><marker id="p1l-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<g>
+<path d="M20 100 v140 a70 20 0 0 0 140 0 v-140" fill="#e0f2fe" stroke="#0369a1" stroke-width="3"/><ellipse cx="90" cy="100" rx="70" ry="20" fill="#bae6fd" stroke="#0369a1" stroke-width="3"/>
+<text x="90" y="178" text-anchor="middle" font-size="17" font-weight="800" fill="#0c4a6e">מסד נתונים</text><text x="90" y="202" text-anchor="middle" font-size="14" fill="#0c4a6e">טבלת orders</text>
+</g>
+<g data-s="1">
+<rect x="590" y="34" width="190" height="82" rx="12" fill="#fff" stroke="#ef4444" stroke-width="2.5"/>
+<text x="685" y="58" text-anchor="middle" font-size="17" font-weight="800" fill="#991b1b">⌨️ הקלדה ידנית</text>
+<text x="685" y="82" text-anchor="middle" font-size="13" font-family="ui-monospace,Menlo,monospace" fill="#475569">INSERT INTO orders ...</text><text x="685" y="102" text-anchor="middle" font-size="13" font-family="ui-monospace,Menlo,monospace" fill="#475569">INSERT INTO orders ...</text>
+<path d="M590 76 L175 128" stroke="#ef4444" stroke-width="3" fill="none" stroke-dasharray="6 5" marker-end="url(#p1l-ar)"/>
+<text x="380" y="82" text-anchor="middle" font-size="15" font-weight="700" fill="#b91c1c">שורה אחרי שורה. איטי, ויש טעויות</text>
+</g>
+<g data-s="2">
+<rect x="590" y="132" width="190" height="66" rx="12" fill="#fff" stroke="#14b8a6" stroke-width="2.5"/>
+<text x="685" y="172" text-anchor="middle" font-size="17" font-weight="800" fill="#0f766e">📄 קובץ CSV</text>
+<path d="M590 165 L490 165" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#p1l-ar)"/>
+<rect x="340" y="135" width="150" height="60" rx="12" fill="#ccfbf1" stroke="#14b8a6" stroke-width="2.5"/><text x="415" y="172" text-anchor="middle" font-size="17" font-weight="800" fill="#0f766e">כלי ייבוא</text>
+<path d="M340 165 L175 165" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#p1l-ar)"/>
+</g>
+<g data-s="3">
+<rect x="590" y="232" width="190" height="66" rx="12" fill="#fff" stroke="#7c3aed" stroke-width="2.5"/>
+<text x="685" y="272" text-anchor="middle" font-size="17" font-weight="800" fill="#6d28d9">📱 טופס באפליקציה</text>
+<path d="M590 265 L490 265" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#p1l-ar)"/>
+<rect x="340" y="235" width="150" height="60" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2.5"/><text x="415" y="262" text-anchor="middle" font-size="17" font-weight="800" fill="#6d28d9">שרת (API)</text><text x="415" y="282" text-anchor="middle" font-size="13" fill="#6d28d9">בונה INSERT</text>
+<path d="M340 265 L172 200" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#p1l-ar)"/>
+</g>
+<g data-s="4" data-pulse><rect x="10" y="62" width="160" height="206" rx="16" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+</g>
+</svg></div>
+<ol class="caps">
+<li>דרך ראשונה: להקליד פקודות INSERT ביד. אפשר בשביל כמה שורות, אבל לא בשביל אלפים.</li>
+<li>דרך שנייה: לטעון קובץ CSV. כלי הייבוא קורא את הקובץ ובונה את השורות בעצמו.</li>
+<li>דרך שלישית: האפליקציה עצמה. הלקוח ממלא טופס, השרת (ה-API) בונה פקודת INSERT ושולח אותה למסד.</li>
+<li>בסוף הכול מגיע לאותה טבלה. הדרך נבחרת לפי הגודל והמקור.</li>
+</ol>
+</div>
+<p class="p1-swipe">אפשר להחליק הצידה כדי לראות את כל האיור.</p>
+
+<div class="sim" data-id="p1-sim-typing">
+<div class="sh">כמה עולה להקליד ביד</div>
+<p class="p1-note">זה חישוב פשוט, על הנחות שאתם בוחרים. אין כאן נתון מדוד. שנו לפחות שניים מהמשתנים.</p>
+<div class="p1-row">
+<label>מספר שורות: <select data-o="rows"><option value="87">87 (ההזמנות של יבגני)</option><option value="1000">1,000</option><option value="100000">100,000</option></select></label>
+<label>שניות להקלדת שורה: <input type="range" data-o="sec" min="5" max="60" step="5" value="20"> <b data-o="secv">20</b></label>
+<label>אחוז שורות עם טעות: <input type="range" data-o="err" min="0" max="5" step="0.5" value="1"> <b data-o="errv">1</b>%</label>
+</div>
+<div class="out" data-o="out"></div>
+</div>
+<script>(function(){FL.dom(function(){
+const box=FL.$('[data-id="p1-sim-typing"]'); if(!box) return;
+const r=FL.$('[data-o=rows]',box), s=FL.$('[data-o=sec]',box), e=FL.$('[data-o=err]',box), o=FL.$('[data-o=out]',box); const used={}; 
+function fmt(n){ return n.toLocaleString('he-IL',{maximumFractionDigits:1}); }
+function calc(){ const rows=+r.value, sec=+s.value, er=+e.value; FL.$('[data-o=secv]',box).textContent=sec; FL.$('[data-o=errv]',box).textContent=er;
+ const hrs=rows*sec/3600, days=hrs/8, bad=Math.round(rows*er/100*10)/10;
+ o.innerHTML='<div class="kpis"><div class="kpi"><b>'+fmt(hrs)+'</b><span>שעות הקלדה</span></div><div class="kpi a"><b>'+fmt(days)+'</b><span>ימי עבודה של 8 שעות</span></div><div class="kpi r"><b>'+fmt(bad)+'</b><span>שורות עם טעות צפויות</span></div><div class="kpi g"><b>1</b><span>פעולה בייבוא קובץ</span></div></div><p>בחרו 100,000 שורות ותראו מה קורה.</p>'; }
+[r,s,e].forEach(function(x,i){x.addEventListener('input',function(){ used[i]=1; calc(); if(Object.keys(used).length>=2) FL.done('p1-sim-typing'); });}); calc();
+});})();</script>
+
+<div class="box try" data-id="p1-try-csv">
+<ol>
+<li>הורידו את הקובץ <a href="data/customers.csv" download>customers.csv</a> (18 לקוחות).</li>
+<li>ב-Supabase, ב-<code>Table Editor</code>, צרו טבלה חדשה בשם <code>customers_csv</code>. בדקו אם בגרסה שלכם יש אפשרות לייבא נתונים מקובץ CSV בזמן יצירת הטבלה. אם אין, חפשו אותה בתפריט הטבלה.</li>
+<li>בחרו את הקובץ, ולפני האישור תסתכלו על העמודות והסוגים שהכלי הציע. האם <code>id</code> מספר? האם <code>joined</code> תאריך?</li>
+<li>אחרי הייבוא הריצו <code>SELECT COUNT(*) FROM customers_csv;</code> וודאו שיש 18 שורות.</li>
+<li>שימו לב: אם הכלי ניחש סוג לא מתאים (למשל תאריך כטקסט), זו בדיוק הטעות שראינו בסעיף על סוגי נתונים.</li>
+</ol>
+<p class="tools"><a class="tool" href="https://supabase.com" target="_blank" rel="noopener">Supabase</a></p>
+</div>
+
+<div class="box try" data-id="p1-try-fk">
+<ol>
+<li>ב-Supabase פתחו <code>Database</code> ואז <code>Schema Visualizer</code>. הטבלאות מופיעות בלי קווים ביניהן, כי עוד לא הגדרנו מפתחות זרים. הן ״צפות״ בלי קשר.</li>
+<li>ב-<code>SQL Editor</code> הריצו את הבלוק הראשון (ארבע פקודות חיבור). אחרי ההרצה רעננו את ה-Schema Visualizer וראו שהקווים הופיעו.</li>
+<li>עכשיו נסו לחבר גם את ההזמנות ללקוחות: הריצו את הבלוק השני. הוא ייכשל. קראו את הודעת השגיאה.</li>
+<li>מצאו איזו הזמנה גורמת לשגיאה, עם הבלוק השלישי. בחלק 4 נחזור לזה ונבין מה עושים.</li>
+</ol>
+<p class="p1-note">הריצו כל בלוק בנפרד. עורך ה-SQL מריץ את כל הטקסט כמקשה אחת, ושגיאה בסוף עלולה לבטל גם את הפקודות שלפניה.</p>
+<pre class="code" data-lang="sql">ALTER TABLE orders ADD CONSTRAINT orders_courier_fk FOREIGN KEY (courier_id) REFERENCES couriers(id);
+ALTER TABLE order_items ADD CONSTRAINT items_order_fk FOREIGN KEY (order_id) REFERENCES orders(id);
+ALTER TABLE order_items ADD CONSTRAINT items_dish_fk FOREIGN KEY (dish_id) REFERENCES dishes(id);
+ALTER TABLE app_events ADD CONSTRAINT events_order_fk FOREIGN KEY (order_id) REFERENCES orders(id);</pre>
+<pre class="code" data-lang="sql">ALTER TABLE orders ADD CONSTRAINT orders_customer_fk FOREIGN KEY (customer_id) REFERENCES customers(id);</pre>
+<pre class="code" data-lang="sql">SELECT id, customer_id FROM orders
+WHERE customer_id NOT IN (SELECT id FROM customers);</pre>
+<p class="p1-note">בבלוק השני ההודעה תכלול משהו כמו <code>Key (customer_id)=(99) is not present in table "customers"</code>. ככה PostgreSQL אומר: ״אין לקוח 99״.</p>
+<p class="tools"><a class="tool" href="https://supabase.com" target="_blank" rel="noopener">Supabase</a></p>
+</div>
+
+<div class="box try" data-id="p1-try-neon">
+<ol>
+<li>חלופה ל-Supabase: היכנסו ל-Neon, שגם הוא נותן PostgreSQL בענן, וצרו פרויקט חדש.</li>
+<li>פתחו את עורך ה-SQL שלו, הדביקו את אותו קובץ <code>yevgeni-postgres.sql</code> והריצו.</li>
+<li>הריצו <code>SELECT COUNT(*) FROM orders;</code> וודאו שיצא 87.</li>
+<li>הקובץ אמור לרוץ בלי שינוי, כי שני השירותים הם PostgreSQL. אם ההדבקה נכשלת, הריצו חלק מהפקודות בכל פעם.</li>
+</ol>
+<p class="tools"><a class="tool" href="https://neon.tech" target="_blank" rel="noopener">Neon</a><a class="tool" href="https://postgresql.org" target="_blank" rel="noopener">PostgreSQL</a></p>
+</div>
+
+<div class="p1-row"><span class="chip b">קבצי הנתונים של השיעור</span>
+<a class="tool" href="data/orders.csv" download>orders.csv</a><a class="tool" href="data/order_items.csv" download>order_items.csv</a><a class="tool" href="data/customers.csv" download>customers.csv</a><a class="tool" href="data/dishes.csv" download>dishes.csv</a><a class="tool" href="data/couriers.csv" download>couriers.csv</a><a class="tool" href="data/app_events.csv" download>app_events.csv</a></div>
+
+<div class="box meaning"><p>מסד בענן הופך את המערכת מפרויקט על מחשב אחד לשירות שאפשר לחבר אליו אפליקציה, קופה ולוח מחוונים. המחיר הוא אחריות חדשה: מי רשאי לקרוא, מי רשאי לכתוב, ואיפה שומרים את הסיסמה. את ההחלטות האלה מקבל הארכיטקט, לא הקבלן.</p></div>
+
+<div class="box real"><p>Supabase בנוי על PostgreSQL, ו-Neon נותן PostgreSQL בענן. גם ספקי הענן הגדולים מציעים מסדי נתונים מנוהלים, ואפשר להתקין PostgreSQL גם על מחשב אישי או על שרת. אותו SQL רץ בכולם, עם הבדלים קטנים. לפני שמחברים נתונים אמיתיים, בדקו באתר הספק את התעריף ואת תנאי השימוש העדכניים.</p></div>
+
+<div class="box think" data-id="p1-th-order-load"><p>הוספנו את המפתחות הזרים רק אחרי טעינת הנתונים. מה היה קורה אילו הגדרנו אותם כבר בתוך <code>CREATE TABLE</code>, ומה הסדר הנכון לטעינה?</p>
+<div class="ans">הטעינה הייתה נכשלת בהזמנה 85, כי היא מצביעה על לקוח שלא קיים. וגם: כשיש מפתחות זרים, סדר הטעינה חשוב. קודם הטבלאות של ״האחד״ (לקוחות, שליחים, מנות), אחר כך ההזמנות, ובסוף טבלאות הקישור. אם מוסיפים מפתח זר אחרי הטעינה, אפשר לטעון, לגלות את השורות הפגומות ולתקן אותן, ורק אז לנעול את הכלל.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לתת לכיתה להגיע לשלב ההרצה כל אחד בקצב שלו, ולעבור בין השולחנות. אם יש בעיית חיבור או הרשמה, אפשר להמשיך עם המעבדות בדפדפן ולהדגים את Supabase על המסך המרכזי. להדגיש: לא מדביקים סיסמאות בצ׳אט של AI. את שגיאת המפתח הזר כדאי להקרין, כי היא תחזור בחלק 4.</div>
+</section>
+
+<section class="sec" id="s1-8" data-t="CREATE, INSERT, SELECT">
+<div class="sec-h"><div class="sec-n">8</div><h2>שלוש הפקודות הראשונות ו-CRUD</h2></div>
+<p class="lead">יש תרשים ויש טבלאות בענן. עכשיו צריך לדבר איתן. בכל אפליקציה, מאחורי הקלעים, עובדות כמה פקודות קטנות: אחת בונה טבלה, אחת מוסיפה שורה, ואחת קוראת. את רובן ה-AI יכתוב במקומנו, אבל אנחנו חייבים לדעת לקרוא אותן כדי לאשר אותן. את הבסיס ראינו <a href="../lec1_part2.html">בשיעור על CREATE, INSERT ו-SELECT</a>.</p>
+
+<div class="p1-roles">
+<div class="p1-role"><div class="ic">🏗️</div><b>CREATE TABLE</b><code>CREATE TABLE reviews (...)</code>הארכיטקט: בונה תבנית ריקה</div>
+<div class="p1-role"><div class="ic">📥</div><b>INSERT INTO</b><code>INSERT INTO reviews ...</code>הפקיד או האפליקציה: מוסיפים שורה</div>
+<div class="p1-role"><div class="ic">🔍</div><b>SELECT</b><code>SELECT * FROM reviews</code>האנליסט: קורא, ולא משנה כלום</div>
+</div>
+<div class="defline"><b>CREATE TABLE:</b> פקודה שיוצרת טבלה חדשה וריקה, עם שמות עמודות, סוגים וכללים. דוגמה: <code>CREATE TABLE reviews (id INTEGER PRIMARY KEY, stars INTEGER)</code> יוצרת טבלה בשם reviews עם שתי עמודות.</div>
+<div class="defline"><b>INSERT INTO:</b> פקודה שמוסיפה שורה לטבלה שכבר קיימת. דוגמה: <code>INSERT INTO reviews (id, stars) VALUES (1, 5)</code> מוסיפה ביקורת אחת עם חמישה כוכבים. טקסט כותבים במרכאות בודדות.</div>
+<div class="defline"><b>CRUD:</b> ארבע הפעולות שכל אפליקציה עושה על נתונים: Create (INSERT), Read (SELECT), Update (UPDATE) ו-Delete (DELETE). דוגמה: לחיצה על ״הזמן״ היא Create, מסך ״ההזמנות שלי״ הוא Read, שינוי כתובת הוא Update, וביטול הזמנה הוא Delete.</div>
+
+<div class="mk mk-term">
+<div class="mk-bar"><i></i><i></i><i></i><span class="url" style="background:#0f172a;color:#94a3b8">טרמינל · הדמיה</span></div>
+<div class="mk-body"><span class="p">sqlite&gt;</span> CREATE TABLE reviews (id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL, stars INTEGER NOT NULL, comment TEXT);
+<span class="p">sqlite&gt;</span> INSERT INTO reviews (id, order_id, stars, comment) VALUES (1, 87, 5, 'מעולה');
+<span class="p">sqlite&gt;</span> SELECT * FROM reviews;
+1|87|5|מעולה
+<span class="p">sqlite&gt;</span> </div>
+</div>
+<p class="p1-note">המחשה של סשן בשורת הפקודה של SQLite. אחרי CREATE ו-INSERT אין פלט. אחרי SELECT השורות מופיעות מופרדות בקו אנכי.</p>
+
+<div class="lab" data-id="p1-lab-create" data-title="CREATE: טבלת ביקורות">
+<div class="q-src">יבגני רוצה לאסוף ביקורות על הזמנות. צרו טבלה <code>reviews</code> עם ארבע עמודות: <code>id</code> (INTEGER, מפתח ראשי), <code>order_id</code> (INTEGER, חובה), <code>stars</code> (INTEGER, חובה) ו-<code>comment</code> (TEXT). השאילתה בסוף מציגה את מבנה הטבלה ובודקת אותו.</div>
+<pre class="start">CREATE TABLE reviews (
+  -- the columns go here
+);
+
+SELECT name, type, "notnull", pk FROM pragma_table_info('reviews')</pre>
+<pre class="check">CREATE TABLE reviews (id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL, stars INTEGER NOT NULL, comment TEXT);
+SELECT name, type, "notnull", pk FROM pragma_table_info('reviews')</pre>
+<pre class="solution">CREATE TABLE reviews (
+  id INTEGER PRIMARY KEY,
+  order_id INTEGER NOT NULL,
+  stars INTEGER NOT NULL,
+  comment TEXT
+);
+
+SELECT name, type, "notnull", pk FROM pragma_table_info('reviews')</pre>
+<ol class="hints"><li>כל עמודה נכתבת כשם, סוג, ואחריהם תוספות. בין עמודות יש פסיק.</li><li>״חובה״ נכתב <code>NOT NULL</code>, ומפתח ראשי נכתב <code>PRIMARY KEY</code>.</li></ol>
+<div class="why-src">הפקודה עצמה לא מחזירה כלום. הטבלה קיימת, ריקה, ומוכנה לשורות. שימו לב לכללים שקבעתם: אי אפשר יהיה להוסיף ביקורת בלי הזמנה ובלי כוכבים.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-insert" data-title="INSERT: הוספת שורות">
+<div class="q-src">הטבלה <code>reviews</code> כבר קיימת וריקה. ביקורת ראשונה כתובה למטה. הוסיפו ביקורת שנייה, מספר 2: הזמנה 12, שלושה כוכבים, בלי הערה (<code>NULL</code>, בלי מרכאות). מתחת לכפתור ההרצה יופיעו שתי טבלאות, ״לפני״ ו״אחרי״.</div>
+<pre class="setup">CREATE TABLE reviews (id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL, stars INTEGER NOT NULL, comment TEXT)</pre>
+<pre class="show">SELECT * FROM reviews</pre>
+<pre class="start">INSERT INTO reviews (id, order_id, stars, comment)
+VALUES (1, 87, 5, 'מעולה');
+
+-- the second review goes here
+</pre>
+<pre class="check">INSERT INTO reviews (id, order_id, stars, comment) VALUES (1, 87, 5, 'מעולה');
+INSERT INTO reviews (id, order_id, stars, comment) VALUES (2, 12, 3, NULL)</pre>
+<pre class="solution">INSERT INTO reviews (id, order_id, stars, comment)
+VALUES (1, 87, 5, 'מעולה');
+
+INSERT INTO reviews (id, order_id, stars, comment)
+VALUES (2, 12, 3, NULL);</pre>
+<ol class="hints"><li>תעתיקו את המבנה של הפקודה הראשונה ותשנו את הערכים.</li></ol>
+<div class="why-src">יש שתי שורות בטבלה. <code>NULL</code> נכתב בלי מרכאות, כי הוא סימן ולא טקסט. אילו כתבתם ״NULL״ במרכאות, ההערה הייתה המילה NULL.</div>
+</div>
+
+<p>בשיעור על <a href="../lec1_part3.html">הזנת נתונים, ייבוא ומחיקה</a> אמרנו שאפשר לכתוב INSERT בלי שמות עמודות, אבל שזה מסוכן. בואו נראה למה.</p>
+<div class="lab" data-id="p1-lab-fragile" data-title="INSERT בלי שמות עמודות נשבר" data-require="INSERT\s+INTO\s+reviews\s*\(" data-require-msg="ציינו את שמות העמודות אחרי שם הטבלה.">
+<div class="q-src">אחרי חודש הוסיפו לטבלת <code>reviews</code> עמודה חמישית, <code>created_at</code>. פקודת INSERT בלי שמות עמודות, שעבדה עד היום, מפסיקה לעבוד. הריצו, קראו את השגיאה, ותקנו אותה: ציינו את שמות העמודות.</div>
+<pre class="setup">CREATE TABLE reviews (id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL, stars INTEGER NOT NULL, comment TEXT);
+ALTER TABLE reviews ADD COLUMN created_at TEXT</pre>
+<pre class="start">INSERT INTO reviews
+VALUES (3, 87, 5, 'מעולה');
+
+SELECT * FROM reviews</pre>
+<pre class="check">INSERT INTO reviews (id, order_id, stars, comment) VALUES (3, 87, 5, 'מעולה');
+SELECT * FROM reviews</pre>
+<pre class="solution">INSERT INTO reviews (id, order_id, stars, comment)
+VALUES (3, 87, 5, 'מעולה');
+
+SELECT * FROM reviews</pre>
+<ol class="hints"><li>בהודעת השגיאה כתוב שיש חמש עמודות ורק ארבעה ערכים.</li><li>אחרי שם הטבלה, בסוגריים, רשמו את שמות ארבע העמודות שלכם.</li></ol>
+<div class="why-src">כשמציינים שמות עמודות, הפקודה לא תלויה בסדר או במספר העמודות בטבלה, ולכן המבנה יכול לגדול בלי לשבור את הקוד. פקודה בלי שמות עובדת עד שמישהו משנה את הטבלה. בקוד אמיתי, וגם בקוד ש-AI כותב, תמיד מציינים שמות.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-where50" data-title="SELECT עם תנאי ומיון" data-ordered="1">
+<div class="q-src">יבגני בודק אילו מנות עולות יותר מ-50 שקלים. הציגו את <code>name</code> ו-<code>price</code> של המנות האלה, מהיקרה לזולה (<code>ORDER BY ... DESC</code>).</div>
+<pre class="start">SELECT name, price
+FROM dishes
+WHERE -- condition
+ORDER BY -- sort</pre>
+<pre class="check">SELECT name, price FROM dishes WHERE price &gt; 50 ORDER BY price DESC</pre>
+<pre class="solution">SELECT name, price
+FROM dishes
+WHERE price &gt; 50
+ORDER BY price DESC</pre>
+<ol class="hints"><li>״יותר מ-50״ נכתב <code>price &gt; 50</code>.</li><li><code>DESC</code> אחרי העמודה מסדר מהגדול לקטן.</li></ol>
+<div class="why-src">יצאו חמש מנות: סלמון (89), המבורגר (68), קציצות (62), פסטה (59) ופיצה (52). WHERE מסנן שורות לפני שמציגים אותן, ו-ORDER BY מסדר אותן.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-update-price" data-title="UPDATE מבוקר">
+<div class="q-src">מחיר הסלמון בתנור (מנה 5) עולה ל-92 שקלים. עדכנו רק אותו. הטבלאות מראות את הסלמון ואת הפיצה (מנה 6) לפני ואחרי, כדי שתראו שרק שורה אחת השתנתה.</div>
+<pre class="show">SELECT id, name, price FROM dishes WHERE id IN (5, 6)</pre>
+<pre class="start">UPDATE dishes
+SET price = 92
+WHERE -- which dish</pre>
+<pre class="check">UPDATE dishes SET price = 92 WHERE id = 5</pre>
+<pre class="solution">UPDATE dishes
+SET price = 92
+WHERE id = 5</pre>
+<ol class="hints"><li>בוחרים את השורה לפי המפתח הראשי: <code>id = 5</code>.</li></ol>
+<div class="why-src">רק הסלמון השתנה. נסו להריץ את אותה פקודה בלי שורת ה-WHERE ותראו מה קורה לפיצה: כל המחירים בתפריט הופכים ל-92. UPDATE ו-DELETE בלי WHERE נוגעים בכל שורה בטבלה, ומערכת אמיתית לא עוצרת אתכם. ההרגל הנכון: קודם מריצים SELECT עם אותו WHERE ורואים אילו שורות ייפגעו.</div>
+</div>
+
+<div class="lab" data-id="p1-lab-delete" data-title="DELETE עם WHERE">
+<div class="q-src">ביקורת מספר 2 בטבלת <code>reviews</code> היא ספאם. מחקו רק אותה. מתחת לכפתור ההרצה יופיעו שתי טבלאות, ״לפני״ ו״אחרי״.</div>
+<pre class="setup">CREATE TABLE reviews (id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL, stars INTEGER NOT NULL, comment TEXT);
+INSERT INTO reviews VALUES (1, 87, 5, 'מעולה');
+INSERT INTO reviews VALUES (2, 12, 1, 'קנו עכשיו שעונים זולים');
+INSERT INTO reviews VALUES (3, 40, 4, NULL)</pre>
+<pre class="show">SELECT * FROM reviews</pre>
+<pre class="start">DELETE FROM reviews
+WHERE -- which review</pre>
+<pre class="check">DELETE FROM reviews WHERE id = 2</pre>
+<pre class="solution">DELETE FROM reviews
+WHERE id = 2</pre>
+<ol class="hints"><li>מוחקים לפי המפתח הראשי: <code>id = 2</code>.</li></ol>
+<div class="why-src">נמחקה שורה אחת. DELETE בלי WHERE מוחקת את כל השורות בטבלה, ומסד נתונים אמיתי לא ישאל אתכם ״בטוחים?״. לכן מוחקים לפי המפתח, ומריצים קודם SELECT עם אותו תנאי. על DELETE וגם על UPDATE נחזור בחלק 2.</div>
+</div>
+
+<h3>ה-AI כתב סכמה. מה לא בסדר בה?</h3>
+<p>יבגני ביקש מ-AI: ״בנה לי טבלאות לתפריט ולהזמנות.״ מה שחזר רץ בלי שגיאה. תבדקו אותו כמו ארכיטקט.</p>
+<pre class="code" data-lang="sql">CREATE TABLE menu_ai (
+  id INTEGER PRIMARY KEY,
+  name TEXT,
+  price TEXT
+);
+CREATE TABLE orders_ai (
+  id INTEGER PRIMARY KEY,
+  customer_name TEXT,
+  dish TEXT,
+  total TEXT
+);</pre>
+<div class="quiz" data-id="p1-q-audit" data-a="2"><p class="qq">איזה משפט מתאר הכי טוב את הבעיות בסכמה?</p>
+<button type="button" class="opt">הסכמה תקינה, רק צריך להחליף TEXT ב-VARCHAR</button>
+<button type="button" class="opt">המחיר והסכום נשמרו כטקסט, ובהזמנה יש רק שם לקוח ומנה אחת כטקסט, בלי מצביעים לטבלאות אחרות</button>
+<button type="button" class="opt">חסר אינדקס על העמודה dish, ולכן השאילתות יהיו איטיות</button>
+<div class="why">המחיר כטקסט חוסם חשבון. שם לקוח כטקסט חוזר בכל הזמנה, ושני לקוחות עם אותו שם לא נבדלים. וגם: בעמודה dish אחת אי אפשר לשמור כמה מנות בהזמנה. הפתרון הוא טבלת קישור, כמו order_items. הסכום total לא צריך להישמר בכלל, כי אפשר לחשב אותו. האפשרות הראשונה מתעלמת מכל זה, והשלישית מדברת על מהירות כשהבעיה היא נכונות.</div></div>
+
+<div class="lab" data-id="p1-lab-audit-fix" data-title="תיקון הסכמה של ה-AI" data-require="REFERENCES" data-require-msg="חסר מפתח זר (REFERENCES) בטבלת ההזמנות.">
+<div class="q-src">כתבו סכמה מתוקנת. <code>menu_ai</code>: <code>id</code> (INTEGER, מפתח ראשי), <code>name</code> (TEXT, חובה), <code>price</code> (REAL, חובה). <code>orders_ai</code>: <code>id</code> (INTEGER, מפתח ראשי), <code>customer_id</code> (INTEGER, חובה, מפתח זר ל-<code>customers(id)</code>), <code>order_ts</code> (TEXT, חובה). השאילתה בסוף מציגה את המבנה ובודקת אותו.</div>
+<pre class="start">CREATE TABLE menu_ai (
+  -- the fixed columns
+);
+CREATE TABLE orders_ai (
+  -- the fixed columns, with a foreign key
+);
+
+SELECT 'menu_ai' AS t, name, type, "notnull" AS nn FROM pragma_table_info('menu_ai')
+UNION ALL SELECT 'orders_ai', name, type, "notnull" FROM pragma_table_info('orders_ai')
+UNION ALL SELECT 'fk', "from", "table", 0 FROM pragma_foreign_key_list('orders_ai')</pre>
+<pre class="check">CREATE TABLE menu_ai (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price REAL NOT NULL);
+CREATE TABLE orders_ai (id INTEGER PRIMARY KEY, customer_id INTEGER NOT NULL REFERENCES customers(id), order_ts TEXT NOT NULL);
+SELECT 'menu_ai' AS t, name, type, "notnull" AS nn FROM pragma_table_info('menu_ai')
+UNION ALL SELECT 'orders_ai', name, type, "notnull" FROM pragma_table_info('orders_ai')
+UNION ALL SELECT 'fk', "from", "table", 0 FROM pragma_foreign_key_list('orders_ai')</pre>
+<pre class="solution">CREATE TABLE menu_ai (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  price REAL NOT NULL
+);
+CREATE TABLE orders_ai (
+  id INTEGER PRIMARY KEY,
+  customer_id INTEGER NOT NULL REFERENCES customers(id),
+  order_ts TEXT NOT NULL
+);
+
+SELECT 'menu_ai' AS t, name, type, "notnull" AS nn FROM pragma_table_info('menu_ai')
+UNION ALL SELECT 'orders_ai', name, type, "notnull" FROM pragma_table_info('orders_ai')
+UNION ALL SELECT 'fk', "from", "table", 0 FROM pragma_foreign_key_list('orders_ai')</pre>
+<ol class="hints"><li>מפתח זר כותבים בתוך הגדרת העמודה: <code>customer_id INTEGER NOT NULL REFERENCES customers(id)</code>.</li><li>המחיר הוא <code>REAL</code>, לא <code>TEXT</code>.</li></ol>
+<div class="why-src">התיקון קטן, וההבדל גדול: אפשר לסכום מחירים, וההזמנה מצביעה על לקוח במקום להעתיק את השם שלו. שימו לב שהורדנו את <code>dish</code> ואת <code>total</code>: את המנות נשמור בטבלת קישור, ואת הסכום נחשב. השורה האחרונה בתוצאה (<code>fk</code>) מראה שהמסד באמת רשם את הקשר. בחלק 5 נראה למה לא כדאי לסמוך על ביקורת עצמית של ה-AI.</div>
+</div>
+
+<p>הפרומפט הבא הוא כזה שיבגני יכול לתת ל-AI כדי לקבל סכמה טובה יותר. שימו לב שיש בו ארבעה חלקים: הקשר, משימה, אילוצים ופורמט. בחלק 5 נרחיב על זה.</p>
+<pre class="prompt">הקשר: אני בונה מסד נתונים למסעדה עם משלוחים בשלושה ערוצים: אפליקציה, טלפון ואולם. יש לקוחות, שליחים, מנות והזמנות, ובכל הזמנה כמה מנות.
+משימה: כתוב פקודות CREATE TABLE לחמש טבלאות: customers, couriers, dishes, orders ו-order_items.
+אילוצים: SQLite. לכל טבלה מפתח ראשי. מחיר ועלות הם מספרים. הזמנה מצביעה על לקוח ועל שליח (שליח יכול להיות ריק בהזמנה באולם). order_items מצביעה על הזמנה ועל מנה, והמפתח שלה הוא הצירוף של שתיהן. אל תוסיף עמודות שלא ביקשתי.
+פורמט: קוד בלבד, עם הערה אחת בעברית מעל כל טבלה.</pre>
+
+<div class="box meaning"><p>הפקודות עצמן קטנות. מה שחשוב הוא מה הן מאפשרות. מי שקורא CREATE TABLE יודע מה יישמר, מה יידחה ואילו שאלות אפשר יהיה לשאול. מי שקורא INSERT או UPDATE יודע מה הולך להשתנות. לכן ״לקרוא כדי לאשר״ היא יכולת מקצועית, לא עניין של הקלדה.</p></div>
+
+<div class="box real"><p>אפליקציות בדרך כלל לא כותבות SQL ביד. חלק מהכלים יוצרים את הפקודות מתוך מודל שמגדירים (ספריות שנקראות ORM), וחלק מקבלים אותן מכלי AI. בשני המקרים מה שמגיע בסוף למסד הוא פקודות מהסוג שראיתם כאן, ומי שבודק אותן צריך להבין אותן.</p></div>
+
+<div class="box think" data-id="p1-th-audit"><p>הסכמה של ה-AI רצה בלי שגיאה, ובכל זאת היא לא טובה. למה המסד לא התריע?</p>
+<div class="ans">מסד נתונים בודק אם הפקודה חוקית, לא אם היא נכונה לעסק. ״מחיר מסוג טקסט״ היא הגדרה חוקית לגמרי. את השאלות ״האם זה מה שרצינו?״ ו״האם נוכל לשאול עם זה את השאלות של יבגני?״ יכול לשאול רק מי שמכיר את העסק. בגלל זה הבדיקה של הארכיטקט היא חלק מהעבודה, לא תוספת.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> במעבדת ה-UPDATE כדאי להריץ בכוונה גרסה בלי WHERE ולהראות את התוצאה לכיתה. לשאול: ״מי ראה פעם דבר כזה קורה?״. בבדיקת הסכמה לתת לכיתה זמן קצר לרשום כל פגם לפני שחושפים את התשובה.</div>
+</section>
+
+<section class="sec" id="s1-9" data-t="סיכום">
+<div class="sec-h"><div class="sec-n">9</div><h2>סיכום: מה עברנו בחלק הזה</h2></div>
+<p class="lead">התחלנו מקובץ אקסל שנשבר, וסיימנו עם תרשים, טבלאות במסד בענן ופקודות שאנחנו יודעים לקרוא. בחלק הבא נלמד לשאול את הנתונים שאלות, ולקבל תשובות שאפשר לסמוך עליהן.</p>
+
+<div class="box recap">
+<ul>
+<li>ה-AI הוא קבלן מהיר. אנחנו מחליטים מה בונים ובודקים את התוצאה: סוגים, מפתחות וקשרים.</li>
+<li>נתון הופך להחלטה בארבע מדרגות: נתון, מידע, תובנה, החלטה. מתחילים מההחלטה שהעסק צריך לקבל.</li>
+<li>מסד נתונים מתאים כשיש הרבה כותבים ונתונים שחייבים להישאר נכונים. אקסל נשאר מתאים לאדם אחד.</li>
+<li>לכל עמודה יש סוג, ו-NULL הוא לא אפס. מפתח ראשי מזהה שורה, ומפתח זר מצביע על שורה בטבלה אחרת.</li>
+<li>ממשפט של העסק מוצאים ישויות, שואלים על קשרים (אחד לרבים, רבים לרבים עם טבלת קישור) ומציירים תרשים לפני הקוד.</li>
+<li>CREATE, INSERT, SELECT, UPDATE ו-DELETE הן ארבע פעולות ה-CRUD. מציינים שמות עמודות, ומסננים לפי מפתח.</li>
+</ul>
+</div>
+
+<div class="cmap" data-part="1" data-mini="1"></div>
+
+<div class="quiz" data-id="p1-q-end-1" data-a="1"><p class="qq">בטבלת <code>order_items</code> המפתח הראשי הוא הצירוף של <code>order_id</code> ו-<code>dish_id</code>. מה הצירוף הזה קובע?</p>
+<button type="button" class="opt">שאותה מנה לא תופיע פעמיים באותה הזמנה (הכמות נרשמת בעמודה qty)</button>
+<button type="button" class="opt">שבכל הזמנה יש מנה אחת בדיוק</button>
+<button type="button" class="opt">שכל מנה מופיעה בהזמנה אחת בלבד</button>
+<div class="why">מפתח מורכב אומר שהצירוף ייחודי, לא כל עמודה לבד. הזמנה אחת יכולה לכלול הרבה מנות, ומנה אחת יכולה להופיע בהרבה הזמנות. אבל אותו זוג (הזמנה, מנה) מופיע פעם אחת, והכמות נרשמת בעמודה qty.</div></div>
+
+<div class="quiz" data-id="p1-q-end-2" data-a="3"><p class="qq">מישהו מריץ <code>UPDATE dishes SET price = 0;</code> בלי WHERE. מה יקרה?</p>
+<button type="button" class="opt">המסד יסרב ויבקש תנאי</button>
+<button type="button" class="opt">יתעדכנו רק המנות שעוד אין להן מחיר</button>
+<button type="button" class="opt">המחיר של כל המנות בטבלה יהפוך לאפס</button>
+<div class="why">מסד נתונים עושה מה שאומרים לו. בלי WHERE, הפקודה חלה על כל שורה. לכן מריצים SELECT עם אותו תנאי לפני כל UPDATE או DELETE, ושומרים גיבוי לפני שינוי גדול.</div></div>
+
+<div class="quiz" data-id="p1-q-end-3" data-a="2"><p class="qq">מה הצעד הראשון של ארכיטקט לפני שמבקשים מ-AI לבנות מערכת?</p>
+<button type="button" class="opt">לבחור טכנולוגיה ולהתקין אותה</button>
+<button type="button" class="opt">לנסח את השאלות של העסק ולמצוא את הישויות והקשרים</button>
+<button type="button" class="opt">לבקש מה-AI לכתוב SQL ולבדוק שהוא רץ</button>
+<div class="why">מבנה שנקבע בלי שאלות של העסק יכול לרוץ בלי תקלה ולא לענות על כלום. הטכנולוגיה והקוד באים אחרי שברור מה המערכת צריכה לדעת ולהחליט.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לפני המעבר לחלק 2 לבקש מהכיתה לצייר על הלוח, בזמן קצר, את התרשים של עסק אחר (ספרייה, מכון כושר). מי שמצליח לזהות ישויות וקשר של רבים לרבים מוכן ל-JOIN.</div>
+</section>
+
+<div class="pager"><a href="index.html">→ למפת המסע</a><a href="part2.html">חלק 2: SQL: לשאול את הנתונים ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · המפגש המסכם · כל דוגמאות הנתונים בדף בדויות</footer>
+</body>
+</html>
