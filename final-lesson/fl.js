@@ -123,12 +123,20 @@ function initAnim(){
     const capsEl = $('.caps', a); a.insertBefore(ctl, capsEl);
     const stageEls = $$('[data-s],[data-only],[data-move]', a);
     function parseMove(el){ if (el._mv) return el._mv; el._mv = el.dataset.move.split('|').map(p=>{ const [s,xy] = p.split(':'); const [x,y] = xy.split(','); return {s:+s,x:+x,y:+y}; }); return el._mv; }
+    const stage = $('.stage', a);
+    function followStep(){
+      if (!stage || stage.scrollWidth <= stage.clientWidth + 4) return;
+      let t = stageEls.filter(el=>el.dataset.s !== undefined && +el.dataset.s === cur)[0] || stageEls.filter(el=>el.dataset.only !== undefined && el.dataset.only.split(',').map(Number).indexOf(cur) >= 0)[0];
+      if (!t) return;
+      try { const r = t.getBoundingClientRect(), sr = stage.getBoundingClientRect(); if (r.width === 0) return; stage.scrollLeft += (r.left + r.width/2) - (sr.left + sr.width/2); } catch(e){}
+    }
     function render(){
       stageEls.forEach(el=>{
         if (el.dataset.s !== undefined){ const on = cur >= +el.dataset.s; el.classList.toggle('on', on); el.classList.toggle('now', on && cur === +el.dataset.s && el.dataset.pulse !== undefined); }
         if (el.dataset.only !== undefined){ const on = el.dataset.only.split(',').map(Number).indexOf(cur) >= 0; el.classList.toggle('on', on); }
         if (el.dataset.move !== undefined){ const mv = parseMove(el); let pos = {x:0,y:0}; mv.forEach(m=>{ if (m.s <= cur) pos = m; }); el.style.transform = 'translate('+pos.x+'px,'+pos.y+'px)'; if (el.dataset.s === undefined && el.dataset.only === undefined) el.classList.add('on'); }
       });
+      followStep();
       caps.forEach((c,i)=>c.classList.toggle('on', i+1===cur));
       $$('.dots i', a).forEach((d,i)=>d.classList.toggle('on', i+1===cur));
       if (cur === N && a.dataset.id) done(a.dataset.id);

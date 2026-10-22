@@ -46,11 +46,11 @@
 .p3-tag{display:inline-block;padding:0 8px;border-radius:999px;font-size:.78rem;font-weight:800;background:#e2e8f0;color:#334155}
 /* p3-mobile-anim */
 .sim select,.sim input[type=text]{max-width:100%}.sim label{max-width:100%}
-@media(max-width:640px){.anim .stage{overflow-x:auto}.anim .stage svg{min-width:660px}}
+@media(max-width:700px){.anim .stage{overflow-x:auto;direction:ltr}.anim .stage svg{min-width:640px}.anim .stage::after{content:"החליקו הצידה לראות הכול";display:block;direction:rtl;font-size:.75rem;color:var(--muted);text-align:center}}
 </style>
 
 <div class="box note">
-<p>בחלק 1 בנינו טבלאות, ובחלק 2 שאלנו אותן שאלות. עד עכשיו אנחנו כתבנו את ה-SQL בעצמנו. מה קורה כשלקוח סתם לוחץ על כפתור? מי כותב אז את ה-SQL? ומה עושים כשהמערכת צריכה לעמוד בהרבה לקוחות ועדיין להישאר נכונה? על זה החלק הזה. כל המעבדות רצות על אותו מסד של המסעדה. בכמה מהן נוסיף טבלה קטנה (מלאי, היסטוריה), רק כדי להראות את הרעיון.</p>
+<p>בחלק 1 בנינו טבלאות, ובחלק 2 שאלנו אותן שאלות. עד עכשיו כתבנו את ה-SQL בעצמנו. מה קורה כשלקוח סתם לוחץ על כפתור? מי כותב אז את ה-SQL? ומה עושים כשהמערכת צריכה לעמוד בהרבה לקוחות ועדיין להישאר נכונה? על זה החלק הזה. כל המעבדות רצות על אותו מסד של המסעדה. בכמה מהן נוסיף טבלה קטנה (מלאי, היסטוריה), רק כדי להראות את הרעיון.</p>
 </div>
 
 <!-- ======================= 1 ======================= -->
@@ -100,7 +100,7 @@
 <path d="M628 205 L477 205" stroke="#10b981" stroke-width="3" stroke-dasharray="7 5" fill="none" marker-end="url(#p3a1-ag)" data-s="6"/>
 <path d="M323 205 L172 205" stroke="#10b981" stroke-width="3" stroke-dasharray="7 5" fill="none" marker-end="url(#p3a1-ag)" data-s="7"/>
 <!-- labels -->
-<text x="95" y="62" text-anchor="middle" font-size="14" font-family="ui-monospace,Menlo,monospace" fill="#3730a3" data-only="2">{ customer_id: 2, items: [...] }</text>
+<text x="125" y="62" text-anchor="middle" font-size="13" font-family="ui-monospace,Menlo,monospace" fill="#3730a3" data-only="2">{ "customer_id": 2, "items": [...] }</text>
 <text x="247" y="128" text-anchor="middle" font-size="14" font-family="ui-monospace,Menlo,monospace" fill="#334155" data-s="3">POST /api/orders</text>
 <text x="247" y="176" text-anchor="middle" font-size="15" font-weight="800" fill="#b45309" data-s="3">המלצר = ה-API</text>
 <text x="552" y="128" text-anchor="middle" font-size="14" font-family="ui-monospace,Menlo,monospace" fill="#334155" data-s="5">INSERT ... UPDATE ...</text>
@@ -189,9 +189,9 @@
 
 <div class="lab" data-id="p3-lab-order-rows" data-title="מה שורות ההזמנה אומרות" data-ordered="0">
 <div class="q-src">הקליק של רועי נשמר כשורות. תציגו את הזמנה 3: שם המנה (<code>name</code>) והכמות (<code>qty</code>) לכל שורה. אלה השורות שהשרת כתב כשהלקוח לחץ ״הזמן״.</div>
-<pre class="start">SELECT d.name, oi.qty
+<pre class="start">SELECT oi.dish_id, oi.qty
 FROM order_items oi
--- השלימו: חיבור למנות ותנאי להזמנה 3</pre>
+-- תשלימו: שם המנה במקום מספר המנה, ותנאי להזמנה 3</pre>
 <pre class="check">SELECT d.name, oi.qty FROM order_items oi JOIN dishes d ON d.id = oi.dish_id WHERE oi.order_id = 3</pre>
 <pre class="solution">SELECT d.name, oi.qty
 FROM order_items oi
@@ -216,7 +216,7 @@ WHERE oi.order_id = 3</pre>
 </div>
 
 <div class="box meaning">
-<p>לכל חלק יש תפקיד אחד, ולכן אפשר להחליף חלק בלי לגעת באחרים. יבגני רוצה מסך חדש לעובדים שמקבלים הזמנות בטלפון? בונים רק מסך. אותו שרת, אותו API ואותו מסד. לשרת אין הבדל בין לחיצה באפליקציה, בדפדפן או משותף: תמיד מגיעה בקשת HTTP עם JSON.</p>
+<p>לכל חלק יש תפקיד אחד, ולכן אפשר להחליף חלק בלי לגעת באחרים. יבגני רוצה מסך חדש לעובדים שמקבלים הזמנות בטלפון? בונים רק מסך. אותו שרת, אותו API ואותו מסד. לשרת אין הבדל בין לחיצה באפליקציה, בדפדפן או במערכת של שותף עסקי: תמיד מגיעה בקשת HTTP עם JSON.</p>
 </div>
 
 <div class="box real">
@@ -227,7 +227,7 @@ WHERE oi.order_id = 3</pre>
 <button class="opt">באפליקציה, כי היא הכי קרובה ללקוח</button>
 <button class="opt">בשרת, כי רק הוא מחזיק את חוקי העסק ומדבר עם המסד</button>
 <button class="opt">איפה שנוח למפתח, זה אותו דבר</button>
-<div class="why">האפליקציה יכולה לרמוז ללקוח (למשל להאפיר מנה שאזלה), אבל מי שמחליט הוא השרת. קוד שרץ אצל הלקוח אפשר לעקוף או לשנות. ובדיקה ״איפה שנוח״ זה הדרך הבטוחה להזמנות שאי אפשר לספק.</div></div>
+<div class="why">האפליקציה יכולה לרמוז ללקוח (למשל להאפיר מנה שאזלה), אבל מי שמחליט הוא השרת. קוד שרץ אצל הלקוח אפשר לעקוף או לשנות. ובדיקה ״איפה שנוח״ היא דרך בטוחה לקבל הזמנות שאי אפשר לספק.</div></div>
 
 <div class="quiz" data-id="p3-q-clients" data-a="3"><p class="qq">יבגני מוסיף מסך לעובדים שמקבלים הזמנות בטלפון, ושותף עסקי שולח הזמנות מהמערכת שלו. כמה שרתים צריך לבנות?</p>
 <button class="opt">שלושה: שרת לכל מסך</button>
@@ -349,7 +349,7 @@ WHERE oi.order_id = 3</pre>
  function one(q){ const r=FL.exec(q); return r&&r.values.length?r.values[0][0]:null; }
  function respond(m,p,bv){
   if(p==='/api/secret') return [404,'{"error":"no such address"}'];
-  if(p==='/api/menu'){ if(m!=='GET') return [405,'{"error":"method not allowed"}']; return [200,one("SELECT json_group_array(json_object('id',id,'name',name,'price',price)) FROM dishes WHERE category IN ('main','starter') ORDER BY id")+'\n(קוצר: מוצגות מנות ראשונות ועיקריות)']; }
+  if(p==='/api/menu'){ if(m!=='GET') return [405,'{"error":"method not allowed"}']; return [200,one("SELECT json_group_array(json_object('id',id,'name',name,'price',price)) FROM dishes ORDER BY id")]; }
   if(p==='/api/orders'){
    if(m==='GET') return [200,'{"orders_count": '+one('SELECT COUNT(*) FROM orders')+'}'];
    if(m==='DELETE') return [405,'{"error":"method not allowed"}'];
@@ -454,12 +454,13 @@ WHERE id = 3</pre>
 
 <!-- ======================= 3 ======================= -->
 <section class="sec" id="s3-3" data-t="שרת וסודות">
-<div class="sec-h"><div class="sec-n">3</div><h2>השרת: הדלת היחידה למסד, והסודות שנשארים אצלו</h2></div>
+<div class="sec-h"><div class="sec-n">3</div><h2>השרת: למה הוא הדלת היחידה למסד, ואיפה שומרים סיסמאות</h2></div>
 <p class="lead">עד עכשיו המטבח היה רק ציור. בסעיף הזה נראה איך בונים אותו באמת: שתי דרכים לכתוב שרת, מה הוא חושף החוצה, ואיך מוודאים שמפתחות וסיסמאות לא מגיעים לאף אחד שפותח את האפליקציה.</p>
 
 <h3>שתי דרכים לבנות שרת</h3>
-<p>בקורס ראינו שתי דרכים. אחת: סקריפט שרץ על השרתים של Google (Apps Script, <a href="../lec3.2.html">כמו שבנינו בשיעור על ה-Backend</a>). שנייה: תוכנית Node.js עם Express שרצה בענן. שתיהן עושות אותו דבר: מקבלות בקשה, בודקות, פונות לנתונים ומחזירות JSON.</p>
+<p>בקורס ראינו שתי דרכים. אחת: סקריפט שרץ על השרתים של Google (Apps Script, <a href="../lec3.1.html">הארכיטקטורה</a> ו<a href="../lec3.2.html">הבניה של ה-Backend</a> בשיעורים הקודמים). שנייה: תוכנית Node.js עם Express שרצה בענן (Node.js היא סביבה שמריצה JavaScript מחוץ לדפדפן, ו-Express היא ספרייה קטנה שמקבלת בקשות HTTP ועונה עליהן). שתיהן עושות אותו דבר: מקבלות בקשה, בודקות, פונות לנתונים ומחזירות JSON.</p>
 
+<div class="defline"><b>Cloud Shell:</b> מחשב קטן בענן של Google שנפתח בדפדפן, עם טרמינל ועורך קוד, בלי התקנה. לדוגמה: מקלידים בו <code>node -v</code> ורואים איזו גרסת Node יש.</div>
 <div class="tw"><table class="tbl">
 <thead><tr><th></th><th>Google Apps Script (אפליקציית אינטרנט)</th><th>Node.js עם Express</th></tr></thead>
 <tbody>
@@ -586,7 +587,7 @@ app.listen(8080, () => console.log('Server is up'));</pre></li>
 <p>לשרת יש דברים סודיים: הסיסמה של המסד, ומפתח של שירות חיצוני (למשל שירות AI או תשלומים). השרת הוא הדלת היחידה למסד, ולכן הוא גם המקום היחיד שבו מותר לשמור אותם.</p>
 
 <div class="defline"><b>מפתח API:</b> קוד אישי ארוך שמזהה אתכם מול שירות חיצוני, והשירות מחייב אתכם לפיו. מי שמחזיק במפתח שלכם יכול לשלוח בקשות על חשבונכם.</div>
-<div class="defline"><b>משתנה סביבה (Environment variable):</b> הגדרה שיושבת מחוץ לקוד, והשרת מקבל אותה כשהוא מתחיל לרוץ. לדוגמה: <code>DATABASE_URL</code> מחזיק את הכתובת והסיסמה של המסד, והקוד קורא אותו עם <code>process.env.DATABASE_URL</code>. כמו כספת בחדר במלון: הכספת אותה כספת בכל חדר, והקוד נמסר בקבלה.</div>
+<div class="defline"><b>משתנה סביבה (Environment variable):</b> הגדרה שיושבת מחוץ לקוד, והשרת מקבל אותה כשהוא מתחיל לרוץ. לדוגמה: <code>DATABASE_URL</code> מחזיק את הכתובת והסיסמה של המסד, והקוד קורא אותו עם <code>process.env.DATABASE_URL</code>. כמו כספת במלון: הכספת קבועה, והקוד משתנה לפי החדר.</div>
 
 <div class="anim" data-id="p3-anim-secret" data-speed="3200">
 <div class="stage"><svg viewBox="0 30 800 290" role="img" aria-label="הנפשה: המפתח נשאר בשרת ולא יוצא לדפדפן">
@@ -627,7 +628,7 @@ app.listen(8080, () => console.log('Server is up'));</pre></li>
 </div>
 
 <div class="sim" data-id="p3-sim-vault"><div class="sh">איפה שמים את המפתח? ומי רואה אותו</div>
-<p style="margin:0 0 6px">תבחרו מקום ותראו מי יכול לקרוא משם את המפתח.</p>
+<p style="margin:0 0 6px">תבחרו מקום ותראו מי יכול לקרוא משם את המפתח. על שמירת מפתחות דיברנו גם <a href="../lec7.4.html">בשיעור על MCP</a>.</p>
 <div class="p3-btns p3-v-opts">
 <button type="button" class="btn sec2" data-k="html">בקובץ ה-HTML של האפליקציה</button>
 <button type="button" class="btn sec2" data-k="prompt">בתוך הפרומפט ל-AI שכותב את הקוד</button>
@@ -654,7 +655,7 @@ app.listen(8080, () => console.log('Server is up'));</pre></li>
  });
 });})();</script>
 
-<p>בפועל שני קבצים קטנים שומרים על המפתחות. הראשון מחזיק את הסודות, והשני אומר ל-Git לא להעלות אותו:</p>
+<p>בפועל שני קבצים קטנים שומרים על המפתחות. הראשון מחזיק את הסודות, והשני אומר ל-Git (הכלי ששומר גרסאות של קבצים, נראה אותו בסעיף הפריסה) לא להעלות אותו:</p>
 <div class="cols2">
 <div><b>קובץ <span class="n">.env</span> (נשאר רק אצלכם)</b>
 <pre class="code" data-lang="bash">DATABASE_URL=postgresql://USER:PASSWORD@HOST/DBNAME?sslmode=require
@@ -663,7 +664,7 @@ SOME_SERVICE_KEY=put-your-own-key-here</pre></div>
 <pre class="code" data-lang="bash">node_modules/
 .env</pre></div>
 </div>
-<p>הערכים כאן הם רק דוגמה, לא סודות אמיתיים. בקוד קוראים אותם כך: <code>process.env.DATABASE_URL</code>. ב-Apps Script זה עובד דרך הגדרות הסקריפט (<code>PropertiesService.getScriptProperties()</code>), ולא דרך קבוע שכתוב בתוך הקוד.</p>
+<p>הערכים כאן הם רק דוגמה, לא סודות אמיתיים. שימו לב: Node לא קורא <code>.env</code> אוטומטית. בגרסאות חדשות מריצים <code>node --env-file=.env server.js</code> (או משתמשים בחבילה dotenv). ב-Cloud Shell אפשר גם <code>export DATABASE_URL='...'</code> לפני ההרצה, ובשירות אירוח מגדירים את המשתנה בהגדרות השירות. בקוד קוראים אותם כך: <code>process.env.DATABASE_URL</code>. ב-Apps Script זה עובד דרך הגדרות הסקריפט (<code>PropertiesService.getScriptProperties()</code>), ולא דרך קבוע שכתוב בתוך הקוד.</p>
 
 <div class="box trap">
 <p><b>אל תדביקו מפתח אמיתי בפרומפט.</b> כשמבקשים מ-AI לכתוב שרת, כותבים בפרומפט את שם המשתנה (<code>process.env.SOME_SERVICE_KEY</code>) ולא את הערך. הערך נכנס רק להגדרות של השרת. מפתח שכתבתם בשיחה נחשב כמפתח שיצא החוצה.</p>
@@ -739,11 +740,13 @@ stock(dish_id, qty)
 - ההזמנה כולה בטרנזקציה אחת: BEGIN, COMMIT, ובכל שגיאה ROLLBACK, ו-client.release() בבלוק finally.
 - הורדת מלאי בפקודה אחת: UPDATE stock SET qty = qty - $1 WHERE dish_id = $2 AND qty >= $1. אם rowCount הוא 0, זורקים שגיאה ומבטלים את כל ההזמנה.
 - המחיר אינו נשלח מהלקוח. הסכום מחושב מטבלת dishes.
+- ההגדרות נקראות מהסביבה בלבד (בלי ספריית dotenv בקוד). העמודה orders.id היא identity.
+- כותרות CORS שמתירות רק את הכתובת של המסך (המשתנה ALLOWED_ORIGIN), כולל תשובה ל-OPTIONS.
 - קודי סטטוס: 201 להצלחה, 400 לבקשה לא תקינה, 409 למלאי חסר, 500 לתקלה.
 
 פורמט הפלט: קובץ server.js אחד בלבד. בלי הסברים לפני או אחרי, ובלי גדרות markdown.</pre>
 
-<p>ולמסך, פרומפט נפרד. הוא מכיר רק את ההסכם מול השרת (הכתובות ומבנה ה-JSON), ולא את הסיסמאות ולא את המסד:</p>
+<p>ולמסך, פרומפט נפרד (<a href="../lec3.3.html">כמו בשיעור על ה-Frontend</a>). הוא מכיר רק את ההסכם מול השרת (הכתובות ומבנה ה-JSON), ולא את הסיסמאות ולא את המסד:</p>
 <pre class="prompt">את/ה מהנדס/ת פרונט-אנד. כתוב/י קובץ HTML אחד, בעברית וב-RTL, שמציג את תפריט המסעדה, מאפשר לבחור כמויות ושולח הזמנה.
 
 החוזה מול השרת:
@@ -755,8 +758,10 @@ stock(dish_id, qty)
 - בגוף הבקשה אין שדה מחיר. את הסכום מציגים מהתשובה של השרת.
 - כל fetch בתוך try/catch, ושגיאה מוצגת למשתמש בעברית ובלי טקסט טכני.
 - בלי מפתחות, בלי סיסמאות ובלי ספריות חיצוניות.
+- אם ה-API הוא Apps Script, שולחים POST עם Content-Type של text/plain ולא application/json.
 
 פורמט הפלט: קובץ HTML אחד בלבד, בלי הסברים ובלי גדרות markdown.</pre>
+<p>אם הקריאה נחסמת בדפדפן ובקונסולה יש שגיאת <dfn data-d="חוק של הדפדפן: דף מכתובת אחת לא יכול לקרוא תשובה משרת בכתובת אחרת, אלא אם השרת הרשה את זה בכותרת מיוחדת">CORS</dfn>, השרת צריך להרשות את הכתובת של המסך. זו התקלה הכי שכיחה בחיבור בין מסך לשרת.</p>
 
 <div class="box meaning">
 <p>בשרת מחליטים <b>מי רשאי</b>, <b>מה מותר</b> ו<b>מה נרשם</b>. אם בונים אותו נכון, כל לקוח עתידי (אתר, אפליקציה, שותף) מקבל את אותן הגנות בלי לבנות אותן מחדש. בלי שרת, ההגנה על הנתונים תלויה בזה שאף אחד לא יטרח לבדוק.</p>
@@ -847,7 +852,7 @@ stock(dish_id, qty)
 <p>המעבדות הבאות רצות על המסד של יבגני, עם טבלה נוספת בשם <code>stock</code> (כמה מנות נשארו במטבח). בסלמון (מנה 5) נשארו 3 מנות.</p>
 <div class="schema" data-db="rest" data-tables="orders,order_items"></div>
 
-<div class="lab" data-id="p3-lab-rollback" data-title="ביטול הזמנה באמצע" data-require="BEGIN[\s\S]*ROLLBACK" data-require-msg="צריך לפתוח טרנזקציה עם BEGIN ולבטל אותה עם ROLLBACK.">
+<div class="lab" data-id="p3-lab-rollback" data-title="ביטול הזמנה באמצע" data-require="BEGIN[\s\S]*INSERT[\s\S]*UPDATE[\s\S]*ROLLBACK" data-require-msg="צריך לפתוח טרנזקציה עם BEGIN, להשאיר את הפקודות ולבטל אותה עם ROLLBACK.">
 <div class="q-src">לקוח 4 מזמין 5 סלמונים, אבל במלאי יש 3. הקוד כבר כתב את ההזמנה ואת שורת המנה והוריד מלאי, והמלאי ירד מתחת לאפס. תוסיפו את מה שחסר, כדי שבסוף <b>לא יישאר שום שינוי</b>: תפתחו טרנזקציה בהתחלה ותבטלו אותה בסוף.</div>
 <pre class="setup">CREATE TABLE stock (dish_id INTEGER PRIMARY KEY, qty INTEGER NOT NULL);
 INSERT INTO stock VALUES (1,40),(2,30),(3,25),(4,30),(5,3),(6,20),(7,15),(8,12),(9,60),(10,50);</pre>
@@ -858,11 +863,13 @@ VALUES (4, '2026-05-30 20:00', 'app', 'placed');
 INSERT INTO order_items (order_id, dish_id, qty)
 VALUES (last_insert_rowid(), 5, 5);
 UPDATE stock SET qty = qty - 5 WHERE dish_id = 5;
+SELECT (SELECT COUNT(*) FROM orders) AS orders_n, (SELECT qty FROM stock WHERE dish_id = 5) AS salmon_stock;
 -- המלאי ירד למינוס 2. כאן: לבטל הכול</pre>
 <pre class="check">BEGIN;
 INSERT INTO orders (customer_id, order_ts, channel, status) VALUES (4, '2026-05-30 20:00', 'app', 'placed');
 INSERT INTO order_items (order_id, dish_id, qty) VALUES (last_insert_rowid(), 5, 5);
 UPDATE stock SET qty = qty - 5 WHERE dish_id = 5;
+SELECT (SELECT COUNT(*) FROM orders) AS orders_n, (SELECT qty FROM stock WHERE dish_id = 5) AS salmon_stock;
 ROLLBACK;</pre>
 <pre class="solution">BEGIN;
 INSERT INTO orders (customer_id, order_ts, channel, status)
@@ -870,16 +877,17 @@ VALUES (4, '2026-05-30 20:00', 'app', 'placed');
 INSERT INTO order_items (order_id, dish_id, qty)
 VALUES (last_insert_rowid(), 5, 5);
 UPDATE stock SET qty = qty - 5 WHERE dish_id = 5;
+SELECT (SELECT COUNT(*) FROM orders) AS orders_n, (SELECT qty FROM stock WHERE dish_id = 5) AS salmon_stock;
 ROLLBACK;</pre>
-<ol class="hints"><li>הפקודה הראשונה היא <code>BEGIN;</code>.</li><li>האחרונה היא <code>ROLLBACK;</code>. אחריה אין שום שינוי בשום טבלה.</li><li>בלי <code>BEGIN</code> לא נפתחה טרנזקציה, אז אין מה לבטל. תנסו ותראו את השגיאה.</li></ol>
-<div class="why-src">טבלת ״אחרי״ זהה ל״לפני״: אותו מספר הזמנות, אפס שורות חדשות ומלאי 3. בלי BEGIN, ההזמנה והמנה היו נשארות והמלאי היה במינוס 2. את זה טרנזקציה מונעת.</div>
+<ol class="hints"><li>הפקודה הראשונה היא <code>BEGIN;</code>.</li><li>האחרונה היא <code>ROLLBACK;</code>. אחריה אין שום שינוי בשום טבלה.</li><li>בלי <code>BEGIN</code> לא נפתחה טרנזקציה, ו-<code>ROLLBACK</code> ייתן שגיאה: אין מה לבטל.</li></ol>
+<div class="why-src">בתוך הטרנזקציה ראיתם הזמנה 88 ומלאי מינוס 2. אחרי ROLLBACK הטבלה זהה ל״לפני״: אותו מספר הזמנות, אפס שורות חדשות ומלאי 3. בלי BEGIN, ההזמנה והמנה היו נשארות והמלאי היה במינוס 2. את זה טרנזקציה מונעת.</div>
 </div>
 
 <div class="lab" data-id="p3-lab-commit" data-title="הזמנה שמצליחה: COMMIT" data-require="BEGIN[\s\S]*COMMIT" data-require-msg="צריך טרנזקציה: BEGIN בהתחלה ו-COMMIT בסוף.">
 <div class="q-src">עכשיו הזמנה תקינה: לקוח 4 מזמין 2 סלמונים (יש 3). תכתבו טרנזקציה אחת שרושמת את ההזמנה (ערוץ <code>app</code>, סטטוס <code>placed</code>), רושמת את שורת המנה (מנה 5, כמות 2), מורידה 2 מהמלאי של מנה 5, ושומרת הכול עם <code>COMMIT</code>.</div>
 <pre class="setup">CREATE TABLE stock (dish_id INTEGER PRIMARY KEY, qty INTEGER NOT NULL);
 INSERT INTO stock VALUES (1,40),(2,30),(3,25),(4,30),(5,3),(6,20),(7,15),(8,12),(9,60),(10,50);</pre>
-<pre class="show">SELECT (SELECT COUNT(*) FROM orders) AS orders_n, (SELECT COUNT(*) FROM order_items WHERE order_id > 87) AS new_items, (SELECT qty FROM stock WHERE dish_id = 5) AS salmon_stock</pre>
+<pre class="show">SELECT (SELECT COUNT(*) FROM orders) AS orders_n, (SELECT dish_id || ':' || qty FROM order_items WHERE order_id > 87) AS new_item, (SELECT qty FROM stock WHERE dish_id = 5) AS salmon_stock</pre>
 <pre class="start">BEGIN;
 -- 1. שורה חדשה ב-orders (לקוח 4, חותמת זמן כלשהי)
 -- 2. שורה חדשה ב-order_items להזמנה החדשה (אפשר last_insert_rowid())
@@ -898,11 +906,11 @@ VALUES (last_insert_rowid(), 5, 2);
 UPDATE stock SET qty = qty - 2 WHERE dish_id = 5;
 COMMIT;</pre>
 <ol class="hints"><li>את ההזמנה פותחים עם <code>INSERT INTO orders (customer_id, order_ts, channel, status) VALUES (...)</code>.</li><li><code>last_insert_rowid()</code> מחזיר את המספר שהמסד נתן להזמנה שהרגע נוספה.</li><li>העדכון: <code>UPDATE stock SET qty = qty - 2 WHERE dish_id = 5</code>.</li></ol>
-<div class="why-src">אחרי ה-COMMIT יש 88 הזמנות, שורת מנה אחת חדשה ומלאי 1. שלוש פעולות נשמרו כאחת.</div>
+<div class="why-src">אחרי ה-COMMIT יש 88 הזמנות, שורת מנה חדשה אחת (מנה 5, כמות 2) ומלאי 1. שלוש פעולות נשמרו כאחת.</div>
 </div>
 
 <h3>הגנה בלי שגיאה: ״תעדכן רק אם יש מספיק״</h3>
-<p>במעבדה הראשונה אנחנו שמנו לב שהמלאי שלילי. בקוד אמיתי אי אפשר לסמוך על זה, והבדיקה צריכה להיות חלק מהפקודה. אם קוראים את המלאי, מחליטים ורק אז כותבים, מישהו אחר יכול לשנות אותו באמצע. הדרך הבטוחה היא פקודה אחת: <code>UPDATE ... WHERE qty &gt;= 5</code>, ואז בודקים כמה שורות השתנו. אם אפס, עוצרים.</p>
+<p>במעבדה הראשונה המלאי ירד מתחת לאפס, ורק אחרי זה ביטלנו. בקוד אמיתי עדיף שהבדיקה תהיה חלק מהפקודה. אם קוראים את המלאי, מחליטים ורק אז כותבים, מישהו אחר יכול לשנות אותו באמצע. הדרך הבטוחה היא פקודה אחת (יש עוד דרך נפוצה: לנעול את השורה בזמן הקריאה, עם <code>SELECT ... FOR UPDATE</code>): <code>UPDATE ... WHERE qty &gt;= 5</code>, ואז בודקים כמה שורות השתנו. אם אפס, עוצרים.</p>
 
 <div class="lab" data-id="p3-lab-guard" data-title="הגנה אטומית על המלאי" data-require="qty\s*&gt;=\s*5|qty\s*>=\s*5" data-require-msg="תוסיפו לתנאי של ה-UPDATE בדיקה שיש מספיק מלאי: qty >= 5.">
 <div class="q-src">אותו מקרה: 5 סלמונים והמלאי 3. הקוד כבר בנוי נכון: ההזמנה והשורה נרשמות רק אם העדכון שינה שורה (<dfn data-d="פונקציה של SQLite שאומרת כמה שורות שינתה הפקודה האחרונה. ב-PostgreSQL ובקוד Node יש לזה מקבילה: rowCount">changes()</dfn>). תשלימו את התנאי ב-<code>UPDATE</code> כך שהוא משנה את המלאי רק כשיש מספיק. בסוף לא אמור להשתנות כלום, ובלי שגיאה.</div>
@@ -936,7 +944,7 @@ SELECT last_insert_rowid(), 5, 5
 WHERE changes() > 0;
 COMMIT;</pre>
 <ol class="hints"><li>ב-<code>UPDATE</code> כבר יש <code>dish_id = 5</code>. תוסיפו אליו <code>AND</code> ובדיקה על <code>qty</code>.</li><li>אם במלאי פחות מ-5, אף שורה לא מתאימה, ולכן <code>changes()</code> יחזיר 0.</li></ol>
-<div class="why-src">העדכון לא שינה אף שורה, ולכן שתי ההוספות שאחריו לא קרו. אין שגיאה, אין הזמנה, והמלאי נשאר 3. בקוד Node זה נראה ככה: <code>if (u.rowCount === 0) throw ...</code>.</div>
+<div class="why-src">העדכון לא שינה אף שורה, ולכן שתי ההוספות שאחריו לא קרו. אין שגיאה, אין הזמנה, והמלאי נשאר 3. בקוד Node זה נראה ככה: <code>if (u.rowCount === 0) throw ...</code>. עכשיו תשנו את 5 ל-2 בכל שלוש הפקודות, ותראו שההזמנה כן נרשמת.</div>
 </div>
 
 <h3>מה קורה כשהשרת נופל באמצע?</h3>
@@ -980,9 +988,9 @@ COMMIT;</pre>
 <h3>ארבע התכונות: ACID</h3>
 <p>מסד שתומך בטרנזקציות מבטיח ארבעה דברים. ראשי התיבות שלהם הם ACID.</p>
 <div class="cols2">
-<div class="card"><h4>A: Atomicity, שלמות</h4><p>הקבוצה נשמרת כולה או לא נשמרת בכלל. <b>דוגמה:</b> הזמנה, שורת מנה ומלאי. ראינו את זה ב-ROLLBACK.</p></div>
-<div class="card"><h4>C: Consistency, עקביות</h4><p>החוקים של המסד נשארים נכונים לפני ואחרי: המלאי לא שלילי, כל שורת מנה שייכת להזמנה. <b>דוגמה:</b> ההגנה עם <code>qty &gt;= 5</code>.</p></div>
-<div class="card"><h4>I: Isolation, הפרדה</h4><p>טרנזקציות שרצות באותו זמן לא מתבלבלות אחת בשנייה ולא רואות עבודה חצי גמורה. <b>דוגמה:</b> שני לקוחות על המנה האחרונה, בהדמיה למטה.</p></div>
+<div class="card"><h4>A: Atomicity, אטומיות</h4><p>הקבוצה נשמרת כולה או לא נשמרת בכלל, כמו אטום שלא מחלקים. <b>דוגמה:</b> הזמנה, שורת מנה ומלאי. ראינו את זה ב-ROLLBACK.</p></div>
+<div class="card"><h4>C: Consistency, עקביות</h4><p>המסד לא נותן לשמור מצב שמפר את החוקים שהוגדרו לו, למשל מלאי שלילי או שורת מנה בלי הזמנה. <b>דוגמה:</b> ה-<code>CHECK (qty &gt;= 0)</code> בתרגיל ב-PostgreSQL בהמשך.</p></div>
+<div class="card"><h4>I: Isolation, בידוד</h4><p>טרנזקציות שרצות באותו זמן לא מתבלבלות אחת בשנייה ולא רואות עבודה חצי גמורה. <b>דוגמה:</b> שני לקוחות על המנה האחרונה, בהדמיה למטה.</p></div>
 <div class="card"><h4>D: Durability, עמידות</h4><p>אחרי COMMIT הנתון שורד גם אם החשמל נופל. <b>דוגמה:</b> הלקוח מקבל ״התקבלה״ רק אחרי שההזמנה נכתבה לדיסק. נחזור לזה בסעיף על פריסה.</p></div>
 </div>
 
@@ -1044,7 +1052,7 @@ COMMIT;</pre>
  FL.$$('input[name="p3-r-mode"]',box).forEach(function(r){r.addEventListener('change',reset);});
  reset();
 });})();</script>
-<p>ההדמיה מראה את התוצאה ולא את הדרך שבה המסד מגן. מסדים אמיתיים משתמשים בנעילות ובדרגות בידוד כדי שכל טרנזקציה תיראה כאילו רצה לבד. שתי הדרכים שראיתם (פקודה אחת עם תנאי, או נעילה של השורה בזמן הקריאה) נפוצות.</p>
+<p>ההדמיה מראה את התוצאה ולא את הדרך שבה המסד מגן. מסדים אמיתיים משתמשים בנעילות ובדרגות בידוד כדי שכל טרנזקציה תיראה כאילו רצה לבד. יש שתי דרכים נפוצות להגן: פקודה אחת עם תנאי (זו שראיתם), או נעילה של השורה בזמן הקריאה (<code>SELECT ... FOR UPDATE</code>).</p>
 
 <h3>איך זה נראה בקוד של השרת</h3>
 <pre class="code" data-lang="js">async function placeOrder(pool, customerId, items) {
@@ -1073,11 +1081,11 @@ COMMIT;</pre>
     client.release();
   }
 }</pre>
-<p>שלושה דברים חשובים בקוד הזה. אחד: <code>ROLLBACK</code> בכל שגיאה. שניים: בדיקת <code>rowCount</code>. בלעדיה, עדכון שלא התאים לאף שורה לא יזרוק שגיאה, וההזמנה תישמר. שלושה: <code>client.release()</code> ב-<code>finally</code>, כדי להחזיר את החיבור למאגר. עוד דבר: במסד של הקורס העמודה <code>id</code> בטבלת <code>orders</code> היא סתם מספר שלם. כדי שה-INSERT יקבל מספר אוטומטי ב-PostgreSQL, מגדירים אותה כ-identity: <code>ALTER TABLE orders ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (START WITH 88);</code></p>
+<p>שלושה דברים חשובים בקוד הזה:</p><ol><li><code>ROLLBACK</code> בכל שגיאה.</li><li>בדיקת <code>rowCount</code>. בלעדיה, עדכון שלא התאים לאף שורה לא יזרוק שגיאה, וההזמנה תישמר.</li><li><code>client.release()</code> ב-<code>finally</code>, כדי להחזיר את החיבור למאגר.</li></ol><p>עוד דבר: במסד של הקורס העמודה <code>id</code> בטבלת <code>orders</code> היא סתם מספר שלם. כדי שה-INSERT יקבל מספר אוטומטי ב-PostgreSQL, מגדירים אותה כ-identity: <code>ALTER TABLE orders ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (START WITH 88);</code></p>
 
 <div class="box try" data-id="p3-try-pgtxn">
 <ol>
-<li>תפתחו חשבון חינמי ב-<a class="tool" href="https://neon.tech" target="_blank" rel="noopener">Neon</a> (או תשתמשו בפרויקט ה-Supabase מחלק 1) ותעתיקו את מחרוזת החיבור. יש בתוכה סיסמה, אז לא מדביקים אותה בצ׳אט, בקוד או במסמכים.</li>
+<li>תפתחו חשבון ב-<a class="tool" href="https://neon.tech" target="_blank" rel="noopener">Neon</a> (יש תוכנית חינמית, בדקו את התנאים העדכניים באתר. או תשתמשו בפרויקט ה-Supabase מחלק 1) ותעתיקו את מחרוזת החיבור. יש בתוכה סיסמה, אז לא מדביקים אותה בצ׳אט, בקוד או במסמכים.</li>
 <li>תטענו את <code>yevgeni-postgres.sql</code> מחבילת הנתונים של הקורס, ותוסיפו טבלת מלאי עם חוק שהמלאי לא יורד מתחת לאפס:
 <pre class="code" data-lang="sql">CREATE TABLE stock (
   dish_id integer PRIMARY KEY REFERENCES dishes(id),
@@ -1163,6 +1171,7 @@ LANGUAGE sql AS $$
 $$;
 
 SELECT order_total(3);   -- 207.00</pre>
+<p>גם כאן <code>orders.id</code> צריך להיות identity, כמו בסעיף על טרנזקציות.</p>
 <p>ארבעה יתרונות לפרוצדורה: <b>כולם עושים אותו דבר</b> (אף אחד לא שוכח צעד), <b>מהירות</b> (קריאה אחת במקום כמה הלוך וחזור), <b>הרשאות</b> (אפשר לתת למשתמש לקרוא לפרוצדורה בלי לתת לו גישה לטבלאות), ו<b>מקום אחד</b> לחוק. החיסרון: הלוגיקה יושבת במקום שיותר קשה לבדוק ולנהל בגרסאות, ואם מחליפים מסד צריך לכתוב אותה מחדש.</p>
 
 <h3>טריגר: חוק קטן שרץ מעצמו</h3>
@@ -1226,7 +1235,7 @@ FOR EACH ROW EXECUTE FUNCTION log_price_change();</pre>
 <p>ב-SQLite יש טריגרים, אז את שלוש המעבדות הבאות אפשר להריץ ממש כאן. התחביר קצת שונה מ-PostgreSQL (אין פונקציית טריגר נפרדת, והגוף כתוב בתוך <code>BEGIN ... END</code>), אבל הרעיון אותו דבר.</p>
 
 <div class="lab" data-id="p3-lab-trg-price" data-title="טריגר להיסטוריית מחירים" data-require="CREATE\s+TRIGGER" data-require-msg="תכתבו פקודת CREATE TRIGGER לפני העדכונים.">
-<div class="q-src">תכתבו טריגר <code>AFTER UPDATE OF price ON dishes</code> שרושם בטבלה <code>price_history</code> שורה (<code>dish_id</code>, <code>old_price</code>, <code>new_price</code>) <b>רק כשהמחיר באמת השתנה</b> (<code>WHEN NEW.price &lt;&gt; OLD.price</code>). תשימו אותו לפני שני העדכונים: אחד משנה מחיר, והשני מציב את אותו מחיר, אז הוא לא אמור להיכנס להיסטוריה.</div>
+<div class="q-src">תכתבו טריגר על <code>dishes</code> שרושם בטבלה <code>price_history</code> שורה (<code>dish_id</code>, <code>old_price</code>, <code>new_price</code>) <b>רק כשהמחיר באמת השתנה</b>. תשימו אותו לפני שני העדכונים: אחד משנה מחיר, והשני מציב את אותו מחיר, אז הוא לא אמור להיכנס להיסטוריה.</div>
 <pre class="setup">CREATE TABLE price_history (id INTEGER PRIMARY KEY, dish_id INTEGER, old_price REAL, new_price REAL);</pre>
 <pre class="show">SELECT dish_id, old_price, new_price FROM price_history</pre>
 <pre class="start">-- כאן כותבים CREATE TRIGGER ...
@@ -1249,7 +1258,7 @@ END;
 
 UPDATE dishes SET price = 72 WHERE id = 3;
 UPDATE dishes SET price = 32 WHERE id = 2;</pre>
-<ol class="hints"><li>המבנה: <code>CREATE TRIGGER שם AFTER UPDATE OF price ON dishes WHEN תנאי BEGIN ... END;</code></li><li>בפנים: <code>INSERT INTO price_history (dish_id, old_price, new_price) VALUES (OLD.id, OLD.price, NEW.price);</code></li><li>בלי <code>WHEN</code>, גם העדכון השני ייכנס להיסטוריה.</li></ol>
+<ol class="hints"><li>המבנה: <code>CREATE TRIGGER שם AFTER UPDATE OF price ON dishes WHEN תנאי BEGIN ... END;</code></li><li>בתוך הטריגר אפשר להשתמש ב-<code>OLD</code> וב-<code>NEW</code>.</li><li>בלי <code>WHEN</code>, גם העדכון השני ייכנס להיסטוריה.</li></ol>
 <div class="why-src">בטבלת ״אחרי״ יש שורה אחת: מנה 3, מ-68 ל-72. העדכון השני לא השאיר עקבות, כי המחיר לא השתנה. ובשום מקום בקוד של העדכון לא כתבנו ״וגם תרשום היסטוריה״. זה חוק של המסד.</div>
 </div>
 
@@ -1274,7 +1283,7 @@ END;
 
 DELETE FROM orders WHERE id = 87;</pre>
 <ol class="hints"><li>במחיקה אין שורה חדשה, אז משתמשים ב-<code>OLD</code>.</li><li>בפנים: <code>INSERT INTO order_audit (order_id, channel) VALUES (OLD.id, OLD.channel);</code></li></ol>
-<div class="why-src">ההזמנה נמחקה, והטריגר השאיר שורה בטבלת האודיט עם מספר ההזמנה והערוץ. בטריגר מחיקה יש רק OLD, כי אין שורה חדשה.</div>
+<div class="why-src">ההזמנה נמחקה, והטריגר השאיר שורה בטבלת האודיט עם מספר ההזמנה והערוץ. בטריגר מחיקה יש רק OLD, כי אין שורה חדשה. במערכת אמיתית לא מוחקים הזמנה כך בלי לטפל בשורות המנות שלה.</div>
 </div>
 
 <div class="lab" data-id="p3-lab-trg-double" data-title="הורדה כפולה של מלאי" data-ordered="0">
@@ -1285,7 +1294,7 @@ CREATE TRIGGER trg_stock AFTER INSERT ON order_items
 BEGIN
   UPDATE stock SET qty = qty - NEW.qty WHERE dish_id = NEW.dish_id;
 END;</pre>
-<pre class="show">SELECT (SELECT COUNT(*) FROM orders) AS orders_n, (SELECT COUNT(*) FROM order_items WHERE order_id > 87) AS new_items, (SELECT qty FROM stock WHERE dish_id = 5) AS salmon_stock</pre>
+<pre class="show">SELECT (SELECT COUNT(*) FROM orders) AS orders_n, (SELECT dish_id || ':' || qty FROM order_items WHERE order_id > 87) AS new_item, (SELECT qty FROM stock WHERE dish_id = 5) AS salmon_stock</pre>
 <pre class="start">BEGIN;
 INSERT INTO orders (customer_id, order_ts, channel, status)
 VALUES (4, '2026-05-30 20:00', 'app', 'placed');
@@ -1312,7 +1321,7 @@ COMMIT;</pre>
 <tbody>
 <tr><td><b>מי מפעיל</b></td><td>מישהו קורא לה בשם (<code>CALL</code>)</td><td>המסד, בתגובה לאירוע בטבלה</td></tr>
 <tr><td><b>מתאים ל</b></td><td>תהליך עם כמה צעדים: להזמין, לבטל, להעביר</td><td>חוק קטן וקבוע: אודיט, היסטוריה, שמירה על תקינות</td></tr>
-<tr><td><b>הסיכון</b></td><td>הלוגיקה מפוזרת בין הקוד לבין המסד</td><td>קסם נסתר: משהו קורה ואי אפשר לראות את זה בקוד</td></tr>
+<tr><td><b>הסיכון</b></td><td>הלוגיקה מפוזרת בין הקוד לבין המסד</td><td>חוק נסתר: משהו קורה ואי אפשר לראות את זה בקוד</td></tr>
 <tr><td><b>כלל אצבע</b></td><td>כשכמה לקוחות צריכים לבצע אותו תהליך</td><td>כשהחוק חייב לקרות תמיד, בלי קשר ללקוח</td></tr>
 </tbody></table></div>
 
@@ -1336,7 +1345,7 @@ COMMIT;</pre>
 </div>
 
 <div class="box real">
-<p>בארגונים שחייבים לשמור עקבות (למשל במערכות פיננסיות) מקובל שטבלת האודיט נכתבת על ידי המסד עצמו, כי אי אפשר לעקוף אותה בטעות מהאפליקציה. בפלטפורמות על בסיס PostgreSQL, כמו Supabase, אפשר להגדיר פונקציות וטריגרים. דוגמה נפוצה: יצירת שורה בטבלת פרופילים לכל משתמש חדש. במערכות ותיקות של בנקים וחברות גדולות יש לא פעם הרבה פרוצדורות ישנות, אז מי שנכנס לארגון כזה צריך לדעת לקרוא אותן.</p>
+<p>בארגונים שחייבים לשמור עקבות (למשל במערכות פיננסיות) אפשר, ולא פעם עושים כך, שטבלת האודיט נכתבת על ידי המסד עצמו, כי אי אפשר לעקוף אותה בטעות מהאפליקציה. בפלטפורמות על בסיס PostgreSQL, כמו Supabase, אפשר להגדיר פונקציות וטריגרים. דוגמה נפוצה: יצירת שורה בטבלת פרופילים לכל משתמש חדש. בארגונים ותיקים יש לא פעם הרבה פרוצדורות ישנות, אז מי שנכנס לארגון כזה צריך לדעת לקרוא אותן.</p>
 </div>
 
 <div class="quiz" data-id="p3-q-old" data-a="1"><p class="qq">בטריגר שמופעל על <b>הוספת</b> שורה (<code>AFTER INSERT</code>), מה הערך של <code>OLD</code>?</p>
@@ -1414,7 +1423,7 @@ COMMIT;</pre>
 <p>אפשר לבנות מסמך כזה גם ב-SQL. המעבדה הבאה מריצה שאילתה שמרכיבה את הזמנה 3 כמסמך JSON. ככה גם שרת מחזיר הזמנה ללקוח.</p>
 
 <div class="lab" data-id="p3-lab-doc" data-title="הזמנה כמסמך אחד">
-<div class="q-src">תריצו את השאילתה. אחר כך תשנו את מספר ההזמנה ותריצו שוב להזמנה אחרת, למשל 4 או 10. שימו לב איך שורות הפריטים הופכות למערך בתוך המסמך.</div>
+<div class="q-src">תריצו את השאילתה. אחר כך תשנו את מספר ההזמנה ותריצו שוב להזמנה אחרת, למשל 4 או 10. שימו לב איך שורות הפריטים הופכות לרשימה בתוך המסמך.</div>
 <pre class="start">SELECT json_object(
   'order_id', o.id,
   'channel',  o.channel,
@@ -1440,7 +1449,7 @@ WHERE o.id = 3</pre>
 </tbody></table></div>
 
 <div class="box meaning">
-<p>שימו לב לפרט קטן אבל חשוב. בטבלאות של יבגני אין מחיר בשורת ההזמנה: המחיר נלקח מ-<code>dishes</code>. אז אם משנים מחיר היום, משתנה גם הסכום של הזמנות ישנות. במסמך אפשר לשמור את המחיר שהיה ברגע ההזמנה. ב-SQL גם אפשר, אם מוסיפים עמודה <code>unit_price</code> לשורת ההזמנה. המסקנה היא לא ״מסמכים עדיפים״. המסקנה: לפני שבוחרים מבנה, שואלים איזה שאלות נשאל עליו אחר כך.</p>
+<p>שימו לב לפרט קטן אבל חשוב. בטבלאות של יבגני אין מחיר בשורת ההזמנה: המחיר נלקח מ-<code>dishes</code>. אז אם משנים מחיר היום, משתנה גם הסכום של הזמנות ישנות. במסמך אפשר לשמור את המחיר שהיה ברגע ההזמנה. ב-SQL גם אפשר, אם מוסיפים עמודה <code>unit_price</code> לשורת ההזמנה. המסקנה היא לא ״מסמכים עדיפים״. המסקנה: לפני שבוחרים מבנה, שואלים אילו שאלות נשאל עליו אחר כך.</p>
 </div>
 
 <div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span class="url">מסוף מסד מסמכים · הדמיה סכמטית</span></div>
@@ -1480,17 +1489,17 @@ notes: "בלי פטרוזיליה"</div></div>
   {t:'תפריט היום שמוצג לאלפי לקוחות בכל שנייה, ואפשר לוותר על עדכניות של דקה.',a:'cache',w:'נתון שנקרא הרבה ומשתנה מעט. שומרים עותק מהיר בזיכרון ולא מעמיסים על המסד.'},
   {t:'דוח של שלוש שנים של הזמנות לפי חודש וערוץ, על מיליוני שורות.',a:'wh',w:'שאילתות ניתוח על הרבה שורות מריצים במחסן נתונים, מחוץ למערכת החיה. נראה את זה בחלק 4.'},
   {t:'לקוח כותב ״משהו קל ורענן״ ורוצים להציע מנות דומות במשמעות.',a:'vec',w:'חיפוש לפי משמעות עובד עם ייצוג מספרי של טקסט. את זה נראה בסעיף 8.'},
-  {t:'העדפות של לקוחות: לכל אחד רשימה שונה של שדות (אלרגיות, הערות, כתובות חלופיות).',a:'doc',w:'לכל לקוח מבנה אחר. מסמך נוח כאן, ואפשר גם עמודת JSON בתוך טבלה רגילה.'}
+  {t:'העדפות של לקוחות: לכל אחד רשימה שונה של שדות (אלרגיות, הערות, כתובות חלופיות).',a:'doc',b:'sql',w:'לכל לקוח מבנה אחר. מסמך נוח כאן, ואפשר גם עמודת JSON בתוך טבלה רגילה. שתי התשובות נכונות.'}
  ];
  let i=0, ok=0, tot=0, answered=false;
  const qE=FL.$('.p3-s-q',box), fb=FL.$('.p3-s-fb',box), sc=FL.$('.p3-s-sc',box);
  function show(){ answered=false; qE.textContent=(i+1)+'. '+Q[i].t; fb.textContent='תבחרו תשובה.'; FL.$$('.p3-s-opts button',box).forEach(function(b){b.className='btn sec2';b.disabled=false;}); }
  FL.$('.p3-s-opts',box).addEventListener('click',function(e){
   const b=e.target.closest('button[data-k]'); if(!b||answered) return; answered=true; tot++;
-  const right=b.dataset.k===Q[i].a; if(right) ok++;
+  const right=b.dataset.k===Q[i].a||b.dataset.k===Q[i].b; if(right) ok++;
   b.className='btn '+(right?'ok':'');
   if(!right){ b.style.background='var(--red)'; const r=FL.$('.p3-s-opts button[data-k="'+Q[i].a+'"]',box); r.className='btn ok'; }
-  fb.innerHTML='<span class="chip '+(right?'g':'r')+'">'+(right?'נכון':'לא מדויק')+'</span> '+FL.esc(Q[i].w);
+  fb.innerHTML='<span class="chip '+(right?'g':'r')+'">'+(right?(b.dataset.k===Q[i].a?'נכון':'נכון, ויש עוד תשובה נכונה'):'לא מדויק')+'</span> '+FL.esc(Q[i].w);
   sc.textContent='ציון: '+ok+' מתוך '+tot;
   if(tot>=Q.length) FL.done('p3-sim-store');
  });
@@ -1501,17 +1510,17 @@ notes: "בלי פטרוזיליה"</div></div>
 <div class="box try" data-id="p3-try-firestore">
 <ol>
 <li>תיכנסו ל-<a class="tool" href="https://console.firebase.google.com" target="_blank" rel="noopener">Firebase Console</a> עם חשבון Google ותיצרו פרויקט בשם <code>yevgeni-demo</code>. את האנליטיקה אפשר לכבות.</li>
-<li>בתפריט הצד תבחרו Firestore Database ויצירת מסד. רק בשביל התרגיל תבחרו מצב בדיקה: הוא פותח את המסד לכולם לזמן מוגבל, אז אל תשימו בו נתונים אמיתיים.</li>
+<li>בתפריט הצד תבחרו Firestore Database ויצירת מסד. אם מוצעות מהדורות, תבחרו Standard, ותבחרו אזור. רק בשביל התרגיל תבחרו מצב בדיקה: הוא פותח את המסד לכולם לזמן מוגבל, אז אל תשימו בו נתונים אמיתיים.</li>
 <li>תיצרו אוסף בשם <code>orders</code> ותוסיפו מסמך: <code>channel</code> (string) <code>app</code>, <code>customer_id</code> (number) <code>2</code>, ו-<code>items</code> (array) עם שני ערכים.</li>
 <li>תוסיפו מסמך שני עם שדות אחרים, למשל רק <code>channel</code> ו-<code>notes</code>. אין שגיאה, כי המבנה לא קבוע.</li>
-<li>תנסו מסנן על השדה <code>channel</code> ותראו מה חוזר. ואז תחשבו: איך הייתם מקבלים כאן ״סך ההכנסות מכל ההזמנות״, לעומת שאילתת SUM אחת ב-SQL?</li>
+<li>תנסו מסנן על השדה <code>channel</code> ותראו מה חוזר. ואז תחשבו: איך הייתם מקבלים כאן ״כמה הכנסה לכל מנה״, כשהמנות יושבות בתוך רשימה בכל מסמך? ב-SQL זו שאילתת GROUP BY אחת.</li>
 <li>בסוף תמחקו את הפרויקט או תסגרו את הכללים, כדי שלא יישאר מסד פתוח.</li>
 </ol>
 <p class="tools"><a class="tool" href="https://console.firebase.google.com" target="_blank" rel="noopener">Firebase Console</a></p>
 </div>
 
 <div class="box real">
-<p>רוב המערכות הגדולות לא משתמשות במסד אחד לכל דבר. בדרך כלל יש מסד יחסי (כמו PostgreSQL) להזמנות ולתשלומים, מסד מסמכים (כמו MongoDB או Firestore) לתוכן גמיש, מטמון (כמו Redis) בשביל מהירות, ומחסן נתונים (כמו BigQuery) לדוחות. טעות נפוצה של מתחילים: לחשוב שמסד אחד יספיק לכל דבר, או לבחור לפי אופנה ולא לפי השאלות שישאלו.</p>
+<p>מערכות גדולות משתמשות לרוב ביותר ממסד אחד. בדרך כלל יש מסד יחסי (כמו PostgreSQL) להזמנות ולתשלומים, מסד מסמכים (כמו MongoDB או Firestore) לתוכן גמיש, מטמון (כמו Redis) בשביל מהירות, ומחסן נתונים (כמו BigQuery) לדוחות. טעות נפוצה של מתחילים: לחשוב שמסד אחד יספיק לכל דבר, או לבחור לפי אופנה ולא לפי השאלות שישאלו.</p>
 </div>
 
 <div class="quiz" data-id="p3-q-chat" data-a="2"><p class="qq">אפליקציית צ׳אט שומרת הודעות בזמן אמת. לכל הודעה שדות אחרים, ואין צורך ב-JOIN מורכבים. מה כנראה מתאים?</p>
@@ -1529,7 +1538,7 @@ notes: "בלי פטרוזיליה"</div></div>
 <div class="box think" data-id="p3-th-doc"><p>תמצאו במסד של יבגני דוגמה שבה מסמך או שדה גמיש מתאימים יותר מעמודות קבועות. ותמצאו דוגמה שבה דווקא הטבלה צריכה להישאר.</p>
 <div class="ans">בטבלה <code>app_events</code> העמודה <code>payload</code> כבר שומרת JSON: לכל סוג אירוע שדות אחרים. שם רואים גם את המחיר של הגמישות: שדה ששינו לו את השם גרם לערכי NULL שקטים. הטבלאות <code>orders</code> ו-<code>order_items</code> צריכות להישאר טבלאות: צריך לוודא שכל שורת מנה שייכת להזמנה קיימת, לרשום אותן ביחד בטרנזקציה, ולשאול עליהן שאלות כמו ״כמה הכנסה לכל מנה״.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> תריצו את משחק האחסון כשהכיתה מצביעה. מקרה 6 (העדפות) בכוונה פתוח: יש מי שיענה מסמכים ויש מי שיענה עמודת JSON, ושתי התשובות סבירות. תשתמשו בזה כדי להראות שההחלטה תלויה בשאלות שישאלו בהמשך. פרויקט ב-Firebase דורש חשבון Google אישי, אז אל תחייבו את הכיתה: אפשר להראות את התהליך.</div>
+<div class="teach"><b>🎓 למרצה:</b> תריצו את משחק האחסון כשהכיתה מצביעה. במקרה 6 (העדפות) שתי התשובות, מסמכים ועמודת JSON, מתקבלות כנכונות. תשתמשו בזה כדי להראות שההחלטה תלויה בשאלות שישאלו בהמשך. פרויקט ב-Firebase דורש חשבון Google אישי, אז אל תחייבו את הכיתה: אפשר להראות את התהליך.</div>
 </section>
 
 <!-- ======================= 7 ======================= -->
@@ -1578,8 +1587,8 @@ notes: "בלי פטרוזיליה"</div></div>
 </div>
 
 <h3>א. מאזן עומסים</h3>
-<div class="defline"><b>מאזן עומסים (Load Balancer):</b> שרת שיושב לפני כמה שרתים זהים, מקבל את כל הבקשות, מחלק אותן ביניהם ודולג על שרת שנפל. כמו מי שמנהל את התור בבנק ושולח כל לקוח לפקיד פנוי.</div>
-<div class="defline"><b>בדיקת בריאות (Health Check):</b> המאזן בודק שוב ושוב אם כל שרת עונה. לדוגמה: שרת שלא ענה כמה פעמים ברצף יוצא מהסבב עד שיחזור.</div>
+<div class="defline"><b>מאזן עומסים (Load Balancer):</b> שרת שיושב לפני כמה שרתים זהים, מקבל את כל הבקשות, מחלק אותן ביניהם ודולג על שרת שנפל. כמו מי שמנהל את התור בבנק ושולח כל לקוח לפקיד פנוי. בזכותו אפשר גם לעדכן שרת אחד בכל פעם בלי להוריד את המערכת.</div>
+<div class="defline"><b>בדיקת בריאות (Health Check):</b> המאזן בודק שוב ושוב אם כל שרת עונה. לדוגמה: שרת שלא ענה כמה פעמים ברצף יוצא מהסבב עד שיחזור. יש מאזנים שבודקים כל כמה שניות, ויש כאלה (כמו nginx החינמי) שמגלים רק כשבקשה נכשלת.</div>
 <p>בהדמיה אפשר לשלוח בקשות, להפיל שרתים ולהחליף שיטת חלוקה. תנסו קודם בלי בדיקת בריאות, ואחר כך איתה.</p>
 
 <div class="sim" data-id="p3-sim-lb"><div class="sh">שלושה שרתים ומאזן עומסים</div>
@@ -1595,7 +1604,7 @@ notes: "בלי פטרוזיליה"</div></div>
 <script>(function(){FL.dom(function(){
  const box=FL.$('[data-id="p3-sim-lb"]'); if(!box) return;
  const srvE=FL.$('.p3-l-srv',box), logE=FL.$('.p3-l-log',box), algE=FL.$('.p3-l-alg',box), hcE=FL.$('.p3-l-hc',box), autoB=FL.$('.p3-l-auto',box);
- const N=3; let S,rr,sent,fail,ans,timer=null,killed=false,afterKill=0;
+ const N=3; let S,rr,sent,fail,ans,timer=null,killed=false,sawBad=0,good=0;
  function reset(){ S=[0,1,2].map(function(){return {down:false,act:[],served:0,failed:0};}); rr=0;sent=0;fail=0;ans=0; logE.innerHTML=''; draw(); }
  function add(t,c){ const d=document.createElement('div'); d.className=c||''; d.textContent=t; logE.insertBefore(d,logE.firstChild); while(logE.childNodes.length>40) logE.removeChild(logE.lastChild); }
  function pick(){
@@ -1606,11 +1615,11 @@ notes: "בלי פטרוזיליה"</div></div>
   return -1;
  }
  function send(){
-  sent++; if(killed) afterKill++;
+  sent++;
   const i=pick();
   if(i<0){ fail++; add('בקשה '+sent+': אין שרת זמין (503)','bad'); return; }
-  if(S[i].down){ S[i].failed++; fail++; add('בקשה '+sent+' הופנתה לשרת '+(i+1)+' שנפל. הלקוח קיבל שגיאה','bad'); return; }
-  const d=1+Math.floor(Math.random()*5); S[i].act.push(d); add('בקשה '+sent+' אל שרת '+(i+1)+' (תיקח '+d+' מחזורים)','inf');
+  if(S[i].down){ sawBad=1; S[i].failed++; fail++; add('בקשה '+sent+' הופנתה לשרת '+(i+1)+' שנפל. הלקוח קיבל שגיאה','bad'); return; }
+  if(hcE.checked&&S.some(function(x){return x.down;})) good++; const d=1+Math.floor(Math.random()*5); S[i].act.push(d); add('בקשה '+sent+' אל שרת '+(i+1)+' (תיקח '+d+' מחזורים)','inf');
  }
  function tick(){ S.forEach(function(s){ s.act=s.act.map(function(x){return x-1;}).filter(function(x){ if(x<=0){ s.served++; ans++; return false; } return true; }); }); }
  function draw(){
@@ -1621,8 +1630,8 @@ notes: "בלי פטרוזיליה"</div></div>
     +'<button type="button" class="btn sec2" data-k="'+i+'" style="margin-top:6px;padding:3px 10px;font-size:.85rem">'+(s.down?'הקימו':'הפילו')+'</button></div>'; }).join('');
   FL.$('.p3-l-sent',box).textContent='נשלחו: '+sent; FL.$('.p3-l-ok',box).textContent='נענו: '+ans; FL.$('.p3-l-fail',box).textContent='נכשלו: '+fail;
  }
- srvE.addEventListener('click',function(e){ const b=e.target.closest('button[data-k]'); if(!b) return; const s=S[+b.dataset.k]; s.down=!s.down; if(s.down){ killed=true; if(s.act.length){ fail+=s.act.length; s.failed+=s.act.length; add('שרת '+(+b.dataset.k+1)+' נפל עם '+s.act.length+' בקשות פעילות: הן אבדו','bad'); s.act=[]; } else add('שרת '+(+b.dataset.k+1)+' נפל','bad'); } else add('שרת '+(+b.dataset.k+1)+' חזר','ok'); draw(); });
- function round(n){ for(let k=0;k<n;k++) send(); draw(); if(afterKill>=6) FL.done('p3-sim-lb'); }
+ srvE.addEventListener('click',function(e){ const b=e.target.closest('button[data-k]'); if(!b) return; const s=S[+b.dataset.k]; s.down=!s.down; if(s.down){ killed=true; if(s.act.length){ fail+=s.act.length; s.failed+=s.act.length; add('שרת '+(+b.dataset.k+1)+' נפל עם '+s.act.length+' בקשות פעילות: הן אבדו (גם בדיקת בריאות לא מצילה בקשות שכבר רצו)','bad'); s.act=[]; } else add('שרת '+(+b.dataset.k+1)+' נפל','bad'); } else add('שרת '+(+b.dataset.k+1)+' חזר','ok'); draw(); });
+ function round(n){ for(let k=0;k<n;k++) send(); draw(); if(sawBad&&good>=3) FL.done('p3-sim-lb'); }
  FL.$('.p3-l-one',box).addEventListener('click',function(){ round(1); });
  FL.$('.p3-l-ten',box).addEventListener('click',function(){ round(10); });
  FL.$('.p3-l-reset',box).addEventListener('click',function(){ reset(); });
@@ -1630,7 +1639,9 @@ notes: "בלי פטרוזיליה"</div></div>
  setInterval(function(){ if(!timer){ const before=JSON.stringify(S.map(function(s){return s.act;})); tick(); if(before!==JSON.stringify(S.map(function(s){return s.act;}))) draw(); } },900);
  reset();
 });})();</script>
-<p>שני דברים לשים לב אליהם. אם בדיקת הבריאות כבויה, המאזן ממשיך לשלוח בקשות לשרת שנפל, והלקוחות מקבלים שגיאות. ובשיטת ״הכי מעט פעילות״ בלי בדיקת בריאות, שרת שנפל נראה למאזן פנוי (אפס בקשות), ולכן הוא מושך אליו את כל התנועה. זה לא באג בהדמיה, זה סיכון אמיתי.</p>
+<p>שני דברים לשים לב אליהם. אם בדיקת הבריאות כבויה, המאזן ממשיך לשלוח בקשות לשרת שנפל, והלקוחות מקבלים שגיאות. ובשיטת ״הכי מעט פעילות״ בלי בדיקת בריאות, שרת שנפל נראה למאזן פנוי (אפס בקשות), ולכן הוא מושך אליו את כל התנועה. זה לא באג בהדמיה, זה סיכון אמיתי, ולכן במאזנים אמיתיים מגדירים בדיקה. עוד הבדל: בהדמיה הזיהוי מיידי. במציאות עוברות כמה שניות עד שהמאזן מבין ששרת נפל, ובזמן הזה חלק מהבקשות נכשלות.</p>
+<p><b>חלוקה לסירוגין (Round Robin):</b> שרת 1, שרת 2, שרת 3 ושוב מההתחלה. <b>הכי מעט פעילות (Least Connections):</b> כל בקשה הולכת לשרת שעסוק בהכי מעט בקשות עכשיו.</p>
+<p><b>שרת בלי מצב (Stateless).</b> בהדמיה כל בקשה יכולה ללכת לכל שרת. זה עובד רק אם השרתים לא זוכרים כלום בין בקשות. אם עגלה של לקוח נשמרת בזיכרון של שרת 1 והבקשה הבאה מגיעה לשרת 2, העגלה נעלמת. הפתרונות: לשמור את העגלה במסד או במטמון משותף (זה הכי טוב), או להשתמש ב-<dfn data-d="הגדרה במאזן שמחזירה את אותו לקוח תמיד לאותו שרת">Sticky Sessions</dfn>.</p>
 
 <div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span class="url">לוח בקרה תפעולי · הדמיה סכמטית</span></div>
 <div class="mk-body" style="background:#f1f5f9">
@@ -1646,14 +1657,15 @@ notes: "בלי פטרוזיליה"</div></div>
 
 <h3>ב. מטמון</h3>
 <div class="defline"><b>מטמון (Cache):</b> עותק מהיר של תשובה שנשאלת הרבה, כדי לא לחשב אותה מחדש כל פעם. לדוגמה: התפריט נשמר בזיכרון, והמסד לא נשאל בכל פעם שמישהו פותח את המסך.</div>
-<div class="defline"><b>פגיעה והחטאה (Hit, Miss):</b> פגיעה זה כשהתשובה נמצאה במטמון. החטאה זה כשהיא לא נמצאה, והשרת צריך לשאול את המסד ולשמור את התשובה במטמון. לדוגמה: הבקשה הראשונה אחרי שהמטמון התרוקן היא תמיד החטאה.</div>
+<div class="defline"><b>פגיעה ופספוס (Hit, Miss):</b> פגיעה זה כשהתשובה נמצאה במטמון. פספוס זה כשהיא לא נמצאה, והשרת צריך לשאול את המסד ולשמור את התשובה במטמון. לדוגמה: הבקשה הראשונה אחרי שהמטמון התרוקן היא תמיד פספוס.</div>
 <p>איזו שאילתה כדאי לשמור? כזו שנשאלת הרבה ומשתנה לאט. הנה אחת:</p>
 
 <div class="lab" data-id="p3-lab-hot" data-title="השאילתה שכדאי לשמור במטמון" data-ordered="1">
 <div class="q-src">מסך ״הכי נמכרים״ באפליקציה מציג את שלוש המנות עם הכמות הכי גדולה (<code>SUM(qty)</code> על כל שורות ההזמנות). תציגו שם מנה (<code>name</code>) וכמות (<code>units</code>), מהגבוהה לנמוכה, שלוש שורות.</div>
-<pre class="start">SELECT d.name, SUM(oi.qty) AS units
+<pre class="start">SELECT oi.dish_id, SUM(oi.qty) AS units
 FROM order_items oi
--- תשלימו
+GROUP BY oi.dish_id
+-- תשלימו: שם המנה במקום מספר המנה, מיון ושלוש שורות
 </pre>
 <pre class="check">SELECT d.name, SUM(oi.qty) AS units FROM order_items oi JOIN dishes d ON d.id = oi.dish_id GROUP BY d.id ORDER BY units DESC LIMIT 3</pre>
 <pre class="solution">SELECT d.name, SUM(oi.qty) AS units
@@ -1672,8 +1684,8 @@ async function getMenu() {
   if (cached) return JSON.parse(cached);          // פגיעה
 
   const r = await pool.query('SELECT id, name, price FROM dishes ORDER BY id');
-  await redis.set('menu', JSON.stringify(r.rows), { EX: 60 }); // תוקף: 60 שניות
-  return r.rows;                                  // החטאה
+  await redis.set('menu', JSON.stringify(r.rows), { EX: 60 }); // תוקף: 60 שניות (ספריית node-redis)
+  return r.rows;                                  // פספוס
 }</pre>
 
 <p>למטמון יש מחיר: הוא יכול להציג מידע ישן. בהדמיה הבאה תשנו את המחיר של הסלמון ותראו כמה זמן הלקוחות ממשיכים לראות את המחיר הישן. העלויות (50 לקריאה מהמסד, 1 מהמטמון) הן יחידות להמחשה, לא מדידה אמיתית.</p>
@@ -1700,7 +1712,7 @@ async function getMenu() {
  FL.$('.p3-c-req',box).addEventListener('click',function(){
   const ttl=+ttlE.value; st.req++;
   if(cache&&cache.age<ttl){ cache.age++; st.hit++; st.cost+=1; const stale=cache.price!==dbPrice; if(stale) st.stale++; add('בקשה '+st.req+': פגיעה. מחיר שהוצג '+cache.price+(stale?' (ישן! במסד '+dbPrice+')':''),stale?'bad':'ok'); }
-  else { st.miss++; st.cost+=50; cache={price:dbPrice,age:1}; add('בקשה '+st.req+': החטאה. קריאה מהמסד, מחיר '+dbPrice+', והעתקה למטמון','inf'); }
+  else { st.miss++; st.cost+=50; cache={price:dbPrice,age:1}; add('בקשה '+st.req+': פספוס. קריאה מהמסד, מחיר '+dbPrice+', והעתקה למטמון','inf'); }
   draw(); if(st.req>=8&&changed) FL.done('p3-sim-cache');
  });
  FL.$('.p3-c-set',box).addEventListener('click',function(){
@@ -1712,11 +1724,11 @@ async function getMenu() {
  FL.onReady(function(ok){ if(ok){ const r=FL.exec('SELECT price FROM dishes WHERE id=5'); if(r) { } } reset(); });
  reset();
 });})();</script>
-<p>שני דברים לקחת מההדמיה. אחד: הבקשה הראשונה תמיד איטית (החטאה), והמטמון משתלם רק כשאותה שאלה חוזרת. שניים: מטמון זה ויתור מכוון על מידע עדכני. בתפריט, דקה של מחיר ישן זה בסדר. במלאי של המנה האחרונה, לא. אפשר לקצר את התוקף או לנקות את המטמון בכל שינוי, ושתי הדרכים עולות בעוד פניות למסד.</p>
+<p>שני דברים לקחת מההדמיה. אחד: הבקשה הראשונה תמיד איטית (פספוס), והמטמון משתלם רק כשאותה שאלה חוזרת. שניים: מטמון זה ויתור מכוון על מידע עדכני. בתפריט, דקה של מחיר ישן זה בסדר. במלאי של המנה האחרונה, לא. אפשר לקצר את התוקף או לנקות את המטמון בכל שינוי, ושתי הדרכים עולות בעוד פניות למסד.</p>
 
 <h3>ג. חיבורים למסד ומאגר חיבורים</h3>
 <div class="defline"><b>חיבור למסד (Connection):</b> ערוץ פתוח בין השרת למסד, שדרכו עוברות הפקודות. לפתוח אותו זה יקר, והמסד מגביל כמה חיבורים יכולים להיות פתוחים בו זמנית. לדוגמה: מסד שמוגדר ל-100 חיבורים ידחה את חיבור 101.</div>
-<div class="defline"><b>מאגר חיבורים (Connection Pool):</b> כמה חיבורים פתוחים שנשארים פתוחים, ואת כל אחד מהם משאילים לבקשה אחת אחרי השנייה. כמו קופות בסופר: הרבה אנשים עוברים דרך שלוש קופות, ומי שלא מצא קופה פנויה מחכה בתור.</div>
+<div class="defline"><b>מאגר חיבורים (Connection Pool):</b> כמה חיבורים שנשארים פתוחים, ואת כל אחד מהם משאילים לבקשה אחת אחרי השנייה. כמו קופות בסופר: הרבה אנשים עוברים דרך שלוש קופות, ומי שלא מצא קופה פנויה מחכה בתור.</div>
 <p>בהדמיה אתם קובעים כמה חיבורים המסד מאפשר וכמה בקשות מגיעות בבת אחת, ומשווים בין שתי דרכי עבודה.</p>
 
 <div class="sim" data-id="p3-sim-pool"><div class="sh">גל בקשות מול מגבלת חיבורים</div>
@@ -1745,7 +1757,7 @@ async function getMenu() {
    else { const w=Math.floor(k/L); if(w===0){ immediate++; h+='<span title="נענה מיד" style="width:22px;height:22px;border-radius:6px;background:#22c55e;display:inline-block"></span>'; } else { waited++; waitSum+=w; h+='<span title="המתין '+w+' סבבים" style="width:22px;height:22px;border-radius:6px;background:#f59e0b;display:inline-block"></span>'; } }
   }
   visE.innerHTML=h;
-  if(mode==='no') out.innerHTML='<p><span class="chip g">נענו מיד: '+immediate+'</span> <span class="chip r">נדחו (too many connections): '+rejected+'</span></p><p>כל בקשה ניסתה לפתוח חיבור חדש. מעבר למגבלה, המסד מסרב, והלקוחות רואים שגיאה. '+(rejected?'':'כאן אין חריגה, ולכן הכול עבר. הגדילו את הגל כדי לראות מה קורה.')+'</p>';
+  if(mode==='no') out.innerHTML='<p><span class="chip g">נענו מיד: '+immediate+'</span> <span class="chip r">נדחו (too many clients): '+rejected+'</span></p><p>כל בקשה ניסתה לפתוח חיבור חדש. מעבר למגבלה, המסד מסרב, והלקוחות רואים שגיאה. '+(rejected?'':'כאן אין חריגה, ולכן הכול עבר. הגדילו את הגל כדי לראות מה קורה.')+'</p>';
   else out.innerHTML='<p><span class="chip g">נענו מיד: '+immediate+'</span> <span class="chip a">המתינו בתור: '+waited+'</span> <span class="chip r">נדחו: 0</span></p><p>נפתחו רק '+Math.min(L,U)+' חיבורים, והם שימשו שוב ושוב. '+(waited?'ההמתנה הממוצעת של מי שחיכה: '+(Math.round(100*waitSum/waited)/100)+' סבבי שירות.':'אין המתנה כי הגל קטן מהמגבלה.')+'</p>';
   if(used.no&&used.pool) FL.done('p3-sim-pool');
  });
@@ -1808,7 +1820,7 @@ EOF
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t &amp;&amp; sudo service nginx restart</pre></li>
 <li>תשלחו שש בקשות: <code>for i in $(seq 1 6); do curl -s http://localhost:8080/; done</code>. התשובות מתחלפות בין שני השרתים.</li>
-<li>תפילו שרת אחד: <code>pkill -f "http.server 8081"</code>, ותריצו שוב את הלולאה. עכשיו כל התשובות מגיעות משרת 2. nginx בגרסה החינמית מגלה ששרת נפל רק אחרי שבקשה אליו נכשלה, אז ייתכן שתראו בקשה אחת איטית לפני שהמעבר מסתדר.</li>
+<li>תפילו שרת אחד: <code>pkill -f "http.server 8081"</code>, ותריצו שוב את הלולאה. עכשיו כל התשובות מגיעות משרת 2, ואין שגיאה. nginx בגרסה החינמית בודק רק בדיעבד: כשבקשה נכשלת הוא מנסה את אותה בקשה על השרת השני, ומסמן את הראשון כלא זמין לכמה שניות. בדיקת בריאות פעילה, שבודקת גם כשאין תנועה, יש בגרסה בתשלום ובמאזנים בענן.</li>
 <li>לסיום: <code>pkill -f http.server</code> ו-<code>sudo service nginx stop</code>.</li>
 </ol>
 <p class="tools"><a class="tool" href="https://shell.cloud.google.com" target="_blank" rel="noopener">Cloud Shell</a><a class="tool" href="https://nginx.org" target="_blank" rel="noopener">nginx</a><a class="tool" href="https://redis.io" target="_blank" rel="noopener">Redis</a></p>
@@ -1819,7 +1831,7 @@ sudo nginx -t &amp;&amp; sudo service nginx restart</pre></li>
 </div>
 
 <div class="box real">
-<p>מאזני עומסים יש ככלים עצמאיים (nginx, HAProxy) וכשירות בענן אצל כל ספק גדול. Redis הוא מסד שיושב בזיכרון, ונפוץ כמטמון. בשירותי PostgreSQL מנוהלים בענן לרוב אפשר לקבל מאגר חיבורים ועותקי קריאה כחלק מהשירות. כרגיל, השמות והאפשרויות משתנים בין ספקים, אז בודקים בתיעוד של השירות שאתם משתמשים בו.</p>
+<p>מאגר חיבורים נפוץ הוא PgBouncer, ובשירותי PostgreSQL מנוהלים יש לרוב כזה מובנה. מאזני עומסים יש ככלים עצמאיים (nginx, HAProxy) וכשירות בענן אצל כל ספק גדול. Redis הוא מסד שיושב בזיכרון, ונפוץ כמטמון. בשירותי PostgreSQL מנוהלים בענן לרוב אפשר לקבל מאגר חיבורים ועותקי קריאה כחלק מהשירות. כרגיל, השמות והאפשרויות משתנים בין ספקים, אז בודקים בתיעוד של השירות שאתם משתמשים בו.</p>
 </div>
 
 <div class="quiz" data-id="p3-q-lb" data-a="1"><p class="qq">שרת אחד מתוך שלושה קרס. מה קורה במאזן עומסים עם בדיקת בריאות?</p>
@@ -1847,7 +1859,7 @@ sudo nginx -t &amp;&amp; sudo service nginx restart</pre></li>
 <div class="why">ההעתקה לא מיידית. קריאה של נתון שהמשתמש עצמו כתב הרגע הולכת לראשי, ואת השאר קוראים מהעותקים.</div></div>
 
 <div class="box think" data-id="p3-th-first"><p>יבגני אומר שבשישי בערב האפליקציה איטית. יש לו שרת אחד ומסד אחד. לפני שמוסיפים עוד חלק, מה בודקים? ומה כנראה הדבר הכי זול שיעזור?</p>
-<div class="ans">בודקים איפה הבעיה: עומס על המעבד של השרת, שאילתות איטיות במסד, מספר החיבורים, וכמה מהבקשות חוזרות על אותה שאלה. כשהתפריט נקרא אלפי פעמים ומשתנה לעתים רחוקות, מטמון הוא בדרך כלל התוספת הכי זולה והכי משתלמת. ולפני זה כדאי לבדוק שאילתות איטיות ואינדקסים. מוסיפים רק מה שהמדידה מצדיקה.</div></div>
+<div class="ans">בודקים איפה הבעיה: עומס על המעבד של השרת, שאילתות איטיות במסד, מספר החיבורים, וכמה מהבקשות חוזרות על אותה שאלה. כשהתפריט נקרא אלפי פעמים ומשתנה לעתים רחוקות, מטמון הוא בדרך כלל התוספת הכי זולה והכי משתלמת. ולפני זה כדאי לבדוק שאילתות איטיות ואינדקסים (<dfn data-d="מבנה עזר במסד שמאפשר למצוא שורות מהר, כמו אינדקס בסוף ספר">אינדקס</dfn>). מוסיפים רק מה שהמדידה מצדיקה.</div></div>
 
 <div class="box think" data-id="p3-th-risk"><p>מטמון משפר מהירות, אבל לפעמים מציג מידע ישן. אילו נתונים במסעדה הייתם שומרים במטמון ואילו לא, ולמה?</p>
 <div class="ans">מתאים: התפריט, תיאורי המנות, רשימת הכי נמכרים. הם משתנים לאט, ודקה של מידע ישן לא מזיקה. לא מתאים: מלאי של מנה אחרונה, סטטוס תשלום וסכום הזמנה ברגע האישור. שם מידע ישן יגרום למכירה כפולה או לחיוב שגוי, ולכן קוראים תמיד מהמסד.</div></div>
@@ -1858,7 +1870,7 @@ sudo nginx -t &amp;&amp; sudo service nginx restart</pre></li>
 <!-- ======================= 8 ======================= -->
 <section class="sec" id="s3-8" data-t="משמעות וזמן אמת">
 <div class="sec-h"><div class="sec-n">8</div><h2>חיפוש לפי משמעות, ועדכון חי ללקוח</h2></div>
-<p class="lead">יש שתי בעיות ש-SQL רגיל ובקשת HTTP רגילה לא פותרים. הראשונה: לקוח כותב ״משהו קל ורענן״, ואין מנה ששמה כך. השנייה: לקוח מחכה למשלוח ורוצה לראות שהמנה יצאה מהמטבח ברגע שהיא יצאה, בלי לרענן את המסך. את שתיהן ראינו <a href="../lec7.5.html">בשיעור על חיפוש סמנטי ו-WebSockets</a>.</p>
+<p class="lead">לקוח כותב באפליקציה ״משהו קל ורענן״, ואין מנה בשם הזה. ולקוח אחר מחכה למשלוח ורוצה לראות שהמנה יצאה מהמטבח ברגע שהיא יצאה, בלי לרענן את המסך. שתי הבעיות האלה לא נפתרות עם SQL רגיל ובקשת HTTP רגילה. את שתיהן ראינו <a href="../lec7.5.html">בשיעור על חיפוש סמנטי ו-WebSockets</a>.</p>
 
 <h3>א. חיפוש לפי משמעות</h3>
 <p>שאילתה כמו <code>WHERE name LIKE '%קל%'</code> משווה אותיות, לא משמעות. ״סלט יווני״ או ״לימונדה״ הם בדיוק מה שהלקוח התכוון אליו, אבל בשם שלהם אין שום דבר משותף למילים שהוא כתב. צריך חיפוש שמבין שמשמעות דומה היא קרבה.</p>
@@ -1867,9 +1879,9 @@ sudo nginx -t &amp;&amp; sudo service nginx restart</pre></li>
 <div class="defline"><b>חיפוש סמנטי (Semantic Search):</b> חיפוש לפי משמעות ולא לפי מילים זהות. ממירים את הבקשה למספרים באותה צורה, ומחפשים את הפריטים הכי קרובים אליה. לדוגמה: ״משהו קל ורענן״ נוחת ליד סלט ולימונדה.</div>
 
 <div class="sim" data-id="p3-sim-embed"><div class="sh">מפת משמעות של התפריט (הדמיה מפושטת)</div>
-<p style="margin:0 0 6px;font-size:.92rem">ההדמיה פשוטה: במקום מאות מספרים לכל מנה יש שניים, ואת הקואורדינטות קבענו ביד, רק כדי להמחיש. במערכת אמיתית מודל מייצר את המספרים. ציר אופקי: קל (שמאל) עד כבד (ימין). ציר אנכי: מתון (למטה) עד חד בטעם, חריף או חמצמץ (למעלה). תבחרו בקשה או תלחצו על נקודה במפה.</p>
-<div class="p3-btns"><button type="button" class="btn sec2" data-q="2,8,משהו קל וחריף">״משהו קל וחריף״</button><button type="button" class="btn sec2" data-q="8,1,משהו משביע ומתון">״משהו משביע ומתון״</button><span class="chip b">או לחצו על המפה</span></div>
-<div class="p3-e-map" style="position:relative;height:300px;max-width:560px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(#e2e8f0 1px,transparent 1px) 0 0/100% 10%,linear-gradient(90deg,#e2e8f0 1px,transparent 1px) 0 0/10% 100%,#fff;direction:ltr;cursor:crosshair;margin:6px 0"></div>
+<p style="margin:0 0 6px;font-size:.92rem">ההדמיה פשוטה: במקום מאות מספרים לכל מנה יש שניים, ואת הקואורדינטות קבענו ביד, רק כדי להמחיש. במערכת אמיתית מודל מייצר את המספרים. ציר אופקי: קל (שמאל) עד כבד ומשביע (ימין). ציר אנכי: מתון (למטה) עד רענן וחמצמץ (למעלה). תבחרו בקשה או תלחצו על נקודה במפה.</p>
+<div class="p3-btns"><button type="button" class="btn sec2" data-q="2,8,משהו קל ורענן">״משהו קל ורענן״</button><button type="button" class="btn sec2" data-q="8,1,משהו משביע ומתון">״משהו משביע ומתון״</button><span class="chip b">או לחצו על המפה</span></div>
+<div class="p3-e-map" style="position:relative;height:340px;max-width:560px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(#e2e8f0 1px,transparent 1px) 0 0/100% 10%,linear-gradient(90deg,#e2e8f0 1px,transparent 1px) 0 0/10% 100%,#fff;direction:ltr;cursor:crosshair;margin:6px 0"></div>
 <div class="out p3-e-out">תלחצו על בקשה או על נקודה במפה.</div>
 </div>
 <style>
@@ -1918,7 +1930,7 @@ sudo nginx -t &amp;&amp; sudo service nginx restart</pre></li>
 <p>מאחורי ההדמיה יש שאילתת SQL רגילה: מודדים מרחק בין נקודת הבקשה לכל מנה, ומסדרים לפי הקרוב ביותר. עכשיו אתם.</p>
 
 <div class="lab" data-id="p3-lab-vector" data-title="הקרובות ביותר לבקשה" data-ordered="1">
-<div class="q-src">בטבלה <code>dish_vec</code> לכל מנה (<code>dish_id</code>) יש שתי קואורדינטות, <code>x</code> ו-<code>y</code>, במפת המשמעות. הבקשה ״משהו קל וחריף״ נמצאת בנקודה (2, 8). תציגו את השמות של שלוש המנות הכי קרובות אליה, מהקרובה לרחוקה. את המרחק מודדים כך: <code>(x-2)*(x-2) + (y-8)*(y-8)</code>.</div>
+<div class="q-src">בטבלה <code>dish_vec</code> לכל מנה (<code>dish_id</code>) יש שתי קואורדינטות, <code>x</code> ו-<code>y</code>, במפת המשמעות. הבקשה ״משהו קל ורענן״ נמצאת בנקודה (2, 8). תציגו את השמות של שלוש המנות הכי קרובות אליה, מהקרובה לרחוקה. את המרחק מודדים כך: <code>(x-2)*(x-2) + (y-8)*(y-8)</code>.</div>
 <pre class="setup">CREATE TABLE dish_vec (dish_id INTEGER PRIMARY KEY, x REAL, y REAL);
 INSERT INTO dish_vec VALUES (1,2,5),(2,3,6),(3,8,5),(4,8,1),(5,6,3),(6,7,4),(7,6,2),(8,7,0),(9,1,7),(10,4,5);</pre>
 <pre class="start">SELECT d.name
@@ -1933,7 +1945,7 @@ JOIN dishes d ON d.id = v.dish_id
 ORDER BY (v.x-2)*(v.x-2) + (v.y-8)*(v.y-8)
 LIMIT 3</pre>
 <ol class="hints"><li>המרחק הוא ביטוי אחד, ואפשר לשים אותו ישר ב-<code>ORDER BY</code>.</li><li>הכי קרוב זה הערך הכי קטן, אז מיון עולה (ברירת המחדל).</li></ol>
-<div class="why-src">יצאו לימונדה, מרק עגבניות וסלט יווני. אף אחת מהן לא מכילה את המילים ״קל״ או ״חריף״. הקרבה נקבעה רק מהמספרים. בחיפוש אמיתי יש מאות מספרים לכל טקסט, אבל העיקרון אותו דבר: מודדים מרחק ומסדרים לפי הקרוב.</div>
+<div class="why-src">יצאו לימונדה, מרק עגבניות וסלט יווני. אף אחת מהן לא מכילה את המילים ״קל״ או ״רענן״. הקרבה נקבעה רק מהמספרים. בחיפוש אמיתי יש מאות מספרים לכל טקסט, אבל העיקרון אותו דבר: מודדים מרחק ומסדרים לפי הקרוב.</div>
 </div>
 
 <pre class="code" data-lang="sql">-- PostgreSQL עם הרחבת pgvector (זמינה בשירותים כמו Neon ו-Supabase)
@@ -1970,7 +1982,7 @@ LIMIT 3;</pre>
 <div class="defline"><b>שאילתה חוזרת (Polling):</b> הלקוח שואל את השרת ״יש משהו חדש?״ שוב ושוב, כל כמה שניות. לדוגמה: הטלפון שואל כל 10 שניות מה מצב ההזמנה, ורוב התשובות הן ״אין שינוי״.</div>
 <div class="defline"><b>WebSocket:</b> חיבור פתוח וקבוע בין הלקוח לשרת, ודרכו כל צד יכול לשלוח הודעה בכל רגע. לדוגמה: המטבח לוחץ ״יצא לדרך״, והשרת שולח את ההודעה מיד לטלפון של הלקוח. כמו שיחת טלפון פתוחה, לעומת חילופי מכתבים.</div>
 
-<p>בהדמיה יש טאבלט במטבח וטלפון של לקוח. השעון בהדמיה מהיר פי 5 מהזמן האמיתי, כדי שלא נחכה. תחליפו שיטה, תלחצו על הסטטוסים במטבח, ותבדקו כמה בקשות נשלחו וכמה זמן עבר עד שהלקוח ראה את השינוי.</p>
+<p>בהדמיה יש טאבלט במטבח וטלפון של לקוח. השעון מתחיל כשלוחצים על סטטוס במטבח, והוא מהיר פי 5 מהזמן האמיתי, כדי שלא נחכה. תחליפו שיטה, תלחצו על הסטטוסים במטבח, ותבדקו כמה בקשות נשלחו וכמה זמן עבר עד שהלקוח ראה את השינוי.</p>
 
 <div class="sim" data-id="p3-sim-ws"><div class="sh">המטבח מעדכן, והלקוח רואה</div>
 <div class="row">
@@ -2047,7 +2059,7 @@ LIMIT 3;</pre>
 <div class="defline"><b>שירות אירוח (Hosting):</b> חברה שמפעילה את הקוד שלכם על המחשבים שלה, ונותנת לו כתובת ציבורית. לדוגמה: שירות כמו Render לוקח את הקוד מ-GitHub, מתקין ומפעיל אותו.</div>
 
 <h3>שני מסלולים: איך הקוד מגיע, ואיך הלקוח מקבל תשובה</h3>
-<p>כדי להבין פריסה צריך להפריד בין שני מסלולים. <b>מסלול הפיתוח</b> הוא איך הקוד עובר מכם אל השרת. <b>מסלול ההרצה</b> הוא איך לקוח מקבל תשובה כשהמערכת כבר חיה. אלה שני מסלולים נפרדים, ומי שמבין את ההבדל הבין את כל העניין.</p>
+<p>כדי להבין פריסה צריך להפריד בין שני מסלולים. <b>מסלול הפיתוח</b> הוא איך הקוד עובר מכם אל השרת. <b>מסלול ההרצה</b> הוא איך לקוח מקבל תשובה כשהמערכת כבר חיה. אלה שני מסלולים נפרדים, וכשמבינים את ההבדל, רוב הפריסה כבר ברורה.</p>
 
 <div class="anim" data-id="p3-anim-deploy" data-speed="3400">
 <div class="stage"><svg viewBox="0 0 800 310" role="img" aria-label="הנפשה: ציר הפיתוח וציר ההרצה בפריסה של השרת">
@@ -2059,16 +2071,16 @@ LIMIT 3;</pre>
 <text x="15" y="24" font-size="14" font-weight="800" fill="#4f46e5">מסלול הפיתוח: כך הקוד מגיע לענן</text>
 <text x="15" y="168" font-size="14" font-weight="800" fill="#047857">מסלול ההרצה: כך לקוח מקבל תשובה</text>
 <rect x="15" y="40" width="110" height="64" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2.5"/><text x="70" y="78" text-anchor="middle" font-size="16" font-weight="800" fill="#3730a3">אתם</text>
-<rect x="165" y="40" width="120" height="64" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2.5"/><text x="225" y="68" text-anchor="middle" font-size="15" font-weight="800" fill="#3730a3">Cloud Shell</text><text x="225" y="88" text-anchor="middle" font-size="12" fill="#475569">כאן כותבים קוד</text>
-<g data-s="2"><rect x="325" y="40" width="110" height="64" rx="12" fill="#f1f5f9" stroke="#334155" stroke-width="2.5"/><text x="380" y="68" text-anchor="middle" font-size="15" font-weight="800" fill="#0f172a">GitHub</text><text x="380" y="88" text-anchor="middle" font-size="12" fill="#475569">מאגר הקוד</text></g>
-<g data-s="3"><rect x="495" y="40" width="130" height="230" rx="14" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/><text x="560" y="70" text-anchor="middle" font-size="17" font-weight="800" fill="#92400e">Render</text><text x="560" y="92" text-anchor="middle" font-size="12" fill="#475569">בונה ומפעיל</text></g>
-<g data-s="3" font-family="ui-monospace,Menlo,monospace" font-size="12" fill="#78350f"><text x="560" y="122" text-anchor="middle">npm install</text><text x="560" y="140" text-anchor="middle">npm start</text></g>
-<g data-s="4" data-pulse><rect x="508" y="154" width="104" height="34" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2" stroke-dasharray="4 3"/><text x="560" y="176" text-anchor="middle" font-size="11" font-family="ui-monospace,Menlo,monospace" fill="#78350f">DATABASE_URL</text></g>
+<rect x="165" y="40" width="120" height="64" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2.5"/><text x="225" y="68" text-anchor="middle" font-size="15" font-weight="800" fill="#3730a3">Cloud Shell</text><text x="225" y="88" text-anchor="middle" font-size="13" fill="#475569">כאן כותבים קוד</text>
+<g data-s="2"><rect x="325" y="40" width="110" height="64" rx="12" fill="#f1f5f9" stroke="#334155" stroke-width="2.5"/><text x="380" y="68" text-anchor="middle" font-size="15" font-weight="800" fill="#0f172a">GitHub</text><text x="380" y="88" text-anchor="middle" font-size="13" fill="#475569">מאגר הקוד</text></g>
+<g data-s="3"><rect x="495" y="40" width="130" height="230" rx="14" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/><text x="560" y="70" text-anchor="middle" font-size="17" font-weight="800" fill="#92400e">Render</text><text x="560" y="92" text-anchor="middle" font-size="13" fill="#475569">בונה ומפעיל</text></g>
+<g data-s="3" font-family="ui-monospace,Menlo,monospace" font-size="13" fill="#78350f"><text x="560" y="122" text-anchor="middle">npm install</text><text x="560" y="140" text-anchor="middle">npm start</text></g>
+<g data-s="4" data-pulse><rect x="508" y="154" width="104" height="34" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2" stroke-dasharray="4 3"/><text x="560" y="176" text-anchor="middle" font-size="13" font-family="ui-monospace,Menlo,monospace" fill="#78350f">DATABASE_URL</text></g>
 <g data-s="5"><rect x="15" y="190" width="110" height="64" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="2.5"/><text x="70" y="228" text-anchor="middle" font-size="16" font-weight="800" fill="#065f46">מבקר</text></g>
-<g data-s="6"><rect x="675" y="190" width="110" height="64" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="2.5"/><text x="730" y="218" text-anchor="middle" font-size="15" font-weight="800" fill="#065f46">Neon</text><text x="730" y="238" text-anchor="middle" font-size="12" fill="#475569">מסד חיצוני</text></g>
+<g data-s="6"><rect x="675" y="190" width="110" height="64" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="2.5"/><text x="730" y="218" text-anchor="middle" font-size="15" font-weight="800" fill="#065f46">Neon</text><text x="730" y="238" text-anchor="middle" font-size="13" fill="#475569">מסד חיצוני</text></g>
 <path d="M127 72 L163 72" stroke="#4f46e5" stroke-width="3" fill="none" marker-end="url(#p3a9-ab)" data-s="1"/>
 <path d="M287 72 L323 72" stroke="#4f46e5" stroke-width="3" fill="none" marker-end="url(#p3a9-ab)" data-s="2"/>
-<text x="305" y="60" text-anchor="middle" font-size="12" fill="#3730a3" font-family="ui-monospace,Menlo,monospace" data-s="2">push</text>
+<text x="305" y="60" text-anchor="middle" font-size="13" fill="#3730a3" font-family="ui-monospace,Menlo,monospace" data-s="2">push</text>
 <path d="M437 72 L493 72" stroke="#4f46e5" stroke-width="3" fill="none" marker-end="url(#p3a9-ab)" data-s="3"/>
 <path d="M127 222 L493 222" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#p3a9-ag)" data-s="5"/>
 <text x="310" y="212" text-anchor="middle" font-size="13" fill="#065f46" data-s="5">בקשה לכתובת הציבורית</text>
@@ -2086,7 +2098,7 @@ LIMIT 3;</pre>
 </div>
 
 <h3>הדיסק בענן הוא כמו לוח מחיק</h3>
-<div class="defline"><b>דיסק זמני (Ephemeral Disk):</b> האחסון של מחשב בענן, שנמחק כשהמחשב מופעל מחדש או מוחלף. כמו לוח מחיק בכיתה: מנקים אותו בסוף היום, ומה שנכתב עליו לא נשאר.</div>
+<div class="defline"><b>דיסק זמני (Ephemeral Disk):</b> האחסון של מחשב בענן (בהרבה שירותי אירוח, בלי דיסק קבוע בתשלום), שנמחק כשהמחשב מופעל מחדש או מוחלף. כמו לוח מחיק בכיתה: מנקים אותו בסוף היום, ומה שנכתב עליו לא נשאר. גם ב-Cloud Shell זה כך: תיקיית הבית נשארת, והמחשב עצמו מוחלף.</div>
 <p>זו הטעות הכי נפוצה בפריסה ראשונה. השרת שומר הזמנות בקובץ, הכול עובד, ואחרי הפעלה מחדש או פריסה חדשה הקובץ נעלם. הכי קל להבין את זה כשרואים. תוסיפו הזמנות בכל אחת משתי הדרכים, ואז תפעילו מחדש את השרת.</p>
 
 <div class="sim" data-id="p3-sim-whiteboard"><div class="sh">איפה השרת שומר: בקובץ או במסד חיצוני?</div>
@@ -2159,9 +2171,9 @@ app.get('/api/menu', async (req, res) => {
 });
 
 app.listen(process.env.PORT || 8080, () => console.log('Server is up'));</pre></li>
-<li><b>מסד ב-<a class="tool" href="https://neon.tech" target="_blank" rel="noopener">Neon</a>.</b> אם כבר יצרתם פרויקט עם הנתונים של יבגני (בתרגילים הקודמים), תשתמשו בו. תעתיקו את מחרוזת החיבור. יש בה סיסמה, אז לא מדביקים אותה בצ׳אט, במסמך או בקוד.</li>
+<li><b>מסד ב-<a class="tool" href="https://neon.tech" target="_blank" rel="noopener">Neon</a>.</b> אם כבר יצרתם פרויקט עם הנתונים של יבגני (בתרגילים הקודמים), תשתמשו בו. אם אין, תטענו קודם את <code>yevgeni-postgres.sql</code> בעורך ה-SQL של Neon (יש תוכנית חינמית, בדקו את התנאים העדכניים באתר). תעתיקו את מחרוזת החיבור. יש בה סיסמה, אז לא מדביקים אותה בצ׳אט, במסמך או בקוד.</li>
 <li><b>הרצה על המחשב שלכם.</b> בטרמינל: <code>export DATABASE_URL='...'</code> (המחרוזת בתוך גרשיים בודדים, כי יש בה תווים מיוחדים) ואז <code>node server.js</code>. תפתחו Web Preview על port 8080 ותוסיפו <code>/api/menu</code>. אתם רואים את התפריט מהמסד. תעצרו עם Ctrl+C ותפעילו שוב: הנתונים עדיין שם.</li>
-<li><b>מאגר ב-<a class="tool" href="https://github.com" target="_blank" rel="noopener">GitHub</a>.</b> תיצרו קובץ <code>.gitignore</code> עם השורות <code>node_modules/</code> ו-<code>.env</code>. תריצו <code>git init</code>, <code>git add .</code>, <code>git commit -m "first version"</code>, <code>git branch -M main</code>. ב-GitHub תיצרו מאגר חדש וריק (בלי README) ותריצו את הפקודות שהוא מציג: <code>git remote add origin ...</code> ו-<code>git push -u origin main</code>. GitHub לא מקבל סיסמת חשבון בשורת פקודה, אז ייתכן שתצטרכו ליצור אסימון גישה אישי (Personal Access Token) עם הרשאה רק למאגר הזה, ולהדביק אותו כשמבקשים. את האסימון לא שומרים בקוד.</li>
+<li><b>מאגר ב-<a class="tool" href="https://github.com" target="_blank" rel="noopener">GitHub</a>.</b> קודם תגדירו שם ומייל לגיט: <code>git config --global user.name "השם שלכם"</code> ו-<code>git config --global user.email "המייל שלכם"</code> (הם יופיעו בהיסטוריה של המאגר, אז שימו לב איזה מייל כותבים). תיצרו קובץ <code>.gitignore</code> עם השורות <code>node_modules/</code> ו-<code>.env</code> (גם אם עוד אין לכם קובץ כזה). תריצו <code>git init</code>, <code>git add .</code>, <code>git commit -m "first version"</code>, <code>git branch -M main</code>. ב-GitHub תיצרו מאגר חדש וריק (בלי README) ותריצו את הפקודות שהוא מציג: <code>git remote add origin ...</code> ו-<code>git push -u origin main</code>. GitHub לא מקבל סיסמת חשבון בשורת פקודה, אז ייתכן שתצטרכו ליצור אסימון גישה אישי (Personal Access Token) עם הרשאה רק למאגר הזה, ולהדביק אותו כשמבקשים. את האסימון לא שומרים בקוד.</li>
 <li><b>שירות ב-<a class="tool" href="https://render.com" target="_blank" rel="noopener">Render</a>.</b> תתחברו עם GitHub, תבחרו New ואז Web Service, ותבחרו את המאגר. תגדירו Build Command: <code>npm install</code>, Start Command: <code>npm start</code>, ותוסיפו משתנה סביבה <code>DATABASE_URL</code> עם המחרוזת (בלי מרכאות) לפני שיוצרים את השירות.</li>
 <li><b>בדיקה.</b> תקראו את הלוג עד שמופיעה הודעה שהשירות פעיל. תפתחו את הכתובת הציבורית עם <code>/health</code> ואז עם <code>/api/menu</code>.</li>
 <li><b>מבחן שרידות.</b> תפעילו פריסה מחדש (Manual Deploy). התפריט עדיין שם, כי הוא נקרא מ-Neon. מה היה קורה אם הוא היה שמור בקובץ?</li>
@@ -2184,7 +2196,7 @@ app.listen(process.env.PORT || 8080, () => console.log('Server is up'));</pre></
   ['הסודות (סיסמת מסד, מפתחות) בהגדרות הסביבה ולא בקוד','כל מי שרואה את הקוד, כולל ב-GitHub, יכול להשתמש בהם.'],
   ['קובץ .gitignore מכיל את .env ואת node_modules','אחרת סודות או אלפי קבצים עולים למאגר.'],
   ['הנתונים במסד חיצוני ולא בקובץ על דיסק השרת','דיסק זמני נמחק בהפעלה מחדש.'],
-  ['יש כתובת בדיקה (/health) שמחזירה ok','בלעדיה מאזן עומסים ושירות האירוח לא יודעים אם השרת חי.'],
+  ['יש כתובת בדיקה (/health) שמחזירה ok','היא עוזרת למאזן ולשירות האירוח לדעת אם השרת חי.'],
   ['כל קלט של לקוח מועבר כפרמטר ולא כטקסט שמודבק לתוך SQL','אחרת הדלת פתוחה להזרקה.'],
   ['כל הזמנה נרשמת בטרנזקציה אחת, עם בדיקת מלאי','אחרת נשארות הזמנות חצי גמורות ומכירות כפולות.'],
   ['הרשאות: לקוח לא יכול לשנות מחירים או לראות לקוחות אחרים','החוקים נאכפים בשרת, לא במסך.'],
@@ -2207,7 +2219,7 @@ app.listen(process.env.PORT || 8080, () => console.log('Server is up'));</pre></
 </div>
 
 <div class="box real">
-<p>״דוחפים קוד למאגר, ושירות האירוח בונה ומפעיל אותו לבד״ זה דפוס נפוץ מאוד, ובהרבה שירותים זה קורה אוטומטית בכל push. בארגונים גדולים קוראים לזה CI/CD, ויש גם בדיקות אוטומטיות לפני הפריסה. GitHub Pages מתאים רק לאתרים סטטיים: הוא מגיש קבצים ולא מריץ קוד שרת.</p>
+<p>״דוחפים קוד למאגר, ושירות האירוח בונה ומפעיל אותו לבד״ זה דפוס נפוץ מאוד, ובהרבה שירותים זה קורה אוטומטית בכל push. בארגונים גדולים קוראים לזה CI/CD (כלומר בדיקה ופריסה אוטומטיות בכל שינוי בקוד). GitHub Pages מתאים רק לאתרים סטטיים: הוא מגיש קבצים ולא מריץ קוד שרת.</p>
 </div>
 
 <div class="quiz" data-id="p3-q-pages" data-a="2"><p class="qq">מעלים את הפרויקט ל-GitHub ומפעילים GitHub Pages. מה קורה עם <code>server.js</code>?</p>
@@ -2260,8 +2272,8 @@ app.listen(process.env.PORT || 8080, () => console.log('Server is up'));</pre></
   {t:'הלקוח לוחץ ״הזמן״ והמסך מציג ״404״.',a:'http',w:'קוד 404 אומר שהבקשה הגיעה לכתובת שלא קיימת. בודקים לאיזו כתובת האפליקציה שלחה.'},
   {t:'ההזמנה נרשמה אבל המלאי לא ירד.',a:'db',w:'שלוש הפעולות לא נעשו כיחידה אחת. הפתרון: טרנזקציה סביב כל ההזמנה.'},
   {t:'אחרי פריסה חדשה, ההזמנות של אתמול נעלמו.',a:'dep',w:'הנתונים ישבו על דיסק זמני. הם צריכים להיות במסד חיצוני.'},
-  {t:'בשישי בערב הכול איטי, ובלוג מופיע too many connections.',a:'scale',w:'המסד נגמרו לו חיבורים. מאגר חיבורים מוריד את הלחץ, ואפשר לשקול גם מטמון ועותקי קריאה.'},
-  {t:'מישהו מצא את מפתח שירות ה-AI שלנו בתוך קוד האתר.',a:'srv',w:'מפתחות שייכים לשרת, בהגדרות סביבה. האפליקציה פונה לשרת, והשרת פונה לשירות.'},
+  {t:'בשישי בערב הכול איטי, ובלוג מופיע too many clients.',a:'scale',w:'המסד נגמרו לו חיבורים. מאגר חיבורים מוריד את הלחץ, ואפשר לשקול גם מטמון ועותקי קריאה.'},
+  {t:'לקוח הקליד בשדה החיפוש קטע SQL, והמערכת הציגה נתונים של לקוחות אחרים.',a:'srv',w:'השרת הדביק קלט של לקוח לתוך SQL. הפתרון: להעביר אותו כפרמטר.'},
   {t:'לקוח שינה בדפדפן את המחיר ל-1 שקל, וההזמנה נרשמה בשקל אחד.',a:'srv',w:'השרת קיבל מחיר מהלקוח. הכלל: הלקוח מבקש, והשרת קובע מחיר מהמסד.'}
  ];
  let i=0, ok=0, tot=0, answered=false;
@@ -2283,9 +2295,8 @@ app.listen(process.env.PORT || 8080, () => console.log('Server is up'));</pre></
 <li><b>הדרך של הזמנה:</b> מסך, חבילת JSON בבקשת HTTP, שרת שבודק חוקים, פקודות SQL ומסד שרושם, ותשובה עם קוד סטטוס. הלקוח מבקש והשרת קובע, גם את המחיר.</li>
 <li><b>השרת הוא הדלת היחידה למסד.</b> שם בודקים חוקים, שם שומרים סודות (בהגדרות סביבה, לא בקוד ולא בפרומפט), ושם מעבירים קלט של לקוח כפרמטר ולא כטקסט שמודבק ל-SQL.</li>
 <li><b>טרנזקציה</b> זה ״הכול או כלום״. <code>BEGIN</code>, <code>COMMIT</code>, <code>ROLLBACK</code>, והגנה בפקודה אחת (<code>UPDATE ... WHERE qty &gt;= ...</code> ובדיקה כמה שורות השתנו). ארבעת העקרונות שלה נקראים ACID.</li>
-<li><b>חוקים בתוך המסד:</b> פרוצדורה קוראים לה בשם, וטריגר רץ מעצמו. בוחרים מקום אחד לכל חוק ומתעדים, כדי שלא יהיו כפילויות וקסמים נסתרים.</li>
-<li><b>SQL או NoSQL:</b> בוחרים לפי השאלות שישאלו וכמה חשוב הדיוק. במערכת אמיתית בדרך כלל משלבים כמה סוגי אחסון.</li>
-<li><b>עומס:</b> מאזן עומסים, מטמון, מאגר חיבורים ועותקי קריאה. כל אחד פותר בעיה אחרת, ומוסיפים אותם אחרי שמודדים. חיפוש לפי משמעות ועדכון חי הם עוד שני כלים, לצרכים מסוימים.</li>
+<li><b>חוקים בתוך המסד:</b> פרוצדורה קוראים לה בשם, וטריגר רץ מעצמו. בוחרים מקום אחד לכל חוק ומתעדים, כדי שלא יהיו כפילויות וחוקים נסתרים.</li>
+<li><b>אחסון ועומס:</b> SQL או NoSQL לפי השאלות שישאלו. מאזן עומסים, מטמון, מאגר חיבורים ועותקי קריאה: כל אחד פותר בעיה אחרת, ומוסיפים אותם אחרי שמודדים. חיפוש לפי משמעות ועדכון חי הם עוד שני כלים, לצרכים מסוימים.</li>
 <li><b>פריסה:</b> קוד ב-GitHub, שירות אירוח שמפעיל אותו, ומסד חיצוני לנתונים. הדיסק של השרת הוא כמו לוח מחיק.</li>
 </ul>
 </div>
