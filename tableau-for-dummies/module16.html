@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>16. תכנות והרחבות · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=16;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public">1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים">2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים">3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות">6<small></small></a><a id="part7" href="module7.html" title="מפות">7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים">8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט">10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב">13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה">14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים">15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות" class=on>16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום">17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות">19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>תכנות<br><span>והרחבות</span></h1>
+  <p>עד עכשיו גררתם. במודול הזה כותבים כללים: ביטויים רגולריים שמנקים טקסט מבולגן, תאריכים שמגיעים כטקסט, תנאים שלא מתבלבלים ופרמטרים שמריצים תרחישים. אחר כך יוצאים מהחוברת: דף אינטרנט משלכם שמטמיע את הגרף שפרסמתם ושולט בו, וסקריפט פייתון שמכין את הקובץ לפני Tableau Public. בסוף מפה כנה של מה שקיים מעבר ל-Public, בלי תרגילים.</p>
+  <div class="chips"><span>🧪 התנסויות בתוכנה ובכלים חינמיים</span><span>🔤 מעבדת Regex</span><span>🧩 מגרש משחקים להטמעה</span><span>🎞️ הנפשות</span><span>🗺️ מה אין ב-Public</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<style>
+.m16-tag{display:inline-block;border-radius:999px;padding:0 10px;font-size:.76rem;font-weight:800;margin-inline-end:6px;white-space:nowrap}
+.m16-tag.g{background:#d1fae5;color:#065f46}
+.m16-tag.b{background:#dbeafe;color:#1e40af}
+.m16-tag.x{background:#e5e7eb;color:#374151}
+.m16-tag.u{background:#fef3c7;color:#92400e}
+.m16-tb{width:100%;border-collapse:collapse;font-size:.84rem;direction:ltr}
+.m16-tb th,.m16-tb td{border:1px solid var(--line);padding:2px 8px;text-align:left;vertical-align:top}
+.m16-tb th{background:#f1f5f9}
+.m16-tb td.r,.m16-tb th.r{text-align:right}
+.m16-tb td.hot{background:#fff7ed;font-weight:700}
+.m16-tb td.nul{color:#94a3b8}
+.m16-dlg{direction:ltr;text-align:left;background:#f1f3f5;border:1px solid #c7cfd9;border-radius:10px;padding:12px 14px;font-size:.82rem;max-width:640px;margin:10px auto;box-shadow:0 8px 22px rgba(15,23,42,.12)}
+.m16-dlg h5{margin:0 0 8px;font-size:.9rem;color:#334155}
+.m16-dlg .f{background:#fff;border:1px solid #c7cfd9;border-radius:4px;padding:4px 8px;min-height:22px}
+.m16-dlg .ed{background:#fff;border:1px solid #c7cfd9;border-radius:4px;padding:6px 10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;line-height:1.55;white-space:pre;overflow-x:auto;color:#0f172a}
+.m16-dlg .ed .c{color:#16a34a}
+.m16-dlg .ed .k{color:#c2410c}
+.m16-dlg .btns{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;align-items:center}
+.m16-dlg .btns span{border:1px solid #c7cfd9;background:#fff;border-radius:4px;padding:1px 14px}
+.m16-dlg .btns span.ok{background:#1f77b4;color:#fff;border-color:#1f77b4}
+.m16-dlg .btns small{margin-inline-end:auto;color:#166534;font-weight:600}
+.m16-kp{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.m16-kp div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:4px 12px;font-size:.88rem}
+.m16-kp b{color:var(--navy)}
+.m16-chart svg{width:100%;height:auto;display:block;direction:ltr}
+.m16-chart svg text{font-family:'Heebo',Arial,sans-serif;font-size:13px}
+.m16-eq{direction:ltr;text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:6px 12px;margin:6px 0;overflow-x:auto;white-space:pre}
+.m16-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0}
+@media(max-width:820px){.m16-grid3{grid-template-columns:1fr}}
+.m16-grid3>div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
+.m16-grid3 h4{margin:0 0 4px;font-size:.98rem;color:var(--navy)}
+.m16-grid3 ul{margin:4px 0 0;padding-inline-start:18px;font-size:.9rem}
+</style>
+
+<div class="box note"><b>מה נבנה במודול הזה</b> <span class="lvl p">מתקדמים</span> <span class="lvl d">מפתחים</span>
+<p>עד עכשיו גררתם שדות ולחצתם. במודול הזה כותבים כללים. מנקים טקסט מבולגן עם ביטויים רגולריים, מפרקים תאריך שהגיע כטקסט, מתכננים תנאים שלא מתבלבלים, ומריצים תרחישים עם פרמטרים. אחרי זה יוצאים מהחוברת: בונים דף אינטרנט משלכם שמטמיע את הגרף שפרסמתם ושולט בו מ-JavaScript, מעלים אותו בחינם, וכותבים סקריפט בפייתון שמכין את הקובץ לפני ש-Tableau Public בכלל רואה אותו. בסוף יש מפה כנה של מה שקיים מעבר ל-Tableau Public ואי אפשר להריץ אצלכם.</p>
+<p>מה צריך להיות מוכן: הקובץ <a class="tool" href="data/scoop_sales_2024_2025.csv">scoop_sales_2024_2025.csv</a>, ושדה מחושב ופרמטר מוכרים לכם (<a href="module8.html">מודול 8</a> ו-<a href="module10.html">מודול 10</a>). לחלק ההטמעה צריך גרף שפרסמתם ל-Tableau Public (<a href="module14.html">מודול 14</a>), או שתשתמשו בדוגמה של Tableau עצמה. לחלק הסקריפטים מספיקים פייתון, עורך טקסט וחשבון GitHub חינמי. את קובץ הטקסט המבולגן בונים בסעיף 3 מתוך הדף הזה. שום דבר כאן לא דורש רישיון של Tableau.</p>
+<p>שלוש תוויות חוזרות בכל המודול, כדי שתדעו מה אתם מריצים:
+<span class="m16-tag g">רץ ב-Tableau Public</span>
+<span class="m16-tag b">Public ועוד כלי חינמי מבחוץ</span>
+<span class="m16-tag x">לא ב-Public: ידע בלבד</span></p>
+</div>
+
+<div class="teach"><b>🎓 למרצה:</b> המודול ארוך, ואפשר לחלק אותו לשלושה מפגשים: (א) סעיפים 1 עד 6, שפת החישובים; (ב) סעיפים 7 ו-8, הטמעה ואירוח; (ג) סעיפים 9 ו-10, סקריפטים והמפה שמעבר ל-Public. כל המספרים בתוצאות הצפויות חושבו בפייתון מהקבצים, לא ב-Tableau. <b>פריטים שלא אומתו ושצריך להריץ בתוכנה לפני השיעור:</b> (1) כל תבנית regex בתוך Tableau Public, כולל הניסוח של ההחלפה ב-REGEXP_REPLACE (האם מוחלפות כל ההתאמות, ואיך כותבים הפניה לקבוצה). (2) DATEPARSE על תא ריק ועל תבנית שגויה (Null או גלגול לתאריך אחר). (3) האם תפריט Insert בכותרת הגיליון מציג פרמטר, ואיך STR מציג מספר עשרוני. (4) דף ההטמעה נבדק משרת מקומי (<code>http://127.0.0.1</code>) ומ-GitHub Pages; פתיחה ישירה כקובץ (<code>file://</code>) לא נבדקה. (5) פתיחת קובץ <code>.hyper</code> ב-Tableau Public: יש אינדיקציה חזקה ולא אישור חזותי. (6) תוספים (extensions): שימוש בתוסף מאושר מתועד, תוסף שבניתם לבד לא נבדק. (7) תוויות ב-GitHub משתנות מגרסה לגרסה.</div>
+<section class="sec" id="m16-1" data-t="המפה">
+<div class="sec-h"><div class="sec-n">1</div><h2>מה אפשר לתכנת ב-Tableau Public ומה לא</h2></div>
+<p class="lead">מנהלת הרשת של Scoop &amp; Go שואלת: ״אם כבר מנתחים ב-Tableau, אפשר גם לתכנת אותו?״ התשובה היא כן, בשלוש שכבות. את השתיים הראשונות אתם מריצים אצלכם בלי רישיון. את השלישית רק מכירים, וחשוב לדעת איפה היא מתחילה, כדי שלא תבנו משהו שלא יעבוד.</p>
+
+<div class="defline"><b>תכנות (במודול הזה):</b> לכתוב כללים שרצים לבד, במקום לגרור ולסמן ביד. דוגמה: שורה אחת של נוסחה שמסמנת כל פנייה של לקוח שכוללת בקשת החזר, במקום לעבור על 24 פניות ולסמן אותן בעיניים.</div>
+
+<div class="anim" data-id="m16-anim-map" data-speed="3600">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="הנפשה: שלוש שכבות של תכנות סביב Tableau Public, מבפנים החוצה">
+<g data-s="3"><circle cx="190" cy="165" r="150" fill="#f3f4f6" stroke="#9ca3af" stroke-width="2" stroke-dasharray="7 5"/><text x="190" y="44" text-anchor="middle" font-size="15" font-weight="700" fill="#4b5563">מעבר ל-Public</text></g>
+<g data-s="2"><circle cx="190" cy="165" r="102" fill="#eff6ff" stroke="#3b82f6" stroke-width="2.5"/><text x="190" y="92" text-anchor="middle" font-size="15" font-weight="700" fill="#1d4ed8">מסביב לחוברת</text></g>
+<circle cx="190" cy="165" r="56" fill="#ecfdf5" stroke="#10b981" stroke-width="3"/>
+<text x="190" y="160" text-anchor="middle" font-size="15" font-weight="800" fill="#065f46">חישובים</text>
+<text x="190" y="181" text-anchor="middle" font-size="15" font-weight="800" fill="#065f46">ופרמטרים</text>
+<g>
+<rect x="400" y="14" width="390" height="96" rx="14" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+<text x="595" y="40" text-anchor="middle" font-size="16" font-weight="800" fill="#065f46">בתוך החוברת</text>
+<text x="595" y="64" text-anchor="middle" font-size="14" fill="#0f172a">שדות מחושבים, regex, תאריכים, פרמטרים</text>
+<text x="595" y="92" text-anchor="middle" font-size="14" font-weight="700" fill="#059669">רץ ב-Tableau Public</text>
+</g>
+<g data-s="2">
+<rect x="400" y="122" width="390" height="96" rx="14" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="595" y="148" text-anchor="middle" font-size="16" font-weight="800" fill="#1d4ed8">מסביב לחוברת</text>
+<text x="595" y="172" text-anchor="middle" font-size="14" fill="#0f172a">דף HTML עם JavaScript, אירוח חינם, סקריפט Python</text>
+<text x="595" y="200" text-anchor="middle" font-size="14" font-weight="700" fill="#2563eb">Public ועוד כלי חינמי מבחוץ</text>
+</g>
+<g data-s="3">
+<rect x="400" y="230" width="390" height="96" rx="14" fill="#f3f4f6" stroke="#9ca3af" stroke-width="2"/>
+<text x="595" y="256" text-anchor="middle" font-size="16" font-weight="800" fill="#374151">מעבר ל-Public</text>
+<text x="595" y="280" text-anchor="middle" font-size="14" fill="#0f172a">TabPy, REST API, Tableau Server Client, Prep</text>
+<text x="595" y="308" text-anchor="middle" font-size="14" font-weight="700" fill="#6b7280">לא ב-Public: ידע בלבד</text>
+</g>
+</svg></div>
+<ol class="caps">
+<li>במרכז: השפה של Tableau עצמה. שדה מחושב, פרמטר, regex, תאריכים. הכול רץ בתוך Tableau Public, על קובץ.</li>
+<li>סביב: דברים שאתם כותבים מחוץ ל-Tableau ומחברים אליו. דף אינטרנט שמטמיע את הגרף שלכם, סקריפט שמכין את הקובץ. צריך לזה כלים חינמיים בלבד.</li>
+<li>בחוץ: מה שקיים אצל משתמשים עם רישיון, Server או Cloud. Tableau Public לא מתחבר לזה, ולכן אין לזה תרגילים כאן.</li>
+</ol></div>
+
+<p>הנה כל מה שבמודול, עם התווית שלו. כשתבנו משהו, תחזרו לטבלה הזאת ותבדקו באיזו שכבה אתם נמצאים.</p>
+<div class="tw"><table class="tbl">
+<tr><th>מה</th><th>שכבה</th><th>איפה במודול</th></tr>
+<tr><td>ביטויים רגולריים, תאריכים מטקסט, IF ו-CASE מקוננים</td><td><span class="m16-tag g">רץ ב-Tableau Public</span></td><td>סעיפים 3 ו-4</td></tr>
+<tr><td>תבניות חישוב לדשבורד, פרמטרים ותרחישים</td><td><span class="m16-tag g">רץ ב-Tableau Public</span></td><td>סעיפים 5 ו-6</td></tr>
+<tr><td>הטמעה עם Embedding API v3, שליטה ב-JavaScript, אירוח ב-GitHub Pages</td><td><span class="m16-tag b">Public ועוד כלי חינמי</span></td><td>סעיפים 7 ו-8</td></tr>
+<tr><td>סקריפט פייתון שמנקה CSV, כתיבת קובץ <code>.hyper</code> (אופציונלי)</td><td><span class="m16-tag b">Public ועוד כלי חינמי</span></td><td>סעיף 9</td></tr>
+<tr><td>תוספים (extensions) מאושרים</td><td><span class="m16-tag u">בדקו אם זמין אצלכם</span></td><td>סעיף 10</td></tr>
+<tr><td>TabPy ו-R, REST API, Tableau Server Client, Metadata API, webhooks, Prep</td><td><span class="m16-tag x">לא ב-Public: ידע בלבד</span></td><td>סעיף 10</td></tr>
+</table></div>
+
+<div class="box try" data-id="m16-try-ready">
+<p><b>בדיקת מוכנות: איזו שכבה אתם יכולים להריץ היום</b></p>
+<ol>
+<li>פתחו Tableau Public וטענו את <code>scoop_sales_2024_2025.csv</code>. גררו את <code>Number of Records</code> לאזור <code>Text</code> בכרטיס <code>Marks</code>. <i>למה: שכבה 1 רצה על הקובץ הזה, וצריך לוודא שנטען כולו.</i></li>
+<li>פתחו חלון טרמינל (Terminal במק, PowerShell או Command Prompt בווינדוס) והריצו <code>python3 --version</code>. בווינדוס לפעמים השם הוא <code>python --version</code>. <i>למה: שכבה 2 צריכה פייתון. אם אין אצלכם, תתקינו מהאתר הרשמי של Python, או תדלגו על הסקריפטים: כל השאר רץ בלעדיהם.</i></li>
+<li>בדקו שיש לכם עורך טקסט שיודע לשמור קובץ בקידוד UTF-8: Notepad, TextEdit במצב טקסט רגיל, או VS Code. <i>למה: דף ההטמעה וקובצי ה-CSV הם קבצי טקסט פשוטים, ובעברית קידוד שגוי הופך הכול לג׳יבריש.</i></li>
+<li>אופציונלי: היכנסו ל-<a class="tool" href="https://github.com" target="_blank" rel="noopener">GitHub</a> עם חשבון חינמי, או צרו חשבון. <i>למה: שם נעלה את דף ההטמעה בסעיף 8.</i></li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלוש שורות: במסך הנתונים מופיע המספר <b>6,575</b> (שורות הקובץ); בטרמינל מופיעה גרסת פייתון, רצוי <b>3.11 ומעלה</b>; ויש לכם עורך טקסט פתוח. חשבון GitHub הוא רשות.</p>
+</div>
+
+<div class="box trap"><p><b>אי אפשר לכתוב פייתון בתוך חישוב ב-Tableau Public.</b> בגרסאות עם רישיון יש פונקציות <code>SCRIPT_REAL</code> ודומות שממלאות את הנוסחה בקוד פייתון או R שרץ בשרת חיצוני. ב-Tableau Public הן לא זמינות: התיעוד הרשמי אומר שאי אפשר לפרסם חוברת שיש בה סקריפטים לשירות חיצוני. אל תבנו דשבורד על זה. מה שכן אפשר: להריץ את הפייתון <b>לפני</b> Tableau, ולטעון את התוצאה כקובץ (סעיף 9).</p></div>
+
+<div class="box meaning"><p>השכבה קובעת איפה הכלל גר, ואיפה הכלל גר קובע מי יכול לבדוק אותו. כלל שכתבתם בנוסחה נראה לכל מי שפותח את החוברת, ואפשר לראות אותו עובד על הסימנים. כלל שכתבתם בסקריפט נשאר מחוץ ל-Tableau, ורק מי שיש לו את הסקריפט יכול לבדוק אותו. הכלל שתראו לאורך המודול: שמים כל כלל במקום שבו הכי קל לבדוק אותו, ולא במקום שבו הכי נוח לכתוב אותו.</p></div>
+
+<div class="box real"><p>בצוותי דאטה בארגונים, חלוקת העבודה הזאת שכיחה: סקריפט או שאילתה מכינים את הטבלה, ובכלי הדוחות כותבים רק את הכללים העסקיים (מה נחשב לקוח פעיל, מה נחשב חריג). אצלכם, במקום מחסן נתונים יש קובץ, והעיקרון אותו דבר.</p></div>
+
+<div class="box think" data-id="m16-th-where-rule"><p>שאלה: רוצים שמספרי טלפון של לקוחות לא יופיעו בגרף שתפרסמו. איפה הייתם שמים את הכלל: בנוסחה בתוך Tableau, או בסקריפט שרץ לפני? מה היה קורה לעמודת הטלפון המקורית בכל אחד מהמקרים?</p>
+<div class="ans">בסקריפט, לפני. ב-Tableau Public הנתונים שבחוברת ניתנים להורדה כברירת מחדל. נוסחה שמסווה את המספר לא מוחקת את העמודה המקורית מהקובץ שנטען, ולכן אם העמודה נשארה בקובץ, היא נשארת בחוברת. הדרך הבטוחה היא להוציא את העמודה לפני שהקובץ בכלל מגיע ל-Tableau. נחזור לזה בסעיפים 3 ו-9.</div></div>
+
+<div class="quiz" data-id="m16-q-layers" data-a="3"><p class="qq">מה מהבאים רץ אצלכם ב-Tableau Public בלי שום כלי נוסף?</p>
+<button class="opt">חישוב שקורא לשרת TabPy כדי להריץ פייתון</button>
+<button class="opt">תסריט שמפרסם חוברת לפי לוח זמנים בעזרת Tableau Server Client</button>
+<button class="opt">שדה מחושב שמחלץ מספר הזמנה מטקסט בעזרת REGEXP_EXTRACT</button>
+<button class="opt">הרצת זרימת Tableau Prep</button>
+<div class="why">שדה מחושב עם regex הוא חלק משפת החישובים, והוא רץ על הקובץ בתוך Tableau Public. TabPy, Tableau Server Client ו-Prep מחייבים רישיון, שרת או מוצר נפרד, ולכן הם לא זמינים ב-Public.</div></div>
+
+<div class="quiz" data-id="m16-q-layer2" data-a="1"><p class="qq">דף HTML משלכם שמטמיע גרף שפרסמתם, באיזו שכבה הוא?</p>
+<button class="opt">מסביב לחוברת: Tableau Public ועוד כלי חינמי מבחוץ (עורך טקסט ואירוח)</button>
+<button class="opt">בתוך החוברת, כי הוא כתוב ב-Tableau</button>
+<button class="opt">מעבר ל-Public, כי צריך רישיון כדי להטמיע</button>
+<button class="opt">הוא לא קשור ל-Tableau</button>
+<div class="why">ההטמעה של גרף ציבורי בדף משלכם עובדת, וצריך רק עורך טקסט ומקום להעלות אליו את הדף. הגרף עצמו נשאר ב-Tableau Public, והדף נמצא מחוצה לו.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> שאלו את הכיתה איזה כלל עסקי יש להם בעבודה שהיום הם מסמנים ביד, ובקשו לכתוב אותו במשפט. בחזרה למפה אחרי כל סעיף הכיתה תסמן באיזו שכבה היא. הציטוט הרשמי על סקריפטים חיצוניים: ״You cannot publish workbooks containing external service scripts to Tableau Public״ (דף Troubleshooting External Service Connections של Tableau). המשפט ״Tableau Public״ שם מתייחס ל-Tableau Desktop Public Edition. הגרסה המינימלית של פייתון לשלב ה-hyper היא 3.11 לפי התיעוד של Hyper API.</div>
+</section>
+<section class="sec" id="m16-2" data-t="רמות חישוב">
+<div class="sec-h"><div class="sec-n">2</div><h2>ארבע רמות חישוב: על מה הנוסחה רצה</h2></div>
+<p class="lead">שתי נוסחאות נראות אותו דבר, אבל אחת נותנת 52.55% והשנייה 50.98%. אחת מגיבה למסנן והשנייה לא. ההבדל הוא לא בסימנים שכתבתם. ההבדל הוא באיזה שלב Tableau מריץ את הנוסחה ועל אילו שורות. מי שיודע את זה לא מנחש, הוא קורא את הנוסחה ויודע מה היא תחזיר.</p>
+
+<div class="defline"><b>רמת חישוב:</b> השלב והקבוצה של השורות שעליהם נוסחה רצה. יש ארבע: <b>שורה</b>, <b>צבירה</b>, <b>רמת פירוט (LOD)</b> ו-<b>חישוב טבלה</b>. דוגמה: <code>[Unit_Price] * [Quantity]</code> רצה על כל שורת מכירה בנפרד, ו-<code>SUM([Sales])</code> רצה על כל השורות של סימן אחד בגרף.</div>
+
+<p>נעקוב אחרי שש שורות אמיתיות מהקובץ של Scoop &amp; Go (שלושה סניפים, שתי מכירות בכל אחד, כולן עם הנחה של 10%), ונראה את ארבע הרמות אחת אחרי השנייה.</p>
+
+<div class="anim" data-id="m16-anim-levels" data-speed="4200">
+<div class="stage"><svg viewBox="0 0 800 350" role="img" aria-label="הנפשה: שש שורות נתונים, ועליהן ארבע רמות חישוב: שורה, צבירה, LOD וחישוב טבלה">
+<defs><marker id="m16lv-ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker></defs>
+<g font-size="13" font-weight="700" fill="#475569"><text x="12" y="30">Branch</text><text x="100" y="30">Item</text><text x="212" y="30">Price</text><text x="262" y="30">Disc</text><text x="312" y="30">Sales</text></g>
+<g data-s="2"><text x="376" y="30" font-size="13" font-weight="700" fill="#c2410c">Net Price</text></g>
+<g>
+<rect x="6" y="38" width="400" height="28" rx="6" fill="#fef3c7"/><rect x="6" y="70" width="400" height="28" rx="6" fill="#fef3c7"/>
+<rect x="6" y="102" width="400" height="28" rx="6" fill="#dbeafe"/><rect x="6" y="134" width="400" height="28" rx="6" fill="#dbeafe"/>
+<rect x="6" y="166" width="400" height="28" rx="6" fill="#dcfce7"/><rect x="6" y="198" width="400" height="28" rx="6" fill="#dcfce7"/>
+</g>
+<g data-s="2"><rect x="370" y="38" width="64" height="188" rx="6" fill="#fff7ed" stroke="#e8741f" stroke-width="2"/></g>
+<g font-size="13" fill="#0f172a">
+<text x="12" y="58">Eilat</text><text x="100" y="58">Iced Coffee</text><text x="212" y="58">18</text><text x="262" y="58">0.1</text><text x="312" y="58">64.8</text>
+<text x="12" y="90">Eilat</text><text x="100" y="90">Choco Cup</text><text x="212" y="90">20</text><text x="262" y="90">0.1</text><text x="312" y="90">36.0</text>
+<text x="12" y="122">Dizengoff</text><text x="100" y="122">Lemon Sorbet</text><text x="212" y="122">20</text><text x="262" y="122">0.1</text><text x="312" y="122">36.0</text>
+<text x="12" y="154">Dizengoff</text><text x="100" y="154">Fruit Stick</text><text x="212" y="154">12</text><text x="262" y="154">0.1</text><text x="312" y="154">21.6</text>
+<text x="12" y="186">Port</text><text x="100" y="186">Double Cone</text><text x="212" y="186">26</text><text x="262" y="186">0.1</text><text x="312" y="186">23.4</text>
+<text x="12" y="218">Port</text><text x="100" y="218">Classic Cone</text><text x="212" y="218">16</text><text x="262" y="218">0.1</text><text x="312" y="218">14.4</text>
+</g>
+<g data-s="2" font-size="13" font-weight="700" fill="#c2410c">
+<text x="376" y="58">16.2</text><text x="376" y="90">18.0</text><text x="376" y="122">18.0</text><text x="376" y="154">10.8</text><text x="376" y="186">23.4</text><text x="376" y="218">14.4</text>
+</g>
+<g data-s="3">
+<rect x="462" y="8" width="332" height="238" rx="12" fill="#fff" stroke="#3b82f6" stroke-width="2"/>
+<g font-size="13" font-weight="700" fill="#1d4ed8"><text x="476" y="30">Branch</text><text x="560" y="30">SUM(Sales)</text></g>
+<g font-size="14" font-weight="700" fill="#0f172a"><text x="476" y="78">Eilat</text><text x="560" y="78">100.8</text><text x="476" y="142">Dizengoff</text><text x="560" y="142">57.6</text><text x="476" y="206">Port</text><text x="560" y="206">37.8</text></g>
+</g>
+<g data-s="4">
+<text x="654" y="30" font-size="13" font-weight="700" fill="#6d28d9">Share</text>
+<g font-size="14" font-weight="700" fill="#6d28d9"><text x="654" y="78">51.4%</text><text x="654" y="142">29.4%</text><text x="654" y="206">19.3%</text></g>
+<rect x="6" y="256" width="430" height="46" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+<text x="18" y="286" font-size="14" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#4c1d95">{ FIXED : SUM([Sales]) } = 196.2</text>
+<path d="M438,279 C 520,279 600,262 646,222" stroke="#7c3aed" stroke-width="2.5" fill="none" marker-end="url(#m16lv-ar)"/>
+</g>
+<g data-s="5">
+<text x="732" y="30" font-size="13" font-weight="700" fill="#047857">Rank</text>
+<g font-size="15" font-weight="800" fill="#047857"><text x="738" y="78">1</text><text x="738" y="142">2</text><text x="738" y="206">3</text></g>
+</g>
+<g data-only="1"><text x="400" y="334" text-anchor="middle" font-size="16" font-weight="700" fill="#334155">שש שורות מהקובץ. עוד לא חישבנו כלום.</text></g>
+<g data-only="2"><text x="400" y="334" text-anchor="middle" font-size="16" font-weight="700" fill="#c2410c">רמת שורה: הנוסחה רצה על כל שורה בנפרד.</text></g>
+<g data-only="3"><text x="400" y="334" text-anchor="middle" font-size="16" font-weight="700" fill="#1d4ed8">צבירה: שורות מתכנסות לסימן אחד בגרף.</text></g>
+<g data-only="4"><text x="400" y="334" text-anchor="middle" font-size="16" font-weight="700" fill="#6d28d9">LOD: מחושב ברמה אחרת, ומוצמד בחזרה לכל סימן.</text></g>
+<g data-only="5"><text x="400" y="334" text-anchor="middle" font-size="16" font-weight="700" fill="#047857">חישוב טבלה: רץ אחרון, על הסימנים שכבר נבנו.</text></g>
+</svg></div>
+<ol class="caps">
+<li>שש שורות. בכל אחת מחיר, הנחה ומכירה. הצבע מסמן סניף.</li>
+<li><b>רמת שורה.</b> <code>Net Price = [Unit_Price] * (1 - [Discount])</code> רצה על כל שורה לבד, לפני שמסכמים משהו. יש שש שורות, ולכן שש תוצאות.</li>
+<li><b>צבירה.</b> הגרף מציג סניף לכל סימן. <code>SUM([Sales])</code> מתכנס לשלושה סימנים: 100.8, 57.6 ו-37.8. נוסחה כמו <code>SUM([Profit]) / SUM([Sales])</code> רצה פה, על קבוצת השורות של הסימן.</li>
+<li><b>רמת פירוט (LOD).</b> <code>{ FIXED : SUM([Sales]) }</code> מחושב בנפרד, על כל הטבלה (196.2), ומוצמד בחזרה לכל סימן. כך אפשר לחשב את הנתח של כל סניף: 100.8 חלקי 196.2 הם 51.4%.</li>
+<li><b>חישוב טבלה.</b> <code>RANK(SUM([Sales]))</code> לא נוגע בשורות המקור. הוא מסתכל על שלושת הסימנים שכבר חושבו ומדרג אותם. לכן הוא רץ אחרון, וכל שינוי במה שמוצג משנה אותו.</li>
+</ol></div>
+
+<div class="tw"><table class="tbl">
+<tr><th>רמה</th><th>על מה רצה</th><th>דוגמה</th><th>איך מגיבה למסנן רגיל</th></tr>
+<tr><td><b>שורה</b></td><td>כל שורה בקובץ, בנפרד</td><td><code>[Unit_Price] * (1 - [Discount])</code></td><td>השורות שנותרו אחרי הסינון הן אלה שמחושבות</td></tr>
+<tr><td><b>צבירה</b></td><td>כל השורות של סימן אחד</td><td><code>SUM([Profit]) / SUM([Sales])</code></td><td>מגיבה: סכום רק של מה שנשאר</td></tr>
+<tr><td><b>רמת פירוט</b></td><td>הרמה שאתם כותבים בסוגריים המסולסלים</td><td><code>{ FIXED [Branch] : SUM([Sales]) }</code></td><td>FIXED לא מגיב למסנן ממדים רגיל. INCLUDE ו-EXCLUDE כן</td></tr>
+<tr><td><b>חישוב טבלה</b></td><td>הסימנים שכבר חושבו בגרף</td><td><code>RANK(SUM([Sales]))</code></td><td>מגיב תמיד, כי רץ אחרי הסינון</td></tr>
+</table></div>
+
+<p>את סדר הסינון והחישוב כבר ראיתם ב<a href="module10.html">מודול 10</a>. הנה אותו סולם, הפעם עם מקום לכל רמה. ככל שהשלב נמוך יותר ברשימה, הוא רץ מאוחר יותר ורואה פחות שורות.</p>
+<ol class="m16-ladder">
+<li>מסנני מיצוי (<code>Extract filters</code>)</li>
+<li>מסנני מקור נתונים (<code>Data source filters</code>)</li>
+<li>מסנני הקשר (<code>Context filters</code>)</li>
+<li>סטים, מסנן מותנה, Top N, ו<b class="lv l3">LOD מסוג FIXED</b></li>
+<li>מסנני ממדים רגילים (<code>Dimension filters</code>)</li>
+<li><b class="lv l3">LOD מסוג INCLUDE ו-EXCLUDE</b> ושילוב נתונים</li>
+<li>מסנני מדדים (<code>Measure filters</code>)</li>
+<li><b class="lv l4">חישובי טבלה</b>, תחזיות, אשכולות וסך הכול</li>
+<li>מסנני חישובי טבלה</li>
+<li>קווי מגמה וקווי עזר</li>
+</ol>
+<p class="m16-note">התרשים הרשמי של Tableau לא מציג &quot;חישובי שורה&quot; ו&quot;צבירות&quot; כשלבים נפרדים. הם חלק מהשאילתה שיוצאת לנתונים, ולכן הם רואים את מה שהמסננים שמעליהם השאירו.</p>
+<style>
+.m16-ladder{counter-reset:ld;list-style:none;margin:10px 0;padding:0;display:grid;gap:4px}
+.m16-ladder li{counter-increment:ld;display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:3px 12px;font-size:.92rem}
+.m16-ladder li::before{content:counter(ld);flex:none;width:24px;height:24px;border-radius:8px;background:var(--navy);color:#fff;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center}
+.lv{border-radius:999px;padding:0 9px}
+.lv.l3{background:#ede9fe;color:#5b21b6}.lv.l4{background:#d1fae5;color:#065f46}
+.m16-note{font-size:.88rem;color:var(--ink-soft)}
+.m16-lv{border:1px solid #c7d2fe;border-radius:14px;background:#fff;padding:12px 14px;margin:12px 0}
+.m16-lv .ex{direction:ltr;text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:8px 12px;margin:8px 0;font-size:.9rem;overflow-x:auto;white-space:pre}
+.m16-lv .opts{display:flex;gap:8px;flex-wrap:wrap}
+.m16-lv .opts button{font:inherit;font-weight:700;border:1px solid #cbd5e1;background:#f8fafc;border-radius:10px;padding:5px 14px;cursor:pointer}
+.m16-lv .opts button:hover{background:#eef2ff}
+.m16-lv .opts button.ok{background:#d1fae5;border-color:#6ee7b7}
+.m16-lv .opts button.no{background:#fee2e2;border-color:#fca5a5}
+.m16-lv .fb{margin-top:8px;min-height:1.4em}
+.m16-lv .bar{height:8px;border-radius:99px;background:#e2e8f0;overflow:hidden;margin-top:8px}
+.m16-lv .bar i{display:block;height:100%;width:0;background:#10b981;transition:width .3s}
+</style>
+
+<div class="sim" data-id="m16-sim-level"><div class="sh">זיהוי רמה: באיזו רמה הנוסחה רצה</div>
+<p>עשר נוסחאות על נתוני Scoop &amp; Go. בחרו לכל אחת את הרמה. אחרי כל תשובה תראו למה.</p>
+<div class="m16-lv"><div class="ex" id="m16-lv-ex"></div>
+<div class="opts" id="m16-lv-opts"><button data-k="row">שורה</button><button data-k="agg">צבירה</button><button data-k="lod">רמת פירוט (LOD)</button><button data-k="tc">חישוב טבלה</button></div>
+<div class="fb" id="m16-lv-fb"></div>
+<div class="bar"><i id="m16-lv-bar"></i></div>
+<div class="row"><button class="btn" id="m16-lv-next" type="button" style="display:none">הבאה</button><span id="m16-lv-sc"></span></div></div>
+<p class="m16-note">הדמיה בדפדפן. היא לא מריצה Tableau, היא רק בודקת שאתם מזהים את הרמה.</p></div>
+<script>(function(){ FL.dom(function(){
+ var box = FL.$('[data-id="m16-sim-level"]'); if (!box) return;
+ var Q = [
+  ['[Unit_Price] * [Quantity]','row','רצה על כל שורת מכירה בנפרד. אין בה צבירה, ולכן הרמה היא שורה.'],
+  ['SUM([Profit]) / SUM([Sales])','agg','שתי הצבירות מחושבות לכל סימן בגרף, ואז מחלקים. זה יחס של סכומים.'],
+  ['{ FIXED [Branch] : SUM([Sales]) }','lod','סוגריים מסולסלים ומילת FIXED: רמת פירוט שאתם קובעים, סניף, בלי קשר לגרף.'],
+  ['RANK(SUM([Sales]))','tc','RANK הוא חישוב טבלה. הוא מדרג את הסימנים שכבר חושבו בגרף.'],
+  ['IF [Discount] > 0 THEN "Promo" ELSE "Full price" END','row','אין כאן צבירה. הבדיקה נעשית בכל שורה, ולכל שורה יש תווית.'],
+  ['SUM([Sales]) / TOTAL(SUM([Sales]))','tc','TOTAL הוא פונקציה של חישוב טבלה: סך הסימנים שמוצגים. לכן כל הביטוי חישוב טבלה.'],
+  ['COUNTD([Order_ID])','agg','COUNTD היא פונקציית צבירה: סופרת ערכים שונים בקבוצה של סימן.'],
+  ['AVG({ INCLUDE [Item] : SUM([Sales]) })','lod','הסוגריים המסולסלים ו-INCLUDE: מוסיפים את Item לרמת הגרף, מסכמים, ואז ממוצע.'],
+  ['REGEXP_EXTRACT([Item], "(Cone|Cup)")','row','פונקציית טקסט שפועלת על הערך בכל שורה. מוציאה Cone או Cup מהשם.'],
+  ['WINDOW_AVG(SUM([Sales]), -2, 0)','tc','פונקציות WINDOW הן חישובי טבלה: ממוצע נע על שלושה סימנים שכבר חושבו.']
+ ];
+ var NAME = {row:'שורה', agg:'צבירה', lod:'רמת פירוט (LOD)', tc:'חישוב טבלה'};
+ var i = 0, right = 0, answered = false;
+ var ex = FL.$('#m16-lv-ex', box), fb = FL.$('#m16-lv-fb', box), nx = FL.$('#m16-lv-next', box), sc = FL.$('#m16-lv-sc', box), bar = FL.$('#m16-lv-bar', box), opts = FL.$$('#m16-lv-opts button', box);
+ function show(){ answered = false; ex.textContent = Q[i][0]; fb.innerHTML = ''; nx.style.display = 'none'; opts.forEach(function(b){ b.className = ''; b.disabled = false; }); bar.style.width = (100 * i / Q.length) + '%'; sc.textContent = 'שאלה ' + (i + 1) + ' מתוך ' + Q.length + ' · נכון עד עכשיו: ' + right; }
+ opts.forEach(function(b){ b.addEventListener('click', function(){
+  if (answered) return; answered = true; var ok = b.dataset.k === Q[i][1];
+  if (ok) right++; b.className = ok ? 'ok' : 'no';
+  if (!ok) opts.forEach(function(o){ if (o.dataset.k === Q[i][1]) o.className = 'ok'; });
+  opts.forEach(function(o){ o.disabled = true; });
+  fb.innerHTML = (ok ? '<span class="chip g">נכון</span> ' : '<span class="chip r">הרמה הנכונה: ' + NAME[Q[i][1]] + '</span> ') + FL.esc(Q[i][2]);
+  sc.textContent = 'נכון עד עכשיו: ' + right + ' מתוך ' + (i + 1);
+  if (i < Q.length - 1) nx.style.display = ''; else { bar.style.width = '100%'; fb.innerHTML += '<br><b>סיימתם: ' + right + ' מתוך ' + Q.length + '.</b>'; nx.textContent = 'מההתחלה'; nx.style.display = ''; }
+  if (right >= 7) FL.done('m16-sim-level');
+ }); });
+ nx.addEventListener('click', function(){ if (i >= Q.length - 1) { i = 0; right = 0; nx.textContent = 'הבאה'; } else i++; show(); });
+ show();
+}); })();</script>
+
+<div class="box try" data-id="m16-try-levels">
+<p><b>ארבע רמות בגרף אחד, ומה קורה כשמסננים</b></p>
+<ol>
+<li>צרו שדה מחושב <code>Net Price</code> (רמת שורה):
+<pre class="code" data-lang="tableau">[Unit_Price] * (1 - [Discount])</pre><i>למה: מחיר אחרי הנחה, לכל שורה בנפרד.</i></li>
+<li>צרו <code>Check Sales</code> (צבירה של ביטוי ברמת שורה):
+<pre class="code" data-lang="tableau">SUM([Net Price] * [Quantity])</pre><i>למה: בדיקת שפיות. אם הכול נכון, הסכום חייב להיות שווה ל-<code>SUM([Sales])</code>.</i></li>
+<li>צרו <code>Margin %</code> (צבירה):
+<pre class="code" data-lang="tableau">SUM([Profit]) / SUM([Sales])</pre></li>
+<li>צרו <code>Share of Network</code> (שימוש ב-LOD):
+<pre class="code" data-lang="tableau">SUM([Sales]) / ATTR({ FIXED : SUM([Sales]) })</pre><i>למה: המכנה הוא סך כל הרשת, ללא קשר למה שמוצג.</i></li>
+<li>צרו <code>Sales Rank</code> (חישוב טבלה):
+<pre class="code" data-lang="tableau">RANK(SUM([Sales]))</pre></li>
+<li>בנו טבלת טקסט: <code>Branch</code> ל-<code>Rows</code>, ואז סמנו <code>SUM(Sales)</code> ואת ארבעת השדות החדשים ובחרו <code>Text Table</code> ב-<code>Show Me</code>. מיינו מהגדול לקטן לפי מכירות. <i>למה: שורה לכל סניף, וכל אחת מארבע הרמות בעמודה משלה.</i></li>
+<li>גררו את <code>Region</code> ל-<code>Filters</code> ובחרו רק <code>South</code>. <i>למה: מסנן ממדים רגיל. נראה מי מגיב.</i></li>
+</ol>
+<p><b>תוצאה צפויה לפני המסנן:</b> <code>Check Sales</code> בטבלה של כל הסניפים מסתכם ל-236,820.9 (ייתכן שיוצג 236,821 לפי הפורמט), בדיוק כמו <code>SUM(Sales)</code>. תשע שורות:</p>
+<div class="tw"><table class="m16-tb">
+<tr><th>Branch</th><th class="r">SUM(Sales)</th><th class="r">Margin %</th><th class="r">Share of Network</th><th class="r">Sales Rank</th></tr>
+<tr><td>Tel Aviv Dizengoff</td><td class="r">44,194.1</td><td class="r">52.0%</td><td class="r">18.7%</td><td class="r">1</td></tr>
+<tr><td>Tel Aviv Port</td><td class="r">39,446.0</td><td class="r">51.5%</td><td class="r">16.7%</td><td class="r">2</td></tr>
+<tr><td>Jerusalem Mamilla</td><td class="r">33,450.8</td><td class="r">50.9%</td><td class="r">14.1%</td><td class="r">3</td></tr>
+<tr><td>Eilat Promenade</td><td class="r">31,473.7</td><td class="r">50.0%</td><td class="r">13.3%</td><td class="r">4</td></tr>
+<tr><td>Haifa German Colony</td><td class="r">27,389.2</td><td class="r">51.8%</td><td class="r">11.6%</td><td class="r">5</td></tr>
+<tr><td>Netanya Beach</td><td class="r">26,840.2</td><td class="r">50.3%</td><td class="r">11.3%</td><td class="r">6</td></tr>
+<tr><td>Beer Sheva Grand Mall</td><td class="r">18,797.2</td><td class="r">51.0%</td><td class="r">7.9%</td><td class="r">7</td></tr>
+<tr><td>Rehovot Mall</td><td class="r">9,925.2</td><td class="r">48.3%</td><td class="r">4.2%</td><td class="r">8</td></tr>
+<tr><td>Ashdod Beach Pop-up</td><td class="r">5,304.5</td><td class="r">48.7%</td><td class="r">2.2%</td><td class="r">9</td></tr>
+</table></div>
+<p><b>תוצאה צפויה אחרי המסנן South:</b> נשארות שלוש שורות: Eilat Promenade, Beer Sheva Grand Mall ו-Ashdod Beach Pop-up. <b>המכירות והרווחיות לא השתנו</b> (31,473.7 ו-50.0%, 18,797.2 ו-51.0%, 5,304.5 ו-48.7%). <b>הנתח לא השתנה</b>: 13.3%, 7.9% ו-2.2%, כי המכנה של FIXED נשאר 236,820.9. <b>הדירוג השתנה</b>: 1, 2 ו-3 במקום 4, 7 ו-9. אחוזים מעוגלים לעשירית. אם אצלכם משהו אחר, בדקו שהמסנן הוא מסנן רגיל ולא מסנן הקשר.</p>
+</div>
+
+<div class="box trap"><p><b>ממוצע של יחסים הוא לא יחס של סכומים.</b> <code>SUM([Profit]) / SUM([Sales])</code> נותן 50.98% לכל הרשת. <code>AVG([Profit] / [Sales])</code> נותן 52.55%, כי הוא מחשב יחס לכל שורה ואז ממוצע, וכך מכירה של 12 שקלים שוקלת כמו מכירה של 80. שתי הנוסחאות תקינות. רק אחת עונה על &quot;מה הרווחיות של הרשת&quot;. כשבודקים רווחיות, כמעט תמיד רוצים את הראשונה.</p></div>
+
+<div class="box meaning"><p>לפני שכותבים נוסחה, שואלים שתי שאלות. הראשונה: על מה היא צריכה לרוץ, על כל שורה, על סימן, ברמה אחרת או על מה שכבר מוצג. השנייה: מה היא צריכה לעשות כשמסננים. שתי התשובות קובעות את הרמה, והרמה קובעת את הכלי. הטעות הנפוצה היא לבחור כלי (למשל LOD) כי הוא מוכר, לפני ששואלים את שתי השאלות.</p></div>
+
+<div class="box real"><p>בעולם הנתונים קוראים לזה <i>גרעיניות</i> (grain): באיזו רמה נמדד כל מספר בדוח. צוותי BI כותבים אותה בכותרת של כל מדד: ״מכירות, לפי סניף, ליום״. כשאין גרעיניות כתובה, אנשים שונים מחשבים &quot;אותו מדד&quot; ומקבלים מספרים שונים.</p></div>
+
+<div class="box think" data-id="m16-th-rank-share"><p>שאלה: אחרי המסנן South הדירוג של Eilat Promenade השתנה מ-4 ל-1, והנתח שלו נשאר 13.3%. איזה מהשניים עונה על ״כמה מהרשת הסניף הזה?״ ואיזה על ״איזה מקום יש לו בין מי שמוצג?״ ולמה זה לא אותו דבר?</p>
+<div class="ans">הנתח עונה על ״כמה מהרשת״: המכנה הוא כל הרשת, והוא קבוע. הדירוג עונה על ״איזה מקום בין מי שמוצג״: הוא חישוב טבלה שרץ על הסימנים הנוכחיים, ולכן מוסיף ומוריד איתם. אותו סניף, שני מספרים, שתי שאלות. בדשבורד צריך לכתוב ליד כל אחד איזו שאלה הוא עונה.</div></div>
+
+<div class="quiz" data-id="m16-q-level-ratio" data-a="2"><p class="qq">מה הרמה של <code>AVG([Profit] / [Sales])</code>?</p>
+<button class="opt">חישוב טבלה, כי יש בו חילוק</button>
+<button class="opt">צבירה: AVG מסכם שורות לסימן, וגם ביטוי ברמת שורה בתוכו. התוצאה שונה מיחס של סכומים</button>
+<button class="opt">רמת פירוט, כי הוא ממוצע</button>
+<button class="opt">רמת שורה, כי הוא כולל שדות מהקובץ</button>
+<div class="why">AVG היא פונקציית צבירה. היחס בתוכה מחושב לכל שורה ואז מצטבר בממוצע. הוא לא חישוב טבלה (אין בו RANK, TOTAL או WINDOW), ולא LOD (אין סוגריים מסולסלים).</div></div>
+
+<div class="quiz" data-id="m16-q-level-filter" data-a="4"><p class="qq">מוסיפים מסנן Region רגיל. איזה מהמספרים של Eilat Promenade בטבלה משתנה, אף שאף אחת משורות Eilat לא נגרעה?</p>
+<button class="opt"><code>SUM(Sales)</code></button>
+<button class="opt"><code>Margin %</code></button>
+<button class="opt"><code>Share of Network</code>, כי המכנה קטן</button>
+<button class="opt"><code>Sales Rank</code>, כי הוא חישוב טבלה על הסימנים שנשארו</button>
+<div class="why">רק הדירוג משתנה (מ-4 ל-1). המכירות והרווחיות מחושבות מהשורות של Eilat, שלא השתנו. הנתח לא משתנה כי המכנה FIXED רץ לפני מסנן ממדים רגיל ונשאר 236,820.9.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> מספרי ההנפשה: שש השורות הן SG-00114, SG-00287, SG-00034, SG-00061, SG-00050 ו-SG-00294 מהקובץ. הסכומים 100.8, 57.6 ו-37.8 ו-196.2 חושבו מהן. המכנה <code>ATTR({ FIXED : SUM([Sales]) })</code> זהה לזה שבמודול 10. לפני השיעור הריצו בתוכנה את <code>Check Sales</code>: צפוי להיות זהה ל-SUM(Sales) כי בקובץ <code>Sales = Quantity * Unit_Price * (1 - Discount)</code> בכל 6,575 השורות (נבדק בפייתון, אפס חריגות). מה שלא אומת: המראה המדויק של פיל חישוב טבלה בגרסה שלכם.</div>
+</section>
+<section class="sec" id="m16-3" data-t="Regex">
+<div class="sec-h"><div class="sec-n">3</div><h2>ביטויים רגולריים: סדר בטקסט מבולגן</h2></div>
+<p class="lead">באפליקציה של Scoop &amp; Go לקוחות כותבים פניות בטקסט חופשי: ״Order SG-01234 arrived melted. Rating <bdi dir="ltr">2/5</bdi>״. המערכת שומרת הכול בעמודה אחת. בתוך הטקסט מתחבאים מספר הזמנה, דירוג, קוד קופון ולפעמים מספר טלפון. עם 24 פניות אפשר לקרוא ולסמן. עם 24 אלף צריך כלל שרץ לבד.</p>
+
+<div class="defline"><b>ביטוי רגולרי (<code>regex</code>):</b> תבנית שמתארת איך נראה הטקסט שמחפשים, למשל ״האותיות SG, מקף, וחמש ספרות״. דוגמה: <code>SG-[0-9]{5}</code> מתאים ל-<code>SG-01234</code> ולא ל-<code>SG-12</code>.</div>
+
+<h3>קובץ הפניות: בונים אותו מהדף הזה</h3>
+<p>הנתונים כאן בדויים, וכתבתי אותם בכוונה מבולגנים: ארבעה עמודות רגילות ועמודת <code>Note</code> של טקסט חופשי באנגלית ובעברית, שמות סניפים בכתיב לא אחיד, ותאריכים שהגיעו כטקסט. הלחצן ״העתק״ בפינת הבלוק מעתיק את כל הטקסט.</p>
+<pre class="code" data-lang="csv">Ticket,Received,Resolved,Branch,Note
+T-1001,03/05/2025 09:15,03/05/2025 11:40,Tel Aviv Dizengoff,"Order SG-01234 arrived melted. Rating 2/5. Coupon SUMMER-20 was not applied. Call me 050-555-0101"
+T-1002,03/05/2025 10:02,03/05/2025 10:30, tel aviv dizengoff ,"Great service! Rating 5/5 for order SG-01301"
+T-1003,14/05/2025 13:47,15/05/2025 09:00,TEL AVIV PORT,"Late delivery to Ramat Gan, order SG-01420. Rating 1/5. Refund 38.50 requested. Phone 052-555-0188"
+T-1004,16/05/2025 18:20,16/05/2025 19:05,Tel Aviv  Port,"Wrong flavor, I asked for pistachio. SG-01477 Rating 3/5"
+T-1005,21/05/2025 12:10,,Jerusalem Mamilla,"הזמנה SG-01512 הגיעה נמסה. Rating 2/5. קוד SUMMER-20 לא עבד"
+T-1006,22/05/2025 14:33,22/05/2025 16:03,jerusalem mamilla,"Came on 13/5 and the cone was cold, rated 4/5. Order SG-01533"
+T-1007,02/06/2025 08:55,02/06/2025 09:10,Haifa German Colony ,"Cannot apply coupon FRIEND-15 in the app. No order id yet"
+T-1008,04/06/2025 20:41,05/06/2025 10:15,HAIFA GERMAN COLONY,"Driver was rude and late. Order SG-01690. Rating 1/5. Refund 52.00 please. Call 054-555-0123"
+T-1009,07/06/2025 11:05,07/06/2025 11:50,Eilat Promenade,"Perfect, thanks. Rating 5/5. SG-01702"
+T-1010,09/06/2025 16:30,10/06/2025 08:20, Eilat Promenade,"הגלידה הגיעה מאוחר מאוד. SG-01745 דירוג: 2/5. החזר 24.50 בבקשה"
+T-1011,10/06/2025 19:12,10/06/2025 21:12,Tel Aviv Dizengoff,"Missing item: no spoon with the sundae. SG-01788. Coupon WELCOME-10 used. Rating 3/5"
+T-1012,11/06/2025 09:48,,TEL AVIV DIZENGOFF,"Where is my order? SG-01801. Phone 050-555-0145"
+T-1013,12/06/2025 13:00,12/06/2025 13:25,Tel Aviv Port,"Love the halva sundae! Rating 5/5. Order sg-01822"
+T-1014,18/06/2025 15:15,19/06/2025 12:45,Jerusalem Mamilla,"Charged twice for SG-01855. Refund 41.00 needed. Rating 2/5"
+T-1015,19/06/2025 10:20,19/06/2025 12:00,Haifa German Colony,"Cold coffee, melted ice. Coupon CHOC-10. SG-01860. Rating 2/5. Contact 053-555-0167"
+T-1016,23/06/2025 17:45,23/06/2025 18:15,Eilat Promenade,"Fast and friendly. Rating 4/5. SG-01901. Coupon SUMMER-20 worked"
+T-1017,25/06/2025 12:30,25/06/2025 15:30,Tel Aviv Dizengoff,"The order never arrived (SG-01934). Rating 1/5. Refund 67.50 promised. 058-555-0199"
+T-1018,26/06/2025 09:09,26/06/2025 09:39,Tel Aviv Port,"Question about allergens in the Choco Stick, no order"
+T-1019,29/06/2025 21:00,30/06/2025 09:00,Jerusalem Mamilla,"מנה חסרה בהזמנה SG-01977. Rating 3/5. טלפון 050-555-0102"
+T-1020,01/07/2025 14:14,01/07/2025 14:44,Haifa German Colony,"Excellent! Rating 5/5. SG-02002. Coupon FRIEND-15"
+T-1021,02/07/2025 18:30,03/07/2025 08:30,Eilat Promenade,"Late again, order SG-02040. Rating 2/5. Refund 29.90. Call 052-555-0177"
+T-1022,05/07/2025 11:11,05/07/2025 12:11,TEL AVIV DIZENGOFF ,"Wrong order delivered: SG-02065 instead of SG-02056. Rating 1/5"
+T-1023,06/07/2025 19:55,,Tel Aviv Port,"Melted again!! SG-02077. Rating 2/5. Coupon SUMMER-20 refused"
+T-1024,08/07/2025 10:40,08/07/2025 11:00,Jerusalem Mamilla,"Thank you. Rating 4/5. SG-02090"</pre>
+
+<div class="box try" data-id="m16-try-load-messy">
+<p><b>שומרים וטוענים את קובץ הפניות</b></p>
+<ol>
+<li>לחצו ״העתק״ על הבלוק למעלה. פתחו עורך טקסט (במק: TextEdit, ואז <code>Format</code> ו-<code>Make Plain Text</code>) והדביקו. <i>למה: קובץ CSV הוא טקסט פשוט, אין צורך ב-Excel.</i></li>
+<li>שמרו בשם <code>messy_tickets.csv</code> בקידוד UTF-8 (בחלון השמירה יש בחירה של <code>Encoding</code>). <i>למה: אחרת העברית תהפוך לסימני שאלה.</i></li>
+<li>ב-Tableau Public: <code>Connect</code>, <code>Text file</code>, בחרו את הקובץ. <i>למה: זה אותו מסלול טעינה כמו של Scoop &amp; Go.</i></li>
+<li>אם העברית מופיעה כג׳יבריש, בחלון מקור הנתונים חפשו את אפשרויות הקובץ (<code>Text File Properties</code>) ובחרו <code>UTF-8</code> בבחירת הקידוד. בגרסה שלכם ייתכן שהשם שונה מעט.</li>
+<li>עברו לגיליון. גררו <code>Number of Records</code> ל-<code>Text</code>, ו-<code>Branch</code> ל-<code>Rows</code>. <i>למה: מוודאים כמה שורות נטענו ואיך נראה הסניף.</i></li>
+</ol>
+<p><b>תוצאה צפויה:</b> <code>Number of Records</code> הוא <b>24</b>. חמש עמודות: <code>Ticket</code>, <code>Received</code>, <code>Resolved</code>, <code>Branch</code>, <code>Note</code>. התאריכים הם טקסט (עוד לא תאריכים). בפייתון, <code>Branch</code> מכיל <b>14 ערכים שונים</b> בבדיקה מדויקת של מחרוזות, לחמישה סניפים בלבד: חלק מהם עם רווח בהתחלה או בסוף, חלק באותיות גדולות. כמה ערכים תראו ב-Tableau תלוי באופן שבו הוא מתייחס לרווחים ולאותיות, ולכן אולי תראו פחות. זה לא אומת, וזה בדיוק מה שנתקן בהמשך.</p>
+</div>
+
+<h3>איך המנוע מחפש</h3>
+<p>לפני התחביר, רגע לראות מה קורה בפנים. המנוע לא מחפש ״בערך״. הוא מנסה להתחיל את התבנית מכל מקום בטקסט, משמאל לימין, עד שהתבנית כולה מתקיימת.</p>
+
+<div class="anim" data-id="m16-anim-regex" data-speed="4200">
+<div class="stage"><svg viewBox="0 0 800 346" role="img" aria-label="הנפשה: איך ביטוי רגולרי מחפש מספר הזמנה בטקסט, ומה חוזר כשאין התאמה">
+<defs><marker id="m16rx-ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
+<text x="24" y="28" font-size="15" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#c2410c">pattern: (SG-[0-9]{5})</text>
+<rect x="24" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="58" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="92" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="126" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="160" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="194" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="228" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="262" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="296" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="330" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="364" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="398" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="432" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="466" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="500" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="534" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="568" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="602" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="636" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="670" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="704" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<rect x="738" y="48" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/>
+<g data-s="3"><rect x="228" y="48" width="32" height="36" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/><rect x="262" y="48" width="32" height="36" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/><rect x="296" y="48" width="32" height="36" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/></g>
+<g data-s="4"><rect x="330" y="48" width="32" height="36" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/><rect x="364" y="48" width="32" height="36" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/><rect x="398" y="48" width="32" height="36" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/><rect x="432" y="48" width="32" height="36" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/><rect x="466" y="48" width="32" height="36" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/></g>
+<text x="40.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">O</text><text x="74.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">r</text><text x="108.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">d</text><text x="142.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">e</text><text x="176.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">r</text><text x="210.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">&#160;</text><text x="244.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">S</text><text x="278.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">G</text><text x="312.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">-</text><text x="346.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">0</text><text x="380.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">1</text><text x="414.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">2</text><text x="448.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">3</text><text x="482.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">4</text><text x="516.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">&#160;</text><text x="550.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">a</text><text x="584.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">r</text><text x="618.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">r</text><text x="652.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">i</text><text x="686.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">v</text><text x="720.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">e</text><text x="754.0" y="72" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">d</text>
+<g data-only="2"><rect x="24" y="45" width="38" height="42" rx="7" fill="none" stroke="#e8741f" stroke-width="3"/></g>
+<g data-s="2"><text x="40" y="108" text-anchor="middle" font-size="18" font-weight="800" fill="#dc2626">&#10007;</text><text x="74" y="108" text-anchor="middle" font-size="18" font-weight="800" fill="#dc2626">&#10007;</text><text x="108" y="108" text-anchor="middle" font-size="18" font-weight="800" fill="#dc2626">&#10007;</text><text x="142" y="108" text-anchor="middle" font-size="18" font-weight="800" fill="#dc2626">&#10007;</text><text x="176" y="108" text-anchor="middle" font-size="18" font-weight="800" fill="#dc2626">&#10007;</text><text x="210" y="108" text-anchor="middle" font-size="18" font-weight="800" fill="#dc2626">&#10007;</text></g>
+<g data-s="4"><path d="M228,100 L228,108 L498,108 L498,100" fill="none" stroke="#16a34a" stroke-width="2.5"/><text x="364.0" y="130" text-anchor="middle" font-size="15" font-weight="800" fill="#15803d">התאמה: 8 תווים</text></g>
+<g data-s="5"><rect x="24" y="148" width="360" height="56" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/><text x="36" y="172" font-size="14" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#1d4ed8" font-weight="700">REGEXP_MATCH</text><text x="200" y="172" font-size="15" font-weight="800" fill="#0f172a">TRUE</text><text x="36" y="194" font-size="14" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#1d4ed8" font-weight="700">REGEXP_EXTRACT</text><text x="200" y="194" font-size="15" font-weight="800" fill="#0f172a">"SG-01234"</text></g>
+<g data-s="5"><text x="404" y="170" font-size="14" font-weight="700" fill="#475569">הקבוצה בסוגריים היא מה שחוזר.</text><text x="404" y="192" font-size="14" fill="#475569">בלי קבוצה: כל ההתאמה.</text></g>
+<g data-s="6"><rect x="24" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="58" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="92" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="126" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="160" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="194" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="228" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="262" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="296" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="330" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="364" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="398" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="432" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="466" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><rect x="500" y="232" width="32" height="36" rx="5" fill="#fff" stroke="#cbd5e1"/><text x="40.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">N</text><text x="74.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">o</text><text x="108.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">&#160;</text><text x="142.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">o</text><text x="176.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">r</text><text x="210.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">d</text><text x="244.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">e</text><text x="278.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">r</text><text x="312.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">&#160;</text><text x="346.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">i</text><text x="380.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">d</text><text x="414.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">&#160;</text><text x="448.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">y</text><text x="482.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">e</text><text x="516.0" y="256" text-anchor="middle" font-size="18" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#0f172a">t</text><text x="40" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="74" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="108" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="142" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="176" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="210" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="244" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="278" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="312" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="346" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="380" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="414" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="448" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="482" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><text x="516" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#dc2626">&#10007;</text><rect x="24" y="304" width="360" height="30" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/><text x="36" y="325" font-size="14" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#b91c1c">EXTRACT = NULL     MATCH = FALSE</text></g>
+</svg></div>
+<ol class="caps">
+<li>הטקסט והתבנית. התבנית מחפשת SG ואחריו מקף וחמש ספרות.</li>
+<li>המנוע מנסה להתחיל מכל מקום בטקסט. באות הראשונה אין SG, וגם לא בחמש שאחריה.</li>
+<li>במקום השביעי נמצא S, אחר כך G, אחר כך מקף. עד עכשיו מתאים.</li>
+<li>אחרי המקף באות בדיוק חמש ספרות. כל התבנית התקיימה: יש התאמה.</li>
+<li>הפונקציה מחזירה לפי הסוג שלה: אמת/שקר, או הטקסט שהתאים.</li>
+<li>בטקסט בלי מספר הזמנה אף מקום לא מתאים. התוצאה NULL, לא טקסט ריק.</li>
+</ol></div>
+
+<h3>המילון של המודול</h3>
+<p>אין צורך לשנן. אלה כל התווים שנשתמש בהם, כל אחד עם דוגמה מהפניות.</p>
+<div class="tw"><table class="tbl">
+<tr><th>תבנית</th><th>מה היא אומרת</th><th>דוגמה</th></tr>
+<tr><td><code>[0-9]</code></td><td>ספרה אחת</td><td><code>[0-9]{5}</code> הוא חמש ספרות, כמו 01234</td></tr>
+<tr><td><code>[A-Z]</code>, <code>[א-ת]</code></td><td>אות גדולה באנגלית, אות בעברית</td><td><code>[A-Z]{4,}</code> הוא ארבע אותיות גדולות או יותר, כמו SUMMER</td></tr>
+<tr><td><code>[^0-9]</code></td><td>תו אחד שאינו ספרה (^ בתוך סוגריים מרובעים אומר ״לא״)</td><td><code>[^0-9/]</code>: לא ספרה ולא קו נטוי</td></tr>
+<tr><td><code>.</code></td><td>תו אחד כלשהו</td><td><code>SG.01234</code> מתאים גם ל-SG-01234 וגם ל-SG 01234</td></tr>
+<tr><td><code>[.]</code></td><td>נקודה אמיתית, לא ״כל תו״</td><td><code>[0-9]+[.][0-9]{2}</code> מתאים ל-38.50</td></tr>
+<tr><td><code>{5}</code>, <code>{4,}</code></td><td>בדיוק חמש פעמים, ארבע פעמים או יותר</td><td><code>[0-9]{3}</code> הוא שלוש ספרות</td></tr>
+<tr><td><code>+</code>, <code>*</code>, <code>?</code></td><td>אחד או יותר, אפס או יותר, אפס או אחד</td><td><code>[ ]+</code> הוא רווח אחד או יותר</td></tr>
+<tr><td><code>^</code>, <code>$</code></td><td>תחילת הטקסט, סוף הטקסט</td><td><code>^T-</code> מתאים רק אם הטקסט מתחיל ב-T-</td></tr>
+<tr><td><code>|</code></td><td>או</td><td><code>late|cold</code></td></tr>
+<tr><td><code>( )</code></td><td>קבוצה. מה שבתוכה הוא מה ש-<code>REGEXP_EXTRACT</code> מחזיר</td><td><code>(SG-[0-9]{5})</code></td></tr>
+<tr><td><code>(?: )</code></td><td>קבוצה שלא מוחזרת, רק לארגון</td><td><code>(?:Rating|rated) ([1-5])</code></td></tr>
+</table></div>
+<p class="m16-note">בדף הזה אין קו נטוי הפוך (<code>\d</code>, <code>\s</code> ודומיהם). בתיעוד של Tableau הכתיב שלו מופיע בשתי צורות, ולא אימתנו כמה פעמים צריך לכתוב אותו בתוך מחרוזת. לכן כל התבניות כאן בנויות מסוגריים מרובעים: <code>[0-9]</code> במקום ספרה, <code>[ ]</code> במקום רווח, <code>[.]</code> במקום נקודה.</p>
+
+<h3>ארבע פונקציות</h3>
+<div class="defline"><b><code>REGEXP_MATCH(טקסט, תבנית)</code>:</b> מחזירה אמת אם התבנית נמצאת איפשהו בטקסט, ושקר אם לא. דוגמה: <code>REGEXP_MATCH("call 050-555-0101", "05[0-9]-[0-9]{3}")</code> היא אמת.</div>
+<div class="defline"><b><code>REGEXP_EXTRACT(טקסט, תבנית)</code>:</b> מחזירה את מה שהקבוצה הראשונה תפסה, או NULL אם אין התאמה. דוגמה: <code>REGEXP_EXTRACT("Order SG-01234", "(SG-[0-9]{5})")</code> היא <code>SG-01234</code>.</div>
+<div class="defline"><b><code>REGEXP_EXTRACT_NTH(טקסט, תבנית, מספר)</code>:</b> כמו הקודמת, אבל בוחרת איזו קבוצה להחזיר. 0 הוא כל ההתאמה, 2 היא הקבוצה השנייה. דוגמה: <code>REGEXP_EXTRACT_NTH("abc 123", "([a-z]+) ([0-9]+)", 2)</code> היא <code>123</code>.</div>
+<div class="defline"><b><code>REGEXP_REPLACE(טקסט, תבנית, החלפה)</code>:</b> מחליפה את מה שהתאים בטקסט אחר. דוגמה: <code>REGEXP_REPLACE("call 050-555-0101", "05[0-9]-[0-9]{3}-[0-9]{4}", "[phone]")</code> היא <code>call [phone]</code>.</div>
+
+<p>הנה מה שהן עושות על חמש פניות מהקובץ. שימו לב לשורות שבהן התוצאה ריקה: הן יחזרו בהמשך.</p>
+<div class="tw"><table class="m16-tb">
+<tr><th>Ticket</th><th>Note (חלקי)</th><th>EXTRACT של מספר הזמנה</th><th>MATCH של טלפון</th></tr>
+<tr><td>T-1001</td><td>Order SG-01234 arrived melted. Rating <bdi dir="ltr">2/5</bdi> ... Call me <bdi dir="ltr">050-555-0101</bdi></td><td>SG-01234</td><td>true</td></tr>
+<tr><td>T-1007</td><td>Cannot apply coupon FRIEND-15 in the app. No order id yet</td><td class="nul">NULL</td><td>false</td></tr>
+<tr><td>T-1013</td><td>Love the halva sundae! Rating <bdi dir="ltr">5/5.</bdi> Order sg-01822</td><td class="nul">NULL</td><td>false</td></tr>
+<tr><td>T-1022</td><td>Wrong order delivered: SG-02065 instead of SG-02056. Rating <bdi dir="ltr">1/5</bdi></td><td>SG-02065</td><td>false</td></tr>
+<tr><td>T-1019</td><td>מנה חסרה בהזמנה SG-01977. Rating <bdi dir="ltr">3/5.</bdi> טלפון <bdi dir="ltr">050-555-0102</bdi></td><td>SG-01977</td><td>true</td></tr>
+</table></div>
+
+<style>
+.m16-rx-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin:8px 0}
+.m16-rx-bar label{display:flex;flex-direction:column;gap:2px;font-size:.82rem;font-weight:700;color:#475569}
+.m16-rx-bar input,.m16-rx-bar select{font:inherit;font-size:.9rem;padding:3px 8px;border:1px solid #cbd5e1;border-radius:8px;direction:ltr;text-align:left;background:#fff}
+.m16-rx-bar input.pat{min-width:260px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.m16-rx-bar input.rep{width:120px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.m16-rx-bar input.idx{width:60px}
+.m16-rx-goals{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.m16-rx-goals button{font:inherit;font-size:.84rem;font-weight:700;border:1px solid #cbd5e1;background:#f8fafc;border-radius:10px;padding:3px 12px;cursor:pointer}
+.m16-rx-goals button.on{border-color:#6366f1;background:#eef2ff}
+.m16-rx-goals button.ok{border-color:#10b981;background:#d1fae5}
+.m16-rx-task{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:6px 12px;margin:6px 0;font-size:.92rem;min-height:2.2em}
+.m16-rx-msg{margin:6px 0;font-size:.9rem;min-height:1.5em}
+.m16-rx-tw{max-height:380px;overflow:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+.m16-rx-tw table{margin:0}
+.m16-rx-tw td.src{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem;unicode-bidi:plaintext;white-space:pre-wrap;word-break:break-word}
+.m16-rx-tw mark{background:#fde68a;border-radius:3px;padding:0 1px}
+.m16-rx-tw td.res{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;unicode-bidi:plaintext;white-space:pre-wrap;word-break:break-word;font-weight:700}
+.m16-rx-tw td.res.nl{color:#94a3b8;font-weight:400}
+.m16-rx-tw td.res.t{color:#047857}.m16-rx-tw td.res.f{color:#b91c1c}
+.m16-rx-tw tr.bad td{background:#fef2f2}
+</style>
+<div class="sim" data-id="m16-sim-regex"><div class="sh">מעבדת regex: הפונקציות של Tableau על 24 הפניות</div>
+<p class="m16-note">זו הדמיה ב-JavaScript, לא Tableau. היא נותנת מקום להתנסות בלי להתחיל כל פעם מחדש. המנוע של Tableau שונה במקצת (הטבלה בהמשך הסעיף), ולכן כל תבנית שתעבוד כאן בדקו גם בתוכנה.</p>
+<div class="m16-rx-bar">
+<label>פונקציה<select id="m16-rx-fn"><option>REGEXP_MATCH</option><option selected>REGEXP_EXTRACT</option><option>REGEXP_EXTRACT_NTH</option><option>REGEXP_REPLACE</option></select></label>
+<label>על איזה שדה<select id="m16-rx-fld"></select></label>
+<label>תבנית<input id="m16-rx-pat" class="pat" type="text" maxlength="120" spellcheck="false" autocomplete="off"></label>
+<label id="m16-rx-idxw">מספר קבוצה<input id="m16-rx-idx" class="idx" type="number" min="0" max="9" value="1"></label>
+<label id="m16-rx-repw">החלפה<input id="m16-rx-rep" class="rep" type="text" maxlength="40" value="[phone]" spellcheck="false" autocomplete="off"></label>
+<label>תבנית מוכנה<select id="m16-rx-pre"></select></label>
+</div>
+<div class="m16-rx-goals" id="m16-rx-goals"></div>
+<div class="m16-rx-task" id="m16-rx-task">בחרו מטרה, או שחקו חופשי עם תבניות מוכנות.</div>
+<div class="m16-rx-msg" id="m16-rx-msg"></div>
+<div class="m16-rx-tw"><table class="m16-tb" id="m16-rx-tbl"></table></div>
+</div>
+<script>(function(){ FL.dom(function(){
+ var box = FL.$('[data-id="m16-sim-regex"]'); if (!box) return;
+ var T = [["T-1001", "Tel Aviv Dizengoff", "Order SG-01234 arrived melted. Rating 2/5. Coupon SUMMER-20 was not applied. Call me 050-555-0101"], ["T-1002", " tel aviv dizengoff ", "Great service! Rating 5/5 for order SG-01301"], ["T-1003", "TEL AVIV PORT", "Late delivery to Ramat Gan, order SG-01420. Rating 1/5. Refund 38.50 requested. Phone 052-555-0188"], ["T-1004", "Tel Aviv  Port", "Wrong flavor, I asked for pistachio. SG-01477 Rating 3/5"], ["T-1005", "Jerusalem Mamilla", "הזמנה SG-01512 הגיעה נמסה. Rating 2/5. קוד SUMMER-20 לא עבד"], ["T-1006", "jerusalem mamilla", "Came on 13/5 and the cone was cold, rated 4/5. Order SG-01533"], ["T-1007", "Haifa German Colony ", "Cannot apply coupon FRIEND-15 in the app. No order id yet"], ["T-1008", "HAIFA GERMAN COLONY", "Driver was rude and late. Order SG-01690. Rating 1/5. Refund 52.00 please. Call 054-555-0123"], ["T-1009", "Eilat Promenade", "Perfect, thanks. Rating 5/5. SG-01702"], ["T-1010", " Eilat Promenade", "הגלידה הגיעה מאוחר מאוד. SG-01745 דירוג: 2/5. החזר 24.50 בבקשה"], ["T-1011", "Tel Aviv Dizengoff", "Missing item: no spoon with the sundae. SG-01788. Coupon WELCOME-10 used. Rating 3/5"], ["T-1012", "TEL AVIV DIZENGOFF", "Where is my order? SG-01801. Phone 050-555-0145"], ["T-1013", "Tel Aviv Port", "Love the halva sundae! Rating 5/5. Order sg-01822"], ["T-1014", "Jerusalem Mamilla", "Charged twice for SG-01855. Refund 41.00 needed. Rating 2/5"], ["T-1015", "Haifa German Colony", "Cold coffee, melted ice. Coupon CHOC-10. SG-01860. Rating 2/5. Contact 053-555-0167"], ["T-1016", "Eilat Promenade", "Fast and friendly. Rating 4/5. SG-01901. Coupon SUMMER-20 worked"], ["T-1017", "Tel Aviv Dizengoff", "The order never arrived (SG-01934). Rating 1/5. Refund 67.50 promised. 058-555-0199"], ["T-1018", "Tel Aviv Port", "Question about allergens in the Choco Stick, no order"], ["T-1019", "Jerusalem Mamilla", "מנה חסרה בהזמנה SG-01977. Rating 3/5. טלפון 050-555-0102"], ["T-1020", "Haifa German Colony", "Excellent! Rating 5/5. SG-02002. Coupon FRIEND-15"], ["T-1021", "Eilat Promenade", "Late again, order SG-02040. Rating 2/5. Refund 29.90. Call 052-555-0177"], ["T-1022", "TEL AVIV DIZENGOFF ", "Wrong order delivered: SG-02065 instead of SG-02056. Rating 1/5"], ["T-1023", "Tel Aviv Port", "Melted again!! SG-02077. Rating 2/5. Coupon SUMMER-20 refused"], ["T-1024", "Jerusalem Mamilla", "Thank you. Rating 4/5. SG-02090"]];
+ var PHONE = /0[0-9]{2}-[0-9]{3}-[0-9]{4}/;
+ var FLD = {
+  'Note': function(r){ return r[2]; },
+  'UPPER([Note])': function(r){ return r[2].toUpperCase(); },
+  'LOWER([Note])': function(r){ return r[2].toLowerCase(); },
+  'Branch': function(r){ return r[1]; },
+  'TRIM([Branch])': function(r){ return r[1].trim(); },
+  'UPPER(TRIM([Branch]))': function(r){ return r[1].trim().toUpperCase(); }
+ };
+ var fn = FL.$('#m16-rx-fn', box), fld = FL.$('#m16-rx-fld', box), pat = FL.$('#m16-rx-pat', box), idx = FL.$('#m16-rx-idx', box), rep = FL.$('#m16-rx-rep', box), pre = FL.$('#m16-rx-pre', box);
+ var idxw = FL.$('#m16-rx-idxw', box), repw = FL.$('#m16-rx-repw', box), msg = FL.$('#m16-rx-msg', box), tbl = FL.$('#m16-rx-tbl', box), goalsEl = FL.$('#m16-rx-goals', box), taskEl = FL.$('#m16-rx-task', box);
+ Object.keys(FLD).forEach(function(k){ var o = document.createElement('option'); o.textContent = k; fld.appendChild(o); });
+ var PRE = [
+  ['בחרו תבנית מוכנה...'],
+  ['מספר הזמנה, פשוט', 'REGEXP_EXTRACT', 'Note', '(SG-[0-9]{5})', 1, ''],
+  ['מספר הזמנה, עם UPPER', 'REGEXP_EXTRACT', 'UPPER([Note])', '(SG-[0-9]{5})', 1, ''],
+  ['דירוג, פשוט (מלכודת)', 'REGEXP_EXTRACT', 'Note', '([1-5])/5', 1, ''],
+  ['דירוג, מתוקן', 'REGEXP_EXTRACT_NTH', 'Note', '(^|[^0-9/])([1-5])/5', 2, ''],
+  ['קוד קופון', 'REGEXP_EXTRACT', 'Note', '([A-Z]{4,}-[0-9]{2})', 1, ''],
+  ['יש טלפון?', 'REGEXP_MATCH', 'Note', '0[0-9]{2}-[0-9]{3}-[0-9]{4}', 1, ''],
+  ['מיסוך טלפון', 'REGEXP_REPLACE', 'Note', '0[0-9]{2}-[0-9]{3}-[0-9]{4}', 1, '[phone]'],
+  ['החזר, חמדני (מלכודת)', 'REGEXP_EXTRACT', 'Note', 'Refund (.*)', 1, ''],
+  ['החזר, מתוקן', 'REGEXP_EXTRACT', 'Note', '([0-9]+[.][0-9]{2})', 1, ''],
+  ['שני מספרי הזמנה', 'REGEXP_EXTRACT_NTH', 'Note', '(SG-[0-9]{5}).*(SG-[0-9]{5})', 2, ''],
+  ['יש אות עברית?', 'REGEXP_MATCH', 'Note', '[א-ת]', 1, ''],
+  ['ניקוי רווחים כפולים בסניף', 'REGEXP_REPLACE', 'TRIM([Branch])', '[ ]+', 1, ' ']
+ ];
+ PRE.forEach(function(p){ var o = document.createElement('option'); o.textContent = p[0]; pre.appendChild(o); });
+ function ex(re, s){ var m = re.exec(s); return m ? m[1] || null : null; }
+ var GOALS = [
+  {t:'מספר הזמנה', task:'חלצו את מספר ההזמנה מכל פנייה שיש בה אחד. עשרים ושתיים פניות כוללות מספר, אחת מהן בכתיב sg באותיות קטנות. ההשוואה אינה רגישה לגודל אותיות.', fn:['REGEXP_EXTRACT','REGEXP_EXTRACT_NTH'], ci:true,
+   exp:function(r){ return ex(/(SG-[0-9]{5})/, r[2].toUpperCase()); }, hint:'בדקו את T-1013. אפשר לעבוד על UPPER([Note]) או לכתוב [Ss][Gg] בתבנית.'},
+  {t:'דירוג', task:'חלצו את הדירוג (ספרה אחת) מ-״N/5״. בפנייה T-1006 מופיע גם התאריך 13/5, והדירוג האמיתי הוא 4.', fn:['REGEXP_EXTRACT','REGEXP_EXTRACT_NTH'],
+   exp:function(r){ var m = /(^|[^0-9\/])([1-5])\/5/.exec(r[2]); return m ? m[2] : null; }, hint:'דרשו שלפני הספרה לא יבוא תו שהוא ספרה או קו נטוי: (^|[^0-9/]), ואז הקבוצה השנייה.'},
+  {t:'קופון', task:'חלצו את קוד הקופון, כמו SUMMER-20. בשמונה פניות יש קופון, ובשאר NULL.', fn:['REGEXP_EXTRACT','REGEXP_EXTRACT_NTH'],
+   exp:function(r){ return ex(/([A-Z]{4,}-[0-9]{2})/, r[2]); }, hint:'ארבע אותיות גדולות או יותר, מקף, ושתי ספרות. שימו לב ש-SG-01234 לא צריך להתאים.'},
+  {t:'מיסוך טלפון', task:'החליפו כל מספר טלפון בטקסט כלשהו, והשאירו את שאר הפנייה בדיוק כמו שהיא. שמונה פניות מכילות מספר.', fn:['REGEXP_REPLACE'], fld:['Note'],
+   exp:null, hint:'השתמשו ב-REGEXP_REPLACE על Note, עם התבנית של טלפון: 0[0-9]{2}-[0-9]{3}-[0-9]{4}.'},
+  {t:'איחורים', task:'סמנו באמת פניות על איחור, באנגלית (late) או בעברית (מאוחר). ארבע פניות. לא משנה אם האות גדולה או קטנה.', fn:['REGEXP_MATCH'],
+   exp:function(r){ return /late|מאוחר/.test(r[2].toLowerCase()); }, hint:'REGEXP_MATCH על LOWER([Note]) עם late|מאוחר.'},
+  {t:'החזר', task:'חלצו את סכום ההחזר (שתי ספרות אחרי הנקודה) כטקסט, למשל 38.50. שש פניות. בלי המילים שאחריו.', fn:['REGEXP_EXTRACT','REGEXP_EXTRACT_NTH'],
+   exp:function(r){ return ex(/([0-9]+[.][0-9]{2})/, r[2]); }, hint:'ספרות, נקודה אמיתית ב-[.], ושתי ספרות. אל תשתמשו ב-.* שתופס הכול.'}
+ ];
+ var cur = -1, solved = {};
+ GOALS.forEach(function(g, i){ var b = document.createElement('button'); b.type = 'button'; b.textContent = (i + 1) + '. ' + g.t; b.addEventListener('click', function(){ cur = i; showGoal(); run(); }); goalsEl.appendChild(b); });
+ function showGoal(){
+  FL.$$('button', goalsEl).forEach(function(b, i){ b.className = (solved[i] ? 'ok ' : '') + (i === cur ? 'on' : ''); });
+  if (cur < 0) { taskEl.textContent = 'בחרו מטרה, או שחקו חופשי עם תבניות מוכנות.'; return; }
+  taskEl.innerHTML = '<b>מטרה ' + (cur + 1) + ':</b> ' + FL.esc(GOALS[cur].task) + ' <details style="display:inline"><summary style="display:inline;cursor:pointer;color:#6366f1">רמז</summary> ' + FL.esc(GOALS[cur].hint) + '</details>';
+ }
+ function show(){ var f = fn.value; idxw.style.display = f === 'REGEXP_EXTRACT_NTH' ? '' : 'none'; repw.style.display = f === 'REGEXP_REPLACE' ? '' : 'none'; }
+ function hiAll(s, re){
+  var g = new RegExp(re.source, 'g'), out = '', last = 0, m, n = 0;
+  while ((m = g.exec(s)) && n++ < 50) { if (m[0].length === 0) { g.lastIndex++; continue; } out += FL.esc(s.slice(last, m.index)) + '<mark>' + FL.esc(m[0]) + '</mark>'; last = m.index + m[0].length; }
+  return out + FL.esc(s.slice(last));
+ }
+ function evalGoal(f, fd, res, repText){
+  var g = GOALS[cur], bad = [], i;
+  if (g.fn.indexOf(f) < 0) return {ok:false, why:'לא הפונקציה המתאימה למטרה הזאת. נסו ' + g.fn[0] + '.'};
+  if (g.fld && g.fld.indexOf(fd) < 0) return {ok:false, why:'המטרה הזאת רצה על השדה ' + g.fld[0] + '.'};
+  if (g.exp === null) {
+   var n = 0;
+   for (i = 0; i < T.length; i++) {
+    var want = T[i][2].replace(new RegExp(PHONE.source, 'g'), function(){ return repText; });
+    if (PHONE.test(res[i])) bad.push(T[i][0] + ': נשאר מספר טלפון');
+    else if (res[i] !== want) bad.push(T[i][0] + ': נוסף או נמחק משהו נוסף');
+    if (res[i] !== T[i][2]) n++;
+   }
+   if (!bad.length && n !== 8) bad.push('הוחלפו ' + n + ' פניות במקום 8');
+  } else {
+   for (i = 0; i < T.length; i++) {
+    var e = g.exp(T[i]), a = res[i];
+    var same = (g.ci && typeof a === 'string' && typeof e === 'string') ? a.toUpperCase() === e.toUpperCase() : a === e;
+    if (!same) bad.push(T[i][0] + ': מצופה ' + (e === null ? 'NULL' : JSON.stringify(e)) + ', התקבל ' + (a === null ? 'NULL' : JSON.stringify(a)));
+   }
+  }
+  return bad.length ? {ok:false, why:'עוד לא. ' + bad.slice(0, 3).join(' · ') + (bad.length > 3 ? ' (ועוד ' + (bad.length - 3) + ')' : '')} : {ok:true};
+ }
+ function run(){
+  show();
+  var f = fn.value, fd = fld.value, p = pat.value, k = parseInt(idx.value, 10) || 0, r = rep.value;
+  var re, i, res = [], html = '', hits = 0;
+  msg.innerHTML = ''; tbl.innerHTML = '';
+  if (!p) { msg.innerHTML = '<span class="chip a">כתבו תבנית</span>'; return; }
+  if (/\([^)]*[+*][^)]*\)[+*{]/.test(p)) { msg.innerHTML = '<span class="chip r">ההדמיה חוסמת תבנית עם כמת בתוך כמת</span> זה סוג התבנית שיכול להתקע, גם ב-Tableau.'; return; }
+  try { re = new RegExp(p); } catch (e) { msg.innerHTML = '<span class="chip r">תבנית לא תקינה</span> ' + FL.esc(String(e.message)); return; }
+  html = '<tr><th>Ticket</th><th>' + FL.esc(fd) + '</th><th>' + FL.esc(f) + '</th></tr>';
+  for (i = 0; i < T.length; i++) {
+   var s = FLD[fd](T[i]), m = re.exec(s), val, cls = '', shown;
+   if (f === 'REGEXP_MATCH') { val = !!m; cls = val ? 't' : 'f'; shown = String(val); }
+   else if (f === 'REGEXP_EXTRACT') { val = m ? (m.length > 1 ? (m[1] == null ? null : m[1]) : m[0]) : null; }
+   else if (f === 'REGEXP_EXTRACT_NTH') { val = m ? (k === 0 ? m[0] : (k < m.length ? (m[k] == null ? null : m[k]) : null)) : null; }
+   else { val = s.replace(new RegExp(p, 'g'), function(){ return r; }); }
+   if (val === null) { cls = 'nl'; shown = 'NULL'; } else if (f !== 'REGEXP_MATCH') shown = val;
+   if (val !== null && val !== false) hits++;
+   res.push(val);
+   html += '<tr><td>' + FL.esc(T[i][0]) + '</td><td class="src">' + hiAll(s, re) + '</td><td class="res ' + cls + '">' + FL.esc(shown) + '</td></tr>';
+  }
+  tbl.innerHTML = html;
+  var line = (f === 'REGEXP_MATCH' ? 'אמת ב-' : f === 'REGEXP_REPLACE' ? 'שורות ששונו: ' : 'ערך שאינו NULL ב-') + (f === 'REGEXP_REPLACE' ? res.filter(function(v, j){ return v !== FLD[fd](T[j]); }).length : hits) + ' מתוך ' + T.length;
+  msg.innerHTML = '<span class="chip b">' + FL.esc(line) + '</span> ';
+  if (f === 'REGEXP_REPLACE') msg.innerHTML += '<span class="m16-note">ההדמיה מחליפה את כל ההתאמות בכל שורה. מה ש-Tableau עושה אצלכם כדאי לבדוק.</span>';
+  if (cur >= 0) {
+   var ev = evalGoal(f, fd, res, r);
+   if (ev.ok) { solved[cur] = true; msg.innerHTML += '<span class="chip g">✓ עונה על מטרה ' + (cur + 1) + '</span>'; showGoal();
+    if (Object.keys(solved).length >= 3) FL.done('m16-sim-regex'); }
+   else msg.innerHTML += '<span class="chip a">מטרה ' + (cur + 1) + '</span> ' + FL.esc(ev.why);
+  }
+ }
+ [fn, fld, pat, idx, rep].forEach(function(el){ el.addEventListener('input', run); el.addEventListener('change', run); });
+ pre.addEventListener('change', function(){ var p = PRE[pre.selectedIndex]; if (p.length < 2) return; fn.value = p[1]; fld.value = p[2]; pat.value = p[3]; idx.value = p[4]; rep.value = p[5] || '[phone]'; run(); });
+ fn.value = 'REGEXP_EXTRACT'; fld.value = 'Note'; pat.value = '(SG-[0-9]{5})'; showGoal(); run();
+}); })();</script>
+
+<div class="box try" data-id="m16-try-regex-fields">
+<p><b>חמישה שדות מחושבים על הפניות</b></p>
+<ol>
+<li>צרו <code>Order ID</code>:
+<pre class="code" data-lang="tableau">REGEXP_EXTRACT(UPPER([Note]), "(SG-[0-9]{5})")</pre><i>למה: UPPER לפני החיפוש, כדי ש-sg באותיות קטנות (פנייה T-1013) לא יפספס.</i></li>
+<li>צרו <code>Rating</code>:
+<pre class="code" data-lang="tableau">INT(REGEXP_EXTRACT_NTH([Note], "(^|[^0-9/])([1-5])/5", 2))</pre><i>למה: הקבוצה הראשונה בודקת מה לפני הספרה (תחילת טקסט, או תו שהוא לא ספרה ולא קו נטוי), והקבוצה השנייה היא הדירוג. ככה ״<bdi dir="ltr">13/5</bdi>״ בתאריך לא נתפס. INT הופך את הטקסט למספר.</i></li>
+<li>צרו <code>Coupon</code>:
+<pre class="code" data-lang="tableau">REGEXP_EXTRACT([Note], "([A-Z]{4,}-[0-9]{2})")</pre></li>
+<li>צרו <code>Refund</code>:
+<pre class="code" data-lang="tableau">ZN(FLOAT(REGEXP_EXTRACT([Note], "([0-9]+[.][0-9]{2})")))</pre><i>למה: מחלצים טקסט, הופכים למספר עשרוני, ו-ZN מחליף NULL באפס כדי שאפשר יהיה לסכום.</i></li>
+<li>צרו <code>Has Phone</code>:
+<pre class="code" data-lang="tableau">REGEXP_MATCH([Note], "0[0-9]{2}-[0-9]{3}-[0-9]{4}")</pre></li>
+<li>גררו <code>Ticket</code> ל-<code>Rows</code>, ואת חמשת השדות החדשים ל-<code>Text</code>. <i>למה: טבלה שורה לכל פנייה, כדי לבדוק כל שורה מול הדף הזה.</i></li>
+<li>בגיליון חדש בנו טבלת סיכום: <code>Number of Records</code> כטקסט, ואז שנו את הצבירה של כל שדה בלחיצה ימנית על הפיל (<code>Measure</code>): <code>Order ID</code> כ-<code>Count</code>, <code>Rating</code> כ-<code>Average</code>, <code>Refund</code> כ-<code>Sum</code>. וגם: <code>Coupon</code> ל-<code>Rows</code> עם <code>Number of Records</code> כטקסט. <i>למה: כך בודקים כל שדה מול המספרים שבסעיף ״תוצאה צפויה״.</i></li>
+</ol>
+<p><b>תוצאה צפויה:</b> <code>COUNT([Order ID])</code> הוא <b>22</b> מתוך 24 (בלי UPPER היה 21). <code>Rating</code> קיים ב-<b>21</b> פניות, והממוצע <code>AVG([Rating])</code> הוא <b>2.81</b> (סכום 59 חלקי 21). התפלגות הדירוגים: 1 ב-4 פניות, 2 ב-7, 3 ב-3, 4 ב-3, 5 ב-4. <code>Coupon</code> קיים ב-<b>8</b> פניות: SUMMER-20 ארבע פעמים, FRIEND-15 פעמיים, WELCOME-10 ו-CHOC-10 פעם אחת כל אחד, ו-Null ב-16 פניות. <code>SUM([Refund])</code> הוא <b>253.4</b>, בשש פניות. <code>Has Phone</code> הוא אמת ב-<b>8</b> פניות. בפנייה T-1006 הדירוג הוא <b>4</b>.</p>
+</div>
+
+<div class="box try" data-id="m16-try-mask-branch">
+<p><b>מיסוך טלפון וניקוי שמות סניפים</b></p>
+<ol>
+<li>צרו <code>Note Masked</code>:
+<pre class="code" data-lang="tableau">REGEXP_REPLACE([Note], "0[0-9]{2}-[0-9]{3}-[0-9]{4}", "[phone]")</pre></li>
+<li>צרו <code>Branch Clean</code>:
+<pre class="code" data-lang="tableau">UPPER(TRIM(REGEXP_REPLACE([Branch], "[ ]+", " ")))</pre><i>למה: קודם מצמצמים רווחים כפולים (Tel Aviv  Port), אחר כך חותכים רווחים מהקצוות, ואז אות גדולה אחת לכל השמות.</i></li>
+<li>בנו גיליון עם <code>Branch Clean</code> ב-<code>Rows</code> ו-<code>Number of Records</code> כטקסט.</li>
+<li>בגיליון נוסף: <code>COUNTD([Branch])</code> מול <code>COUNTD([Branch Clean])</code>.</li>
+<li>בדקו שאין טלפון שנשאר:
+<pre class="code" data-lang="tableau">SUM(IF REGEXP_MATCH([Note Masked], "0[0-9]{2}-[0-9]{3}-[0-9]{4}") THEN 1 ELSE 0 END)</pre></li>
+</ol>
+<p><b>תוצאה צפויה:</b> <code>Branch Clean</code> נותן חמישה סניפים: TEL AVIV DIZENGOFF <b>6</b> פניות, TEL AVIV PORT <b>5</b>, JERUSALEM MAMILLA <b>5</b>, HAIFA GERMAN COLONY <b>4</b>, EILAT PROMENADE <b>4</b> (סך 24). <code>COUNTD([Branch Clean])</code> הוא <b>5</b>. בבדיקת הטלפון על <code>Note Masked</code> מתקבל <b>0</b>, ועל <code>Note</code> המקורי מתקבל <b>8</b>. ב-<code>Note Masked</code> שמונה פניות כוללות את הטקסט <code>[phone]</code>.</p>
+</div>
+
+<h3>הטבלה שמסבירה למה Tableau, פייתון ו-JavaScript לא תמיד מסכימים</h3>
+<p>רוב הכלים מבינים regex, אבל כל אחד מהם הוא ניב אחר. Tableau לפי התיעוד שלו משתמש בספריית ICU. הנה ההבדלים שיכולים לפגוע בכם כשמעבירים תבנית ממקום למקום, לפי התיעוד של כל שפה.</p>
+<div class="tw"><table class="tbl">
+<tr><th>מה</th><th>ICU (המנוע ש-Tableau מצהיר עליו)</th><th>Python (<code>re</code>)</th><th>JavaScript</th></tr>
+<tr><td>קבוצה עם שם</td><td><code>(?&lt;name&gt;...)</code></td><td><code>(?P&lt;name&gt;...)</code></td><td><code>(?&lt;name&gt;...)</code></td></tr>
+<tr><td>הפניה לקבוצה בהחלפה</td><td><code>$1</code></td><td><code>\1</code></td><td><code>$1</code></td></tr>
+<tr><td>אות מכל שפה, <code>\p{L}</code></td><td>נתמך</td><td>לא נתמך במודול <code>re</code> הרגיל</td><td>צריך את הדגל <code>u</code></td></tr>
+<tr><td>דגל לא רגיש לגודל אותיות</td><td><code>(?i)</code> בתוך התבנית</td><td><code>(?i)</code> בתחילת התבנית, או <code>re.I</code></td><td>דגל מחוץ לתבנית: <code>/.../i</code></td></tr>
+<tr><td>״מה שלפני״ (lookbehind)</td><td>נתמך באורך חסום</td><td>רק באורך קבוע</td><td>נתמך בדפדפנים חדשים</td></tr>
+</table></div>
+<p class="m16-note">אל תבנו על שורה בטבלה הזאת בלי לבדוק ב-Tableau עצמו. התיעוד של Tableau אומר שהמנוע הוא ICU, אבל לא כל תכונה נבדקה בתוכנה, ולכן הדף הזה נשאר בתת-קבוצה שפשוטה בכל הניבים: סוגריים מרובעים, כמתים, קבוצות ו-<code>|</code>. הפניה לקבוצה בתוך ההחלפה לא נבדקה בתוכנה, ולכן לא בנינו עליה שום תרגיל.</p>
+
+<div class="box trap"><p><b>תבנית שתופסת יותר מדי.</b> ב-T-1006 כתוב ״Came on <bdi dir="ltr">13/5</bdi> and the cone was cold, rated <bdi dir="ltr">4/5</bdi>״. התבנית הפשוטה <code>([1-5])/5</code> מוצאת קודם את ״<bdi dir="ltr">3/5</bdi>״ שבתוך התאריך <bdi dir="ltr">13/5</bdi> ומחזירה 3. הדירוג האמיתי הוא 4. בלי הבדיקה הנכונה, הממוצע יוצא 2.76 ולא 2.81, ואף אחד לא רואה את הטעות. הפתרון: להגדיר מה צריך להיות <b>לפני</b> התבנית, בדיוק כמו ב-<code>(^|[^0-9/])</code>.</p></div>
+
+<div class="box trap"><p><b>REGEXP_EXTRACT מחזירה רק את ההתאמה הראשונה.</b> ב-T-1022 יש שני מספרי הזמנה: SG-02065 ו-SG-02056. הפונקציה תחזיר רק SG-02065. אין פונקציה ״מצא את כולם״. כדי לקבל את השני כותבים תבנית עם שתי קבוצות, <code>(SG-[0-9]{5}).*(SG-[0-9]{5})</code>, ובוחרים ב-<code>REGEXP_EXTRACT_NTH</code> את הקבוצה 2.</p></div>
+
+<div class="box trap"><p><b>הכוכבית תופסת הכול.</b> <code>Refund (.*)</code> נראית הגיונית, אבל <code>.*</code> תופסת עד סוף הטקסט: ב-T-1003 היא מחזירה ״38.50 requested. Phone <bdi dir="ltr">052-555-0188</bdi>״, כולל הטלפון. כשיש לכם מושג ברור איך נראה הערך (ספרות ונקודה), כתבו אותו: <code>([0-9]+[.][0-9]{2})</code>.</p></div>
+
+<div class="box trap"><p><b>מיסוך בנוסחה לא מוחק את העמודה המקורית.</b> הוספתם <code>Note Masked</code>, אבל <code>Note</code> עם מספרי הטלפון עדיין בקובץ. ב-Tableau Public כל הנתונים שבחוברת ניתנים להורדה כברירת מחדל, ואצלנו אין אימות אם הסתרת שדה מוציאה אותו מהמיצוי שמתפרסם. הדרך הבטוחה: להוציא את העמודה מהקובץ <b>לפני</b> שטוענים אותו. את זה עושים בסעיף 9 עם סקריפט.</p></div>
+
+<div class="box meaning"><p>Regex הופך טקסט חופשי לעמודות. אחרי שיש עמודת דירוג ועמודת סכום החזר, אפשר לחשב ממוצע, לסנן ולצבוע, בדיוק כמו בכל נתון אחר. הערך האמיתי הוא לא התבנית עצמה אלא הבדיקה: כל שדה חדש מחזיר NULL בחלק מהשורות, ואתם צריכים לדעת אם זה בגלל שאין שם ערך או בגלל שהתבנית פספסה. בשורות של Scoop &amp; Go, שלוש פניות בלי דירוג הן שלוש פניות בלי דירוג, ופנייה אחת עם sg קטן היא פספוס.</p></div>
+
+<div class="box real"><p>אנשי תמיכה ושיווק מחלצים כך מספרי הזמנה, קודי מבצע ותגיות מהודעות, קבצי לוג וכתובות. אנשי כספים מנקים בעזרת regex קודי חשבון ומספרי חשבונית. לפני שמפרסמים נתון שנגזר מטקסט חופשי, הגישה הנפוצה היא לבדוק ידנית מדגם של שורות, ולא רק לסמוך על התבנית.</p></div>
+
+<div class="box think" data-id="m16-th-null-miss"><p>שאלה: קיבלתם עמודת <code>Order ID</code> עם 21 ערכים ו-3 NULL. איך תדעו אם שלוש הפניות האלה באמת בלי מספר הזמנה, או שהתבנית פספסה? מה תעשו קודם?</p>
+<div class="ans">מציגים את הפניות עם NULL לצד הטקסט המקורי ועוברים עליהן. כאן יש שתי פניות שבאמת בלי מספר (T-1007, T-1018) ואחת שפוספסה בגלל sg באותיות קטנות (T-1013). הבדיקה הזאת קצרה, והיא מונעת שנה של דוחות שגויים. אחרי התיקון (UPPER) יש 22 ערכים ו-2 NULL אמיתיים.</div></div>
+
+<div class="quiz" data-id="m16-q-rx-null" data-a="3"><p class="qq">מה מחזירה <code>REGEXP_EXTRACT</code> כשהתבנית לא נמצאת בטקסט?</p>
+<button class="opt">טקסט ריק (<code>""</code>)</button>
+<button class="opt">שגיאה, והחישוב נעצר</button>
+<button class="opt"><code>NULL</code></button>
+<button class="opt">אפס</button>
+<div class="why">כשאין התאמה מתקבל NULL. לכן אחרי חילוץ של מספר אפשר להשתמש ב-<code>ZN</code> או <code>IFNULL</code> כשצריך ערך ברירת מחדל, ובדיקה כמו <code>ISNULL</code> כשצריך לזהות מי לא נמצא.</div></div>
+
+<div class="quiz" data-id="m16-q-rx-group" data-a="1"><p class="qq">מה מחזירה <code>REGEXP_EXTRACT("Order SG-01234", "SG-([0-9]{5})")</code>?</p>
+<button class="opt"><code>01234</code>, רק מה שבתוך הסוגריים</button>
+<button class="opt"><code>SG-01234</code>, כל ההתאמה</button>
+<button class="opt"><code>Order SG-01234</code></button>
+<button class="opt"><code>NULL</code>, כי יש בה שני חלקים</button>
+<div class="why">כשיש קבוצה בסוגריים, היא מה שחוזר. ה-<code>SG-</code> שלפניה נדרש להתאמה אבל לא מוחזר. כדי לקבל את כל ההתאמה, שמים את הכול בקבוצה: <code>(SG-[0-9]{5})</code>.</div></div>
+
+<div class="quiz" data-id="m16-q-rx-first" data-a="4"><p class="qq">בפנייה יש שני מספרי הזמנה. איך מקבלים את השני?</p>
+<button class="opt"><code>REGEXP_EXTRACT</code> עם הדגל ״הכול״</button>
+<button class="opt"><code>REGEXP_EXTRACT_NTH</code> עם מספר 2 על תבנית עם קבוצה אחת</button>
+<button class="opt"><code>REGEXP_REPLACE</code> שמוחקת את הראשון, ואז אי אפשר</button>
+<button class="opt"><code>REGEXP_EXTRACT_NTH</code> על תבנית עם שתי קבוצות, ואינדקס 2</button>
+<div class="why">המספר הוא מספר <b>קבוצה</b> ולא מספר <b>התאמה</b>. כדי שתהיה קבוצה שנייה צריך לכתוב בתבנית שתי קבוצות. אין דגל ״הכול״, ולא בדקנו שיטה של מחיקת הראשון.</div></div>
+
+<div class="quiz" data-id="m16-q-rx-case" data-a="2"><p class="qq">התבנית <code>SG-[0-9]{5}</code> פספסה את <code>sg-01822</code>. מה הפתרון הפשוט ביותר?</p>
+<button class="opt">להוסיף עוד כוכבית לתבנית</button>
+<button class="opt">להפעיל אותה על <code>UPPER([Note])</code>, או לכתוב <code>[Ss][Gg]</code> בתבנית</button>
+<button class="opt">לסנן החוצה את הפנייה</button>
+<button class="opt">להחליף את SG ב-<code>.</code> כדי שכל תו יתאים</button>
+<div class="why">אות גדולה ואות קטנה הן תווים שונים. UPPER מאחד אותן לפני החיפוש. חמישה תווים של ״כל תו״ היו מתאימים ליותר מדי דברים, וסינון הפנייה משמיט נתון אמיתי.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> כל התוצאות בסעיף חושבו בפייתון על 24 השורות, עם <code>re</code> של פייתון ועם אותה תבנית ב-JavaScript של ההדמיה (שתי התוצאות זהות). לא הורצו ב-Tableau. לפני השיעור טענו את הקובץ ב-Tableau Public והריצו כל אחת מהתבניות: (1) האם הקידוד של עברית נקרא נכון בלי הגדרה. (2) כמה ערכים שונים יש ב-Branch הגולמי: Tableau עשוי להתעלם מרווחים בקצוות או מגודל אותיות, ואז המספר יהיה קטן מ-14. (3) האם <code>REGEXP_REPLACE</code> מחליפה את כל ההתאמות (בתרגיל יש טלפון אחד בכל שורה, ולכן זה לא משפיע) ואיך כותבים הפניה לקבוצה בהחלפה. (4) הערה: <code>REGEXP_EXTRACT_NTH</code> אינה זמינה בכל מקורות הנתונים לפי התיעוד, אבל קובץ CSV ב-Public הוא מיצוי. (5) שהתבנית בנויה כמחרוזת קבועה: בתיעוד כתוב שבמיצוי התבנית חייבת להיות קבועה, כלומר אי אפשר לבנות אותה משדה או מפרמטר.</div>
+</section>
+<section class="sec" id="m16-4" data-t="תאריכים ותנאים">
+<div class="sec-h"><div class="sec-n">4</div><h2>תאריכים מטקסט ותנאים מקוננים: מסדרים את הפניות</h2></div>
+<p class="lead">יש לנו עכשיו דירוג, החזר וטלפון. עוד לא ענינו על שתי שאלות של מנהלת השירות: כמה זמן לוקח לטפל בפנייה, ובאיזה סדר לטפל בהן. הראשונה מחייבת תאריכים אמיתיים, והשנייה מחייבת תנאים שלא מתבלבלים.</p>
+
+<h3>תאריך שהגיע כטקסט</h3>
+<p>בעמודה <code>Received</code> כתוב <code>03/05/2025 09:15</code>. Tableau רואה את זה כמחרוזת, ולכן אי אפשר לחסר שני תאריכים, לקבץ לחודשים או לשרטט ציר זמן. צריך להגיד לו איך הטקסט בנוי.</p>
+
+<div class="defline"><b><code>DATEPARSE</code>:</b> פונקציה שהופכת טקסט לתאריך לפי תבנית שאתם כותבים. דוגמה: <code>DATEPARSE("dd/MM/yyyy", "15/01/2025")</code> היא ה-15 בינואר 2025.</div>
+
+<div class="tw"><table class="tbl">
+<tr><th>סימן בתבנית</th><th>מה הוא</th><th>בדוגמה <code>03/05/2025 09:15</code></th></tr>
+<tr><td><code>dd</code></td><td>יום בחודש</td><td>03</td></tr>
+<tr><td><code>MM</code></td><td>חודש (באותיות גדולות!)</td><td>05</td></tr>
+<tr><td><code>yyyy</code></td><td>שנה בארבע ספרות</td><td>2025</td></tr>
+<tr><td><code>HH</code></td><td>שעה 0 עד 23</td><td>09</td></tr>
+<tr><td><code>mm</code></td><td>דקות (באותיות קטנות!)</td><td>15</td></tr>
+</table></div>
+<p>שני כללים רשמיים: התבנית חייבת לכלול את כל הרווחים, המקפים והקווים הנטויים שבטקסט, ו-<code>DATEPARSE</code> תלויה בהגדרות השפה של המחשב (בתיעוד יש דוגמה לתאריך עם שם חודש באנגלית שמתפרש אצל משתמש אחד ולא אצל אחר). אנחנו משתמשים רק בספרות, כדי להתרחק מהבעיה הזאת.</p>
+
+<div class="box try" data-id="m16-try-dateparse">
+<p><b>תאריכים אמיתיים וזמן טיפול</b></p>
+<ol>
+<li>צרו <code>Received Dt</code>:
+<pre class="code" data-lang="tableau">DATEPARSE("dd/MM/yyyy HH:mm", [Received])</pre></li>
+<li>צרו <code>Resolved Dt</code> באותה תבנית על <code>[Resolved]</code>. <i>למה: שלוש פניות עדיין פתוחות, ולהן אין תאריך סגירה.</i></li>
+<li>צרו <code>Handling Minutes</code>:
+<pre class="code" data-lang="tableau">DATEDIFF("minute", [Received Dt], [Resolved Dt])</pre><i>למה: דקות ולא שעות, כדי לא ליפול במלכודת של ספירת גבולות (בהמשך).</i></li>
+<li>גררו <code>Ticket</code> ל-<code>Rows</code>, ואת שלושת השדות ל-<code>Text</code>. הוסיפו שדה <code>Hour Received</code> = <code>DATEPART("hour", [Received Dt])</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בפנייה T-1001 התאריך הוא <b>3 במאי 2025, 09:15</b> (יום לפני חודש) וזמן הטיפול <b>145</b> דקות. ב-<b>21</b> פניות יש זמן טיפול, ו-<b>3</b> הן Null (T-1005, T-1012, T-1023). <code>AVG([Handling Minutes])</code> הוא <b>320.5</b> דקות, כלומר כ-5.34 שעות. הארוך ביותר <b>1,290</b> דקות (T-1014) והקצר ביותר <b>15</b> (T-1007). לפי חודש: מאי 6 פניות, יוני 13, יולי 5. לפי שעה: שעות 9 ו-10 הן 3 פניות כל אחת, והשעות 8, 15, 16, 17, 20 ו-21 פנייה אחת כל אחת. אם <code>DATEPARSE</code> מחזירה Null בכל השורות, בדקו את התבנית ואת הרווח בין התאריך לשעה.</p>
+</div>
+
+<div class="box trap"><p><b>יום לפני חודש או חודש לפני יום.</b> אם כתבתם <code>MM/dd/yyyy HH:mm</code> במקום <code>dd/MM/yyyy HH:mm</code>, 14 מ-24 הפניות (אלה שהיום בהן 12 או פחות) יתפרשו כתאריך אחר לגמרי: ה-<bdi dir="ltr">03/05</bdi> הופך ל-5 במרץ. אף הודעת שגיאה לא תופיע. ב-10 הפניות שהיום בהן גדול מ-12 הפרשנות לא אפשרית, ומה Tableau מחזיר אצלכם (Null או משהו אחר) כדאי לבדוק. הכלל: לפני שסומכים על עמודת תאריך, בודקים תאריך אחד שהיום בו גדול מ-12.</p></div>
+
+<div class="box trap"><p><b><code>DATEDIFF</code> סופרת גבולות, לא זמן.</b> בפנייה T-1004 הטיפול התחיל ב-18:20 והסתיים ב-19:05, 45 דקות. <code>DATEDIFF("hour", ...)</code> מחזירה 1, כי עברנו גבול שעה אחד. בפנייה T-1001 (09:15 עד 11:40) היא מחזירה 2, והזמן האמיתי כמעט שעתיים וחצי. בדקות, ובלי שניות בנתונים, אין הפרש כזה.</p></div>
+
+<h3>תנאים: קודם מתכננים, אחר כך כותבים</h3>
+<p>מנהלת השירות מבקשת סדר טיפול. אם יש לקוח שביקש החזר והשאיר טלפון או נתן דירוג נמוך, מתקשרים אליו. אם ביקש החזר בלי טלפון, מטפלים בהחזר. אם רק נתן דירוג נמוך, קוראים ומגיבים. מי שאין לו אות בכלל לא נכנס לתור. כל השאר בסדר. זה אלגוריתם של חמש שורות, ויש בו מלכודת אחת: <b>הסדר</b>.</p>
+
+<div class="defline"><b>תנאי מקונן (<code>IF</code> עם <code>ELSEIF</code>):</b> רשימה של בדיקות שמתבצעות מלמעלה למטה, והראשונה שמתקיימת קובעת את התוצאה. מה שמתחתיה לא נבדק. דוגמה: <code>IF [Rating] &lt;= 2 THEN "Review" ELSE "Fine" END</code>.</div>
+
+<div class="anim" data-id="m16-anim-nested" data-speed="4200">
+<div class="stage"><svg viewBox="0 0 800 372" role="img" aria-label="הנפשה: אותה פנייה נופלת בשני סדרים של תנאים, ומקבלת שני סיווגים שונים">
+<text x="400" y="22" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">T-1001: rating 2, phone, no refund</text>
+<text x="200" y="48" text-anchor="middle" font-size="15" font-weight="800" fill="#b91c1c">סדר שגוי</text>
+<text x="600" y="48" text-anchor="middle" font-size="15" font-weight="800" fill="#047857">סדר נכון</text>
+<g font-size="13" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#0f172a">
+<rect x="10" y="58" width="380" height="42" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="20" y="84">1 no rating and no refund: No signal</text>
+<rect x="10" y="108" width="380" height="42" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="20" y="134">2 rating &lt;= 2: 3 Review</text>
+<rect x="10" y="158" width="380" height="42" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="20" y="184">3 phone and (low or refund): 1 Call back</text>
+<rect x="10" y="208" width="380" height="42" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="20" y="234">4 refund &gt; 0: 2 Refund</text>
+<rect x="10" y="258" width="380" height="42" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="20" y="284">5 else: 4 Fine</text>
+<rect x="410" y="58" width="380" height="42" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="420" y="84">1 no rating and no refund: No signal</text>
+<rect x="410" y="108" width="380" height="42" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="420" y="134">2 phone and (low or refund): 1 Call back</text>
+<rect x="410" y="158" width="380" height="42" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="420" y="184">3 refund &gt; 0: 2 Refund</text>
+<rect x="410" y="208" width="380" height="42" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="420" y="234">4 rating &lt;= 2: 3 Review</text>
+<rect x="410" y="258" width="380" height="42" rx="8" fill="#fff" stroke="#cbd5e1"/><text x="420" y="284">5 else: 4 Fine</text>
+</g>
+<g data-s="2"><rect x="10" y="108" width="380" height="42" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="3"/><text x="20" y="134" font-size="13" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#991b1b">2 rating &lt;= 2: 3 Review</text>
+<rect x="10" y="158" width="380" height="142" rx="8" fill="#f1f5f9" opacity=".8"/><text x="200" y="236" text-anchor="middle" font-size="15" font-weight="700" fill="#64748b">לא נבדק יותר</text></g>
+<g data-s="3"><rect x="410" y="108" width="380" height="42" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="3"/><text x="420" y="134" font-size="13" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" fill="#065f46">2 phone and (low or refund): 1 Call back</text>
+<rect x="410" y="158" width="380" height="142" rx="8" fill="#f1f5f9" opacity=".8"/><text x="600" y="236" text-anchor="middle" font-size="15" font-weight="700" fill="#64748b">לא נבדק יותר</text></g>
+<g data-s="4"><text x="200" y="326" text-anchor="middle" font-size="14" font-weight="700" fill="#991b1b">Review 11, Fine 10, No signal 3</text><text x="200" y="348" text-anchor="middle" font-size="14" fill="#991b1b">Call back ו-Refund: אפס</text>
+<text x="600" y="326" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Fine 10, Call back 6, Review 3</text><text x="600" y="348" text-anchor="middle" font-size="14" fill="#065f46">No signal 3, Refund 2</text></g>
+</svg></div>
+<ol class="caps">
+<li>פנייה אחת: דירוג 2, מספר טלפון, בלי החזר. היא צריכה לקבל ״התקשרו אליו״. אותם חמישה תנאים, בשני סדרים.</li>
+<li>משמאל הדירוג הנמוך נבדק ראשון. הוא מתקיים, והתוצאה נקבעת: ״בדיקה בלבד״. שלושת התנאים שאחריו לא נבדקים אף פעם.</li>
+<li>מימין התנאי הצר (טלפון ובקשה חמורה) נבדק לפני התנאי הרחב (דירוג נמוך). הפנייה מקבלת ״התקשרו אליו״.</li>
+<li>על כל 24 הפניות: הסדר השגוי מעלים לגמרי את שתי הקטגוריות החשובות. אין הודעת שגיאה, רק מספרים שונים.</li>
+</ol></div>
+
+<p>הכלל, בלי לנחש: <b>מהצר אל הרחב</b>. התנאי שמתאים למעט שורות והוא הכי חשוב בא ראשון. התנאי שתופס הרבה (״דירוג נמוך״) בא אחריו. ולפני כולם, שומר על ערכי Null, כי ביטוי כמו <code>[Rating] &lt;= 2</code> על Null לא נותן אמת ולא שקר.</p>
+
+<pre class="code" data-lang="tableau">IF ISNULL([Rating]) AND [Refund] = 0 THEN "No signal"
+ELSEIF [Has Phone] AND ([Rating] &lt;= 2 OR [Refund] &gt; 0) THEN "1 Call back"
+ELSEIF [Refund] &gt; 0 THEN "2 Refund"
+ELSEIF [Rating] &lt;= 2 THEN "3 Review"
+ELSE "4 Fine"
+END</pre>
+
+<div class="box try" data-id="m16-try-priority">
+<p><b>סדר טיפול, ובדיקה שהסדר חשוב</b></p>
+<ol>
+<li>צרו שדה <code>Priority</code> עם הנוסחה למעלה (העתיקו עם הלחצן). <i>למה: זה כל האלגוריתם בנוסחה אחת, וכל תנאי בשורה משלו.</i></li>
+<li>גררו <code>Priority</code> ל-<code>Rows</code> ואת <code>Number of Records</code> ל-<code>Text</code>.</li>
+<li>עכשיו שברו בכוונה: העבירו את השורה <code>ELSEIF [Rating] &lt;= 2 THEN "3 Review"</code> להיות מיד אחרי השורה הראשונה, לפני ״1 Call back״. <i>למה: לראות במו עיניים מה קורה כשהסדר שגוי.</i></li>
+<li>החזירו את הסדר הנכון ושמרו.</li>
+</ol>
+<p><b>תוצאה צפויה (סדר נכון):</b> <b>4 Fine</b> 10 פניות, <b>1 Call back</b> 6, <b>3 Review</b> 3, <b>No signal</b> 3, <b>2 Refund</b> 2. סך 24. <b>סדר שגוי:</b> 3 Review קופץ ל-11, Fine נשאר 10, No signal 3, ושתי הקטגוריות 1 Call back ו-2 Refund נעלמות. אם אצלכם יוצאים מספרים אחרים, בדקו ש-<code>Rating</code>, <code>Refund</code> ו-<code>Has Phone</code> מהסעיף הקודם נכונים (22, 253.4 ו-8 בהתאמה).</p>
+</div>
+
+<h3>כשיש הרבה תנאים: פורקים לשדות עזר</h3>
+<p>הנוסחה למעלה קריאה כי כל מה שהיא בודקת כבר שדה עם שם: <code>Rating</code>, <code>Refund</code>, <code>Has Phone</code>. אילו כתבנו אותה במכה אחת עם ה-regex בתוכה, היא הייתה באורך של שלושה מסכים ואי אפשר היה לבדוק אותה. הכלל המעשי: כל שלב שיש לו משמעות עסקית זוכה לשדה משלו, והתנאי המקונן רק מרכיב אותם.</p>
+<div class="tw"><table class="tbl">
+<tr><th></th><th>נוסחה אחת ענקית</th><th>שדות עזר ותנאי קצר</th></tr>
+<tr><td>איך בודקים</td><td>רק את התוצאה הסופית</td><td>כל שדה בנפרד, מול הטבלה שלמעלה</td></tr>
+<tr><td>כשמשהו משתבש</td><td>לא ברור איזה חלק</td><td>רואים איזה שדה נותן NULL</td></tr>
+<tr><td>מי יכול לשנות</td><td>רק מי שכתב</td><td>כל אחד שמבין את השמות</td></tr>
+</table></div>
+
+<div class="defline"><b><code>CASE</code>:</b> תנאי שמשווה ערך אחד לרשימת ערכים מדויקים. דוגמה: <code>CASE [Branch Clean] WHEN "TEL AVIV PORT" THEN "Center" ... END</code>. משתמשים בו כשהשאלה היא ״מי זה בדיוק״ ולא ״האם גדול מ-״.</div>
+
+<div class="box try" data-id="m16-try-case-region">
+<p><b>מסניף לאזור עם CASE</b></p>
+<ol>
+<li>צרו <code>Region Guess</code> על <code>Branch Clean</code> מהסעיף הקודם:
+<pre class="code" data-lang="tableau">CASE [Branch Clean]
+WHEN "TEL AVIV DIZENGOFF" THEN "Center"
+WHEN "TEL AVIV PORT" THEN "Center"
+WHEN "JERUSALEM MAMILLA" THEN "Jerusalem"
+WHEN "HAIFA GERMAN COLONY" THEN "North"
+WHEN "EILAT PROMENADE" THEN "South"
+ELSE "Unknown"
+END</pre></li>
+<li>גררו <code>Region Guess</code> ל-<code>Rows</code> ואת <code>Number of Records</code> ל-<code>Text</code>.</li>
+<li>עכשיו שימו לב: במקום <code>Branch Clean</code> נסו <code>[Branch]</code> הגולמי בנוסחה.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> עם <code>Branch Clean</code>: <b>Center 11</b> פניות, <b>Jerusalem 5</b>, <b>North 4</b>, <b>South 4</b>, ו-<b>Unknown 0</b>. עם <code>[Branch]</code> הגולמי רוב השורות ייפלו ל-<code>Unknown</code>, כי ״ tel aviv dizengoff ״ באותיות קטנות ועם רווחים לא שווה ל-״TEL AVIV DIZENGOFF״. כמה ייפלו בדיוק תלוי בהתייחסות של Tableau לרווחים ולאותיות: לא אומת. זה הרגע שבו מבינים למה מנקים לפני שמתכנתים.</p>
+</div>
+
+<div class="box meaning"><p>תנאי הוא תוכנית קטנה. כמו כל תוכנית, היא נבדקת על מקרים, לא על הרגשה: הפניות T-1001, T-1010, T-1012 הן שלוש בדיקות טובות כי כל אחת מפעילה ענף אחר. לפני שמעלים דשבורד, בוחרים מדגם של שורות שמכסה כל ענף ובודקים שכל אחת מקבלת את הקטגוריה שציפיתם.</p></div>
+
+<div class="box real"><p>כך נראים כללי תעדוף בכל מערכת תמיכה, זיהוי הונאות או ניקוד לידים: רשימת תנאים מסודרת, מהחמור אל הכללי, עם שורת ״אחרת״ בסוף. כשהכללים האלה נפרשים בגיליון אחד (טבלת החלטות), אפשר להראות אותם למי שאחראי עליהם עסקית, לפני שמתרגמים לנוסחה.</p></div>
+
+<div class="box think" data-id="m16-th-order-design"><p>שאלה: רוצים להוסיף קטגוריה ״VIP״ ללקוחות שדירגו 5. איפה בסדר הנכון היא צריכה לבוא, ולמה? ומה תעשו עם פנייה שיש בה גם דירוג 5 וגם בקשת החזר?</p>
+<div class="ans">דירוג 5 הוא תנאי שלא מתנגש עם ״No signal״ (שם אין דירוג), אבל כן עם ״Refund״ ו-״Call back״ (שבהם יש בקשת החזר). לכן ״VIP״ בא אחרי שני אלה ולפני ״Fine״. פנייה שיש בה 5 והחזר תקבל ״Refund״, כי התנאי הצר יותר והחמור יותר הוא שקובע. ההחלטה היא עסקית, ולא טכנית: שואלים את מנהלת השירות לפני שכותבים.</div></div>
+
+<div class="quiz" data-id="m16-q-dateparse" data-a="1"><p class="qq">מה התבנית הנכונה לטקסט <code>21/05/2025 12:10</code>?</p>
+<button class="opt"><code>dd/MM/yyyy HH:mm</code></button>
+<button class="opt"><code>MM/dd/yyyy HH:mm</code></button>
+<button class="opt"><code>dd/mm/yyyy HH:MM</code></button>
+<button class="opt"><code>dd-MM-yyyy hh:mm</code></button>
+<div class="why">יום, אחריו חודש (MM באותיות גדולות), שנה, שעה ב-24 שעות (HH) ודקות (mm באותיות קטנות). בתבנית ב' היום והחודש מתהפכים. בתבנית ג' האותיות הגדולות והקטנות מתחלפות, ובתבנית ד' המקף לא קיים בטקסט.</div></div>
+
+<div class="quiz" data-id="m16-q-ifnull-first" data-a="3"><p class="qq">למה השורה <code>IF ISNULL([Rating]) AND [Refund] = 0</code> באה ראשונה?</p>
+<button class="opt">כי Tableau מחייב שבדיקת Null תהיה ראשונה</button>
+<button class="opt">כי היא הנפוצה ביותר</button>
+<button class="opt">כי ביטוי כמו <code>[Rating] &lt;= 2</code> על Null לא נותן אמת או שקר, ואנחנו רוצים לטפל בהם בנפרד</button>
+<button class="opt">כי היא מהירה יותר</button>
+<div class="why">הבדיקה הראשונה תופסת את מי שאין עליו מידע, כדי שהתנאים שאחריה לא יתייחסו לערכים חסרים. זו הנחיה, לא דרישה של Tableau, והיא לא קשורה למהירות.</div></div>
+
+<div class="quiz" data-id="m16-q-case-vs-if" data-a="4"><p class="qq">מתי <code>CASE</code> מתאים יותר מ-<code>IF</code>?</p>
+<button class="opt">כשרוצים להשוות טווחים של מספרים</button>
+<button class="opt">כשצריך כמה תנאים שונים על כמה שדות</button>
+<button class="opt">כשצריך לבדוק שדה ריק</button>
+<button class="opt">כשמשווים שדה אחד לרשימת ערכים מדויקים, כמו שם סניף לאזור</button>
+<div class="why">CASE בנוי להשוואה של ביטוי אחד לערכים מדויקים. טווחים, כמה שדות וערכים ריקים מתאימים יותר ל-IF.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> כל המספרים (145 דקות, 320.5, 1,290, 15, הספירה לפי חודש ושעה, <bdi dir="ltr">10/6/3/3/2</bdi> ו-<bdi dir="ltr">11/10/3</bdi>) חושבו בפייתון מ-24 השורות. לבדוק בתוכנה לפני השיעור: (א) האם <code>DATEPARSE</code> על תא ריק ב-<code>Resolved</code> מחזירה Null (סביר, לא אומת). (ב) מה קורה בתבנית שגויה כשהיום גדול מ-12: Null או גלגול לתאריך אחר. (ג) מה ש-IF עושה כשהתנאי Null: הדף הרשמי של הפונקציות הלוגיות לא אומר, ולכן הנוסחה שלנו שומרת על Null בשורה הראשונה במפורש. (ד) הסימן <code>[Rating] &lt;= 2</code> בשורה הרביעית על פנייה שיש בה החזר ללא דירוג הוא Null, אבל פנייה כזאת נתפסת קודם בשורות שמעליה. (ה) <code>DATEPARSE</code> מוגדרת ב-Tableau לפי תיעוד לקבצי טקסט שאינם legacy ולמיצויים, וזה המצב ב-Public.</div>
+</section>
+<section class="sec" id="m16-5" data-t="תבניות ופרמטרים">
+<div class="sec-h"><div class="sec-n">5</div><h2>תבניות חישוב לדשבורד, ופרמטרים כקלט</h2></div>
+<p class="lead">מנהלת הרשת של Scoop &amp; Go רוצה דשבורד אחד: חץ שאומר אם המכירות עלו או ירדו, כותרת שמספרת מה מוצג, צבע אדום לסניף או הנחה שמפסידים בהם, ובורר שמאפשר לשאול ״מה יקרה אם מגבילים הנחות?״. כל אחד מאלה הוא חישוב קטן שחוזרים עליו בכל דשבורד. אפשר לכתוב אותו פעם אחת נכון ולשמור כתבנית.</p>
+
+<div class="defline"><b>תבנית חישוב:</b> נוסחה או קבוצת שדות שפותרת בעיה שחוזרת בכל דשבורד, ושאפשר להעתיק ולהחליף בה שמות שדות. דוגמה: ״חץ מגמה״ שמורכב מארבעה שדות, ואחרי שבודקים אותו פעם אחת משתמשים בו שוב ושוב.</div>
+
+<h3>תבנית 1: חץ מגמה שיודע מה לעשות כשאין שנה קודמת</h3>
+<p>ארבעה שדות, כל אחד עושה דבר אחד. פרמטר קובע איזו שנה להשוות.</p>
+<pre class="code" data-lang="tableau">// Year Param: פרמטר, Integer, List: 2024, 2025, ערך נוכחי 2025
+
+// Sales CY
+SUM(IF YEAR([Order_Date]) = [Year Param] THEN [Sales] END)
+
+// Sales PY
+SUM(IF YEAR([Order_Date]) = [Year Param] - 1 THEN [Sales] END)
+
+// YoY %
+IIF(ZN([Sales PY]) = 0, NULL, ([Sales CY] - [Sales PY]) / [Sales PY])
+
+// KPI Arrow
+IF ISNULL([YoY %]) THEN "●"
+ELSEIF [YoY %] &gt; 0 THEN "▲"
+ELSEIF [YoY %] &lt; 0 THEN "▼"
+ELSE "●"
+END</pre>
+<p>השורות שמתחילות ב-<code>//</code> הן הערות. Tableau מתעלם מהן, ואנחנו משתמשים בהן כדי לתת לכל שדה שם בתוך הקוד.</p>
+
+<div class="box try" data-id="m16-try-kpi">
+<p><b>חץ מגמה לפי סניף</b></p>
+<ol>
+<li>צרו את הפרמטר <code>Year Param</code>: <code>Integer</code>, <code>List</code> עם 2024 ו-2025, ערך נוכחי 2025. הציגו אותו (<code>Show Parameter</code>). <i>למה: הצופה בוחר שנה, ולא צריך לשכפל גיליון.</i></li>
+<li>צרו ארבעת השדות מהבלוק למעלה. <i>למה: כל אחד נבדק בנפרד, ואם משהו נשבר רואים איפה.</i></li>
+<li>גררו <code>Branch</code> ל-<code>Rows</code>, ואת <code>Sales CY</code>, <code>Sales PY</code>, <code>YoY %</code> ו-<code>KPI Arrow</code> ל-<code>Text</code> (דרך <code>Measure Values</code> או כעמודות נפרדות).</li>
+<li>מיינו לפי <code>Sales CY</code> יורד.</li>
+<li>החליפו את הפרמטר ל-2024.</li>
+</ol>
+<p><b>תוצאה צפויה (2025):</b></p>
+<div class="tw"><table class="m16-tb">
+<tr><th>Branch</th><th class="r">Sales CY</th><th class="r">Sales PY</th><th class="r">YoY %</th><th>Arrow</th></tr>
+<tr><td>Tel Aviv Dizengoff</td><td class="r">23,187.7</td><td class="r">21,006.4</td><td class="r">+10.4%</td><td>▲</td></tr>
+<tr><td>Tel Aviv Port</td><td class="r">20,729.3</td><td class="r">18,716.7</td><td class="r">+10.8%</td><td>▲</td></tr>
+<tr><td>Jerusalem Mamilla</td><td class="r">17,344.9</td><td class="r">16,105.9</td><td class="r">+7.7%</td><td>▲</td></tr>
+<tr><td>Eilat Promenade</td><td class="r">16,925.6</td><td class="r">14,548.1</td><td class="r">+16.3%</td><td>▲</td></tr>
+<tr><td>Haifa German Colony</td><td class="r">14,407.2</td><td class="r">12,982.0</td><td class="r">+11.0%</td><td>▲</td></tr>
+<tr><td>Netanya Beach</td><td class="r">14,260.5</td><td class="r">12,579.7</td><td class="r">+13.4%</td><td>▲</td></tr>
+<tr><td>Rehovot Mall</td><td class="r">9,925.2</td><td class="r nul">Null</td><td class="r nul">Null</td><td>●</td></tr>
+<tr><td>Beer Sheva Grand Mall</td><td class="r">7,688.4</td><td class="r">11,108.8</td><td class="r">-30.8%</td><td>▼</td></tr>
+<tr><td>Ashdod Beach Pop-up</td><td class="r">5,304.5</td><td class="r nul">Null</td><td class="r nul">Null</td><td>●</td></tr>
+</table></div>
+<p>סך הרשת (בלי <code>Branch</code>): <b>129,773.3</b> לעומת <b>107,047.6</b>, כלומר <b>+21.2%</b>. שני סניפים ללא שנה קודמת (Rehovot ו-Ashdod נפתחו ב-2025) מקבלים עיגול ולא חץ. כשהפרמטר הוא 2024, שנת 2023 לא קיימת בקובץ, ולכן כל השורות מקבלות ●.</p>
+</div>
+
+<div class="box trap"><p><b>חילוק באפס מחזיר Null, ולא שגיאה.</b> בלי השורה <code>IIF(ZN([Sales PY]) = 0, NULL, ...)</code> Rehovot ו-Ashdod היו מקבלים Null בשקט, והחץ שלהן היה נעלם או משתנה ללא הסבר. כשכותבים נוסחת יחס, מחליטים במפורש מה קורה כשהמכנה חסר, ובודקים שורה כזאת בכל גרף.</p></div>
+
+<h3>תבנית 2: כותרת שמספרת מה מוצג</h3>
+<div class="defline"><b>כותרת דינמית:</b> כותרת גיליון שמורכבת מטקסט ומתוצאת חישוב, ומתעדכנת כשהצופה משנה בחירה. דוגמה: ״Sales in Tel Aviv Dizengoff: 44194״.</div>
+<pre class="code" data-lang="tableau">// Branch Pick: פרמטר, String, List: שמות תשעת הסניפים
+// Is Picked:  [Branch] = [Branch Pick]        (עולה ל-Filters, True)
+// Title Text:
+"Sales in " + [Branch Pick] + ": " + STR(ROUND(SUM([Sales]), 0))</pre>
+
+<div class="box try" data-id="m16-try-title">
+<p><b>כותרת שמשתנה</b></p>
+<ol>
+<li>צרו <code>Branch Pick</code> (<code>String</code>, <code>List</code>, אפשר <code>Add from Field</code> מ-<code>Branch</code>). הציגו אותו.</li>
+<li>צרו <code>Is Picked</code> ושימו אותו ב-<code>Filters</code> עם <code>True</code>.</li>
+<li>צרו <code>Title Text</code> וגררו אותו ל-<code>Detail</code>. <i>למה: שדה שלא בגרף לא מופיע ברשימה של הכותרת.</i></li>
+<li>לחצו פעמיים על כותרת הגיליון, בחלון העריכה לחצו <code>Insert</code> ובחרו <code>Title Text</code>.</li>
+<li>שנו את הפרמטר ל-Eilat Promenade.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> כותרת ״Sales in Tel Aviv Dizengoff: 44194״ ואחרי השינוי ״Sales in Eilat Promenade: 31474״ (31,473.7 מעוגל). אם הטקסט מופיע עם נקודה עשרונית או עם פסיקים, זו הצגת המספר של <code>STR</code> בגרסה שלכם, ולא טעות בחישוב. לפי התיעוד, תפריט <code>Insert</code> מציע שדות ותכונות של הגיליון. האם הוא מציע גם פרמטרים ישירות לא אומת, ולכן עוברים דרך שדה.</p>
+</div>
+
+<h3>תבנית 3: צבע שאומר ״בעיה״</h3>
+<pre class="code" data-lang="tableau">// Margin Band
+IF SUM([Profit]) / SUM([Sales]) &lt; 0 THEN "Loss"
+ELSEIF SUM([Profit]) / SUM([Sales]) &lt; 0.3 THEN "Thin"
+ELSE "Healthy"
+END</pre>
+
+<div class="box try" data-id="m16-try-band">
+<p><b>סיווג רווחיות בצבע</b></p>
+<ol>
+<li>צרו <code>Margin Band</code> (הנוסחה למעלה).</li>
+<li>המירו את <code>Discount</code> לממד (<code>Convert to Dimension</code> בלחיצה ימנית), גררו אותו ל-<code>Columns</code>, ואת <code>Margin Band</code> ל-<code>Color</code>. <code>SUM(Profit)</code> ב-<code>Rows</code>.</li>
+<li>ערכו את הצבעים: Loss באדום, Thin בכתום, Healthy בירוק. <i>למה: הצבע הוא ההודעה, ולא עיטור.</i></li>
+<li>בגיליון שני החליפו את <code>Discount</code> ב-<code>Category</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> לפי הנחה: <b>0</b> 52.9% Healthy, <b>0.1</b> 47.6% Healthy, <b>0.2</b> 46.7% Healthy, <b>0.5</b> <b>-6.1% Loss</b> (רווח כולל של 292 שורות הוא -378.0). לפי קטגוריה: Cones 52.9%, Cups 52.0%, Drinks 67.3% ו-Sticks 51.6% הם Healthy, ו-<b>Sundaes 28.2% Thin</b>.</p>
+</div>
+
+<h3>תבנית 4: מחליפים את הממד בלחיצה</h3>
+<p>בתבנית של החלפת מדד (מודול 10) הצופה בוחר מה לסכום. כאן הוא בוחר <b>לפי מה</b> לקבץ.</p>
+<pre class="code" data-lang="tableau">// Group By: פרמטר, String, List: Branch, Category, Channel
+// Dim Swap
+CASE [Group By]
+WHEN "Branch" THEN [Branch]
+WHEN "Category" THEN [Category]
+ELSE [Channel]
+END</pre>
+<div class="box try" data-id="m16-try-dimswap">
+<p><b>גיליון אחד, שלושה חיתוכים</b></p>
+<ol>
+<li>צרו את הפרמטר <code>Group By</code> והציגו אותו. צרו <code>Dim Swap</code>.</li>
+<li>גררו <code>Dim Swap</code> ל-<code>Rows</code> ו-<code>SUM(Sales)</code> ל-<code>Columns</code>.</li>
+<li>עברו בין שלושת הערכים בפרמטר.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> לפי Channel: Walk-in 164,767.9, App 36,957.8, Delivery 35,095.2. לפי Category: Cups 69,470.0, Drinks 54,553.3, Cones 48,317.0, Sundaes 47,037.2, Sticks 17,443.4. לפי Branch: תשעה סניפים, מ-44,194.1 של Tel Aviv Dizengoff עד 5,304.5 של Ashdod. בכל החלפה הסך נשאר 236,820.9.</p>
+</div>
+
+<h3>תבנית 5: Top N שהצופה בוחר</h3>
+<pre class="code" data-lang="tableau">// Top N: פרמטר, Integer, Range 1 עד 9, צעד 1, ערך נוכחי 3
+// In Top N (Filters, True):
+RANK(SUM([Sales])) &lt;= [Top N]</pre>
+<div class="box try" data-id="m16-try-topn">
+<p><b>Top N עם פרמטר</b></p>
+<ol>
+<li>צרו <code>Top N</code> והציגו. צרו את <code>In Top N</code> ושימו ב-<code>Filters</code> עם <code>True</code>.</li>
+<li>גרף עמודות: <code>Branch</code> ב-<code>Rows</code>, <code>SUM(Sales)</code> ב-<code>Columns</code>, מיון יורד.</li>
+<li>הוסיפו מסנן Region רגיל ובחרו <code>South</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בלי מסנן Region ועם <code>Top N</code> = 3: Tel Aviv Dizengoff 44,194.1, Tel Aviv Port 39,446.0, Jerusalem Mamilla 33,450.8 (שלושתם יחד 49.4% מהרשת). אחרי הוספת Region = South, החישוב רץ על מה שנשאר: עם N = 2 מתקבלים Eilat Promenade 31,473.7 ו-Beer Sheva Grand Mall 18,797.2. זה ההבדל בין מסנן חישוב טבלה לבין מסנן Top N רגיל, שראיתם בסדר הפעולות.</p>
+</div>
+
+<div class="box real"><p>חמש התבניות האלה מופיעות כמעט בכל דשבורד תפעולי שמחולק לרשתות ולסניפים: חץ מגמה, כותרת שמסבירה, צבע לחריג, בורר לחיתוך ובורר לדירוג. מי שבונה אותן פעם אחת, ושומר את הקבצים עם הערות, חוסך שעות בכל דשבורד הבא.</p></div>
+
+<h3>פרמטרים כקלט: תרחישים</h3>
+<p>עד כאן הפרמטר בחר ערך מרשימה. הצד השני הוא פרמטר שהוא <b>הנחה</b> או <b>הנחת עבודה</b>: ״מה היה קורה אם?״. הצופה מזיז, והמספרים זזים.</p>
+<div class="defline"><b>תרחיש (<code>what-if</code>):</b> חישוב שבו חלק מהקלט הוא פרמטר, כדי לראות מה יקרה אם ערך אחד ישתנה. דוגמה: מה יקרה למכירות אם כל הנחה גדולה מ-20% תוגבל ל-20%. הפרמטר הוא התקרה.</div>
+<pre class="code" data-lang="tableau">// Discount Cap: פרמטר, Float, List: 0.5, 0.3, 0.2, 0.1, 0
+// Price Change: פרמטר, Float, List: -0.1, -0.05, 0, 0.05, 0.1
+
+// Scenario Sales
+SUM([Quantity] * [Unit_Price]
+    * (1 - IIF([Discount] &gt; [Discount Cap], [Discount Cap], [Discount]))
+    * (1 + [Price Change]))
+
+// Scenario Profit
+[Scenario Sales] - SUM([Cost])
+
+// Scenario Margin
+[Scenario Profit] / [Scenario Sales]</pre>
+<p>שימו לב: <code>Cost</code> לא משתנה, כי התרחיש משנה רק מחיר ומבצעים. ובעיקר: הכמות לא משתנה. זו הנחה, ואפשר לשאול אם היא סבירה.</p>
+
+<style>
+.m16-dash{direction:ltr;text-align:left;background:#f4f6f8;border:1px solid #c7cfd9;border-radius:12px;padding:10px;margin:14px 0;box-shadow:0 10px 28px rgba(15,23,42,.12);font-size:.82rem}
+.m16-dash .top{background:#fff;border:1px solid #d5dbe3;border-radius:8px;padding:5px 10px;font-weight:700;color:#334155;margin-bottom:8px}
+.m16-dash .cols{display:grid;grid-template-columns:190px 1fr;gap:8px}
+@media(max-width:640px){.m16-dash .cols{grid-template-columns:1fr}}
+.m16-dash .par{background:#fff;border:1px solid #d5dbe3;border-radius:8px;padding:6px 8px;margin-bottom:8px}
+.m16-dash .par b{display:block;font-size:.72rem;color:#64748b}
+.m16-dash .par .sel{border:1px solid #94a3b8;border-radius:3px;padding:0 6px;display:flex;justify-content:space-between}
+.m16-dash .par .sl{height:6px;background:#cbd5e1;border-radius:3px;position:relative;margin:8px 4px}
+.m16-dash .par .sl i{position:absolute;top:-4px;left:62%;width:14px;height:14px;border-radius:50%;background:#1f77b4}
+.m16-dash .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.m16-dash .tile{background:#fff;border:1px solid #d5dbe3;border-radius:8px;padding:6px 10px}
+.m16-dash .tile small{display:block;color:#64748b}
+.m16-dash .tile b{font-size:1.1rem;color:#0f172a}
+.m16-dash .tile span{color:#16a34a;font-weight:700}
+.m16-dash .chart{background:#fff;border:1px solid #d5dbe3;border-radius:8px;padding:6px 10px}
+</style>
+<figure class="shot" data-shot="m16-scenario-dashboard"><div class="fb"><div class="m16-dash" aria-label="הדמיה סכמטית של דשבורד תרחישים">
+<div class="top">Sales in the network, scenario view</div>
+<div class="cols">
+<div><div class="par"><b>Discount Cap</b><div class="sel"><span>20%</span><span>▾</span></div></div><div class="par"><b>Price Change</b><div class="sl"><i></i></div><div style="text-align:center">0%</div></div></div>
+<div><div class="tiles">
+<div class="tile"><small>Scenario Sales</small><b>240,527.1</b><span>▲ +1.6% vs base</span></div>
+<div class="tile"><small>Scenario Profit</small><b>124,429.1</b><span>▲ +3.1% vs base</span></div>
+<div class="tile"><small>Scenario Margin</small><b>51.7%</b><span>▲ +0.8 pt</span></div></div>
+<div class="chart"><svg viewBox="0 0 400 70" width="100%" height="70" role="img" aria-label="עמודות לדוגמה"><g fill="#4e79a7"><rect x="10" y="10" width="300" height="9"/><rect x="10" y="24" width="268" height="9"/><rect x="10" y="38" width="228" height="9"/><rect x="10" y="52" width="214" height="9"/></g></svg></div></div>
+</div>
+</div><div class="need">צילום מסך נדרש: Tableau Public, דשבורד תרחישים עם הפרמטרים Discount Cap ו-Price Change, שלושה כרטיסי KPI וגרף עמודות לפי סניף</div></div><figcaption>הדמיה סכמטית של דשבורד התרחישים. המספרים הם של תקרת הנחה 20% ושינוי מחיר 0%.</figcaption></figure>
+
+<style>
+.m16-sc{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin:8px 0}
+.m16-sc label{display:flex;flex-direction:column;gap:2px;font-weight:700;font-size:.84rem;color:#475569}
+.m16-sc select{font:inherit;padding:3px 8px;border:1px solid #cbd5e1;border-radius:8px;background:#fff}
+.m16-sc .pre button{font:inherit;font-size:.82rem;font-weight:700;border:1px solid #cbd5e1;background:#f8fafc;border-radius:10px;padding:3px 12px;cursor:pointer}
+.m16-sc-k{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:8px 0}
+.m16-sc-k div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 12px}
+.m16-sc-k small{display:block;color:var(--muted);font-size:.78rem}
+.m16-sc-k b{font-size:1.2rem;color:var(--navy);direction:ltr;unicode-bidi:isolate}
+.m16-sc-k span{font-size:.84rem;font-weight:700;direction:ltr;unicode-bidi:isolate}
+</style>
+<div class="sim" data-id="m16-sim-scenario"><div class="sh">תרחיש הנחות מול הנתונים האמיתיים</div>
+<p>הדמיה על 6,575 שורות המכירה של Scoop &amp; Go, מחושבת בדפדפן. בחרו תקרת הנחה ושינוי מחיר, והשוו לבסיס.</p>
+<div class="m16-sc">
+<label>Discount Cap<select id="m16-sc-cap"><option value="0.5">50% (כמו שהיה)</option><option value="0.3">30%</option><option value="0.2">20%</option><option value="0.1">10%</option><option value="0">0% (בלי מבצעים)</option></select></label>
+<label>Price Change<select id="m16-sc-pc"><option value="-0.1">-10%</option><option value="-0.05">-5%</option><option value="0" selected>0%</option><option value="0.05">+5%</option><option value="0.1">+10%</option></select></label>
+<span class="pre"><button type="button" data-cap="0.5" data-pc="0">בסיס</button> <button type="button" data-cap="0.2" data-pc="0">תקרה 20%</button> <button type="button" data-cap="0" data-pc="0">בלי מבצעים</button> <button type="button" data-cap="0.2" data-pc="0.05">תקרה 20% ועוד 5%</button></span>
+</div>
+<div class="m16-sc-k" id="m16-sc-k"></div>
+<div class="m16-chart" id="m16-sc-chart"></div>
+<p class="m16-note" id="m16-sc-note">מחשב...</p></div>
+<script>(function(){ FL.dom(function(){
+ var box = FL.$('[data-id="m16-sim-scenario"]'); if (!box) return;
+ var capEl = FL.$('#m16-sc-cap', box), pcEl = FL.$('#m16-sc-pc', box), kEl = FL.$('#m16-sc-k', box), chEl = FL.$('#m16-sc-chart', box), note = FL.$('#m16-sc-note', box);
+ var seen = {}, DATA = null;
+ function fmt(x, d){ return x.toLocaleString('en-US', {minimumFractionDigits: d, maximumFractionDigits: d}); }
+ TF.loadScoop(function(D){
+  var C = D.cols, br = C.Branch, names = br.dict ? br.dict : null, n = D.n, i;
+  var b = br.dict ? br.v : null;
+  if (!names) { var map = {}, list = []; b = br.v.map(function(x){ if (!(x in map)) { map[x] = list.length; list.push(x); } return map[x]; }); names = list; }
+  DATA = {n: n, b: b, names: names, q: C.Quantity.v, p: C.Unit_Price.v, d: C.Discount.v, c: C.Cost.v};
+  var cost = 0; for (i = 0; i < n; i++) cost += DATA.c[i]; DATA.cost = cost;
+  render();
+ });
+ function calc(cap, pc){
+  var s = 0, per = names0(), i, d = DATA, disc;
+  for (i = 0; i < d.n; i++) { disc = d.d[i] > cap ? cap : d.d[i]; var v = d.q[i] * d.p[i] * (1 - disc) * (1 + pc); s += v; per[d.b[i]] += v; }
+  return {s: s, per: per};
+ }
+ function names0(){ return DATA.names.map(function(){ return 0; }); }
+ function arrow(x){ return x > 0.00005 ? '<span style="color:#15803d">▲ +' + fmt(x * 100, 1) + '%</span>' : x < -0.00005 ? '<span style="color:#b91c1c">▼ ' + fmt(x * 100, 1) + '%</span>' : '<span style="color:#64748b">● 0.0%</span>'; }
+ function render(){
+  if (!DATA) return;
+  var cap = parseFloat(capEl.value), pc = parseFloat(pcEl.value);
+  var base = calc(0.5, 0), sc = calc(cap, pc);
+  var profit = sc.s - DATA.cost, bprofit = base.s - DATA.cost, m = profit / sc.s, bm = bprofit / base.s;
+  kEl.innerHTML = '<div><small>Scenario Sales</small><b>' + fmt(sc.s, 1) + '</b><br>' + arrow(sc.s / base.s - 1) + '</div>' +
+   '<div><small>Scenario Profit</small><b>' + fmt(profit, 1) + '</b><br>' + arrow(profit / bprofit - 1) + '</div>' +
+   '<div><small>Scenario Margin</small><b>' + fmt(m * 100, 2) + '%</b><br><span style="color:#475569">' + (m >= bm ? '+' : '') + fmt((m - bm) * 100, 2) + ' נק׳ אחוז</span></div>';
+  var order = DATA.names.map(function(x, j){ return j; }).sort(function(x, y){ return base.per[y] - base.per[x]; });
+  var mx = 0; order.forEach(function(j){ mx = Math.max(mx, base.per[j], sc.per[j]); });
+  var W = 760, L = 170, h = 22, svg = '<svg viewBox="0 0 ' + W + ' ' + (order.length * h + 26) + '" role="img" aria-label="מכירות לפי סניף: בסיס מול תרחיש">';
+  order.forEach(function(j, r){
+   var y = 8 + r * h, wb = (W - L - 80) * base.per[j] / mx, ws = (W - L - 80) * sc.per[j] / mx;
+   svg += '<text x="' + (L - 8) + '" y="' + (y + 14) + '" text-anchor="end" fill="#334155">' + FL.esc(DATA.names[j]) + '</text>' +
+    '<rect x="' + L + '" y="' + (y + 2) + '" width="' + ws.toFixed(1) + '" height="14" fill="#4e79a7"/>' +
+    '<rect x="' + L + '" y="' + (y + 2) + '" width="' + wb.toFixed(1) + '" height="14" fill="none" stroke="#e8741f" stroke-width="1.5" stroke-dasharray="3 2"/>' +
+    '<text x="' + (L + Math.max(ws, wb) + 6) + '" y="' + (y + 14) + '" fill="#0f172a">' + fmt(sc.per[j], 0) + '</text>';
+  });
+  svg += '<text x="' + L + '" y="' + (order.length * h + 20) + '" fill="#64748b" font-size="12">כחול: תרחיש. מקווקו כתום: בסיס.</text></svg>';
+  chEl.innerHTML = svg;
+  note.textContent = 'ההנחה המובלעת: הלקוחות קונים את אותן כמויות. בפועל מחיר גבוה או מבצע פחות אטרקטיבי עשויים להקטין כמות, וההדמיה לא יודעת את זה.';
+  seen[cap + '|' + pc] = 1; if (Object.keys(seen).length >= 4) FL.done('m16-sim-scenario');
+ }
+ capEl.addEventListener('change', render); pcEl.addEventListener('change', render);
+ FL.$$('.pre button', box).forEach(function(bt){ bt.addEventListener('click', function(){ capEl.value = bt.dataset.cap; pcEl.value = bt.dataset.pc; render(); }); });
+}); })();</script>
+
+<div class="box try" data-id="m16-try-scenario">
+<p><b>דשבורד תרחישים</b></p>
+<ol>
+<li>צרו שני פרמטרים כפי שבבלוק למעלה, מסוג <code>List</code>, והציגו אותם. השתמשו בערך מספרי ב-<code>Value</code>, ובעמודת <code>Display As</code> אפשר לכתוב אחוזים. <i>למה: חישוב קורא ל-Value, לא ל-Display As.</i></li>
+<li>צרו <code>Scenario Sales</code>, <code>Scenario Profit</code>, <code>Scenario Margin</code>.</li>
+<li>בנו שלושה גיליונות טקסט עם כל אחד מהם, ללא ממדים. אחר כך גיליון עמודות: <code>Branch</code> ב-<code>Rows</code> ו-<code>Scenario Sales</code> ב-<code>Columns</code>.</li>
+<li>בדשבורד (מודול 13) הניחו את הגיליונות ואת הפרמטרים.</li>
+<li>הזיזו את <code>Discount Cap</code> ל-0.2, אחר כך ל-0.1, אחר כך ל-0, ואת <code>Price Change</code> ל-+5%.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בבסיס (תקרה 0.5, שינוי 0): מכירות <b>236,820.9</b>, רווח <b>120,722.9</b>, רווחיות <b>50.98%</b>. תקרה 0.3: 239,291.7 ו-123,193.7. תקרה 0.2: <b>240,527.1</b>, <b>124,429.1</b>, <b>51.73%</b>. תקרה 0.1: 241,985.1, 125,887.1 ו-52.02%. תקרה 0: <b>245,055.0</b>, 128,957.0 ו-52.62%. תקרה 0.2 עם +5% מחיר: מכירות 252,553.5, רווח 136,455.5, רווחיות 54.03%. אותם מספרים מופיעים בהדמיה למעלה, ואם הם שונים אצלכם, הבעיה כנראה ב-<code>Display As</code>.</p>
+</div>
+
+<div class="box trap"><p><b>פרמטר לא ״מחשב מחדש״ מה שלא קורא לו.</b> אם ליד הגרף הזה יש גם שדה <code>{ FIXED : SUM([Sales]) }</code>, הוא לא יזוז כשמזיזים את התקרה, כי הוא לא מזכיר אותה. לפני שמראים דשבורד תרחישים, עוברים על כל מספר ושואלים: האם הוא אמור להגיב לפרמטר, והאם הוא באמת מגיב?</p></div>
+
+<div class="box meaning"><p>תרחיש הוא לא תחזית. הוא מראה מה יוצא אם <b>ההנחות</b> נכונות. בדשבורד תרחישים כדאי לכתוב ליד הפרמטרים מה ההנחה (״כמויות ללא שינוי״), כי הצופה יזכור את המספר ולא את ההערה.</p></div>
+
+<div class="box think" data-id="m16-th-scenario-assumption"><p>שאלה: בתרחיש ״תקרה 0%״ המכירות עולות ב-3.48% והרווחיות ב-1.6 נקודות אחוז. אל מה לא התייחסנו, ואיך תנסחו את המסקנה למנהלת בלי להטעות?</p>
+<div class="ans">לא התייחסנו לכך שלקוחות שמגיעים בגלל מבצע עשויים לא לקנות בלעדיו. התרחיש מחשב אותן כמויות במחיר גבוה יותר, ולכן הוא ״תקרת הפוטנציאל״ ולא תחזית. אפשר לכתוב: ״אם הכמויות נשארות כמו שהן, ביטול המבצעים מוסיף עד 8,234 למכירות. הערך האמיתי תלוי באיך הכמויות מגיבות.״ בקובץ יש 292 שורות עם הנחה של 50%, ויחד הן מפסידות 378, ולכן כדאי להתחיל מהן.</div></div>
+
+<div class="quiz" data-id="m16-q-title-detail" data-a="2"><p class="qq">שדה <code>Title Text</code> לא מופיע ברשימה של <code>Insert</code> בעורך הכותרת. מה הסיבה הסבירה?</p>
+<button class="opt">צריך לרענן את הנתונים</button>
+<button class="opt">השדה לא נמצא בגיליון. צריך לגרור אותו ל-<code>Detail</code></button>
+<button class="opt">כותרות דינמיות לא קיימות ב-Public</button>
+<button class="opt">השדה צריך להיות פרמטר</button>
+<div class="why">העורך מציע שדות שנמצאים בגיליון. גוררים את השדה ל-Detail והוא מופיע. כותרות עם שדות עובדות, ופרמטר הוא לא חובה.</div></div>
+
+<div class="quiz" data-id="m16-q-yoy-null" data-a="4"><p class="qq">לסניף נפתח ב-2025 אין מכירות ב-2024. מה צריך לקרות ב-<code>YoY %</code>?</p>
+<button class="opt">1, כדי שלא יהיה ריק</button>
+<button class="opt">100%, כי הכול חדש</button>
+<button class="opt">0%, כי אין שינוי</button>
+<button class="opt">Null, וחץ נייטרלי, כי אין אפשרות להשוות</button>
+<div class="why">אין מכנה, ולכן אין אחוז. להמציא מספר (0%, 100%) מטעה. Null עם חץ נייטרלי אומר: אין בסיס להשוואה.</div></div>
+
+<div class="quiz" data-id="m16-q-param-display" data-a="1"><p class="qq">בפרמטר רשימה יש <code>Value</code> ו-<code>Display As</code>. לאיזה מהם חישוב צריך להתייחס?</p>
+<button class="opt">ל-<code>Value</code>: זה הערך האמיתי שנשמר</button>
+<button class="opt">ל-<code>Display As</code>, כי זה מה שהצופה רואה</button>
+<button class="opt">לשניהם, בבת אחת</button>
+<button class="opt">לאף אחד, הפרמטר מחושב לבד</button>
+<div class="why">לפי התיעוד, הנוסחה חייבת להתייחס לערך ולא לטקסט המוצג. <code>Display As</code> הוא תווית בלבד.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> כל המספרים חושבו בפייתון מהקובץ. ההדמיה מחשבת אותם בדפדפן ומתאימה לפייתון בכל חמשת הערכים של התקרה. לפני השיעור בדקו בתוכנה: (א) שהחץ ● מופיע ל-Rehovot ול-Ashdod. (ב) איך <code>STR(ROUND(...,0))</code> מוצג. (ג) האם תפריט <code>Insert</code> בכותרת מציע פרמטרים ישירות (בתיעוד הרשמי לא כתוב). (ד) <code>IIF</code> על פרמטר בתוך <code>SUM</code>: תקין בתיעוד, אבל ודאו שהפרמטרים מסוג List עם ערכים עשרוניים מציגים את הערך הנכון. פרמטרים דינמיים (ערך שמתרענן בפתיחת החוברת) לא נלמדים כאן, כי ב-Public הנתונים לא משתנים אחרי פרסום.</div>
+</section>
+<section class="sec" id="m16-6" data-t="קוד נקי">
+<div class="sec-h"><div class="sec-n">6</div><h2>קוד נקי: שמות, הערות, ביקורת וביצועים</h2></div>
+<p class="lead">שנה אחרי, אתם פותחים חוברת ורואים <code>Calculation1</code>, <code>Calculation2</code> ו-<code>Calculation1 (copy)</code>. אף אחד, כולל מי שכתב, לא יודע מה הם עושים, ומי תלוי בהם. קוד נכתב פעם אחת ונקרא הרבה פעמים. בסעיף הזה נלמד לכתוב חישובים שאפשר לקרוא, לבדוק ולהחליף.</p>
+
+<h3>שמות והערות</h3>
+<p>אין חוק רשמי של Tableau לשמות. אלה כללים מקובלים בצוותי BI, והם עובדים:</p>
+<div class="tw"><table class="tbl">
+<tr><th>כלל</th><th>לא כך</th><th>כך</th></tr>
+<tr><td>שם שמתאר את התוצאה</td><td><code>Calculation1</code></td><td><code>App Order Share</code></td></tr>
+<tr><td>יחידה או תקופה בשם כשזה חשוב</td><td><code>Sales2</code></td><td><code>Sales CY</code>, <code>Sales PY</code></td></tr>
+<tr><td>בוליאני מתחיל ב-<code>Is</code> או <code>Has</code></td><td><code>Phone</code></td><td><code>Has Phone</code></td></tr>
+<tr><td>פרמטר נקרא כמו הקלט שהוא מייצג</td><td><code>Parameter 1</code></td><td><code>Discount Cap</code></td></tr>
+<tr><td>שם אחד לכל משמעות</td><td><code>Rating</code> ו-<code>Rating Final</code> ו-<code>Rating2</code></td><td><code>Rating</code></td></tr>
+</table></div>
+
+<div class="defline"><b>הערה בנוסחה:</b> שורה שמתחילה ב-<code>//</code> (עד סוף השורה), או טקסט בין <code>/*</code> ל-<code>*/</code>, ש-Tableau מתעלם ממנו. דוגמה: <code>// Share of App orders, 0.16 means 16%</code>. התיעוד הרשמי של הפעולות מציין את שתי הצורות.</div>
+
+<p>הערה טובה עונה על שלוש שאלות במשפטים קצרים: <b>מה</b> זה מחשב, <b>ברמה</b> איזו (שורה, סימן, LOD, טבלה), ו<b>מה ההנחה</b> שהחישוב סומך עליה.</p>
+
+<h3>ביקורת קוד: מי שמקבל חישוב של מישהו אחר</h3>
+<p>הנה חישוב שמישהו כתב. הוא עובד: הוא מחזיר מספר. נעבור עליו כמו שמבקרים קוד.</p>
+
+<figure class="shot" data-shot="m16-calc-review">
+<div class="fb"><div class="m16-dlg" aria-label="הדמיה סכמטית של חלון שדה מחושב עם נוסחה לביקורת">
+<h5>Calculated Field</h5>
+<div class="f" style="margin-bottom:8px">Calculation1</div>
+<div class="ed">COUNTD(IF [Channel] = "App" THEN [Order_ID] END)
+  / COUNTD([Order_ID]) * 100</div>
+<div class="btns"><small>The calculation is valid.</small><span>Apply</span><span class="ok">OK</span></div></div>
+<div class="need">צילום מסך נדרש: Tableau Public, חלון שדה מחושב בשם Calculation1 עם הנוסחה COUNTD(IF [Channel] = "App" THEN [Order_ID] END) / COUNTD([Order_ID]) * 100 ושורת "The calculation is valid"</div></div>
+<figcaption>הדמיה סכמטית. החישוב תקין, כלומר Tableau מקבל אותו. השאלה היא אם הוא טוב.</figcaption>
+</figure>
+<ol class="callouts">
+<li><b>שם.</b> <code>Calculation1</code> לא אומר כלום.</li>
+<li><b>אין הערה.</b> אף אחד לא יודע ש-0.16 אמור להיות ״אחוז הזמנות מהאפליקציה״.</li>
+<li><b>יחידה.</b> הכפל ב-100 בתוך הנוסחה מסתיר את היחידה. עדיף מספר כמו 0.16 ופורמט אחוזים בשדה.</li>
+<li><b>COUNTD פעמיים.</b> ספירת ערכים שונים היא מהפעולות היקרות. כאן אין בה צורך, אם כל שורה היא הזמנה אחת.</li>
+<li><b>הנחה סמויה.</b> החישוב סומך על ש-<code>Order_ID</code> ייחודי בכל שורה. בקובץ של Scoop &amp; Go זה נכון (6,575 שורות, 6,575 ערכים שונים), אבל הנחה כזאת כותבים.</li>
+<li><b>טקסט קבוע.</b> ״App״ כתוב בתוך הנוסחה. אם הערוץ ישנה שם, החישוב ישתנה בשקט.</li>
+</ol>
+
+<div class="box try" data-id="m16-try-review">
+<p><b>משפצים ובודקים שלא שברנו כלום</b></p>
+<ol>
+<li>צרו את <code>Calculation1</code> בדיוק כמו בהדמיה. <i>למה: זה החישוב המקורי, ונשווה אליו.</i></li>
+<li>צרו שדה חדש <code>App Order Share</code>:
+<pre class="code" data-lang="tableau">// App Order Share
+// Share of order lines sold through the App. 0.16 means 16%.
+// Assumes one row per order line (Order_ID is unique). Format as Percentage.
+SUM(IIF([Channel] = "App", 1, 0)) / COUNT([Order_ID])</pre></li>
+<li>עיצבו את <code>App Order Share</code> כאחוזים עם שתי ספרות אחרי הנקודה: לחיצה ימנית על הפיל, <code>Format</code>, <code>Numbers</code>, <code>Percentage</code>.</li>
+<li>הציגו את שני החישובים בטבלת טקסט, פעם בלי ממדים ופעם עם <code>Region</code> ב-<code>Rows</code>. <i>למה: בדיקת שקילות. אם הגרסה החדשה לא נותנת אותו מספר, הפיצוי שלנו שבר משהו.</i></li>
+</ol>
+<p><b>תוצאה צפויה:</b> בלי ממדים: הישן נותן <b>16.08</b> (כפול 100) והחדש <b>16.08%</b>. מאחורי זה 1,057 הזמנות אפליקציה מתוך 6,575. לפי אזור (שני החישובים זהים): North <b>16.23%</b>, South <b>15.88%</b>, Center <b>16.10%</b>, Jerusalem <b>16.19%</b>.</p>
+</div>
+
+<h3>רשימת ביקורת: לפני שמפרסמים</h3>
+<style>
+.m16-ck label{display:flex;gap:10px;align-items:flex-start;padding:5px 0;border-bottom:1px dashed var(--line);cursor:pointer}
+.m16-ck label small{display:block;color:var(--muted)}
+.m16-ck .bar{height:8px;border-radius:99px;background:#e2e8f0;overflow:hidden;margin:8px 0}
+.m16-ck .bar i{display:block;height:100%;width:0;background:#10b981;transition:width .3s}
+</style>
+<div class="sim" data-id="m16-sim-review"><div class="sh">רשימת ביקורת לחישוב</div>
+<p>בחרו חישוב אחד מהמודול (למשל <code>Priority</code> או <code>KPI Arrow</code>) וסמנו מה בדקתם בו. אחרי שמסמנים שמונה סעיפים, ההדמיה נרשמת.</p>
+<div class="m16-ck" id="m16-ck"></div>
+<div class="bar"><i id="m16-ck-bar"></i></div><div id="m16-ck-out"></div></div>
+<script>(function(){ FL.dom(function(){
+ var box = FL.$('[data-id="m16-sim-review"]'); if (!box) return;
+ var L = [
+  ['שם', 'מתאר את התוצאה ואת היחידה, לא Calculation1.'],
+  ['הערה', 'שורה ראשונה שאומרת מה מחושב, ברמה איזו, ומה ההנחה.'],
+  ['רמה', 'ידוע אם זו רמת שורה, צבירה, LOD או חישוב טבלה, ומה קורה כשמסננים.'],
+  ['Null וחילוק באפס', 'כתוב מה קורה כשערך חסר או כשהמכנה אפס.'],
+  ['סדר תנאים', 'מהצר אל הרחב, ושורת ELSE בסוף.'],
+  ['קבועים בתוך הנוסחה', 'מספרים וטקסטים שכדאי להפוך לפרמטר, כמו 0.3 או "App".'],
+  ['בדיקה על שורות ידועות', 'לפחות שלוש שורות שיודעים מה התוצאה שלהן, כל אחת בענף אחר.'],
+  ['סכום ביקורת', 'החלקים מסתכמים לסך, האחוזים ל-100.'],
+  ['ביצועים', 'מספר או בוליאני במקום טקסט, בלי COUNTD ו-LOD מיותרים.'],
+  ['מה יוצא לציבור', 'אם הנוסחה נוגעת בעמודה רגישה, העמודה הוסרה מהקובץ לפני הטעינה.']
+ ];
+ var host = FL.$('#m16-ck', box), bar = FL.$('#m16-ck-bar', box), out = FL.$('#m16-ck-out', box);
+ host.innerHTML = L.map(function(x, i){ return '<label><input type="checkbox" data-i="' + i + '"><span><b>' + FL.esc(x[0]) + '</b><small>' + FL.esc(x[1]) + '</small></span></label>'; }).join('');
+ function upd(){
+  var on = FL.$$('input:checked', host).length; bar.style.width = (100 * on / L.length) + '%';
+  out.innerHTML = on === L.length ? '<span class="chip g">כל הסעיפים נבדקו</span>' : '<span class="chip ' + (on >= 8 ? 'a' : 'r') + '">' + on + ' מתוך ' + L.length + '</span>';
+  if (on >= 8) FL.done('m16-sim-review');
+ }
+ host.addEventListener('change', upd); upd();
+}); })();</script>
+
+<h3>ביצועים של חישובים</h3>
+<p>ב-Tableau Public הנתונים הם מיצוי, ומותר בו קובץ של עד 15 מיליון שורות (נכון לאוקטובר 2026, בדקו בתיעוד). אצלכם, עם 6,575 שורות, אף חישוב לא יאט את הגיליון. אבל הרגלים נקבעים על קבצים קטנים, ובקבצים גדולים ההבדל מורגש. רשימת הביצועים של Tableau (לפי המדריך הרשמי) מציעה לגבי חישובים:</p>
+<ul>
+<li><b>בוליאני ומספר שלם קלים מטקסט ומתאריך.</b> <code>IIF([Channel] = "App", 1, 0)</code> הוא יותר זול מעבודה עם מחרוזות ארוכות.</li>
+<li><b>MIN ו-MAX קלים מ-AVG ו-ATTR</b> כשהתוצאה זהה.</li>
+<li><b>עדיף כלי מובנה</b> (קבוצה, סט, בינים) על חישוב שעושה אותו דבר.</li>
+<li><b>COUNTD יקרה.</b> אם מספיק COUNT, משתמשים בו.</li>
+</ul>
+<div class="tw"><table class="tbl">
+<tr><th>שלוש דרכים לספור הזמנות אפליקציה</th><th>התוצאה</th><th>מה נאמר עליה</th></tr>
+<tr><td><code>COUNTD(IF [Channel] = "App" THEN [Order_ID] END)</code></td><td>1,057</td><td>נכונה, אבל ספירת ערכים שונים</td></tr>
+<tr><td><code>COUNT(IF [Channel] = "App" THEN [Order_ID] END)</code></td><td>1,057</td><td>נכונה כשהמזהה ייחודי</td></tr>
+<tr><td><code>SUM(IIF([Channel] = "App", 1, 0))</code></td><td>1,057</td><td>נכונה, חיבור של מספרים שלמים</td></tr>
+</table></div>
+<p class="m16-note">כל המספרים האלה חושבו בפייתון. ההבדל במהירות לא נמדד כאן. הוא מגיע מהמדריך הרשמי, ואצלכם בקובץ הקטן אי אפשר לראות אותו. כלי ההקלטה של ביצועים (<code>Help</code>, <code>Settings and Performance</code>, <code>Start Performance Recording</code>) מתועד ב-Desktop. בדקו אם הוא זמין אצלכם ב-Public.</p>
+
+<div class="box trap"><p><b>״עובד״ זה לא ״נכון״.</b> <code>Calculation1</code> בסעיף הזה מחזיר 16.08, ומי שרואה אותו בלי הקשר יחשוב על 16.08 מכירות או 16.08 הזמנות. הטעות לא נמצאת בנוסחה אלא בחוסר ההסבר. רוב הבעיות בחישובים שמגיעים למנהלים הן כאלה.</p></div>
+
+<div class="box trap"><p><b>הערה שמתיישנת גרועה מחוסר הערה.</b> אם שיניתם את הנוסחה ושכחתם לעדכן את ההערה שמעליה, ההערה משקרת. מי שקורא יסמוך עליה. לכן כותבים הערה קצרה, שאי אפשר לטעות בה, ומעדכנים אותה באותו רגע שמשנים את הנוסחה.</p></div>
+
+<div class="box meaning"><p>ביקורת קוד היא לא ביקורת על האדם. היא שאלה: האם מישהו אחר, בעוד שנה, יצליח להשתמש בזה בלי לשאול? חישוב שעובר את הרשימה חוסך שעות למי שמקבל אותו, ולכם, כי אתם אותו מישהו אחר.</p></div>
+
+<div class="box real"><p>בצוותי פיתוח ביקורת קוד (code review) היא שגרה: אף שינוי לא נכנס לפני שמישהו אחר עבר עליו. אפשר ליישם את זה גם ב-BI: לפני שפרסמתם דשבורד, תנו לעמית לפתוח את החוברת ולנסות להסביר לכם מה עושה כל שדה, בלי שתעזרו לו.</p></div>
+
+<div class="box think" data-id="m16-th-hardcode"><p>שאלה: בנוסחת הסיווג <code>Margin Band</code> הסף 0.3 כתוב בתוך הנוסחה. מתי כדאי להפוך אותו לפרמטר, ומתי עדיף להשאיר?</p>
+<div class="ans">כשהסף משתנה לפי מי שמסתכל, או שהצופה רוצה לשחק בו (״מה אם הסף הוא 0.4?״), הופכים לפרמטר. כשזה כלל עסקי קבוע שלא אמור להשתנות בלי החלטה (״מפסידים מתחת ל-0.3 ואין ויכוח״), משאירים בנוסחה, עם הערה שאומרת למה 0.3. פרמטר שאף אחד לא נוגע בו רק מוסיף כרטיס שמבלבל.</div></div>
+
+<div class="quiz" data-id="m16-q-comment" data-a="3"><p class="qq">איך כותבים הערה בשורה אחת בתוך נוסחה ב-Tableau?</p>
+<button class="opt"><code>-- הערה</code></button>
+<button class="opt"><code># הערה</code></button>
+<button class="opt"><code>// הערה</code></button>
+<button class="opt"><code>REM הערה</code></button>
+<div class="why">// הוא ההערה השורתית של Tableau, ו-<code>/* ... */</code> להערה מרובת שורות. <code>--</code> הוא ההערה של SQL, ו-<code>#</code> מקיף תאריכים בנוסחאות Tableau.</div></div>
+
+<div class="quiz" data-id="m16-q-equal-test" data-a="2"><p class="qq">אחרי שיפוץ נוסחה, מה הבדיקה הראשונה?</p>
+<button class="opt">לוודא שהיא קצרה יותר</button>
+<button class="opt">להציג אותה ליד המקורית ולוודא שהמספרים זהים, כולל חיתוך לפי ממד</button>
+<button class="opt">למחוק את המקורית</button>
+<button class="opt">לוודא שהשם ארוך</button>
+<div class="why">שיפוץ אמור לשמור על התוצאה ולשנות רק את המבנה. השוואה ליד המקור, ובחיתוכים שונים, מגלה שבירה בשקט. מחיקה לפני הבדיקה היא ההפך.</div></div>
+
+<div class="quiz" data-id="m16-q-countd" data-a="1"><p class="qq">בקובץ של Scoop &amp; Go כל שורה היא הזמנה אחת (המזהה ייחודי). מה מתוך הבאים נכון?</p>
+<button class="opt"><code>COUNT([Order_ID])</code> ו-<code>COUNTD([Order_ID])</code> נותנים אותו מספר, 6,575, והראשון קל יותר</button>
+<button class="opt"><code>COUNTD</code> תמיד נותן מספר גדול יותר מ-<code>COUNT</code></button>
+<button class="opt"><code>COUNT</code> לא עובד על טקסט</button>
+<button class="opt">שני החישובים שונים כי <code>COUNTD</code> מדלגת על Null</button>
+<div class="why">כשאין כפילויות, ספירה של ערכים שונים שווה לספירה רגילה. המזהה כאן ייחודי לכל שורה, ולכן שתי הפונקציות נותנות 6,575. בקובץ שבו המזהה חוזר, התוצאות יהיו שונות.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> המספרים 1,057, 6,575, 16.08% ושיעורי האזורים חושבו בפייתון. הכללים לשמות הם מקובלים בעולם ה-BI ולא של Tableau, ולכן נאמר כך. הרשימה של הביצועים מבוססת על המדריך הרשמי של Tableau לביצועים (בדיקה: help.tableau.com, perf_checklist). לא נמדדו זמני ריצה, אין לטעון שהחישוב המהיר ״מורגש״ בקובץ הזה. מה לבדוק בתוכנה: האם ״Performance Recording״ זמין ב-Public.</div>
+</section>
+<section class="sec" id="m16-7" data-t="הטמעה">
+<div class="sec-h"><div class="sec-n">7</div><h2>הטמעה בדף משלכם: Embedding API v3</h2></div>
+<p class="lead">הדשבורד של Scoop &amp; Go מפורסם ב-Tableau Public, ומנהלת השיווק רוצה אותו בתוך הדף של הרשת, ליד הטקסטים של החברה. לא קישור שפותח לשונית אחרת, אלא הגרף עצמו בתוך הדף. מכאן מתחיל החלק שמעבר ל-Tableau: דף אינטרנט שלכם, וקוד JavaScript שמדבר עם הגרף.</p>
+<p><span class="m16-tag b">Public ועוד כלי חינמי מבחוץ</span> צריך עורך טקסט, דפדפן, וכדי לפרסם גם חשבון GitHub חינמי (סעיף 8).</p>
+
+<div class="defline"><b>Embedding API v3:</b> ספריית JavaScript של Tableau שהופכת את התגית <code>&lt;tableau-viz src="..."&gt;</code> לגרף חי בתוך הדף שלכם, ונותנת לקוד של הדף לשלוט בו: לסנן, להחליף פרמטר ולהאזין לפעולות הצופה. דוגמה: שלוש שורות HTML מציגות גרף שפורסם.</div>
+
+<h3>איפה לוקחים את הקישור</h3>
+<p>אחרי שמפרסמים ל-Tableau Public, בדף הגרף לוחצים <code>Share</code>. נפתח חלון עם שני שדות: <code>Embed Code</code> ו-<code>Link</code>.</p>
+<figure class="shot"><img src="img/share-dialog.png" alt="חלון Share של Tableau Public עם שני שדות: Embed Code ו-Link"><figcaption>חלון <code>Share</code>. תעתיקו את השדה השני, <code>Link</code>, ולא את <code>Embed Code</code>.</figcaption></figure>
+<div class="box trap"><p><b>אל תדביקו את <code>Embed Code</code>.</b> בבדיקה שנעשתה באוקטובר 2026 השדה הזה עדיין נתן קוד של הגרסה הישנה של הספרייה (<code>viz_v1.js</code>), שמסומנת בתיעוד של Tableau כמיושנת. היא עדיין עובדת, אבל כל מה שבמודול הזה מבוסס על הגרסה החדשה. מעתיקים את ה-<code>Link</code>, ובונים סביבו את <code>&lt;tableau-viz&gt;</code>. הצורה של הקישור: <code>https://public.tableau.com/views/WORKBOOK/SHEET?...</code>. חלק מהכתובת שאחרי הסימן <code>?</code> אפשר להשמיט.</p></div>
+
+<h3>הדף הכי קטן שעובד</h3>
+<p>עשר שורות. הגרף כאן הוא דוגמה של Tableau עצמה (Superstore_24), כדי שתראו שזה עובד לפני שתחליפו בגרף שלכם.</p>
+<pre class="code" data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;Minimal embed&lt;/title&gt;
+  &lt;script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.16.0.min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;tableau-viz src="https://public.tableau.com/views/Superstore_24/Overview"
+               toolbar="bottom" hide-tabs width="100%" height="800px"&gt;&lt;/tableau-viz&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+<p>שלושה דברים שחשוב להבין בו:</p>
+<ol>
+<li><b><code>type="module"</code></b> חובה. הספרייה כתובה כמודול ES, ובלי זה הדפדפן לא יריץ אותה.</li>
+<li><b>כתובת הספרייה מקובעת לגרסה 3.16.0.</b> למה, בהמשך.</li>
+<li><b>אפשר להשמיט את הכתובת הארוכה של ה-Link.</b> מספיק <code>https://public.tableau.com/views/WORKBOOK/SHEET</code>.</li>
+</ol>
+
+<div class="anim" data-id="m16-anim-embed" data-speed="4200">
+<div class="stage"><svg viewBox="0 0 800 352" role="img" aria-label="הנפשה: איך דף שלכם טוען את ספריית ההטמעה, מציג את הגרף, ושולט בו">
+<defs><marker id="m16em-ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e8741f"/></marker><marker id="m16em-ar2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker></defs>
+<rect x="8" y="30" width="250" height="300" rx="14" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+<text x="133" y="22" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">הדף שלכם</text>
+<g font-size="12" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#0f172a">
+<text x="20" y="58">&lt;script type="module"&gt;</text>
+<text x="20" y="80">  import {...} from "...3.16.0"</text>
+<text x="20" y="102">  viz.addEventListener(</text>
+<text x="20" y="122">    FirstInteractive, ...)</text>
+<text x="20" y="148">  ws.applyFilterAsync(</text>
+<text x="20" y="168">    "Region", ["West"])</text>
+<text x="20" y="190">&lt;/script&gt;</text>
+<text x="20" y="226">&lt;tableau-viz src="..."&gt;</text>
+</g>
+<g data-s="2"><rect x="316" y="30" width="210" height="64" rx="12" fill="#fff7ed" stroke="#e8741f" stroke-width="2.5"/><text x="421" y="56" text-anchor="middle" font-size="14" font-weight="800" fill="#9a4a0b">ספריית ההטמעה</text><text x="421" y="78" text-anchor="middle" font-size="12" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#9a4a0b">tableau.embedding.3.16.0.min.js</text>
+<path d="M260,62 L314,62" stroke="#e8741f" stroke-width="3" fill="none" marker-end="url(#m16em-ar)"/></g>
+<g data-s="3"><rect x="548" y="30" width="244" height="300" rx="14" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/><text x="670" y="22" text-anchor="middle" font-size="15" font-weight="800" fill="#1d4ed8">public.tableau.com</text>
+<rect x="566" y="80" width="208" height="150" rx="10" fill="#fff" stroke="#93c5fd" stroke-width="2" stroke-dasharray="5 4"/><text x="670" y="106" text-anchor="middle" font-size="13" font-weight="700" fill="#2563eb">iframe שהספרייה בנתה</text>
+<path d="M526,62 C 540,62 540,160 564,160" stroke="#e8741f" stroke-width="3" fill="none" marker-end="url(#m16em-ar)"/></g>
+<g data-s="4"><g fill="#4e79a7"><rect x="590" y="190" width="30" height="30"/><rect x="630" y="160" width="30" height="60"/><rect x="670" y="140" width="30" height="80"/><rect x="710" y="170" width="30" height="50"/></g>
+<g data-only="4,5"><text x="670" y="254" text-anchor="middle" font-size="13" font-weight="700" fill="#0f766e">firstinteractive</text></g>
+<path d="M548,282 C 440,320 330,300 262,260" stroke="#0f766e" stroke-width="3" fill="none" marker-end="url(#m16em-ar2)"/></g>
+<g data-s="5"><path d="M260,150 C 380,150 460,150 564,170" stroke="#e8741f" stroke-width="3" fill="none" marker-end="url(#m16em-ar)"/><text x="410" y="140" text-anchor="middle" font-size="13" font-weight="700" fill="#9a4a0b">applyFilterAsync</text></g>
+<g data-s="6"><g fill="#4e79a7"><rect x="590" y="200" width="30" height="20"/><rect x="630" y="190" width="30" height="30"/><rect x="670" y="180" width="30" height="40"/><rect x="710" y="205" width="30" height="15"/></g><rect x="590" y="140" width="150" height="36" fill="#fff"/>
+<text x="670" y="262" text-anchor="middle" font-size="13" font-weight="700" fill="#0f766e">filterchanged</text>
+<path d="M548,300 C 440,340 330,318 262,276" stroke="#0f766e" stroke-width="3" fill="none" marker-end="url(#m16em-ar2)"/></g>
+</svg></div>
+<ol class="caps">
+<li>הדפדפן טוען את הדף שלכם. התגית <code>&lt;tableau-viz&gt;</code> עדיין תגית ריקה, כי אף אחד לא יודע מה זה.</li>
+<li>שורת ה-<code>import</code> טוענת את ספריית ההטמעה. בגרסה מקובעת, 3.16.0.</li>
+<li>הספרייה מלמדת את הדפדפן מה זה <code>tableau-viz</code>, ובונה iframe שמצביע על הגרף ב-public.tableau.com.</li>
+<li>הגרף נטען. כשהוא מוכן לאינטראקציה, הספרייה שולחת לדף אירוע <code>firstinteractive</code>.</li>
+<li>הקוד שלכם קורא לשיטה, למשל <code>applyFilterAsync</code>, והבקשה עוברת לגרף.</li>
+<li>הגרף מצייר מחדש, ושולח אירוע <code>filterchanged</code> לדף. ככה הדף יודע מה קרה גם כשהצופה לחץ בגרף בעצמו.</li>
+</ol></div>
+
+<div class="box try" data-id="m16-try-embed-mini">
+<p><b>הדף הכי קטן: רואים שזה עובד</b></p>
+<ol>
+<li>העתיקו את הדף הקטן למעלה לעורך טקסט ושמרו בשם <code>mini.html</code> בתיקייה חדשה.</li>
+<li>פתחו טרמינל בתיקייה והריצו <code>python3 -m http.server 8000</code> (אם אין פייתון, אפשר לנסות לפתוח את הקובץ ישר בדפדפן, אבל זה לא נבדק). <i>למה: שרת מקומי קטן הוא הדרך שנבדקה. פתיחה ישירה כקובץ עובדת לפעמים, וזה לא נבדק.</i></li>
+<li>בדפדפן פתחו <code>http://localhost:8000/mini.html</code>.</li>
+<li>המתינו. בטעינה ראשונה תיבה ריקה לכמה שניות היא רגילה.</li>
+<li>לחצו בגרף על אזור. פתחו את כלי המפתחים של הדפדפן (<code>F12</code>) ולשונית <code>Elements</code>, ומצאו את התגית <code>tableau-viz</code>. <i>למה: רואים את ה-iframe שהספרייה בנתה בתוך <code>#shadow-root</code>.</i></li>
+</ol>
+<p><b>תוצאה צפויה:</b> דשבורד Superstore של Tableau, בתוך הדף שלכם, עם סרגל כלים בתחתית ובלי לשוניות. בכלי המפתחים: תחת <code>tableau-viz</code> יש <code>#shadow-root</code> ובתוכו <code>iframe</code> שכתובתו מכילה <code>public.tableau.com/views/Superstore_24/Overview</code> ואת הפרמטר <code>apiExternalVersion=3.16.0</code>. אם אחרי דקה אין כלום: בדקו את הכתובת, את החיבור, ואת חסימת פרסומות (חלק מהחוסמים חוסמים נכסים של Tableau).</p>
+</div>
+
+<h3>הדף המלא: פילטר, פרמטר ואירועים</h3>
+<p>עכשיו הדף שמדבר עם הגרף. הוא נבדק באוקטובר 2026 מול Superstore_24: הוא טוען את הספרייה המקובעת, קורא את רשימת הפרמטרים, מסנן Region מרשימה נפתחת, מחליף פרמטר בלחיצה ורושם לתיבה כל אירוע.</p>
+<pre class="code" data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;My embedded viz&lt;/title&gt;
+  &lt;script type="module"&gt;
+    // The library is pinned to 3.16.0, so a new release cannot break this page.
+    import { TableauEventType, FilterUpdateType } from
+      "https://embedding.tableauusercontent.com/tableau.embedding.3.16.0.min.js";
+
+    const viz = document.getElementById("viz");
+    const out = document.getElementById("log");
+    const log = (msg) =&gt; { out.textContent += msg + "\n"; };
+
+    // 1. the viz is ready
+    viz.addEventListener(TableauEventType.FirstInteractive, async () =&gt; {
+      log("ready: " + viz.workbook.activeSheet.name);
+      const params = await viz.workbook.getParametersAsync();
+      log("parameters: " + params.map((p) =&gt; p.name).join(", "));
+    });
+
+    // 2. the viewer did something
+    viz.addEventListener(TableauEventType.FilterChanged, async (e) =&gt; {
+      log("filter changed: " + (await e.detail.getFilterAsync()).fieldName);
+    });
+    viz.addEventListener(TableauEventType.ParameterChanged, async (e) =&gt; {
+      log("parameter changed: " + (await e.detail.getParameterAsync()).name);
+    });
+
+    // 3. the page drives the viz
+    document.getElementById("region").addEventListener("change", async (e) =&gt; {
+      const sheet = viz.workbook.activeSheet.worksheets.find((w) =&gt; w.name === "SaleMap");
+      await sheet.applyFilterAsync("Region", [e.target.value], FilterUpdateType.Replace);
+    });
+    document.getElementById("clear").addEventListener("click", async () =&gt; {
+      const sheet = viz.workbook.activeSheet.worksheets.find((w) =&gt; w.name === "SaleMap");
+      await sheet.clearFilterAsync("Region");
+    });
+    document.getElementById("salary").addEventListener("click", async () =&gt; {
+      await viz.workbook.changeParameterValueAsync("Base Salary", 80000);
+    });
+  &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;p&gt;
+    &lt;select id="region"&gt;
+      &lt;option&gt;West&lt;/option&gt;&lt;option&gt;East&lt;/option&gt;&lt;option&gt;Central&lt;/option&gt;&lt;option&gt;South&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;button id="clear"&gt;Clear Region filter&lt;/button&gt;
+    &lt;button id="salary"&gt;Base Salary = 80000&lt;/button&gt;
+  &lt;/p&gt;
+  &lt;tableau-viz id="viz"
+               src="https://public.tableau.com/views/Superstore_24/Overview"
+               toolbar="hidden" hide-tabs width="100%" height="800px"&gt;
+    &lt;viz-filter field="Region" value="East"&gt;&lt;/viz-filter&gt;
+    &lt;viz-parameter name="Base Salary" value="60000"&gt;&lt;/viz-parameter&gt;
+  &lt;/tableau-viz&gt;
+  &lt;pre id="log"&gt;&lt;/pre&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+<ol>
+<li><b>ייבוא.</b> <code>TableauEventType</code> ו-<code>FilterUpdateType</code> הם קבועים של הספרייה. שמות האירועים כתובים בהם, כדי שלא תטעו בכתיב.</li>
+<li><b>האזנה ל-<code>FirstInteractive</code>.</b> רק אחרי האירוע הזה אפשר לשאול את הגרף שאלות. <code>viz.workbook.activeSheet</code> הוא הדף שנטען (כאן דשבורד).</li>
+<li><b>האזנה ל-<code>FilterChanged</code> ו-<code>ParameterChanged</code>.</b> האירוע נושא פרטים על מה השתנה, כדי שתוכלו לקרוא לו במקום לנחש.</li>
+<li><b>שליטה בגרף.</b> <code>applyFilterAsync(שדה, [ערכים], FilterUpdateType.Replace)</code> מסנן. <code>changeParameterValueAsync(שם, ערך)</code> מחליף פרמטר. הערכים בסינון הם <b>מערך</b>, גם כשיש ערך אחד.</li>
+<li><b>האלמנט.</b> <code>&lt;viz-filter&gt;</code> ו-<code>&lt;viz-parameter&gt;</code> קובעים מצב התחלתי: כאן Region = East ו-Base Salary = 60000.</li>
+</ol>
+
+<div class="tw"><table class="tbl">
+<tr><th>מה אתם מחליפים בגרף שלכם</th><th>בדוגמה</th><th>איפה מוצאים</th></tr>
+<tr><td><code>src</code></td><td><code>.../views/Superstore_24/Overview</code></td><td>שדה Link ב-Share, בלי מה שאחרי <code>?</code></td></tr>
+<tr><td>שם הגיליון שאליו מסננים</td><td><code>SaleMap</code></td><td>בדשבורד, גיליון שיש בו את המסנן (סעיף 8 מראה איך לברר)</td></tr>
+<tr><td>שם השדה לסינון</td><td><code>Region</code></td><td>הכיתוב שמופיע בגרף. רגיש לאותיות</td></tr>
+<tr><td>שם הפרמטר</td><td><code>Base Salary</code></td><td>בחוברת, ברשימת הפרמטרים</td></tr>
+</table></div>
+
+<div class="box try" data-id="m16-try-embed-full">
+<p><b>הדף המלא, ואירועים בזמן אמת</b></p>
+<ol>
+<li>העתיקו את הדף המלא לקובץ <code>index.html</code> באותה תיקייה, והריצו את אותו שרת (או רעננו). פתחו <code>http://localhost:8000/index.html</code>.</li>
+<li>המתינו שהגרף נטען. בתיבת הרישום מתחת לגרף אמורות להופיע שורות.</li>
+<li>בחרו <code>West</code> מהרשימה הנפתחת.</li>
+<li>לחצו על ״Base Salary = 80000״.</li>
+<li>לחצו על ״Clear Region filter״.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> אחרי הטעינה: <code>ready: Overview</code> ושורת <code>parameters:</code> עם שישה שמות, ביניהם <code>Base Salary</code> (הסדר ברשימה יכול להשתנות). בהתחלה הגרף מסונן ל-East. אחרי בחירת West: הגרף עובר ל-West, ומופיעות <b>כמה שורות</b> <code>filter changed: Region</code> (בבדיקה שלנו ארבע, אחת לכל גיליון שמשתמש בשדה, ולכן לא תמיד מספר זהה). אחרי הלחיצה השנייה: שורה <code>parameter changed: Base Salary</code>. אחרי הניקוי: הסינון נעלם. אם כלום לא קורה בלחיצה, פתחו את הקונסול (<code>F12</code>) ובדקו אם יש שגיאה: סביר ששם הגיליון <code>SaleMap</code> לא קיים.</p>
+</div>
+
+<h3>למה מקבעים גרסה</h3>
+<p>קישור הספרייה <code>.../tableau.embedding.3.latest.min.js</code> בשרת של Tableau Public מצביע תמיד על הגרסה הנוכחית. זה נוח, אבל מסוכן לדף שהוא חלק מעבודה שמוגשת או מדשבורד שפרסמתם. בבדיקה שנעשתה באוקטובר 2026, הקובץ ״latest״ השתנה בין שני ימים: גודלו ירד, ובתוכו הופיעה מחרוזת גרסה של טרום-שחרור (<code>3.17.0-pre.14</code>), בעוד שרשימת השחרורים הרשמית של Tableau כוללת עד 3.16.0. ״latest״ של אותו יום עבד באותו דף. ובכל זאת, למה לסכן?</p>
+<div class="tw"><table class="tbl">
+<tr><th></th><th>גרסה מקובעת</th><th><code>latest</code></th></tr>
+<tr><td>כתובת</td><td><code>https://embedding.tableauusercontent.com/tableau.embedding.3.16.0.min.js</code></td><td><code>https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js</code></td></tr>
+<tr><td>מה קורה כשיוצאת גרסה חדשה</td><td>כלום, הדף נשאר זהה</td><td>הדף מקבל את הגרסה החדשה, כולל טרום-שחרור</td></tr>
+<tr><td>יתרון</td><td>מתנהג אותו דבר מחר</td><td>תיקונים חדשים בלי עבודה</td></tr>
+<tr><td>חיסרון</td><td>לא מקבלים תיקונים עד שמעדכנים בעצמכם</td><td>שינוי בשרת יכול לשבור את הדף בלי שנגעתם בו</td></tr>
+</table></div>
+<p class="m16-note">בבדיקה, שני הקישורים הפעילו אותו דף בדיוק באותו אופן. הכתובת של ה-CDN לא מציעה ״latest״ ומחזירה שגיאה 403 אם מבקשים אותו, בהתאם לתיעוד. מחפשים את הגרסה האחרונה ברשימת השחרורים של Tableau, ומעדכנים בכוונה.</p>
+
+<style>
+.m16-em-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.m16-em-grid{grid-template-columns:1fr}}
+.m16-em-grid fieldset{border:1px solid #cbd5e1;border-radius:12px;padding:6px 12px 10px;margin:0;min-width:0}
+.m16-em-grid legend{font-weight:800;font-size:.84rem;color:#475569;padding:0 6px}
+.m16-em-grid label{display:flex;flex-direction:column;gap:2px;font-size:.8rem;font-weight:700;color:#475569;margin:5px 0}
+.m16-em-grid label.ck{flex-direction:row;align-items:center;gap:8px}
+.m16-em-grid input[type=text],.m16-em-grid select{font:inherit;font-size:.86rem;padding:3px 8px;border:1px solid #cbd5e1;border-radius:8px;direction:ltr;text-align:left;background:#fff;min-width:0}
+.m16-em-out{position:relative;margin:10px 0}
+.m16-em-out pre{direction:ltr;text-align:left;background:#0f172a;color:#e2e8f0;border-radius:12px;padding:12px 14px;margin:0;overflow:auto;max-height:420px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;line-height:1.55;white-space:pre}
+.m16-em-out button{position:absolute;top:8px;inset-inline-end:10px;font:inherit;font-size:.74rem;font-weight:700;border:0;border-radius:8px;background:#6366f1;color:#fff;padding:2px 10px;cursor:pointer}
+.m16-em-warn{margin:8px 0;display:grid;gap:4px}
+.m16-em-warn div{border-radius:10px;padding:4px 12px;font-size:.88rem}
+.m16-em-warn .e{background:#fee2e2;color:#7f1d1d}.m16-em-warn .w{background:#fef3c7;color:#78350f}.m16-em-warn .i{background:#dbeafe;color:#1e3a8a}.m16-em-warn .g{background:#d1fae5;color:#064e3b}
+.m16-em-prev{direction:ltr;text-align:left;border:2px dashed #94a3b8;border-radius:12px;background:repeating-linear-gradient(45deg,#f8fafc,#f8fafc 10px,#f1f5f9 10px,#f1f5f9 20px);padding:10px;margin:8px 0;font-size:.8rem;color:#475569;text-align:center;overflow:hidden}
+.m16-em-prev b{display:block;color:#0f172a}
+</style>
+<div class="sim" data-id="m16-sim-embed"><div class="sh">מגרש משחקים להטמעה: משנים הגדרות, ורואים את הקוד</div>
+<p class="m16-note">זו הדמיה שבונה טקסט. היא לא טוענת שום ספרייה ולא מציגה גרף אמיתי. ההערות הצהובות והאדומות מבוססות על בדיקות שנעשו מול Tableau Public.</p>
+<div class="m16-em-grid">
+<fieldset><legend>איך מטמיעים</legend>
+<label>שיטה<select id="m16-em-mode"><option value="v3">רכיב v3: tableau-viz</option><option value="ifr">iframe רגיל</option></select></label>
+<label>כתובת (src)<input id="m16-em-src" type="text" value="https://public.tableau.com/views/Superstore_24/Overview" spellcheck="false"></label>
+<label>רוחב<input id="m16-em-w" type="text" value="100%"></label>
+<label>גובה<input id="m16-em-h" type="text" value="800px"></label>
+<label>ספרייה<select id="m16-em-lib"><option value="pin">מקובעת: 3.16.0 מה-CDN של Tableau</option><option value="latest">latest מ-public.tableau.com</option></select></label>
+<label>הצגה<select id="m16-em-scope"><option value="el">רק האלמנט</option><option value="page">דף מלא</option></select></label>
+</fieldset>
+<fieldset><legend>מראה והתנהגות</legend>
+<label>סרגל כלים<select id="m16-em-tb"><option>bottom</option><option>top</option><option>hidden</option></select></label>
+<label class="ck"><input id="m16-em-tabs" type="checkbox" checked> להסתיר לשוניות</label>
+<label>מכשיר<select id="m16-em-dev"><option>default</option><option>desktop</option><option>tablet</option><option>phone</option></select></label>
+<label>שדה לסינון התחלתי<input id="m16-em-ff" type="text" value="Region" spellcheck="false"></label>
+<label>ערכים (עם פסיק)<input id="m16-em-fv" type="text" value="West" spellcheck="false"></label>
+<label>שם פרמטר<input id="m16-em-pn" type="text" value="" spellcheck="false" placeholder="Base Salary"></label>
+<label>ערך הפרמטר<input id="m16-em-pv" type="text" value="" spellcheck="false" placeholder="60000"></label>
+<label class="ck"><input id="m16-em-ev" type="checkbox"> האזנה לאירועים (בדף מלא)</label>
+</fieldset></div>
+<div class="m16-em-warn" id="m16-em-warn"></div>
+<div class="m16-em-prev" id="m16-em-prev"></div>
+<div class="m16-em-out"><pre id="m16-em-code"></pre><button type="button" id="m16-em-copy">העתק</button></div>
+</div>
+<script>(function(){ FL.dom(function(){
+ var box = FL.$('[data-id="m16-sim-embed"]'); if (!box) return;
+ var $ = function(id){ return FL.$('#m16-em-' + id, box); };
+ var PIN = 'https://embedding.tableauusercontent.com/tableau.embedding.3.16.0.min.js';
+ var LATEST = 'https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js';
+ var touched = {}, copied = false;
+ function q(s){ return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+ function enc(s){ return s.split(',').map(function(v){ return encodeURIComponent(v.trim()); }).join(','); }
+ function build(){
+  var mode = $('mode').value, src = $('src').value.trim(), w = $('w').value.trim() || '100%', h = $('h').value.trim() || '800px';
+  var lib = $('lib').value === 'pin' ? PIN : LATEST, scope = $('scope').value, tb = $('tb').value, tabs = $('tabs').checked, dev = $('dev').value;
+  var ff = $('ff').value.trim(), fv = $('fv').value.trim(), pn = $('pn').value.trim(), pv = $('pv').value.trim(), ev = $('ev').checked;
+  var warn = [], code = '', base = src.split('?')[0];
+  if (!src) warn.push(['e', 'הכתובת ריקה.']);
+  else {
+   if (src.indexOf('https://') !== 0) warn.push(['e', 'הכתובת חייבת להתחיל ב-https:// (Tableau דורש HTTPS להטמעה).']);
+   if (src.indexOf('public.tableau.com') < 0) warn.push(['w', 'המודול הזה עוסק ב-Tableau Public. הכתובת צריכה להיות בדומיין public.tableau.com.']);
+   if (src.indexOf('/app/profile/') >= 0) warn.push(['e', mode === 'ifr' ? 'כתובת של דף הפרופיל נחסמת בהצגה בתוך iframe (X-Frame-Options: SAMEORIGIN, נבדק). השתמשו בצורה /views/WORKBOOK/SHEET.' : 'זו כתובת של דף הפרופיל. השתמשו בשדה Link של Share: צורתו /views/WORKBOOK/SHEET.']);
+   else if (src.indexOf('/views/') < 0) warn.push(['w', 'כתובת גרף ציבורי נראית כך: https://public.tableau.com/views/WORKBOOK/SHEET.']);
+   if (src.indexOf('?') >= 0) warn.push(['w', mode === 'v3' ? 'ב-tableau-viz, מה שאחרי ה-? נזרק (נבדק: סינון בכתובת לא הופעל). סננו עם viz-filter. הקוד שלמטה משתמש רק בחלק שלפני ה-?.' : 'הקוד שלמטה משתמש רק בחלק שלפני ה-?, ומוסיף את הפרמטרים לפי הטופס.']);
+  }
+  if ($('lib').value === 'latest') warn.push(['i', 'latest מצביע על הגרסה הנוכחית בשרת, ויכול להשתנות בלי שתדעו. לדף שחשוב שיישאר יציב, קבעו גרסה.']);
+  var hasF = ff && fv, hasP = pn && pv;
+  if (mode === 'v3') {
+   var at = ['id="viz"', 'src="' + q(base) + '"'];
+   if (tb !== 'bottom') at.push('toolbar="' + tb + '"'); else at.push('toolbar="bottom"');
+   if (tabs) at.push('hide-tabs');
+   if (dev !== 'default') at.push('device="' + dev + '"');
+   at.push('width="' + q(w) + '"', 'height="' + q(h) + '"');
+   var inner = '';
+   if (hasF) inner += '\n  <viz-filter field="' + q(ff) + '" value="' + q(fv) + '"></viz-filter>';
+   if (hasP) inner += '\n  <viz-parameter name="' + q(pn) + '" value="' + q(pv) + '"></viz-parameter>';
+   var el = '<tableau-viz ' + at.join('\n             ') + '>' + inner + (inner ? '\n' : '') + '</tableau-viz>';
+   if (scope === 'el') code = '<\!-- the library must be loaded once on the page: -->\n<script type="module" src="' + lib + '"><\/script>\n\n' + el;
+   else {
+    var js = '';
+    if (ev) js = '  <script type="module">\n    import { TableauEventType } from\n      "' + lib + '";\n    const viz = document.getElementById("viz");\n    const log = (m) => { document.getElementById("log").textContent += m + "\\n"; };\n    viz.addEventListener(TableauEventType.FirstInteractive, () => log("ready"));\n    viz.addEventListener(TableauEventType.FilterChanged, async (e) => {\n      log("filter changed: " + (await e.detail.getFilterAsync()).fieldName);\n    });\n    viz.addEventListener(TableauEventType.ParameterChanged, async (e) => {\n      log("parameter changed: " + (await e.detail.getParameterAsync()).name);\n    });\n  <\/script>\n';
+    else js = '  <script type="module" src="' + lib + '"><\/script>\n';
+    code = '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>My embedded viz</title>\n' + js + '</head>\n<body>\n' + el.replace(/^/gm, '  ') + (ev ? '\n  <pre id="log"></pre>' : '') + '\n<\/body>\n</html>';
+   }
+   if (hasF) warn.push(['i', 'viz-filter קובע סינון התחלתי. שם השדה רגיש לאותיות, ורשימת ערכים מופרדת בפסיק.']);
+   if (ev && scope === 'el') warn.push(['i', 'האזנה לאירועים נכנסת לקוד רק בהצגת דף מלא.']);
+  } else {
+   var qs = ':embed=y&:showVizHome=no';
+   if (tabs) qs += '&:tabs=no';
+   if (dev !== 'default') qs += '&:device=' + dev;
+   if (hasF) qs += '&' + encodeURIComponent(ff) + '=' + enc(fv);
+   var fr = '<iframe src="' + q(base + '?' + qs) + '"\n        width="' + q(w) + '" height="' + q(h) + '" style="border:0"></iframe>';
+   code = scope === 'el' ? fr : '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n  <title>My embedded viz</title>\n</head>\n<body>\n' + fr.replace(/^/gm, '  ') + '\n<\/body>\n</html>';
+   code = code.replace(/&amp;/g, '&');
+   warn.push(['i', 'iframe לא צריך ספרייה: הכתובת עושה הכול. אבל אי אפשר לשלוט בגרף מקוד הדף, ואי אפשר להאזין לאירועים.']);
+   if (tb === 'hidden') warn.push(['w', 'בבדיקה, :toolbar=no ו-:toolbar=n לא הסתירו את סרגל הכלים ב-iframe של Public (:tabs=no כן הסתיר לשוניות). להסתרה צריך את הרכיב v3.']);
+   if (hasF) warn.push(['i', 'סינון בכתובת עובד ב-iframe (נבדק עם Region=West). רווחים בשם שדה הופכים ל-%20, ורשימת ערכים מופרדת בפסיק בלי רווחים.']);
+   if (hasP) warn.push(['w', 'iframe: פרמטר מכתובת אינו נבדק כאן. לשינוי פרמטר מהקוד צריך את הרכיב v3.']);
+  }
+  if (!warn.length) warn.push(['g', 'אין אזהרות. העתיקו את הקוד, שמרו כ-.html והריצו מול שרת (סעיף 8).']);
+  return {code: code, warn: warn, mode: mode, w: w, h: h, tb: tb, tabs: tabs, dev: dev, base: base};
+ }
+ function render(){
+  var r = build();
+  FL.$('#m16-em-code', box).textContent = r.code;
+  FL.$('#m16-em-warn', box).innerHTML = r.warn.map(function(x){ return '<div class="' + x[0] + '">' + FL.esc(x[1]) + '</div>'; }).join('');
+  FL.$('#m16-em-prev', box).innerHTML = '<b>' + FL.esc(r.mode === 'v3' ? 'tableau-viz' : 'iframe') + ' · ' + FL.esc(r.w) + ' × ' + FL.esc(r.h) + '</b>' + FL.esc(r.base || '(כתובת ריקה)') + '<br>toolbar: ' + FL.esc(r.tb) + ' · tabs: ' + (r.tabs ? 'hidden' : 'shown') + ' · device: ' + FL.esc(r.dev);
+ }
+ FL.$$('input, select', box).forEach(function(el){ el.addEventListener('input', function(){ touched[el.id] = 1; render(); if (Object.keys(touched).length >= 4 && copied) FL.done('m16-sim-embed'); }); el.addEventListener('change', function(){ touched[el.id] = 1; render(); if (Object.keys(touched).length >= 4 && copied) FL.done('m16-sim-embed'); }); });
+ $('copy').addEventListener('click', function(){ FL.copyText(FL.$('#m16-em-code', box).textContent, $('copy')); copied = true; if (Object.keys(touched).length >= 4) FL.done('m16-sim-embed'); });
+ render();
+}); })();</script>
+
+<div class="box trap"><p><b>הסינון בכתובת נעלם ב-<code>tableau-viz</code>.</b> ב-iframe, הכתובת <code>...?:embed=y&amp;Region=West</code> מסננת. ב-<code>&lt;tableau-viz src="...?Region=West"&gt;</code> ה-<code>?Region=West</code> נזרק (נבדק: הגרף נשאר ללא סינון). מי שעבר מ-iframe לרכיב ושכח, מקבל גרף לא מסונן בלי שום הודעה. בשביל סינון התחלתי ברכיב משתמשים ב-<code>&lt;viz-filter&gt;</code>, או בקוד אחרי <code>FirstInteractive</code>.</p></div>
+
+<div class="box trap"><p><b>תיבה ריקה היא לא תמיד שגיאה.</b> בטעינה ראשונה, ובמיוחד ברשת איטית, יכולות לעבור עשרות שניות עד שהגרף מופיע. אם הדף רחוק מתחתית העמוד, בגרסה 3.15 ומעלה הגרף נטען עצל (lazy) רק כשמתקרבים אליו, ולכן גם האירוע <code>FirstInteractive</code> מגיע מאוחר. לפני שאומרים ״זה לא עובד״ מחכים, ואז בודקים את הקונסול.</p></div>
+
+<div class="box meaning"><p>ההטמעה מחלקת את העבודה בין שני עולמות. Tableau אחראי על מה שהצופה רואה: הגרף, המספרים, הסימנים. הדף שלכם אחראי על מה שמסביב: הכותרות, הבחירות והשיחה. הקשר ביניהם הוא רשימה קטנה ומתועדת של שיטות ואירועים. כל מה שלא ברשימה, הדף לא יכול לעשות, ולכן שווה לדעת אותה לפני שמתכננים דף.</p></div>
+
+<div class="box real"><p>אתרי חדשות ובלוגים מטמיעים כך גרפים ציבוריים בתוך כתבות. אנשי מקצוע בונים דף ״נחיתה״ קטן לדשבורד, עם הסבר, בחירת תקופה והורדת נתונים, ומשאירים את החישוב עצמו ב-Tableau. אצלכם, הדף הזה הוא גם דרך להציג תיק עבודות מקצועי מעבר לעמוד הפרופיל.</p></div>
+
+<div class="box think" data-id="m16-th-pin"><p>שאלה: יש לכם דף שמוצג בעבודה מסכמת שתוגש בעוד שבועיים. תשתמשו ב-latest או בגרסה מקובעת? ומה תעשו אחרי ההגשה?</p>
+<div class="ans">מקובעת. לדף שאסור שישתנה, עדיף שהוא יעבוד אותו דבר ביום ההגשה כמו היום. אחרי ההגשה בודקים ברשימת השחרורים של Tableau אם יצאה גרסה חדשה, מעלים את המספר בכתובת, ובודקים שהדף עדיין עובד. זה עדכון מכוון, ולא הפתעה.</div></div>
+
+<div class="quiz" data-id="m16-q-link" data-a="2"><p class="qq">איזה שדה בחלון <code>Share</code> מעתיקים כדי להטמיע עם <code>&lt;tableau-viz&gt;</code>?</p>
+<button class="opt"><code>Embed Code</code>, כי הוא נקרא ככה</button>
+<button class="opt"><code>Link</code>, ומשתמשים בו בתור <code>src</code></button>
+<button class="opt">הכתובת מסרגל הדפדפן, מדף הפרופיל</button>
+<button class="opt">כתובת ה-iframe של הדף של Tableau</button>
+<div class="why">השדה Link נותן את כתובת הגרף עצמו. ה-Embed Code שבבדיקה נתן קוד של הגרסה הישנה. כתובת של דף הפרופיל לא מתאימה להטמעה.</div></div>
+
+<div class="quiz" data-id="m16-q-module" data-a="4"><p class="qq">הדף נטען, אבל הגרף לא מופיע, ובקונסול כתוב שהספרייה לא נטענה כמודול. מה חסר?</p>
+<button class="opt">ספרייה נוספת בשם jQuery</button>
+<button class="opt">הכתובת חייבת להסתיים ב-<code>.html</code></button>
+<button class="opt">חשבון Tableau Server</button>
+<button class="opt"><code>type="module"</code> בתגית ה-<code>script</code></button>
+<div class="why">הספרייה היא מודול ES, ולכן התגית חייבת להיות <code>&lt;script type="module" ...&gt;</code>. אין צורך ב-jQuery ובחשבון Server, והסיומת של הכתובת לא רלוונטית.</div></div>
+
+<div class="quiz" data-id="m16-q-firstint" data-a="1"><p class="qq">מתי בטוח לקרוא ל-<code>viz.workbook.activeSheet</code> או לסנן את הגרף מהקוד?</p>
+<button class="opt">אחרי שהגיע האירוע <code>FirstInteractive</code></button>
+<button class="opt">מיד אחרי שורת ה-<code>import</code></button>
+<button class="opt">רק אחרי שהצופה לחץ על הגרף</button>
+<button class="opt">אחרי 5 שניות קבועות</button>
+<div class="why">האירוע אומר שהגרף מוכן. לפניו, הגרף עדיין נטען. המתנה קבועה היא ניחוש: בחיבור איטי היא קצרה מדי.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הדף המלא נבדק באוקטובר 2026 מדפדפן Chrome מקומי מול שרת מקומי (<code>http://127.0.0.1</code>) עם הספרייה המקובעת 3.16.0: אחרי הטעינה מצב התחלתי East ו-60,000, אחרי West הסינון עבר ל-West (ארבע שורות filter changed), אחרי הלחיצה Base Salary היה 80,000. הדף הקטן (<code>mini.html</code>) נבדק באותו אופן: נוצר shadow-root עם iframe. מה שלא נבדק: פתיחה ישירה כקובץ (<code>file://</code>), והמשפט שבו Public עדיין מייצר קוד v1 בחלון Share (נבדק אחרון ב-13 באוקטובר 2026; בדקו שוב לפני השיעור). שם התכונה לטעינה עצלה (lazy) לא אומת. הסתרת סרגל כלים: בדקו אם <code>toolbar="hidden"</code> אכן מסתיר אותו, זה לא צולם.</div>
+</section>
+<section class="sec" id="m16-8" data-t="שליטה ואירוח">
+<div class="sec-h"><div class="sec-n">8</div><h2>שליטה מ-JavaScript, iframe ואירוח בחינם</h2></div>
+<p class="lead">הדף עובד מול הדוגמה של Tableau. עכשיו הגרף שלכם. כדי לסנן ולשנות פרמטר צריך שלושה שמות מדויקים: שם הגיליון, שם השדה ושם הפרמטר. אחרי זה מעלים את הדף לאינטרנט בחינם.</p>
+<h3>מה יש בתוך הגרף שלי</h3>
+<p>דף קטן שכל מה שהוא עושה זה לרשום לכם את השמות. שימו את הקישור שלכם ב-<code>src</code> (או השאירו את הדוגמה).</p>
+<pre class="code" data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;What is inside my viz?&lt;/title&gt;
+  &lt;script type="module"&gt;
+    import "https://embedding.tableauusercontent.com/tableau.embedding.3.16.0.min.js";
+
+    const viz = document.getElementById("viz");
+    const out = document.getElementById("out");
+    const say = (text) =&gt; { out.textContent += text + "\n"; };
+
+    viz.addEventListener("firstinteractive", async () =&gt; {
+      const sheet = viz.workbook.activeSheet;
+      say("active sheet: " + sheet.name + " (" + sheet.sheetType + ")");
+      const sheets = sheet.sheetType === "dashboard" ? sheet.worksheets : [sheet];
+      for (const ws of sheets) {
+        const filters = await ws.getFiltersAsync();
+        say("worksheet: " + ws.name + " | filters: " + filters.map((f) =&gt; f.fieldName).join(", "));
+      }
+      const params = await viz.workbook.getParametersAsync();
+      say("parameters: " + params.map((p) =&gt; p.name).join(", "));
+    });
+  &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;pre id="out"&gt;&lt;/pre&gt;
+  &lt;tableau-viz id="viz"
+               src="https://public.tableau.com/views/Superstore_24/Overview"
+               hide-tabs width="100%" height="600px"&gt;&lt;/tableau-viz&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+<div class="box try" data-id="m16-try-probe">
+<p><b>מגלים את השמות</b></p>
+<ol>
+<li>שמרו את הדף כ-<code>probe.html</code>, הריצו שרת מקומי (<code>python3 -m http.server 8000</code>) ופתחו אותו.</li>
+<li>המתינו שהטקסט יופיע מעל הגרף.</li>
+<li>אם הגרף שלכם בלי מסנן ובלי פרמטר, הרשימות יהיו ריקות. הוסיפו בחוברת מסנן מהיר או פרמטר לגיליון שנמצא בדשבורד, פרסמו מחדש ובדקו שוב.</li>
+</ol>
+<p><b>תוצאה צפויה לדוגמת Superstore_24:</b> <code>active sheet: Overview (dashboard)</code>, ארבעה גיליונות (<code>SaleMap</code>, <code>Total Sales</code>, <code>SalesbyProduct</code>, <code>SalesbySegment</code>) ובהם שדות כמו <code>Region</code>, <code>State</code>, <code>Order Date</code>, ושישה פרמטרים ובהם <code>Base Salary</code>. הרשימה כוללת גם פעולות (<code>Action (...)</code>) שאינן מסננים שלכם.</p>
+</div>
+<div class="tw"><table class="tbl">
+<tr><th>שיטה</th><th>מה עושה</th></tr>
+<tr><td><code>ws.applyFilterAsync(field, [values], FilterUpdateType.Replace)</code></td><td>מסנן. סוגי עדכון: Replace, Add, Remove, All. הערכים תמיד במערך</td></tr>
+<tr><td><code>ws.clearFilterAsync(field)</code></td><td>מנקה סינון</td></tr>
+<tr><td><code>viz.workbook.changeParameterValueAsync(name, value)</code></td><td>מחליף פרמטר. בפרמטר טקסט הערך חייב להיות אחד מהערכים המותרים</td></tr>
+<tr><td><code>getFiltersAsync()</code>, <code>getParametersAsync()</code></td><td>קוראות מה קיים</td></tr>
+<tr><td>אירועים: <code>FirstInteractive</code>, <code>FilterChanged</code>, <code>ParameterChanged</code>, <code>MarkSelectionChanged</code></td><td>הדף מקבל הודעה כשמשהו קרה</td></tr>
+</table></div>
+<p class="m16-note">בדשבורד, הקריאה שעבדה בבדיקה הייתה על גיליון (worksheet) שבתוכו, והיא השפיעה על כל הדשבורד. יש גם שיטות ייצוא (תמונה, PDF, נתונים): לא נבדקו כאן, ויתכן שהורדת נתונים חסומה אם המחבר כיבה אותה.</p>
+
+<h3>סינון בגרף, בכתובת ובקוד</h3>
+<div class="tw"><table class="tbl">
+<tr><th>דרך</th><th>איפה</th><th>מה נבדק</th></tr>
+<tr><td>מסנן מהיר בגרף</td><td>הצופה, בתוך הגרף</td><td>עובד תמיד</td></tr>
+<tr><td><code>&lt;viz-filter&gt;</code></td><td>בתוך האלמנט, מצב התחלתי</td><td>עובד ב-tableau-viz</td></tr>
+<tr><td><code>applyFilterAsync</code></td><td>קוד הדף, בכל רגע</td><td>עובד אחרי FirstInteractive</td></tr>
+<tr><td>כתובת <code>?Region=West</code></td><td>iframe בלבד</td><td>עובד ב-iframe. ב-tableau-viz המחרוזת נזרקת</td></tr>
+</table></div>
+
+<div class="box try" data-id="m16-try-iframe">
+<p><b>iframe מול רכיב</b></p>
+<ol>
+<li>בדף חדש שימו את זה:
+<pre class="code" data-lang="html">&lt;iframe src="https://public.tableau.com/views/Superstore_24/Overview?:embed=y&amp;:showVizHome=no&amp;:tabs=no&amp;Region=West"
+        width="1000" height="760" style="border:0"&gt;&lt;/iframe&gt;</pre></li>
+<li>בדף שני: <code>&lt;tableau-viz src="...Overview?Region=West"&gt;</code> (בלי viz-filter), ובדף שלישי עם <code>&lt;viz-filter field="Region" value="West"&gt;</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> ב-iframe הגרף נפתח כשהאזור West מסונן. ברכיב עם ה-<code>?</code> בכתובת: אין סינון. ברכיב עם <code>viz-filter</code>: West מסונן.</p>
+</div>
+
+<h3>iframe: מה הוא נותן ומה לא</h3>
+<ul>
+<li>לא צריך ספרייה ולא JavaScript. הכתובת עושה הכול.</li>
+<li>אי אפשר לשלוט מהקוד ולא להאזין לאירועים. גובה קבוע שאתם קובעים.</li>
+<li>הצורה הנכונה: <code>/views/WORKBOOK/SHEET?:embed=y</code>.</li>
+<li><code>:toolbar=no</code> לא הסתיר את סרגל הכלים ב-Public בבדיקה, ו-<code>:tabs=no</code> הסתיר לשוניות.</li>
+</ul>
+<div class="defline"><b><code>X-Frame-Options</code>:</b> כותרת שדף שולח וקובעת אם מותר להציג אותו בתוך iframe של אתר אחר. דוגמה: <code>SAMEORIGIN</code> אומר שרק אתר מאותו מקור.</div>
+<div class="tw"><table class="tbl">
+<tr><th>כתובת</th><th>בבדיקה (curl)</th><th>מותר ב-iframe</th></tr>
+<tr><td><code>public.tableau.com/views/X/Y?:embed=y&amp;:showVizHome=no</code></td><td>200, בלי X-Frame-Options</td><td>כן</td></tr>
+<tr><td><code>public.tableau.com/app/profile/.../viz/X/Y</code></td><td>200 עם <code>x-frame-options: SAMEORIGIN</code></td><td>לא</td></tr>
+</table></div>
+
+<h3>מעלים את הדף בחינם: GitHub Pages</h3>
+<p>דף HTML הוא אתר סטטי. הוא לא צריך שרת שמריץ קוד, ולכן GitHub Pages מתאים. על הפריסה בענף הרחב יותר: <a class="tool" href="../final-lesson/part3.html">חלק 3 של המפגש המסכם, פריסה לענן</a>.</p>
+<div class="box try" data-id="m16-try-pages">
+<p><b>מעלים את הדף</b></p>
+<ol>
+<li>היכנסו ל-<a class="tool" href="https://github.com" target="_blank" rel="noopener">GitHub</a> וצרו מאגר ציבורי (<code>New repository</code>, <code>Public</code>) בשם <code>scoop-dashboard</code>. <i>למה: Pages החינמי עובד על מאגר ציבורי.</i></li>
+<li><code>Add file</code>, <code>Upload files</code>, העלו את הדף בשם <code>index.html</code> ו-<code>Commit</code>.</li>
+<li><code>Settings</code>, <code>Pages</code>. תחת <code>Build and deployment</code> בחרו <code>Deploy from a branch</code>, ענף <code>main</code>, תיקייה <code>/ (root)</code>, <code>Save</code>. התוויות משתנות בין גרסאות.</li>
+<li>המתינו כמה דקות. הכתובת: <code>https://USERNAME.github.io/scoop-dashboard/</code>.</li>
+<li>פתחו אותה בחלון פרטי ובטלפון.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> הדף נטען מהכתובת הציבורית, הגרף מופיע, והמסנן והפרמטר עובדים. בבדיקה קודמת הרכיב v3 עבד מתוך <code>github.io</code>.</p>
+</div>
+<div class="box trap"><p><b>הכול בדף ציבורי.</b> מאגר ציבורי וקוד JavaScript נראים לכל אחד, והגרף עצמו ציבורי. אל תשימו בדף מפתחות, סיסמאות או נתונים אישיים.</p></div>
+<div class="box trap"><p><b>אחרי הפרסום אין מיד.</b> לפעמים לוקח כמה דקות עד שהכתובת עובדת. אם מקבלים 404, בדקו שהקובץ נקרא <code>index.html</code> ושההגדרה נשמרה.</p></div>
+<div class="box meaning"><p>הדף שלכם הוא הרבה יותר מגרף: אתם שולטים בבחירות ובטקסט. המחיר: צריך לתחזק שמות (גיליון, שדה, פרמטר). אם תשנו אותם בחוברת, הדף ישבר בשקט.</p></div>
+<div class="box real"><p>צוותים בונים כך דפי נחיתה לדוחות ציבוריים, ומארחים אותם בחינם כשאין צורך בשרת.</p></div>
+<div class="box think" data-id="m16-th-names-break"><p>שאלה: שיניתם בחוברת את השם של פרמטר ופרסמתם מחדש. מה קורה לדף, ואיך תגלו?</p>
+<div class="ans">הקריאה ל-<code>changeParameterValueAsync</code> תיכשל בשם הישן, והדף לא ישתנה. מגלים בקונסול (F12) ובדף ה-probe. לכן משאירים את דף ה-probe ורצים עליו אחרי כל פרסום.</div></div>
+<div class="quiz" data-id="m16-q-iframe-profile" data-a="3"><p class="qq">למה כתובת של דף הפרופיל לא עובדת ב-iframe?</p>
+<button class="opt">היא ארוכה מדי</button>
+<button class="opt">צריך חשבון Server</button>
+<button class="opt">היא שולחת <code>X-Frame-Options: SAMEORIGIN</code></button>
+<button class="opt">iframe לא עובד עם https</button>
+<div class="why">הכותרת אוסרת הצגה באתר אחר. הצורה <code>/views/...?:embed=y</code> לא שולחת אותה.</div></div>
+<div class="quiz" data-id="m16-q-array" data-a="2"><p class="qq">איך מעבירים ערך אחד ל-<code>applyFilterAsync</code>?</p>
+<button class="opt">כמחרוזת: <code>"West"</code></button>
+<button class="opt">במערך: <code>["West"]</code></button>
+<button class="opt">כמספר</button>
+<button class="opt">בלי ערך</button>
+<div class="why">לפי התיעוד, הערכים תמיד במערך, גם כשיש אחד.</div></div>
+<div class="teach"><b>🎓 למרצה:</b> דף ה-probe הורץ מול Superstore_24 והחזיר את הרשימות שבתוצאה הצפויה. פתיחת הדף מ-GitHub Pages של הסטודנטים לא הורצה כאן. תוויות GitHub: בדקו לפני השיעור.</div>
+</section>
+
+<section class="sec" id="m16-9" data-t="פייתון לפני Tableau">
+<div class="sec-h"><div class="sec-n">9</div><h2>סקריפט שמכין את הקובץ לפני Tableau Public</h2></div>
+<p class="lead">בסעיף 3 ראינו ש-Note המקורי נשאר בקובץ. הפתרון הוא לנקות לפני. סקריפט פייתון קצר מנקה את קובץ הפניות, מחלץ שדות ומוציא את הטלפונים, וכותב קובץ שאפשר לטעון.</p>
+<span class="m16-tag b">Public ועוד כלי חינמי מבחוץ</span>
+<pre class="code" data-lang="python">"""Clean messy_tickets.csv so Tableau Public can read it.
+
+Run:  python clean_tickets.py messy_tickets.csv tickets_clean.csv
+Needs: pip install pandas
+"""
+import sys
+import pandas as pd
+
+src, dst = sys.argv[1], sys.argv[2]
+
+# 1. read everything as text first, so nothing is guessed
+df = pd.read_csv(src, encoding="utf-8-sig", dtype=str)
+
+# 2. branch: collapse repeated spaces, trim, one casing
+df["Branch"] = (df["Branch"]
+                .str.replace(r"\s+", " ", regex=True)
+                .str.strip()
+                .str.title())
+
+# 3. dates: day first, so 03/05/2025 is 3 May. Empty cells become NaT (empty)
+for col in ("Received", "Resolved"):
+    df[col] = pd.to_datetime(df[col], format="%d/%m/%Y %H:%M")
+
+# 4. pull values out of the free text (same patterns as in Tableau)
+note = df["Note"]
+df["Order_ID"] = note.str.upper().str.extract(r"(SG-[0-9]{5})")[0]
+df["Rating"] = pd.to_numeric(note.str.extract(r"(?:^|[^0-9/])([1-5])/5")[0]).astype("Int64")
+df["Coupon"] = note.str.extract(r"([A-Z]{4,}-[0-9]{2})")[0]
+df["Refund"] = pd.to_numeric(note.str.extract(r"([0-9]+[.][0-9]{2})")[0]).fillna(0)
+minutes = (df["Resolved"] - df["Received"]).dt.total_seconds() / 60
+df["Handling_Minutes"] = minutes.round().astype("Int64")
+
+# 5. privacy: keep a masked note, drop the raw one
+PHONE = r"0[0-9]{2}-[0-9]{3}-[0-9]{4}"
+df["Has_Phone"] = note.str.contains(PHONE, regex=True)
+df["Note_Masked"] = note.str.replace(PHONE, "[phone]", regex=True)
+out = df.drop(columns=["Note"])
+assert not out["Note_Masked"].str.contains(PHONE, regex=True).any(), "a phone number is still there"
+
+# 6. UTF-8 with BOM, ISO dates
+out.to_csv(dst, index=False, encoding="utf-8-sig", date_format="%Y-%m-%d %H:%M")
+
+print("rows written:", len(out))
+print("branches:", out["Branch"].nunique())
+print("order ids found:", out["Order_ID"].notna().sum())
+print("average rating:", round(out["Rating"].mean(), 2))
+print("refund total:", round(out["Refund"].sum(), 2))
+print("average handling minutes:", round(out["Handling_Minutes"].mean(), 1))</pre>
+<div class="mk mk-term"><div class="mk-bar"><i></i><i></i><i></i><span class="url">Terminal (הדמיה סכמטית)</span></div><div class="mk-body"><span class="p">$</span> pip install pandas
+<span class="p">$</span> python clean_tickets.py messy_tickets.csv tickets_clean.csv
+rows written: 24
+branches: 5
+order ids found: 22
+average rating: 2.81
+refund total: 253.4
+average handling minutes: 320.5</div></div>
+<div class="box try" data-id="m16-try-pandas">
+<p><b>מריצים ומשווים ל-Tableau</b></p>
+<ol>
+<li>שמרו את הסקריפט כ-<code>clean_tickets.py</code> ליד <code>messy_tickets.csv</code>.</li>
+<li><code>pip install pandas</code>, ואז <code>python clean_tickets.py messy_tickets.csv tickets_clean.csv</code>.</li>
+<li>טענו את <code>tickets_clean.csv</code> ב-Tableau Public.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> ההדפסה שבטרמינל למעלה (24, 5, 22, 2.81, 253.4, 320.5). אלה אותם מספרים שיצאו בנוסחאות. בקובץ אין עמודת <code>Note</code>, ויש <code>Note_Masked</code> ו-0 טלפונים. הסקריפט נבדק בפייתון 3.14 עם pandas 3.1.0.</p>
+</div>
+<h3>קובץ <code>.hyper</code>: אופציונלי</h3>
+<p>אין צורך בו: CSV עושה אותו דבר. אם בכל זאת: Hyper API כותב קובץ מיצוי של Tableau. לפי התיעוד נדרש פייתון 3.11 ומעלה. ב-macOS החבילה העדכנית ב-PyPI לא תמיד קיימת, ובבדיקה עבדה <code>tableauhyperapi==0.0.26479</code>.</p>
+<pre class="code" data-lang="python">"""Optional: write a CSV as a Tableau .hyper extract.
+
+Run:  python csv_to_hyper.py tickets_clean.csv tickets.hyper
+Needs: Python 3.11+, pip install pandas tableauhyperapi
+"""
+import sys
+import pandas as pd
+from tableauhyperapi import (Connection, CreateMode, HyperProcess, Inserter,
+                             SqlType, TableDefinition, TableName, Telemetry)
+
+src, dst = sys.argv[1], sys.argv[2]
+df = pd.read_csv(src, encoding="utf-8-sig", parse_dates=["Received", "Resolved"])
+
+
+def sql_type(dtype):
+    if pd.api.types.is_bool_dtype(dtype):
+        return SqlType.bool()
+    if pd.api.types.is_integer_dtype(dtype):
+        return SqlType.big_int()
+    if pd.api.types.is_float_dtype(dtype):
+        return SqlType.double()
+    if pd.api.types.is_datetime64_any_dtype(dtype):
+        return SqlType.timestamp()
+    return SqlType.text()
+
+
+columns = [TableDefinition.Column(str(c), sql_type(df[c].dtype)) for c in df.columns]
+table = TableDefinition(TableName("Extract", "Extract"), columns)
+rows = df.astype(object).where(df.notna(), None).values.tolist()
+
+with HyperProcess(telemetry=Telemetry.DO_NOT_SEND_USAGE_DATA_TO_TABLEAU) as hyper:
+    with Connection(hyper.endpoint, dst, CreateMode.CREATE_AND_REPLACE) as conn:
+        conn.catalog.create_schema("Extract")
+        conn.catalog.create_table(table)
+        with Inserter(conn, table) as ins:
+            ins.add_rows(rows)
+            ins.execute()
+        n = conn.execute_scalar_query(f"SELECT COUNT(*) FROM {table.table_name}")
+print("wrote", n, "rows to", dst)</pre>
+<p><b>נבדק:</b> הרצה על <code>tickets_clean.csv</code> כתבה 24 שורות והעברית נשמרה, ושלוש שורות עם <code>Resolved</code> ריק. פתיחת הקובץ ב-Tableau Public (<code>Connect</code>, <code>More</code>, <code>Tableau Data Extract</code>) יש אינדיקציה חזקה אך לא אושרה חזותית: בדקו אם זמין אצלכם.</p>
+<div class="box trap"><p><b>סקריפט לא מוחק היסטוריה.</b> אם העליתם ל-GitHub את הקובץ המלא, הוא נשאר בהיסטוריה גם אחרי שמוחקים עמודה. מנקים לפני העלאה ראשונה.</p></div>
+<div class="box meaning"><p>הסקריפט הוא המקום שבו הכלל ״מה יוצא לציבור״ נאכף. Tableau לא יכול לשכוח משהו שלא קיבל.</p></div>
+<div class="box real"><p>בצוותי נתונים כותבים סקריפט כזה כשלב קבוע לפני כל דוח. בחיבור למסד נתונים: אותה שאילתה ב-SQL שמוציאה CSV, כמו ב<a href="module15.html">מודול 15</a>.</p></div>
+<div class="box think" data-id="m16-th-script-or-calc"><p>שאלה: מה שמים בסקריפט ומה בנוסחה ב-Tableau?</p>
+<div class="ans">בסקריפט: הסרת עמודות רגישות, ניקוי רווחים ופורמטים. בנוסחה: כללים עסקיים שהצופים צריכים לראות ולבדוק, כמו Priority.</div></div>
+<div class="quiz" data-id="m16-q-script-privacy" data-a="1"><p class="qq">איפה בטוח להסיר טלפונים לפני פרסום?</p>
+<button class="opt">בסקריפט, לפני שהקובץ נטען</button>
+<button class="opt">בנוסחה שמסווה</button>
+<button class="opt">בהסתרת הגיליון</button>
+<button class="opt">אין צורך</button>
+<div class="why">מה שלא בקובץ לא מתפרסם. סיווה בנוסחה והסתרה לא מבטיחות הסרה.</div></div>
+<div class="quiz" data-id="m16-q-hyper" data-a="2"><p class="qq">למה לא חייבים <code>.hyper</code>?</p>
+<button class="opt">כי Public לא פותח אותו לעולם</button>
+<button class="opt">כי CSV נטען ב-Public ועושה אותו דבר בקובץ קטן</button>
+<button class="opt">כי הוא איטי</button>
+<button class="opt">כי הוא מוצפן</button>
+<div class="why">ה-hyper מוסיף טיפוסים ומהירות, בלי רענון אוטומטי ובלי הגנת פרטיות.</div></div>
+<div class="teach"><b>🎓 למרצה:</b> שני הסקריפטים הורצו כאן. פתיחת hyper ב-Public לא אומתה חזותית.</div>
+</section>
+
+<section class="sec" id="m16-10" data-t="מעבר ל-Public">
+<div class="sec-h"><div class="sec-n">10</div><h2>תוספים, ומה שקיים מעבר ל-Public</h2></div>
+<p class="lead">תוסף (extension) הוא יישום קטן שמתחבר לדשבורד או מוסיף סוג גרף. הרשימה שאחריו היא מפה כנה: מה קיים, ולא תוכלו להריץ.</p>
+<div class="box note"><span class="m16-tag u">בדקו אם זמין אצלכם</span> לפי העזרה הרשמית אפשר לחפש תוספים עם הסימון Works with Tableau Public, וצריך לאשר גישה לנתונים כשמפרסמים. תוסף שכתבתם בעצמכם: לא נבדק. אין כאן תרגיל.</div>
+<div class="tw"><table class="tbl">
+<tr><th>מה</th><th>דוגמה קצרה</th><th>סטטוס</th></tr>
+<tr><td>TabPy ו-R: <code>SCRIPT_REAL</code></td><td><code>SCRIPT_REAL("return [x*0.5 for x in _arg1]", SUM([Profit]))</code></td><td><span class="m16-tag x">לא ב-Public</span></td></tr>
+<tr><td>REST API</td><td>ניהול Server או Cloud דרך HTTP</td><td><span class="m16-tag x">לא ב-Public</span></td></tr>
+<tr><td>Tableau Server Client</td><td><code>server.workbooks.get()</code> בפייתון</td><td><span class="m16-tag x">לא ב-Public</span></td></tr>
+<tr><td>Metadata API</td><td>שאילתת GraphQL על קשרי חוברות ושדות</td><td><span class="m16-tag x">לא ב-Public</span></td></tr>
+<tr><td>Webhooks</td><td>הודעה ל-URL כשרענון נכשל</td><td><span class="m16-tag x">לא ב-Public</span></td></tr>
+<tr><td>Tableau Prep</td><td>זרימת ניקוי ויזואלית</td><td><span class="m16-tag x">לא ב-Public</span>. במקום: pandas או Excel</td></tr>
+</table></div>
+<p>מה משתמשים במקום: לעבודה עם מסד נתונים חי או הרשאות לפי משתמש, אפשר לבדוק כלים אחרים, כמו Power BI, Looker Studio, או ספריות כמו matplotlib בפייתון. אלה הכרות כלליות ולא נבדקו כאן: בדקו רישיונות וחיבורים לפני שממליצים.</p>
+<div class="box trap"><p><b>אל תיכנסו לפרויקט שמחייב משהו מהרשימה.</b> אם הסקריפט צריך שרת פייתון חי, ב-Public הוא לא יעבוד. תכננו מראש: חישוב לפני, קובץ אחרי.</p></div>
+<div class="box meaning"><p>מי שיודע מה חסר ב-Public בוחר נכון מתי לעבור לכלי אחר, במקום להיתקע.</p></div>
+<div class="box real"><p>בארגונים עם Server או Cloud, צוותי נתונים משתמשים ב-API וב-webhooks כדי להפעיל תהליכים אוטומטיים.</p></div>
+<div class="box think" data-id="m16-th-which-tool"><p>שאלה: צריכים דשבורד שמתעדכן כל שעה ממסד נתונים. מה אפשר ב-Public?</p>
+<div class="ans">לא חי. אפשר סקריפט שמפיק CSV, ורענון רק דרך Google Sheets אחת ל-24 שעות לפי התיעוד. לצורך שעתי צריך כלי אחר.</div></div>
+<div class="quiz" data-id="m16-q-beyond" data-a="4"><p class="qq">מה מבין אלה לא ב-Tableau Public?</p>
+<button class="opt">שדה מחושב עם regex</button>
+<button class="opt">פרמטר</button>
+<button class="opt">הטמעה בדף שלכם</button>
+<button class="opt">Tableau Server Client</button>
+<div class="why">שלוש הראשונות רצות. ה-Server Client מחייב Server או Cloud.</div></div>
+<div class="teach"><b>🎓 למרצה:</b> הכלים שאינם Tableau נזכרים מהיכרות כללית ולא אומתו.</div>
+</section>
+
+<section class="sec" id="m16-11" data-t="סיכום">
+<div class="sec-h"><div class="sec-n">11</div><h2>סיכום: מה עברנו במודול הזה</h2></div>
+<div class="box recap"><ul>
+<li>לכל נוסחה יש רמה: שורה, צבירה, LOD או חישוב טבלה. הרמה קובעת איך היא מגיבה למסנן.</li>
+<li>Regex מחלץ סדר מטקסט: <code>REGEXP_EXTRACT</code>, <code>MATCH</code> ו-<code>REPLACE</code>. תמיד בודקים שורות עם NULL מול הטקסט.</li>
+<li>תנאים: מהצר אל הרחב, עם הגנה על Null. <code>DATEPARSE</code> בפורמט הנכון והבדיקה על יום גדול מ-12.</li>
+<li>תבניות ופרמטרים הופכים גיליון לדשבורד שמגיב. כותבים הערות ובודקים שקילות.</li>
+<li>Embedding API v3: Link, <code>tableau-viz</code>, גרסה מקובעת, סינון ופרמטר מהקוד, אירועים. אירוח ב-GitHub Pages.</li>
+<li>סקריפט לפני Tableau מנקה ומסיר מידע רגיש. TabPy, REST ו-Prep לא ב-Public.</li>
+</ul></div>
+<div class="quiz" data-id="m16-q-end-1" data-a="2"><p class="qq">פרמטר טקסט נקרא בחישוב. לאיזה חלק בו מתייחסים?</p>
+<button class="opt">ל-Display As</button>
+<button class="opt">ל-Value</button>
+<button class="opt">לשניהם</button>
+<button class="opt">לאף אחד</button>
+<div class="why">הנוסחה קוראת את הערך, לא את הטקסט המוצג.</div></div>
+<div class="quiz" data-id="m16-q-end-2" data-a="1"><p class="qq">ב-<code>tableau-viz</code> כתבתם <code>src="...?Region=West"</code> והגרף לא סונן. מה הפתרון?</p>
+<button class="opt">להשתמש ב-<code>&lt;viz-filter&gt;</code> או ב-<code>applyFilterAsync</code></button>
+<button class="opt">להוסיף עוד פרמטר ל-URL</button>
+<button class="opt">לעבור ל-latest</button>
+<button class="opt">להשתמש ב-Embed Code</button>
+<div class="why">בכתובת של הרכיב ה-<code>?</code> נזרק. ב-iframe הוא כן עובד.</div></div>
+<div class="quiz" data-id="m16-q-end-3" data-a="3"><p class="qq">מסווים טלפון בנוסחה, והעמודה המקורית נשארת בקובץ. מה הסיכון?</p>
+<button class="opt">אין סיכון</button>
+<button class="opt">הנוסחה תאט את הגרף</button>
+<button class="opt">הנתונים המקוריים נשארים בחוברת הציבורית וניתנים להורדה</button>
+<button class="opt">Tableau לא יפרסם</button>
+<div class="why">מסננים בקובץ, לפני הטעינה.</div></div>
+<p>במודול הבא עוברים לפרויקטים ולבדיקת הסיום: <a href="module17.html">מודול 17, פרויקטים ובדיקת סיום</a>.</p>
+</section>
+
+<div class="pager"><a href="module15.html">→ 15. בסיסי נתונים: איך הנתונים מגיעים</a><a href="module17.html">17. פרויקטים ובדיקת סיום ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>

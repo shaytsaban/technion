@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. מכירים את Tableau Public · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=1;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public" class=on>1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים">2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים">3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות">6<small></small></a><a id="part7" href="module7.html" title="מפות">7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים">8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט">10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב">13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה">14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים">15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות">16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום">17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות">19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>מכירים את<br><span>Tableau Public</span></h1>
+  <p>בודקים איזו הורדה נכונה, מתקינים, פותחים חשבון ומסתובבים במסך הפתיחה. קוראים ויז ציבורי, בונים עמודות ראשונות מנתוני Scoop & Go, שומרים מקומית ומפרסמים ויז לבדיקה. בסוף אתם יודעים מה ציבורי, מה אף פעם לא מפרסמים, ואיך עובדים באתר הזה.</p>
+  <div class="chips"><span>🧪 תשעה תרגילים בתוכנה</span><span>🎞️ ארבע הנפשות</span><span>🎛️ שש הדמיות אינטראקטיביות</span><span>🆓 רק Tableau Public, בלי רישיון</span><span>📦 קובץ נתונים להורדה</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<style>
+.m1-opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.m1-opt{font:inherit;font-weight:700;border:1px solid #c7d2fe;background:#fff;border-radius:10px;padding:5px 14px;cursor:pointer}
+.m1-opt:hover{background:#eef2ff}
+.m1-opt.ok{background:#dcfce7;border-color:#6ee7b7}
+.m1-opt.bad{background:#fee2e2;border-color:#fca5a5}
+.m1-opt.sel{background:#dbeafe;border-color:#60a5fa}
+.m1-fb:empty{display:none}
+.m1-fb{margin-top:8px;padding:8px 12px;border-radius:10px;background:#f1f5f9;min-height:1.4em}
+.m1-score{font-weight:800;color:var(--primary-dark)}
+.m1-qtxt{font-weight:700;margin:6px 0}
+.m1-cmp td:first-child,.m1-cmp th:first-child{font-weight:700;white-space:nowrap}
+.m1-yes{color:#047857;font-weight:800}.m1-no{color:#b91c1c;font-weight:800}.m1-maybe{color:#b45309;font-weight:800}
+.m1-start{display:grid;grid-template-columns:1.1fr 1.3fr 1.1fr;gap:0;direction:ltr;text-align:left;font-size:.82rem;min-height:250px}
+.m1-start>div{padding:10px 12px}
+.m1-st-c{background:#355c82;color:#e8f0f8}
+.m1-st-c h5,.m1-st-o h5,.m1-st-d h5{margin:0 0 8px;font-size:1.05rem;font-weight:600}
+.m1-st-c small{display:block;opacity:.65;margin:8px 0 3px;font-size:.72rem}
+.m1-st-c div{padding:1px 0}
+.m1-st-o{background:#f8f8f8;color:#444;border-left:1px solid #d5dbe3;border-right:1px solid #d5dbe3}
+.m1-st-d{background:#fff;color:#444}
+.m1-st-d .t{display:inline-block;width:46%;height:46px;margin:2px 1.5%;background:linear-gradient(135deg,#dbeafe,#fde68a);border-radius:6px;border:1px solid #d5dbe3}
+.m1-no-n{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#e8741f;color:#fff;font-weight:800;font-size:.72rem;margin-inline-end:4px}
+.m1-hsw{position:relative;line-height:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.m1-hsw img{width:100%;height:auto;display:block}
+.m1-hs{position:absolute;cursor:pointer;border-radius:4px}
+.m1-hs:hover{background:rgba(59,130,246,.12);outline:2px dashed #3b82f6}
+.m1-hs.ok{background:rgba(34,197,94,.3);outline:3px solid #16a34a}
+.m1-hs.bad{background:rgba(239,68,68,.25);outline:3px solid #dc2626}
+.m1-viz{direction:ltr;text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;position:relative}
+.m1-viz .vt{font-size:1.05rem;color:#444;margin-bottom:4px}
+.m1-viz .vr{display:flex;align-items:center;gap:8px;margin:4px 0;cursor:pointer}
+.m1-viz .vl{width:78px;font-size:.82rem;color:#555;text-align:right;flex:none}
+.m1-viz .vb{height:24px;background:#4e79a7;border-radius:2px;transition:width .35s,opacity .2s}
+.m1-viz .vb.dim{opacity:.3}
+.m1-viz .vn{font-size:.8rem;color:#555}
+.m1-viz .tip{position:fixed;z-index:90;background:#fff;border:1px solid #bbb;box-shadow:0 4px 14px rgba(0,0,0,.2);padding:6px 10px;border-radius:4px;font-size:.8rem;pointer-events:none;display:none;direction:ltr;text-align:left}
+.m1-viz .mn{margin:6px 0 0;font-size:.74rem;color:#777;text-align:right;border:0;box-shadow:none;background:none;border-radius:0;display:block}
+.m1-chk{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0;font-size:.9rem}
+.m1-chk label{display:inline-flex;gap:4px;align-items:center;cursor:pointer}
+.m1-stp{display:inline-block;margin:2px 6px 2px 0;padding:0 10px;border-radius:999px;background:#e2e8f0;font-size:.8rem;font-weight:700}
+.m1-stp.on{background:#dcfce7;color:#065f46}
+.m1-map td:first-child{white-space:nowrap}
+</style>
+
+<div class="box note"><span class="lvl s">מתחילים</span> <b>מה נבנה במודול הזה</b>
+<p>בסוף המודול יש לכם על המחשב את Tableau Desktop Public Edition, חשבון Tableau Public פעיל, וקובץ <span class="n">.twbx</span> שבו גרף עמודות אחד: מכירות של Scoop &amp; Go לפי קטגוריה. הגרף גם מפורסם בקישור, ואתם יודעים לפתוח אותו בחלון פרטי ולבדוק שהוא נראה לכולם. זה גרף קטן בכוונה. המטרה היא לוודא שכל החוליות עובדות: התקנה, חשבון, קובץ נתונים, שמירה ופרסום.</p>
+<p><b>מה צריך לפני שמתחילים:</b> מחשב עם Windows 10 או 11, או Mac עם macOS 13 ומעלה. כתובת מייל שאפשר לפתוח. הקובץ <a class="tool" href="data/scoop_sales_2024_2025.csv" download>scoop_sales_2024_2025.csv</a> שמור בתיקייה קצרה, בלי עברית ובלי רווחים בנתיב, למשל <code>C:\Scoop</code> או <code>~/Scoop</code>. אין מודול קודם: זה המודול הראשון.</p>
+</div>
+
+<section class="sec" id="m1-1" data-t="הרעיון">
+<div class="sec-h"><div class="sec-n">1</div><h2>מה זה Tableau ולמה צריך אותו</h2></div>
+<p class="lead">מנהל הרשת של Scoop &amp; Go רוצה לדעת איזו קטגוריה מכניסה הכי הרבה. הנתונים נמצאים בקובץ אחד, והוא כולל 6,575 שורות. אף אחד לא יקרא אותן שורה אחרי שורה.</p>
+
+<p>הנה חמש שורות מתוך הקובץ, כמו שהן:</p>
+<div class="tw" dir="ltr"><table class="tbl">
+<thead><tr><th>Order_ID</th><th>Order_Date</th><th>Branch</th><th>Category</th><th>Item</th><th>Quantity</th><th>Sales</th></tr></thead>
+<tbody>
+<tr><td>SG-00001</td><td><bdi dir="ltr">2024-01-01</bdi></td><td>Haifa German Colony</td><td>Cups</td><td>Lemon Sorbet Cup</td><td>2</td><td>40.0</td></tr>
+<tr><td>SG-00002</td><td><bdi dir="ltr">2024-01-02</bdi></td><td>Eilat Promenade</td><td>Cups</td><td>Pistachio Cup</td><td>1</td><td>24.0</td></tr>
+<tr><td>SG-00003</td><td><bdi dir="ltr">2024-01-02</bdi></td><td>Tel Aviv Port</td><td>Drinks</td><td>Milkshake</td><td>1</td><td>26.0</td></tr>
+<tr><td>SG-00004</td><td><bdi dir="ltr">2024-01-02</bdi></td><td>Netanya Beach</td><td>Cones</td><td>Classic Cone</td><td>1</td><td>16.0</td></tr>
+<tr><td>SG-00005</td><td><bdi dir="ltr">2024-01-03</bdi></td><td>Tel Aviv Dizengoff</td><td>Cones</td><td>Double Cone</td><td>1</td><td>26.0</td></tr>
+</tbody></table></div>
+<p>ועכשיו אותו קובץ, כל 6,575 השורות, מסוכם לפי קטגוריה. חמש עמודות במקום אלפי שורות, ואפשר לראות מיד מי מוביל:</p>
+
+<figure class="shot" data-shot="m1-first-bars">
+<div class="fb">
+<svg viewBox="0 0 560 200" width="100%" role="img" aria-label="גרף עמודות אופקי: מכירות לפי קטגוריה. Cups 69,470, Drinks 54,553.3, Cones 48,317, Sundaes 47,037.2, Sticks 17,443.4" style="direction:ltr;max-width:640px;display:block;margin:0 auto">
+<g font-family="Heebo,Arial,sans-serif" font-size="15" fill="#334155">
+<text x="10" y="38">Cups</text><text x="10" y="73">Drinks</text><text x="10" y="108">Cones</text><text x="10" y="143">Sundaes</text><text x="10" y="178">Sticks</text>
+</g>
+<g fill="#4e79a7"><rect x="90" y="20" width="300" height="26"/><rect x="90" y="55" width="235.6" height="26"/><rect x="90" y="90" width="208.7" height="26"/><rect x="90" y="125" width="203.1" height="26"/><rect x="90" y="160" width="75.3" height="26"/></g>
+<g font-family="Heebo,Arial,sans-serif" font-size="14" fill="#334155">
+<text x="398" y="38">69,470</text><text x="333" y="73">54,553.3</text><text x="306" y="108">48,317</text><text x="301" y="143">47,037.2</text><text x="173" y="178">17,443.4</text>
+</g>
+</svg>
+<div class="need">צילום מסך נדרש: Tableau Public, גיליון עם Category על Columns ו-SUM(Sales) על Rows מהקובץ scoop_sales_2024_2025.csv, חמש עמודות, העכבר על העמודה Cups והטולטיפ פתוח</div>
+</div>
+<figcaption>הדמיה סכמטית של הגרף שתבנו בהמשך המודול. כל המספרים חושבו מהקובץ.</figcaption>
+</figure>
+
+<div class="defline"><b>Tableau:</b> תוכנה שקוראת קובץ נתונים ומציירת ממנו גרפים, לפי השדות שגוררים אליה. כשהשאלה משתנה, גוררים שדה אחר, ולא בונים הכול מחדש. דוגמה: גוררים את Category ואת Sales, והעמודות שלמעלה מצטיירות.</div>
+<div class="defline"><b>ויז (viz):</b> גרף אחד או דשבורד שלם שנבנה ב-Tableau. דוגמה: חמש העמודות של המכירות לפי קטגוריה הן ויז אחד. הרבה מנתחי נתונים אומרים &quot;ויז&quot; במקום &quot;ויזואליזציה&quot;.</div>
+
+<h3>איפה Tableau נמצא בדרך מנתונים להחלטה</h3>
+<p>Tableau לא אוסף נתונים ולא מנקה אותם. הוא בא אחרי שיש נתונים: מחברים אליו קובץ, וגוררים. כשהוויז מוכן, מפרסמים אותו בקישור. הנפשה קצרה:</p>
+
+<div class="anim" data-id="m1-anim-pipeline" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 270" role="img" aria-label="חמש חוליות: נתונים, הכנה, Tableau Public, קישור, החלטה. סמן אתם כאן עובר מחוליה לחוליה">
+<defs><marker id="m1ap-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<g data-s="1"><rect x="10" y="70" width="140" height="96" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="80" y="108" text-anchor="middle" font-size="19" font-weight="700" fill="#3730a3">נתונים</text><text x="80" y="136" text-anchor="middle" font-size="14" fill="#475569">CSV, Excel, SQL</text></g>
+<g data-s="2"><path d="M152,118 L168,118" stroke="#64748b" stroke-width="2.5" marker-end="url(#m1ap-a)"/><rect x="170" y="70" width="140" height="96" rx="14" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/><text x="240" y="108" text-anchor="middle" font-size="19" font-weight="700" fill="#9a3412">הכנה</text><text x="240" y="136" text-anchor="middle" font-size="14" fill="#475569">SQL או Excel</text></g>
+<g data-s="3"><path d="M312,118 L328,118" stroke="#64748b" stroke-width="2.5" marker-end="url(#m1ap-a)"/><rect x="330" y="70" width="140" height="96" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="3"/><text x="400" y="108" text-anchor="middle" font-size="19" font-weight="700" fill="#065f46">Tableau</text><text x="400" y="136" text-anchor="middle" font-size="14" fill="#475569">גוררים שדות</text></g>
+<g data-s="4"><path d="M472,118 L488,118" stroke="#64748b" stroke-width="2.5" marker-end="url(#m1ap-a)"/><rect x="490" y="70" width="140" height="96" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/><text x="560" y="108" text-anchor="middle" font-size="19" font-weight="700" fill="#1e40af">קישור</text><text x="560" y="136" text-anchor="middle" font-size="14" fill="#475569">ויז מפורסם</text></g>
+<g data-s="5"><path d="M632,118 L648,118" stroke="#64748b" stroke-width="2.5" marker-end="url(#m1ap-a)"/><rect x="650" y="70" width="140" height="96" rx="14" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/><text x="720" y="108" text-anchor="middle" font-size="19" font-weight="700" fill="#854d0e">החלטה</text><text x="720" y="136" text-anchor="middle" font-size="14" fill="#475569">מישהו פותח ובוחר</text></g>
+<g data-move="1:0,0|2:160,0|3:320,0|4:480,0|5:640,0"><path d="M80,198 L80,174" stroke="#d97706" stroke-width="3" marker-end="url(#m1ap-a)"/><rect x="38" y="200" width="84" height="30" rx="15" fill="#d8b862"/><text x="80" y="221" text-anchor="middle" font-size="15" font-weight="800" fill="#1e293b">אתם כאן</text></g>
+<g data-only="3"><text x="400" y="40" text-anchor="middle" font-size="16" font-weight="700" fill="#065f46">הקורס הזה כאן</text></g>
+<g data-only="2"><text x="240" y="40" text-anchor="middle" font-size="15" fill="#9a3412">מחוץ ל-Tableau Public</text></g>
+</svg></div>
+<ol class="caps"><li>קודם יש נתונים: קובץ CSV או Excel, או טבלאות במסד נתונים.</li><li>מכינים אותם: שאילתת SQL או עבודה ב-Excel. זה קורה מחוץ ל-Tableau Public.</li><li>מחברים קובץ ל-Tableau, גוררים שדות, ובונים גרפים ודשבורד. כאן הקורס הזה נמצא.</li><li>מפרסמים. מקבלים קישור אחד לוויז, ולא קובץ שנשלח במייל.</li><li>מי שפותח את הקישור רואה, מסנן ומחליט. בשביל זה בנינו את הכול.</li></ol>
+</div>
+
+<h3>ומה עם Excel?</h3>
+<p>Excel הוא כלי מצוין לחישוב. Tableau נועד לדבר אחר: לחקור נתונים ולהציג אותם. הם משלימים זה את זה.</p>
+<div class="tw"><table class="tbl m1-cmp">
+<thead><tr><th>מה רוצים</th><th>ב-Excel</th><th>ב-Tableau</th></tr></thead>
+<tbody>
+<tr><td>לשנות את השאלה</td><td>בונים טבלת צירים או גרף חדשים, או משנים ידנית</td><td>גוררים שדה אחר למדף</td></tr>
+<tr><td>כמה גרפים מאותם נתונים</td><td>כל גרף נשען על טווח או על טבלת צירים משלו</td><td>מקור נתונים אחד מזין הרבה גיליונות</td></tr>
+<tr><td>גודל הנתונים</td><td>עד 1,048,576 שורות בגיליון (לפי Microsoft)</td><td>ב-Tableau Public עד 15 מיליון שורות בחוברת עבודה (נכון לאוקטובר 2026, בדקו בתיעוד)</td></tr>
+<tr><td>שיתוף</td><td>שולחים קובץ, והוא מתיישן</td><td>שולחים קישור לוויז מפורסם</td></tr>
+<tr><td>חישוב מדויק שורה אחרי שורה</td><td>זה החוזק של Excel</td><td>אפשרי, אבל זה לא מה שהכלי בנוי לו</td></tr>
+</tbody></table></div>
+<p>יש עוד כלים באותו תפקיד: Power BI של Microsoft ו-Looker Studio של Google. גם בהם מחברים נתונים, בונים גרפים ודשבורד ומשתפים. את ההבדלים המדויקים בין התכונות לא בדקנו לצורך הקורס, ולכן לא נשווה ביניהם כאן. מי שעבד במפגשים קודמים עם Looker Studio יזהה את הרעיון.</p>
+
+<div class="box meaning"><p>Tableau לא מחליף את SQL ולא את Excel. SQL שולף ומכין את הנתונים, Excel מחשב, ו-Tableau שואל שאלות ומראה תשובות. בקורס הזה אתם בעיקר בחוליה האמצעית, ומי שרוצה לראות את החוליה שלפניה יכול לפתוח את <a href="../final-lesson/part2.html">חלק ה-SQL במפגש המסכם</a>.</p></div>
+<div class="box real"><p>בעבודה רגילה, אנליסט מכין את הנתונים ב-SQL או ב-Excel, ובונה ב-Tableau דשבורד. המנהל פותח את הדשבורד ושואל שאלות בלחיצות: איזה סניף, איזו שנה. הוא לא צריך לבקש מהאנליסט טבלה חדשה בכל פעם.</p></div>
+
+<div class="quiz" data-id="m1-q-sits" data-a="2"><p class="qq">איפה Tableau נמצא ברצף העבודה?</p>
+<button class="opt">במקום SQL: הוא שולף את הנתונים ממסד הנתונים</button>
+<button class="opt">אחרי שיש נתונים: מחברים קובץ, גוררים שדות ומקבלים גרפים, ואפשר לפרסם בקישור</button>
+<button class="opt">לפני שאוספים נתונים: הוא יוצר אותם</button>
+<div class="why">התשובה השנייה. Tableau לוקח נתונים שקיימים ומציג אותם. הוא לא יוצר נתונים. ב-Tableau Public הוא גם לא מתחבר למסד נתונים: את השאילתה מריצים מחוץ לו, ואת התוצאה טוענים כקובץ.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> להתחיל מהטבלה של חמש השורות, ואז להראות את הגרף. אפשר לשאול &quot;מה עניתם לעצמכם כשראיתם את הטבלה?&quot; ולהראות שהגרף עונה בשנייה. לא להיכנס לשוני בין הכלים: זו הפעם הראשונה שהם שומעים על Tableau. ההשוואה ל-Power BI ול-Looker Studio נשארת בכוונה בלי פירוט, כי לא נבדקו תכונות.</div>
+</section>
+
+<section class="sec" id="m1-2" data-t="המהדורות">
+<div class="sec-h"><div class="sec-n">2</div><h2>המשפחה: Public, Free, Desktop ו-Cloud</h2></div>
+<p class="lead">מחפשים &quot;Tableau download&quot; בגוגל, ומקבלים כמה הורדות עם שמות דומים. רק אחת מהן מתאימה לקורס. בואו נסדר את השמות.</p>
+
+<p>הטבלה הבאה היא המפה. היא נכונה נכון לאוקטובר 2026. השמות והמבצעים של Tableau משתנים, ולכן בדקו גם בדף הרשמי.</p>
+<div class="tw"><table class="tbl m1-cmp">
+<thead><tr><th>השם</th><th>מה זה</th><th>עלות</th><th>מתאים לקורס?</th></tr></thead>
+<tbody>
+<tr><td>Tableau Public<br><span class="n">public.tableau.com</span></td><td>האתר הציבורי: פרופילים, דף <code>Discover</code> עם ויזים של אחרים, אירוח של הוויזים שלכם, ועריכה בדפדפן</td><td>חינם</td><td class="m1-yes">כן, שם מפרסמים</td></tr>
+<tr><td>Tableau Desktop Public Edition</td><td>התוכנה החינמית שמתקינים ב-Windows או ב-Mac. שומרת במחשב או מפרסמת ל-Tableau Public</td><td>חינם, לא לשימוש מסחרי</td><td class="m1-yes">כן, זו ההורדה</td></tr>
+<tr><td>Web authoring</td><td>עריכת ויזים בתוך הדפדפן באתר, בלי התקנה. צריך חשבון</td><td>חינם</td><td class="m1-maybe">גיבוי, אם ההתקנה נכשלה</td></tr>
+<tr><td>Tableau Desktop Free Edition</td><td>תוכנה חינמית נפרדת: אפשר להתחבר להרבה מקורות נתונים, בלי תקרת שורות, אבל אי אפשר לפרסם ל-Tableau Public</td><td>חינם</td><td class="m1-no">לא</td></tr>
+<tr><td>Tableau Desktop (Professional)</td><td>התוכנה בתשלום. מפרסמת ל-Cloud ול-Server, וגם ל-Tableau Public</td><td>בתשלום, ברישיון</td><td class="m1-no">לא (אין לכם)</td></tr>
+<tr><td>Tableau Cloud ו-Tableau Server</td><td>מקום פרטי של ארגון לוויזים, עם הרשאות לפי משתמש. Cloud מאוחסן אצל Tableau, Server אצל הארגון</td><td>בתשלום</td><td class="m1-no">לא</td></tr>
+</tbody></table></div>
+
+<div class="defline"><b>Tableau Desktop Public Edition (בקיצור TDPE):</b> התוכנה החינמית של Tableau ל-Windows ול-Mac, שאפשר לשמור בה במחשב או לפרסם ממנה לאתר Tableau Public. דוגמה: זו התוכנה שתתקינו בהמשך המודול. כשכתוב בקורס &quot;Tableau Public&quot; בלי הסבר, מתכוונים לה ולאתר יחד.</div>
+<div class="defline"><b>web authoring:</b> עריכה של ויז בתוך הדפדפן, בלי להתקין כלום. דוגמה: נכנסים ל-public.tableau.com, בתפריט <code>Create</code> בוחרים <code>Web Authoring</code>, ומעלים קובץ CSV או Excel.</div>
+<p>אז יש שלושה מצבי עבודה, ובקורס אנחנו עובדים בעיקר בראשון:</p>
+<div class="cols3">
+<div class="card"><h4>1. Desktop Public Edition</h4><p>המצב הראשי של הקורס. מתקינים, שומרים במחשב, ומפרסמים כשרוצים.</p></div>
+<div class="card"><h4>2. Web authoring</h4><p>גיבוי למי שלא יכול להתקין: Chromebook, Linux, מחשב נעול. במחשב נייד או נייח בלבד, לא בטלפון.</p></div>
+<div class="card"><h4>3. צפייה בלבד</h4><p>פותחים ויז של מישהו אחר בדפדפן ומסתכלים. לא צריך להתקין שום דבר.</p></div>
+</div>
+
+<h3>Public, Free ו-Professional זו לצד זו</h3>
+<p>שלוש התוכנות נראות דומה כשעובדים בהן, אבל הן שונות במה שאפשר להוציא החוצה. זו ההשוואה שהחברה עצמה מפרסמת:</p>
+<div class="tw"><table class="tbl m1-cmp">
+<thead><tr><th>יכולת</th><th>Public Edition</th><th>Free Edition</th><th>Professional</th></tr></thead>
+<tbody>
+<tr><td>שמירה מקומית</td><td class="m1-yes">כן</td><td class="m1-yes">כן</td><td class="m1-yes">כן</td></tr>
+<tr><td>פרסום ל-Tableau Public</td><td class="m1-yes">כן</td><td class="m1-no">לא</td><td class="m1-yes">כן</td></tr>
+<tr><td>פרסום ל-Cloud או ל-Server</td><td class="m1-no">לא</td><td class="m1-no">לא</td><td class="m1-yes">כן</td></tr>
+<tr><td>מקורות נתונים</td><td>רשימה מוגבלת (קבצים ועוד)</td><td>כמעט הכול</td><td>הכול</td></tr>
+<tr><td>מספר שורות</td><td>עד 15 מיליון</td><td>ללא הגבלה</td><td>ללא הגבלה</td></tr>
+<tr><td>חיבור חי לנתונים</td><td>רק Google Drive</td><td class="m1-yes">כן</td><td class="m1-yes">כן</td></tr>
+</tbody></table></div>
+<p style="font-size:.85rem;color:var(--muted)">מקור: דף ההשוואה הרשמי של Tableau (<span class="n">desktop_comparison</span>), נכון לאוקטובר 2026.</p>
+
+<div class="box trap"><p><b>הכפתור הירוק.</b> בדפים <span class="n">tableau.com/pricing</span> ו-<span class="n">tableau.com/products/desktop</span> מופיע כפתור גדול של הורדה חינמית. הוא מוריד את Free Edition, ולא את Public Edition. מי שהתקין אותה לא יראה אפשרות לשמור ל-Tableau Public, ולא יוכל לבצע את שלב הפרסום בקורס. הזיהוי: בתפריט <code>File</code> אין <code>Save to Tableau Public</code>. הפתרון: להסיר את התוכנה ולהתקין את ההורדה הנכונה, שמתחילה ב-<span class="n">public.tableau.com</span>.</p></div>
+
+<div class="sim" data-id="m1-sim-edition"><div class="sh">איזו מהדורה מתאימה למצב?</div>
+<p>חמישה מצבים אמיתיים. לכל מצב בחרו את התשובה, ותקבלו הסבר.</p>
+<div class="m1-qtxt"></div><div class="m1-opts"></div><div class="m1-fb"></div>
+<div class="row"><button class="btn sec2 m1-next" type="button" hidden>המצב הבא</button><span class="m1-score"></span></div></div>
+<script>(function(){ FL.dom(function(){
+var box = FL.$('[data-id="m1-sim-edition"]'); if (!box) return;
+var OPT = [['pub','Public Edition'],['web','Web authoring'],['free','Free Edition'],['pro','Desktop בתשלום (Creator)'],['cloud','Cloud או Server']];
+var S = [
+ {t:'אתם רוצים תיק עבודות ציבורי: דשבורד על נתונים ציבוריים, בלי לשלם.', a:'pub', w:'Public Edition. בדיוק בשביל זה היא נבנתה: לימוד, נתונים ציבוריים ופרסום ל-Tableau Public.'},
+ {t:'בחברה שלכם יש נתוני מכירות פנימיים, והדשבורד אמור להיות גלוי רק למחלקת הכספים.', a:'cloud', w:'צריך מקום פרטי עם הרשאות: Tableau Cloud או Server, בתשלום של הארגון. ב-Tableau Public כל מה שמפורסם פתוח לכולם, וגם Public Edition אסורה לשימוש מסחרי.'},
+ {t:'יש לכם קובץ פרטי שגדול מ-15 מיליון שורות, ואתם רוצים לחקור אותו רק לעצמכם, בחינם.', a:'free', w:'Free Edition: אין בה תקרת שורות ויש לה הרבה מקורות נתונים. היא לא מפרסמת, כך שהנתונים נשארים אצלכם.'},
+ {t:'יש לכם Chromebook ואי אפשר להתקין תוכנה.', a:'web', w:'Public Edition קיימת רק ל-Windows ול-Mac. נשארת העריכה בדפדפן: web authoring, עם חשבון, במחשב נייד או נייח.'},
+ {t:'המעסיק נתן לכם רישיון Creator, ואתם רוצים לפרסם לתיק העבודות ויז על נתוני דוגמה ציבוריים.', a:'pro', w:'Desktop בתשלום יכולה לשמור גם ל-Tableau Public. אבל נתונים של המעסיק לא מעלים לשם אף פעם.'}
+];
+var i = 0, score = 0, answered = false;
+var q = FL.$('.m1-qtxt', box), ops = FL.$('.m1-opts', box), fb = FL.$('.m1-fb', box), nx = FL.$('.m1-next', box), sc = FL.$('.m1-score', box);
+function show(){
+  answered = false; fb.textContent = ''; nx.hidden = true;
+  q.textContent = (i+1) + '. ' + S[i].t;
+  ops.innerHTML = OPT.map(function(o){ return '<button type="button" class="m1-opt" data-k="'+o[0]+'">'+FL.esc(o[1])+'</button>'; }).join('');
+  sc.textContent = 'נכון עד כה: ' + score + ' מתוך ' + i;
+}
+ops.addEventListener('click', function(e){
+  var b = e.target.closest('.m1-opt'); if (!b || answered) return;
+  answered = true; var ok = b.dataset.k === S[i].a;
+  if (ok) score++; b.classList.add(ok ? 'ok' : 'bad');
+  if (!ok){ var r = FL.$('.m1-opt[data-k="'+S[i].a+'"]', ops); if (r) r.classList.add('ok'); }
+  fb.innerHTML = (ok ? '<b>נכון.</b> ' : '<b>לא בדיוק.</b> ') + FL.esc(S[i].w);
+  sc.textContent = 'נכון עד כה: ' + score + ' מתוך ' + (i+1);
+  if (i < S.length-1){ nx.hidden = false; } else { fb.innerHTML += '<br><b>סיימתם: ' + score + ' מתוך ' + S.length + '.</b>'; FL.done('m1-sim-edition'); nx.textContent = 'מההתחלה'; nx.hidden = false; }
+});
+nx.addEventListener('click', function(){ if (i >= S.length-1){ i = 0; score = 0; } else i++; nx.textContent = 'המצב הבא'; show(); });
+show();
+}); })();</script>
+
+<div class="box meaning"><p>כל מה שלומדים כאן עובד גם בעבודה. אותם Columns, Rows ו-Marks, אותם חישובים ואותם סוגי גרפים. ההבדל הוא איפה הנתונים נמצאים, מי רואה אותם ומי משלם. מה שנלמד ב-Tableau Public תופס גם ב-Tableau Cloud.</p></div>
+<div class="box real"><p>דרך פשוטה לזכור: Tableau Public הוא כמו יוטיוב, כל העולם רואה. Tableau Cloud הוא כמו תיקייה ארגונית, ורואה רק מי שקיבל הרשאה. בארגונים משלמים על רישיון לפי תפקיד: מי שבונה, מי שעורך ומי שרק צופה.</p></div>
+
+<div class="quiz" data-id="m1-q-pub" data-a="3"><p class="qq">איזו תוכנה יכולה לפרסם ויז ל-Tableau Public?</p>
+<button class="opt">רק Public Edition</button>
+<button class="opt">Free Edition ו-Public Edition, אבל לא Professional</button>
+<button class="opt">Public Edition ו-Professional, אבל לא Free Edition</button>
+<button class="opt">כל שלוש</button>
+<div class="why">התשובה השלישית. Free Edition עובדת מקומית בלבד ולא מפרסמת. Professional יכולה לפרסם ל-Tableau Public וגם ל-Cloud ול-Server. Public Edition מפרסמת רק ל-Tableau Public.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לשאול בכיתה מי כבר מכיר Tableau מהעבודה, ובאיזו מהדורה. להדגיש שהכפתור הירוק של Free Edition הוא הטעות השכיחה. לפני השיעור לבדוק בדף ההשוואה הרשמי שהטבלה עדיין נכונה. תאריך ההשקה של Free Edition לא אומת רשמית, ולכן הוא לא מופיע בדף.</div>
+</section>
+
+<section class="sec" id="m1-3" data-t="מה מורידים">
+<div class="sec-h"><div class="sec-n">3</div><h2>איזה קובץ מורידים, ולמי הוא מתאים</h2></div>
+<p class="lead">סטודנט אחד מוריד את הקובץ הלא נכון, והשני מגלה בשיעור שהמחשב שלו בכלל לא נתמך. כדאי לבדוק את זה עכשיו, לפני שמורידים קובץ של כמעט גיגה.</p>
+
+<h3>מה המחשב צריך</h3>
+<ul>
+<li><b>Windows:</b> Windows 10 (64 סיביות) או Windows 11.</li>
+<li><b>Mac:</b> macOS Ventura (גרסה 13) או חדשה יותר, עם מעבד Intel או עם שבב Apple silicon (M1 ומעלה).</li>
+<li>חיבור לאינטרנט, והרשאת מנהל (<span class="n">Administrator</span>) להתקנה. במחשב עבודה נעול ייתכן שההתקנה תיחסם.</li>
+<li>זיכרון ומקום: הרשימה הרשמית מציינת 2GB זיכרון ב-Windows ו-4GB ב-Mac. לעבודה נוחה אני ממליץ על 8GB זיכרון ועל כ-5GB מקום פנוי בדיסק. זו המלצה שלי ולא דרישה רשמית.</li>
+<li><b>אין גרסה</b> ל-Linux, ל-ChromeOS (Chromebook), לטלפון או לטאבלט. מי שיש לו רק אלה עובד ב-web authoring, במחשב נייד או נייח.</li>
+<li>ברשימה הרשמית מופיע רק Windows רגיל של 64 סיביות (x64). אם יש לכם מחשב Windows עם מעבד ARM, ההתקנה עלולה לא לעבוד, ובמקרה כזה עוברים ל-web authoring. עדיף לגלות את זה מוקדם.</li>
+<li>הקובץ גדול: בערך 0.6 עד 0.9GB (נכון לאוקטובר 2026). מורידים מראש, לא ברשת צפופה בכיתה.</li>
+</ul>
+
+<div class="sim" data-id="m1-sim-download"><div class="sh">איזו הורדה מתאימה לי?</div>
+<p>ענו על השאלות, ובסוף תקבלו את שם הקישור שצריך ללחוץ עליו בדף ההורדה.</p>
+<div class="m1-qtxt">1. איזו מערכת יש לכם?</div>
+<div class="m1-opts" data-g="os"><button type="button" class="m1-opt" data-k="win">Windows 10 או 11</button><button type="button" class="m1-opt" data-k="mac">Mac</button><button type="button" class="m1-opt" data-k="lin">Linux או Chromebook</button><button type="button" class="m1-opt" data-k="mob">טלפון או טאבלט</button></div>
+<div data-g-wrap="chip" hidden><div class="m1-qtxt">2. תפריט Apple ואז <code>About This Mac</code>. מה כתוב שם?</div>
+<div class="m1-opts" data-g="chip"><button type="button" class="m1-opt" data-k="apple">Chip ואז Apple M1, M2 או חדש יותר</button><button type="button" class="m1-opt" data-k="intel">Processor ואז Intel Core</button><button type="button" class="m1-opt" data-k="unk">עוד לא בדקתי</button></div>
+<div class="m1-qtxt">3. איזו גרסת macOS?</div>
+<div class="m1-opts" data-g="ver"><button type="button" class="m1-opt" data-k="new">macOS 13 (Ventura) או חדשה יותר</button><button type="button" class="m1-opt" data-k="old">ישנה מ-13</button></div></div>
+<div class="m1-fb"></div></div>
+<script>(function(){ FL.dom(function(){
+var box = FL.$('[data-id="m1-sim-download"]'); if (!box) return;
+var st = {os:null, chip:null, ver:null}, shown = {};
+var fb = FL.$('.m1-fb', box), wrap = FL.$('[data-g-wrap="chip"]', box);
+function out(){
+  var r = null;
+  if (st.os === 'win') r = ['ok', 'בדף ההורדה, אחרי הטופס, לחצו על הקישור <b>Windows</b>. תקבלו קובץ exe. הריצו אותו עם הרשאת מנהל.'];
+  else if (st.os === 'lin') r = ['info', 'אין התקנה למערכת הזו. עובדים ב-<b>web authoring</b>: נכנסים ל-public.tableau.com, מתחברים ובתפריט <code>Create</code> בוחרים <code>Web Authoring</code>.'];
+  else if (st.os === 'mob') r = ['info', 'אי אפשר ליצור ויזים בטלפון או בטאבלט, גם לא ב-web authoring. צפייה בוויזים אפשרית. ליצירה צריך מחשב נייד או נייח.'];
+  else if (st.os === 'mac' && st.ver === 'old') r = ['bad', 'גרסה ישנה מ-macOS 13 לא ברשימה הנתמכת. עדכנו את המערכת, ואם אי אפשר, עברו ל-web authoring.'];
+  else if (st.os === 'mac' && st.chip && st.ver){
+    if (st.chip === 'apple') r = ['ok', 'לחצו על הקישור <b>Mac (Apple Silicon)</b>. תקבלו קובץ dmg, ובתוכו קובץ pkg שמריצים בלחיצה כפולה.'];
+    else if (st.chip === 'intel') r = ['ok', 'לחצו על הקישור <b>Mac (Intel)</b>. תקבלו קובץ dmg, ובתוכו קובץ pkg שמריצים בלחיצה כפולה.'];
+    else r = ['info', 'קודם בדקו: תפריט Apple בפינה השמאלית העליונה, ואז About This Mac. &quot;Chip Apple M...&quot; פירושו Apple Silicon. &quot;Processor Intel Core&quot; פירושו Intel.'];
+  }
+  if (!r){ fb.innerHTML = ''; return; }
+  fb.innerHTML = r[1];
+  shown[st.os + (st.chip||'') + (st.ver||'')] = 1;
+  if (Object.keys(shown).length >= 2) FL.done('m1-sim-download');
+}
+box.addEventListener('click', function(e){
+  var b = e.target.closest('.m1-opt'); if (!b) return;
+  var g = b.parentNode.dataset.g; st[g] = b.dataset.k;
+  Array.prototype.forEach.call(b.parentNode.children, function(c){ c.classList.toggle('sel', c === b); });
+  if (g === 'os'){ wrap.hidden = st.os !== 'mac'; if (st.os !== 'mac'){ st.chip = null; st.ver = null; } }
+  out();
+});
+}); })();</script>
+
+<h3>איך מגיעים להורדה</h3>
+<p>נכנסים לאתר <a class="tool" href="https://public.tableau.com/app/discover" target="_blank" rel="noopener">public.tableau.com</a>, ובסרגל העליון לוחצים על <code>Create</code>. נפתחת רשימה קצרה. מה שמחפשים הוא <code>Tableau Desktop Public Edition</code>. בצילום שלמטה, הרשימה מציגה שתי אפשרויות. בגרסה העדכנית של האתר יש גם אפשרות שלישית, <code>Published Data Sources</code> עם תווית BETA, ושם הפריט הנכון עשוי להיות כתוב בלי המילה Download. בגרסה שלכם ייתכן שהשם שונה מעט, אבל המילים Desktop Public Edition יופיעו בו.</p>
+<figure class="shot" style="max-width:460px;margin-inline:auto"><img src="img/create-menu.png" alt="התפריט Create באתר Tableau Public עם הפריטים Web Authoring ו-Download Tableau Desktop Public Edition"><figcaption>התפריט <code>Create</code> באתר public.tableau.com. הפריט השני מוביל להורדה של Public Edition. הצילום ישן מעט, ולכן ייתכן שיופיעו אצלכם פריטים נוספים.</figcaption></figure>
+<p>הלחיצה על הפריט מובילה לדף של tableau.com עם טופס קצר. אפשר גם להגיע ישר: <a class="tool" href="https://www.tableau.com/products/public/download" target="_blank" rel="noopener">tableau.com/products/public/download</a>. בטופס מלאים שם פרטי ושם משפחה, תפקיד (<code>Job role</code>, בחרו <code>Student</code> אם זה מתאים), מדינה (<code>Country/region</code>) ומייל. תיבת הסימון על הודעות שיווקיות: אני ממליץ להשאיר אותה ריקה. לוחצים על הכפתור <code>Download the app</code>. מי שכבר רשום יכול ללחוץ על <code>Sign in</code> במקום למלא.</p>
+<figure class="shot" style="max-width:460px;margin-inline:auto"><img src="img/download-form.png" alt="טופס ההורדה של Tableau Public עם שדות שם, מייל, תפקיד, מדינה והכפתור Download the app"><figcaption>טופס ההורדה. הערכים בצילום הם לדוגמה בלבד, ואצלכם יופיעו הפרטים שלכם. הכותרת בדף משתנה מדי פעם, והכפתור <code>Download the app</code> הוא מה שצריך לחפש.</figcaption></figure>
+<p>אחרי השליחה נפתח דף תודה עם שלושה קישורים: <b>Windows</b>, <b>Mac (Intel)</b> ו-<b>Mac (Apple Silicon)</b>. זה המקום שבו המחשב שלכם קובע איזה קישור ללחוץ עליו, וההדמיה שלמעלה עזרה לכם להחליט. ההורדה אמורה להתחיל לבד, ואם לא, לוחצים על הקישור.</p>
+
+<div class="box try" data-id="m1-try-which-download">
+<p><b>תרגיל: מוצאים את ההורדה הנכונה (בלי להוריד עדיין)</b></p>
+<ol>
+<li>פתחו דפדפן במחשב ולא בטלפון, והיכנסו ל-<span class="n">public.tableau.com</span>. <i>למה:</i> בצג של טלפון תפריט Create מציג פחות אפשרויות, וייתכן שפריט ההורדה לא יופיע בכלל.</li>
+<li>לחצו על <code>Create</code> בסרגל העליון וקראו את האפשרויות. <i>למה:</i> כאן רואים את ההבדל בין עריכה בדפדפן, הורדת תוכנה ומקורות נתונים מפורסמים.</li>
+<li>לחצו על הפריט <code>Tableau Desktop Public Edition</code>. <i>למה:</i> זה הפריט שמוביל לתוכנה שהקורס בנוי עליה.</li>
+<li>בדף שנפתח, מצאו את הטופס ואת הכפתור <code>Download the app</code>. עדיין אל תמלאו. <i>למה:</i> קודם פותחים חשבון, בחלק הבא.</li>
+<li>בכרטיסייה אחרת פתחו את <span class="n">tableau.com/pricing</span> ומצאו את הכפתור הירוק של ההורדה החינמית. אל תלחצו עליו. <i>למה:</i> כדי לזהות אותו בעתיד: הוא מוביל ל-Free Edition.</li>
+<li>אם יש לכם Mac: תפריט Apple ואז <code>About This Mac</code>, וכתבו לעצמכם אם כתוב Chip או Processor. <i>למה:</i> זה קובע בין שני קישורי ה-Mac.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> אתם רואים בטופס את הכפתור <code>Download the app</code>, ואתם יכולים לומר בלי להסתכל: &quot;אני מוריד את Windows&quot;, או &quot;את Mac (Apple Silicon)&quot;, או &quot;את Mac (Intel)&quot;. הכפתור הירוק של הדף ששמו pricing אינו זה שאתם מחפשים.</p>
+</div>
+
+<div class="box think" data-id="m1-th-free"><p>חבר הוריד את התוכנה מהכפתור הירוק בדף המחירים. הוא אומר: &quot;זה אותו Tableau, והכול חינם, אז מה אכפת&quot;. מה תענו לו, ואיזה שלב בקורס הזה ייתקע אצלו?</p>
+<div class="ans">Free Edition אכן חינמית ועובדת מקומית, ואפילו עם יותר מקורות נתונים. אבל אי אפשר לשמור ממנה ל-Tableau Public. בקורס אנחנו מפרסמים ויזים, מקבלים קישור ומטמיעים אותו בדף שלנו, ולכן הוא ייתקע בשלב הפרסום. הפתרון הוא להתקין את Public Edition מהאתר public.tableau.com.</div></div>
+
+<div class="box real"><p>במקומות עבודה, מי שמתקין את Tableau הוא בדרך כלל מחלקת IT, לפי הרישיון של הארגון. את Public Edition אסור להפעיל לעבודה מסחרית. אז מה שהתקנתם בבית משמש ללימוד ולתיק עבודות, ולא לנתוני החברה.</p></div>
+
+<div class="quiz" data-id="m1-q-chip" data-a="1"><p class="qq">ב-About This Mac כתוב Chip ואחריו Apple M2. איזה קישור לוחצים בדף ההורדה?</p>
+<button class="opt">Mac (Apple Silicon)</button>
+<button class="opt">Mac (Intel), כי זה ה-Mac הרגיל</button>
+<button class="opt">Windows, כי הקובץ הזה עובד על הכול</button>
+<div class="why">התשובה הראשונה. Chip מסוג Apple M פירושו Apple Silicon. Intel הוא ל-Mac ישנים יותר, ושם כתוב Processor Intel Core. קובץ Windows לא רץ על Mac.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לבקש מהכיתה לכתוב בצ׳אט &quot;Windows&quot;, &quot;Apple Silicon&quot; או &quot;Intel&quot;. למי שיש ARM של Windows או מחשב נעול: לתת מיד את הדרך של web authoring. לבדוק לפני השיעור שהפריט ב-Create עדיין נקרא Tableau Desktop Public Edition ושהטופס לא השתנה. לא אומת: האם ההורדה מתחילה אוטומטית לאחר שליחת הטופס ואם תיבת השיווק מסומנת מראש.</div>
+</section>
+
+<section class="sec" id="m1-4" data-t="חשבון והתקנה">
+<div class="sec-h"><div class="sec-n">4</div><h2>חשבון, התקנה והפעלה ראשונה</h2></div>
+<p class="lead">קודם פותחים חשבון, ואחר כך מתקינים. בלי חשבון אי אפשר לפרסם, ומייל ההפעלה אוהב להתחבא בספאם.</p>
+
+<h3>חשבון Tableau Public</h3>
+<p>החשבון חינמי, והוא משותף לאתר tableau.com ולאתר Tableau Public. מי שכבר יש לו חשבון ב-tableau.com, כנראה יכול להשתמש בו. החשבון נדרש כדי לפרסם ויזים ולעבוד ב-web authoring. להורדה עצמה מספיק למלא את הטופס, אבל נוח לפתוח חשבון עכשיו.</p>
+<div class="box try" data-id="m1-try-account">
+<p><b>תרגיל: פותחים חשבון ומפעילים אותו</b></p>
+<ol>
+<li>היכנסו ל-<span class="n">public.tableau.com</span> ולחצו <code>Sign Up</code> בפינה העליונה. <i>למה:</i> כל פעולה של פרסום דורשת חשבון.</li>
+<li>מלאו שם, מייל וסיסמה. השתמשו במייל שאתם בודקים באמת, ובסיסמה שאין לכם בשירות אחר. <i>למה:</i> מייל ההפעלה נשלח אליו.</li>
+<li>פתחו את המייל שהגיע מ-Tableau, ולחצו על קישור ההפעלה. אם אין מייל, בדקו בספאם ובלשונית ההודעות הפרסומיות. <i>למה:</i> הקישור תקף לאורך 48 שעות. אחרי כן אפשר לבקש מחדש דרך <code>Forgot password</code>.</li>
+<li>חזרו לאתר ולחצו <code>Sign In</code>. היכנסו עם המייל והסיסמה. <i>למה:</i> כך אתם מוודאים שהחשבון פעיל לפני שצריך אותו בפרסום.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> ההתחברות מצליחה, ואתם מגיעים לאזור שלכם באתר, כולל הפרופיל. אם האתר מבקש שוב ושוב להתחבר, קראו את המלכודת שמתחת.</p>
+</div>
+<div class="box trap"><p><b>האתר מבקש התחברות כל הזמן.</b> לפי התיעוד של Tableau Public, מי שלא אישר עוגיות פונקציונליות (<span class="n">functional cookies</span>) יתבקש להתחבר לעתים קרובות. אם זה קורה, פתחו את הגדרות העוגיות של האתר ואשרו את הפונקציונליות. ייתכן שזה קשור גם למקרים של &quot;חלון לבן&quot; בזמן הפרסום, שנראה בהמשך המודול.</p></div>
+
+<h3>התקנה</h3>
+<p>אחרי שההורדה הסתיימה:</p>
+<div class="cols2">
+<div class="card"><h4>Windows</h4><ol>
+<li>הריצו את קובץ ה-exe. ההתקנה דורשת הרשאת מנהל.</li>
+<li>במסך <code>Welcome</code> ודאו שכתוב Tableau Desktop <b>Public Edition</b>, וסמנו שאתם מסכימים לתנאי הרישיון.</li>
+<li>אם תרצו, סמנו <code>Don't send product usage data</code>.</li>
+<li>לחצו <code>Install</code>.</li>
+</ol><p style="font-size:.9rem">אם Windows מציג אזהרה כחולה על קובץ שהורד, ואתם בטוחים שהוא ירד מהדף הרשמי, אפשר להמשיך דרך <code>More info</code>.</p></div>
+<div class="card"><h4>Mac</h4><ol>
+<li>פתחו את קובץ ה-dmg שירד.</li>
+<li>לחצו פעמיים על קובץ ה-pkg שבתוכו, והמשיכו עם <code>Continue</code> עד <code>Install</code>. תתבקשו להקליד את סיסמת המחשב.</li>
+<li>אם ה-Mac חוסם את הקובץ: <code>System Settings</code>, אחר כך <code>Privacy &amp; Security</code>, גללו למטה ולחצו <code>Open Anyway</code>.</li>
+<li>פתחו את התוכנה מרשימת היישומים.</li>
+</ol></div>
+</div>
+<p>אפשר להתקין רק גרסה אחת של Public Edition בכל פעם. כדי לעדכן מתקינים את הגרסה החדשה, ואם ההתקנה מתלוננת, מסירים קודם את הישנה.</p>
+
+<div class="box try" data-id="m1-try-install">
+<p><b>תרגיל: מתקינים ופותחים בפעם הראשונה</b></p>
+<ol>
+<li>התקינו לפי הכרטיס של המערכת שלכם. <i>למה:</i> התקנה רגילה, בלי צעדים מיוחדים, מספיקה.</li>
+<li>הפעילו את התוכנה. אם התבקשתם להתחבר, התחברו עם החשבון שפתחתם. אם לא התבקשתם, זה בסדר: ההתחברות תידרש בפרסום. <i>למה:</i> לא בכל גרסה מופיעה בקשה כבר בפתיחה.</li>
+<li>המתינו שייפתח מסך הפתיחה (<code>Start page</code>). <i>למה:</i> זה מסך שמראה שהתוכנה אכן עובדת.</li>
+<li>בצד שמאל מצאו את האזור <code>Connect</code> ובתוכו את הרשימה <code>To a File</code>. <i>למה:</i> משם מחברים קובץ נתונים, מהרגע הבא.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> מסך הפתיחה פתוח, ובאזור <code>Connect</code> מופיעים, תחת <code>To a File</code>: <code>Microsoft Excel</code>, <code>Text file</code>, <code>JSON file</code>, <code>PDF file</code>, <code>Spatial file</code> ו-<code>Statistical file</code>. תחת <code>To a Server</code> מופיעים <code>OData</code> ו-<code>More...</code>. ייתכן שיהיו אצלכם אזורים נוספים או סדר שונה, והחשוב הוא שהרשימה של הקבצים נמצאת שם.</p>
+</div>
+
+<p>והנה מה שעשוי להשתבש בהתקנה, ומה עושים:</p>
+<div class="tw"><table class="tbl m1-cmp">
+<thead><tr><th>מה קורה</th><th>הסיבה</th><th>מה עושים</th></tr></thead>
+<tbody>
+<tr><td>Mac: ההודעה &quot;Verifying&quot; לא נגמרת</td><td>בדיקת האבטחה של macOS</td><td>בחרו את קובץ ה-pkg ופתחו אותו בלחיצה ימנית (או Control ולחיצה) עם <code>Open</code>. בגרסאות macOS חדשות עדיף <code>Open Anyway</code> דרך Privacy &amp; Security</td></tr>
+<tr><td>Mac: &quot;cannot be opened because the developer cannot be verified&quot;</td><td>macOS חוסם תוכנה שהורדה</td><td>נסו לפתוח פעם אחת, ואז <code>System Settings</code>, <code>Privacy &amp; Security</code>, <code>Open Anyway</code></td></tr>
+<tr><td>Windows: ההתקנה מבקשת הרשאה או נעצרת בשגיאת הרשאות</td><td>נדרשת הרשאת מנהל</td><td>היכנסו כמנהל, או בקשו מ-IT. במחשב נעול, עברו ל-web authoring</td></tr>
+<tr><td>ההורדה נכשלת, מפות ריקות או הפרסום נכשל</td><td>חומת אש או שרת proxy של הרשת</td><td>נסו רשת אחרת, למשל נקודה חמה מהטלפון. התקשורת עוברת בפורטים 80 ו-443</td></tr>
+<tr><td>לא הגיע מייל הפעלה</td><td>ספאם, או שגיאת הקלדה במייל</td><td>בדקו ספאם, ובקשו שוב דרך <code>Forgot password</code></td></tr>
+<tr><td>הורדתם Mac (Intel) ויש לכם Apple Silicon, או להפך</td><td>בחירה שגויה בדף ההורדה</td><td>About This Mac, ובחרו מחדש את הקישור הנכון</td></tr>
+</tbody></table></div>
+
+<h3>הממשק באנגלית, והנתונים בכל שפה</h3>
+<p>Tableau Public מגיעה בכמה שפות, אבל עברית אינה ביניהן. גם אם המחשב שלכם בעברית, התפריטים והשדות יהיו באנגלית. לכן בקורס אני כותב כל שם של תפריט או מדף באנגלית, בתוך <code>קוד</code>, ולידו הסבר בעברית. הנתונים עצמם יכולים להיות בכל שפה, כולל עברית, כי התוכנה תומכת ב-Unicode.</p>
+
+<div class="box trap"><p><b>גרסה חדשה ויזים ישנים.</b> קובץ שנשמר בגרסה חדשה של Tableau לא ייפתח בגרסה ישנה יותר. מקבלים הודעה שהקובץ נוצר בגרסה חדשה, והפתרון הוא לעדכן את ההתקנה. לכן בקורס מחליפים קישורים של ויזים מפורסמים, ולא קבצים, ושומרים את אותה גרסה לאורך הקורס. מספר הגרסה מתעדכן כמה פעמים בשנה. את מספר הגרסה שלכם אפשר למצוא בתפריט <code>Help</code>, ב-<code>About</code> (בגרסה שלכם ייתכן שהשם שונה מעט).</p></div>
+
+<div class="box meaning"><p>החשבון אינו מנגנון כניסה לתוכנה. הוא המפתח לפרסום. אפשר לעבוד שעות עם הנתונים שלכם בתוכנה ובלי חשבון פעיל, ולשמור הכול במחשב. רק כשרוצים להעלות לאתר, התוכנה מבקשת להתחבר.</p></div>
+<div class="box real"><p>מי שעובד בצוות עם Tableau בודק תמיד שלכולם אותה גרסה. קובץ ששמרה אחת הקולגות בגרסה חדשה לא ייפתח אצל מי שלא עדכן. זו אחת הסיבות שצוותים מתאמים עדכונים.</p></div>
+
+<div class="box think" data-id="m1-th-install-early"><p>למה כדאי להוריד, להתקין ולהפעיל את החשבון יום לפני השיעור, ולא בתחילת השיעור? תנו שתי סיבות.</p>
+<div class="ans">הקובץ גדול (בערך חצי עד כמעט גיגה), ואם הרבה אנשים מורידים ברשת אחת, היא מאטה. ובנוסף, כל אחד מהצעדים עלול להיתקע: חסימת אבטחה, הרשאות, או מייל הפעלה שלא הגיע. מי שמגלה את זה יום קודם מספיק לתקן, ומי שמגלה בשיעור מפספס את החלק המעשי.</div></div>
+
+<div class="quiz" data-id="m1-q-install" data-a="3"><p class="qq">ההתקנה ב-Windows נעצרת בשגיאת הרשאות. מה הצעד הנכון?</p>
+<button class="opt">להוריד את Free Edition, כי היא לא דורשת התקנה</button>
+<button class="opt">להתעלם מהשגיאה ולהפעיל את הקובץ מהתיקייה</button>
+<button class="opt">להיכנס כמנהל או לבקש מ-IT. אם אי אפשר להתקין, לעבוד ב-web authoring בדפדפן</button>
+<div class="why">התשובה השלישית. ההתקנה דורשת הרשאת מנהל, ובמחשב נעול יש דרך ללא התקנה: web authoring. Free Edition גם היא דורשת התקנה, וגם לא מתאימה לקורס. התעלמות מהשגיאה לא תעזור: ההתקנה לא הושלמה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לא אומת בתוכנה: האם מופיעה בקשת התחברות בהפעלה הראשונה, ומה בדיוק רואים במסך הפתיחה (אזורי Open ו-Discover, והאם יש דוגמאות מובנות ו-Sample Workbooks). לבדוק על התקנה נקייה לפני השיעור. גם לא אומת: ההתנהגות של Control ולחיצה על קובץ ה-pkg ב-macOS חדש (Open Anyway מתועד על ידי Apple), והאזהרה הכחולה של Windows עבור Tableau בפרט. לא אומת: מחשבי Windows עם מעבד ARM. לתכנן שני מחשבי גיבוי בכיתה.</div>
+</section>
+
+<section class="sec" id="m1-5" data-t="מסך הפתיחה">
+<div class="sec-h"><div class="sec-n">5</div><h2>מסך הפתיחה, הגיליון ותפריט File</h2></div>
+<p class="lead">עוד לפני שבונים משהו, כדאי לדעת איפה נמצא כל דבר. אין כאן מה לשנן: רק לזהות שלושה מקומות, ואז לחזור אליהם בהמשך.</p>
+
+<h3>מסך הפתיחה</h3>
+<div class="defline"><b>מסך הפתיחה (Start page):</b> המסך שנפתח כשמפעילים את Tableau ועדיין אין חוברת עבודה פתוחה. משם מחברים קובץ או פותחים עבודה קיימת. דוגמה: ברשימה שמאלית מופיעים סוגי הקבצים שאפשר לחבר.</div>
+<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span class="url">הדמיה סכמטית של מסך הפתיחה. אצלכם העיצוב עשוי להיות שונה</span></div>
+<div class="mk-body" style="padding:0"><div class="m1-start">
+<div class="m1-st-c"><h5><span class="m1-no-n">1</span>Connect</h5><small>To a File</small><div>Microsoft Excel</div><div>Text file</div><div>JSON file</div><div>PDF file</div><div>Spatial file</div><div>Statistical file</div><small>To a Server</small><div>OData</div><div>More...</div></div>
+<div class="m1-st-o"><h5><span class="m1-no-n">2</span>Open</h5><div style="color:#2a6ba8">Open a Workbook</div><div style="margin-top:10px;color:#888">חוברות עבודה אחרונות יופיעו כאן. בפעם הראשונה האזור ריק.</div></div>
+<div class="m1-st-d"><h5><span class="m1-no-n">3</span>Discover</h5><span class="t"></span><span class="t"></span><span class="t"></span><span class="t"></span><div style="color:#888;margin-top:6px;direction:rtl;text-align:right">ויזים ציבוריים לדוגמה מ-Tableau Public</div></div>
+</div></div></div>
+<ol class="callouts"><li><code>Connect</code>: מחברים קובץ נתונים. כל מה שמופיע תחת <code>To a File</code> הוא קובץ במחשב, ותחת <code>To a Server</code> מקורות מרחוק. ב-Tableau Public הרשימה מוגבלת, וסעיף 10 מסביר למה.</li><li><code>Open</code>: חוברות עבודה שפתחתם לאחרונה, והקישור לפתיחת חוברת שמורה.</li><li><code>Discover</code>: דוגמאות מוכנות מהאתר, כדי לקבל השראה.</li></ol>
+<p>זו תבנית, ולא צילום מדויק. הנה הצילום האמיתי של האזור השמאלי, מהתוכנה עצמה:</p>
+<figure class="shot" style="max-width:380px;margin-inline:auto"><img src="img/connect-pane.png" alt="האזור Connect במסך הפתיחה של Tableau Public ובו רשימת סוגי הקבצים"><figcaption>האזור <code>Connect</code> בתוכנה. שימו לב: אין כאן מסדי נתונים כמו SQL Server. את המגבלה הזו נבין בסעיף 10.</figcaption></figure>
+
+<h3>הגיליון, והמקום שבו בונים</h3>
+<p>אחרי שמחברים קובץ, Tableau פותח קודם את דף הנתונים, ובו אתם מסתכלים על הטבלה. כדי לצייר עוברים ללשונית הגיליון.</p>
+<div class="defline"><b>חוברת עבודה (workbook) וגיליון (sheet):</b> חוברת עבודה היא קובץ Tableau אחד. בתוכה יש גיליונות, ובכל גיליון גרף אחד, וגם דשבורדים וסיפורים. דוגמה: בחוברת שתבנו היום יהיה גיליון אחד בשם <code>Sheet 1</code> עם גרף עמודות.</div>
+
+<figure class="shot"><img src="img/worksheet-annotated.png" alt="הגיליון הריק של Tableau Public עם שמונה אזורים ממוספרים"><figcaption>גיליון ריק, ושמונה האזורים שחשוב להכיר. הצילום ממחשב Mac, ומנתוני vgsales (מכירות משחקי וידאו) כדי להראות מבנה בלבד. אצלכם יופיעו שדות של Scoop &amp; Go.</figcaption></figure>
+<ol class="callouts">
+<li><code>Data pane</code> (חלונית הנתונים): רשימת כל השדות בקובץ. שדות הטקסט והתאריכים נמצאים למעלה (סמל <span class="n">Abc</span>), והמספרים מתחת לקו הדק (סמל <span class="n">#</span>).</li>
+<li><code>Columns</code>: מה מונח על הציר האופקי.</li>
+<li><code>Rows</code>: מה מונח על הציר האנכי.</li>
+<li><code>Marks</code>: הכרטיס שקובע איך הסימנים נראים: צבע, גודל, תווית, פירוט ו-Tooltip.</li>
+<li><code>Filters</code>: המקום שבו מסננים החוצה שורות.</li>
+<li><code>Show Me</code>: כפתור שמציע סוגי גרפים לפי השדות שבחרתם.</li>
+<li>לשוניות הגיליונות למטה: <code>Data Source</code> (הטבלה) ו-<code>Sheet 1</code> (הגיליון).</li>
+<li>אזור הציור: כאן מצטייר הגרף.</li>
+</ol>
+<p>המודולים 3 עד 5 יסבירו את כל זה לעומק. כרגע מספיק שאתם יודעים לפנות אל האזור הנכון.</p>
+
+<div class="sim" data-id="m1-sim-hotspots"><div class="sh">איפה זה נמצא?</div>
+<p>זה גיליון אמיתי בלי סימונים. לחצו על האזור שמבקשים, ותקבלו משוב מיד.</p>
+<div class="m1-qtxt"></div>
+<div class="m1-hsw"><img src="img/worksheet-full.png" alt="גיליון ריק של Tableau Public לשימוש בהדמיה"></div>
+<div class="m1-fb"></div><div class="row"><span class="m1-score"></span></div></div>
+<script>(function(){ FL.dom(function(){
+var box = FL.$('[data-id="m1-sim-hotspots"]'); if (!box) return;
+var W = FL.$('.m1-hsw', box), q = FL.$('.m1-qtxt', box), fb = FL.$('.m1-fb', box), sc = FL.$('.m1-score', box);
+/* אחוזים מתוך תמונה בגודל 1100 על 627 */
+var Z = [
+ ['canvas','אזור הציור', 27.5,26.3,70.9,65.9],
+ ['data','Data pane', 0.4,9.3,13.0,84.0],
+ ['cols','Columns', 23.8,8.8,75.1,3.8],
+ ['rows','Rows', 23.8,12.8,75.1,3.8],
+ ['filters','Filters', 13.8,16.0,9.5,8.8],
+ ['marks','Marks', 13.8,25.5,9.5,22.3],
+ ['showme','Show Me', 92.7,4.8,6.5,3.8],
+ ['tabs','לשוניות הגיליונות', 0.4,94.0,17.7,3.6]
+];
+var ORDER = ['marks','cols','data','showme','rows','tabs','filters','canvas'];
+var NAME = {}; Z.forEach(function(z){ NAME[z[0]] = z[1]; });
+Z.forEach(function(z){ var d = document.createElement('div'); d.className = 'm1-hs'; d.dataset.k = z[0]; d.style.cssText = 'left:'+z[2]+'%;top:'+z[3]+'%;width:'+z[4]+'%;height:'+z[5]+'%'; W.appendChild(d); });
+var i = 0, tries = 0, got = 0;
+function ask(){ q.textContent = (i+1) + '. איפה נמצא: ' + NAME[ORDER[i]] + '?'; sc.textContent = 'נמצאו ' + got + ' מתוך ' + ORDER.length + ', ניסיונות: ' + tries; }
+W.addEventListener('click', function(e){
+  var h = e.target.closest('.m1-hs'); if (!h || i >= ORDER.length) return;
+  tries++; var want = ORDER[i];
+  if (h.dataset.k === want){
+    h.classList.add('ok'); got++; i++; fb.innerHTML = '<b>נכון.</b>';
+    if (i >= ORDER.length){ q.textContent = 'סיימתם.'; fb.innerHTML = '<b>סיימתם: ' + ORDER.length + ' אזורים, ב-' + tries + ' ניסיונות.</b>'; FL.done('m1-sim-hotspots'); }
+    else ask();
+  } else {
+    h.classList.add('bad'); setTimeout(function(){ h.classList.remove('bad'); }, 700);
+    fb.innerHTML = 'זה ' + FL.esc(NAME[h.dataset.k]) + '. נסו שוב.';
+  }
+  sc.textContent = 'נמצאו ' + got + ' מתוך ' + ORDER.length + ', ניסיונות: ' + tries;
+});
+ask();
+}); })();</script>
+
+<div class="box trap"><p><b>&quot;אני רואה רק טבלה ואין גרף.&quot;</b> אחרי שמחברים קובץ, Tableau נפתח בדף הנתונים (<code>Data Source</code>), והוא מציג טבלה. הגרף נבנה בלשונית <code>Sheet 1</code> שבתחתית המסך. מי שמחפש את המדפים Columns ו-Rows בדף הנתונים לא ימצא אותם. הכלל: דף הנתונים הוא לבדוק את הנתונים, והגיליון הוא לצייר.</p></div>
+
+<h3>תפריט File: מה נשמר איפה</h3>
+<p>בתפריט File יש שני סוגי שמירה שנראים דומים. אחד שומר במחשב שלכם, והשני שולח את החוברת לאתר ציבורי. ההבדל הוא בשם.</p>
+<figure class="shot" style="max-width:340px;margin-inline:auto"><img src="img/file-menu.png" alt="תפריט File ב-Tableau Public עם הפריטים Save, Save to Tableau Public, Save As, Save to Tableau Public As, Export Packaged Workbook"><figcaption>תפריט <code>File</code> ב-Mac. ב-Windows התפריט דומה, וקיצורי המקשים שונים.</figcaption></figure>
+<div class="tw"><table class="tbl m1-map">
+<thead><tr><th>הפריט</th><th>מה הוא עושה</th><th>איפה זה נשמר</th></tr></thead>
+<tbody>
+<tr><td><code>Save</code>, <code>Save As...</code></td><td>שמירה של החוברת בשם ובמקום שתבחרו</td><td class="m1-yes">במחשב שלכם</td></tr>
+<tr><td><code>Export Packaged Workbook...</code></td><td>יוצר קובץ אחד שכולל גם את הנתונים (twbx)</td><td class="m1-yes">במחשב שלכם</td></tr>
+<tr><td><code>Save to Tableau Public...</code> ו-<code>Save to Tableau Public As...</code></td><td>שולחים את החוברת ואת הנתונים לאתר</td><td class="m1-no">ב-Tableau Public, ציבורי</td></tr>
+<tr><td><code>Open...</code></td><td>פותח חוברת מהמחשב</td><td>-</td></tr>
+<tr><td><code>Open from Tableau Public...</code></td><td>פותח חוברת שפרסמתם באתר</td><td>-</td></tr>
+<tr><td><code>Show Start Page</code></td><td>חוזר למסך הפתיחה</td><td>-</td></tr>
+</tbody></table></div>
+
+<div class="box try" data-id="m1-try-tour">
+<p><b>תרגיל: סיור במסך הפתיחה ובתפריט File</b></p>
+<ol>
+<li>פתחו את Tableau והסתכלו על האזורים של מסך הפתיחה. כתבו לעצמכם שם אחד לכל אזור: <code>Connect</code>, <code>Open</code>, <code>Discover</code>. <i>למה:</i> כדי לדעת מאיפה מתחילים.</li>
+<li>פתחו את התפריט <code>File</code> ומצאו בו: <code>Save As...</code>, <code>Save to Tableau Public As...</code>, <code>Open from Tableau Public...</code> ו-<code>Show Start Page</code>. אל תלחצו על שום פריט של Tableau Public. <i>למה:</i> אין עדיין מה לפרסם, ואתם רוצים לדעת איפה הפריט נמצא לפני שצריך אותו.</li>
+<li>באזור <code>Connect</code> לחצו על <code>More...</code> וקראו את הרשימה. סגרו בלי לבחור. <i>למה:</i> לראות אילו מקורות נתונים Public מציעה.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> מצאתם את ארבעת הפריטים בתפריט, ואתם יכולים לומר אילו מהם שומרים במחשב ואילו שולחים לאתר ציבורי. ברשימה שפתחתם אין מסדי נתונים כמו SQL Server או Oracle. אם שם הפריט אצלכם שונה מעט, חפשו את המילים Save ו-Tableau Public.</p>
+</div>
+
+<div class="box meaning"><p>הסידור של המסך הוא תמונה של הדרך לחשוב: מצד שמאל הנתונים, באמצע מורכבים את הגרף, ובצד אחר מתקנים את המראה. כל ויז ב-Tableau נבנה מאותה פעולה: לוקחים שדה מהחלונית השמאלית, ומניחים אותו על מדף.</p></div>
+<div class="box real"><p>אנליסטים מנוסים עובדים הרבה עם קיצורי מקשים, אבל כולם התחילו בדיוק כאן: לדעת איפה כל אזור. מי שמכיר את הסידור קורא ויז של מישהו אחר ומבין מהר מה הונח על כל ציר.</p></div>
+
+<div class="quiz" data-id="m1-q-sheet" data-a="4"><p class="qq">אתם רוצים לצייר גרף. איפה גוררים את השדות?</p>
+<button class="opt">בדף הנתונים (<code>Data Source</code>), ישר על הטבלה</button>
+<button class="opt">בתפריט <code>File</code>, בפריט Save As</button>
+<button class="opt">בחלונית <code>Connect</code> במסך הפתיחה</button>
+<button class="opt">בלשונית הגיליון (<code>Sheet 1</code>), על המדפים <code>Columns</code> ו-<code>Rows</code></button>
+<div class="why">התשובה האחרונה. דף הנתונים הוא לבדיקת הטבלה, ו-File לשמירה ופתיחה. החלונית Connect משמשת לחבר קובץ. הגרף נבנה בגיליון.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> להראות את המסך בשיתוף, ולבקש מהכיתה לכתוב בצ׳אט שם של אזור אחד. לא אומת: מה בדיוק מופיע במסך הפתיחה של Public Edition (Open, Sample Workbooks, Discover) ומה שמו של הפריט ב-More. הצילומים הם של Mac, ובכיתה יש גם Windows. אם התפריט אצלכם שונה (למשל Server במקום File), לומר זאת בקול. לתרגל פעם אחת את הצפייה בתפריט File בלי ללחוץ על פריטי הפרסום.</div>
+</section>
+
+<section class="sec" id="m1-6" data-t="קריאת ויז">
+<div class="sec-h"><div class="sec-n">6</div><h2>קוראים ויז: סימנים, טולטיפ ומסננים</h2></div>
+<p class="lead">קוראים לפני שבונים. מי שיודע לקרוא ויז של מישהו אחר, יבנה ויז טוב יותר. בואו נראה מה יש בכל ויז, ואז נפתח אחד אמיתי באתר.</p>
+
+<div class="defline"><b>סימן (mark):</b> כל עמודה, נקודה או קו בגרף שמייצג ערך אחד. דוגמה: בגרף של מכירות לפי קטגוריה יש חמש קטגוריות, ולכן חמישה סימנים. בשורת המצב שבתחתית החלון של Tableau מופיע בדרך כלל מספר הסימנים.</div>
+<div class="defline"><b>טולטיפ (tooltip):</b> חלונית קטנה שקופצת כשמצביעים בעכבר על סימן ומראה את הערכים שלו. דוגמה: מצביעים על העמודה Cups, ורואים את הקטגוריה ואת סכום המכירות המדויק שלה.</div>
+<p>וגם מסנן. <dfn data-d="מסנן (filter): כלי שמסתיר חלק מהשורות, כדי שהגרף יראה רק את מה שבחרתם. למשל, רק סניפי אזור המרכז, ואז הסכומים בגרף קטנים יותר.">מסנן (filter)</dfn> הוא הדרך לראות רק חלק מהשורות. נתאמן על שלושתם בעוד רגע. קודם, איך נראה הנתון שמאחורי כל סימן:</p>
+
+<div class="anim" data-id="m1-anim-marks" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 310" role="img" aria-label="הנפשה: חמש שורות מהקובץ מקובצות לפי קטגוריה, מסוכמות, ומצוירות כחמש עמודות עם טולטיפ">
+<defs><marker id="m1am-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<g font-family="Heebo,Arial,sans-serif">
+<g data-s="1">
+<rect x="8" y="14" width="250" height="228" rx="10" fill="#fff" stroke="#cbd5e1"/>
+<text x="30" y="40" font-size="14" font-weight="700" fill="#475569">Category</text><text x="170" y="40" font-size="14" font-weight="700" fill="#475569">Sales</text>
+<line x1="14" y1="48" x2="252" y2="48" stroke="#cbd5e1"/>
+<text x="30" y="72" font-size="15" fill="#1e293b">Cups</text><text x="170" y="72" font-size="15" fill="#1e293b">40.0</text>
+<text x="30" y="100" font-size="15" fill="#1e293b">Cups</text><text x="170" y="100" font-size="15" fill="#1e293b">24.0</text>
+<text x="30" y="128" font-size="15" fill="#1e293b">Drinks</text><text x="170" y="128" font-size="15" fill="#1e293b">26.0</text>
+<text x="30" y="156" font-size="15" fill="#1e293b">Cones</text><text x="170" y="156" font-size="15" fill="#1e293b">16.0</text>
+<text x="30" y="184" font-size="15" fill="#1e293b">Cones</text><text x="170" y="184" font-size="15" fill="#1e293b">26.0</text>
+<text x="133" y="218" text-anchor="middle" font-size="14" fill="#64748b">... ועוד 6,570 שורות</text>
+</g>
+<g data-s="2"><rect x="14" y="58" width="9" height="19" fill="#4e79a7"/><rect x="14" y="86" width="9" height="19" fill="#4e79a7"/><rect x="14" y="114" width="9" height="19" fill="#f28e2b"/><rect x="14" y="142" width="9" height="19" fill="#59a14f"/><rect x="14" y="170" width="9" height="19" fill="#59a14f"/></g>
+<g data-s="3"><path d="M262,130 L290,130" stroke="#64748b" stroke-width="2.5" marker-end="url(#m1am-a)"/>
+<rect x="294" y="14" width="236" height="228" rx="10" fill="#fff" stroke="#cbd5e1"/>
+<text x="412" y="40" text-anchor="middle" font-size="14" font-weight="700" fill="#475569">SUM(Sales), כל 6,575 השורות</text>
+<line x1="300" y1="48" x2="524" y2="48" stroke="#cbd5e1"/>
+<text x="310" y="78" font-size="15" fill="#1e293b">Cups</text><text x="520" y="78" text-anchor="end" font-size="15" font-weight="700" fill="#1e293b">69,470</text>
+<text x="310" y="108" font-size="15" fill="#1e293b">Drinks</text><text x="520" y="108" text-anchor="end" font-size="15" font-weight="700" fill="#1e293b">54,553.3</text>
+<text x="310" y="138" font-size="15" fill="#1e293b">Cones</text><text x="520" y="138" text-anchor="end" font-size="15" font-weight="700" fill="#1e293b">48,317</text>
+<text x="310" y="168" font-size="15" fill="#1e293b">Sundaes</text><text x="520" y="168" text-anchor="end" font-size="15" font-weight="700" fill="#1e293b">47,037.2</text>
+<text x="310" y="198" font-size="15" fill="#1e293b">Sticks</text><text x="520" y="198" text-anchor="end" font-size="15" font-weight="700" fill="#1e293b">17,443.4</text>
+</g>
+<g data-s="4"><path d="M534,130 L562,130" stroke="#64748b" stroke-width="2.5" marker-end="url(#m1am-a)"/>
+<g fill="#4e79a7"><rect x="568" y="62" width="224" height="22"/><rect x="568" y="92" width="176" height="22"/><rect x="568" y="122" width="156" height="22"/><rect x="568" y="152" width="152" height="22"/><rect x="568" y="182" width="56" height="22"/></g>
+<text x="680" y="40" text-anchor="middle" font-size="16" font-weight="800" fill="#065f46">Marks: 5</text></g>
+<g data-s="5" data-pulse><rect x="470" y="236" width="318" height="62" rx="6" fill="#fff" stroke="#9ca3af"/><text x="482" y="260" font-size="15" fill="#1e293b">Category: <tspan font-weight="700">Cups</tspan></text><text x="482" y="284" font-size="15" fill="#1e293b">SUM(Sales): <tspan font-weight="700">69,470</tspan></text><path d="M600,236 L600,214" stroke="#d97706" stroke-width="2.5" marker-end="url(#m1am-a)"/></g>
+</g></svg></div>
+<ol class="caps"><li>הקובץ הוא טבלה של שורות. כאן רואים חמש מתוך 6,575.</li><li>Tableau מקבץ את השורות לפי Category. לכל קבוצה יש צבע.</li><li>לכל קבוצה הוא מחשב סכום של Sales, על כל השורות שלה ולא רק על החמש שמוצגות.</li><li>כל סכום הופך לסימן אחד. חמש קטגוריות, חמישה סימנים.</li><li>כשמצביעים על סימן, הטולטיפ מציג את מה שמאחוריו: הקטגוריה והסכום.</li></ol>
+</div>
+
+<p>עכשיו אתם. זה ויז קטן שנבנה בדפדפן מהנתונים האמיתיים של Scoop &amp; Go. זו הדמיה, ולא Tableau עצמו, אבל ההתנהגות דומה. נסו שלוש פעולות: להצביע על עמודה, ללחוץ על עמודה, ולסנן אזור.</p>
+
+<div class="sim" data-id="m1-sim-read"><div class="sh">קוראים ויז על נתוני Scoop &amp; Go</div>
+<div class="m1-chk" data-r="regions"></div>
+<div class="m1-viz"><div class="vt">Sales by Category</div><div class="m1-rows"></div><div class="mn">Marks: <b class="m1-mc">5</b> · Filter, Region: <span class="m1-fr">All</span></div><div class="tip"></div></div>
+<p style="margin:8px 0 2px"><span class="m1-stp" data-s="hover">1 הצבעה</span><span class="m1-stp" data-s="click">2 לחיצה</span><span class="m1-stp" data-s="filter">3 סינון</span></p>
+<div class="m1-fb">טוען נתונים...</div></div>
+<script>(function(){ FL.dom(function(){
+var box = FL.$('[data-id="m1-sim-read"]'); if (!box) return;
+var REG = FL.$('.m1-chk', box), ROWS = FL.$('.m1-rows', box), TIP = FL.$('.tip', box), FB = FL.$('.m1-fb', box), MC = FL.$('.m1-mc', box), FR = FL.$('.m1-fr', box);
+var used = {hover:0, click:0, filter:0};
+function mark(k){ used[k] = 1; var s = FL.$('.m1-stp[data-s="'+k+'"]', box); if (s) s.classList.add('on'); if (used.hover && used.click && used.filter) FL.done('m1-sim-read'); }
+function fmt(v){ return v.toLocaleString('en-US', {maximumFractionDigits:1}); }
+TF.loadScoop(function(D){
+  var cat = D.cols.Category, reg = D.cols.Region, sales = D.cols.Sales.v, n = D.n;
+  var on = {}; reg.dict.forEach(function(r){ on[r] = true; });
+  var sel = -1;
+  var CAP = {}; cat.dict.forEach(function(c,i){ CAP[i] = c; });
+  var MAX = 0; (function(){ var t = new Array(cat.dict.length).fill(0); for (var i = 0; i < n; i++) t[cat.v[i]] += sales[i]; MAX = Math.max.apply(null, t); })();
+  REG.innerHTML = reg.dict.map(function(r){ return '<label><input type="checkbox" checked data-r="'+FL.esc(r)+'"> '+FL.esc(r)+'</label>'; }).join('');
+  function calc(){
+    var s = new Array(cat.dict.length).fill(0), c = new Array(cat.dict.length).fill(0);
+    for (var i = 0; i < n; i++){ if (!on[reg.dict[reg.v[i]]]) continue; s[cat.v[i]] += sales[i]; c[cat.v[i]]++; }
+    return {s:s, c:c};
+  }
+  function draw(){
+    var r = calc(); var h = '';
+    cat.dict.forEach(function(name, i){
+      h += '<div class="vr" data-i="'+i+'"><span class="vl">'+FL.esc(name)+'</span><div class="vb'+(sel >= 0 && sel !== i ? ' dim' : '')+'" style="width:'+Math.round(100*r.s[i]/MAX*0.7)+'%"></div><span class="vn">'+(r.c[i] ? fmt(r.s[i]) : '')+'</span></div>';
+    });
+    ROWS.innerHTML = h; ROWS._r = r;
+    var offs = reg.dict.filter(function(x){ return !on[x]; });
+    FR.textContent = offs.length ? reg.dict.filter(function(x){ return on[x]; }).join(', ') || 'none' : 'All';
+    if (sel >= 0 && r.c[sel]) FB.innerHTML = 'בחרתם סימן אחד: <b dir="ltr">'+FL.esc(cat.dict[sel])+'</b>. הסכום <b class="n">'+fmt(r.s[sel])+'</b> מחושב מתוך <b class="n">'+r.c[sel].toLocaleString('en-US')+'</b> שורות.';
+    else if (sel >= 0) FB.textContent = 'לסימן שבחרתם אין שורות בסינון הנוכחי.';
+    else FB.innerHTML = 'הצביעו על עמודה, לחצו עליה, או שנו את הסינון. בדיקה: השאירו רק <b>South</b> ולחצו על Cups. אמור להופיע <b class="n">16,648.4</b> מתוך <b class="n">465</b> שורות.';
+  }
+  ROWS.addEventListener('mousemove', function(e){
+    var row = e.target.closest('.vr'); if (!row){ TIP.style.display = 'none'; return; }
+    var i = +row.dataset.i, r = ROWS._r;
+    TIP.innerHTML = 'Category: <b>'+FL.esc(cat.dict[i])+'</b><br>SUM(Sales): <b>'+fmt(r.s[i])+'</b><br><span style="color:#777">Order lines: '+r.c[i].toLocaleString('en-US')+'</span>';
+    TIP.style.display = 'block'; TIP.style.left = (e.clientX + 14) + 'px'; TIP.style.top = (e.clientY + 14) + 'px'; mark('hover');
+  });
+  ROWS.addEventListener('mouseleave', function(){ TIP.style.display = 'none'; });
+  ROWS.addEventListener('click', function(e){
+    var row = e.target.closest('.vr'); if (!row) return; var i = +row.dataset.i;
+    sel = (sel === i) ? -1 : i; mark('click'); draw();
+  });
+  REG.addEventListener('change', function(e){
+    var c = e.target.closest('input'); if (!c) return; on[c.dataset.r] = c.checked; mark('filter'); draw();
+  });
+  draw();
+});
+}); })();</script>
+
+<figure class="shot"><img src="img/dash-example.png" alt="דשבורד לדוגמה עם ארבעה גרפים, וסימונים אפורים של nulls בפינות"><figcaption>דשבורד לדוגמה מנתוני vgsales (מכירות משחקי וידאו). שימו לב לתוויות האפורות בפינות של שלושה מהגרפים, כמו <span class="n">12 nulls</span>.</figcaption></figure>
+<p>התווית האפורה, כמו <span class="n">12 nulls</span>, אומרת: יש שורות שאי אפשר לצייר, כי חסר בהן ערך. בקובץ הזה, שנת ההוצאה של משחקים מסוימים חסרה. Tableau לא מסתיר את זה, והוא מזכיר לכם שנתונים חסרים. נטפל בזה במודול 2.</p>
+
+<h3>חמש שאלות לקריאת ויז</h3>
+<div class="defline"><b>חמש שאלות לפני שמאמינים לגרף:</b> (1) מה השאלה, מה כתוב בכותרת? (2) מה על כל ציר, ובאיזו יחידה? (3) מה מייצג כל סימן, שורה אחת או סכום? (4) אילו מסננים פועלים, וכמה נתונים נשארו? (5) מה לא רואים: ערכים חסרים, טווח תאריכים, הערות? דוגמה: בגרף שלמעלה, (2) הציר האופקי הוא Category והאנכי הוא סכום מכירות, ו-(3) כל סימן הוא סכום של מאות שורות.</div>
+
+<div class="box try" data-id="m1-try-gallery">
+<p><b>תרגיל: מטיילים ב-Discover וקוראים ויז</b></p>
+<ol>
+<li>היכנסו ל-<a class="tool" href="https://public.tableau.com/app/discover" target="_blank" rel="noopener">public.tableau.com/app/discover</a>. <i>למה:</i> זה דף הגילוי של האתר, ובו ויזים של אנשים אחרים.</li>
+<li>בחרו ויז אחד שמעניין אתכם, ופתחו אותו. אל תחפשו את המושלם: כל ויז מתאים. <i>למה:</i> המטרה היא לתרגל קריאה.</li>
+<li>המתינו שייטען, וענו בכתב על חמש השאלות מהמסגרת למעלה: מה הכותרת, מה על הצירים, מה הסימנים, אילו מסננים, מה חסר. <i>למה:</i> קריאה מסודרת מונעת טעויות.</li>
+<li>הצביעו על שלושה סימנים שונים וקראו את הטולטיפ. לחצו על סימן אחד, ואז לחצו ברקע הגרף כדי לבטל את הבחירה. <i>למה:</i> כך רואים את הערכים המדויקים, ואת איך הסימן קשור לשאר.</li>
+<li>אם יש בוויז מסנן או רשימה נפתחת, שנו ערך אחד וראו מה משתנה. <i>למה:</i> ויז אינטראקטיבי מראה תשובות שונות לפי הבחירה.</li>
+<li>הסתכלו בשורת הכלים של הוויז (ייתכן שהיא מעל הוויז או מתחתיו), ומצאו את הכפתורים <code>Share</code> ו-<code>Download</code>. <i>למה:</i> נחזור אליהם בסעיף 8 ובסעיף 9.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> יש לכם בכתב שורה אחת: &quot;הגרף הוא ___, הוא עונה על השאלה ___, והקהל הוא ___&quot;, וגם הצלחתם לעשות שלוש פעולות: להצביע, ללחוץ ולשנות מסנן. נקודה אחת להמשך: כפתור <code>Download</code> קיים בדרך כלל בכל ויז ציבורי.</p>
+<p style="font-size:.9rem"><b>רשות:</b> אפשר ללחוץ על <code>Download</code> ולבחור את סוג הקובץ של חוברת העבודה, ואז לפתוח אותו ב-Tableau דרך <code>File</code> ואז <code>Open...</code>. אם התוכנה מודיעה שהקובץ נוצר בגרסה חדשה יותר, מעדכנים את ההתקנה (ראו הסעיף על גרסאות).</p>
+</div>
+
+<div class="box meaning"><p>הטולטיפ הוא הדרך לראות מה באמת מאחורי סימן. הציר מעוגל ומוגבל, ואילו הטולטיפ מראה את המספר המדויק. כשיש ספק בגרף, מצביעים.</p></div>
+<div class="box trap"><p><b>מספר בלי יחידה.</b> בגרף של vgsales שבדשבורד למעלה, הקו של <span class="n">Total Sales by Year</span> מגיע בשנת 2008 לכ-678.9. אלה מיליוני עותקים, ולא שקלים ולא דולרים. התיעוד של חבילת הנתונים אומר זאת, והגרף לא. לפני שמצטטים מספר, מחפשים את היחידה. בקובץ Scoop &amp; Go אין עמודת מטבע, ולכן כשמסכמים מכירות כותבים תמיד &quot;סכום המכירות בקובץ&quot;.</p></div>
+<div class="box trap"><p><b>המסנן שלא רואים.</b> ויז יכול להיות מסונן בלי שמוצג כפתור סינון. הסכומים שרואים הם של השורות שנשארו, ולא של כל הקובץ. אם מספר נראה קטן, בדקו אם יש מסנן פעיל, בכותרת, בהערות או במסנן שמוצג. לכן שאלה (4) נמצאת ברשימה.</p></div>
+<div class="box real"><p>מנתחי נתונים ועיתונאים קוראים ויז בצורה כזאת בכל פעם שמישהו מראה להם גרף בישיבה. אחת הדרכים להתאמן: Tableau Public בוחרת בדרך כלל ביום חול ויז אחד כ-Viz of the Day, והוא מופיע בדף Discover. כדאי לפתוח אחד ולקרוא אותו לפי חמש השאלות.</p></div>
+
+<div class="box think" data-id="m1-th-read"><p>מראים לכם גרף עמודות יפה. אין כותרת, אין יחידות, ואין שום סימן למסנן. אילו שלוש שאלות תשאלו לפני שתאמינו למספרים בו?</p>
+<div class="ans">אפשר לשאול: מה בדיוק נמדד, ובאיזו יחידה (שקלים, אחוזים, מיליוני עותקים)? על איזה טווח זמן ואיזה חלק מהשורות הגרף מבוסס, כלומר האם מסננים משהו? ומה כל עמודה מייצגת: שורה אחת, ממוצע או סכום? בלי שלוש התשובות האלה אי אפשר להשוות בין עמודות.</div></div>
+
+<div class="quiz" data-id="m1-q-tooltip" data-a="1"><p class="qq">הצבעתם על העמודה Cups, והטולטיפ מציג SUM(Sales) בערך 69,470. מה המספר הזה?</p>
+<button class="opt">הסכום של Sales בכל שורות הקובץ שהקטגוריה שלהן Cups, כלומר 1,974 שורות</button>
+<button class="opt">המכירה הגדולה ביותר של Cups</button>
+<button class="opt">הממוצע של מכירה אחת של Cups</button>
+<button class="opt">מספר השורות שבהן הקטגוריה היא Cups</button>
+<div class="why">התשובה הראשונה. SUM פירושו סכום, והעמודה מייצגת את כל שורות Cups יחד: 1,974 שורות. אם הייתם רוצים ממוצע או ספירה, הייתם רואים AVG או Count בשם של השדה. Tableau עשוי להציג את המספר מעוגל או עם נקודה עשרונית, וזה בסדר.</div></div>
+
+<div class="quiz" data-id="m1-q-null" data-a="3"><p class="qq">בפינה של ויז מופיעה תווית אפורה: &quot;12 nulls&quot;. מה זה אומר?</p>
+<button class="opt">שגיאה בתוכנה, ואפשר להתעלם</button>
+<button class="opt">הגרף מציג 12 קטגוריות ריקות</button>
+<button class="opt">יש נתונים שלא ציירו, כי חסר בהם ערך, ובדרך כלל הם חסרים בקובץ</button>
+<div class="why">התשובה השלישית. התווית נועדה להזכיר שיש חוסרים. מתעלמים ממנה רק אחרי שבודקים מה חסר.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לבקש מכל סטודנט לשים בצ׳אט את סוג הגרף ואת הקהל. לבחור מראש ויז אחד להדגמה, ממש לפני השיעור, כי Viz of the Day משתנה מדי יום. אם ההדמיה או הוויז הציבורי לא נטענים, אפשר להשתמש ב-vgsales בצילום. אם יש סטודנטים שפותחים Download: לוודא שהם באותה גרסה או חדשה.</div>
+</section>
+
+<section class="sec" id="m1-7" data-t="ויז ראשון">
+<div class="sec-h"><div class="sec-n">7</div><h2>הויז הראשון: מחברים קובץ ומציירים עמודות</h2></div>
+<p class="lead">עכשיו בונים משהו. זה לא שיעור בגרפים, אלא בדיקה שכל החוליות עובדות: מחברים קובץ, מציירים עמודות, שומרים ופותחים מחדש. את הגרפים עצמם נלמד במודולים הבאים.</p>
+
+<h3>הנתונים של הקורס: Scoop &amp; Go</h3>
+<p>Scoop &amp; Go היא רשת גלידריות בדיונית לגמרי, עם תשעה סניפים בשמונה ערים. הקובץ מכיל <b>6,575 שורות</b>, מ-1 בינואר 2024 עד 31 בדצמבר 2025. כל שורה היא פריט שנמכר בהזמנה. הנתונים נוצרו על ידי תוכנית, וכל דמיון למציאות מקרי. זה בדיוק מה שמתאים לפרסום ציבורי: אין בהם אדם אמיתי.</p>
+<p>הורידו את הקובץ: <a class="tool" href="data/scoop_sales_2024_2025.csv" download>scoop_sales_2024_2025.csv</a>. יש גם גרסת Excel, <a class="tool" href="data/scoop_sales_2024_2025.xlsx" download>scoop_sales_2024_2025.xlsx</a>, עם גיליון Sales וגיליון Branches. במודול הזה נשתמש ב-CSV.</p>
+<div class="tw" dir="ltr"><table class="tbl m1-map">
+<thead><tr><th>Field</th><th>Example</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td>Order_ID</td><td>SG-00001</td><td>Order line id</td></tr>
+<tr><td>Order_Date</td><td><bdi dir="ltr">2024-01-01</bdi></td><td>Date</td></tr>
+<tr><td>Order_Hour</td><td>19</td><td>Hour of the day</td></tr>
+<tr><td>Branch_Code, Branch</td><td>BR04, Haifa German Colony</td><td>Branch id and name (9 branches)</td></tr>
+<tr><td>City, Region</td><td>Haifa, North</td><td>8 cities; regions: Center, South, Jerusalem, North</td></tr>
+<tr><td>Channel</td><td>Walk-in</td><td>Walk-in, App or Delivery</td></tr>
+<tr><td>Category, Item</td><td>Cups, Lemon Sorbet Cup</td><td>5 categories, 15 items</td></tr>
+<tr><td>Quantity, Unit_Price</td><td>2, 20</td><td>Units and price per unit</td></tr>
+<tr><td>Discount</td><td>0.0</td><td>0, 0.1, 0.2 or 0.5</td></tr>
+<tr><td>Sales, Cost, Profit</td><td>40.0, 17.0, 23.0</td><td>Sales is after discount; Profit = Sales - Cost</td></tr>
+</tbody></table></div>
+<p>שמרו את הקובץ בתיקייה קצרה, בלי עברית ובלי רווחים בנתיב, למשל <code>C:\Scoop</code> או <code>~/Scoop</code>. זה מונע בעיות מיותרות.</p>
+
+<h3>קודם מתנסים במיני Tableau</h3>
+<p>לפני שעושים את זה בתוכנה האמיתית, נסו את אותה פעולה במיני Tableau שבדף. זו הדמיה של Tableau, ולא התוכנה עצמה. גוררים שדה מהרשימה שמשמאל אל המדף, והגרף מצטייר מיד.</p>
+<div class="tfp" data-id="m1-pg-first-bar" data-task="בנו גרף עמודות: סכום המכירות (Sales) לפי קטגוריה (Category). גררו Category אל Columns ו-Sales אל Rows." data-goal='{"columns":["Category"],"rows":["SUM(Sales)"],"mark":"bar"}' data-hide-shelves="size,label"></div>
+<p>ועוד אחד, עם שאלה חדשה: <b>איזה סניף מוכר הכי הרבה?</b> שינוי השאלה פירושו שדה אחר על המדף:</p>
+<div class="tfp" data-id="m1-pg-branches" data-task="בנו גרף עמודות של סכום המכירות (Sales) לפי סניף (Branch). בדקו איזה סניף הכי גבוה ואיזה הכי נמוך." data-goal='{"columns":["Branch"],"rows":["SUM(Sales)"],"mark":"bar"}' data-hide-shelves="size,label"></div>
+<p>בדיקה: ב-Branch יש 9 סימנים. הגבוה ביותר הוא Tel Aviv Dizengoff עם <span class="n">44,194.1</span>, והנמוך הוא Ashdod Beach Pop-up עם <span class="n">5,304.5</span>.</p>
+
+<div class="defline"><b>פיל (pill):</b> כדור צבעוני שמייצג שדה על מדף. דוגמה: הכדור <span class="pill d">Category</span> שעל <code>Columns</code>, והכדור <span class="pill c sum">Sales</span> שעל <code>Rows</code>. שימו לב שהכדור השני נקרא SUM(Sales), כי Tableau מסכם אותו לבד.</div>
+<p>כחול וירוק: הצבע של הפיל אומר איך Tableau מתייחס לשדה, ולא אם הוא טקסט או מספר. כחול הוא <dfn data-d="בדיד (discrete): שדה שמפריד לערכים נפרדים וגורם ל-Tableau לצייר כותרות. למשל, Category נותן חמש כותרות: Cones, Cups, Drinks, Sticks, Sundaes.">בדיד</dfn>, וירוק הוא <dfn data-d="רציף (continuous): שדה שמצייר ציר עם סולם. למשל, סכום המכירות מצויר על ציר מספרי שאפשר למדוד עליו מרחקים.">רציף</dfn>. מודול 4 מוקדש לזה, ועכשיו מספיק לשים לב.</p>
+
+<p>כך נראה דף הנתונים אחרי חיבור קובץ. בצילום זה קובץ אחר, vgsales, ומה שחשוב הוא המבנה:</p>
+<figure class="shot"><img src="img/datasource-page.png" alt="דף הנתונים של Tableau Public עם הטבלה, שורת הסיכום 11 fields 16598 rows ורשימת השדות"><figcaption>דף הנתונים (<code>Data Source</code>). מעל הטבלה, ליד שם המקור, כתוב כמה שדות וכמה שורות יש בקובץ (בצילום: <span class="n">11 fields 16598 rows</span>). בקובץ של Scoop &amp; Go תראו <span class="n">16 fields</span> ו-<span class="n">6575 rows</span>. בצילום יש גם רשימת השדות ומה סוג כל אחד.</figcaption></figure>
+
+<div class="box try" data-id="m1-try-first-bar">
+<p><b>תרגיל: מחברים את הקובץ, בונים עמודות, שומרים ופותחים</b></p>
+<ol>
+<li>במסך הפתיחה, באזור <code>Connect</code> תחת <code>To a File</code>, לחצו <code>Text file</code>. <i>למה:</i> CSV הוא קובץ טקסט. הפריט <code>Microsoft Excel</code> מיועד לקבצי xlsx.</li>
+<li>בחרו את <span class="n">scoop_sales_2024_2025.csv</span> ולחצו <code>Open</code>. <i>למה:</i> כך Tableau קורא את הקובץ ויוצר מקור נתונים.</li>
+<li>הסתכלו על דף הנתונים (<code>Data Source</code>). מתחת לאזור העליון, ליד הטבלה, מופיע סיכום של מספר השדות והשורות. <i>למה:</i> לפני שמציירים בודקים שהקובץ נטען שלם.</li>
+<li>לחצו על הלשונית <code>Sheet 1</code> בתחתית המסך. <i>למה:</i> בגיליון בונים את הגרף.</li>
+<li>מתוך ה-<code>Data pane</code> גררו את <code>Category</code> (סמל Abc) אל המדף <code>Columns</code>. <i>למה:</i> הקטגוריות ייצרו את הכותרות של העמודות.</li>
+<li>גררו את <code>Sales</code> (סמל #) אל המדף <code>Rows</code>. <i>למה:</i> הסכום מצויר כגובה העמודות. שימו לב שהפיל נקרא SUM(Sales).</li>
+<li>הצביעו על העמודה Cups וקראו את הטולטיפ. <i>למה:</i> כדי לאמת שהמספר שבגרף הוא מה שציפיתם.</li>
+<li>שמרו במחשב: <code>File</code>, אחר כך <code>Save As...</code>. בחרו את התיקייה שלכם, בשם <span class="n">scoop-first</span>, ובתפריט סוג הקובץ בחרו חוברת עבודה ארוזה (<span class="n">.twbx</span>, Tableau Packaged Workbook). אם אין שם אפשרות כזאת, השתמשו ב-<code>Export Packaged Workbook...</code>. <i>למה:</i> קובץ twbx כולל את הנתונים, ולכן אפשר לפתוח אותו בכל מחשב.</li>
+<li>סגרו את Tableau, פתחו אותו מחדש ופתחו את הקובץ שנשמר (<code>File</code>, <code>Open...</code>, או לחיצה כפולה על הקובץ). <i>למה:</i> כך בודקים שהשמירה באמת עובדת.</li>
+</ol>
+<p><b>תוצאה צפויה:</b></p>
+<ul>
+<li>בדף הנתונים: <span class="n">16 fields</span> ו-<span class="n">6575 rows</span> (או <span class="n">6,575</span>, לפי העיצוב). השורה הראשונה בטבלה היא <span class="n">SG-00001</span>, בתאריך <bdi dir="ltr">2024-01-01</bdi> (התאריך עשוי להופיע כ-<bdi dir="ltr">1/1/2024</bdi> לפי הגדרות האזור במחשב), בסניף Haifa German Colony, ובסכום 40.</li>
+<li>בגיליון: חמש עמודות, בדרך כלל לפי סדר האלף-בית: Cones, Cups, Drinks, Sticks, Sundaes. העמודה הגבוהה היא Cups, והנמוכה היא Sticks.</li>
+<li>בטולטיפ של Cups: Category הוא Cups, והסכום הוא <span class="n">69,470</span>. שאר הסכומים: Cones <span class="n">48,317</span>, Drinks <span class="n">54,553.3</span>, Sticks <span class="n">17,443.4</span>, Sundaes <span class="n">47,037.2</span>. Tableau עשוי להציג מעוגל (54,553 למשל), ולא בדיוק עם הנקודה העשרונית.</li>
+<li>אחרי הפתיחה מחדש: אותו גרף, אותם חמישה סימנים.</li>
+</ul>
+<p><b>בדיקת סכום:</b> חמש העמודות מסתכמות ל-<span class="n">236,820.9</span>. זה סך המכירות בקובץ, ונשתמש בו כנקודת בדיקה במודולים הבאים.</p>
+</div>
+
+<p>הגרף הקטן הזה הוא מה שנפרסם בסעיף הבא.</p>
+
+<div class="box trap"><p><b>פתחתם CSV דרך Microsoft Excel.</b> הפריט <code>Microsoft Excel</code> ב-Connect מיועד לקבצי xlsx. לקובץ CSV בוחרים <code>Text file</code>. אם קבצים אחרים לא נפתחים, בדקו קודם את סוג הקובץ.</p></div>
+<div class="box trap"><p><b>&quot;בטבלה רואים רק 100 שורות.&quot;</b> בדף הנתונים הטבלה מציגה רק תצוגה מקדימה של השורות הראשונות. בצילום של דף הנתונים שלמעלה מופיע ליד הטבלה שדה עם המספר 100. מספר השורות האמיתי הוא זה שבסיכום שליד השדות: <span class="n">fields</span> ו-<span class="n">rows</span>. הוא מתייחס לכל הקובץ.</p></div>
+<div class="box meaning"><p>המספרים שכתובים בתוצאה הצפויה הם נקודת הבדיקה שלכם. אם בגרף שלכם Cups הוא לא 69,470, אל תמשיכו הלאה: משהו בקובץ או בחיבור שונה. כך נתפסות שגיאות מוקדם, ולא אחרי שבונים דשבורד שלם.</p></div>
+<div class="box real"><p>אנליסטים משווים תמיד את מספר השורות ואת סכום הבקרה אל המקור, לפני שמציירים. אם הקובץ מגיע ממסד נתונים, בודקים שמספר השורות זהה לתוצאה של השאילתה. זה צעד של כמה שניות שמונע דיווח שגוי.</p></div>
+
+<div class="box think" data-id="m1-th-rows"><p>בקובץ יש 6,575 שורות, וחמש העמודות מסתכמות ל-236,820.9. למה לא מופיע בגרף המספר 6,575?</p>
+<div class="ans">כי הגרף מסכם את העמודה Sales, ולא סופר שורות. 6,575 הוא מספר השורות, ו-236,820.9 הוא סכום ערכי המכירות שלהן. בהמשך נלמד גם לספור שורות (Count), ואז כן נקבל 6,575.</div></div>
+
+<div class="quiz" data-id="m1-q-rows" data-a="2"><p class="qq">אחרי חיבור הקובץ scoop_sales_2024_2025.csv, מה אמור להופיע בדף הנתונים?</p>
+<button class="opt">6,575 שדות ו-16 שורות</button>
+<button class="opt">16 שדות ו-6,575 שורות</button>
+<button class="opt">11 שדות ו-16,598 שורות</button>
+<div class="why">התשובה השנייה. יש 16 עמודות (שדות), והן מתארות 6,575 שורות. האפשרות הראשונה היא הפוכה. השלישית היא של קובץ אחר: vgsales, קובץ משחקי הווידאו.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> זו נקודת בדיקה ראשונה: כל סטודנט כותב בצ׳אט את הסכום שהופיע בטולטיפ של Cups. מי שכותב ערך אחר, שוגה בשלב מסוים (קובץ שגוי, סינון). בדף הנתונים לבדוק שהתאריך זוהה כתאריך: אם הוא מופיע כטקסט (Abc), זה נושא למודול 2. לא אומת: אם Save As מציע בפועל את הסוג twbx כבררת מחדל. הפריט Export Packaged Workbook מופיע בתפריט File בצילום, ולכן הוא הגיבוי. לבדוק לפני השיעור.</div>
+</section>
+
+<section class="sec" id="m1-8" data-t="שמירה ופרסום">
+<div class="sec-h"><div class="sec-n">8</div><h2>שמירה במחשב מול פרסום באתר</h2></div>
+<p class="lead">שמירה במחשב ופרסום באתר הם שני דברים שונים לגמרי. אחד נשאר אצלכם, והשני עולה לאינטרנט. כאן עושים את שניהם, ובודקים שהקישור באמת נפתח לכל אחד.</p>
+
+<h3>שמירה במחשב</h3>
+<div class="defline"><b>חוברת עבודה ארוזה (twbx):</b> קובץ אחד, מעין zip, שמכיל את החוברת ואת קובצי הנתונים המקומיים. דוגמה: הקובץ scoop-first.twbx שלכם כולל בתוכו גם את scoop_sales_2024_2025.csv, ולכן אפשר להעביר אותו לחבר והוא ייפתח עם הנתונים. לעומת זאת קובץ twb שומר רק את העיצוב, בלי הנתונים.</div>
+<ul>
+<li>Tableau Public שומרת אוטומטית, כל כמה דקות, כברירת מחדל. אפשר לכבות את זה בתפריט <code>Help</code>, תחת <code>Settings and Performance</code> (בגרסה שלכם ייתכן שהשם שונה מעט).</li>
+<li>מקום ברירת המחדל לשמירה הוא תיקייה בשם <span class="n">My Tableau Repository</span> בתוך Documents. אפשר לבחור מקום אחר בכל שמירה.</li>
+<li>שמירה במחשב מתאימה גם לנתונים פרטיים. מה שלא מפרסמים, נשאר אצלכם.</li>
+</ul>
+
+<h3>פרסום ל-Tableau Public</h3>
+<div class="defline"><b>extract:</b> עותק של הנתונים ש-Tableau שומר בתוך הקובץ ועובד איתו, במקום להתחבר כל פעם למקור. Tableau Public עובדת רק עם extract, ולא מאפשרת חיבור חי. דוגמה: כשמפרסמים את הוויז, צילום של קובץ ה-CSV עולה לאתר יחד איתו. אם תשנו את ה-CSV אחר כך, מה שרואים באתר לא ישתנה.</div>
+<p>הנפשה שמראה מה בדיוק קורה:</p>
+
+<div class="anim" data-id="m1-anim-publish" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 300" role="img" aria-label="הנפשה: חוברת עבודה ועותק נתונים עוברים מהמחשב אל Tableau Public, מתקבל קישור, ואנשים אחרים יכולים לצפות ולהוריד">
+<defs><marker id="m1ap2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<g font-family="Heebo,Arial,sans-serif">
+<g data-s="1"><rect x="10" y="40" width="180" height="170" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+<text x="100" y="70" text-anchor="middle" font-size="18" font-weight="700" fill="#3730a3">המחשב שלכם</text>
+<rect x="24" y="88" width="152" height="36" rx="8" fill="#fff" stroke="#6366f1"/><text x="100" y="112" text-anchor="middle" font-size="15" fill="#1e293b">scoop-first.twbx</text>
+<rect x="24" y="136" width="152" height="36" rx="8" fill="#fff" stroke="#94a3b8"/><text x="100" y="160" text-anchor="middle" font-size="15" fill="#1e293b">scoop...csv</text></g>
+<g data-s="2"><path d="M194,110 L356,110" stroke="#64748b" stroke-width="3" marker-end="url(#m1ap2)"/><rect x="204" y="122" width="142" height="52" rx="8" fill="#fef3c7" stroke="#d97706"/><text x="275" y="144" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Save to Tableau</text><text x="275" y="164" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Public As...</text></g>
+<g data-s="3"><rect x="362" y="40" width="228" height="170" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+<text x="476" y="70" text-anchor="middle" font-size="18" font-weight="700" fill="#065f46">Tableau Public</text>
+<rect x="378" y="88" width="196" height="36" rx="8" fill="#fff" stroke="#10b981"/><text x="476" y="112" text-anchor="middle" font-size="15" fill="#1e293b">הוויז עצמו</text>
+<rect x="378" y="136" width="196" height="36" rx="8" fill="#fff" stroke="#10b981"/><text x="476" y="160" text-anchor="middle" font-size="15" fill="#1e293b">extract: עותק נתונים</text></g>
+<g data-s="4"><rect x="362" y="222" width="228" height="34" rx="17" fill="#dbeafe" stroke="#2563eb"/><text x="476" y="244" text-anchor="middle" font-size="14" fill="#1e3a8a">public.tableau.com/views/...</text></g>
+<g data-s="5"><path d="M594,110 L648,110" stroke="#64748b" stroke-width="3" marker-end="url(#m1ap2)"/><rect x="652" y="40" width="140" height="170" rx="14" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/><text x="722" y="70" text-anchor="middle" font-size="15" font-weight="700" fill="#854d0e">מי שיש לו קישור</text><text x="722" y="108" text-anchor="middle" font-size="15" fill="#1e293b">צופה ומסנן</text><text x="722" y="136" text-anchor="middle" font-size="15" fill="#1e293b">ובדרך כלל</text><text x="722" y="164" text-anchor="middle" font-size="15" font-weight="700" fill="#b91c1c">מוריד גם נתונים</text></g>
+<g data-s="6" data-pulse><rect x="24" y="136" width="152" height="36" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/><text x="100" y="160" text-anchor="middle" font-size="14" font-weight="700" fill="#991b1b">שיניתם את ה-csv</text><text x="476" y="286" text-anchor="middle" font-size="15" font-weight="700" fill="#991b1b">האתר לא השתנה. כדי לעדכן, מפרסמים שוב</text></g>
+</g></svg></div>
+<ol class="caps"><li>על המחשב יש חוברת עבודה, וקובץ הנתונים שלה.</li><li>בוחרים File, ואז Save to Tableau Public As..., מתחברים וכותבים שם לוויז.</li><li>לאתר עולים שני דברים: הוויז, ועותק (extract) של הנתונים.</li><li>האתר נותן כתובת קבועה לוויז.</li><li>כל מי שיש לו את הכתובת רואה את הוויז, מסנן, ובדרך כלל גם יכול להוריד אותו עם הנתונים.</li><li>אם אחר כך משנים את ה-CSV שבמחשב, הוויז באתר נשאר כמו שהוא. כדי לעדכן, מפרסמים מחדש.</li></ol>
+</div>
+
+<div class="tw"><table class="tbl m1-cmp">
+<thead><tr><th></th><th>שמירה במחשב</th><th>פרסום ל-Tableau Public</th></tr></thead>
+<tbody>
+<tr><td>איפה נשמר</td><td>על הדיסק שלכם</td><td>בשרתי Tableau Public, בפרופיל שלכם</td></tr>
+<tr><td>מי רואה</td><td>רק מי שיש לו את הקובץ</td><td>כל מי שיש לו קישור, ובדרך כלל כל העולם</td></tr>
+<tr><td>צריך חשבון</td><td>לא</td><td>כן</td></tr>
+<tr><td>נתונים פרטיים</td><td>מותר</td><td class="m1-no">אסור</td></tr>
+<tr><td>צריך אינטרנט</td><td>לא</td><td>כן</td></tr>
+</tbody></table></div>
+
+<div class="box try" data-id="m1-try-publish">
+<p><b>תרגיל: מפרסמים ויז לבדיקה, ובודקים אותו כמו זר</b></p>
+<p><b>שימו לב לפני שמתחילים:</b> מפרסמים רק את החוברת שנבנתה מהקובץ של Scoop &amp; Go, שהוא בדיוני. לא מפרסמים שום קובץ אחר.</p>
+<ol>
+<li>פתחו את <span class="n">scoop-first.twbx</span> שבניתם בסעיף הקודם. <i>למה:</i> זה מה שמפרסמים.</li>
+<li>בתפריט <code>File</code> בחרו <code>Save to Tableau Public As...</code>. <i>למה:</i> זה הפריט שמעלה את החוברת לאתר ובוחר לה שם (בגרסה שלכם ייתכן שהפריט נמצא בתפריט אחר, אבל המילים Save to Tableau Public יופיעו).</li>
+<li>אם התבקשתם, התחברו עם חשבון Tableau Public שפתחתם. <i>למה:</i> הפרסום נעשה אל הפרופיל שלכם.</li>
+<li>בחלון השם כתבו שם ברור, למשל <span class="n">Scoop Go first bar test</span>, ולחצו <code>Save</code>. <i>למה:</i> שם ברור עוזר למצוא את הוויז, והוא הופך לחלק מהכתובת.</li>
+<li>המתינו: הדפדפן נפתח על הוויז שלכם באתר. <i>למה:</i> כך אתם רואים איך הוא נראה לעולם.</li>
+<li>לחצו על <code>Share</code> בשורת הכלים של הוויז, והעתיקו את מה שבשדה <code>Link</code>. <i>למה:</i> זה הקישור שמעבירים לאחרים.</li>
+<li>פתחו חלון גלישה פרטית (<span class="n">Incognito</span> ב-Chrome, <span class="n">Private</span> ב-Safari ו-Firefox) והדביקו את הקישור. <i>למה:</i> בחלון פרטי אתם לא מחוברים, כך שאתם רואים בדיוק מה רואה אדם זר.</li>
+<li>הצביעו על העמודה Cups. <i>למה:</i> לבדוק שגם שם הוויז עובד וחי.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> הוויז נפתח בחלון הפרטי בלי שהתבקשתם להתחבר. יש חמש עמודות, והטולטיפ של Cups מציג <span class="n">69,470</span>. הכתובת מתחילה ב-<span class="n">https://public.tableau.com/views/</span> ואחריה שם הוויז ושם הגיליון. בשורת הכלים של הוויז יש כפתור <code>Download</code>: כל מי שפתח את הקישור יכול להשתמש בו. אם הפרסום נכשל, ראו הרשימה למטה.</p>
+</div>
+
+<figure class="shot" style="max-width:360px;margin-inline:auto"><img src="img/share-dialog.png" alt="חלון Share של Tableau Public עם השדות Embed Code ו-Link"><figcaption>חלון <code>Share</code> באתר. בשדה <code>Link</code> נמצא הקישור לשיתוף. השדה <code>Embed Code</code> הוא קוד להטמעה בדף אינטרנט, ונחזור אליו במודול 14. בגרסה שלכם ייתכן שהחלון נראה שונה מעט.</figcaption></figure>
+
+<h3>אם הפרסום נכשל</h3>
+<p>זה קורה, ויש סדר קבוע של בדיקות. עוברים עליהן לפי הסדר:</p>
+<ol>
+<li>היכנסו לאתר <span class="n">public.tableau.com</span> בדפדפן והתחברו שם, ורק אחר כך נסו שוב מהתוכנה. זה הפתרון שעבד במקרים של &quot;חלון לבן&quot; או שגיאה בזמן הפרסום.</li>
+<li>ודאו שאישרתם בדפדפן עוגיות פונקציונליות. בלעדיהן האתר מבקש התחברות חוזרת.</li>
+<li>היכנסו לפרופיל שלכם באתר. לפעמים הפרסום הצליח, למרות הודעת השגיאה.</li>
+<li>עדכנו את התוכנה לגרסה הנוכחית, אם ההתקנה שלכם ישנה.</li>
+<li>האתר עשוי להיות בתחזוקה, או שרשת הארגון חוסמת אותו. נסו רשת אחרת, או חזרו מאוחר יותר.</li>
+</ol>
+<p>והפתרון שתמיד עובד: שמרו במחשב ופרסמו כשהכול מסתדר. הקובץ השמור הוא הגיבוי שלכם.</p>
+
+<div class="box trap"><p><b>פרסמתם בלי לקרוא את החלון.</b> לפני שלוחצים אישור בחלון שנפתח, קראו לאן הוא שומר: למחשב או ל-Tableau Public. בחירה בפריט הלא נכון היא ההבדל בין קובץ פרטי לוויז שכולם רואים.</p></div>
+<div class="box trap"><p><b>שמרתם twb ושלחתם לחבר.</b> קובץ twb מכיל רק את עיצוב החוברת. החבר יפתח אותו ויקבל הודעה שהנתונים חסרים. כדי לשלוח קובץ, שמרו twbx. עדיף לשלוח קישור לוויז מפורסם.</p></div>
+<div class="box trap"><p><b>פרסום חוזר באותו שם.</b> אם מפרסמים שוב באותו שם ומאשרים החלפה, לפי התיעוד האתר רואה את זה כוויז חדש, ומונה הצפיות מתחיל מאפס. לא נורא בוויז בדיקה, ושווה לדעת לפני שמחליפים ויז שכבר שיתפתם.</p></div>
+
+<div class="box meaning"><p>הקישור הוא התוצר. שולחים כתובת אחת, והיא תמיד מראה את הגרסה האחרונה שפרסמתם. אין קובץ שמתיישן בתיבת מייל, ואין מישהו שפותח גרסה ישנה. מצד שני, מה שפורסם נשאר שם עד שתעדכנו או תמחקו.</p></div>
+<div class="box real"><p>בעולם הנתונים, תיק עבודות ב-Tableau Public הוא דרך מקובלת להציג יכולת. בפרופיל באתר יש ויזים, ואפשר לסמן שאתם פנויים לעבודה. מגייס יכול לפתוח קישור אחד ולראות מה אתם יודעים לעשות. בגלל זה כדאי לפרסם ויזים נקיים, עם נתונים שמותר להראות.</p></div>
+
+<div class="box think" data-id="m1-th-extract"><p>הוספתם שורות חדשות לקובץ ה-CSV שלכם, אחרי שפרסמתם. פותחים את הקישור באתר. מה רואים, ומה צריך לעשות כדי שהוויז יתעדכן?</p>
+<div class="ans">רואים את הוויז הישן, בלי השורות החדשות. הסיבה: באתר נמצא extract, כלומר עותק של הנתונים מרגע הפרסום, והוא לא מושך מחדש את הקובץ שלכם. כדי לעדכן, טוענים מחדש את הנתונים ב-Tableau במחשב ומפרסמים שוב. (הערה: Google Drive הוא היוצא מן הכלל, כי הוא מתרענן אוטומטית אחת ל-24 שעות. על זה נדבר בסעיף 10.)</div></div>
+
+<div class="quiz" data-id="m1-q-save" data-a="3"><p class="qq">מה ההבדל בין <code>Save As...</code> לבין <code>Save to Tableau Public As...</code>?</p>
+<button class="opt">אין הבדל, שניהם שומרים באותו מקום בשם שונה</button>
+<button class="opt">הראשון שומר באתר, והשני במחשב</button>
+<button class="opt">הראשון שומר במחשב שלכם, והשני מעלה את החוברת ואת הנתונים לאתר ציבורי</button>
+<div class="why">התשובה השלישית. המילים Tableau Public בשם הפריט הן הסימן: הוא שולח לאתר. כל השאר שומר במחשב.</div></div>
+
+<div class="quiz" data-id="m1-q-snapshot" data-a="1"><p class="qq">פרסמתם ויז, ואחר כך תיקנתם ערך בקובץ ה-CSV במחשב. מה רואים באתר?</p>
+<button class="opt">את הוויז הישן, כי באתר יש עותק (extract) מרגע הפרסום</button>
+<button class="opt">את הערך המתוקן, כי האתר קורא את הקובץ שלכם כל פעם</button>
+<button class="opt">שגיאה, כי הקובץ השתנה</button>
+<div class="why">התשובה הראשונה. ב-Tableau Public אין חיבור חי: בעת הפרסום נשמר עותק. כדי לעדכן, מפרסמים שוב. אין שגיאה, הוויז פשוט נשאר כמו שהיה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> זה השלב שבו תקלות צפויות. לבקש מהכיתה לפרסם בבת אחת ולכתוב בצ׳אט &quot;פורסם&quot; או &quot;תקוע&quot;, ולהשתמש ברשימת הבדיקות. מי שתקוע ממשיך עם גרסה שמורה במחשב, ומנסה שוב בהפסקה. לפני השיעור לבדוק אם האתר מכריז על תחזוקה. לא אומת בתוכנה: המקום המדויק של הפריט Save to Tableau Public As (בצילום ב-Mac הוא ב-File, ולפי התיעוד הרשמי ייתכן מתחת ל-Server, Tableau Public), והאם חלון השם והחלון של ההתחברות נראים כמו בתיאור. לא אומת: האם הכפתור Save בשורת הכלים מציע שמירה ל-Tableau Public.</div>
+</section>
+
+<section class="sec" id="m1-9" data-t="ציבורי">
+<div class="sec-h"><div class="sec-n">9</div><h2>מה זה &quot;ציבורי&quot;, ומה אף פעם לא מפרסמים</h2></div>
+<p class="lead">כל מה שמפרסמים ב-Tableau Public פתוח לכולם. החלק הזה קצר, אבל חשוב: טעות כאן קשה מאוד לבטל.</p>
+
+<h3>מה בדיוק קורה כשמפרסמים</h3>
+<ul>
+<li><b>כל אחד באינטרנט</b> יכול לפתוח את הוויז, לסנן אותו ולעבוד איתו.</li>
+<li><b>כל אחד יכול להוריד</b> את חוברת העבודה ואת הנתונים שמאחוריה. זו ברירת המחדל, והמחבר יכול לכבות אותה.</li>
+<li><b>&quot;Hide&quot; אינו פרטי.</b> אפשר להסתיר ויז מדף הפרופיל, אבל כל מי שיודע את הקישור עדיין רואה אותו.</li>
+<li><b>מחיקה שוברת הכול.</b> אחרי מחיקה של ויז, כל הקישורים אליו וההטמעות שלו באתרים אחרים מציגים הודעת שגיאה, ואי אפשר לשחזר אותו.</li>
+<li><b>מדיניות הנתונים של האתר:</b> אסור לפרסם נתונים סודיים, כמו תוכנית מכירות של חברה או מידע כלכלי אישי. נתונים שפורסמו עשויים לשמש את Tableau או צדדים שלישיים גם לאימון מודלי בינה מלאכותית.</li>
+<li><b>Public Edition אסורה לשימוש מסחרי.</b> היא נועדה ללימוד, לנתונים ציבוריים ולהצגה.</li>
+<li><b>הסתרה בתוך החוברת אינה הגנה.</b> גם גיליון מוסתר וגם עמודה שלא מוצגת בגרף נשארים בקובץ, ומי שמוריד את החוברת יכול לראות אותם.</li>
+</ul>
+<p>ולמה אין בזה בעיה בקורס? כי כל הנתונים שלנו בדויים או ציבוריים. הכלל שלכם לכל עבודה אחרת:</p>
+<div class="defline"><b>כלל שלט החוצות:</b> לפני שמפרסמים, שואלים &quot;האם הייתי מוכן שהקובץ הזה יופיע על שלט חוצות?&quot; אם התשובה לא ברורה, לא מפרסמים. דוגמה: קובץ המכירות של Scoop &amp; Go עומד בכלל, כי הוא בדוי. קובץ ציונים של סטודנטים לא עומד בו.</div>
+
+<div class="anim" data-id="m1-anim-hidden" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 300" role="img" aria-label="הנפשה: ויז מפורסם מופיע בפרופיל, מוסתר לשונית Hidden, אבל זר עם הקישור עדיין פותח אותו ומוריד, ואחרי מחיקה הקישור נשבר">
+<defs><marker id="m1ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<g font-family="Heebo,Arial,sans-serif">
+<g data-s="1"><rect x="10" y="30" width="230" height="200" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="125" y="58" text-anchor="middle" font-size="17" font-weight="700" fill="#3730a3">הפרופיל שלכם</text>
+<rect x="30" y="170" width="190" height="40" rx="8" fill="#fff" stroke="#94a3b8"/><text x="125" y="195" text-anchor="middle" font-size="14" fill="#475569">ויז אחר</text></g>
+<g data-only="1"><rect x="30" y="76" width="190" height="62" rx="8" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="125" y="102" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">Scoop Go test</text><text x="125" y="124" text-anchor="middle" font-size="14" fill="#16a34a">מפורסם, גלוי</text></g>
+<g data-s="2"><rect x="270" y="30" width="230" height="200" rx="14" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 4"/><text x="385" y="58" text-anchor="middle" font-size="17" font-weight="700" fill="#475569">Hidden</text></g>
+<g data-only="2,3,4"><rect x="290" y="76" width="190" height="62" rx="8" fill="#fff" stroke="#64748b" stroke-width="2"/><text x="385" y="102" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">Scoop Go test</text><text x="385" y="124" text-anchor="middle" font-size="14" fill="#b45309">לא מופיע בפרופיל</text></g>
+<g data-s="3"><circle cx="680" cy="80" r="26" fill="#fde68a" stroke="#ca8a04" stroke-width="2"/><text x="680" y="130" text-anchor="middle" font-size="16" font-weight="700" fill="#854d0e">זר עם קישור</text></g>
+<g data-only="3,4"><path d="M652,84 L486,106" stroke="#16a34a" stroke-width="3" marker-end="url(#m1ah)"/><text x="570" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#166534">נפתח!</text></g>
+<g data-only="4"><path d="M486,124 L650,150" stroke="#b91c1c" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#m1ah)"/><text x="580" y="176" text-anchor="middle" font-size="15" font-weight="700" fill="#b91c1c">חוברת ונתונים להורדה</text></g>
+<g data-only="5"><rect x="290" y="76" width="190" height="62" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/><text x="385" y="112" text-anchor="middle" font-size="16" font-weight="700" fill="#991b1b">נמחק: שגיאה</text><path d="M652,84 L486,106" stroke="#dc2626" stroke-width="3" stroke-dasharray="6 4"/><text x="570" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#b91c1c">הקישור נשבר</text></g>
+</g></svg></div>
+<ol class="caps"><li>ויז מפורסם מופיע בפרופיל הציבורי שלכם.</li><li>מסתירים אותו. הוא עובר ללשונית Hidden ונעלם מדף הפרופיל.</li><li>אבל זר שמכיר את הקישור פותח אותו בלי בעיה.</li><li>וגם יכול ללחוץ Download ולקבל את החוברת עם הנתונים, אם לא כיבית את האפשרות.</li><li>רק מחיקה באמת מסלקת את הוויז. כל הקישורים וההטמעות מציגים שגיאה.</li></ol>
+</div>
+
+<div class="sim" data-id="m1-sim-public"><div class="sh">פרסום או אף פעם?</div>
+<p>אחד עשר קבצים. לכל אחד לחצו על התשובה שלכם. ההסבר מופיע מיד.</p>
+<div class="m1-pubs"></div><div class="m1-fb"></div><div class="row"><span class="m1-score"></span></div></div>
+<script>(function(){ FL.dom(function(){
+var box = FL.$('[data-id="m1-sim-public"]'); if (!box) return;
+var L = [
+ ['scoop_sales_2024_2025.csv, נתוני הרשת הבדיונית של הקורס', 1, 'נתונים בדויים שנוצרו לקורס. אין בהם אדם אמיתי.'],
+ ['vgsales.csv, נתוני מכירות של משחקי וידאו שפורסמו לציבור', 1, 'נתונים כלליים, בלי מידע על אנשים. כדאי לציין את המקור.'],
+ ['קובץ ציונים של סטודנטים בקורס, עם מספר ת״ז', 0, 'ציונים ות״ז הם מידע אישי. אף פעם לא מפרסמים אותם.'],
+ ['מכירות הרבעון האחרון של המעסיק שלכם', 0, 'נתוני חברה. מפרסמים ל-Tableau Public רק נתונים שמותר להראות לכולם, ו-Public Edition אסורה לשימוש מסחרי.'],
+ ['נתוני Superstore, דוגמה שמפרסמת Tableau (חברה בדיונית)', 1, 'נתוני דוגמה בדויים, שמיועדים ללימוד.'],
+ ['ייצוא של תנועות בחשבון הבנק שלכם', 0, 'מידע כלכלי אישי. מדיניות הנתונים של האתר אוסרת במפורש.'],
+ ['רשימת לקוחות של העסק שלכם: שם וטלפון', 0, 'לקוחות מצפים שהפרטים שלהם יישארו פרטיים. פרסום עלול לחשוף אתכם לתביעה.'],
+ ['סטטיסטיקה ממשלתית מצטברת מאתר ציבורי, ובדקתם שהרישיון מאפשר שימוש חוזר', 1, 'נתונים מצטברים וציבוריים, עם רישיון שנבדק. מציינים את המקור.'],
+ ['תשובות לשאלון &quot;אנונימי&quot; שיש בו עמודת מייל', 0, 'מייל מזהה אדם, ולכן השאלון אינו אנונימי. מוחקים את העמודה מהמקור, ואז בודקים שוב.'],
+ ['קובץ עם עמודת ת״ז, שהסתרתם בגיליון בלבד', 0, 'הסתרה בגיליון אינה מוחקת: העמודה נשארת בקובץ, ומי שמוריד את החוברת רואה אותה. מוחקים את העמודה מהקובץ המקורי לפני שטוענים אותו.'],
+ ['yevgeni_fact_sales.csv, נתוני המסעדה הבדיונית מהמפגש המסכם', 1, 'נתונים בדויים. אין בהם אדם אמיתי.']
+];
+var wrap = FL.$('.m1-pubs', box), fb = FL.$('.m1-fb', box), sc = FL.$('.m1-score', box);
+wrap.innerHTML = L.map(function(x,i){ return '<div class="m1-prow" data-i="'+i+'" style="border-top:1px solid #e2e8f0;padding:8px 0"><div class="m1-qtxt" style="margin:0 0 4px">'+(i+1)+'. '+x[0].replace(/&quot;/g,'"').replace(/</g,'&lt;')+'</div><div class="m1-opts" style="margin:2px 0"><button type="button" class="m1-opt" data-v="1">אפשר לפרסם</button><button type="button" class="m1-opt" data-v="0">אף פעם</button></div><div class="m1-why" style="font-size:.9rem;color:#475569"></div></div>'; }).join('');
+var done = 0, right = 0;
+wrap.addEventListener('click', function(e){
+  var b = e.target.closest('.m1-opt'); if (!b) return; var row = b.closest('.m1-prow'); if (row.dataset.a) return;
+  var i = +row.dataset.i, ok = (+b.dataset.v) === L[i][1]; row.dataset.a = '1'; done++; if (ok) right++;
+  b.classList.add(ok ? 'ok' : 'bad');
+  if (!ok){ var r = FL.$('.m1-opt[data-v="'+L[i][1]+'"]', row); if (r) r.classList.add('ok'); }
+  FL.$('.m1-why', row).textContent = (ok ? 'נכון. ' : 'לא בדיוק. ') + L[i][2];
+  sc.textContent = 'ענו על ' + done + ' מתוך ' + L.length + ', נכון: ' + right;
+  if (done === L.length){ fb.innerHTML = '<b>סיימתם: ' + right + ' נכון מתוך ' + L.length + '.</b>'; FL.done('m1-sim-public'); }
+});
+sc.textContent = 'ענו על 0 מתוך ' + L.length;
+}); })();</script>
+
+<div class="box try" data-id="m1-try-hidden">
+<p><b>תרגיל רשות: &quot;הסתרה&quot; מול &quot;מחיקה&quot; על ויז הבדיקה שלכם</b> (בדקו אם זמין אצלכם, ושמות הכפתורים עשויים להיות שונים)</p>
+<ol>
+<li>היכנסו לפרופיל שלכם באתר ומצאו את ויז הבדיקה שפרסמתם בסעיף 8. <i>למה:</i> מתרגלים רק על ויז שמותר שיהיה ציבורי: הוא בנוי מנתונים בדויים.</li>
+<li>הסתירו אותו מהפרופיל (חפשו את האפשרות <code>Hide</code> בתפריט של הוויז או בהגדרות שלו). <i>למה:</i> כך רואים מה המשמעות של הסתרה.</li>
+<li>העתיקו את הקישור שלו (<code>Share</code>, שדה <code>Link</code>) ופתחו אותו בחלון גלישה פרטית. <i>למה:</i> כך בודקים מה רואה זר.</li>
+<li>אם אתם רוצים לנקות: מחקו את ויז הבדיקה מהפרופיל, ופתחו שוב את הקישור בחלון הפרטי. <i>למה:</i> לראות איך נראה קישור אחרי מחיקה. אפשר גם להשאיר את הוויז, כי הנתונים בדויים.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> אחרי ההסתרה הוויז נעלם מרשימת הוויזים בדף הפרופיל, ומופיע בלשונית של המוסתרים, אבל הקישור ממשיך להיפתח בחלון הפרטי. אחרי מחיקה, הקישור מציג הודעת שגיאה במקום הוויז.</p>
+</div>
+
+<div class="box trap"><p><b>&quot;הסתרתי, אז זה פרטי.&quot;</b> זו הטעות השכיחה ביותר. הסתרה משנה רק מה שמופיע בדף הפרופיל. כל מי שיש לו את הקישור, או שנתקל בו, רואה את הוויז. אם מישהו כבר הוריד אותו, הוא שמר גם את הנתונים. מה שחשוף פעם אחת, אי אפשר לקחת בחזרה.</p></div>
+<div class="box trap"><p><b>&quot;העמודה לא מופיעה בגרף, אז היא לא שם.&quot;</b> עמודה שלא נמצאת על אף מדף ב-Tableau עדיין שמורה בקובץ הנתונים שמפורסם. גם גיליון מוסתר נשאר בקובץ. מי שמוריד את החוברת פותח אותה ורואה הכול. לכן מוחקים עמודות רגישות מהקובץ המקורי לפני שמחברים אותו ל-Tableau.</p></div>
+<div class="box trap"><p><b>מחקתם ויז שמוטמע בדף אחר.</b> אחרי מחיקה, כל מקום שבו הוויז היה מוטמע (באתר האישי שלכם, למשל) יציג שגיאה. לפני שמוחקים ויז שכבר שיתפתם, חשבו אם משהו תלוי בו.</p></div>
+
+<div class="box meaning"><p>בגלל זה כל התרגילים בקורס בנויים על נתונים בדויים או ציבוריים. כשנגיע לדשבורדים, לסיפורים ולהטמעה, תוכלו לפרסם ולהראות בלי לחשוש. וכשתעבדו על נתונים אמיתיים, תדעו מה לעשות: לשמור אותם במחשב, או להשתמש בכלי פרטי של הארגון.</p></div>
+<div class="box real"><p>ארגונים בדרך כלל לא מעלים נתונים פנימיים ל-Tableau Public. מה שהם מפרסמים שם הוא נתונים שכבר פתוחים לציבור, כמו סטטיסטיקה ממשלתית. נתונים פנימיים נשארים ב-Tableau Cloud או ב-Server, שם אפשר להגביל מי רואה מה.</p></div>
+
+<div class="box think" data-id="m1-th-boss"><p>המנהל שלכם אומר: &quot;תבנו דשבורד של המכירות של החברה ותפרסמו אותו בפרופיל שלכם ב-Tableau Public, כדי להראות ללקוחות&quot;. מה אתם עונים, ומה מציעים במקום?</p>
+<div class="ans">עונים שלא: כל מה שמפורסם ב-Tableau Public פתוח לכולם ואפשר להוריד אותו עם הנתונים, ו-Public Edition אסורה לשימוש מסחרי. מציעים לשאול מה בדיוק הלקוחות צריכים לראות: אם מספיק נתונים כלליים שכבר פורסמו, אפשר לבנות ויז מהם. אם צריך להציג נתוני חברה, צריך כלי פרטי עם הרשאות, כמו Tableau Cloud או Server, והחברה צריכה לקבל לכך רישיון.</div></div>
+
+<div class="quiz" data-id="m1-q-hide" data-a="2"><p class="qq">הסתרתם ויז מהפרופיל שלכם. מי יכול לפתוח אותו?</p>
+<button class="opt">אף אחד, חוץ מכם</button>
+<button class="opt">כל מי שיודע את הקישור</button>
+<button class="opt">רק מי שנכנס לפרופיל שלכם ומחפש בלשונית Hidden</button>
+<div class="why">התשובה השנייה. Hide מסיר את הוויז מדף הפרופיל, אבל לא נועל אותו. כל מי שמכיר את הקישור, או נתקל בו, פותח אותו. מי שרוצה לעבוד בפרטיות, שומר את הקובץ במחשב.</div></div>
+
+<div class="quiz" data-id="m1-q-column" data-a="1"><p class="qq">בקובץ שלכם יש עמודת ת״ז. בגרף שבניתם היא לא משמשת, והיא לא מופיעה על אף מדף. אפשר לפרסם?</p>
+<button class="opt">לא. העמודה נשארת בנתונים שמפורסמים, ומי שמוריד את החוברת יכול לראות אותה. מוחקים אותה מהמקור קודם</button>
+<button class="opt">כן, כי היא לא מופיעה בגרף</button>
+<button class="opt">כן, אם מסתירים אותה בחלונית הנתונים</button>
+<div class="why">התשובה הראשונה. הנתונים נשמרים בתוך החוברת. הסתרה בגיליון או בחלונית אינה הגנה, ומי שמוריד את הקובץ רואה את העמודה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> להראות במסך משותף ויז שנמצא בלשונית Hidden שנפתח בחלון פרטי, ולהראות את הכפתור Download על ויז של מישהו אחר. לא אומת: השם המדויק של האפשרות Hide, ומקומה (פרופיל, הגדרות הוויז), ושל האפשרות להפעיל או לכבות הורדה (Settings, Allow Access, לפי התיעוד). לבדוק בתוכנה לפני השיעור. לבקש שכל סטודנט יספר מה הוא יעשה עם נתונים של מקום העבודה שלו, ולהזכיר שאין לפרסם דבר.</div>
+</section>
+
+<section class="sec" id="m1-10" data-t="כללים ומגבלות">
+<div class="sec-h"><div class="sec-n">10</div><h2>הכללים והמגבלות של Tableau Public</h2></div>
+<p class="lead">ל-Tableau Public יש כללים ומגבלות. רובם לא מפריעים לקורס, אבל כדאי לדעת איפה הקצה, כדי לא להתנגש בו באמצע פרויקט.</p>
+<p>הטבלה נכונה נכון לאוקטובר 2026, והמספרים עלולים להשתנות, ולכן בדקו בתיעוד של Tableau לפני שנשענים עליהם בעבודה.</p>
+
+<div class="tw"><table class="tbl m1-cmp">
+<thead><tr><th>נושא</th><th>הכלל</th><th>מה זה אומר לכם</th></tr></thead>
+<tbody>
+<tr><td>שימוש</td><td>לא לשימוש מסחרי</td><td>ללימוד, לנתונים ציבוריים ולתיק עבודות. לא לנתונים של המעסיק</td></tr>
+<tr><td>גודל הנתונים</td><td>עד 15 מיליון שורות בחוברת עבודה</td><td>הקובץ שלנו הוא 6,575 שורות, בערך 0.04 אחוז מהתקרה</td></tr>
+<tr><td>אחסון</td><td>10GB לחשבון</td><td>זה כל הוויזים שתפרסמו, יחד עם הנתונים שלהם</td></tr>
+<tr><td>סוג חיבור</td><td>extract בלבד, אין חיבור חי</td><td>בפרסום נשמר עותק של הנתונים, והוא לא מתעדכן לבד</td></tr>
+<tr><td>מקורות נתונים</td><td>Google Drive, JSON, Excel (2007 ומעלה), OData, PDF, קבצים מרחביים, קבצים סטטיסטיים וקבצי טקסט (CSV)</td><td>אין מסדי נתונים</td></tr>
+<tr><td>רענון</td><td>רק Google Drive, בערך אחת ל-24 שעות</td><td>בכל השאר מפרסמים מחדש</td></tr>
+<tr><td>איפה מפרסמים</td><td>רק ל-Tableau Public</td><td>אי אפשר לפרסם ל-Cloud או ל-Server</td></tr>
+<tr><td>התקנה</td><td>גרסה אחת בכל פעם, Windows ו-Mac בלבד</td><td>עדכון פירושו להחליף את ההתקנה</td></tr>
+<tr><td>שפה</td><td>ממשק באנגלית. נתונים בכל שפה. PDF עם טקסט מימין לשמאל עלול להתהפך</td><td>בעברית עובדים עם xlsx או CSV, ובודקים את התוצאה</td></tr>
+<tr><td>עריכה בדפדפן</td><td>העלאת xlsx, csv או tsv עד 1GB. מחשב נייד או נייח, לא טלפון. אין שמירה מקומית</td><td>גיבוי טוב, אבל כל מה שנשמר שם ציבורי</td></tr>
+<tr><td>תמיכה</td><td>תיעוד, בסיס ידע וקהילה</td><td>אין מוקד תמיכה אישי</td></tr>
+</tbody></table></div>
+
+<p>בואו נבדוק את ההבנה על מקורות הנתונים. לכל מקור, האם Tableau Public יכולה לקרוא אותו?</p>
+<div class="sim" data-id="m1-sim-connectors"><div class="sh">אפשר לחבר, או לא?</div>
+<p>שלוש תשובות אפשריות לכל מקור: אפשר, צריך לבדוק, או אי אפשר.</p>
+<div class="m1-srcs"></div><div class="m1-fb"></div><div class="row"><span class="m1-score"></span></div></div>
+<script>(function(){ FL.dom(function(){
+var box = FL.$('[data-id="m1-sim-connectors"]'); if (!box) return;
+var L = [
+ ['קובץ Excel בפורמט xlsx','y','Microsoft Excel 2007 ומעלה נמצא ברשימה הרשמית.'],
+ ['קובץ CSV','y','קבצי טקסט נתמכים. זה הקובץ שבו אנחנו עובדים.'],
+ ['קובץ JSON','y','JSON נמצא ברשימה. Tableau קורא את 10,000 השורות הראשונות כדי להבין את המבנה.'],
+ ['גיליון Google Sheets דרך Google Drive','y','המחבר נקרא Google Drive. הוא המקור היחיד שמתרענן אוטומטית, בערך אחת ל-24 שעות.'],
+ ['קובץ מרחבי: shapefile בתוך zip, או GeoJSON','y','קבצים מרחביים נתמכים בתוכנה. בעריכה בדפדפן מעלים רק xlsx, csv או tsv.'],
+ ['PDF שיש בו טבלה בעברית','c','PDF נתמך, אבל Tableau לא תומך בטקסט מימין לשמאל ב-PDF, והמילים עלולות להתהפך. עדיף להמיר לטבלה.'],
+ ['קובץ xls ישן, מלפני 2007','c','ברשימה הרשמית כתוב Excel 2007 ומעלה. בדקו אם נפתח אצלכם, ואם לא, שמרו אותו ב-xlsx.'],
+ ['מסד נתונים SQL Server','n','אין מחברים למסדי נתונים. מריצים שאילתה במסד, מייצאים לקובץ, וטוענים את הקובץ.'],
+ ['מחסן נתונים כמו Snowflake או BigQuery','n','גם הוא לא ברשימה. אותו פתרון: מייצאים תוצאה לקובץ וטוענים.'],
+ ['מקור נתונים שפורסם ב-Tableau Cloud או Server','n','Tableau Public לא מתחברת למקורות שפורסמו בענן או בשרת של ארגון.'],
+ ['קובץ CSV של 20 מיליון שורות','n','זה מעל התקרה של 15 מיליון שורות. מקטינים את הקובץ, למשל סיכום לפי יום, או מסננים לפני הטעינה.'],
+ ['קובץ של Microsoft Access','n','Access לא מופיע ברשימה של Public Edition. מייצאים טבלה ל-Excel או ל-CSV.']
+];
+var NAMES = {y:'אפשר', c:'צריך לבדוק', n:'אי אפשר'};
+var wrap = FL.$('.m1-srcs', box), fb = FL.$('.m1-fb', box), sc = FL.$('.m1-score', box);
+wrap.innerHTML = L.map(function(x,i){ return '<div class="m1-prow" data-i="'+i+'" style="border-top:1px solid #e2e8f0;padding:8px 0"><div class="m1-qtxt" style="margin:0 0 4px">'+(i+1)+'. '+x[0]+'</div><div class="m1-opts" style="margin:2px 0"><button type="button" class="m1-opt" data-v="y">אפשר</button><button type="button" class="m1-opt" data-v="c">צריך לבדוק</button><button type="button" class="m1-opt" data-v="n">אי אפשר</button></div><div class="m1-why" style="font-size:.9rem;color:#475569"></div></div>'; }).join('');
+var done = 0, right = 0;
+wrap.addEventListener('click', function(e){
+  var b = e.target.closest('.m1-opt'); if (!b) return; var row = b.closest('.m1-prow'); if (row.dataset.a) return;
+  var i = +row.dataset.i, ok = b.dataset.v === L[i][1]; row.dataset.a = '1'; done++; if (ok) right++;
+  b.classList.add(ok ? 'ok' : 'bad');
+  if (!ok){ var r = FL.$('.m1-opt[data-v="'+L[i][1]+'"]', row); if (r) r.classList.add('ok'); }
+  FL.$('.m1-why', row).textContent = (ok ? 'נכון. ' : 'התשובה: ' + NAMES[L[i][1]] + '. ') + L[i][2];
+  sc.textContent = 'ענו על ' + done + ' מתוך ' + L.length + ', נכון: ' + right;
+  if (done === L.length){ fb.innerHTML = '<b>סיימתם: ' + right + ' נכון מתוך ' + L.length + '.</b>'; FL.done('m1-sim-connectors'); }
+});
+sc.textContent = 'ענו על 0 מתוך ' + L.length;
+}); })();</script>
+
+<div class="box note"><p><b>לא זמין ב-Tableau Public: ככה עובדים סביב זה</b></p>
+<p>כמה דברים שכן קיימים בגרסאות בתשלום, אין ב-Public. בקורס אנחנו לא נתבסס עליהם, ולכל אחד יש דרך עקיפה שתעבוד אצלכם:</p>
+<div class="tw"><table class="tbl m1-cmp">
+<thead><tr><th>מה חסר</th><th>איך עובדים סביב זה</th></tr></thead>
+<tbody>
+<tr><td>חיבור למסד נתונים (SQL Server, PostgreSQL ואחרים)</td><td>מריצים את השאילתה במסד, מייצאים את התוצאה לקובץ CSV או Excel, וטוענים את הקובץ ב-Tableau Public. ב<a href="../final-lesson/part2.html">חלק ה-SQL של המפגש המסכם</a> כתבתם את השאילתות, ובמודול 15 נחבר אותן לכאן.</td></tr>
+<tr><td>חיבור חי ורענון אוטומטי מתוזמן</td><td>מייצאים מחדש ומפרסמים מחדש. או שומרים את הנתונים בגיליון ב-Google Drive, שמתרענן אחת ל-24 שעות.</td></tr>
+<tr><td>Tableau Prep, כלי לניקוי נתונים</td><td>מנקים את הקובץ לפני הטעינה: ב-SQL, ב-Excel או בתוכנית קטנה ב-Python. מודולים 15 ו-16 מראים איך.</td></tr>
+<tr><td>סקריפטים חיצוניים בתוך חישוב (TabPy, R)</td><td>לא מותרים בחוברות שמפורסמות ל-Tableau Public. מריצים את החישוב מחוץ ל-Tableau ושומרים את התוצאה כעמודה בקובץ.</td></tr>
+<tr><td>פרסום ל-Tableau Cloud או Server, עם הרשאות</td><td>לא אפשרי מ-Public Edition. מי שצריך את זה בעבודה מקבל מהארגון רישיון, והלוגיקה שלמדתם כאן עובדת שם כמו שהיא.</td></tr>
+</tbody></table></div></div>
+
+<div class="box try" data-id="m1-try-web-authoring">
+<p><b>תרגיל רשות: אותו גרף בדפדפן, בלי התקנה</b> (בגרסה שלכם ייתכן שהמסך שונה מעט)</p>
+<ol>
+<li>היכנסו ל-<span class="n">public.tableau.com</span> והתחברו. <i>למה:</i> עריכה בדפדפן דורשת חשבון.</li>
+<li>לחצו <code>Create</code> ואז <code>Web Authoring</code>. <i>למה:</i> זה מצב העריכה בדפדפן.</li>
+<li>העלו את <span class="n">scoop_sales_2024_2025.csv</span> מהמחשב. <i>למה:</i> הדפדפן מקבל קובץ csv, xlsx או tsv עד 1GB, והקובץ שלנו קטן הרבה יותר (בערך 0.7MB).</li>
+<li>בנו את אותו גרף: <code>Category</code> על העמודות ו-<code>Sales</code> על השורות. <i>למה:</i> כך משווים בין שתי הדרכים.</li>
+<li>הצביעו על העמודה Cups. <i>למה:</i> לבדוק שהמספר זהה לתוכנה.</li>
+<li>רשמו שלושה הבדלים שמצאתם בין העריכה בדפדפן לבין התוכנה. <i>למה:</i> כך תדעו מה לצפות אם תצטרכו לעבוד כך.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> חמש עמודות, והטולטיפ של Cups מציג <span class="n">69,470</span>, בדיוק כמו בתוכנה. בעריכה בדפדפן אין שמירה מקומית של קובץ, ושמירה בו שולחת את החוברת לפרופיל הציבורי. לכן אפשר לא לשמור, אלא אם אתם רוצים לפרסם. הנתונים שלנו בדויים, ולכן אין סיכון.</p>
+</div>
+
+<div class="box trap"><p><b>&quot;עדכנתי את הקובץ, למה הוויז לא התעדכן?&quot;</b> כי באתר יושב עותק מרגע הפרסום. רק Google Drive מתרענן לבד. בכל מקור אחר צריך לטעון מחדש ולפרסם שוב. בפרויקט עם נתונים משתנים, כדאי לתכנן את זה מראש.</p></div>
+<div class="box trap"><p><b>קובץ PDF בעברית.</b> ב-PDF שבו הטקסט מימין לשמאל, האותיות והמילים עלולות להתהפך כשטוענים אותו ל-Tableau. אם הנתונים שלכם נמצאים ב-PDF בעברית, עדיף להעתיק אותם לטבלת Excel ולטעון משם. בכל קובץ עם עברית, בדקו את התוצאה במסך הנתונים.</p></div>
+<div class="box meaning"><p>המגבלות הן חלק מהעסקה: כלי חינמי לנתונים ציבוריים. הלוגיקה של העבודה, מהנתונים לגרף לדשבורד, זהה בכל הגרסאות. מה שמשתנה הוא איך הנתונים מגיעים, ולא מה עושים בהם.</p></div>
+<div class="box real"><p>בארגון שמשתמש ב-Tableau Cloud או Server יש בדרך כלל חיבור ישיר למסד הנתונים, וטבלאות שמתרעננות לפי לוח זמנים. אצלנו, את אותו תפקיד ממלאים שני צעדים ידניים: ייצוא ופרסום מחדש. מי שמבין את הלוגיקה הזאת יבין גם איך הדברים עובדים אצלם.</p></div>
+
+<div class="box think" data-id="m1-th-sql"><p>הנתונים של הרשת נמצאים בטבלה במסד SQL. איך תגיעו מהם לוויז ב-Tableau Public? תארו את הצעדים.</p>
+<div class="ans">ב-Tableau Public אין חיבור למסד, ולכן: (1) כותבים ומריצים שאילתה שמחזירה את העמודות שצריך. (2) מייצאים את התוצאה לקובץ CSV או Excel, עם כותרות באנגלית ותאריכים בפורמט שנה-חודש-יום. (3) טוענים את הקובץ ב-Tableau Public ובונים. כשהנתונים משתנים, חוזרים על שלושת הצעדים ומפרסמים מחדש.</div></div>
+
+<div class="quiz" data-id="m1-q-limit" data-a="3"><p class="qq">יש לכם קובץ CSV של 8 מיליון שורות. אפשר לטעון אותו ל-Tableau Public ולפרסם?</p>
+<button class="opt">לא, התקרה היא מיליון שורות</button>
+<button class="opt">רק ב-Free Edition</button>
+<button class="opt">כן, זה מתחת לתקרה של 15 מיליון שורות (נכון לאוקטובר 2026), בתנאי שנשאר מקום באחסון של החשבון</button>
+<button class="opt">רק אחרי שמעלים אותו ל-Tableau Cloud</button>
+<div class="why">התשובה השלישית. התקרה היא 15 מיליון שורות בחוברת עבודה, והאחסון הוא 10GB לחשבון. כדאי תמיד לבדוק את המספרים בתיעוד העדכני. Free Edition לא מפרסמת בכלל, ו-Cloud לא קשור כאן.</div></div>
+
+<div class="quiz" data-id="m1-q-sql" data-a="2"><p class="qq">הנתונים שלכם במסד SQL. מה הדרך הנכונה לטעון אותם ל-Tableau Public?</p>
+<button class="opt">לבחור מחבר SQL ב-Connect ולהתחבר ישירות</button>
+<button class="opt">להריץ שאילתה, לייצא את התוצאה ל-CSV או Excel, ולטעון את הקובץ</button>
+<button class="opt">להתקין Tableau Prep ולחבר דרכו</button>
+<div class="why">התשובה השנייה. ב-Tableau Public אין מחברים למסדי נתונים, וגם Prep אינו חלק ממנה. הקובץ הוא הגשר: מכינים אותו מחוץ ל-Tableau וטוענים אותו.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הדגש שהמגבלות לא פוגעות בשום תרגיל בקורס. לא אומת: מתי המגבלה עלתה ל-15 מיליון, והאם היא לכל חוברת או לכל מקור נתונים (התיעוד אינו אחיד), האם xls ישן נפתח ב-Public Edition, האם עברית וה-CSV נפתחים תקין (בדקו קובץ עברי לפני השיעור: ערכת תווים UTF-8, או שמירה ב-xlsx), וגם גיאוקידוד של שמות ערים בעברית. מהלך העריכה בדפדפן לא נבדק מול התוכנה כולה: לא להבטיח שכל תכונה זהה.</div>
+</section>
+
+<section class="sec" id="m1-11" data-t="מפת האתר">
+<div class="sec-h"><div class="sec-n">11</div><h2>מפת האתר ואיך עובדים עליו</h2></div>
+<p class="lead">האתר הזה הוא קורס מלא: 19 מודולים, מהגרף הראשון ועד פרויקט סיום. כאן רואים את המפה, איך בנוי כל מודול, ואיפה הנתונים.</p>
+
+<h3>המפה</h3>
+<div class="tw"><table class="tbl m1-map">
+<thead><tr><th>שלב</th><th>מודול</th><th>על מה</th></tr></thead>
+<tbody>
+<tr><td rowspan="6">הבסיס</td><td><b>1</b> מכירים את Tableau Public</td><td>המודול הזה: הורדה, חשבון, פרסום ובדיקה</td></tr>
+<tr><td><a href="module2.html"><b>2</b> מתחברים לנתונים</a></td><td>קבצים, שדות, בדיקת שורות</td></tr>
+<tr><td><a href="module3.html"><b>3</b> סביבת העבודה והגרפים הראשונים</a></td><td>מדפים, Marks, Show Me, ראשוני גרפים</td></tr>
+<tr><td><a href="module4.html"><b>4</b> כחול וירוק</a></td><td>בדיד, רציף ותאריכים</td></tr>
+<tr><td><a href="module5.html"><b>5</b> צבע, גודל וקטלוג הגרפים</a></td><td>איזה גרף מתאים לאיזו שאלה</td></tr>
+<tr><td><a href="module6.html"><b>6</b> סינון, מיון, קיבוץ וסדר הפעולות</a></td><td>איך מסננים נכון, ומה קודם למה</td></tr>
+<tr><td rowspan="4">חישוב ומפות</td><td><a href="module7.html"><b>7</b> מפות</a></td><td>איך מציירים נתונים על מפה</td></tr>
+<tr><td><a href="module8.html"><b>8</b> שדות מחושבים</a></td><td>שדות שאתם יוצרים בעצמכם</td></tr>
+<tr><td><a href="module9.html"><b>9</b> חישובי טבלה וניתוח רץ</a></td><td>סכום מצטבר, אחוזים, דירוג</td></tr>
+<tr><td><a href="module10.html"><b>10</b> פרמטרים ורמת פירוט</a></td><td>כפתורים שהקורא שולט בהם, וחישוב ברמות שונות</td></tr>
+<tr><td rowspan="4">נתונים ודשבורד</td><td><a href="module11.html"><b>11</b> שילוב נתונים ושינוי צורה</a></td><td>חיבור כמה טבלאות לאחת</td></tr>
+<tr><td><a href="module12.html"><b>12</b> גרפים מתקדמים ואנליטיקה</a></td><td>ציר כפול, קווי מגמה ועוד</td></tr>
+<tr><td><a href="module13.html"><b>13</b> דשבורדים, פעולות ועיצוב</a></td><td>כמה גיליונות במסך אחד, עם אינטראקציה</td></tr>
+<tr><td><a href="module14.html"><b>14</b> סיפורים, פרסום והטמעה</a></td><td>סיפור, פרסום, והטמעה בדף שלכם</td></tr>
+<tr><td rowspan="2">מאחורי הקלעים</td><td><a href="module15.html"><b>15</b> בסיסי נתונים: איך הנתונים מגיעים</a></td><td>SQL, ייצוא, והדרך אל Tableau Public</td></tr>
+<tr><td><a href="module16.html"><b>16</b> תכנות והרחבות</a></td><td>שפת החישוב, והכנת קבצים בסקריפט</td></tr>
+<tr><td rowspan="3">סיכום והפניה</td><td><a href="module17.html"><b>17</b> פרויקטים ובדיקת סיום</a></td><td>פרויקט מלא ובדיקה של כל הדרך</td></tr>
+<tr><td><a href="module18.html"><b>18</b> דף עזר</a></td><td>ריכוז: מדפים, קיצורים, גרפים</td></tr>
+<tr><td><a href="module19.html"><b>19</b> פתרון תקלות</a></td><td>מה עושים כשמשהו לא עובד</td></tr>
+</tbody></table></div>
+<p>אפשר לעבוד לפי הסדר, וזה מה שאני ממליץ, כי כל מודול נשען על הקודמים. מי שכבר מכיר Tableau יכול לדלג ישר אל מה שחסר לו, ולהשתמש ב-<a href="module18.html">דף העזר</a> וב-<a href="module19.html">פתרון התקלות</a> כשצריך. מי שעבר את <a href="../tableau-4h/tableau-4h.html">מפגש Tableau Public המקוצר</a> כבר ביצע את ההתקנה ואת הגרף הראשון, וימשיך מכאן במודול 2.</p>
+
+<h3>איך בנוי כל מודול</h3>
+<div class="cols3">
+<div class="card"><h4>🧪 התנסות</h4><p>צעדים לביצוע בתוכנה. ליד כל צעד כתוב <i>למה</i>. בסוף יש <b>תוצאה צפויה</b>: מספר, מספר סימנים או צורה, כדי שתבדקו את עצמכם.</p></div>
+<div class="card"><h4>💭 שאלת מחשבה</h4><p>שאלה שמתאימה לכתיבה קצרה. אפשר לכתוב תשובה בתיבה, ואחר כך לפתוח תשובה לדוגמה ולהשוות.</p></div>
+<div class="card"><h4>⚠️ מלכודת</h4><p>טעות שחוזרת אצל מתחילים, ואיך מזהים אותה ומתקנים. כדאי לקרוא לפני שנתקעים.</p></div>
+<div class="card"><h4>🔎 משמעות</h4><p>מה המספר או הגרף אומרים לניתוח, ולא רק איך מגיעים אליהם.</p></div>
+<div class="card"><h4>🌍 בעולם האמיתי</h4><p>איך אנשי מקצוע משתמשים בזה, בעבודה רגילה.</p></div>
+<div class="card"><h4>🎛️ הדמיות ומיני Tableau</h4><p>נסו לפני שאתם עובדים בתוכנה האמיתית. חלקן עובדות על נתוני Scoop &amp; Go עצמם.</p></div>
+</div>
+<ul>
+<li><b>ההתקדמות</b> שלכם נראית בפס שבראש הדף, ונשמרת רק בדפדפן הזה. מחיקת נתוני הדפדפן מוחקת אותה.</li>
+<li><b>מספרים:</b> אם התוצאה שלכם שונה מהצפויה, חזרו צעד אחורה. Tableau עשוי להציג מספרים מעוגלים, וזה לא נחשב טעות.</li>
+<li><b>הממשק באנגלית.</b> בכל מקום כתוב שם התפריט באנגלית בתוך <code>קוד</code>, ולידו הסבר בעברית.</li>
+<li><b>סוף כל מודול:</b> סיכום קצר, חידון, ושורה שמפנה אל המודול הבא.</li>
+</ul>
+
+<h3>הנתונים, והשאלות שנשאל</h3>
+<p>לאורך האתר חוזרים לאותה רשת, Scoop &amp; Go, עם שאלות חדשות בכל מודול. בדרך נמצא שלושה סיפורים שמסתתרים בנתונים: מתי הרשת מוכרת הכי הרבה, סניף אחד שמוכר פחות בשנה השנייה, ומבצע אחד שמפסיד כסף. עוד לא נגלה את התשובות. נגלה אותן כשנדע לשאול נכון.</p>
+<p>הקבצים, להורדה:</p>
+<p class="tools">
+<a class="tool" href="data/scoop_sales_2024_2025.csv" download>scoop_sales_2024_2025.csv</a>
+<a class="tool" href="data/scoop_sales_2024_2025.xlsx" download>scoop_sales_2024_2025.xlsx</a>
+<a class="tool" href="data/vgsales.csv" download>vgsales.csv</a>
+<a class="tool" href="data/yevgeni_fact_sales.csv" download>yevgeni_fact_sales.csv</a>
+<a class="tool" href="data/toy_join.xlsx" download>toy_join.xlsx</a>
+</p>
+<ul>
+<li><span class="n">scoop_sales_2024_2025</span>: קובץ המכירות של הרשת, שבו עובדים רוב הזמן. יש בו 6,575 שורות. ב-xlsx יש גם גיליון Branches.</li>
+<li><span class="n">vgsales.csv</span>: מכירות של משחקי וידאו. הוא מופיע בצילומי המסך של האתר.</li>
+<li><span class="n">yevgeni_fact_sales.csv</span>: הגרסה השטוחה של נתוני המסעדה מהמפגש המסכם.</li>
+<li><span class="n">toy_join.xlsx</span>: שתי טבלאות קטנות לתרגול חיבור טבלאות.</li>
+</ul>
+<p>עוד קבצים, של המסעדה ושל נקניקים, יחכו לנו במודולים 11 ו-15. לנתוני דוגמה נוספים יש את <a class="tool" href="https://public.tableau.com/app/learn/sample-data" target="_blank" rel="noopener">דף נתוני הדוגמה הרשמי</a> של Tableau Public. אין לשכפל אותם, והרישיון של כל קובץ שייך לספק המקורי.</p>
+
+<div class="box recap"><ul>
+<li>Tableau לוקח קובץ נתונים ומצייר ממנו גרפים לפי שדות שגוררים. הוא בא אחרי הכנת הנתונים, ולפני ההחלטה.</li>
+<li>מורידים את Tableau Desktop <b>Public Edition</b> דרך public.tableau.com. הכפתור הירוק בדף המחירים הוא Free Edition, והיא לא מפרסמת. אם אי אפשר להתקין, עובדים ב-web authoring.</li>
+<li>במסך הפתיחה: <code>Connect</code>, <code>Open</code>, <code>Discover</code>. בגיליון: <code>Data pane</code>, <code>Columns</code>, <code>Rows</code>, <code>Marks</code>, <code>Filters</code>, <code>Show Me</code>.</li>
+<li>קוראים ויז בחמש שאלות. הטולטיפ מראה את המספר המדויק, ו-null אפור מזכיר שחסרים נתונים.</li>
+<li><code>Save As...</code> שומר במחשב. <code>Save to Tableau Public As...</code> שולח לאתר, עם עותק (extract) של הנתונים. כדי לעדכן, מפרסמים מחדש.</li>
+<li>ציבורי הוא ציבורי: Hide אינו פרטי, כל אחד יכול להוריד, ואף פעם לא מפרסמים מידע אישי או נתוני מעסיק. המגבלות: 15 מיליון שורות, 10GB, ומקורות של קבצים בלבד.</li>
+</ul></div>
+
+<div class="quiz" data-id="m1-q-end-edition" data-a="4"><p class="qq">איזו תוכנה מתקינים בשביל הקורס הזה?</p>
+<button class="opt">Tableau Cloud</button>
+<button class="opt">Tableau Prep</button>
+<button class="opt">Tableau Desktop Free Edition, מהכפתור הירוק</button>
+<button class="opt">Tableau Desktop Public Edition, דרך public.tableau.com</button>
+<div class="why">התשובה האחרונה. Public Edition חינמית, שומרת במחשב ומפרסמת ל-Tableau Public. Free Edition לא מפרסמת, ו-Cloud ו-Prep הם מוצרים בתשלום שאין לכם.</div></div>
+
+<div class="quiz" data-id="m1-q-end-download" data-a="1"><p class="qq">פרסמתם ויז, ומישהו שמצא את הקישור לחץ על Download. מה הוא קיבל?</p>
+<button class="opt">את חוברת העבודה ואת הנתונים שבתוכה, כי ברירת המחדל מאפשרת הורדה</button>
+<button class="opt">רק תמונה של הגרף</button>
+<button class="opt">כלום, כי הוא לא מחובר לחשבון</button>
+<div class="why">התשובה הראשונה. ברירת המחדל ב-Tableau Public היא שכל אחד יכול להוריד את הוויז ואת הנתונים. המחבר יכול לכבות את האפשרות, אבל מה שכבר הורד נשאר אצל מי שהוריד.</div></div>
+
+<div class="quiz" data-id="m1-q-end-pii" data-a="2"><p class="qq">בקובץ הנתונים שלכם יש עמודה עם כתובות מייל של לקוחות, ואתם רוצים לפרסם ויז. מה עושים?</p>
+<button class="opt">מסתירים את העמודה בחלונית הנתונים ומפרסמים</button>
+<button class="opt">מוחקים את העמודה מהקובץ המקורי לפני הטעינה, ובודקים שאין בו מידע מזהה נוסף</button>
+<button class="opt">מפרסמים ומסתירים את הוויז מהפרופיל</button>
+<div class="why">התשובה השנייה. הסתרה בחלונית או בגיליון לא מוחקת את הנתונים מהחוברת, והסתרת הוויז לא מונעת גישה לקישור. רק קובץ בלי המידע הרגיש בטוח לפרסום.</div></div>
+
+<p><b>הבא:</b> <a class="tool" href="module2.html">מודול 2: מתחברים לנתונים</a> שם נעבוד עם קבצים שונים, ונלמד לבדוק שורות ושדות לפני שמציירים.</p>
+
+<div class="teach"><b>🎓 למרצה:</b> לסכם בקול את שלוש הטעויות: ההורדה הלא נכונה, ההסתרה שאינה פרטית, והציפייה לרענון אוטומטי. לשאול מי בכיתה נתקע ובאיזה שלב, ולהחליט אם צריך לחזור על ההתקנה בשעת המעבר. לפני השיעור לבדוק שהקישורים של המודולים הבאים קיימים, ושקבצי הנתונים נפתחים מהקישורים.</div>
+</section>
+
+<div class="pager"><a href="index.html">→ למפת האתר</a><a href="module2.html">2. מתחברים לנתונים ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>

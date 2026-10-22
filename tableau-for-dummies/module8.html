@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8. שדות מחושבים · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=8;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public">1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים">2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים">3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות">6<small></small></a><a id="part7" href="module7.html" title="מפות">7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים" class=on>8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט">10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב">13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה">14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים">15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות">16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום">17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות">19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>שדות מחושבים<br><span>כשהמספר שצריך לא נמצא בקובץ</span></h1>
+  <p>בונים ב-Tableau Public שדות חדשים מנוסחאות על נתוני Scoop & Go: מחיר מלא, אחוז רווח, דגל הנחה, סוף שבוע, שעות היום, עונות וחיווי למנהל. מבינים מה ההבדל בין חישוב לכל שורה לחישוב על סיכום, מה השגיאה על ערבוב ביניהם אומרת, ואיך מנפים באגים בנוסחה שלא יוצאת.</p>
+  <div class="chips"><span>🧪 13 תרגילים בתוכנה</span><span>🎞️ 6 הנפשות</span><span>🎛️ מעבדת נוסחאות ועוד שתי הדמיות</span><span>🧮 כל מספר נבדק מול הנתונים</span><span>✅ הכול עובד ב-Tableau Public</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<style>
+.m8-why{display:block;font-size:.88rem;color:#64748b;margin-top:1px}
+.m8-exp{background:#ecfdf5;border:1px solid #a7f3d0;border-inline-start:5px solid #10b981;border-radius:10px;padding:8px 14px;margin:12px 0}
+.m8-exp>:last-child{margin-bottom:0}
+.m8-ed{max-width:560px;margin:14px auto;border:1px solid #b8c0cc;border-radius:6px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.18);direction:ltr;text-align:left;font-size:.9rem;overflow:hidden}
+.m8-ed .nm{margin:12px 14px 0;border:1px solid #c7cfd9;border-radius:3px;padding:3px 9px;width:60%;font-size:.88rem;color:#1e293b;background:#fff}
+.m8-ed .bd{margin:10px 14px 0;border-top:1px solid #d5dbe3;padding:12px 0 16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92rem;line-height:1.7;white-space:pre-wrap;min-height:70px;color:#111}
+.m8-ed .f{color:#d9731a;font-weight:600}.m8-ed .k{color:#1d4ed8;font-weight:700}.m8-ed .s{color:#b91c1c}.m8-ed .c{color:#6b7280;font-style:italic}
+.m8-ed .ft{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px 12px;font-size:.84rem;flex-wrap:wrap}
+.m8-ed .ft .ok{color:#111}.m8-ed .ft .er{color:#c00;font-weight:600}
+.m8-ed .bt{display:flex;gap:8px}.m8-ed .bt i{font-style:normal;border:1px solid #9aa4b2;border-radius:3px;padding:2px 16px;color:#334155;background:#fff}.m8-ed .bt b{background:#1fb890;color:#fff;border-radius:3px;padding:2px 20px;font-weight:600}
+.m8-tb td.num,.m8-tb th.num{text-align:center}
+.m8-tb td.hi{background:#fef9c3;font-weight:700}.m8-tb td.g{background:#dcfce7;font-weight:700}.m8-tb td.r{background:#fee2e2;font-weight:700}
+.m8-tb code{font-size:.82em}
+.m8-cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:14px 0}
+.m8-cmp>div{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff}
+.m8-cmp>div.ok{border-color:#86efac;background:#f0fdf4}.m8-cmp>div.bad{border-color:#fca5a5;background:#fef2f2}
+.m8-cmp h4{margin:0 0 6px;font-size:1rem}
+.m8-big{font-size:1.9rem;font-weight:900;color:var(--navy);direction:ltr;unicode-bidi:isolate;display:inline-block}
+.m8-ladder{display:grid;gap:6px;margin:12px 0}
+.m8-ladder .st{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 12px;background:#fff}
+.m8-ladder .st b{flex:none;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center}
+.m8-lab textarea{width:100%;direction:ltr;text-align:left;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92rem;line-height:1.55;border:1px solid #cbd5e1;border-radius:10px;padding:8px 10px;min-height:92px;resize:vertical;background:#0f172a;color:#e2e8f0}
+.m8-lab .msg{margin:8px 0;padding:8px 12px;border-radius:10px;font-weight:600;direction:ltr;text-align:left;font-size:.9rem}
+.m8-lab .msg.ok{background:#dcfce7;color:#065f46}.m8-lab .msg.bad{background:#fee2e2;color:#991b1b}
+.m8-lab .exp{font-size:.92rem;margin:4px 0 8px;color:var(--ink-soft)}
+.m8-lab .tw{max-height:420px;overflow:auto}
+.m8-lab table{border-collapse:collapse;font-size:.84rem;direction:ltr;width:100%}
+.m8-lab th,.m8-lab td{border:1px solid var(--line);padding:3px 8px;text-align:left;white-space:nowrap}
+.m8-lab th{background:#f1f5f9;position:sticky;top:0}
+.m8-lab td.res{background:#fef9c3;font-weight:700}.m8-lab td.nul{color:#94a3b8;font-style:italic}
+.m8-lab .stp{font-size:.85rem;border:1px dashed #cbd5e1;border-radius:10px;padding:6px 10px;margin-top:8px;direction:ltr;text-align:left;background:#fff}
+.m8-lab .stp div{display:flex;gap:10px;border-bottom:1px solid #eef2f7;padding:2px 0}.m8-lab .stp div span:first-child{flex:1;font-family:ui-monospace,Menlo,monospace}.m8-lab .stp div span:last-child{font-weight:700;color:#1d4ed8}
+.m8-lab label{font-size:.9rem;font-weight:600}
+.m8-lab .row{gap:10px}
+.m8-lab .scope{font-size:.86rem;color:var(--muted)}
+.m8-sw label{display:inline-flex;align-items:center;gap:4px;margin:2px 8px 2px 0;font-weight:600;cursor:pointer}
+.m8-sw .m8-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px}
+.m8-sw .m8-box{border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:#fff}
+.m8-sw .m8-box b{display:block;margin-bottom:4px}
+.m8-sw .m8-box .v{font-size:1.5rem;font-weight:900;color:var(--navy);direction:ltr;unicode-bidi:isolate;display:inline-block}
+.m8-sw .m8-warn{background:#fef3c7;border:1px solid #fde68a;border-radius:10px;padding:6px 12px;margin-top:8px;font-size:.92rem}
+.m8-th .chips2{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;direction:ltr}
+.m8-th .c2{border-radius:999px;padding:2px 10px;font-size:.84rem;font-weight:700;border:1px solid transparent}
+.m8-th .c2.High{background:#dcfce7;color:#166534;border-color:#86efac}.m8-th .c2.Medium{background:#e0e7ff;color:#3730a3;border-color:#a5b4fc}.m8-th .c2.Low{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+.m8-th .cnt{display:flex;gap:10px;flex-wrap:wrap}.m8-th .cnt span{font-weight:800}
+@media(max-width:640px){.m8-fb .tws-body{grid-template-columns:1fr}.m8-fb .tws-data,.m8-fb .tws-marks{border:0;border-bottom:1px solid #d5dbe3}.m8-fb .tws-data{display:grid;grid-template-columns:1fr 1fr}.m8-fb .tws-data h6{grid-column:1/-1}.m8-ed{font-size:.8rem}.m8-big{font-size:1.5rem}}
+</style>
+
+<div class="box note">
+<p><span class="lvl b">בונים</span> <b>מה נבנה במודול הזה.</b> עד עכשיו עבדתם עם השדות שיש בקובץ. כאן אתם יוצרים שדות שלא קיימים בו: מחיר מלא לפני הנחה, סכום ההנחה, אחוז רווח, דגל &quot;נמכר בהנחה&quot;, סוף שבוע או יום חול, שעת ערב, עונה, קטגוריית רווחיות ושורת KPI לכל סניף (מעלה, יורד או חדש). בסוף יש לכם סט של כ-30 שדות מחושבים על Scoop & Go, כולם בדוקים מול הנתונים, ומעבדה בדפדפן שמריצה נוסחאות על שורות אמיתיות לפני שאתם נוגעים ב-Tableau.</p>
+<p><b>מה להכין.</b> קובץ <a class="tool" href="data/scoop_sales_2024_2025.csv" download>scoop_sales_2024_2025.csv</a> טעון ב-Tableau Public (איך מחברים: <a href="module2.html">מודול 2</a>). כדאי להכיר כבר כחול וירוק (<a href="module4.html">מודול 4</a>) ופילטר בסיסי (<a href="module6.html">מודול 6</a>). אם עשיתם את שדה ה-Discount Amount בשיעור הפתיחה, תפגשו אותו כאן שוב, עם ההסבר שמאחוריו.</p>
+<p><b>שדות מחושבים אפשר לבנות בכל Tableau Public.</b> בגרסת העריכה בדפדפן הכול עובד באותה שפה, רק התפריטים בנויים קצת אחרת. בגרסה שלכם ייתכן ששמות הכפתורים שונים מעט. מה שלא עובד ב-Tableau Public (פונקציות <code>SCRIPT_*</code> ו-<code>RAWSQL</code>) יוסבר ברגע שנגיע אליו, בלי תרגילים עליו.</p>
+</div>
+<section class="sec" id="m8-1" data-t="מה זה ואיפה יוצרים">
+<div class="sec-h"><div class="sec-n">1</div><h2>שדה חדש מנוסחה: מה זה ואיפה יוצרים אותו</h2></div>
+<p class="lead">בקובץ של Scoop & Go יש כמות, מחיר ליחידה, הנחה ורווח. אין בו &quot;מחיר מלא לפני הנחה&quot;, אין בו &quot;כמה כסף ניתן בהנחות&quot;, ואין בו &quot;סוף שבוע&quot;. את כל אלה אתם בונים בעצמכם, ב-Tableau, בלי לגעת בקובץ.</p>
+
+<div class="defline"><b>שדה מחושב (Calculated Field):</b> שדה חדש ש-Tableau מחשב מנוסחה שאתם כותבים, מתוך שדות שכבר קיימים. דוגמה: מחיר מלא = כמות כפול מחיר ליחידה, בכל שורה.</div>
+
+<p>הנה שלוש שורות אמיתיות מהקובץ, והחישוב שנעשה על כל אחת. הנוסחה היא <code>[Quantity] * [Unit Price]</code>. שם שדה נכתב בסוגריים מרובעים. את <dfn data-d="נוסחה היא טקסט שמתאר חישוב: שמות שדות, מספרים, סימנים כמו + ו-* ופונקציות. למשל [Sales] - [Cost]">הנוסחה</dfn> Tableau מריץ שורה אחרי שורה.</p>
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>Order ID</th><th class="num">Quantity</th><th class="num">Unit Price</th><th class="num">Sales</th><th class="num"><code>[Quantity] * [Unit Price]</code></th><th class="num"><code>[Full Price] - [Sales]</code></th></tr></thead>
+<tbody>
+<tr><td>SG-00001</td><td class="num">2</td><td class="num">20</td><td class="num">40</td><td class="num g">40</td><td class="num g">0</td></tr>
+<tr><td>SG-00034</td><td class="num">2</td><td class="num">20</td><td class="num">36</td><td class="num g">40</td><td class="num g">4</td></tr>
+<tr><td>SG-03005</td><td class="num">3</td><td class="num">40</td><td class="num">60</td><td class="num g">120</td><td class="num g">60</td></tr>
+</tbody></table></div>
+<p>בשורה השלישית המחיר המלא הוא 120 והלקוח שילם 60: זו הנחה של 50 אחוז, ו-60 שקל ניתנו בהנחה. בשורה השנייה ההנחה היא 10 אחוז: 4 שקל. כדאי לשים לב שהעמודה השישית משתמשת בשדה שבנינו בעצמנו (<code>Full Price</code>). שדה מחושב יכול להישען על שדה מחושב אחר.</p>
+
+<div class="anim" data-id="m8-anim-born" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 300" role="img" aria-label="הנפשה: איך נולד שדה מחושב, מנוסחה לעמודה חדשה בכל שורה ושדה חדש בחלונית הנתונים">
+<defs><marker id="m8b-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e8741f"/></marker></defs>
+<text x="20" y="84" font-size="15" font-weight="700" fill="#334155" text-anchor="start">scoop_sales_2024_2025.csv</text>
+<g font-size="15" text-anchor="middle">
+<rect x="20" y="96" width="100" height="32" fill="#e2e8f0" stroke="#94a3b8"/><text x="70" y="118" font-weight="700" fill="#334155">Order ID</text>
+<rect x="120" y="96" width="80" height="32" fill="#e2e8f0" stroke="#94a3b8"/><text x="160" y="118" font-weight="700" fill="#334155">Quantity</text>
+<rect x="200" y="96" width="90" height="32" fill="#e2e8f0" stroke="#94a3b8"/><text x="245" y="118" font-weight="700" fill="#334155">Unit Price</text>
+<rect x="290" y="96" width="70" height="32" fill="#e2e8f0" stroke="#94a3b8"/><text x="325" y="118" font-weight="700" fill="#334155">Sales</text>
+<g fill="#fff" stroke="#cbd5e1"><rect x="20" y="128" width="100" height="32"/><rect x="120" y="128" width="80" height="32"/><rect x="200" y="128" width="90" height="32"/><rect x="290" y="128" width="70" height="32"/>
+<rect x="20" y="160" width="100" height="32"/><rect x="120" y="160" width="80" height="32"/><rect x="200" y="160" width="90" height="32"/><rect x="290" y="160" width="70" height="32"/>
+<rect x="20" y="192" width="100" height="32"/><rect x="120" y="192" width="80" height="32"/><rect x="200" y="192" width="90" height="32"/><rect x="290" y="192" width="70" height="32"/></g>
+<g fill="#1e293b"><text x="70" y="150">SG-00001</text><text x="160" y="150">2</text><text x="245" y="150">20</text><text x="325" y="150">40</text>
+<text x="70" y="182">SG-00034</text><text x="160" y="182">2</text><text x="245" y="182">20</text><text x="325" y="182">36</text>
+<text x="70" y="214">SG-03005</text><text x="160" y="214">3</text><text x="245" y="214">40</text><text x="325" y="214">60</text></g>
+</g>
+<g data-s="2" data-pulse><rect x="95" y="14" width="330" height="40" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="2"/>
+<text x="260" y="40" font-size="16" font-family="ui-monospace,Menlo,monospace" fill="#9a3412" text-anchor="middle">[Quantity] * [Unit Price]</text>
+<path d="M260 54 L260 92" stroke="#e8741f" stroke-width="2.5" fill="none" marker-end="url(#m8b-ar)"/></g>
+<g data-s="3" data-pulse font-size="15" text-anchor="middle">
+<rect x="360" y="96" width="110" height="32" fill="#bbf7d0" stroke="#16a34a"/><text x="415" y="118" font-weight="700" fill="#14532d">Full Price</text>
+<rect x="360" y="128" width="110" height="32" fill="#f0fdf4" stroke="#86efac"/><text x="415" y="150" font-weight="700" fill="#166534">40</text>
+<rect x="360" y="160" width="110" height="32" fill="#f0fdf4" stroke="#86efac"/><text x="415" y="182" font-weight="700" fill="#166534">40</text>
+<rect x="360" y="192" width="110" height="32" fill="#f0fdf4" stroke="#86efac"/><text x="415" y="214" font-weight="700" fill="#166534">120</text></g>
+<g data-s="3" font-size="13" fill="#64748b" text-anchor="start"><text x="480" y="150">2 * 20</text><text x="480" y="182">2 * 20</text><text x="480" y="214">3 * 40</text></g>
+<g font-size="15"><rect x="590" y="40" width="190" height="210" rx="8" fill="#fff" stroke="#94a3b8"/><text x="685" y="64" text-anchor="middle" font-weight="700" fill="#334155">Data pane</text>
+<g fill="#1e293b" text-anchor="start"><text x="606" y="100">Order ID</text><text x="606" y="130">Quantity</text><text x="606" y="160">Unit Price</text><text x="606" y="190">Sales</text></g>
+<g data-s="4" data-pulse><rect x="596" y="206" width="178" height="30" rx="15" fill="#d9f0d6" stroke="#16a34a" stroke-width="2"/><text x="610" y="227" text-anchor="start" fill="#14532d" font-weight="700">=#  Full Price</text></g></g>
+<g data-s="4"><rect x="20" y="246" width="340" height="34" rx="17" fill="#ecfdf5" stroke="#10b981"/><text x="190" y="269" font-size="15" text-anchor="middle" fill="#065f46" font-weight="700">CSV file: unchanged</text></g>
+</svg></div>
+<ol class="caps">
+<li>זה הקובץ. יש בו כמות, מחיר ליחידה ומכירות. אין בו שדה &quot;מחיר מלא&quot;.</li>
+<li>אתם כותבים נוסחה: כמות כפול מחיר ליחידה.</li>
+<li>Tableau מריץ אותה בכל שורה בנפרד: 2 כפול 20, 2 כפול 20, 3 כפול 40.</li>
+<li>השדה החדש מופיע בחלונית הנתונים, ליד השדות האחרים. הקובץ המקורי נשאר בדיוק כמו שהיה.</li>
+</ol></div>
+
+<h3>איפה יוצרים אותו</h3>
+<p>יש שתי דרכים ב-Tableau Public Desktop, והתוצאה זהה:</p>
+<ol>
+<li>בתפריט העליון: <code>Analysis</code> ואז <code>Create Calculated Field...</code></li>
+<li>קליק ימני (ב-Mac: Control ועוד קליק) על שדה כלשהו בחלונית <code>Data</code>, ואז <code>Create</code> ואז <code>Calculated Field...</code> (בצילום).</li>
+</ol>
+<p>בעריכה בדפדפן אפשר ליצור שדות מחושבים גם כן, בדרך כלל דרך אותו קליק ימני על שדה בחלונית הנתונים. אם אינכם מוצאים את הפקודה, חפשו את השם <code>Create Calculated Field</code>.</p>
+<figure class="shot" style="max-width:440px;margin-inline:auto"><img src="img/create-menu-calc.png" alt="תפריט קליק ימני על שדה בחלונית Data עם Create ואחריו Calculated Field"><figcaption>קליק ימני על שדה, <code>Create</code>, <code>Calculated Field...</code>. בצילום הנתונים הם של משחקי וידאו (קובץ אחר). אצלכם יופיעו השדות של Scoop & Go.</figcaption></figure>
+
+<h3>החלון שנפתח</h3>
+<figure class="shot" data-shot="m8-calc-fullprice"><div class="fb"><div class="m8-ed" role="img" aria-label="הדמיה סכמטית של חלון עריכת שדה מחושב">
+<div class="nm">Full Price</div>
+<div class="bd"><span class="f">[Quantity]</span> * <span class="f">[Unit Price]</span></div>
+<div class="ft"><span class="ok">The calculation is valid.</span><span class="bt"><i>Apply</i><b>OK</b></span></div>
+</div>
+<div class="need">צילום מסך נדרש: Tableau Public, חלון Create Calculated Field עם השם Full Price והנוסחה [Quantity] * [Unit Price] על נתוני Scoop & Go, ההודעה The calculation is valid. בתחתית</div><p class="tag" style="text-align:center;font-size:.8rem;color:#94a3b8;margin:-6px 0 6px">הדמיה סכמטית</p></div><figcaption>חלון השדה המחושב עם הנוסחה הראשונה שלנו. הצילום מתעדכן אוטומטית כשקובץ התמונה קיים.</figcaption></figure>
+<ol class="callouts">
+<li><b>שם השדה</b> בשורה העליונה. השם הזה יופיע בחלונית הנתונים, אז כדאי שיהיה ברור.</li>
+<li><b>אזור הנוסחה.</b> שמות שדות בסוגריים מרובעים, וב-Tableau הם נצבעים בכתום. תוך כדי הקלדה מוצעת רשימת שדות ופונקציות. אפשר לבחור ממנה.</li>
+<li><b>ההודעה בתחתית.</b> <code>The calculation is valid.</code> אומרת שהנוסחה כתובה נכון. אם יש שגיאה תופיע שם הודעה אדומה, <code>The calculation contains errors</code>, ואפשר ללחוץ עליה כדי לראות איפה הבעיה.</li>
+<li><b>Apply ו-OK.</b> <code>Apply</code> שומר ומשאיר את החלון פתוח, <code>OK</code> שומר וסוגר. נוסחה עם שגיאה לא תישמר.</li>
+<li>החץ הקטן בצד של החלון פותח רשימת פונקציות עם הסבר ודוגמה לכל אחת. כדאי להציץ בו.</li>
+</ol>
+<div class="cols2">
+<figure class="shot"><img src="img/calc-empty.png" alt="חלון שדה מחושב ריק עם הודעת שגיאה אדומה"><figcaption>טקסט חופשי שאינו נוסחה: הודעה אדומה בתחתית, <code>The calculation contains errors</code>.</figcaption></figure>
+<figure class="shot"><img src="img/calc-valid.png" alt="חלון שדה מחושב עם נוסחה תקינה והודעה שהחישוב תקין"><figcaption>נוסחה תקינה: <code>The calculation is valid.</code> וכפתור <code>OK</code> פעיל. (בצילום: נתוני משחקי וידאו.)</figcaption></figure>
+</div>
+
+<div class="box try" data-id="m8-try-full-price">
+<p><b>בונים את שני השדות הראשונים: Full Price ו-Discount Amount.</b> קובץ ה-CSV טעון, וגיליון חדש פתוח.</p>
+<ol>
+<li>בחרו <code>Analysis</code> ואז <code>Create Calculated Field...</code>.<span class="m8-why">למה: זו נקודת ההתחלה של כל שדה מחושב.</span></li>
+<li>בשורה העליונה כתבו את השם <code>Full Price</code>. באזור הנוסחה כתבו:
+<pre class="code" data-lang="tableau">[Quantity] * [Unit Price]</pre>
+<span class="m8-why">למה: מחיר מלא לפני הנחה הוא כמות כפול מחיר ליחידה. אם בחלונית הנתונים אצלכם כתוב Unit_Price עם קו תחתון, כתבו כפי שמופיע אצלכם. ב-Tableau באנגלית קו תחתון בשם עמודה מוצג בדרך כלל כרווח.</span></li>
+<li>ודאו שבתחתית כתוב <code>The calculation is valid.</code> ולחצו <code>OK</code>.<span class="m8-why">למה: רק נוסחה תקינה נשמרת. השדה החדש יופיע בחלונית הנתונים, בין המדדים, עם סימן = ליד הסמל.</span></li>
+<li>צרו שדה שני בשם <code>Discount Amount</code> עם הנוסחה:
+<pre class="code" data-lang="tableau">[Full Price] - [Sales]</pre>
+<span class="m8-why">למה: Sales כבר אחרי הנחה. ההפרש בין המחיר המלא למה ששולם הוא כמה כסף ניתן בהנחות. שימו לב שהנוסחה משתמשת בשדה שבניתם הרגע.</span></li>
+<li>פתחו גיליון חדש (<code>New Worksheet</code>) וגררו אליו את <code>Full Price</code> אל <code>Text</code> בכרטיס <code>Marks</code>. אחר כך גררו אל <code>Text</code> גם את <code>Sales</code> ואת <code>Discount Amount</code> (או החליפו ביניהם, אחד כל פעם).<span class="m8-why">למה: כשאין עוד שדות בגיליון, Tableau מסכם את כל הנתונים למספר אחד, ו-Text מראה אותו.</span></li>
+<li>שבירה מכוונת: ערכו את <code>Discount Amount</code> (קליק ימני עליו בחלונית הנתונים, <code>Edit...</code>). שנו את <code>[Sales]</code> ל-<code>[Sals]</code> וקראו את ההודעה האדומה. תקנו חזרה ולחצו <code>OK</code>.<span class="m8-why">למה: כדאי לראות איך שגיאה נראית כשהיא קטנה ומכוונת, ולא בפעם הראשונה כשהיא באמצע עבודה.</span></li>
+</ol>
+<div class="m8-exp"><p><b>תוצאה צפויה:</b> <code>SUM(Full Price)</code> = <span class="n">245,055</span>. <code>SUM(Sales)</code> = <span class="n">236,820.90</span>. <code>SUM(Discount Amount)</code> = <span class="n">8,234.10</span>. בדיקה בראש: 245,055 פחות 236,820.9 הוא 8,234.1. Tableau עשוי להציג את המספרים מעוגלים (למשל 236,821 ו-8,234), לפי פורמט ברירת המחדל. ריחוף על המספר או <code>Format</code> יראו את שאר הספרות.</p></div>
+<p><b>למי שסיים:</b> גררו <code>Discount</code> אל <code>Rows</code> (אם הוא בין המדדים: קליק ימני, <code>Convert to Dimension</code>, כדי שיהיה כחול) והשאירו את <code>Discount Amount</code> על <code>Text</code>. תוצאה צפויה: הנחה 0.1: <span class="n">1,611.90</span>, הנחה 0.2: <span class="n">445.20</span>, הנחה 0.5: <span class="n">6,177.00</span> (ובהנחה 0: 0). שימו לב: ההנחה של 50 אחוז היא 6,177 מתוך 8,234.10, שלושה רבעים מכל ההנחות שניתנו.</p>
+</div>
+
+<h3>מה צבע וסוג מקבל השדה החדש</h3>
+<p>Tableau קובע לבד איפה לשים את השדה, לפי <b>סוג הערך שהנוסחה מחזירה</b>. לא אתם בוחרים. הטבלה הזאת תחזור בהמשך עם כל שדה שנבנה:</p>
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>הנוסחה מחזירה</th><th>איפה השדה נוחת</th><th>הצבע כשגוררים אותו</th><th>דוגמה</th></tr></thead>
+<tbody>
+<tr><td>מספר, לכל שורה</td><td>בין המדדים (<span class="pill c">=#</span>)</td><td>ירוק, ומסוכם: <span class="pill c sum">Full Price</span></td><td><code>Full Price</code></td></tr>
+<tr><td>טקסט</td><td>בין הממדים (<span class="pill d">=Abc</span>)</td><td>כחול, בדיד</td><td><code>Day Type</code></td></tr>
+<tr><td>אמת או שקר (<dfn data-d="שדה שיכול לקבל רק שני ערכים: True או False. למשל Is Discounted הוא True בשורה שיש בה הנחה">בוליאני</dfn>)</td><td>בין הממדים</td><td>כחול, בדיד, עם שתי כותרות True ו-False</td><td><code>Is Discounted</code></td></tr>
+<tr><td>תאריך</td><td>בין הממדים</td><td>ירוק או כחול, לפי מה שתבחרו בתפריט של הפיל</td><td><code>Month Start</code></td></tr>
+<tr><td>תוצאה של חישוב מסכם (SUM ודומיו)</td><td>בין המדדים</td><td>ירוק, ומופיע כ-<code>AGG(...)</code></td><td><code>Profit Margin</code></td></tr>
+</tbody></table></div>
+<p>בקיצור: <b>המספר נוחת במדדים והטקסט בממדים.</b> כשגוררים את השדה לגיליון הוא הופך ל<dfn data-d="הצורה המעוגלת שהשדה מקבל כשמניחים אותו על מדף בגיליון. למשל SUM(Sales) על Rows. כחול לבדיד וירוק לרציף">פיל</dfn>. מספר שהוא בעצם מזהה (כמו מספר הזמנה שהוצא מהטקסט) יהיה מדד וירוק, וצריך להמיר אותו בעצמכם (<code>Convert to Dimension</code>).</p>
+
+<div class="box trap"><p><b>&quot;The calculation is valid&quot; לא אומרת שהחישוב נכון.</b> היא אומרת רק שהנוסחה כתובה בצורה ש-Tableau מבין. אפשר לכתוב <code>[Sales] - [Cost]</code> כשהתכוונתם ל-<code>[Sales] - [Discount Amount]</code>, והחלון ישמח. לכן בכל שדה חדש בודקים מספר אחד ידוע. לדוגמה כאן: 245,055 פחות 236,820.9 חייב לתת 8,234.1.</p></div>
+
+<div class="box meaning"><p>שדה מחושב לא משנה את קובץ המקור. הוא נשמר בתוך חוברת העבודה של Tableau, ובכל פעם שהנתונים מתעדכנים הוא מתחשב מחדש. זה ההבדל בין עמודה ב-Excel שמדביקים ערכים לתוכה לבין נוסחה שחיה: אתם משנים נוסחה במקום אחד, וכל הגיליונות שמשתמשים בה מתעדכנים.</p></div>
+
+<div class="box think" data-id="m8-th-why-field"><p>יבגני אומר: &quot;למה לא להוסיף עמודה Discount Amount בקובץ ה-CSV עצמו, ולטעון אותו מחדש?&quot; תנו שני יתרונות לשדה מחושב ויתרון אחד לעמודה בקובץ.</p>
+<div class="ans">יתרונות לשדה מחושב: (1) הנוסחה גלויה ואפשר לבדוק ולתקן אותה, בעוד שעמודה בקובץ היא רק מספרים שאין דרך לראות איך נוצרו; (2) משנים במקום אחד והכול מתעדכן, והקובץ המקורי נשאר נקי למי שמשתמש בו גם בכלי אחר. יתרון לעמודה בקובץ: היא זמינה לכל כלי שיקרא את הקובץ, גם בלי Tableau, וכשהחישוב כבד אפשר לחשב אותה פעם אחת מראש.</div></div>
+
+<div class="quiz" data-id="m8-q-where" data-a="2"><p class="qq">יצרתם שדה בשם <code>Full Price</code> עם הנוסחה <code>[Quantity] * [Unit Price]</code>. איפה הוא יופיע בחלונית הנתונים, ומה הצבע שלו כשתגררו אותו לגיליון?</p>
+<button class="opt">בין הממדים, כחול, כי הוא שדה חדש</button>
+<button class="opt">בין המדדים, ירוק ומסוכם, כי הנוסחה מחזירה מספר</button>
+<button class="opt">בין המדדים, אבל כחול, כי הוא נוצר בנוסחה</button>
+<div class="why">מספר נוחת במדדים וגורר ירוק ומסוכם (<code>SUM(Full Price)</code>). הצבע נקבע לפי סוג התוצאה, לא לפי העובדה שהשדה חדש או שנוצר בנוסחה. טקסט או אמת/שקר היו נוחתים בממדים ובכחול.</div></div>
+
+<div class="quiz" data-id="m8-q-valid" data-a="3"><p class="qq">בחלון השדה המחושב כתוב <code>The calculation is valid.</code> מה זה מבטיח?</p>
+<button class="opt">שהחישוב נותן בדיוק את המספר שחשבתם עליו</button>
+<button class="opt">שהשדה יופיע בצבע הנכון</button>
+<button class="opt">שהנוסחה כתובה נכון בשפה של Tableau, ולא יותר מזה</button>
+<div class="why">ההודעה בודקת תחביר: סוגריים, שמות שדות, פונקציות. אם כתבתם נוסחה תקינה שמחשבת דבר אחר מהמתוכנן, היא עדיין תהיה &quot;valid&quot;. לכן בודקים מול מספר ידוע.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> כדאי לפתוח את Tableau Public לפני השיעור ולבדוק אם השדות מופיעים עם רווח (Unit Price) או עם קו תחתון, ולהגיד לכיתה בדיוק מה רואים. תנו להם להקליד את הנוסחה הראשונה בעצמם ולא להעתיק: ההשלמה האוטומטית של השמות היא חלק מהלמידה. אם מישהו מקליד בעברית (מקלדת לא באנגלית) תראו אותיות עבריות בתוך הנוסחה: זו הטעות הנפוצה ביותר בשעה הראשונה.</div>
+</section>
+<section class="sec" id="m8-2" data-t="שורה מול סיכום">
+<div class="sec-h"><div class="sec-n">2</div><h2>חישוב לכל שורה או חישוב על סיכום</h2></div>
+<p class="lead">המנהל שואל: &quot;מה אחוז הרווח של הסאנדיי?&quot; ב-Tableau אפשר לקבל שני מספרים שונים מאותה שאלה, ושניהם יראו מקצועיים. רק אחד מהם עונה על השאלה. כאן מבינים למה.</p>
+
+<div class="defline"><b>חישוב ברמת שורה (row-level):</b> Tableau מריץ אותו בכל שורה של הקובץ בנפרד, לפני כל סיכום. התוצאה היא ערך אחד לכל שורה. דוגמה: <code>[Quantity] * [Unit Price]</code> נותן מחיר מלא לכל שורה (השדה שבניתם בסעיף הקודם).</div>
+<div class="defline"><b>חישוב מסכם (aggregate):</b> Tableau קודם מסכם שורות (SUM, AVG, COUNT ודומיהם) ורק אחר כך מחשב. התוצאה היא ערך אחד לכל <dfn data-d="סימן הוא מה שמצויר בגרף עבור קבוצת שורות: עמודה אחת, נקודה אחת או תא אחד בטבלה. בגרף עמודות לפי סניף יש תשעה סימנים">סימן</dfn> בגרף. דוגמה: <code>SUM([Profit]) / SUM([Sales])</code> נותן לכל סניף את הרווח הכולל שלו חלקי המכירות הכוללות שלו.</div>
+
+<p>ננסה על ארבע שורות אמיתיות של סאנדיי. בשורה הראשונה והשנייה הרווח הוא 30 אחוז. בשתי האחרונות יש הפסד (הנחה של 50 אחוז).</p>
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>Order ID</th><th>Item</th><th class="num">Sales</th><th class="num">Profit</th><th class="num">Profit / Sales</th></tr></thead>
+<tbody>
+<tr><td>SG-00007</td><td>Banana Split</td><td class="num">40</td><td class="num">12</td><td class="num">30.0%</td></tr>
+<tr><td>SG-00091</td><td>Banana Split</td><td class="num">160</td><td class="num">48</td><td class="num">30.0%</td></tr>
+<tr><td>SG-03005</td><td>Banana Split</td><td class="num">60</td><td class="num">-24</td><td class="num r">-40.0%</td></tr>
+<tr><td>SG-03129</td><td>Halva Sundae</td><td class="num">18</td><td class="num">-6</td><td class="num r">-33.3%</td></tr>
+</tbody></table></div>
+
+<div class="anim" data-id="m8-anim-two-ways" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 320" role="img" aria-label="הנפשה: שתי דרכים לחשב אחוז רווח על ארבע שורות, ממוצע של יחסים מול יחס של סכומים">
+<defs><marker id="m8t-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<g font-size="15" text-anchor="middle">
+<rect x="20" y="40" width="100" height="32" fill="#e2e8f0" stroke="#94a3b8"/><text x="70" y="62" font-weight="700" fill="#334155">Order ID</text>
+<rect x="120" y="40" width="70" height="32" fill="#e2e8f0" stroke="#94a3b8"/><text x="155" y="62" font-weight="700" fill="#334155">Sales</text>
+<rect x="190" y="40" width="70" height="32" fill="#e2e8f0" stroke="#94a3b8"/><text x="225" y="62" font-weight="700" fill="#334155">Profit</text>
+<g fill="#fff" stroke="#cbd5e1"><rect x="20" y="72" width="100" height="32"/><rect x="120" y="72" width="70" height="32"/><rect x="190" y="72" width="70" height="32"/>
+<rect x="20" y="104" width="100" height="32"/><rect x="120" y="104" width="70" height="32"/><rect x="190" y="104" width="70" height="32"/>
+<rect x="20" y="136" width="100" height="32"/><rect x="120" y="136" width="70" height="32"/><rect x="190" y="136" width="70" height="32"/>
+<rect x="20" y="168" width="100" height="32"/><rect x="120" y="168" width="70" height="32"/><rect x="190" y="168" width="70" height="32"/></g>
+<g fill="#1e293b"><text x="70" y="94">SG-00007</text><text x="155" y="94">40</text><text x="225" y="94">12</text>
+<text x="70" y="126">SG-00091</text><text x="155" y="126">160</text><text x="225" y="126">48</text>
+<text x="70" y="158">SG-03005</text><text x="155" y="158">60</text><text x="225" y="158">-24</text>
+<text x="70" y="190">SG-03129</text><text x="155" y="190">18</text><text x="225" y="190">-6</text></g></g>
+<text x="20" y="28" font-size="14" fill="#64748b" font-weight="700" text-anchor="start">4 Sundae rows</text>
+<g data-s="2" data-pulse font-size="15" text-anchor="middle"><rect x="270" y="40" width="110" height="32" fill="#fed7aa" stroke="#ea580c"/><text x="325" y="62" font-weight="700" fill="#7c2d12">Profit/Sales</text>
+<rect x="270" y="72" width="110" height="32" fill="#fff7ed" stroke="#fdba74"/><text x="325" y="94" fill="#9a3412" font-weight="700">30.0%</text>
+<rect x="270" y="104" width="110" height="32" fill="#fff7ed" stroke="#fdba74"/><text x="325" y="126" fill="#9a3412" font-weight="700">30.0%</text>
+<rect x="270" y="136" width="110" height="32" fill="#fff7ed" stroke="#fdba74"/><text x="325" y="158" fill="#9a3412" font-weight="700">-40.0%</text>
+<rect x="270" y="168" width="110" height="32" fill="#fff7ed" stroke="#fdba74"/><text x="325" y="190" fill="#9a3412" font-weight="700">-33.3%</text></g>
+<g data-s="2"><rect x="268" y="210" width="114" height="30" rx="8" fill="#fff" stroke="#ea580c"/><text x="325" y="230" font-size="13" text-anchor="middle" fill="#9a3412" font-family="ui-monospace,Menlo,monospace">row first</text></g>
+<g><rect x="420" y="30" width="360" height="130" rx="12" fill="#fff" stroke="#fb923c" stroke-width="2"/>
+<text x="600" y="56" font-size="16" font-weight="800" text-anchor="middle" fill="#9a3412">A: row first, then AVG</text>
+<text x="600" y="82" font-size="14" text-anchor="middle" fill="#64748b" font-family="ui-monospace,Menlo,monospace">AVG([Profit] / [Sales])</text>
+<g data-s="3" data-pulse><text x="600" y="132" font-size="32" font-weight="900" text-anchor="middle" fill="#c2410c">-3.3%</text></g></g>
+<g><rect x="420" y="176" width="360" height="130" rx="12" fill="#fff" stroke="#22c55e" stroke-width="2"/>
+<text x="600" y="202" font-size="16" font-weight="800" text-anchor="middle" fill="#166534">B: SUM first, then divide</text>
+<text x="600" y="226" font-size="14" text-anchor="middle" fill="#64748b" font-family="ui-monospace,Menlo,monospace">SUM([Profit]) / SUM([Sales])</text>
+<g data-s="4" data-pulse><text x="600" y="256" font-size="16" font-weight="700" text-anchor="middle" fill="#14532d" font-family="ui-monospace,Menlo,monospace">30 / 278</text></g>
+<g data-s="5" data-pulse><text x="600" y="294" font-size="32" font-weight="900" text-anchor="middle" fill="#15803d">10.8%</text></g></g>
+<g data-s="4">
+<rect x="20" y="214" width="240" height="26" rx="13" fill="#dcfce7" stroke="#22c55e"/><text x="140" y="232" font-size="13" text-anchor="middle" fill="#166534">SUM(Profit)=30  SUM(Sales)=278</text></g>
+<g data-s="6"><rect x="20" y="256" width="360" height="50" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+<text x="200" y="278" font-size="14" text-anchor="middle" fill="#065f46" font-weight="700">B answers: profit per shekel sold</text>
+<text x="200" y="297" font-size="13" text-anchor="middle" fill="#b45309">A treats an 18 NIS row like a 160 NIS row</text></g>
+</svg></div>
+<ol class="caps">
+<li>ארבע שורות: מכירות ורווח. שתיים רווחיות ושתיים בהפסד.</li>
+<li>דרך א: קודם מחשבים יחס בכל שורה (רווח חלקי מכירות). זה חישוב ברמת שורה.</li>
+<li>ואז לוקחים ממוצע של ארבעת היחסים: מינוס 3.3 אחוז. השורה של 18 שקל שוקלת כמו השורה של 160 שקל.</li>
+<li>דרך ב: קודם מסכמים. הרווח הכולל הוא 30, המכירות הכוללות הן 278.</li>
+<li>ואז מחלקים: 30 חלקי 278 הם 10.8 אחוז.</li>
+<li>דרך ב עונה על השאלה &quot;כמה רווח יש לנו על כל שקל שנמכר&quot;. לכן אחוז רווח של קבוצה מחשבים מסכומים. ממוצע של יחסים נותן מספר אחר, ולא נכון לשאלה הזאת.</li>
+</ol></div>
+
+<p>שני החישובים נכתבים ב-Tableau בקלות, ושניהם &quot;valid&quot;. ההבדל הוא רק מה מסכמים ומתי. עכשיו עושים את זה על כל הנתונים.</p>
+
+<div class="box try" data-id="m8-try-margin">
+<p><b>Profit Margin מול Avg Row Margin, לפי קטגוריה.</b></p>
+<ol>
+<li>צרו שדה מחושב בשם <code>Profit Margin</code>:
+<pre class="code" data-lang="tableau">SUM([Profit]) / SUM([Sales])</pre>
+<span class="m8-why">למה: סכום הרווח חלקי סכום המכירות הוא אחוז הרווח של הקבוצה. הנוסחה מסכמת קודם, ולכן היא חישוב מסכם.</span></li>
+<li>בחלונית הנתונים: קליק ימני על <code>Profit Margin</code>, <code>Default Properties</code>, <code>Number Format...</code>, <code>Percentage</code> עם ספרה אחת אחרי הנקודה.<span class="m8-why">למה: כך השדה מוצג כאחוז בכל מקום שבו משתמשים בו, ואין צורך לעצב מחדש בכל גיליון.</span></li>
+<li>צרו שדה שני בשם <code>Avg Row Margin</code>:
+<pre class="code" data-lang="tableau">AVG([Profit] / [Sales])</pre>
+<span class="m8-why">למה: זו הדרך השנייה, יחס לכל שורה ואז ממוצע. נעצב אותו גם כאחוז באותה דרך. שימו לב שהחישוב בתוך ה-AVG הוא ברמת שורה, וה-AVG מסכם אותו: זה חוקי.</span></li>
+<li>גיליון חדש. גררו <code>Category</code> אל <code>Rows</code>, את <code>Profit Margin</code> אל <code>Columns</code>, ואת <code>Avg Row Margin</code> אל <code>Columns</code>, מימין לראשון.<span class="m8-why">למה: כך רואים את שני הגרפים זה ליד זה, אותה קטגוריה בשורה אחת. בכרטיס Marks כדאי להוסיף את <code>Profit Margin</code> אל <code>Label</code> כדי לראות את המספרים.</span></li>
+<li>כדי לראות את הסכום הכללי, גררו את <code>Category</code> החוצה מ-<code>Rows</code> ובדקו את שני המספרים.<span class="m8-why">למה: בלי ממד בגיליון יש סימן אחד לכל הנתונים. שימו לב איך אותו שדה מחושב נותן ערך אחר כשמשנים את הממדים. זה טבעו של חישוב מסכם.</span></li>
+</ol>
+<div class="m8-exp"><p><b>תוצאה צפויה</b> (<code>Profit Margin</code> / <code>Avg Row Margin</code>):</p>
+<div class="tw"><table class="tbl m8-tb"><thead><tr><th>Category</th><th class="num">Profit Margin</th><th class="num">Avg Row Margin</th></tr></thead><tbody>
+<tr><td>Cones</td><td class="num">52.9%</td><td class="num">51.7%</td></tr>
+<tr><td>Cups</td><td class="num">52.0%</td><td class="num">50.8%</td></tr>
+<tr><td>Drinks</td><td class="num">67.3%</td><td class="num">68.7%</td></tr>
+<tr><td>Sticks</td><td class="num">51.6%</td><td class="num">51.6%</td></tr>
+<tr><td>Sundaes</td><td class="num hi">28.2%</td><td class="num hi">25.4%</td></tr>
+<tr><td><b>הכול (בלי Category)</b></td><td class="num g">51.0%</td><td class="num r">52.6%</td></tr>
+</tbody></table></div>
+<p>התוצאה המדויקת הכללית היא 120,722.9 חלקי 236,820.9, שהם 0.5098. בסאנדיי ההבדל הכי בולט: 28.2 מול 25.4, כי שם יושבות כל שורות ההפסד.</p></div>
+</div>
+
+<div class="box trap"><p><b>ממוצע של יחסים.</b> הטעות הנפוצה בשדות מחושבים: להשתמש ב-<code>AVG([Profit] / [Sales])</code> ולקרוא לזה &quot;אחוז הרווח&quot;. הוא נותן משקל שווה לשורה של 8 שקל ולשורה של 160 שקל. לכל יחס של קבוצה, כמו אחוז רווח, אחוז הנחה או מחיר ממוצע ליחידה, מסכמים את המונה, מסכמים את המכנה, ורק אז מחלקים.</p></div>
+
+<h3>אותו שדה, כל פעם בגרף אחר</h3>
+<p>חישוב מסכם מחושב מחדש לכל סימן בגרף, לפי הממדים שיש בו. אותו <code>Profit Margin</code> נותן שלוש תמונות שונות על אותם נתונים:</p>
+<div class="tw"><table class="tbl m8-tb"><thead><tr><th>מה יש בגיליון</th><th>מה Tableau מסכם בכל סימן</th><th>מה רואים</th></tr></thead><tbody>
+<tr><td>שום ממד</td><td>כל 6,575 השורות</td><td>סימן אחד: 51.0%</td></tr>
+<tr><td><span class="pill d">Channel</span></td><td>שורות של כל ערוץ בנפרד</td><td>App 50.2%, Delivery 51.9%, Walk-in 51.0%</td></tr>
+<tr><td><span class="pill d">Branch</span></td><td>שורות של כל סניף בנפרד</td><td>9 סימנים, מ-48.3% (Rehovot Mall) עד 52.0% (Tel Aviv Dizengoff)</td></tr>
+</tbody></table></div>
+<p>אפשר לראות ב-Tableau שהשדה על המדף נקרא <code>AGG(Profit Margin)</code>. ה-AGG אומר: &quot;זה כבר מסוכם, לא מסכמים שוב&quot;. תוצאה של חישוב מסכם היא תמיד מדד, וירוקה.</p>
+<p>ויש בונוס: הסכום הכללי של חישוב מסכם מחושב נכון. אם תפעילו <code>Analysis</code> ואז <code>Totals</code>, השורה &quot;Grand Total&quot; של <code>Profit Margin</code> תראה 51.0%, כלומר סך הרווח חלקי סך המכירות, ולא סכום או ממוצע של האחוזים שבשורות.</p>
+
+<div class="box meaning"><p>השאלה &quot;באיזו רמה מחשבים?&quot; חשובה יותר מכל פונקציה. חישוב ברמת שורה הוא כמו עמודה חדשה בקובץ: הוא לא משתנה כשמשנים את הגרף. חישוב מסכם הוא כמו שאלה על קבוצה: התשובה תלויה בקבוצה. כשתראו מספר מוזר, השאלה הראשונה היא באיזו רמה הוא חושב.</p></div>
+
+<div class="box real"><p>בדוחות כספיים, אחוז רווח גולמי הוא תמיד הרווח הגולמי חלקי ההכנסות של התקופה, כלומר יחס של סכומים. כך מחשבים גם בכלי BI אחרים: ב-SQL זה <code>SUM(profit) / SUM(sales)</code> ולא <code>AVG(profit / sales)</code>. הכלל זהה בכל מקום, לא רק ב-Tableau.</p></div>
+
+<div class="box think" data-id="m8-th-level"><p>מוסיפים את <code>Branch</code> ל-<code>Rows</code> לצד <code>Category</code>. מה קורה לערך של <code>Profit Margin</code> בכל סימן, ולמה לא צריך ליצור שדה חדש?</p>
+<div class="ans">לכל צירוף של סניף וקטגוריה Tableau מסכם רק את השורות שלו ומחשב מחדש את הרווח חלקי המכירות. השדה אותו שדה, כי הנוסחה אינה תלויה ברמת הפירוט. היא מחושבת מחדש בכל סימן, ולכן אחוז הרווח של Sundaes בסניף אחד יכול להיות שונה מהאחוז של Sundaes בכל הרשת.</div></div>
+
+<div class="quiz" data-id="m8-q-level" data-a="1"><p class="qq">איזה מהשדות המחושבים האלה הוא ברמת שורה?</p>
+<button class="opt"><code>[Sales] - [Cost]</code></button>
+<button class="opt"><code>SUM([Sales]) - SUM([Cost])</code></button>
+<button class="opt"><code>AVG([Sales])</code></button>
+<div class="why">רק הראשון. הוא מחשב הפרש בכל שורה, בלי פונקציה מסכמת. השני והשלישי מסכמים (SUM ו-AVG), ולכן הם חישובים מסכמים, והערך שלהם תלוי בגרף.</div></div>
+
+<div class="quiz" data-id="m8-q-grand" data-a="3"><p class="qq">בגרף של <code>Profit Margin</code> לפי Category מוסיפים Grand Total. מה יוצג בו?</p>
+<button class="opt">הממוצע של חמשת האחוזים בשורות</button>
+<button class="opt">הסכום של חמשת האחוזים בשורות</button>
+<button class="opt">סך הרווח חלקי סך המכירות של כל הנתונים: 51.0%</button>
+<div class="why">חישוב מסכם מחושב בכל רמה לפי הנוסחה שלו. ב-Grand Total הנוסחה רצה על כל השורות יחד, ולכן יוצא 120,722.9 חלקי 236,820.9. ממוצע או סכום של אחוזים היה עונה על שאלה אחרת.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> כדאי לעצור אחרי ההנפשה ולשאול את הכיתה איזה מספר נראה להם הגיוני לסאנדיי. רוב הסטודנטים חושבים ש&quot;ממוצע של יחסים&quot; הוא סביר עד שמראים להם את שורת ה-18 שקל. בדקו ב-Tableau אצלכם שה-Grand Total אכן מראה 51.0% (Analysis, Totals, Show Column Grand Totals), וש-AVG של יחס מוצג כ-AGG.</div>
+</section>
+<section class="sec" id="m8-3" data-t="שגיאת הערבוב">
+<div class="sec-h"><div class="sec-n">3</div><h2>&quot;Cannot mix aggregate and non-aggregate&quot;: השגיאה הכי נפוצה</h2></div>
+<p class="lead">המנהל מבקש שדה אחד של מכירות הסאנדיי בלבד. כותבים את הנוסחה הכי טבעית, ו-Tableau מסרב. זו השגיאה שכל מי שבונה שדות מחושבים פוגש בשבוע הראשון. כשמבינים מה היא אומרת, מתקנים אותה בשניות.</p>
+
+<p>הנוסחה שנראית הגיונית:</p>
+<pre class="code" data-lang="tableau">IF [Category] = "Sundaes" THEN SUM([Sales]) END</pre>
+<div class="m8-ed" role="img" aria-label="הדמיה סכמטית של חלון שדה מחושב עם הודעת שגיאה על ערבוב">
+<div class="nm">Sundaes Sales</div>
+<div class="bd"><span class="k">IF</span> <span class="f">[Category]</span> = <span class="s">"Sundaes"</span> <span class="k">THEN</span> <span class="k">SUM</span>(<span class="f">[Sales]</span>) <span class="k">END</span></div>
+<div class="ft"><span class="er">Cannot mix aggregate and non-aggregate comparisons or results in IF expressions</span><span class="bt"><i>Apply</i><b>OK</b></span></div>
+</div>
+<p class="tag" style="text-align:center;font-size:.8rem;color:#94a3b8;margin:-6px 0 6px">הדמיה סכמטית. נוסח ההודעה המדויק משתנה קצת בין גרסאות, והרעיון זהה.</p>
+
+<div class="defline"><b>ערבוב (mix):</b> נוסחה שבה חלק אחד מחושב לכל שורה וחלק אחר על קבוצת שורות. Tableau לא יודע באיזו רמה לחשב, ולכן לא מסכים. דוגמה: <code>SUM([Sales]) / [Quantity]</code>, כי SUM מסכם הרבה שורות ו-Quantity הוא של שורה אחת.</div>
+
+<p>בנוסחה למעלה, התנאי <code>[Category] = "Sundaes"</code> צריך תשובה אחת <b>לכל שורה</b>: כן או לא. התוצאה <code>SUM([Sales])</code> צריכה <b>הרבה שורות</b> כדי להתחשב. הם לא מדברים באותה רמה. ההנפשה מראה איפה זה נתקע, ואיך מתקנים.</p>
+
+<div class="anim" data-id="m8-anim-mix" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="הנפשה: למה נוסחת IF עם SUM נכשלת ואיך SUM מחוץ ל-IF מתקן את זה">
+<g data-only="1,2"><text x="20" y="26" font-size="15" font-weight="700" fill="#334155" text-anchor="start" font-family="ui-monospace,Menlo,monospace">IF [Category] = "Sundaes" THEN SUM([Sales]) END</text></g>
+<g font-size="15" text-anchor="middle">
+<rect x="20" y="50" width="110" height="32" fill="#e2e8f0" stroke="#94a3b8"/><text x="75" y="72" font-weight="700" fill="#334155">Category</text>
+<rect x="130" y="50" width="80" height="32" fill="#e2e8f0" stroke="#94a3b8"/><text x="170" y="72" font-weight="700" fill="#334155">Sales</text>
+<g fill="#fff" stroke="#cbd5e1"><rect x="20" y="82" width="110" height="34"/><rect x="130" y="82" width="80" height="34"/><rect x="20" y="116" width="110" height="34"/><rect x="130" y="116" width="80" height="34"/><rect x="20" y="150" width="110" height="34"/><rect x="130" y="150" width="80" height="34"/><rect x="20" y="184" width="110" height="34"/><rect x="130" y="184" width="80" height="34"/></g>
+<g fill="#1e293b"><text x="75" y="105">Cones</text><text x="170" y="105">16</text><text x="75" y="139">Sundaes</text><text x="170" y="139">40</text><text x="75" y="173">Sundaes</text><text x="170" y="173">60</text><text x="75" y="207">Cups</text><text x="170" y="207">24</text></g></g>
+<g data-only="1,2" font-size="14" text-anchor="middle"><rect x="220" y="50" width="130" height="32" fill="#dbeafe" stroke="#60a5fa"/><text x="285" y="72" font-weight="700" fill="#1e3a8a">test per row</text>
+<g font-weight="800" font-size="20"><text x="285" y="106" fill="#dc2626">no</text><text x="285" y="140" fill="#16a34a">yes</text><text x="285" y="174" fill="#16a34a">yes</text><text x="285" y="208" fill="#dc2626">no</text></g></g>
+<g data-only="2" text-anchor="middle"><rect x="380" y="86" width="400" height="120" rx="14" fill="#fef2f2" stroke="#ef4444" stroke-width="2.5"/>
+<text x="580" y="118" font-size="20" font-weight="800" fill="#b91c1c">THEN SUM([Sales]) ?</text>
+<text x="580" y="148" font-size="15" fill="#7f1d1d">SUM needs a group of rows</text>
+<text x="580" y="170" font-size="15" fill="#7f1d1d">but the test gives one answer per row</text>
+<text x="580" y="195" font-size="13" fill="#991b1b" font-weight="700">Cannot mix aggregate and non-aggregate</text></g>
+<g data-only="3,4"><text x="20" y="26" font-size="15" font-weight="700" fill="#166534" text-anchor="start" font-family="ui-monospace,Menlo,monospace">SUM( IF [Category] = "Sundaes" THEN [Sales] END )</text></g>
+<g data-only="3,4" font-size="14" text-anchor="middle"><rect x="220" y="50" width="130" height="32" fill="#bbf7d0" stroke="#16a34a"/><text x="285" y="72" font-weight="700" fill="#14532d">IF result per row</text>
+<g font-weight="800" font-size="19" fill="#166534"><text x="285" y="105" fill="#94a3b8" font-style="italic" font-weight="600">Null</text><text x="285" y="139">40</text><text x="285" y="173">60</text><text x="285" y="207" fill="#94a3b8" font-style="italic" font-weight="600">Null</text></g></g>
+<g data-s="4" data-pulse text-anchor="middle"><path d="M360 150 L410 150" stroke="#16a34a" stroke-width="3" fill="none" marker-end="url(#m8m-ar)"/><rect x="420" y="100" width="250" height="100" rx="14" fill="#ecfdf5" stroke="#10b981" stroke-width="2.5"/><text x="545" y="136" font-size="15" fill="#065f46">SUM adds the non-Null:</text><text x="545" y="178" font-size="34" font-weight="900" fill="#15803d">40 + 60 = 100</text></g>
+<defs><marker id="m8m-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker></defs>
+</svg></div>
+<ol class="caps">
+<li>הנוסחה בודקת תנאי בכל שורה: האם הקטגוריה היא Sundaes? כאן אין בעיה, לכל שורה יש תשובה.</li>
+<li>אבל אחרי ה-THEN יש SUM, שצריך קבוצה של שורות כדי לסכם. אי אפשר לסכם &quot;שורה אחת בלי חברות&quot;. Tableau עוצר ומציג את השגיאה.</li>
+<li>התיקון: מכניסים את ה-SUM החוצה. עכשיו ה-IF מחזיר לכל שורה את המכירות שלה (או Null כשהתנאי לא נכון), והכול ברמת שורה.</li>
+<li>ורק אז SUM מסכם את מה שנשאר: 40 ועוד 60. ה-Null לא נספרים בסכום.</li>
+</ol></div>
+
+<h3>ארבע דרכים לתקן, ומתי כל אחת</h3>
+<div class="cols2">
+<div class="card"><h4>1. מכניסים את ה-SUM החוצה (הכי נפוץ)</h4><pre class="code" data-lang="tableau">SUM(
+  IF [Category] = "Sundaes"
+  THEN [Sales] END
+)</pre><p>הכול ברמת שורה בפנים, וסיכום אחד בחוץ. עובד בכל גרף. זה התיקון הראשון שכדאי לנסות.</p></div>
+<div class="card"><h4>2. הופכים את התנאי למסכם עם ATTR</h4><pre class="code" data-lang="tableau">IF ATTR([Category]) = "Sundaes"
+THEN SUM([Sales]) END</pre><p><code>ATTR</code> מחזיר את הערך אם כל השורות בסימן שותפות בו, ואחרת כוכבית (*). עובד כש-Category נמצא בגרף, כך שיש ערך אחד לכל סימן.</p></div>
+<div class="card"><h4>3. מסכמים גם את החלק השני</h4><pre class="code" data-lang="tableau">SUM([Sales]) / SUM([Quantity])</pre><p>במקום <code>SUM([Sales]) / [Quantity]</code>. כשיש יחס, שני הצדדים באותה רמה.</p></div>
+<div class="card"><h4>4. מחשבים ברמה קבועה (LOD)</h4><p>אפשר לחשב ערך מסוכם ברמת פירוט קבועה ולשלב אותו עם כל שורה. הכלי נקרא <code>FIXED</code> ונלמד ב<a href="module10.html">מודול 10</a>. כאן לא צריך אותה.</p></div>
+</div>
+
+<div class="box note"><p><b>הכללים הרשמיים בקצרה</b> (מתוך התיעוד של Tableau על חישובים מסכמים):</p>
+<ul>
+<li>אי אפשר לשלב ערך מסוכם וערך לא מסוכם. <code>SUM([Price]) * [Items]</code> לא תקין. <code>SUM([Price] * [Items])</code> ו-<code>SUM([Price]) * SUM([Items])</code> תקינים.</li>
+<li>מספר קבוע מתאים לשני הצדדים: <code>SUM([Price]) * 7</code> ו-<code>SUM([Price] * 7)</code> שניהם תקינים.</li>
+<li><dfn data-d="הערכים שמעבירים לפונקציה בתוך הסוגריים. ב-ROUND(2.718, 1) הארגומנטים הם 2.718 ו-1">הארגומנטים</dfn> של פונקציה אחת צריכים להיות כולם מסוכמים או כולם לא. <code>MAX(SUM([Sales]), [Profit])</code> לא תקין. <code>MAX(SUM([Sales]), SUM([Profit]))</code> תקין.</li>
+<li>תוצאה של חישוב מסכם היא תמיד מדד, והיא מוצגת כ-<code>AGG(...)</code>. אי אפשר לסכם אותה שוב.</li>
+</ul></div>
+
+<div class="box try" data-id="m8-try-mix">
+<p><b>שוברים ומתקנים: מכירות הסאנדיי.</b></p>
+<ol>
+<li>צרו שדה בשם <code>Sundaes Sales</code> עם הנוסחה:
+<pre class="code" data-lang="tableau">IF [Category] = "Sundaes" THEN SUM([Sales]) END</pre>
+<span class="m8-why">למה: רוצים לראות את השגיאה בעצמכם. קראו את ההודעה האדומה (אפשר ללחוץ עליה). נוסחה עם שגיאה לא תישמר.</span></li>
+<li>החליפו את הנוסחה בתיקון 1 ולחצו <code>OK</code>:
+<pre class="code" data-lang="tableau">SUM( IF [Category] = "Sundaes" THEN [Sales] END )</pre>
+<span class="m8-why">למה: ה-IF עכשיו ברמת שורה והסיכום מחוץ לו.</span></li>
+<li>גיליון חדש: <code>Category</code> אל <code>Rows</code>, ו-<code>Sundaes Sales</code> אל <code>Text</code>. אחר כך הוציאו את <code>Category</code> מהגיליון.<span class="m8-why">למה: רוצים לראות את הערך בכל קטגוריה, ואחר כך כסכום כולל. בקטגוריות האחרות השדה מחזיר Null, ולכן לא יוצג בהן מספר.</span></li>
+<li>צרו שדה נוסף בשם <code>Sundaes Sales ATTR</code> עם תיקון 2:
+<pre class="code" data-lang="tableau">IF ATTR([Category]) = "Sundaes" THEN SUM([Sales]) END</pre>
+<span class="m8-why">למה: להשוות בין שתי דרכים. החזירו את <code>Category</code> ל-<code>Rows</code>, ובדקו שהתוצאה זהה. אחר כך הוציאו אותו שוב ובדקו מה קורה כשהגיליון לא מפרק לפי קטגוריה.</span></li>
+<li>צרו <code>Revenue per Unit</code> עם <code>SUM([Sales]) / SUM([Quantity])</code>. נסו גם <code>SUM([Sales]) / [Quantity]</code> כדי לראות את השגיאה השנייה.<span class="m8-why">למה: אותה שגיאה בלבוש אחר, והתיקון הוא תיקון 3.</span></li>
+</ol>
+<div class="m8-exp"><p><b>תוצאה צפויה:</b> <code>Sundaes Sales</code> = <span class="n">47,037.20</span> בשורה של Sundaes, וגם כשאין Category בגיליון. <code>Revenue per Unit</code> = 236,820.9 חלקי 11,426 = <span class="n">20.73</span> שקל ליחידה (20.7265). בדיקה: מכירות הסאנדיי הן 47,037.2 מתוך 236,820.9, כלומר כ-19.9 אחוז מהמכירות.</p></div>
+</div>
+
+<div class="box trap"><p><b>ATTR שמחזיר כוכבית.</b> בתיקון 2 הכול תלוי בכך ש-Category נמצא בגיליון. אם מוציאים אותו, יש מאות שורות בסימן, <code>ATTR</code> מחזיר כוכבית (*), והתנאי כבר לא מתקיים. השדה לא נשבר ולא מציג שגיאה, הוא פשוט מראה לא מה שציפיתם. לכן תיקון 1 עדיף כמעט תמיד: הוא נכון בכל גרף.</p></div>
+
+<div class="box real"><p>אותה בעיה קיימת ב-SQL, שלמדתם ב<a href="../final-lesson/part2.html">חלק 2 של המפגש המסכם</a>: <code>SELECT category, SUM(sales) ... GROUP BY</code>. עמודה שלא בקבוצה ולא עטופה בפונקציה מסכמת מחזירה שגיאה (&quot;must appear in the GROUP BY clause or be used in an aggregate function&quot; במנועים רבים). אותו כלל, שפה אחרת: בכל שאילתה צריך לדעת מה ברמת שורה ומה ברמת קבוצה.</p></div>
+
+<div class="box think" data-id="m8-th-mix"><p>למה <code>SUM([Sales]) / [Quantity]</code> לא תקין, אבל <code>SUM([Sales]) / 100</code> כן?</p>
+<div class="ans">[Quantity] הוא ערך של שורה אחת, ו-Tableau לא יודע איזו שורה לקחת מתוך הקבוצה שמסוכמת. המספר 100 הוא קבוע, והוא זהה בכל שורה ובכל קבוצה, לכן הוא מתאים לשני הצדדים. הכלל: אפשר לחלק בקבוע, ואי אפשר לחלק בערך של שורה מסוימת.</div></div>
+
+<div class="quiz" data-id="m8-q-fix" data-a="2"><p class="qq">איזו נוסחה תקינה ומחזירה את סך המכירות של Delivery בלבד?</p>
+<button class="opt"><code>IF [Channel] = "Delivery" THEN SUM([Sales]) END</code></button>
+<button class="opt"><code>SUM( IF [Channel] = "Delivery" THEN [Sales] END )</code></button>
+<button class="opt"><code>SUM([Sales]) WHERE [Channel] = "Delivery"</code></button>
+<div class="why">התשובה השנייה מחשבת את התנאי בכל שורה, ורק אחר כך מסכמת. הראשונה מערבבת תנאי של שורה עם SUM. השלישית לא קיימת בשפה של Tableau. הערך הצפוי הוא 35,095.20.</div></div>
+
+<div class="quiz" data-id="m8-q-msg" data-a="3"><p class="qq">מה ההודעה &quot;Cannot mix aggregate and non-aggregate&quot; אומרת בפועל?</p>
+<button class="opt">שהשדה שבחרתם חסר בקובץ</button>
+<button class="opt">שהנוסחה ארוכה מדי</button>
+<button class="opt">שחלק מהנוסחה מחושב לכל שורה וחלק על סיכום, ו-Tableau לא יודע באיזו רמה לעבוד</button>
+<div class="why">אין כאן בעיה של שם שדה או אורך. זו בעיה של רמה. התיקון הוא לשים הכול באותה רמה: להכניס את הסיכום החוצה, להפוך את החלק של השורה למסכם, או לחשב ברמה קבועה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> כדאי להכריח את הכיתה לכתוב קודם את הנוסחה השגויה ולקבל את השגיאה, ולא לדלג לפתרון. בקשו מכל אחד להסביר לשכן במילים שלו מה &quot;רמת שורה&quot; ומה &quot;רמת קבוצה&quot;. נוסח ההודעה האדומה אצלכם בגרסה יכול להיות מעט שונה: בדקו אותו לפני השיעור. את ההתנהגות של ATTR בלי Category בגיליון (כוכבית, תנאי שלא מתקיים) כדאי לבדוק בתוכנה לפני השיעור.</div>
+</section>
+<section class="sec" id="m8-4" data-t="מספרים וסוגי נתונים">
+<div class="sec-h"><div class="sec-n">4</div><h2>פונקציות: שש משפחות, ומתחילים במספרים</h2></div>
+<p class="lead">עד עכשיו כתבתם נוסחאות עם כפל, חיסור וחילוק. השלב הבא הוא <dfn data-d="פונקציה היא פקודה מוכנה של Tableau שמקבלת ערך או כמה ערכים ומחזירה תוצאה. למשל ROUND(2.718, 1) מחזירה 2.7">פונקציות</dfn>: פקודות מוכנות. אין צורך לזכור מאות. יש שש משפחות, ובכל אחת כעשר פונקציות שתשתמשו בהן כל הזמן.</p>
+
+<div class="cols3">
+<div class="card"><h4>🔢 מספרים</h4><p>עיגול, חיתוך, ערך מוחלט, שארית.</p><p><code>ROUND FLOOR CEILING ABS DIV</code></p><p><small>סעיף 4</small></p></div>
+<div class="card"><h4>🔁 המרת סוג</h4><p>מספר לטקסט, טקסט למספר, טקסט לתאריך.</p><p><code>STR INT FLOAT DATE</code></p><p><small>סעיף 4</small></p></div>
+<div class="card"><h4>🔤 טקסט</h4><p>לחתוך, לחפש, לנקות, להחליף.</p><p><code>LEFT SPLIT CONTAINS REPLACE TRIM</code></p><p><small>סעיף 5</small></p></div>
+<div class="card"><h4>📅 תאריך</h4><p>לחתוך לחודש, לקרוא יום בשבוע, למדוד מרחק.</p><p><code>DATETRUNC DATEPART DATEDIFF DATEADD</code></p><p><small>סעיף 6</small></p></div>
+<div class="card"><h4>🧭 לוגיקה</h4><p>להחליט: אם זה, אז זה.</p><p><code>IF CASE IIF IFNULL ZN</code></p><p><small>סעיף 7</small></p></div>
+<div class="card"><h4>∑ מסכמות</h4><p>לצמצם הרבה שורות למספר אחד.</p><p><code>SUM AVG COUNTD MEDIAN ATTR</code></p><p><small>סעיף 8</small></p></div>
+</div>
+<p>כל משפחה בסעיף משלה: טבלה של הפונקציות השימושיות, דוגמה על Scoop & Go עם התוצאה, ושדה שבונים. בסעיף הזה: מספרים והמרות.</p>
+
+<h3>פונקציות מספרים</h3>
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>פונקציה</th><th>מה היא עושה</th><th>דוגמה על Scoop & Go</th><th>תוצאה</th></tr></thead>
+<tbody>
+<tr><td><code>ROUND(x, n)</code></td><td>מעגלת ל-n ספרות אחרי הנקודה</td><td><code>ROUND(SUM([Profit]) / SUM([Sales]), 3)</code></td><td>0.510 (מ-0.5098)</td></tr>
+<tr><td><code>FLOOR(x)</code></td><td>מעגלת כלפי מטה למספר שלם</td><td><code>FLOOR(64.8)</code>, וגם <code>FLOOR([Sales] / 20) * 20</code> שהופך 64.8 ל-60</td><td>64 ו-60</td></tr>
+<tr><td><code>CEILING(x)</code></td><td>מעגלת כלפי מעלה</td><td><code>CEILING([Sales])</code> בשורה של 23.4</td><td>24</td></tr>
+<tr><td><code>ABS(x)</code></td><td>ערך מוחלט, בלי סימן</td><td><code>ABS([Profit])</code> בשורה של הפסד 24</td><td>24</td></tr>
+<tr><td><code>SIGN(x)</code></td><td>מחזירה -1, 0 או 1 לפי הסימן</td><td><code>SIGN([Profit])</code> על שורת הפסד, על שורה ללא רווח, על שורה רווחית</td><td>-1, 0, 1</td></tr>
+<tr><td><code>DIV(a, b)</code> ו-<code>a % b</code></td><td>מנה שלמה ושארית של שני מספרים שלמים</td><td><code>DIV(11, 2)</code> ו-<code>11 % 2</code>. בקובץ: <code>[Order Hour] % 12</code> הופך 19 ל-7 (שעון של 12 שעות)</td><td>5, 1 ו-7</td></tr>
+<tr><td><code>POWER(x, y)</code>, <code>SQRT(x)</code></td><td>חזקה ושורש</td><td><code>POWER(5, 3)</code>, <code>SQRT(25)</code></td><td>125 ו-5</td></tr>
+<tr><td><code>MIN(a, b)</code>, <code>MAX(a, b)</code></td><td>הקטן או הגדול משני ערכים, ברמת שורה (עם שני ארגומנטים)</td><td><code>MIN([Sales], 100)</code> חוסמת שורה של 160 ל-100</td><td>100</td></tr>
+<tr><td><code>ZN(x)</code></td><td>מחליפה Null באפס</td><td>נסביר בסעיף 7</td><td>0</td></tr>
+</tbody></table></div>
+<p>שימו לב: <code>MIN</code> ו-<code>MAX</code> עם שני ערכים הן פונקציות של שורה. עם ערך אחד, <code>MIN([Sales])</code>, הן פונקציות מסכמות שמחזירות את הקטן ביותר מכל השורות. אותו שם, שתי משמעויות, ו-Tableau מבחין לפי מספר הארגומנטים.</p>
+
+<h3>המרת סוג</h3>
+<p>כל שדה ב-Tableau הוא מסוג אחד: טקסט, מספר שלם, מספר עשרוני, אמת/שקר, תאריך או תאריך ושעה. לפעמים צריך להפוך סוג אחד לאחר. השינוי הפשוט נעשה בלחיצה על הסמל של השדה בחלונית הנתונים (<code>Change Data Type</code>). כשצריך לעשות את זה בתוך נוסחה, משתמשים בפונקציות ההמרה:</p>
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>פונקציה</th><th>מה היא עושה</th><th>דוגמה</th><th>תוצאה</th></tr></thead>
+<tbody>
+<tr><td><code>STR(x)</code></td><td>הופכת לטקסט</td><td><code>STR([Order Hour]) + ":00"</code> בשורה של שעה 19</td><td>"19:00"</td></tr>
+<tr><td><code>INT(x)</code></td><td>הופכת למספר שלם, חותכת (לא מעגלת)</td><td><code>INT(2.9)</code>, <code>INT(-9.7)</code>, וגם <code>INT(SPLIT([Order ID], "-", 2))</code> על SG-00007</td><td><bdi dir="ltr">2, -9</bdi> ו-7</td></tr>
+<tr><td><code>FLOAT(x)</code></td><td>הופכת למספר עשרוני</td><td><code>FLOAT(3)</code></td><td>3.000</td></tr>
+<tr><td><code>DATE(x)</code></td><td>הופכת טקסט או תאריך-ושעה לתאריך</td><td><code>DATE("2025-05-12")</code></td><td>12 במאי 2025</td></tr>
+<tr><td><code>DATEPARSE(format, text)</code></td><td>קוראת טקסט בתבנית מדויקת שאתם מגדירים</td><td><code>DATEPARSE("dd/MM/yyyy", "15/01/2025")</code></td><td>15 בינואר 2025</td></tr>
+</tbody></table></div>
+<p><code>INT(2.9)</code> נותן 2 ו-<code>ROUND(2.9, 0)</code> נותן 3. זה ההבדל בין חיתוך לעיגול. וכשרוצים שהמספר 7 יהיה &quot;SG-00007&quot; או &quot;19:00&quot;, זה כבר עניין של <code>STR</code>. תאריכים יקבלו סעיף משלהם בעוד רגע.</p>
+
+<div class="box try" data-id="m8-try-numbers">
+<p><b>שלושה שדות: מדרגות מחיר, תווית שעה, ורווח ליחידה.</b></p>
+<ol>
+<li>צרו <code>Line Band 20</code>:
+<pre class="code" data-lang="tableau">FLOOR([Sales] / 20) * 20</pre>
+<span class="m8-why">למה: מחלקים ב-20, חותכים לשלם, ומכפילים חזרה. כל שורה מקבלת את גבול המדרגה שלה: 0, 20, 40 וכן הלאה.</span></li>
+<li>גיליון חדש. גררו את <code>Line Band 20</code> אל <code>Columns</code>. הוא ירוק, כי הוא מספר. לחצו על החץ של הפיל ובחרו <code>Discrete</code>. כספירה, גררו <code>Order ID</code> אל <code>Rows</code> ובחרו <code>Measure</code> ואז <code>Count (Distinct)</code> או סתם <code>Count</code>.<span class="m8-why">למה: רוצים עמודה לכל מדרגה (כחול, בדיד) וספירת שורות מעליה. הקובץ הזה מכיל שורה אחת לכל Order ID, ולכן Count ו-Count (Distinct) נותנים אותו דבר.</span></li>
+<li>צרו <code>Hour Label</code>:
+<pre class="code" data-lang="tableau">STR([Order Hour]) + ":00"</pre>
+<span class="m8-why">למה: מתאימים את השעה לתצוגה: 19 הופך ל-19:00. הפונקציה STR הופכת את המספר לטקסט כדי שאפשר יהיה לחבר אותו לטקסט אחר.</span></li>
+<li>גיליון חדש: <code>Hour Label</code> אל <code>Columns</code> ו-<code>Count</code> של <code>Order ID</code> אל <code>Rows</code>.<span class="m8-why">למה: מקבלים את התפלגות הזמנות לפי שעה ורואים איפה השיא.</span></li>
+<li>צרו <code>Profit per Unit</code>: <code>SUM([Profit]) / SUM([Quantity])</code>. גררו <code>Category</code> אל <code>Rows</code> ואת השדה אל <code>Columns</code>.<span class="m8-why">למה: יחס של סכומים, כמו בסעיף 2. כמה רווח משאירה כל יחידה שנמכרת.</span></li>
+</ol>
+<div class="m8-exp"><p><b>תוצאה צפויה.</b></p>
+<p><b>מדרגות מחיר</b> (מספר שורות בכל מדרגה, בסך הכול 6,575):</p>
+<div class="tw"><table class="tbl m8-tb"><thead><tr><th>Line Band 20</th><th class="num">0</th><th class="num">20</th><th class="num">40</th><th class="num">60</th><th class="num">80</th><th class="num">100</th><th class="num">120</th><th class="num">140</th><th class="num">160</th></tr></thead><tbody><tr><td>שורות</td><td class="num">1,639</td><td class="num">2,682</td><td class="num">1,304</td><td class="num">608</td><td class="num">147</td><td class="num">125</td><td class="num">28</td><td class="num">32</td><td class="num">10</td></tr></tbody></table></div>
+<p><b>שעות:</b> 10:00 הוא הנמוך, <span class="n">91</span> שורות. השיא ב-21:00: <span class="n">938</span> שורות. אחריו 20:00 עם <span class="n">859</span> ו-22:00 עם <span class="n">750</span>.</p>
+<p><b>Profit per Unit:</b> Cones <span class="n">10.28</span>, Cups <span class="n">10.48</span>, Drinks <span class="n">13.22</span>, Sticks <span class="n">6.40</span>, Sundaes <span class="n">10.19</span>. בכל הנתונים: <span class="n">10.57</span> (120,722.9 חלקי 11,426).</p></div>
+</div>
+
+<div class="box trap"><p><b>טקסט ממוין לפי א-ב.</b> כל שעות הפתיחה בקובץ הן דו-ספרתיות (10 עד 23), ולכן 10:00 עד 23:00 מסתדרות נכון. אילו הקובץ כלל גם 9, התווית &quot;9:00&quot; הייתה מופיעה אחרי &quot;23:00&quot;, כי בטקסט התו &quot;9&quot; גדול מהתו &quot;2&quot;. כשמשהו חייב להיות בסדר מספרי, שמרו את המספר כמספר ורק את התווית הציגו כטקסט, או כתבו שעה עם אפס מוביל.</p></div>
+
+<div class="box trap"><p><b>עיגול בנוסחה ועיגול בתצוגה זה לא אותו דבר.</b> <code>Default Properties</code> ואז <code>Number Format</code> רק משנים איך המספר מוצג. הערך עצמו נשאר מדויק, ובחישוב המשך Tableau משתמש בערך המדויק. <code>ROUND</code> משנה את הערך עצמו. אם אתם רוצים ש-0.5098 ייראה כ-51.0%, שנו פורמט. אם אתם רוצים להשוות לסף עגול, השתמשו ב-<code>ROUND</code>.</p></div>
+
+<div class="box meaning"><p>רוב השדות המחושבים בעבודה אמיתית הם פשוטים: הפרש, יחס, עיגול, תווית. מי שמכיר חמש-שש פונקציות של מספרים והמרה כבר פותר הרבה ממה שמבקשים. אל תמהרו לנוסחאות ארוכות: נוסחה קצרה קל לבדוק, וקל יותר להסביר למי שיפתח את החוברת אחריכם.</p></div>
+
+<div class="box note"><p><b>בנוסחה של Tableau הסוג חשוב.</b> אי אפשר לחבר מספר לטקסט בלי המרה: <code>[Order Hour] + ":00"</code> לא תקין, ו-<code>STR([Order Hour]) + ":00"</code> תקין. כשתקבלו הודעת שגיאה על סוגים שלא מתאימים, בדקו קודם אם חסרה המרה כמו <code>STR</code>.</p></div>
+
+<div class="quiz" data-id="m8-q-floor" data-a="3"><p class="qq">מה הערך של <code>FLOOR([Sales] / 20) * 20</code> בשורה שבה Sales הוא 64.8?</p>
+<button class="opt">64</button>
+<button class="opt">80</button>
+<button class="opt">60</button>
+<div class="why">64.8 חלקי 20 הוא 3.24. FLOOR חותכת כלפי מטה ל-3. 3 כפול 20 הוא 60. הערך 64 היה יוצא מ-<code>FLOOR([Sales])</code> בלבד, ו-80 מ-<code>CEILING</code> של 3.24 כפול 20.</div></div>
+
+<div class="quiz" data-id="m8-q-int" data-a="1"><p class="qq">ההבדל בין <code>INT(2.9)</code> ל-<code>ROUND(2.9, 0)</code> הוא:</p>
+<button class="opt">הראשונה נותנת 2 (חותכת) והשנייה 3 (מעגלת)</button>
+<button class="opt">שתיהן נותנות 3</button>
+<button class="opt">הראשונה נותנת 3 והשנייה 2</button>
+<div class="why">INT חותכת את החלק העשרוני לכיוון אפס. ROUND מעגלת לשלם הקרוב. לכן אותו מספר נותן 2 ו-3.</div></div>
+
+<div class="box think" data-id="m8-th-str"><p>איך תהפכו את אחוז ההנחה 0.1 לתווית &quot;10%&quot;? כתבו נוסחה.</p>
+<div class="ans"><code>STR(ROUND([Discount] * 100, 0)) + "%"</code>. כופלים ב-100, מעגלים כדי שלא יישארו זנבות עשרוניים מוזרים, הופכים לטקסט ומחברים את הסימן. התוצאה: &quot;10%&quot;, &quot;20%&quot;, &quot;50%&quot;, ו-&quot;0%&quot; בלי הנחה. אפשר גם להשתמש בעיצוב אחוזים בלי נוסחה, אבל תווית טקסט נחוצה כשרוצים להוסיף עוד טקסט סביב המספר.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> סעיף שמיועד לריצה מהירה: הטבלאות הן חומר עזר, ולא צריך לעבור על כל שורה. תעצרו על FLOOR (הבסיס למדרגות), על STR, ועל ההבדל בין עיגול לפורמט. כדאי לבדוק ש-DATEPARSE עם התבנית dd/MM/yyyy עובד בגרסה שלכם. שימו לב לשפת התצוגה: אצל חלק מהסטודנטים הפונקציה DATE עלולה לקרוא תאריך בטקסט כיום/חודש הפוך.</div>
+</section>
+<section class="sec" id="m8-5" data-t="טקסט">
+<div class="sec-h"><div class="sec-n">5</div><h2>פונקציות טקסט: לחתוך, לחפש ולנקות</h2></div>
+<p class="lead">מספר ההזמנה של Scoop & Go הוא טקסט, <code>SG-00007</code>. שם הסניף הוא טקסט ארוך. כשצריך רק חלק מהם, למשל המספר עצמו, או כל מי ששם הסניף שלו כולל &quot;Pop-up&quot;, משתמשים בפונקציות טקסט.</p>
+
+<p>הנה הפונקציות השימושיות. בתוך הנוסחה טקסט כתוב בין גרשיים כפולים, <code>"Pop-up"</code>, ושם שדה בסוגריים מרובעים, <code>[Branch]</code>. הספירה של מקומות בטקסט מתחילה ב-1.</p>
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>פונקציה</th><th>מה היא עושה</th><th>דוגמה על Scoop & Go</th><th>תוצאה</th></tr></thead>
+<tbody>
+<tr><td><code>LEFT(s, n)</code>, <code>RIGHT(s, n)</code></td><td>n התווים הראשונים או האחרונים</td><td><code>LEFT([Branch], 3)</code> על Haifa German Colony</td><td>"Hai"</td></tr>
+<tr><td><code>MID(s, start, n)</code></td><td>n תווים החל ממקום start</td><td><code>MID([Item], 1, 5)</code> על Milkshake</td><td>"Milks"</td></tr>
+<tr><td><code>LEN(s)</code></td><td>אורך הטקסט</td><td><code>LEN("Milkshake")</code></td><td>9</td></tr>
+<tr><td><code>FIND(s, sub)</code></td><td>המקום הראשון של sub בתוך s, ו-0 אם אין</td><td><code>FIND([Branch], " ")</code> על Eilat Promenade</td><td>6</td></tr>
+<tr><td><code>SPLIT(s, delimiter, n)</code></td><td>חותכת לפי מפריד ומחזירה את החלק מספר n. מספר שלילי סופר מהסוף</td><td><code>SPLIT([Order ID], "-", 2)</code> על SG-00007, וגם <code>SPLIT([Branch], " ", -1)</code> על Tel Aviv Port</td><td>"00007" ו-"Port"</td></tr>
+<tr><td><code>REPLACE(s, old, new)</code></td><td>מחליפה טקסט אחד באחר</td><td><code>REPLACE([Item], " Cup", "")</code> על Pistachio Cup</td><td>"Pistachio"</td></tr>
+<tr><td><code>CONTAINS(s, sub)</code></td><td>אמת אם הטקסט כולל את sub</td><td><code>CONTAINS([Branch], "Pop-up")</code></td><td>True ל-Ashdod Beach Pop-up בלבד</td></tr>
+<tr><td><code>STARTSWITH</code>, <code>ENDSWITH</code></td><td>אמת אם הטקסט מתחיל או מסתיים כך</td><td><code>STARTSWITH([Item], "Choco")</code></td><td>True ל-Chocolate Cup ול-Choco Stick</td></tr>
+<tr><td><code>UPPER</code>, <code>LOWER</code>, <code>PROPER</code></td><td>אותיות גדולות, קטנות, ראשונה גדולה בכל מילה</td><td><code>UPPER("Hai")</code></td><td>"HAI"</td></tr>
+<tr><td><code>TRIM(s)</code></td><td>מוריד רווחים בהתחלה ובסוף</td><td><code>TRIM("  Eilat  ")</code></td><td>"Eilat"</td></tr>
+</tbody></table></div>
+<p>ויש משפחה שלמה של ביטויים רגולריים, <code>REGEXP_EXTRACT</code> ודומיה, לחיפוש תבניות. למשל <code>REGEXP_EXTRACT([Order ID], "([0-9]+)")</code> מחזירה &quot;00007&quot; מתוך SG-00007: הסוגריים בתבנית מסמנים מה להחזיר. הם יקבלו מקום ב<a href="module16.html">מודול 16</a>.</p>
+<p>שני דברים שכדאי לדעת מראש: <code>SPLIT</code> מחזירה תמיד <b>טקסט</b> (&quot;00007&quot;, לא 7), ו-<code>CONTAINS</code> עשויה להבדיל בין אותיות גדולות לקטנות, תלוי במקור הנתונים. כדי שלא תהיו תלויים בזה, אפשר לכתוב <code>CONTAINS(UPPER([Branch]), "POP-UP")</code>.</p>
+
+<div class="anim" data-id="m8-anim-split" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 280" role="img" aria-label="הנפשה: חיתוך SG-00007 עם SPLIT לפי מקף, לקיחת החלק השני והפיכתו למספר עם INT">
+<defs><marker id="m8s-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker></defs>
+<text x="40" y="34" font-size="17" font-weight="700" fill="#334155" font-family="ui-monospace,Menlo,monospace" text-anchor="start">INT( SPLIT( [Order ID], "-", 2 ) )</text>
+<g font-size="24" font-weight="800" text-anchor="middle" font-family="ui-monospace,Menlo,monospace">
+<rect x="40" y="70" width="46" height="52" rx="6" fill="#fff" stroke="#94a3b8"/><text x="63" y="105" fill="#1e293b">S</text>
+<rect x="90" y="70" width="46" height="52" rx="6" fill="#fff" stroke="#94a3b8"/><text x="113" y="105" fill="#1e293b">G</text>
+<rect x="140" y="70" width="46" height="52" rx="6" fill="#fff" stroke="#94a3b8"/><text x="163" y="105" fill="#1e293b">-</text>
+<rect x="190" y="70" width="46" height="52" rx="6" fill="#fff" stroke="#94a3b8"/><text x="213" y="105" fill="#1e293b">0</text>
+<rect x="240" y="70" width="46" height="52" rx="6" fill="#fff" stroke="#94a3b8"/><text x="263" y="105" fill="#1e293b">0</text>
+<rect x="290" y="70" width="46" height="52" rx="6" fill="#fff" stroke="#94a3b8"/><text x="313" y="105" fill="#1e293b">0</text>
+<rect x="340" y="70" width="46" height="52" rx="6" fill="#fff" stroke="#94a3b8"/><text x="363" y="105" fill="#1e293b">0</text>
+<rect x="390" y="70" width="46" height="52" rx="6" fill="#fff" stroke="#94a3b8"/><text x="413" y="105" fill="#1e293b">7</text></g>
+<text x="40" y="62" font-size="13" fill="#64748b" text-anchor="start">[Order ID] = "SG-00007"</text>
+<g data-s="2" data-pulse><rect x="140" y="70" width="46" height="52" rx="6" fill="#fed7aa" stroke="#ea580c" stroke-width="3"/><text x="163" y="105" font-size="24" font-weight="800" text-anchor="middle" fill="#7c2d12" font-family="ui-monospace,Menlo,monospace">-</text>
+<text x="163" y="150" font-size="14" text-anchor="middle" fill="#9a3412" font-weight="700">delimiter</text></g>
+<g data-s="3"><path d="M40 168 L132 168" stroke="#64748b" stroke-width="3" fill="none"/><text x="86" y="190" font-size="14" text-anchor="middle" fill="#64748b" font-weight="700">token 1: "SG"</text>
+<rect x="190" y="70" width="246" height="52" rx="6" fill="#bbf7d0" fill-opacity=".55" stroke="#16a34a" stroke-width="3"/>
+<path d="M190 168 L436 168" stroke="#16a34a" stroke-width="3" fill="none"/><text x="313" y="190" font-size="14" text-anchor="middle" fill="#166534" font-weight="800">token 2: "00007" (text!)</text></g>
+<g data-s="4" data-pulse><path d="M450 96 L520 96" stroke="#16a34a" stroke-width="3" fill="none" marker-end="url(#m8s-ar)"/>
+<rect x="530" y="62" width="110" height="68" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="585" y="86" font-size="14" text-anchor="middle" fill="#065f46">INT</text><text x="585" y="118" font-size="30" font-weight="900" text-anchor="middle" fill="#15803d">7</text>
+<text x="660" y="104" font-size="14" text-anchor="start" fill="#64748b">a number, zeros gone</text></g>
+<g data-s="4"><text x="40" y="250" font-size="14" fill="#334155" text-anchor="start" font-weight="700">Order Number (Measure, green):  MAX = 6,575 over the whole file</text></g>
+</svg></div>
+<ol class="caps">
+<li>הטקסט המלא הוא SG-00007. אנחנו רוצים רק את המספר.</li>
+<li>SPLIT מחפשת את המפריד שביקשנו: המקף.</li>
+<li>היא חותכת את הטקסט לחלקים משני צידי המקף. מבקשים את החלק השני: &quot;00007&quot;. זה עדיין טקסט.</li>
+<li>INT הופכת את הטקסט למספר, והאפסים בהתחלה נעלמים: 7. עכשיו אפשר למיין, לסכם ולהשוות.</li>
+</ol></div>
+
+<div class="box try" data-id="m8-try-strings">
+<p><b>ארבעה שדות טקסט.</b> בכל אחד: בנו, בדקו מול התוצאה הצפויה.</p>
+<ol>
+<li>צרו <code>Order Number</code>:
+<pre class="code" data-lang="tableau">INT(SPLIT([Order ID], "-", 2))</pre>
+<span class="m8-why">למה: מוציאים את המספר מתוך מזהה הטקסט. SPLIT חותכת לפי מקף, ו-INT הופכת את התוצאה למספר.</span> גררו אותו אל <code>Text</code>. הוא יופיע כ-<code>SUM(Order Number)</code>: קליק ימני על הפיל, <code>Measure</code>, ובחרו <code>Maximum</code>.</li>
+<li>צרו <code>Branch Tag</code>:
+<pre class="code" data-lang="tableau">UPPER(LEFT([Branch], 3))</pre>
+גררו <code>Branch Tag</code> אל <code>Rows</code> ואת <code>Order ID</code> אל <code>Text</code> כ-<code>Count</code>, וספרו כמה ערכים יש בעמודה.<span class="m8-why">למה: רוצים קיצור של שלוש אותיות לכל סניף, ובודקים שהקיצור לא איחד סניפים שונים.</span></li>
+<li>תיקון: ערכו את <code>Branch Tag</code> לנוסחה:
+<pre class="code" data-lang="tableau">UPPER(LEFT([Branch], 3)) + "-" + UPPER(LEFT(SPLIT([Branch], " ", -1), 3))</pre>
+<span class="m8-why">למה: מוסיפים את שלוש האותיות הראשונות של המילה האחרונה בשם הסניף. <code>-1</code> אומר &quot;החלק האחרון&quot;.</span></li>
+<li>צרו <code>Is Pop-up</code>: <code>CONTAINS([Branch], "Pop-up")</code>. גררו אותו אל <code>Color</code> בגרף עמודות של <code>SUM(Sales)</code> לפי <code>Branch</code>.<span class="m8-why">למה: שדה בוליאני (אמת או שקר) הוא הדרך הקצרה לצבוע סניף אחד באופן שונה משאר הרשת.</span></li>
+<li>צרו <code>Is Chocolate</code>: <code>STARTSWITH([Item], "Choco")</code>. גררו אל <code>Rows</code> עם <code>Item</code> ברמה נמוכה יותר, או אל <code>Color</code> של גרף לפי Item.<span class="m8-why">למה: לראות אילו פריטים שדה כזה &quot;תופס&quot;. נראה שהחיפוש רחב מהמתוכנן.</span></li>
+</ol>
+<div class="m8-exp"><p><b>תוצאה צפויה:</b></p>
+<ul>
+<li><code>MAX(Order Number)</code> = <span class="n">6,575</span>.</li>
+<li>בגרסה הראשונה של <code>Branch Tag</code> יש <b>8</b> ערכים במקום 9 סניפים: TEL מכיל <span class="n">2,305</span> שורות, כי Tel Aviv Dizengoff (1,235) ו-Tel Aviv Port (1,070) קיבלו את אותו קיצור. השאר: JER 970, EIL 866, HAI 758, NET 732, BEE 525, REH 280, ASH 139.</li>
+<li>בגרסה המתוקנת יש <b>9</b> ערכים, בהם TEL-DIZ, TEL-POR, BEE-MAL, REH-MAL ו-ASH-POP.</li>
+<li><code>Is Pop-up</code> = True בסניף אחד, Ashdod Beach Pop-up: <span class="n">139</span> שורות ו-<span class="n">5,304.50</span> מכירות.</li>
+<li><code>Is Chocolate</code> = True ב-<b>שני</b> פריטים: Chocolate Cup (485 שורות) ו-Choco Stick (398). ביחד <span class="n">883</span> שורות.</li>
+</ul></div>
+</div>
+
+<div class="box trap"><p><b>קיצור שמאחד בטעות.</b> כל קיצור של טקסט (שלוש אותיות ראשונות, מילה ראשונה) עלול לאחד שני ערכים שונים. אצלנו &quot;TEL&quot; הפך שני סניפים לאחד, וכל הגרף נתן מספרים לא נכונים בלי שום שגיאה. הכלל: אחרי כל שדה טקסט שחותך, בדקו <code>COUNTD</code> (או ספרו ערכים) מול מספר הערכים המקוריים. כאן 8 מול 9, וזה מספיק כדי לדעת שמשהו התאחד.</p></div>
+
+<div class="box trap"><p><b>החיפוש רחב מהמתוכנן.</b> <code>STARTSWITH([Item], "Choco")</code> תפס גם את Choco Stick וגם את Chocolate Cup. כשאתם מחפשים תת-טקסט, בדקו איזה ערכים נתפסו, ובמידת הצורך החמירו: <code>[Item] = "Chocolate Cup"</code>, או חפשו מחרוזת ארוכה יותר.</p></div>
+
+<div class="box note"><p><b>עברית בתוך נוסחה.</b> כל השדות והתוויות בתרגילים כאן באנגלית. מותר לכתוב טקסט בעברית בין גרשיים בתוך נוסחה, אבל בעורך הנוסחאות שהוא משמאל לימין השילוב של עברית ואנגלית עלול להיראות מבולבל, ואז קשה לראות מה בדיוק כתבתם. אם בוחרים בכל זאת בתוויות בעברית, הקלידו אותן קצר ובדקו את התוצאה בגרף. בגרסה שלכם ייתכן שהתצוגה שונה.</p></div>
+
+<div class="box real"><p>בנתונים של עסקים אמיתיים, שמות מגיעים עם רווחים בסוף, עם אותיות גדולות וקטנות מעורבות ועם איות שונה לאותו לקוח. לפני שמנתחים, מנקים בשדה מחושב: <code>TRIM</code>, <code>UPPER</code> או <code>PROPER</code>, ואם צריך <code>REPLACE</code>. הניקוי לא נוגע בקובץ המקורי.</p></div>
+
+<div class="box think" data-id="m8-th-tag"><p>איזה קיצור היה פותר את בעיית &quot;TEL&quot; בלי לחתוך שם הסניף בכלל?</p>
+<div class="ans">להשתמש בשדה שכבר ייחודי לכל סניף: Branch Code (קודי הסניפים BR01 עד BR08 ו-POP01) או שם הסניף עצמו. לא תמיד צריך לחשב קיצור. כשיש שדה ייחודי, הוא בטוח יותר מחיתוך. חיתוך שימושי כשאין שדה כזה או כשהקיצור נועד לתצוגה בלבד.</div></div>
+
+<div class="quiz" data-id="m8-q-split" data-a="2"><p class="qq">מה מחזירה <code>SPLIT([Order ID], "-", 2)</code> על SG-00041, ומה הסוג של התוצאה?</p>
+<button class="opt">המספר 41, מסוג מספר</button>
+<button class="opt">"00041", מסוג טקסט</button>
+<button class="opt">"SG", מסוג טקסט</button>
+<div class="why">החלק השני אחרי המקף הוא &quot;00041&quot;, וכל תוצאה של SPLIT היא טקסט. כדי לקבל 41 צריך לעטוף ב-INT. החלק הראשון היה &quot;SG&quot;.</div></div>
+
+<div class="quiz" data-id="m8-q-contains" data-a="1"><p class="qq">מוסיפים שדה <code>CONTAINS([Branch], "Mall")</code>. כמה סניפים יקבלו True?</p>
+<button class="opt">שניים: Beer Sheva Grand Mall ו-Rehovot Mall</button>
+<button class="opt">אחד: רק Rehovot Mall</button>
+<button class="opt">שלושה, כולל Tel Aviv Port</button>
+<div class="why">&quot;Mall&quot; מופיע בשם של שני סניפים בלבד: Beer Sheva Grand Mall ו-Rehovot Mall. ב-Tel Aviv Port אין &quot;Mall&quot;, והחיפוש של CONTAINS לא תופס מילים דומות.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הקיצור &quot;TEL&quot; הוא מלכודת טובה: תנו לכיתה לבנות את Branch Tag, לבקש מהם לנחש לפני שהם סופרים כמה סימנים יש, ואז לספור. בדקו אצלכם ש-SPLIT עם מספר שלילי (-1) עובד בחיבור לקובץ הטקסט. אם השדה Branch Code מופיע אצלכם כ-Branch Code עם רווח, אפשר להשתמש בו בשאלת המחשבה.</div>
+</section>
+<section class="sec" id="m8-6" data-t="תאריכים ושעות">
+<div class="sec-h"><div class="sec-n">6</div><h2>תאריכים ושעות: סוף שבוע, עונה ומרחק בימים</h2></div>
+<p class="lead">בקובץ של Scoop & Go יש תאריך ושעה בלבד. אין בו &quot;סוף שבוע&quot; ואין בו &quot;קיץ&quot;. ובכל זאת מנהל הרשת ישאל בדיוק על זה: מתי באים הלקוחות? כאן בונים את השדות שעונים.</p>
+
+<p>הפונקציות של תאריכים עושות חמישה דברים: חותכות תאריך לרמה (חודש, רבעון), קוראות חלק ממנו, מודדות מרחק בין שני תאריכים, מזיזות תאריך, או קוראות טקסט ומחזירות תאריך. בתוך נוסחה תאריך קבוע נכתב בין סולמיות: <code>#2025-05-12#</code>.</p>
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>פונקציה</th><th>מה היא עושה</th><th>דוגמה</th><th>תוצאה</th></tr></thead>
+<tbody>
+<tr><td><code>DATETRUNC('month', d)</code></td><td>חותכת לתחילת התקופה. מחזירה <b>תאריך</b></td><td><code>DATETRUNC('month', #2025-05-12#)</code></td><td>1.5.2025</td></tr>
+<tr><td><code>DATEPART('month', d)</code></td><td>קוראת חלק מהתאריך. מחזירה <b>מספר שלם</b></td><td><code>DATEPART('month', #2025-05-12#)</code>, <code>DATEPART('quarter', ...)</code></td><td>5 ו-2</td></tr>
+<tr><td><code>DATEPART('iso-weekday', d)</code></td><td>יום בשבוע לפי תקן ISO: שני הוא 1 ו-ראשון הוא 7</td><td><code>DATEPART('iso-weekday', #2025-05-12#)</code>. ה-12 במאי 2025 היה יום שני.</td><td>1</td></tr>
+<tr><td><code>DATENAME('weekday', d)</code></td><td>שם החלק, כטקסט</td><td><code>DATENAME('weekday', #2025-05-12#)</code></td><td>"Monday" (השפה לפי ההגדרות אצלכם)</td></tr>
+<tr><td><code>YEAR(d)</code>, <code>MONTH(d)</code>, <code>DAY(d)</code></td><td>קיצורים של DATEPART</td><td><code>YEAR(#2025-05-12#)</code></td><td>2025</td></tr>
+<tr><td><code>DATEDIFF('day', d1, d2)</code></td><td>כמה גבולות של יחידה עוברים בין שני תאריכים</td><td><code>DATEDIFF('day', #2024-01-01#, #2025-12-31#)</code></td><td>730</td></tr>
+<tr><td><code>DATEADD('month', n, d)</code></td><td>מזיזה תאריך ב-n יחידות</td><td><code>DATEADD('month', 9, #2025-05-12#)</code></td><td>12.2.2026</td></tr>
+<tr><td><code>MAKEDATE(y, m, d)</code></td><td>בונה תאריך משלושה מספרים</td><td><code>MAKEDATE(2025, 6, 1)</code></td><td>1.6.2025</td></tr>
+<tr><td><code>TODAY()</code>, <code>NOW()</code></td><td>התאריך או הזמן של היום</td><td>שימוש: <code>DATEDIFF('day', [Order Date], TODAY())</code></td><td>משתנה</td></tr>
+</tbody></table></div>
+<p>שימו לב להבדל שקל לפספס: <code>DATETRUNC</code> מחזירה <b>תאריך אמיתי</b> (אפשר לשים אותו על ציר זמן ירוק), ו-<code>DATEPART</code> מחזירה <b>מספר</b> (5, לא &quot;מאי&quot;).</p>
+<p>הערה על ספירת ימים: <code>DATEDIFF</code> סופרת גבולות, לא פרקי זמן שלמים. <code>DATEDIFF('month', #2025-01-31#, #2025-02-01#)</code> נותנת 1, למרות שעבר יום אחד, כי עברנו את הגבול בין ינואר לפברואר. ובשבועות התוצאה תלויה ביום שבו השבוע מתחיל. לכן אצלנו יום בשבוע נקרא עם <code>'iso-weekday'</code>, שבו שבוע תמיד מתחיל ביום שני ואין תלות בהגדרות.</p>
+
+<h3>איזה יום הוא סוף שבוע, ומה רואים בנתונים</h3>
+<p>ב-Scoop & Go עסק שיושבים בו בערב של סוף שבוע בישראל: שישי ושבת. בשדה ISO אלה היום החמישי והשישי. הגרף כאן הוא <b>בדיקה</b> לפני שבונים את השדה: סכום המכירות לכל יום בשבוע, מחושב על 6,575 השורות. בגרף רואים שני עמודים גבוהים, 5 ו-6.</p>
+<figure class="shot"><svg viewBox="0 0 760 256" role="img" aria-label="גרף עמודות של סך המכירות לכל יום בשבוע לפי ISO, שישי ושבת גבוהים בהרבה" style="width:100%;height:auto;direction:ltr">
+<line x1="40" y1="200" x2="720" y2="200" stroke="#94a3b8"/>
+<rect x="60" y="124.9" width="56" height="75.1" fill="#4e79a7" rx="3"/><text x="88" y="118.9" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">26.0k</text><text x="88" y="220" text-anchor="middle" font-size="13" fill="#334155">1</text><text x="88" y="238" text-anchor="middle" font-size="12" fill="#64748b">Mon</text><rect x="150" y="129.2" width="56" height="70.8" fill="#4e79a7" rx="3"/><text x="178" y="123.19999999999999" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">24.5k</text><text x="178" y="220" text-anchor="middle" font-size="13" fill="#334155">2</text><text x="178" y="238" text-anchor="middle" font-size="12" fill="#64748b">Tue</text><rect x="240" y="122.5" width="56" height="77.5" fill="#4e79a7" rx="3"/><text x="268" y="116.5" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">26.9k</text><text x="268" y="220" text-anchor="middle" font-size="13" fill="#334155">3</text><text x="268" y="238" text-anchor="middle" font-size="12" fill="#64748b">Wed</text><rect x="330" y="108.5" width="56" height="91.5" fill="#4e79a7" rx="3"/><text x="358" y="102.5" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">31.7k</text><text x="358" y="220" text-anchor="middle" font-size="13" fill="#334155">4</text><text x="358" y="238" text-anchor="middle" font-size="12" fill="#64748b">Thu</text><rect x="420" y="60.400000000000006" width="56" height="139.6" fill="#e8741f" rx="3"/><text x="448" y="54.400000000000006" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">48.4k</text><text x="448" y="220" text-anchor="middle" font-size="13" fill="#334155">5</text><text x="448" y="238" text-anchor="middle" font-size="12" fill="#64748b">Fri</text><rect x="510" y="50.099999999999994" width="56" height="149.9" fill="#e8741f" rx="3"/><text x="538" y="44.099999999999994" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">52.0k</text><text x="538" y="220" text-anchor="middle" font-size="13" fill="#334155">6</text><text x="538" y="238" text-anchor="middle" font-size="12" fill="#64748b">Sat</text><rect x="600" y="121.3" width="56" height="78.7" fill="#4e79a7" rx="3"/><text x="628" y="115.3" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">27.3k</text><text x="628" y="220" text-anchor="middle" font-size="13" fill="#334155">7</text><text x="628" y="238" text-anchor="middle" font-size="12" fill="#64748b">Sun</text>
+<text x="40" y="22" font-size="14" font-weight="700" fill="#334155" text-anchor="start">SUM(Sales) by ISO weekday (1 = Monday ... 7 = Sunday)</text>
+</svg><figcaption>הדמיה סכמטית של הגרף שתקבלו. כל הערכים מחושבים מהקובץ: שישי (5) 48.4 אלף ושבת (6) 52.0 אלף, בעוד שבשאר הימים בין 24.5 ל-31.7 אלף.</figcaption></figure>
+
+<div class="sim m8-sw" data-id="m8-sim-weekend"><div class="sh">איזה ימים נחשבים סוף שבוע, ומה זה עושה למספרים</div>
+<p>סמנו אילו ימים (לפי ISO: 1 = שני ... 7 = ראשון) נכללים ב&quot;סוף שבוע&quot;. ההדמיה מחשבת מכל 6,575 השורות את מספר השורות, המכירות, ימי המסחר והמכירות ליום. זה אותו חישוב שה-IF ו-<code>COUNTD</code> עושים בשדות המחושבים.</p>
+<div class="row m8-days"></div>
+<div class="m8-cols"><div class="m8-box m8-we"></div><div class="m8-box m8-wd"></div></div>
+<div class="m8-warn" style="display:none"></div>
+</div>
+<script>(function(){FL.dom(function(){
+var box=FL.$('[data-id="m8-sim-weekend"]'); if(!box) return;
+var NM=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], row=box.querySelector('.m8-days'), we=box.querySelector('.m8-we'), wd=box.querySelector('.m8-wd'), warn=box.querySelector('.m8-warn');
+var on=[0,0,0,0,1,1,0], L=[0,0,0,0,0,0,0], Sx=[0,0,0,0,0,0,0], D=[{},{},{},{},{},{},{}], ready=false, touched=false;
+NM.forEach(function(n,i){ var l=document.createElement('label'), c=document.createElement('input'); c.type='checkbox'; c.checked=!!on[i]; c.addEventListener('change',function(){ on[i]=c.checked?1:0; touched=true; render(); FL.done('m8-sim-weekend'); }); l.appendChild(c); l.appendChild(document.createTextNode(' '+(i+1)+' '+n)); row.appendChild(l); });
+function fmt(x,d){ return x.toLocaleString('en-US',{minimumFractionDigits:d||0,maximumFractionDigits:d||0}); }
+function render(){
+  if(!ready){ we.textContent='טוען...'; return; }
+  var a={l:0,s:0,d:0}, b={l:0,s:0,d:0};
+  for(var i=0;i<7;i++){ var t=on[i]?a:b; t.l+=L[i]; t.s+=Sx[i]; t.d+=Object.keys(D[i]).length; }
+  function card(el,title,t){ el.innerHTML='<b>'+title+'</b><div>שורות: <span class="n">'+fmt(t.l)+'</span></div><div>מכירות: <span class="n">'+fmt(t.s,2)+'</span></div><div>ימי מסחר: <span class="n">'+fmt(t.d)+'</span></div><div>מכירות ליום: <span class="v">'+(t.d?fmt(t.s/t.d,2):'-')+'</span></div>'; }
+  card(we,'סוף שבוע (הימים המסומנים)',a); card(wd,'שאר הימים',b);
+  var msg=''; if(on[6]&&!on[4]) msg='הגדרה בלי שישי: בדקו שזה מה שרציתם.'; if(on[6]&&on[4]&&on[5]) msg='שימו לב: הגדרה של שישי, שבת וראשון. זו ה"טעות" של &gt;= 5.'; if(!a.l) msg='לא סימנתם אף יום.';
+  warn.style.display=msg?'block':'none'; warn.innerHTML=msg;
+}
+render();
+TF.loadScoop(function(d){
+  var dates=d.cols.Order_Date.v, s=d.cols.Sales.v;
+  for(var i=0;i<d.n;i++){ var p=dates[i].split('-'); var w=(new Date(Date.UTC(+p[0],+p[1]-1,+p[2])).getUTCDay()+6)%7; L[w]++; Sx[w]+=s[i]; D[w][dates[i]]=1; }
+  ready=true; render();
+});
+});})();</script>
+
+<div class="box try" data-id="m8-try-dates">
+<p><b>סוף שבוע, מכירות ליום, עונה וציר חודשים.</b></p>
+<ol>
+<li>צרו שדה בדיקה בשם <code>ISO Weekday</code>: <code>DATEPART('iso-weekday', [Order Date])</code>. גררו אותו אל <code>Columns</code> (הפכו אותו ל-<code>Discrete</code>) ו-<code>SUM(Sales)</code> אל <code>Rows</code>.<span class="m8-why">למה: לפני שמגדירים סוף שבוע בודקים שמספרי הימים מתנהגים כמו שחשבנו. אם משהו שונה אצלכם, אל תמשיכו.</span></li>
+<li>צרו <code>Day Type</code>:
+<pre class="code" data-lang="tableau">// Israel weekend: Friday and Saturday
+IF DATEPART('iso-weekday', [Order Date]) IN (5, 6)
+THEN "Weekend"
+ELSE "Weekday"
+END</pre>
+<span class="m8-why">למה: הנוסחה בודקת בכל שורה אם היום הוא 5 או 6. השורה הראשונה היא הערה, והיא לא משפיעה על החישוב.</span></li>
+<li>גיליון חדש: <code>Day Type</code> אל <code>Rows</code>, <code>SUM(Sales)</code> אל <code>Columns</code>, <code>Count</code> של <code>Order ID</code> אל <code>Label</code>.<span class="m8-why">למה: כמה כסף וכמה שורות בכל סוג יום.</span></li>
+<li>צרו <code>Sales per Trading Day</code>: <code>SUM([Sales]) / COUNTD([Order Date])</code>. הציבו אותו במקום <code>SUM(Sales)</code>.<span class="m8-why">למה: יש חמישה ימי חול ושני ימי סוף שבוע בכל שבוע, אז סכום פשוט מוטה. חלוקה במספר הימים השונים בכל קבוצה נותנת מכירות ליום, וזה השוואה הוגנת.</span></li>
+<li>צרו <code>Season</code>:
+<pre class="code" data-lang="tableau">IF MONTH([Order Date]) IN (12, 1, 2) THEN "Winter"
+ELSEIF MONTH([Order Date]) IN (3, 4, 5) THEN "Spring"
+ELSEIF MONTH([Order Date]) IN (6, 7, 8) THEN "Summer"
+ELSE "Autumn"
+END</pre>
+<span class="m8-why">למה: עונה לפי חודשי לוח. אפשר להחליט אחרת, אבל מחליטים פעם אחת ובנוסחה, כדי שכולם ישתמשו באותו חיתוך. גררו אל <code>Rows</code> עם <code>SUM(Sales)</code> ב-<code>Columns</code>.</span></li>
+<li>צרו <code>Month Start</code>: <code>DATETRUNC('month', [Order Date])</code>. גררו אל <code>Columns</code>, לחצו על חץ הפיל ובחרו <code>Exact Date</code> מהחלק <b>הירוק</b> של הרשימה (<code>Continuous</code>). <code>SUM(Sales)</code> אל <code>Rows</code>.<span class="m8-why">למה: ציר זמן רציף עם נקודה לכל חודש, ללא תלות בשנה. בדיוק מה שמסכם פונקציית חיתוך.</span></li>
+</ol>
+<div class="m8-exp"><p><b>תוצאה צפויה.</b> גרף ה-ISO Weekday:</p>
+<div class="tw"><table class="tbl m8-tb"><thead><tr><th class="num">ISO</th><th class="num">יום</th><th class="num">שורות</th><th class="num">מכירות</th></tr></thead><tbody>
+<tr><td class="num">1</td><td class="num">Mon</td><td class="num">710</td><td class="num">26,040.90</td></tr>
+<tr><td class="num">2</td><td class="num">Tue</td><td class="num">848</td><td class="num">24,530.50</td></tr>
+<tr><td class="num">3</td><td class="num">Wed</td><td class="num">740</td><td class="num">26,868.00</td></tr>
+<tr><td class="num">4</td><td class="num">Thu</td><td class="num">865</td><td class="num">31,718.30</td></tr>
+<tr><td class="num hi">5</td><td class="num hi">Fri</td><td class="num hi">1,292</td><td class="num hi">48,399.70</td></tr>
+<tr><td class="num hi">6</td><td class="num hi">Sat</td><td class="num hi">1,380</td><td class="num hi">51,979.50</td></tr>
+<tr><td class="num">7</td><td class="num">Sun</td><td class="num">740</td><td class="num">27,284.00</td></tr>
+</tbody></table></div>
+<p><b>Day Type:</b></p>
+<div class="tw"><table class="tbl m8-tb"><thead><tr><th>Day Type</th><th class="num">שורות</th><th class="num">מכירות</th><th class="num">ימי מסחר</th><th class="num">Sales per Trading Day</th></tr></thead><tbody>
+<tr><td>Weekend</td><td class="num">2,672</td><td class="num">100,379.20</td><td class="num">208</td><td class="num g">482.59</td></tr>
+<tr><td>Weekday</td><td class="num">3,903</td><td class="num">136,441.70</td><td class="num">517</td><td class="num">263.91</td></tr>
+</tbody></table></div>
+<p>ביום סוף שבוע מוכרים בערך פי 1.8 מאשר ביום חול. הסכום הרגיל הראה את ההפך.</p>
+<p><b>Season:</b></p>
+<div class="tw"><table class="tbl m8-tb"><thead><tr><th>Season</th><th class="num">שורות</th><th class="num">מכירות</th></tr></thead><tbody>
+<tr><td>Winter</td><td class="num">799</td><td class="num">28,805.10</td></tr>
+<tr><td>Spring</td><td class="num">1,269</td><td class="num">45,897.70</td></tr>
+<tr><td>Summer</td><td class="num hi">2,937</td><td class="num hi">105,895.30</td></tr>
+<tr><td>Autumn</td><td class="num">1,570</td><td class="num">56,222.80</td></tr>
+</tbody></table></div>
+<p>הקיץ הוא 44.7 אחוז מהמכירות.</p>
+<p><b>Month Start:</b> 24 נקודות. הגבוהה ביותר היא אוגוסט 2025: <span class="n">23,259.90</span>. אוגוסט 2024: <span class="n">17,703.10</span>. הנמוכה ביותר: פברואר 2025, <span class="n">4,097.00</span>.</p></div>
+<p>הסדר האלפביתי של העונות (Autumn, Spring, Summer, Winter) אינו הסדר הטבעי. אפשר לסדר ידנית (גרירה בכותרות) או לשמור את הסדר שבחרתם. זה עניין של תצוגה, לא של הנוסחה.</p>
+</div>
+
+<div class="box trap"><p><b>&gt;= 5 תופס גם את יום ראשון.</b> נוח לכתוב <code>DATEPART('iso-weekday', [Order Date]) >= 5</code>, אבל ב-ISO יום ראשון הוא 7, ולכן התנאי כולל שישי, שבת וראשון. התוצאה: <span class="n">3,412</span> שורות &quot;סוף שבוע&quot; במקום 2,672. אין שגיאה, והגרף נראה סביר. הדרך היחידה לתפוס את זה היא בדיקה מול מספר ידוע, כמו גרף ה-ISO למעלה.</p></div>
+
+<div class="box trap"><p><b>סכום מול ממוצע ליום.</b> חמישה ימי חול מול שני ימי סוף שבוע: הסכום מראה ש&quot;ימי חול מוכרים יותר&quot; (136,441.70 מול 100,379.20). זה רק כי יש יותר ימי חול. ליום, סוף שבוע חזק בהרבה. כשמשווים קבוצות בגדלים שונים, מחלקים בגודל הקבוצה, לפי <code>COUNTD</code> של התאריכים.</p></div>
+
+<div class="box meaning"><p>בשדה אחד, <code>Day Type</code>, הפכתם 6,575 שורות עם תאריך לשאלה עסקית: איך נערכים לשישי ושבת? לעובדים, לעומס ולמלאי יש סיבה לתכנן לפי הנתון הזה. ועם <code>Season</code> אפשר לתכנן את הקיץ, שבו מרוכזים כמעט 45 אחוז מהמכירות.</p></div>
+
+<div class="box real"><p>בעסקים מסוג זה מנתחים לפי יום בשבוע ושעה כדי לקבוע משמרות ומלאי. בכלי ניתוח אחרים אותו חיתוך נעשה בפונקציות דומות: ב-SQL יש פונקציות דומות, כמו <code>EXTRACT</code> ב-PostgreSQL ו-<code>strftime</code> ב-SQLite. ההבדל הוא בעיקר בשם הפונקציה.</p></div>
+
+<div class="box note"><p><b>שנת כספים.</b> רשת שהשנה הכספית שלה מתחילה באפריל יכולה להשתמש בהגדרה המובנית של Tableau (קליק ימני על שדה התאריך, <code>Default Properties</code>, <code>Fiscal Year Start</code>), או בנוסחה שאינה תלויה בהגדרה:
+<pre class="code" data-lang="tableau">// FY named by the year in which it ends (April start)
+YEAR( DATEADD('month', 9, [Order Date]) )</pre>
+הרעיון: מזיזים את כל התאריכים תשעה חודשים קדימה, ואז השנה של התאריך החדש היא שנת הכספים. לפי מדריכים מקובלים זו דרך נפוצה. תוצאה על Scoop & Go: FY2024 (ינואר עד מרץ 2024) 14,406.30; FY2025 (אפריל 2024 עד מרץ 2025) 109,370.00; FY2026 (אפריל עד דצמבר 2025) 113,044.60. הסכום 236,820.90. ההגדרה המובנית מציגה את השנה בצורה &quot;FY2025&quot; בלי נוסחה. מהתיעוד לא ברור איך פונקציות כמו DATETRUNC מתייחסות אליה בתוך חישוב, ולכן בנוסחה שלנו לא נסמכים עליה.</p></div>
+
+<div class="box think" data-id="m8-th-weekend"><p>מנהל הרשת טוען: &quot;בסוף שבוע אנחנו מוכרים פחות, כי הסכום של ימי חול גדול יותר.&quot; מה תענו לו, ואיזה שדה מחושב תראו לו?</p>
+<div class="ans">הסכום גדול בימי חול כי יש בו חמישה ימים בשבוע מול שניים. כשמחלקים במספר הימים (<code>SUM([Sales]) / COUNTD([Order Date])</code>), יוצא שביום סוף שבוע מוכרים 482.59 ובימי חול 263.91, בערך פי 1.8. אותה השוואה, מנורמלת לכמות הימים.</div></div>
+
+<div class="quiz" data-id="m8-q-weekday" data-a="1"><p class="qq">איזה תנאי מסמן שישי ושבת, כש-<code>DATEPART('iso-weekday', [Order Date])</code> נותן 1 ליום שני?</p>
+<button class="opt"><code>IN (5, 6)</code></button>
+<button class="opt"><code>&gt;= 5</code></button>
+<button class="opt"><code>IN (6, 7)</code></button>
+<div class="why">ב-ISO: שני=1, שלישי=2, רביעי=3, חמישי=4, שישי=5, שבת=6, ראשון=7. לכן (5, 6). האפשרות &gt;= 5 תופסת גם יום ראשון, ו-(6, 7) תופסת שבת וראשון.</div></div>
+
+<div class="quiz" data-id="m8-q-trunc" data-a="2"><p class="qq">מה מחזירה <code>DATETRUNC('month', #2025-05-12#)</code>?</p>
+<button class="opt">המספר 5</button>
+<button class="opt">התאריך 1.5.2025</button>
+<button class="opt">הטקסט &quot;May&quot;</button>
+<div class="why">DATETRUNC מחזירה תאריך: תחילת התקופה. 5 היה מגיע מ-DATEPART, והטקסט &quot;May&quot; מ-DATENAME.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הכי חשוב כאן הוא גרף הבדיקה של ISO Weekday: תנו לכיתה לגלות לבד ששישי ושבת גבוהים, ואז להגדיר סוף שבוע. אם מישהו משתמש ב-DATEPART('weekday') בלי ISO, התוצאה תלויה בהגדרת תחילת השבוע של מקור הנתונים: מומלץ לבדוק אצלכם. בדקו גם את DATENAME (שפת התצוגה) ואת הפיל הירוק של DATETRUNC. את שנת הכספים כדאי לבדוק מול ההגדרה המובנית (Fiscal Year Start) לפני שמציגים אותה.</div>
+</section>
+<section class="sec" id="m8-7" data-t="לוגיקה">
+<div class="sec-h"><div class="sec-n">7</div><h2>לוגיקה: אם זה, אז זה</h2></div>
+<p class="lead">&quot;מה השעה העמוסה?&quot; &quot;איזה מוצר כדאי לקדם?&quot; &quot;כמה שורות גדולות יש לנו?&quot; כל שאלה כזאת דורשת להחליט בכל שורה לאיזו קבוצה היא שייכת. את זה עושים פונקציות לוגיקה, והעיקרית שבהן היא <code>IF</code>.</p>
+
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>פונקציה</th><th>מה היא עושה</th><th>דוגמה על Scoop & Go</th></tr></thead>
+<tbody>
+<tr><td><code>IF ... THEN ... ELSEIF ... ELSE ... END</code></td><td>בודקת תנאים לפי הסדר, והראשון שמתקיים קובע</td><td>שעה לקטגוריה: הדוגמה הבאה</td></tr>
+<tr><td><code>CASE field WHEN value THEN ... ELSE ... END</code></td><td>משווה שדה אחד לרשימת ערכים מדויקים</td><td><code>CASE [Channel] WHEN "Walk-in" THEN "In store" ELSE "Digital" END</code></td></tr>
+<tr><td><code>IIF(test, then, else)</code></td><td>IF קצר לשתי אפשרויות. ארגומנט רביעי אופציונלי מוחזר כשהתנאי Null</td><td><code>IIF([Discount] &gt; 0, "Discounted", "Full price")</code></td></tr>
+<tr><td><code>IN</code></td><td>האם הערך נמצא ברשימה</td><td><code>[Channel] IN ("App", "Delivery")</code></td></tr>
+<tr><td><code>AND</code>, <code>OR</code>, <code>NOT</code></td><td>חיבור תנאים. קודם NOT, אחר כך AND ואחר כך OR</td><td><code>[Discount] &gt; 0 AND [Category] = "Sundaes"</code></td></tr>
+<tr><td><code>ISNULL(x)</code></td><td>אמת כשאין ערך</td><td>בסעיף 8</td></tr>
+<tr><td><code>ZN(x)</code>, <code>IFNULL(x, default)</code></td><td>מחליפות Null באפס או בערך שבחרתם</td><td>בסעיף 8</td></tr>
+</tbody></table></div>
+
+<div class="defline"><b>Null:</b> &quot;אין ערך&quot;, לא אפס ולא טקסט ריק. דוגמה: סניף שלא פעל ב-2024 אין לו מכירות ב-2024, והסכום שלו לאותה שנה הוא Null. הסכום 0 היה אומר &quot;פעל ולא מכר&quot;.</div>
+
+<h3>IF: שעה לקטגוריה</h3>
+<p>רוצים לקבץ שעות היום לחמש קטגוריות. כך נראית הנוסחה, וההנפשה מראה איך שורה אחת, עם שעה 20, יורדת במדרגות הבדיקה:</p>
+<pre class="code" data-lang="tableau">IF [Order Hour] < 12 THEN "Morning"
+ELSEIF [Order Hour] < 16 THEN "Noon"
+ELSEIF [Order Hour] < 19 THEN "Afternoon"
+ELSEIF [Order Hour] < 22 THEN "Evening"
+ELSE "Late"
+END</pre>
+
+<div class="anim" data-id="m8-anim-ladder" data-speed="3000">
+<div class="stage"><svg viewBox="0 0 800 380" role="img" aria-label="הנפשה: שורה עם שעה 20 יורדת בסולם תנאי IF ו-ELSEIF ומקבלת את הקטגוריה Evening">
+<g font-size="16" font-family="ui-monospace,Menlo,monospace" text-anchor="start">
+<rect x="110" y="24" width="360" height="52" rx="10" fill="#fff" stroke="#94a3b8"/><text x="126" y="56" fill="#1e293b">IF [Order Hour] &lt; 12</text>
+<rect x="110" y="86" width="360" height="52" rx="10" fill="#fff" stroke="#94a3b8"/><text x="126" y="118" fill="#1e293b">ELSEIF [Order Hour] &lt; 16</text>
+<rect x="110" y="148" width="360" height="52" rx="10" fill="#fff" stroke="#94a3b8"/><text x="126" y="180" fill="#1e293b">ELSEIF [Order Hour] &lt; 19</text>
+<rect x="110" y="210" width="360" height="52" rx="10" fill="#fff" stroke="#94a3b8"/><text x="126" y="242" fill="#1e293b">ELSEIF [Order Hour] &lt; 22</text>
+<rect x="110" y="272" width="360" height="52" rx="10" fill="#fff" stroke="#94a3b8"/><text x="126" y="304" fill="#1e293b">ELSE</text></g>
+<g font-size="16" font-weight="700" text-anchor="middle">
+<rect x="500" y="34" width="120" height="32" rx="16" fill="#e2e8f0"/><text x="560" y="56" fill="#475569">Morning</text>
+<rect x="500" y="96" width="120" height="32" rx="16" fill="#e2e8f0"/><text x="560" y="118" fill="#475569">Noon</text>
+<rect x="500" y="158" width="120" height="32" rx="16" fill="#e2e8f0"/><text x="560" y="180" fill="#475569">Afternoon</text>
+<rect x="500" y="220" width="120" height="32" rx="16" fill="#e2e8f0"/><text x="560" y="242" fill="#475569">Evening</text>
+<rect x="500" y="282" width="120" height="32" rx="16" fill="#e2e8f0"/><text x="560" y="304" fill="#475569">Late</text></g>
+<g data-move="1:0,0|3:0,62|4:0,124|5:0,186"><circle cx="58" cy="50" r="26" fill="#fde68a" stroke="#d97706" stroke-width="3"/><text x="58" y="57" font-size="20" font-weight="900" text-anchor="middle" fill="#78350f">20</text></g>
+<text x="58" y="100" font-size="12" text-anchor="middle" fill="#64748b" data-only="1">Order Hour</text>
+<g font-size="15" font-weight="800" text-anchor="start">
+<text x="640" y="56" fill="#dc2626" data-s="2">20 &lt; 12 : no</text>
+<text x="640" y="118" fill="#dc2626" data-s="3">20 &lt; 16 : no</text>
+<text x="640" y="180" fill="#dc2626" data-s="4">20 &lt; 19 : no</text>
+<text x="640" y="242" fill="#16a34a" data-s="5">20 &lt; 22 : yes</text></g>
+<g data-s="5" data-pulse><rect x="500" y="220" width="120" height="32" rx="16" fill="#bbf7d0" stroke="#16a34a" stroke-width="3"/><text x="560" y="242" font-size="16" font-weight="800" text-anchor="middle" fill="#14532d">Evening</text></g>
+<g data-s="6"><rect x="110" y="338" width="580" height="32" rx="16" fill="#ecfdf5" stroke="#10b981"/><text x="400" y="360" font-size="14" font-weight="700" text-anchor="middle" fill="#065f46">first true test wins, the rest are skipped: order matters</text></g>
+</svg></div>
+<ol class="caps">
+<li>שורה מגיעה עם שעה 20. Tableau בודק את התנאים מלמעלה למטה.</li>
+<li>התנאי הראשון: 20 קטן מ-12? לא. ממשיכים.</li>
+<li>20 קטן מ-16? לא. ממשיכים.</li>
+<li>20 קטן מ-19? לא. ממשיכים.</li>
+<li>20 קטן מ-22? כן. התוצאה: Evening. הבדיקה נעצרת כאן, ו-ELSE לא נבדק.</li>
+<li>הכלל: התנאי הראשון שמתקיים קובע. אם היינו הופכים את הסדר ומתחילים מ-22, כל שעה מתחת ל-22 הייתה נכנסת ל-Evening. לכן מסדרים מהמצומצם לרחב, או מהקטן לגדול.</li>
+</ol></div>
+
+<div class="sim m8-th" data-id="m8-sim-thresholds"><div class="sh">מזיזים סף ורואים איך המוצרים מתחלקים</div>
+<p>15 המוצרים של Scoop & Go, כל אחד עם אחוז הרווח הכולל שלו, מחושב מכל השורות. הזיזו את שני הספים ותראו איך <code>Margin Category</code> משתנה. הערכים בתרגיל הם הספים 55 ו-35.</p>
+<div class="row"><label>High מ-<span class="n m8-hv">55</span>% ומעלה <input type="range" class="m8-hi" min="30" max="80" step="1" value="55"></label><label>Low מתחת ל-<span class="n m8-lv">35</span>% <input type="range" class="m8-lo" min="10" max="60" step="1" value="35"></label></div>
+<div class="chips2"></div>
+<div class="cnt"><div>High: <span class="m8-nh">0</span></div><div>Medium: <span class="m8-nm">0</span></div><div>Low: <span class="m8-nl">0</span></div></div>
+</div>
+<script>(function(){FL.dom(function(){
+var box=FL.$('[data-id="m8-sim-thresholds"]'); if(!box) return;
+var hi=box.querySelector('.m8-hi'), lo=box.querySelector('.m8-lo'), hv=box.querySelector('.m8-hv'), lv=box.querySelector('.m8-lv'), chips=box.querySelector('.chips2'), items=null, moved=false;
+function render(){
+  if(!items){ chips.textContent='טוען...'; return; }
+  var H=+hi.value, Lw=+lo.value; if(Lw>H){ Lw=H; lo.value=H; } hv.textContent=H; lv.textContent=Lw;
+  var c={High:0,Medium:0,Low:0}; chips.innerHTML='';
+  items.forEach(function(it){ var k=it.m*100>=H?'High':(it.m*100>=Lw?'Medium':'Low'); c[k]++; var s=document.createElement('span'); s.className='c2 '+k; s.textContent=it.n+' '+(it.m*100).toFixed(1)+'%'; chips.appendChild(s); });
+  box.querySelector('.m8-nh').textContent=c.High; box.querySelector('.m8-nm').textContent=c.Medium; box.querySelector('.m8-nl').textContent=c.Low;
+}
+function onIn(){ moved=true; render(); FL.done('m8-sim-thresholds'); }
+hi.addEventListener('input',onIn); lo.addEventListener('input',onIn); render();
+TF.loadScoop(function(d){
+  var dict=d.cols.Item.dict, v=d.cols.Item.v, p=d.cols.Profit.v, s=d.cols.Sales.v, P=[], S=[]; dict.forEach(function(){ P.push(0); S.push(0); });
+  for(var i=0;i<d.n;i++){ P[v[i]]+=p[i]; S[v[i]]+=s[i]; }
+  items=dict.map(function(n,i){ return {n:n,m:P[i]/S[i]}; }).sort(function(a,b){ return b.m-a.m; });
+  render();
+});
+});})();</script>
+
+<div class="box try" data-id="m8-try-ifs">
+<p><b>חמישה שדות לוגיים.</b></p>
+<ol>
+<li>צרו <code>Hour Bucket</code> עם הנוסחה למעלה. גררו אותו אל <code>Rows</code>, ו-<code>Count</code> של <code>Order ID</code> עם <code>SUM(Sales)</code> אל <code>Columns</code>.<span class="m8-why">למה: רוצים לראות כמה שורות וכמה כסף בכל חלק של היום.</span></li>
+<li>צרו <code>Line Band</code>:
+<pre class="code" data-lang="tableau">IF [Sales] < 20 THEN "1 Small"
+ELSEIF [Sales] < 40 THEN "2 Medium"
+ELSEIF [Sales] < 80 THEN "3 Large"
+ELSE "4 XL"
+END</pre>
+<span class="m8-why">למה: מדרגות של ערך שורה. המספר בתחילת השם גורם לסדר האלפביתי להיות סדר גודל. השורה בקובץ היא שורת הזמנה אחת (Order ID ייחודי), לכן זה ערך שורה ולא ערך הזמנה שלמה.</span></li>
+<li>צרו <code>Channel Group</code>: <code>CASE [Channel] WHEN "Walk-in" THEN "In store" ELSE "Digital" END</code>.<span class="m8-why">למה: מקבצים שני ערוצים דיגיטליים (App ו-Delivery) לקבוצה אחת. CASE מתאים כשמשווים לערכים מדויקים.</span></li>
+<li>צרו <code>Is Discounted</code>: <code>[Discount] > 0</code>. אל <code>Color</code> בגרף של <code>SUM(Sales)</code> לפי <code>Category</code>.<span class="m8-why">למה: שדה בוליאני מחזיר True או False. הוא כחול ומקבל שני צבעים.</span></li>
+<li>צרו <code>Margin Category</code> (זה חישוב מסכם, והוא נשען על <code>Profit Margin</code> מסעיף 2):
+<pre class="code" data-lang="tableau">IF [Profit Margin] >= 0.55 THEN "High"
+ELSEIF [Profit Margin] >= 0.35 THEN "Medium"
+ELSE "Low"
+END</pre>
+<span class="m8-why">למה: מסווגים כל מוצר לפי אחוז הרווח הכולל שלו, לא לפי שורה בודדת. גררו <code>Item</code> אל <code>Rows</code> ואת <code>Margin Category</code> אל <code>Color</code> או <code>Label</code>, ואת <code>Profit Margin</code> אל <code>Columns</code>.</span></li>
+</ol>
+<div class="m8-exp"><p><b>תוצאה צפויה.</b></p>
+<div class="cols2"><div class="tw"><table class="tbl m8-tb"><thead><tr><th>Hour Bucket</th><th class="num">שורות</th><th class="num">מכירות</th></tr></thead><tbody>
+<tr><td>Morning</td><td class="num">287</td><td class="num">10,103.10</td></tr>
+<tr><td>Noon</td><td class="num">1,523</td><td class="num">56,784.00</td></tr>
+<tr><td>Afternoon</td><td class="num">1,181</td><td class="num">41,760.70</td></tr>
+<tr><td>Evening</td><td class="num hi">2,524</td><td class="num hi">89,092.20</td></tr>
+<tr><td>Late</td><td class="num">1,060</td><td class="num">39,080.90</td></tr>
+</tbody></table></div>
+<div class="tw"><table class="tbl m8-tb"><thead><tr><th>Line Band</th><th class="num">שורות</th><th class="num">מכירות</th></tr></thead><tbody>
+<tr><td>1 Small</td><td class="num">1,639</td><td class="num">25,205.30</td></tr>
+<tr><td>2 Medium</td><td class="num">2,682</td><td class="num">73,938.20</td></tr>
+<tr><td>3 Large</td><td class="num">1,912</td><td class="num">102,283.20</td></tr>
+<tr><td>4 XL</td><td class="num">342</td><td class="num">35,394.20</td></tr>
+</tbody></table></div></div>
+<p>ערב הוא 37.6 אחוז מהמכירות. בשתי הטבלאות הסכום הוא 6,575 שורות ו-236,820.90.</p>
+<ul>
+<li><b>Channel Group:</b> In store 4,523 שורות (Walk-in), Digital 2,052 (App 1,057 ועוד Delivery 995).</li>
+<li><b>Is Discounted:</b> True 777 שורות, False 5,798.</li>
+<li><b>Margin Category</b> לפי Item: <b>High</b> (4 מוצרים): Lemonade Mint 73.1%, Iced Coffee 72.0%, Milkshake 61.2%, Lemon Sorbet Cup 55.6%. <b>Low</b> (3): Halva Sundae 30.1%, Brownie Sundae 28.8%, Banana Split 25.7%. <b>Medium</b> (8): כל השאר, בין 47.9% ל-53.9%.</li>
+</ul></div>
+</div>
+
+<div class="box trap"><p><b>סדר התנאים.</b> אם כותבים <code>IF [Order Hour] &lt; 22</code> ראשון, כל שעה מתחת ל-22 נתפסת שם, והקטגוריות Morning, Noon ו-Afternoon לא יופיעו לעולם. הנוסחה תקינה ולא תציג שגיאה. כשתוצאה של IF חסרה קטגוריות, בדקו קודם את הסדר.</p></div>
+
+<div class="box trap"><p><b>AND ו-OR בלי סוגריים.</b> הנוסחה <code>[Channel] = "App" OR [Channel] = "Delivery" AND [Discount] > 0</code> נקראת כ-App, או (Delivery וגם הנחה). היא תופסת <span class="n">1,132</span> שורות. מה שרצינו, &quot;App או Delivery, ועם הנחה&quot;, דורש סוגריים: <code>([Channel] = "App" OR [Channel] = "Delivery") AND [Discount] > 0</code> ונותן <span class="n">363</span>. סדר הקדימות הוא NOT, אחר כך AND, אחר כך OR. כשיש ספק, שימו סוגריים.</p></div>
+
+<div class="box trap"><p><b>שוכחים END, או כותבים ELSE IF.</b> כל IF ו-CASE נסגרים ב-<code>END</code>, וצירוף של תנאי נוסף הוא <code>ELSEIF</code> במילה אחת. <code>ELSE IF</code> בשתי מילים פותח IF חדש שגם הוא דורש END. ההודעה האדומה בעורך תצביע על המקום.</p></div>
+
+<div class="box meaning"><p>קטגוריה שבניתם בנוסחה היא החלטה עסקית שנכתבה בקוד: &quot;ערב הוא 19 עד 21&quot;, &quot;רווח גבוה הוא מ-55 אחוז&quot;. כדאי לכתוב אותה במקום אחד, בשדה מחושב עם שם ברור, ולא לחזור עליה בגיליונות. כך כל הדשבורד משתמש באותה הגדרה, ושינוי של סף נעשה פעם אחת.</p></div>
+
+<div class="box real"><p>אותו רעיון קיים בכל הכלים: ב-SQL הוא <code>CASE WHEN ... THEN ... END</code>, ב-Excel הוא <code>IF</code> או <code>IFS</code>. מה שמיוחד ב-Tableau הוא שהקטגוריה נשארת שדה חי, ואפשר לגרור אותה לצבע, למסנן או לכותרת בלי לחשב מחדש.</p></div>
+
+<div class="box think" data-id="m8-th-thresholds"><p>למה הסף של High הוא 0.55 ולא 0.50? איך הייתם בוחרים סף אחר, ומה היה קורה למוצרים אם הסף היה 0.50?</p>
+<div class="ans">הסף הוא החלטה עסקית. ברשת הזאת הרווח הכללי הוא 51 אחוז, ולכן סף של 0.50 היה מסווג כ-High 10 מוצרים מתוך 15, כל מי שאינו סאנדיי, Pistachio Cup או Choco Stick. זה כבר לא מבדיל. סף של 0.55 משאיר בקבוצה רק ארבעה מוצרים (שלושה משקאות וכוס הסורבה) ומראה בבירור מי הכי רווחי. אפשר לבחור סף לפי הממוצע, לפי יעד של ההנהלה, או לפי חלוקה לשלשות. המטרה: חלוקה שעוזרת להחליט.</div></div>
+
+<div class="quiz" data-id="m8-q-ifs" data-a="3"><p class="qq">שורה עם <code>[Order Hour]</code> שווה ל-17. מה יחזיר <code>Hour Bucket</code>?</p>
+<button class="opt">Noon, כי 17 גדול מ-16</button>
+<button class="opt">Evening, כי 17 קטן מ-22</button>
+<button class="opt">Afternoon, כי 17 קטן מ-19 והתנאים שלפניו (12 ו-16) לא מתקיימים</button>
+<div class="why">בודקים מלמעלה: 17 לא קטן מ-12, לא קטן מ-16, אבל קטן מ-19. הבדיקה נעצרת שם ומחזירה Afternoon. Evening אפשרי רק משעה 19 עד 21.</div></div>
+
+<div class="quiz" data-id="m8-q-case" data-a="2"><p class="qq">מתי עדיף <code>CASE</code> על <code>IF</code>?</p>
+<button class="opt">כשצריך לבדוק טווחי מספרים, למשל שעות</button>
+<button class="opt">כשמשווים שדה אחד לרשימה של ערכים מדויקים, כמו ערוצים או קטגוריות</button>
+<button class="opt">כשהחישוב מסכם הרבה שורות</button>
+<div class="why">CASE משווה שדה אחד לערכים מדויקים. לטווחים (קטן מ-, גדול מ-) צריך IF. ושני הכלים יכולים לשמש בחישוב ברמת שורה או מסכם, לפי מה שבתוכם.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> אחרי ההנפשה, בקשו מהכיתה לנחש מה יחזיר Hour Bucket לשעה 12, 15, 16 ו-19 (Noon, Noon, Afternoon, Evening). נקודת עצירה טובה: &quot;מה עושה השורה האחרונה ELSE?&quot;. בדקו שבגרף של Margin Category לפי Item מופיעים 4 מוצרים High, 8 Medium ו-3 Low.</div>
+</section>
+<section class="sec" id="m8-8" data-t="מסכמות ו-KPI">
+<div class="sec-h"><div class="sec-n">8</div><h2>פונקציות מסכמות, Null וחיווי למנהל</h2></div>
+<p class="lead">המנהל לא רוצה 6,575 שורות. הוא רוצה לדעת: האם כל סניף גדל מאז השנה שעברה, ומי בירידה? כאן מחברים פונקציות מסכמות, תנאי ושדה אחד שמראה חץ.</p>
+
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>פונקציה</th><th>מה היא עושה</th><th>על כל Scoop & Go</th></tr></thead>
+<tbody>
+<tr><td><code>SUM(x)</code></td><td>סכום (Null לא נספרים)</td><td><code>SUM([Sales])</code> = 236,820.90</td></tr>
+<tr><td><code>AVG(x)</code></td><td>ממוצע של הערכים הקיימים, Null מתעלמים</td><td><code>AVG([Sales])</code> = 36.02</td></tr>
+<tr><td><code>MEDIAN(x)</code></td><td>החציון: הערך שחצי מהשורות מתחתיו</td><td><code>MEDIAN([Sales])</code> = 26.00</td></tr>
+<tr><td><code>COUNT(x)</code></td><td>כמה ערכים (לא Null)</td><td><code>COUNT([Order ID])</code> = 6,575</td></tr>
+<tr><td><code>COUNTD(x)</code></td><td>כמה ערכים <b>שונים</b></td><td><code>COUNTD([Order Date])</code> = 725 ימים. <code>COUNTD([Branch])</code> = 9</td></tr>
+<tr><td><code>MIN(x)</code>, <code>MAX(x)</code></td><td>הקטן והגדול. עובדים גם על תאריכים וטקסט</td><td><code>MAX([Sales])</code> = 160. <code>MIN([Order Date])</code> = 1.1.2024</td></tr>
+<tr><td><code>ATTR(x)</code></td><td>הערך אם כל השורות בסימן שותפות בו, אחרת כוכבית (*)</td><td>עם Branch בגרף, <code>ATTR([Region])</code> מחזיר את האזור של הסניף</td></tr>
+<tr><td><code>STDEV(x)</code>, <code>PERCENTILE(x, p)</code></td><td>סטיית תקן ואחוזון (תלוי במקור הנתונים, בדקו שזמין)</td><td>למתקדמים</td></tr>
+</tbody></table></div>
+<p>שימו לב לשני המספרים הראשונים: הממוצע של שורה הוא 36.02 והחציון 26. הממוצע גבוה יותר כי מעט שורות גדולות (עד 160) מושכות אותו למעלה. כשיש כמה שורות גדולות, החציון מראה את המצב הרגיל יותר.</p>
+<p>ו-<code>COUNT</code> מול <code>COUNTD</code>: כל שורה מקבלת Order ID ייחודי, ולכן שניהם נותנים אותו מספר על Order ID. על התאריך ההבדל גדול: 6,575 שורות, ו-725 ימים שונים.</p>
+
+<h3>Null: איך מטפלים כשאין ערך</h3>
+<p>סניף Ashdod Beach Pop-up ו-Rehovot Mall לא מכרו כלום ב-2024: אין להם שורות באותה שנה. אם נחשב את מכירות 2024 לפי סניף, הערך שלהם הוא <b>Null</b> ולא 0. הנה שלוש הפונקציות שמטפלות בזה:</p>
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>פונקציה</th><th>מה היא עושה</th><th>דוגמה</th><th>על Null</th></tr></thead>
+<tbody>
+<tr><td><code>ISNULL(x)</code></td><td>בודקת אם אין ערך</td><td><code>ISNULL([Sales 2024])</code></td><td>True</td></tr>
+<tr><td><code>ZN(x)</code></td><td>מחליפה Null באפס</td><td><code>ZN([Sales 2024])</code></td><td>0</td></tr>
+<tr><td><code>IFNULL(x, y)</code></td><td>מחליפה Null בערך שבחרתם</td><td><code>IFNULL([Sales 2024], -1)</code></td><td>-1</td></tr>
+</tbody></table></div>
+<p>שני כללים שכדאי לדעת: <code>AVG</code> מתעלם מ-Null (הערכים 1, 2 ו-Null נותנים ממוצע 1.5, לא 1), ו-<code>[Score] = NULL</code> לעולם לא מתקיים: בודקים Null רק עם <code>ISNULL</code>. לפי מדריכים מקובלים, חילוק באפס ב-Tableau מחזיר Null ולא שגיאה, ולכן KPI יכול להתרוקן בלי הודעה.</p>
+
+<div class="box try" data-id="m8-try-kpi">
+<p><b>ארבעה שדות שמראים אם סניף גדל או ירד.</b></p>
+<ol>
+<li>צרו <code>Sales 2025</code> ו-<code>Sales 2024</code>:
+<pre class="code" data-lang="tableau">// Sales 2025
+SUM( IF YEAR([Order Date]) = 2025 THEN [Sales] END )</pre>
+<pre class="code" data-lang="tableau">// Sales 2024
+SUM( IF YEAR([Order Date]) = 2024 THEN [Sales] END )</pre>
+<span class="m8-why">למה: IF ברמת שורה בפנים, SUM מבחוץ, בדיוק כמו תיקון 1 בסעיף 3. הנוסחה מביאה את המכירות של שנה אחת בלבד.</span></li>
+<li>צרו <code>Sales Change %</code>:
+<pre class="code" data-lang="tableau">IF ZN([Sales 2024]) = 0 THEN NULL
+ELSE ([Sales 2025] - [Sales 2024]) / [Sales 2024]
+END</pre>
+<span class="m8-why">למה: סניף בלי מכירות ב-2024 לא יכול לקבל אחוז שינוי. מחזירים Null במקום לחלק באפס. עצבו את השדה כאחוז (<code>Default Properties</code>, <code>Number Format</code>).</span></li>
+<li>צרו <code>Trend Arrow</code>:
+<pre class="code" data-lang="tableau">IF ZN([Sales 2024]) = 0 THEN "NEW"
+ELSEIF [Sales 2025] >= [Sales 2024] THEN "▲"
+ELSE "▼"
+END</pre>
+<span class="m8-why">למה: חץ פשוט שאפשר להציג כתווית. NEW לסניף חדש.</span></li>
+<li>צרו <code>Branch Status</code>:
+<pre class="code" data-lang="tableau">IF ISNULL([Sales Change %]) THEN "New branch"
+ELSEIF [Sales Change %] < -0.1 THEN "Alert"
+ELSE "OK"
+END</pre>
+<span class="m8-why">למה: סטטוס לצביעה בסעיף 9. ירידה של יותר מ-10 אחוז היא התראה.</span></li>
+<li>גיליון חדש: <code>Branch</code> אל <code>Rows</code>. גררו אל <code>Columns</code> את <code>Sales 2024</code> ואחריו את <code>Sales 2025</code>, ובכל כרטיס Marks של מדד גררו את השדה אל <code>Label</code>. בגיליון שני: <code>Branch</code> אל <code>Rows</code>, <code>Sales Change %</code> אל <code>Columns</code>, ו-<code>Trend Arrow</code> אל <code>Label</code>.<span class="m8-why">למה: מבקשים לראות מספרים בדיוק, ולא רק עמודות. כל מדד מקבל כרטיס Marks משלו.</span></li>
+</ol>
+<div class="m8-exp"><p><b>תוצאה צפויה:</b></p>
+<div class="tw"><table class="tbl m8-tb"><thead><tr><th>Branch</th><th class="num">Sales 2024</th><th class="num">Sales 2025</th><th class="num">Change</th><th class="num">Arrow</th><th>Status</th></tr></thead><tbody>
+<tr><td>Ashdod Beach Pop-up</td><td class="num">Null</td><td class="num">5,304.50</td><td class="num">Null</td><td class="num">NEW</td><td>New branch</td></tr>
+<tr><td>Beer Sheva Grand Mall</td><td class="num">11,108.80</td><td class="num">7,688.40</td><td class="num r">-30.8%</td><td class="num r">▼</td><td>Alert</td></tr>
+<tr><td>Eilat Promenade</td><td class="num">14,548.10</td><td class="num">16,925.60</td><td class="num g">16.3%</td><td class="num">▲</td><td>OK</td></tr>
+<tr><td>Haifa German Colony</td><td class="num">12,982.00</td><td class="num">14,407.20</td><td class="num g">11.0%</td><td class="num">▲</td><td>OK</td></tr>
+<tr><td>Jerusalem Mamilla</td><td class="num">16,105.90</td><td class="num">17,344.90</td><td class="num g">7.7%</td><td class="num">▲</td><td>OK</td></tr>
+<tr><td>Netanya Beach</td><td class="num">12,579.70</td><td class="num">14,260.50</td><td class="num g">13.4%</td><td class="num">▲</td><td>OK</td></tr>
+<tr><td>Rehovot Mall</td><td class="num">Null</td><td class="num">9,925.20</td><td class="num">Null</td><td class="num">NEW</td><td>New branch</td></tr>
+<tr><td>Tel Aviv Dizengoff</td><td class="num">21,006.40</td><td class="num">23,187.70</td><td class="num g">10.4%</td><td class="num">▲</td><td>OK</td></tr>
+<tr><td>Tel Aviv Port</td><td class="num">18,716.70</td><td class="num">20,729.30</td><td class="num g">10.8%</td><td class="num">▲</td><td>OK</td></tr>
+</tbody></table></div>
+<p>בלי Branch בגיליון: <code>Sales 2024</code> = 107,047.60, <code>Sales 2025</code> = 129,773.30, שינוי <span class="n">21.2%</span>. Tableau עשוי להציג Null כריק או כסימן חסר, לפי הגרף.</p></div>
+</div>
+
+<h3>ספירה על תנאי: שורות הפסד</h3>
+<p>עוד שימוש שכדאי להכיר: מספר ושדה בוליאני שמסכמים אותו. <code>SUM(IIF([Profit] &lt; 0, 1, 0))</code> סופר שורות הפסד, כי כל שורה כזאת תורמת 1. דוגמה נוספת: <code>SUM(IF [Profit] &lt; 0 THEN [Profit] END)</code> מסכם את ההפסד עצמו.</p>
+<div class="box try" data-id="m8-try-loss">
+<p><b>שני שדות: מספר שורות ההפסד וסך ההפסד.</b></p>
+<ol>
+<li>צרו <code>Loss Lines</code>: <code>SUM(IIF([Profit] < 0, 1, 0))</code>. וגם <code>Loss Amount</code>: <code>SUM(IF [Profit] < 0 THEN [Profit] END)</code>.<span class="m8-why">למה: IIF מחזיר 1 או 0 לכל שורה, ו-SUM סופר אותן. בשדה השני ה-IF ברמת שורה בפנים והסיכום בחוץ.</span></li>
+<li>גיליון חדש: <code>Item</code> אל <code>Rows</code>, ו-<code>Loss Lines</code> אל <code>Columns</code>. אחר כך החליפו ל-<code>Loss Amount</code>. אחר כך גררו את <code>Discount</code> (כממד, כחול) אל <code>Color</code>.<span class="m8-why">למה: לראות איפה ההפסד ובאיזו הנחה.</span></li>
+</ol>
+<div class="m8-exp"><p><b>תוצאה צפויה:</b> בכל הנתונים 63 שורות הפסד, וסכום ההפסד הוא <span class="n">-747.00</span>. כולן בשלושת הסאנדיי: Banana Split 23, Brownie Sundae 20, Halva Sundae 20. כל 63 בהנחה של 0.5. (יש עוד 35 שורות שהרווח בהן אפס בדיוק, והן לא נספרות כהפסד.)</p></div>
+</div>
+
+<div class="box trap"><p><b>סניף חדש נראה כמו כישלון.</b> אילו כתבתם <code>([Sales 2025] - [Sales 2024]) / [Sales 2024]</code> בלי בדיקה, בשני הסניפים החדשים החילוק היה בערך חסר: התוצאה ריקה, והסניפים נעלמים מהתצוגה בלי הסבר. <code>Branch Status</code> עושה את זה נכון: &quot;New branch&quot; הוא תוצאה מוגדרת ולא תקלה.</p></div>
+
+<div class="box meaning"><p>הצמיחה הכללית של הרשת היא 21.2 אחוז, אבל שני סניפים חדשים תורמים לה. אם משווים רק את שבעת הסניפים שפעלו בשתי השנים, הצמיחה היא 7.0 אחוז (107,047.60 ל-114,543.60). זו תמונה אחרת לגמרי: היא מראה שהקיימים גדלו בבינוניות ושבאר שבע בירידה חדה. שדה מחושב עם תנאי הוא בדיוק הכלי לשאלה &quot;מה בעצם משווים?&quot;.</p></div>
+
+<div class="box note"><p><b>לא זמין ב-Tableau Public: ככה עובדים סביב זה.</b></p>
+<ul>
+<li><b>פונקציות SCRIPT_*</b> (הרצת Python או R חיצוני מתוך נוסחה) לא עובדות במה שאתם מפרסמים. לפי התיעוד, אי אפשר לפרסם ל-Tableau Public חוברות עם סקריפטים חיצוניים. אין כאן תרגילים עליהן. הדרך: מריצים את ה-Python מחוץ ל-Tableau, שומרים תוצאה כקובץ CSV וטוענים אותו (<a href="module15.html">מודול 15</a> ו<a href="module16.html">מודול 16</a>).</li>
+<li><b>RAWSQL_*</b> (שליחת SQL ישירות למסד נתונים) מתאימות למסדי נתונים. ב-Tableau Public אין חיבור למסד נתונים חי, ולכן לא מלמדים אותן כאן.</li>
+<li><b>פונקציות משתמש</b> (<code>USERNAME()</code>, <code>ISMEMBEROF()</code> ודומיהן) נועדו להראות לכל משתמש רק את שלו. ב-Tableau Public אין משתמשים מחוברים, וכל מי שרואה את החוברת יכול להוריד את הנתונים. לכן אי אפשר להשתמש בהן כדי להסתיר מידע.</li>
+</ul></div>
+
+<div class="box real"><p>שורת KPI עם חץ, אחוז שינוי וצבע היא חלק קבוע מכל דשבורד ניהולי: מכירות מול אשתקד, יעד מול ביצוע. ההבחנה בין צמיחה כוללת לצמיחה של סניפים שפעלו בשתי השנים (&quot;like for like&quot; באנגלית) נפוצה בקמעונאות, כי פתיחת סניפים חדשים מנפחת את הצמיחה הכוללת.</p></div>
+
+<div class="box think" data-id="m8-th-null"><p>בסניף Beer Sheva הצמיחה היא מינוס 30.8 אחוז, בעוד שבכל שאר הסניפים הקיימים היא חיובית. מה הנתונים כן אומרים, ומה הם לא אומרים?</p>
+<div class="ans">הנתונים אומרים שמכירות הסניף ב-2025 נמוכות ב-30.8 אחוז מ-2024. הם לא אומרים למה: אפשר לחשוב על שיפוץ, פתיחת סניף מתחרה, שעות פתיחה שונות או שינוי בשירות. שדה מחושב מזהה את התופעה, ומה שבא אחריו הוא שאלה לבדיקה, לא מסקנה. נבדוק למשל אם הירידה במוצר מסוים, בערוץ מסוים או בחודשים מסוימים.</div></div>
+
+<div class="quiz" data-id="m8-q-countd" data-a="1"><p class="qq">מה ההבדל בין <code>COUNT([Order Date])</code> ל-<code>COUNTD([Order Date])</code> על כל הקובץ?</p>
+<button class="opt">הראשונה סופרת שורות (6,575), השנייה סופרת תאריכים שונים (725)</button>
+<button class="opt">אין הבדל, שתיהן מחזירות 725</button>
+<button class="opt">הראשונה מחזירה את התאריך הראשון והשנייה את האחרון</button>
+<div class="why">COUNT סופרת כל ערך שאינו Null, כלומר שורה אחת לכל שורה בקובץ. COUNTD סופרת רק ערכים שונים, ובתאריכים זה מספר הימים שבהם נרשמה לפחות מכירה אחת.</div></div>
+
+<div class="quiz" data-id="m8-q-zn" data-a="2"><p class="qq">מה הערך של <code>Sales 2024</code> בסניף Rehovot Mall, ומה יחזיר <code>ZN([Sales 2024])</code>?</p>
+<button class="opt">0 בשניהם</button>
+<button class="opt">Null, ו-0</button>
+<button class="opt">Null בשניהם</button>
+<div class="why">אין שורות של Rehovot Mall ב-2024, ולכן הסכום הוא Null. ZN מחליפה Null באפס, כך שהיא מחזירה 0. אפס ו-Null אינם אותו דבר: 0 אומר &quot;פעל ולא מכר&quot;, ו-Null אומר &quot;אין נתון&quot;.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> סעיף שדורש זמן לבדיקה. כדאי לוודא ש-Null מוצג אצלכם כריק, ושחיצי ▲ ו-▼ מופיעים נכון בגופן של התוכנה. כדאי לבדוק בתוכנה את שלושת האחוזים הגבוהים (Eilat 16.3%, Netanya 13.4%, Haifa 11.0%). פונקציות SCRIPT_* ו-RAWSQL מוזכרות רק כמידע, ואין להדגים אותן. נקודת עצירה: &quot;מה היה קורה אם היינו מוחקים את הבדיקה ZN?&quot;.</div>
+</section>
+<section class="sec" id="m8-9" data-t="בגרף: צבע, מסנן, שם">
+<div class="sec-h"><div class="sec-n">9</div><h2>השדה המחושב בתוך הגרף: צבע, מסנן, שם והערות</h2></div>
+<p class="lead">בנינו שדות. עכשיו משתמשים בהם. שדה מחושב הוא שדה רגיל לכל דבר: גוררים אותו ל-Color, ל-Label, למסנן. ועוד דבר שמבדיל מקצוענים: שם טוב והערה בתוך הנוסחה, כדי שמי שיפתח את החוברת בעוד חצי שנה יבין מה כתבתם.</p>
+
+<figure class="shot m8-fb" data-shot="m8-branch-status"><div class="fb"><div class="tws" aria-label="הדמיה סכמטית של סביבת העבודה עם שדות מחושבים">
+<div class="tws-top"><b>Sheet 1 - Tableau Public</b><span class="tws-btn">Undo</span><span class="tws-btn">Show Me</span><span class="tws-btn">Sort</span></div>
+<div class="tws-body">
+<div class="tws-data">
+<h6>Dimensions</h6>
+<div><span class="fld dim"><i>Abc</i>Branch</span></div>
+<div><span class="fld dim"><i>Abc</i>Category</span></div>
+<div><span class="fld dim"><i>=Abc</i>Day Type</span></div>
+<div><span class="fld dim"><i>=T/F</i>Is Discounted</span></div>
+<div><span class="fld dim"><i>=Abc</i>Branch Status</span></div>
+<h6>Measures</h6>
+<div><span class="fld mea"><i>#</i>Sales</span></div>
+<div><span class="fld mea"><i>=#</i>Full Price</span></div>
+<div><span class="fld mea"><i>=#</i>Profit Margin</span></div>
+<div><span class="fld mea"><i>=#</i>Sales 2025</span></div>
+</div>
+<div class="tws-main">
+<div class="tws-shelf"><span>Columns</span><span class="pill c">AGG(Sales 2025)</span></div>
+<div class="tws-shelf"><span>Rows</span><span class="pill d">Branch</span></div>
+<div class="tws-canvas" style="align-items:center">
+<svg viewBox="0 0 380 190" width="100%" height="190" role="img" aria-label="תרשים עמודות אופקי של מכירות 2025 לפי סניף, מקודד בצבע לפי Branch Status" style="direction:ltr">
+<g font-size="10" fill="#334155" text-anchor="end">
+<text x="104" y="17">Tel Aviv Dizengoff</text><text x="104" y="38">Tel Aviv Port</text><text x="104" y="59">Jerusalem Mamilla</text><text x="104" y="80">Eilat Promenade</text><text x="104" y="101">Haifa German Colony</text><text x="104" y="122">Netanya Beach</text><text x="104" y="143">Rehovot Mall</text><text x="104" y="164">Beer Sheva Grand Mall</text><text x="104" y="185">Ashdod Beach Pop-up</text></g>
+<rect x="110" y="7" width="231" height="14" fill="#4e79a7"/><rect x="110" y="28" width="207" height="14" fill="#4e79a7"/><rect x="110" y="49" width="173" height="14" fill="#4e79a7"/><rect x="110" y="70" width="169" height="14" fill="#4e79a7"/><rect x="110" y="91" width="144" height="14" fill="#4e79a7"/><rect x="110" y="112" width="143" height="14" fill="#4e79a7"/><rect x="110" y="133" width="99" height="14" fill="#a0a7b4"/><rect x="110" y="154" width="77" height="14" fill="#e15759"/><rect x="110" y="175" width="53" height="14" fill="#a0a7b4"/></svg>
+</div></div>
+<div class="tws-marks"><h6>Marks</h6><div class="pill d">Bar</div><div class="tws-mk"><div><span class="pill d">Branch Status</span><br>Color</div><div>Size</div><div>Label</div><div>Detail</div></div>
+<div style="font-size:.7rem;margin-top:8px;color:#334155"><span style="display:inline-block;width:10px;height:10px;background:#e15759"></span> Alert<br><span style="display:inline-block;width:10px;height:10px;background:#4e79a7"></span> OK<br><span style="display:inline-block;width:10px;height:10px;background:#a0a7b4"></span> New branch</div></div>
+</div>
+<div class="tws-tabs"><span class="on">Branch status</span><span>+</span></div>
+</div>
+<div class="need">צילום מסך נדרש: Tableau Public, גיליון עם Branch על Rows, SUM(Sales 2025) על Columns, Branch Status על Color באדום, כחול ואפור, ואגדת הצבעים גלויה</div></div><figcaption>הצבע לפי Branch Status. הצילום מתעדכן אוטומטית כשקובץ התמונה קיים.</figcaption></figure>
+<ol class="callouts">
+<li>שדות מחושבים בחלונית הנתונים, עם סימן <code>=</code> ליד הסמל. טקסט ובוליאני בממדים, מספרים במדדים.</li>
+<li>המדד <code>Sales 2025</code> על <code>Columns</code> והסניף על <code>Rows</code>: עמודה לכל סניף.</li>
+<li><code>Branch Status</code> על <code>Color</code> בכרטיס Marks: Tableau מקצה צבע לכל ערך. הגרף כאן סכמטי; בתוכנה הצבעים בברירת המחדל שונים, ומשנים אותם דרך האגדה.</li>
+</ol>
+
+<h3>גוררים ל-Marks ול-Filters</h3>
+<p>שדה מחושב נגרר לכל מקום ששדה רגיל נגרר אליו. בכרטיס Marks אפשר להעביר אותו בין <code>Color</code>, <code>Label</code>, <code>Size</code> ו-<code>Detail</code>, בתפריט של הפיל.</p>
+<figure class="shot" style="max-width:240px;margin-inline:auto"><img src="img/color-menu.png" alt="תפריט הפיל בכרטיס Marks עם Color, Label, Size, Path, Detail ו-Tooltip"><figcaption>הפיל בכרטיס Marks ותפריט ההעברה שלו: <code>Color</code>, <code>Label</code>, <code>Size</code> ועוד. (בצילום: פיל של Genre בקובץ המשחקים. אצלכם יופיע השדה המחושב.)</figcaption></figure>
+<p>למסנן גוררים את השדה אל המדף <code>Filters</code>. מה שיקרה בחלון המסנן תלוי בסוג השדה:</p>
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>סוג השדה המחושב</th><th>דוגמה</th><th>חלון המסנן</th><th>מתי הוא פועל</th></tr></thead>
+<tbody>
+<tr><td>ברמת שורה, אמת/שקר או טקסט</td><td><code>Is Discounted</code>, <code>Margin Category</code> לפי שורה</td><td>רשימה של ערכים (True, False)</td><td>לפני הסיכום: משאיר רק שורות מתאימות</td></tr>
+<tr><td>מסכם (AGG)</td><td><code>Profit Margin</code></td><td>טווח ערכים, כמו למדד (At least, At most)</td><td>אחרי הסיכום: משאיר סימנים (למשל סניפים) שהערך שלהם עומד בתנאי</td></tr>
+</tbody></table></div>
+<p>זה אותו הבדל שהכרתם בסעיף 2, והפעם בפעולה: מסנן על שדה ברמת שורה פועל על השורות לפני החישוב, ומסנן על שדה מסכם פועל על התוצאה. את סדר הפעולות המלא של המסננים למדתם ב<a href="module6.html">מודול 6</a>.</p>
+<figure class="shot" style="max-width:420px;margin-inline:auto"><img src="img/filter-dialog.png" alt="חלון מסנן עם לשוניות General, Wildcard, Condition ו-Top ורשימת ערכים לסימון"><figcaption>חלון המסנן של שדה בדיד (כחול), בצילום של Genre. שדה מחושב מסוג טקסט או True/False ייראה אותו דבר, עם רשימה של הערכים שלו.</figcaption></figure>
+
+<div class="box try" data-id="m8-try-view">
+<p><b>צביעה לפי סטטוס, ושני מסננים שונים.</b></p>
+<ol>
+<li>גיליון חדש: <code>Branch</code> אל <code>Rows</code>, <code>Sales 2025</code> אל <code>Columns</code>, <code>Branch Status</code> אל <code>Color</code>.<span class="m8-why">למה: שדה מחושב כצבע. ל-Sales 2025 יש ערך לכל תשעת הסניפים, ולכן רואים את כל הסטטוסים.</span></li>
+<li>לחצו על פיל או כותרת האגדה (<code>Branch Status</code>), בחרו <code>Edit Colors...</code> וצבעו: Alert באדום, OK בכחול, New branch באפור.<span class="m8-why">למה: צבעים שמסמנים משמעות (אדום להתראה) נקראים מהר יותר מצבעי ברירת מחדל.</span></li>
+<li>גיליון חדש: <code>Branch</code> אל <code>Rows</code> ו-<code>SUM(Sales)</code> אל <code>Columns</code>. גררו את <code>Is Discounted</code> אל <code>Filters</code> וסמנו True.<span class="m8-why">למה: מסנן על שדה ברמת שורה: רק שורות עם הנחה נכנסות לסיכום.</span></li>
+<li>הסירו את המסנן הזה (גררו אותו החוצה). גררו את <code>Profit Margin</code> אל <code>Filters</code>, ובחלון בחרו <code>At least</code> והקלידו <code>0.505</code>.<span class="m8-why">למה: מסנן על שדה מסכם: Tableau מחשב קודם את אחוז הרווח של כל סניף, ואז משאיר רק את מי שעומד בתנאי.</span></li>
+</ol>
+<div class="m8-exp"><ul>
+<li><b>צביעה:</b> 9 עמודות. אדום אחת (Beer Sheva Grand Mall, 7,688.40), אפור שתיים (Ashdod Beach Pop-up 5,304.50 ו-Rehovot Mall 9,925.20), כחול שש.</li>
+<li><b>מסנן True על Is Discounted:</b> סך המכירות בכל הסניפים יחד הוא <span class="n">22,464.90</span> (777 שורות עם הנחה).</li>
+<li><b>מסנן Profit Margin לפחות 0.505:</b> נשארים 5 סניפים: Tel Aviv Dizengoff 52.0%, Haifa German Colony 51.8%, Tel Aviv Port 51.5%, Beer Sheva Grand Mall 51.0%, Jerusalem Mamilla 50.9%. יוצאים: Netanya Beach 50.3%, Eilat Promenade 50.0%, Ashdod Beach Pop-up 48.7%, Rehovot Mall 48.3%.</li>
+</ul></div>
+</div>
+
+<h3>שם, הערה, סדר</h3>
+<p>שדה מחושב שנקרא <code>Calculation1</code> הוא חידה לכל מי שיפתח את החוברת. כללי עבודה קצרים:</p>
+<ul>
+<li><b>שם שאומר מה יש בשדה ובאיזו יחידה או תקופה.</b> <code>Sales 2025</code> ולא <code>S25</code>. <code>Discount Amount</code> ולא <code>New Field</code>.</li>
+<li><b>הערה בתחילת הנוסחה.</b> שורה שמתחילה ב-<code>//</code> מתעלמים ממנה בחישוב, ואפשר לכתוב בה למה בחרתם את הסף.
+<pre class="code" data-lang="tableau">// High margin = 55% and above. Decided with the finance team.
+// Medium = 35% to 55%. Low = below 35%.
+IF [Profit Margin] >= 0.55 THEN "High"
+ELSEIF [Profit Margin] >= 0.35 THEN "Medium"
+ELSE "Low"
+END</pre></li>
+<li><b>עריכה בלי לשבור.</b> קליק ימני על השדה ו-<code>Edit...</code> משנה את הנוסחה בכל הגיליונות שמשתמשים בו. <code>Duplicate</code> יוצר עותק לניסוי, כך שאפשר לבדוק גרסה חדשה בלי לפגוע בקיימת. <code>Rename</code> משנה שם בלי לשבור את הגיליונות.</li>
+<li><b>שדות עזר.</b> שדה שבניתם רק בתור שלב ביניים אפשר להסתיר (<code>Hide</code>), והוא ימשיך לעבוד בתוך שדות אחרים.</li>
+<li><b>פורמט תצוגה.</b> <code>Default Properties</code> ואז <code>Number Format</code> פעם אחת בשדה, ולא בכל גיליון.</li>
+</ul>
+
+<div class="box try" data-id="m8-try-name">
+<p><b>סדר בחוברת: שם, הערה ועותק.</b></p>
+<ol>
+<li>ערכו את <code>Margin Category</code> (קליק ימני, <code>Edit...</code>) והוסיפו בראשו את שתי שורות ההערה מהדוגמה. לחצו <code>OK</code>.<span class="m8-why">למה: הסף כתוב עכשיו ליד הנוסחה שמשתמשת בו. אין שינוי בתוצאה.</span></li>
+<li>שנו את השם של <code>Line Band</code> ל-<code>Line Value Band</code> (קליק ימני, <code>Rename</code>).<span class="m8-why">למה: שם שמסביר מה הערך. הגיליון שמשתמש בו ממשיך לעבוד.</span></li>
+<li>צרו עותק (<code>Duplicate</code>) של <code>Hour Bucket</code>, ושנו בעותק את הסף 22 ל-21. בדקו את הגרף.<span class="m8-why">למה: אותו תרגיל של ניסוי בטוח, בלי לשנות את השדה המקורי.</span></li>
+</ol>
+<div class="m8-exp"><p><b>תוצאה צפויה:</b> אחרי ההערה ושינוי השם הגרפים לא משתנים: ארבעה מוצרים High, 8 Medium ו-3 Low. בעותק עם הסף 21 קטגוריית Evening יורדת ל-1,586 שורות (שעות 19 ו-20) ו-Late עולה ל-1,998 שורות (שעות 21, 22 ו-23).</p></div>
+</div>
+
+<div class="box trap"><p><b>עריכת שדה שמשתמשים בו בעשרה גיליונות.</b> כשמשנים נוסחה של שדה קיים, כל הגיליונות והדשבורדים שמסתמכים עליו משתנים מיד. זה כוח, וזה גם סיכון. אם אתם לא בטוחים, עשו <code>Duplicate</code>, נסו, ורק אז החליפו. ושדה שנמחק, ושגיליון עדיין מסתמך עליו, יופיע עם סימן קריאה אדום על הפיל.</p></div>
+
+<div class="box trap"><p><b>סינון חישוב מסכם כשרצינו סינון שורות.</b> אם גוררים <code>Profit Margin</code> אל Filters מצפים ש&quot;ישארו רק שורות רווחיות&quot;. מה שקורה הוא אחר: נשארים סימנים (סניפים) שאחוז הרווח הכולל שלהם עובר סף. לסינון שורות כתבו שדה ברמת שורה, כמו <code>[Profit] &gt; 0</code>, וסננו עליו.</p></div>
+
+<div class="box meaning"><p>שדה מחושב עם שם טוב הופך את הדשבורד לקריא גם למי שלא כתב אותו. כשעורך קורא <code>Branch Status</code> בכרטיס Color, הוא מבין מה הגרף מראה בלי לפתוח את הנוסחה. ההערה בתוך הנוסחה מסבירה למה בחרתם את הסף, וזה מה ששואלים אחרי חצי שנה.</p></div>
+
+<div class="box real"><p>בצוותים שעובדים על חוברות משותפות מקובל לתת לשדות מחושבים שמות עקביים (למשל להוסיף תחילית לשדות עזר), לתעד סף בהערה ולהסתיר שדות עזר. כשמפרסמים ב-Tableau Public, כל מי שמוריד את החוברת רואה את הנוסחאות והערות בהן, ולכן אין לכתוב בהן מידע פנימי, סיסמאות או הערות אישיות.</p></div>
+
+<div class="box think" data-id="m8-th-filter"><p>סניף עם Profit Margin של 50.9 אחוז נשאר במסנן &quot;לפחות 0.505&quot;. האם זה אומר שכל השורות שלו עומדות בסף?</p>
+<div class="ans">לא. המסנן עובד על התוצאה המסוכמת של הסניף, לא על שורות. בסניף כזה יש שורות עם הפסד ושורות עם רווח של 70 אחוז, והממוצע המשוקלל הוא 50.9. כדי לסנן שורות לפי הרווח שלהן צריך שדה ברמת שורה, למשל <code>[Profit] / [Sales] >= 0.505</code>, וגם אז יש לשים לב שזה יחס של שורה.</div></div>
+
+<div class="quiz" data-id="m8-q-filter" data-a="2"><p class="qq">גוררים את <code>Is Discounted</code> (ברמת שורה) למסנן ומסמנים True. מה קורה לחישובים בגיליון?</p>
+<button class="opt">כל החישובים נשארים על כל 6,575 השורות, ורק התצוגה מסוננת</button>
+<button class="opt">רק 777 השורות עם הנחה נכנסות לסיכומים (SUM, COUNT ודומיהם)</button>
+<button class="opt">הפילים של המדדים הופכים לאדומים</button>
+<div class="why">מסנן על שדה ברמת שורה פועל לפני הסיכום. שורות שאינן True מוסרות, ו-SUM(Sales) מחושב רק על ה-777 שנשארו. הוא מגיע ל-22,464.90.</div></div>
+
+<div class="quiz" data-id="m8-q-name" data-a="1"><p class="qq">איזו נוסחה יותר ברורה לעורך שיפתח את החוברת בעוד חצי שנה?</p>
+<button class="opt">שדה בשם <code>Margin Category</code> עם הערה שמסבירה את הסף</button>
+<button class="opt">שדה בשם <code>Calculation1</code> עם אותה נוסחה</button>
+<button class="opt">שדה בשם <code>MC</code> בלי הערה, כדי לחסוך מקום</button>
+<div class="why">שם שמתאר את התוכן והערה שמסבירה את ההחלטה חוסכים זמן לכולם. הנוסחה עצמה זהה, אבל מי שקורא את החוברת לא צריך לנחש.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בדקו שבגרסה אצלכם חלון המסנן של שדה AGG אכן מציע At least ו-At most (בחוברות שונות נראה מעט אחרת). כדאי להראות לכיתה את שדה העזר המוסתר ואת הסימן האדום אחרי מחיקת שדה (לבדוק בתוכנה לפני השיעור איך הסימן נראה בגרסה שלכם), לפני שמבקשים מהם ליצור שדות משלהם. הצבע בברירת המחדל של Branch Status אינו אדום: חלק מהכיתה יתעכב על Edit Colors.</div>
+</section>
+<section class="sec" id="m8-10" data-t="מעבדה וניפוי באגים">
+<div class="sec-h"><div class="sec-n">10</div><h2>מעבדת נוסחאות ושגרת ניפוי באגים</h2></div>
+<p class="lead">יש שני סוגי תקלות בשדות מחושבים. בראשונה Tableau מציג הודעה אדומה. בשנייה אין שום הודעה, אבל המספר לא נכון. השנייה מסוכנת יותר, כי אף אחד לא שם לב. כאן מתרגלים את שני הסוגים, קודם בדפדפן ואחר כך ב-Tableau.</p>
+
+<div class="sim m8-lab" data-id="m8-sim-lab"><div class="sh">מעבדת נוסחאות על שורות אמיתיות של Scoop & Go</div>
+<p class="exp"><b>זו הדמיה</b>, לא המנוע של Tableau. היא קוראת נוסחה בסגנון Tableau ומריצה אותה על 15 שורות אמיתיות מהקובץ, או על כל 6,575. היא מכירה חלק מהפונקציות בלבד, והודעות השגיאה שלה דומות לשל Tableau אבל לא זהות. המטרה: לראות מה קורה בכל שורה לפני שפותחים את התוכנה.</p>
+<div class="row"><label>נוסחה מוכנה: <select class="m8-pre"></select></label><label>קיבוץ (לחישוב מסכם): <select class="m8-grp"></select></label><label>נתונים: <select class="m8-scope"><option value="s">15 שורות אמיתיות</option><option value="f">כל 6,575 השורות</option></select></label></div>
+<textarea class="m8-src" spellcheck="false" aria-label="נוסחה"></textarea>
+<div class="row"><button type="button" class="btn m8-run">הרצה</button><label>שורה לפירוק שלבים: <select class="m8-row"></select></label></div>
+<div class="msg"></div>
+<div class="exp m8-kind"></div>
+<div class="tw"><table class="m8-res"></table></div>
+<div class="stp m8-stp"></div>
+<div class="exp m8-note"></div>
+</div>
+<script>(function(){
+/* m8 calculation lab: a tiny Tableau-like formula evaluator. A simulation, not Tableau's engine. */
+var M8 = (function(){
+'use strict';
+function Err(msg, hint){ var e = new Error(msg); e.hint = hint || ''; e.m8 = true; return e; }
+var AGG = {SUM:1, AVG:1, COUNT:1, COUNTD:1, MEDIAN:1, ATTR:1, MIN:1, MAX:1};
+var KW = {IF:1, THEN:1, ELSEIF:1, ELSE:1, END:1, CASE:1, WHEN:1, AND:1, OR:1, NOT:1, IN:1, TRUE:1, FALSE:1, NULL:1};
+var DAYN = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var MONN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+function mkDate(y, m, d){ return {dt: Date.UTC(y, m, d)}; }
+function parseDate(s){ var m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(s); if (!m) return null; return mkDate(+m[1], +m[2]-1, +m[3]); }
+function isDate(v){ return v && typeof v === 'object' && v.dt !== undefined; }
+function fmtDate(v){ var d = new Date(v.dt); return d.getUTCFullYear()+'-'+('0'+(d.getUTCMonth()+1)).slice(-2)+'-'+('0'+d.getUTCDate()).slice(-2); }
+
+/* ---------- tokenizer ---------- */
+function tokenize(src){
+  var toks = [], i = 0, n = src.length, c, s, e, m;
+  while (i < n){
+    c = src.charAt(i);
+    if (/\s/.test(c)){ i++; continue; }
+    if (c === '/' && src.charAt(i+1) === '/'){ while (i < n && src.charAt(i) !== '\n') i++; continue; }
+    if (c === '/' && src.charAt(i+1) === '*'){ e = src.indexOf('*/', i+2); if (e < 0) throw Err('Unterminated comment', 'הערה שנפתחה ב-/* חייבת להיסגר ב-*/'); i = e+2; continue; }
+    s = i;
+    if (c === '['){ e = src.indexOf(']', i); if (e < 0) throw Err('Missing ] after field name', 'שם שדה נכתב בסוגריים מרובעים: [Sales]'); toks.push({t:'fld', v:src.slice(i+1, e), s:s, e:e+1}); i = e+1; continue; }
+    if (c === '"' || c === "'"){ e = src.indexOf(c, i+1); if (e < 0) throw Err('Unterminated string', 'טקסט בנוסחה נכתב בין גרשיים, ויש לסגור אותו'); toks.push({t:'str', v:src.slice(i+1, e), s:s, e:e+1}); i = e+1; continue; }
+    if (c === '#'){ e = src.indexOf('#', i+1); if (e < 0) throw Err('Missing closing # in date', 'תאריך קבוע נכתב בין סולמיות: #2025-05-12#'); var dv = parseDate(src.slice(i+1, e).trim()); if (!dv) throw Err('Bad date literal', 'בהדמיה תאריך נכתב כך: #2025-05-12#'); toks.push({t:'date', v:dv, s:s, e:e+1}); i = e+1; continue; }
+    if (/[0-9]/.test(c) || (c === '.' && /[0-9]/.test(src.charAt(i+1)))){ m = /^[0-9]*\.?[0-9]+/.exec(src.slice(i)); toks.push({t:'num', v:parseFloat(m[0]), s:s, e:i+m[0].length}); i += m[0].length; continue; }
+    if (/[A-Za-z_]/.test(c)){ m = /^[A-Za-z_][A-Za-z_0-9]*/.exec(src.slice(i)); var up = m[0].toUpperCase(); toks.push(KW[up] ? {t:'kw', v:up, s:s, e:i+m[0].length} : {t:'id', v:up, s:s, e:i+m[0].length}); i += m[0].length; continue; }
+    var two = src.substr(i, 2);
+    if (two === '<=' || two === '>=' || two === '!=' || two === '<>' || two === '=='){ toks.push({t:'op', v: two === '==' ? '=' : (two === '<>' ? '!=' : two), s:s, e:i+2}); i += 2; continue; }
+    if ('+-*/%^=<>(),'.indexOf(c) >= 0){ toks.push({t:'op', v:c, s:s, e:i+1}); i++; continue; }
+    throw Err('Unexpected character ' + c, 'תו לא צפוי בנוסחה. בדקו שהקלדתם באנגלית ושהגרשיים רגילים ולא מסולסלים.');
+  }
+  toks.push({t:'eof', s:n, e:n});
+  return toks;
+}
+
+/* ---------- parser ---------- */
+function parse(src){
+  var toks = tokenize(src), p = 0;
+  function peek(){ return toks[p]; }
+  function isKw(v){ return toks[p].t === 'kw' && toks[p].v === v; }
+  function isOp(v){ return toks[p].t === 'op' && toks[p].v === v; }
+  function next(){ return toks[p++]; }
+  function expectKw(v, hint){ if (!isKw(v)) throw Err('Expected ' + v + (toks[p].t === 'eof' ? ' but the formula ended' : ''), hint || ''); return next(); }
+  function node(k, o, s, e){ o.k = k; o.s = s; o.e = e; return o; }
+  function expr(){ return orE(); }
+  function orE(){ var l = andE(); while (isKw('OR')){ next(); var r = andE(); l = node('bin', {op:'OR', l:l, r:r}, l.s, r.e); } return l; }
+  function andE(){ var l = notE(); while (isKw('AND')){ next(); var r = notE(); l = node('bin', {op:'AND', l:l, r:r}, l.s, r.e); } return l; }
+  function notE(){ if (isKw('NOT')){ var t = next(); var x = notE(); return node('un', {op:'NOT', x:x}, t.s, x.e); } return cmpE(); }
+  function cmpE(){
+    var l = addE();
+    for (;;){
+      var t = peek();
+      if (t.t === 'op' && (t.v === '=' || t.v === '!=' || t.v === '<' || t.v === '>' || t.v === '<=' || t.v === '>=')){ next(); var r = addE(); l = node('bin', {op:t.v, l:l, r:r}, l.s, r.e); }
+      else if (isKw('IN')){ next(); if (!isOp('(')) throw Err('Expected ( after IN', 'IN מקבלת רשימה בסוגריים: IN (5, 6)'); next(); var items = []; if (!isOp(')')){ items.push(expr()); while (isOp(',')){ next(); items.push(expr()); } } if (!isOp(')')) throw Err('Missing ) in IN list', 'חסר סוגר ) ברשימה'); var cl = next(); l = node('in', {x:l, items:items}, l.s, cl.e); }
+      else break;
+    }
+    return l;
+  }
+  function addE(){ var l = mulE(); while (isOp('+') || isOp('-')){ var o = next().v; var r = mulE(); l = node('bin', {op:o, l:l, r:r}, l.s, r.e); } return l; }
+  function mulE(){ var l = powE(); while (isOp('*') || isOp('/') || isOp('%')){ var o = next().v; var r = powE(); l = node('bin', {op:o, l:l, r:r}, l.s, r.e); } return l; }
+  function powE(){ var l = unE(); while (isOp('^')){ next(); var r = unE(); l = node('bin', {op:'^', l:l, r:r}, l.s, r.e); } return l; }
+  function unE(){ if (isOp('-')){ var t = next(); var x = unE(); return node('un', {op:'-', x:x}, t.s, x.e); } return prim(); }
+  function prim(){
+    var t = peek();
+    if (t.t === 'num'){ next(); return node('lit', {v:t.v}, t.s, t.e); }
+    if (t.t === 'str'){ next(); return node('lit', {v:t.v}, t.s, t.e); }
+    if (t.t === 'date'){ next(); return node('lit', {v:t.v}, t.s, t.e); }
+    if (t.t === 'fld'){ next(); return node('fld', {name:t.v}, t.s, t.e); }
+    if (t.t === 'kw' && t.v === 'TRUE'){ next(); return node('lit', {v:true}, t.s, t.e); }
+    if (t.t === 'kw' && t.v === 'FALSE'){ next(); return node('lit', {v:false}, t.s, t.e); }
+    if (t.t === 'kw' && t.v === 'NULL'){ next(); return node('lit', {v:null}, t.s, t.e); }
+    if (isOp('(')){ next(); var x = expr(); if (!isOp(')')) throw Err('Missing )', 'חסר סוגר ) סוגר'); var cl = next(); x = node('par', {x:x}, t.s, cl.e); return x; }
+    if (t.t === 'kw' && t.v === 'IF') return ifE();
+    if (t.t === 'kw' && t.v === 'CASE') return caseE();
+    if (t.t === 'id'){
+      next();
+      if (!isOp('(')) throw Err('Unknown field or word ' + t.v, 'שם שדה נכתב בסוגריים מרובעים, למשל [Sales]. פונקציה נכתבת עם סוגריים, למשל SUM(...)');
+      next(); var args = [];
+      if (!isOp(')')){ args.push(expr()); while (isOp(',')){ next(); args.push(expr()); } }
+      if (!isOp(')')) throw Err('Missing ) after arguments of ' + t.v, 'חסר סוגר ) בסוף הפונקציה ' + t.v);
+      var c2 = next(); return node('call', {name:t.v, args:args}, t.s, c2.e);
+    }
+    if (t.t === 'eof') throw Err('The formula ended unexpectedly', 'הנוסחה נגמרת באמצע. בדקו שחסר END או סוגר.');
+    throw Err('Unexpected ' + (t.v === undefined ? t.t : t.v), 'משהו לא במקום בנוסחה. בדקו פסיקים, סוגריים ומילות IF, THEN, END.');
+  }
+  function ifE(){
+    var st = next(), conds = [], ress = [], els = null;
+    var c = expr(); expectKw('THEN', 'אחרי תנאי של IF צריך THEN'); var r = expr(); conds.push(c); ress.push(r);
+    while (isKw('ELSEIF')){ next(); c = expr(); expectKw('THEN', 'אחרי תנאי של ELSEIF צריך THEN'); r = expr(); conds.push(c); ress.push(r); }
+    if (isKw('ELSE')){ next(); els = expr(); }
+    var en = expectKw('END', 'כל IF נסגר ב-END. ושימו לב: ELSEIF במילה אחת, לא ELSE IF');
+    return node('if', {conds:conds, ress:ress, els:els}, st.s, en.e);
+  }
+  function caseE(){
+    var st = next(), x = expr(), whens = [], ress = [], els = null;
+    if (!isKw('WHEN')) throw Err('Expected WHEN after CASE', 'אחרי CASE ושדה באים WHEN ... THEN ...');
+    while (isKw('WHEN')){ next(); var w = expr(); expectKw('THEN', 'אחרי WHEN צריך THEN'); var r = expr(); whens.push(w); ress.push(r); }
+    if (isKw('ELSE')){ next(); els = expr(); }
+    var en = expectKw('END', 'כל CASE נסגר ב-END');
+    return node('case', {x:x, whens:whens, ress:ress, els:els}, st.s, en.e);
+  }
+  var ast = expr();
+  if (peek().t !== 'eof') throw Err('Unexpected ' + (peek().v === undefined ? peek().t : peek().v) + ' after the end of the formula', 'יש משהו אחרי סוף הנוסחה. אולי END מיותר, או פסיק, או סוגר.');
+  return ast;
+}
+
+/* ---------- kind analysis: c = constant, r = row level, a = aggregate ---------- */
+function comb(kinds, what){
+  var r = 0, a = 0, i;
+  for (i = 0; i < kinds.length; i++){ if (kinds[i] === 'r') r = 1; if (kinds[i] === 'a') a = 1; }
+  if (r && a) throw Err(what, 'זו שגיאת הערבוב: חלק מהנוסחה ברמת שורה וחלק מסכם. עטפו את כל החלק של השורה בפונקציה מסכמת, למשל SUM( IF ... THEN [Sales] END ), או סכמו גם את החלק השני.');
+  return a ? 'a' : (r ? 'r' : 'c');
+}
+var MIXARG = 'Cannot mix aggregate and non-aggregate arguments with this function';
+function kindOf(n, fields){
+  var k, i;
+  switch (n.k){
+    case 'lit': k = 'c'; break;
+    case 'fld': if (fields.indexOf(n.name) < 0) throw Err('Unknown field [' + n.name + ']', 'אין שדה בשם הזה בנתונים. בדקו איות. בחלונית הנתונים של Tableau אפשר שיהיה רווח במקום קו תחתון: Unit Price ולא Unit_Price.'); k = 'r'; break;
+    case 'par': k = kindOf(n.x, fields); break;
+    case 'un': k = kindOf(n.x, fields); break;
+    case 'bin': k = comb([kindOf(n.l, fields), kindOf(n.r, fields)], MIXARG); break;
+    case 'in': k = comb([kindOf(n.x, fields)].concat(n.items.map(function(x){ return kindOf(x, fields); })), MIXARG); break;
+    case 'if': { var ks = []; n.conds.forEach(function(c){ ks.push(kindOf(c, fields)); }); n.ress.forEach(function(c){ ks.push(kindOf(c, fields)); }); if (n.els) ks.push(kindOf(n.els, fields)); k = comb(ks, 'Cannot mix aggregate and non-aggregate comparisons or results in IF expressions'); break; }
+    case 'case': { var kc = [kindOf(n.x, fields)]; n.whens.forEach(function(c){ kc.push(kindOf(c, fields)); }); n.ress.forEach(function(c){ kc.push(kindOf(c, fields)); }); if (n.els) kc.push(kindOf(n.els, fields)); k = comb(kc, 'Cannot mix aggregate and non-aggregate comparisons or results in CASE expressions'); break; }
+    case 'call': {
+      var nm = n.name, args = n.args.map(function(x){ return kindOf(x, fields); });
+      if (AGG[nm] && (args.length === 1)){
+        if (args[0] === 'a') throw Err('Cannot call ' + nm + ' on an argument that is already aggregated', 'אי אפשר לסכם ערך שכבר מסוכם. הוציאו את הפונקציה המסכמת הפנימית.');
+        k = 'a';
+      } else { if (!FUNCS[nm]) throw Err('Unknown function ' + nm, 'הפונקציה לא קיימת בהדמיה. בהדמיה הזאת יש רק חלק מהפונקציות של Tableau.'); k = comb(args, MIXARG); }
+      break;
+    }
+  }
+  n.kind = k; return k;
+}
+
+/* ---------- evaluation ---------- */
+function isNum(v){ return typeof v === 'number'; }
+function cmp(a, b){ if (isDate(a) && isDate(b)) return a.dt - b.dt; if (isNum(a) && isNum(b)) return a - b; if (typeof a === 'string' && typeof b === 'string') return a < b ? -1 : (a > b ? 1 : 0); if (typeof a === 'boolean' && typeof b === 'boolean') return (a ? 1 : 0) - (b ? 1 : 0); throw Err('Cannot compare values of different types', 'משווים רק ערכים מאותו סוג: מספר למספר, טקסט לטקסט.'); }
+function rnd(x, n){ var f = Math.pow(10, n || 0); var s = x < 0 ? -1 : 1; return s * Math.round(Math.abs(x) * f + 1e-9) / f; }
+function dstr(v){ if (v === null || v === undefined) return null; if (isNum(v)) return String(v); if (typeof v === 'boolean') return v ? 'true' : 'false'; if (isDate(v)) return fmtDate(v); return String(v); }
+function need(v, t, fn){ if (v === null) return null; if (t === 'n' && !isNum(v)) throw Err(fn + ' needs a number', 'הפונקציה ' + fn + ' מצפה למספר, וקיבלה טקסט. בדקו אם חסרה המרה עם INT או FLOAT.'); if (t === 's' && typeof v !== 'string') throw Err(fn + ' needs a string', 'הפונקציה ' + fn + ' מצפה לטקסט. אם יש לכם מספר, המירו אותו עם STR.'); if (t === 'd' && !isDate(v)) throw Err(fn + ' needs a date', 'הפונקציה ' + fn + ' מצפה לתאריך.'); return v; }
+var FUNCS = {
+  ROUND: function(a){ var x = need(a[0], 'n', 'ROUND'); return x === null ? null : rnd(x, a.length > 1 ? a[1] : 0); },
+  CEILING: function(a){ var x = need(a[0], 'n', 'CEILING'); return x === null ? null : Math.ceil(x); },
+  FLOOR: function(a){ var x = need(a[0], 'n', 'FLOOR'); return x === null ? null : Math.floor(x); },
+  ABS: function(a){ var x = need(a[0], 'n', 'ABS'); return x === null ? null : Math.abs(x); },
+  SIGN: function(a){ var x = need(a[0], 'n', 'SIGN'); return x === null ? null : (x > 0 ? 1 : (x < 0 ? -1 : 0)); },
+  DIV: function(a){ if (a[0] === null || a[1] === null) return null; if (a[1] === 0) return null; return Math.trunc(a[0] / a[1]); },
+  POWER: function(a){ if (a[0] === null || a[1] === null) return null; return Math.pow(a[0], a[1]); },
+  SQRT: function(a){ var x = need(a[0], 'n', 'SQRT'); return x === null ? null : Math.sqrt(x); },
+  MIN: function(a){ if (a[0] === null || a[1] === null) return null; return cmp(a[0], a[1]) <= 0 ? a[0] : a[1]; },
+  MAX: function(a){ if (a[0] === null || a[1] === null) return null; return cmp(a[0], a[1]) >= 0 ? a[0] : a[1]; },
+  ZN: function(a){ return a[0] === null ? 0 : a[0]; },
+  IFNULL: function(a){ return a[0] === null ? a[1] : a[0]; },
+  ISNULL: function(a){ return a[0] === null; },
+  CONTAINS: function(a){ if (a[0] === null || a[1] === null) return null; need(a[0], 's', 'CONTAINS'); return a[0].indexOf(a[1]) >= 0; },
+  STARTSWITH: function(a){ if (a[0] === null || a[1] === null) return null; need(a[0], 's', 'STARTSWITH'); return a[0].indexOf(a[1]) === 0; },
+  ENDSWITH: function(a){ if (a[0] === null || a[1] === null) return null; need(a[0], 's', 'ENDSWITH'); var s = a[0], t = a[1]; return s.length >= t.length && s.slice(s.length - t.length) === t; },
+  LEFT: function(a){ var s = need(a[0], 's', 'LEFT'); return s === null ? null : s.slice(0, Math.max(0, a[1])); },
+  RIGHT: function(a){ var s = need(a[0], 's', 'RIGHT'); return s === null ? null : (a[1] <= 0 ? '' : s.slice(-a[1])); },
+  MID: function(a){ var s = need(a[0], 's', 'MID'); if (s === null) return null; var st = Math.max(1, a[1]) - 1; return a.length > 2 ? s.substr(st, a[2]) : s.slice(st); },
+  LEN: function(a){ var s = need(a[0], 's', 'LEN'); return s === null ? null : s.length; },
+  FIND: function(a){ if (a[0] === null || a[1] === null) return null; need(a[0], 's', 'FIND'); var st = a.length > 2 ? Math.max(1, a[2]) - 1 : 0; return a[0].indexOf(a[1], st) + 1; },
+  REPLACE: function(a){ var s = need(a[0], 's', 'REPLACE'); if (s === null || a[1] === null) return null; return a[1] === '' ? s : s.split(a[1]).join(a[2] === null ? '' : a[2]); },
+  UPPER: function(a){ var s = need(a[0], 's', 'UPPER'); return s === null ? null : s.toUpperCase(); },
+  LOWER: function(a){ var s = need(a[0], 's', 'LOWER'); return s === null ? null : s.toLowerCase(); },
+  TRIM: function(a){ var s = need(a[0], 's', 'TRIM'); return s === null ? null : s.replace(/^\s+|\s+$/g, ''); },
+  PROPER: function(a){ var s = need(a[0], 's', 'PROPER'); return s === null ? null : s.toLowerCase().replace(/(^|[^a-z0-9])([a-z])/g, function(m, p, q){ return p + q.toUpperCase(); }); },
+  SPLIT: function(a){ var s = need(a[0], 's', 'SPLIT'); if (s === null) return null; var parts = s.split(a[1]); var i = a[2]; if (i > 0) return i <= parts.length ? parts[i-1] : ''; if (i < 0) return -i <= parts.length ? parts[parts.length + i] : ''; return null; },
+  STR: function(a){ return dstr(a[0]); },
+  INT: function(a){ var x = a[0]; if (x === null) return null; if (typeof x === 'string'){ var f = parseFloat(x); return isNaN(f) ? null : Math.round(f); } if (typeof x === 'boolean') return x ? 1 : 0; return Math.trunc(x); },
+  FLOAT: function(a){ var x = a[0]; if (x === null) return null; if (typeof x === 'string'){ var f = parseFloat(x); return isNaN(f) ? null : f; } return +x; },
+  IIF: function(a){ var t = a[0]; if (t === null) return a.length > 3 ? a[3] : null; return t ? a[1] : a[2]; },
+  YEAR: function(a){ var d = need(a[0], 'd', 'YEAR'); return d === null ? null : new Date(d.dt).getUTCFullYear(); },
+  MONTH: function(a){ var d = need(a[0], 'd', 'MONTH'); return d === null ? null : new Date(d.dt).getUTCMonth() + 1; },
+  DAY: function(a){ var d = need(a[0], 'd', 'DAY'); return d === null ? null : new Date(d.dt).getUTCDate(); },
+  DATEPART: function(a){
+    var p = a[0], d = need(a[1], 'd', 'DATEPART'); if (d === null) return null; var x = new Date(d.dt), w = x.getUTCDay();
+    switch (p){ case 'year': return x.getUTCFullYear(); case 'quarter': return Math.floor(x.getUTCMonth() / 3) + 1; case 'month': return x.getUTCMonth() + 1; case 'day': return x.getUTCDate();
+      case 'iso-weekday': return (w + 6) % 7 + 1; case 'weekday': return w + 1; case 'dayofyear': return Math.round((d.dt - Date.UTC(x.getUTCFullYear(), 0, 1)) / 864e5) + 1; }
+    throw Err("Unsupported date part '" + p + "'", "בהדמיה נתמכים: 'year', 'quarter', 'month', 'day', 'iso-weekday', 'weekday', 'dayofyear'.");
+  },
+  DATENAME: function(a){
+    var p = a[0], d = need(a[1], 'd', 'DATENAME'); if (d === null) return null; var x = new Date(d.dt);
+    if (p === 'weekday') return DAYN[x.getUTCDay()]; if (p === 'month') return MONN[x.getUTCMonth()]; return String(FUNCS.DATEPART(a));
+  },
+  DATETRUNC: function(a){
+    var p = a[0], d = need(a[1], 'd', 'DATETRUNC'); if (d === null) return null; var x = new Date(d.dt), y = x.getUTCFullYear(), m = x.getUTCMonth();
+    if (p === 'year') return mkDate(y, 0, 1); if (p === 'quarter') return mkDate(y, Math.floor(m / 3) * 3, 1); if (p === 'month') return mkDate(y, m, 1); if (p === 'day') return mkDate(y, m, x.getUTCDate());
+    if (p === 'week') return {dt: d.dt - x.getUTCDay() * 864e5};
+    throw Err("Unsupported date part '" + p + "'", "בהדמיה נתמכים: 'year', 'quarter', 'month', 'week', 'day'.");
+  },
+  DATEDIFF: function(a){
+    var p = a[0], d1 = need(a[1], 'd', 'DATEDIFF'), d2 = need(a[2], 'd', 'DATEDIFF'); if (d1 === null || d2 === null) return null;
+    var x = new Date(d1.dt), y = new Date(d2.dt);
+    if (p === 'day') return Math.round((d2.dt - d1.dt) / 864e5);
+    if (p === 'month') return (y.getUTCFullYear() - x.getUTCFullYear()) * 12 + y.getUTCMonth() - x.getUTCMonth();
+    if (p === 'quarter') return (y.getUTCFullYear() - x.getUTCFullYear()) * 4 + Math.floor(y.getUTCMonth() / 3) - Math.floor(x.getUTCMonth() / 3);
+    if (p === 'year') return y.getUTCFullYear() - x.getUTCFullYear();
+    throw Err("Unsupported date part '" + p + "'", "בהדמיה נתמכים: 'day', 'month', 'quarter', 'year'.");
+  },
+  DATEADD: function(a){
+    var p = a[0], n = a[1], d = need(a[2], 'd', 'DATEADD'); if (d === null || n === null) return null; var x = new Date(d.dt), y = x.getUTCFullYear(), m = x.getUTCMonth(), dd = x.getUTCDate();
+    if (p === 'day') return {dt: d.dt + n * 864e5};
+    if (p === 'month' || p === 'quarter' || p === 'year'){ var add = p === 'month' ? n : (p === 'quarter' ? 3 * n : 12 * n); var t = m + add; var yy = y + Math.floor(t / 12), mm = ((t % 12) + 12) % 12; var last = new Date(Date.UTC(yy, mm + 1, 0)).getUTCDate(); return mkDate(yy, mm, Math.min(dd, last)); }
+    throw Err("Unsupported date part '" + p + "'", "בהדמיה נתמכים: 'day', 'month', 'quarter', 'year'.");
+  },
+  MAKEDATE: function(a){ if (a[0] === null || a[1] === null || a[2] === null) return null; return mkDate(a[0], a[1] - 1, a[2]); }
+};
+function distinctKey(v){ return isDate(v) ? 'd' + v.dt : typeof v + ':' + v; }
+function aggregate(name, vals){
+  var v = vals.filter(function(x){ return x !== null && x !== undefined; });
+  switch (name){
+    case 'COUNT': return v.length;
+    case 'COUNTD': { var seen = {}; v.forEach(function(x){ seen[distinctKey(x)] = 1; }); return Object.keys(seen).length; }
+    case 'SUM': { if (!v.length) return null; var s = 0; v.forEach(function(x){ if (!isNum(x)) throw Err('SUM needs numbers', 'SUM מסכמת מספרים בלבד.'); s += x; }); return s; }
+    case 'AVG': { if (!v.length) return null; var t = 0; v.forEach(function(x){ if (!isNum(x)) throw Err('AVG needs numbers', 'AVG מחשבת ממוצע של מספרים בלבד.'); t += x; }); return t / v.length; }
+    case 'MIN': return v.length ? v.reduce(function(a, b){ return cmp(a, b) <= 0 ? a : b; }) : null;
+    case 'MAX': return v.length ? v.reduce(function(a, b){ return cmp(a, b) >= 0 ? a : b; }) : null;
+    case 'MEDIAN': { if (!v.length) return null; var q = v.slice().sort(function(a, b){ return a - b; }); var h = q.length >> 1; return q.length % 2 ? q[h] : (q[h-1] + q[h]) / 2; }
+    case 'ATTR': { if (!v.length) return null; var k = {}; v.forEach(function(x){ k[distinctKey(x)] = 1; }); return Object.keys(k).length === 1 ? v[0] : '*'; }
+  }
+}
+function ev(n, row, rows){
+  switch (n.k){
+    case 'lit': return n.v;
+    case 'fld': { var x = row[n.name]; return x === undefined ? null : x; }
+    case 'par': return ev(n.x, row, rows);
+    case 'un': { var v = ev(n.x, row, rows); if (n.op === 'NOT') return v === null ? null : !v; if (v === null) return null; if (!isNum(v)) throw Err('Cannot negate a non-number', 'מינוס לפני טקסט אינו חוקי.'); return -v; }
+    case 'bin': {
+      var op = n.op, l = ev(n.l, row, rows);
+      if (op === 'AND'){ if (l === false) return false; var r1 = ev(n.r, row, rows); if (r1 === false) return false; return (l === null || r1 === null) ? null : true; }
+      if (op === 'OR'){ if (l === true) return true; var r2 = ev(n.r, row, rows); if (r2 === true) return true; return (l === null || r2 === null) ? null : false; }
+      var r = ev(n.r, row, rows);
+      if (l === null || r === null) return null;
+      switch (op){
+        case '+': if (typeof l === 'string' && typeof r === 'string') return l + r; if (isNum(l) && isNum(r)) return l + r; throw Err('Cannot add ' + (isNum(l) ? 'a number' : 'a string') + ' and ' + (isNum(r) ? 'a number' : 'a string'), 'אי אפשר לחבר מספר לטקסט. עטפו את המספר ב-STR(...) כדי לחבר טקסטים.');
+        case '-': case '*': case '/': case '%': case '^':
+          if (!isNum(l) || !isNum(r)) throw Err('Operator ' + op + ' needs two numbers', 'הפעולה ' + op + ' מחייבת שני מספרים.');
+          if (op === '-') return l - r; if (op === '*') return l * r; if (op === '^') return Math.pow(l, r);
+          if (r === 0) return null; if (op === '/') return l / r; return l % r;
+        case '=': return cmp(l, r) === 0; case '!=': return cmp(l, r) !== 0; case '<': return cmp(l, r) < 0; case '>': return cmp(l, r) > 0; case '<=': return cmp(l, r) <= 0; case '>=': return cmp(l, r) >= 0;
+      }
+      return null;
+    }
+    case 'in': { var xv = ev(n.x, row, rows); if (xv === null) return null; for (var i = 0; i < n.items.length; i++){ var iv = ev(n.items[i], row, rows); if (iv !== null && cmp(xv, iv) === 0) return true; } return false; }
+    case 'if': { for (var j = 0; j < n.conds.length; j++){ if (ev(n.conds[j], row, rows) === true) return ev(n.ress[j], row, rows); } return n.els ? ev(n.els, row, rows) : null; }
+    case 'case': { var cv = ev(n.x, row, rows); for (var q = 0; q < n.whens.length; q++){ var wv = ev(n.whens[q], row, rows); if (cv !== null && wv !== null && cmp(cv, wv) === 0) return ev(n.ress[q], row, rows); } return n.els ? ev(n.els, row, rows) : null; }
+    case 'call': {
+      if (AGG[n.name] && n.args.length === 1){ var vals = new Array(rows.length); for (var z = 0; z < rows.length; z++) vals[z] = ev(n.args[0], rows[z], null); return aggregate(n.name, vals); }
+      if (n.name === 'IIF'){ var t = ev(n.args[0], row, rows); if (t === null) return n.args.length > 3 ? ev(n.args[3], row, rows) : null; return t ? ev(n.args[1], row, rows) : ev(n.args[2], row, rows); }
+      var av = n.args.map(function(a2){ return ev(a2, row, rows); });
+      if (['ZN', 'IFNULL', 'ISNULL', 'STR', 'INT', 'FLOAT', 'IIF'].indexOf(n.name) < 0){ /* null-propagating by default inside implementations */ }
+      return FUNCS[n.name](av);
+    }
+  }
+}
+function fmt(v){
+  if (v === null || v === undefined) return 'Null';
+  if (typeof v === 'boolean') return v ? 'True' : 'False';
+  if (isNum(v)){ if (Math.abs(v - Math.round(v)) < 1e-9) return String(Math.round(v)); var s = v.toFixed(4).replace(/0+$/, '').replace(/\.$/, ''); return s; }
+  if (isDate(v)) return fmtDate(v);
+  return String(v);
+}
+function compile(src, fields){ var ast = parse(src); var kind = kindOf(ast, fields); return {ast:ast, kind:kind, src:src}; }
+function fieldsUsed(n, out){ out = out || []; if (!n || typeof n !== 'object') return out; if (n.k === 'fld' && out.indexOf(n.name) < 0) out.push(n.name); ['l','r','x','els'].forEach(function(k){ if (n[k]) fieldsUsed(n[k], out); }); ['items','args','conds','ress','whens'].forEach(function(k){ if (n[k]) n[k].forEach(function(c){ fieldsUsed(c, out); }); }); return out; }
+function steps(n, row, rows, src, out){
+  out = out || [];
+  var kids = [];
+  ['l','r','x','els'].forEach(function(k){ if (n[k]) kids.push(n[k]); });
+  ['items','args','conds','ress','whens'].forEach(function(k){ if (n[k]) n[k].forEach(function(c){ kids.push(c); }); });
+  kids.forEach(function(c){ steps(c, row, rows, src, out); });
+  if (n.k === 'par') return out;
+  if (n.k === 'lit') return out;
+  if (n.k === 'fld' && n.kind === 'r'){ if (row) out.push({text: src.slice(n.s, n.e), val: fmt(ev(n, row, rows))}); return out; }
+  if (n.kind === 'r' && !row) return out;
+  var v; try { v = fmt(ev(n, row, rows)); } catch (e) { v = 'error'; }
+  var t = src.slice(n.s, n.e).replace(/\s+/g, ' ');
+  if (t.length > 70) t = t.slice(0, 67) + '...';
+  out.push({text: t, val: v});
+  return out;
+}
+return {compile:compile, ev:ev, fmt:fmt, fieldsUsed:fieldsUsed, steps:steps, parseDate:parseDate, isDate:isDate, Err:Err};
+})();
+
+/* ---------- UI of the calculation lab ---------- */
+FL.dom(function(){
+  var box = FL.$('[data-id="m8-sim-lab"]'); if (!box) return;
+  var $ = function(s){ return box.querySelector(s); };
+  var COLS = ['Order ID','Order Date','Order Hour','Branch','City','Region','Channel','Category','Item','Quantity','Unit Price','Discount','Sales','Cost','Profit'];
+  var SAMPLE = [["SG-00001","2024-01-01",19,"Haifa German Colony","Haifa","North","Walk-in","Cups","Lemon Sorbet Cup",2,20.0,0.0,40.0,17.0,23.0],["SG-00007","2024-01-03",22,"Eilat Promenade","Eilat","South","Walk-in","Sundaes","Banana Split",1,40.0,0.0,40.0,28.0,12.0],["SG-00024","2024-01-10",15,"Beer Sheva Grand Mall","Beer Sheva","South","Walk-in","Drinks","Milkshake",4,26.0,0.0,104.0,40.0,64.0],["SG-00034","2024-01-12",21,"Tel Aviv Dizengoff","Tel Aviv-Yafo","Center","Delivery","Cups","Lemon Sorbet Cup",2,20.0,0.1,36.0,17.0,19.0],["SG-00041","2024-01-13",22,"Netanya Beach","Netanya","Center","Delivery","Drinks","Milkshake",2,26.0,0.0,52.0,20.0,32.0],["SG-00087","2024-01-26",11,"Tel Aviv Dizengoff","Tel Aviv-Yafo","Center","Walk-in","Cones","Double Cone",1,26.0,0.0,26.0,12.0,14.0],["SG-00091","2024-01-27",13,"Eilat Promenade","Eilat","South","Walk-in","Sundaes","Banana Split",4,40.0,0.0,160.0,112.0,48.0],["SG-00101","2024-01-28",10,"Netanya Beach","Netanya","Center","Delivery","Cones","Waffle Cone",4,19.0,0.0,76.0,34.0,42.0],["SG-00105","2024-01-28",23,"Eilat Promenade","Eilat","South","Walk-in","Cones","Waffle Cone",2,19.0,0.0,38.0,17.0,21.0],["SG-00114","2024-01-31",22,"Eilat Promenade","Eilat","South","Walk-in","Drinks","Iced Coffee",4,18.0,0.1,64.8,20.0,44.8],["SG-00141","2024-02-05",20,"Jerusalem Mamilla","Jerusalem","Jerusalem","Walk-in","Cups","Lemon Sorbet Cup",4,20.0,0.2,64.0,34.0,30.0],["SG-02947","2025-01-10",17,"Beer Sheva Grand Mall","Beer Sheva","South","App","Cups","Pistachio Cup",1,24.0,0.0,24.0,12.0,12.0],["SG-03005","2025-01-21",13,"Netanya Beach","Netanya","Center","App","Sundaes","Banana Split",3,40.0,0.5,60.0,84.0,-24.0],["SG-03129","2025-02-11",13,"Beer Sheva Grand Mall","Beer Sheva","South","Walk-in","Sundaes","Halva Sundae",1,36.0,0.5,18.0,24.0,-6.0],["SG-04085","2025-06-16",20,"Ashdod Beach Pop-up","Ashdod","South","App","Sticks","Fruit Stick",4,12.0,0.0,48.0,22.0,26.0]];
+  function toRow(a){ var r = {}; for (var i = 0; i < COLS.length; i++) r[COLS[i]] = (COLS[i] === 'Order Date') ? M8.parseDate(a[i]) : a[i]; return r; }
+  var small = SAMPLE.map(toRow), full = null, rows = small;
+  var P = [
+    ['Full Price (שורה)', '[Quantity] * [Unit Price]', ''],
+    ['Discount Amount (שורה)', '[Quantity] * [Unit Price] - [Sales]', ''],
+    ['Is Discounted (בוליאני)', '[Discount] > 0', ''],
+    ['Day Type (סוף שבוע)', '// Israel weekend: Friday and Saturday\nIF DATEPART(\'iso-weekday\', [Order Date]) IN (5, 6)\nTHEN "Weekend"\nELSE "Weekday"\nEND', ''],
+    ['Day Type עם >= 5 (טעות)', 'IF DATEPART(\'iso-weekday\', [Order Date]) >= 5\nTHEN "Weekend"\nELSE "Weekday"\nEND', ''],
+    ['Hour Bucket', 'IF [Order Hour] < 12 THEN "Morning"\nELSEIF [Order Hour] < 16 THEN "Noon"\nELSEIF [Order Hour] < 19 THEN "Afternoon"\nELSEIF [Order Hour] < 22 THEN "Evening"\nELSE "Late"\nEND', ''],
+    ['Season', 'IF MONTH([Order Date]) IN (12, 1, 2) THEN "Winter"\nELSEIF MONTH([Order Date]) IN (3, 4, 5) THEN "Spring"\nELSEIF MONTH([Order Date]) IN (6, 7, 8) THEN "Summer"\nELSE "Autumn"\nEND', ''],
+    ['Line Band', 'IF [Sales] < 20 THEN "1 Small"\nELSEIF [Sales] < 40 THEN "2 Medium"\nELSEIF [Sales] < 80 THEN "3 Large"\nELSE "4 XL"\nEND', ''],
+    ['Order Number (טקסט למספר)', 'INT(SPLIT([Order ID], "-", 2))', ''],
+    ['Branch Tag (מתוקן)', 'UPPER(LEFT([Branch], 3)) + "-" + UPPER(LEFT(SPLIT([Branch], " ", -1), 3))', ''],
+    ['Hour Label', 'STR([Order Hour]) + ":00"', ''],
+    ['Profit Margin (מסכם)', 'SUM([Profit]) / SUM([Sales])', 'Category'],
+    ['Avg Row Margin (הטעות)', 'AVG([Profit] / [Sales])', 'Category'],
+    ['שגיאת ערבוב', 'IF [Category] = "Sundaes" THEN SUM([Sales]) END', ''],
+    ['תיקון 1: SUM מבחוץ', 'SUM( IF [Category] = "Sundaes" THEN [Sales] END )', ''],
+    ['שגיאה: SUM חלקי שורה', 'SUM([Sales]) / [Quantity]', ''],
+    ['Revenue per Unit', 'SUM([Sales]) / SUM([Quantity])', ''],
+    ['Sales 2024 לפי סניף', 'SUM( IF YEAR([Order Date]) = 2024 THEN [Sales] END )', 'Branch'],
+    ['Sales 2024 עם IFNULL', 'IFNULL( SUM( IF YEAR([Order Date]) = 2024 THEN [Sales] END ), -1 )', 'Branch'],
+    ['Trend Arrow לפי סניף', 'IF ZN( SUM( IF YEAR([Order Date]) = 2024 THEN [Sales] END ) ) = 0 THEN "NEW"\nELSEIF SUM( IF YEAR([Order Date]) = 2025 THEN [Sales] END )\n   >= SUM( IF YEAR([Order Date]) = 2024 THEN [Sales] END ) THEN "UP"\nELSE "DOWN"\nEND', 'Branch'],
+    ['Margin Category לפי מוצר', 'IF SUM([Profit]) / SUM([Sales]) >= 0.55 THEN "High"\nELSEIF SUM([Profit]) / SUM([Sales]) >= 0.35 THEN "Medium"\nELSE "Low"\nEND', 'Item'],
+    ['Loss Lines', 'SUM( IIF([Profit] < 0, 1, 0) )', 'Item'],
+    ['COUNT מול COUNTD', 'COUNTD([Order Date])', 'Branch'],
+    ['AND ו-OR בלי סוגריים', '[Channel] = "App" OR [Channel] = "Delivery" AND [Discount] > 0', ''],
+    ['AND ו-OR עם סוגריים', '([Channel] = "App" OR [Channel] = "Delivery") AND [Discount] > 0', ''],
+    ['שגיאה: מספר ועוד טקסט', '[Order Hour] + ":00"', ''],
+    ['Days Since Launch', 'DATEDIFF(\'day\', #2024-01-01#, [Order Date])', ''],
+    ['שגיאה: חסר END', 'IF [Discount] > 0 THEN "Discounted" ELSE "Full price"', ''],
+    ['שגיאה: שם שדה לא נכון', '[Unit_Price] * [Quantity]', ''],
+    ['שקט ושגוי: טקסט לא מדויק', 'IF [Branch] = "Beer Sheva" THEN "Alert" ELSE "OK" END', '']
+  ];
+  var G = ['', 'Branch', 'Channel', 'Category', 'Item', 'Region'];
+  var preSel = $('.m8-pre'), grpSel = $('.m8-grp'), scopeSel = $('.m8-scope'), src = $('.m8-src'), rowSel = $('.m8-row'), msg = $('.msg'), kindEl = $('.m8-kind'), tbl = $('.m8-res'), stp = $('.m8-stp'), note = $('.m8-note');
+  P.forEach(function(p, i){ var o = document.createElement('option'); o.value = i; o.textContent = p[0]; preSel.appendChild(o); });
+  G.forEach(function(g){ var o = document.createElement('option'); o.value = g; o.textContent = g || 'בלי קיבוץ (כל השורות)'; grpSel.appendChild(o); });
+  var used = {}, nUsed = 0, edited = false;
+  function mark(key){ if (!used[key]){ used[key] = 1; nUsed++; } if (nUsed >= 3 || edited) FL.done('m8-sim-lab'); }
+  function cell(v, cls){ var td = document.createElement('td'); td.textContent = M8.fmt(v); if (v === null || v === undefined) td.className = 'nul'; if (cls) td.className += ' ' + cls; return td; }
+  function head(cols){ var tr = document.createElement('tr'); cols.forEach(function(c){ var th = document.createElement('th'); th.textContent = c; tr.appendChild(th); }); return tr; }
+  function setRows(){ var n = Math.min(rows.length, 15); rowSel.innerHTML = ''; for (var i = 0; i < Math.min(n, rows === small ? 15 : 10); i++){ var o = document.createElement('option'); o.value = i; o.textContent = (i + 1) + ' (' + rows[i]['Order ID'] + ')'; rowSel.appendChild(o); } }
+  function run(){
+    tbl.innerHTML = ''; stp.innerHTML = ''; kindEl.textContent = ''; note.textContent = '';
+    var c;
+    try { c = M8.compile(src.value, COLS); }
+    catch (e){
+      msg.className = 'msg bad'; msg.textContent = (e.m8 ? 'The calculation contains errors: ' + e.message : 'The calculation contains errors');
+      if (e.hint) kindEl.textContent = e.hint; return;
+    }
+    var out;
+    try { out = evaluate(c); }
+    catch (e2){ msg.className = 'msg bad'; msg.textContent = 'The calculation contains errors: ' + (e2.m8 ? e2.message : 'evaluation failed'); if (e2.hint) kindEl.textContent = e2.hint; return; }
+    msg.className = 'msg ok'; msg.textContent = 'The calculation is valid.';
+    kindEl.textContent = c.kind === 'r' ? 'סוג: חישוב ברמת שורה. מחושב בנפרד לכל שורה, וערכו לא תלוי בגרף.' : (c.kind === 'a' ? 'סוג: חישוב מסכם (AGG). ערך אחד לכל סימן בגרף, כאן לכל ערך של הקיבוץ שבחרתם. נסו לשנות את הקיבוץ.' : 'סוג: ערך קבוע, לא תלוי בשורות.');
+    mark(src.value);
+  }
+  function evaluate(c){
+    var used = M8.fieldsUsed(c.ast).filter(function(f){ return f !== 'Order ID'; }), r, i, j, tr;
+    if (c.kind === 'a' || c.kind === 'c'){
+      var g = c.kind === 'c' ? '' : grpSel.value, groups = {}, keys = [];
+      if (g){ rows.forEach(function(rw){ var k = rw[g]; if (!groups[k]){ groups[k] = []; keys.push(k); } groups[k].push(rw); }); keys.sort(); } else { keys = ['(all rows)']; groups['(all rows)'] = rows; }
+      tbl.appendChild(head([g || 'Group', 'rows', 'Result']));
+      var first = null;
+      keys.forEach(function(k, idx){ var v = M8.ev(c.ast, null, groups[k]); tr = document.createElement('tr'); var t0 = document.createElement('td'); t0.textContent = k; tr.appendChild(t0); var t1 = document.createElement('td'); t1.textContent = groups[k].length; tr.appendChild(t1); tr.appendChild(cell(v, 'res')); tbl.appendChild(tr); if (idx === 0) first = groups[k]; });
+      rowSel.disabled = true;
+      if (c.kind === 'a'){ var st = M8.steps(c.ast, null, first, src.value); renderSteps(st, 'פירוק שלבים לקבוצה הראשונה: ' + keys[0]); }
+      note.textContent = rows === small ? 'הערכים מחושבים על 15 שורות לדוגמה בלבד, ולכן שונים ממה שיוצא על כל הקובץ. עברו ל-6,575 שורות כדי להשוות לתרגילים.' : 'מחושב על כל 6,575 השורות של הקובץ.';
+      return true;
+    }
+    rowSel.disabled = false;
+    var cols = ['Order ID'].concat(used).concat(['Result']);
+    tbl.appendChild(head(cols));
+    var show = rows === small ? rows.length : 10, counts = {}, nonNum = false, sum = 0, mn = Infinity, mx = -Infinity;
+    for (i = 0; i < rows.length; i++){
+      r = rows[i]; var v = M8.ev(c.ast, r, null);
+      var key = M8.fmt(v); counts[key] = (counts[key] || 0) + 1; if (typeof v === 'number'){ sum += v; if (v < mn) mn = v; if (v > mx) mx = v; } else if (v !== null) nonNum = true;
+      if (i < show){ tr = document.createElement('tr'); var t = document.createElement('td'); t.textContent = r['Order ID']; tr.appendChild(t); used.forEach(function(f){ tr.appendChild(cell(r[f])); }); tr.appendChild(cell(v, 'res')); tbl.appendChild(tr); }
+    }
+    var ks = Object.keys(counts);
+    if (rows !== small){
+      var line = 'מוצגות 10 השורות הראשונות. התפלגות התוצאות על כל ' + rows.length.toLocaleString('en-US') + ' השורות: ';
+      if (ks.length <= 14){ line += ks.sort().map(function(k){ return k + ' = ' + counts[k].toLocaleString('en-US'); }).join(', '); }
+      else if (!nonNum){ line += ks.length + ' ערכים שונים. מינימום ' + M8.fmt(mn) + ', מקסימום ' + M8.fmt(mx) + ', סכום ' + M8.fmt(Math.round(sum * 100) / 100) + '.'; }
+      else line += ks.length + ' ערכים שונים.';
+      note.textContent = line;
+    } else note.textContent = 'כל 15 השורות מוצגות. עברו ל-6,575 שורות כדי לראות את ההתפלגות המלאה.';
+    var idx = Math.min(+rowSel.value || 0, rows.length - 1);
+    renderSteps(M8.steps(c.ast, rows[idx], null, src.value), 'פירוק שלבים לשורה ' + rows[idx]['Order ID']);
+    return true;
+  }
+  function renderSteps(st, title){
+    if (!st.length) return;
+    var h = document.createElement('b'); h.textContent = title; stp.appendChild(h);
+    st.slice(0, 40).forEach(function(s){ var d = document.createElement('div'); var a = document.createElement('span'), b = document.createElement('span'); a.textContent = s.text; b.textContent = '= ' + s.val; d.appendChild(a); d.appendChild(b); stp.appendChild(d); });
+  }
+  var t0 = null;
+  src.addEventListener('input', function(){ edited = true; clearTimeout(t0); t0 = setTimeout(run, 250); });
+  preSel.addEventListener('change', function(){ var p = P[+preSel.value]; src.value = p[1]; grpSel.value = p[2]; run(); });
+  grpSel.addEventListener('change', run);
+  rowSel.addEventListener('change', run);
+  $('.m8-run').addEventListener('click', run);
+  scopeSel.addEventListener('change', function(){
+    if (scopeSel.value === 's'){ rows = small; setRows(); run(); return; }
+    note.textContent = 'טוען את 6,575 השורות...';
+    TF.loadScoop(function(d){
+      if (!full){
+        var nm = {Order_ID:'Order ID', Order_Date:'Order Date', Order_Hour:'Order Hour', Unit_Price:'Unit Price'};
+        full = []; var keys = Object.keys(d.cols);
+        for (var i = 0; i < d.n; i++){ var r = {}; for (var k = 0; k < keys.length; k++){ var c = d.cols[keys[k]], name = nm[keys[k]] || keys[k], v = c.v[i]; if (c.t === 'c') v = c.dict[v]; else if (c.t === 'd') v = M8.parseDate(v); r[name] = v; } full.push(r); }
+      }
+      rows = full; setRows(); run();
+    });
+  });
+  preSel.value = 0; src.value = P[0][1]; setRows(); run();
+});
+
+})();</script>
+
+<div class="box try" data-id="m8-try-lab">
+<p><b>שישה ניסויים במעבדה.</b> אחרי כל אחד: מה ציפיתם, ומה קיבלתם?</p>
+<ol>
+<li>בחרו <b>Day Type עם &gt;= 5 (טעות)</b> ועברו ל-6,575 שורות. תראו Weekend = 3,412. עכשיו בחרו <b>Day Type (סוף שבוע)</b>: Weekend = 2,672.<span class="m8-why">למה: אותה הבדיקה שראיתם בסעיף 6. שנו בעצמכם את הנוסחה ל-<code>IN (5, 6, 7)</code> ותראו מה קורה.</span></li>
+<li>בחרו <b>שגיאת ערבוב</b>, ואז <b>תיקון 1: SUM מבחוץ</b>.<span class="m8-why">למה: רואים את ההודעה, ואת התיקון שמחזיר 47,037.20 על כל הנתונים.</span></li>
+<li>בחרו <b>Profit Margin (מסכם)</b> עם קיבוץ לפי Category, ואז <b>Avg Row Margin (הטעות)</b> באותו קיבוץ. שנו את הקיבוץ ל-Branch.<span class="m8-why">למה: רואים את שני החישובים זה מול זה ואת ההשפעה של הממד על חישוב מסכם.</span></li>
+<li>בחרו <b>Trend Arrow לפי סניף</b> על 15 השורות, ואחר כך על כולן.<span class="m8-why">למה: על 15 שורות רואים בעין למה כל סניף קיבל את התווית. בדוגמה חסרות שורות של סניפים רבים, ולכן רובם יקבלו DOWN: זה לא אומר שהם ירדו באמת. על כל הקובץ מגיעים לתוצאות מסעיף 8.</span></li>
+<li>בחרו <b>שקט ושגוי: טקסט לא מדויק</b> ועברו ל-6,575 שורות. תראו OK בכל 6,575 השורות. תקנו את השם ל-<code>"Beer Sheva Grand Mall"</code> ותראו Alert ב-525 שורות.<span class="m8-why">למה: טקסט שלא מדויק לא נותן שגיאה, הוא פשוט לא מתאים לאף שורה.</span></li>
+<li>כתבו נוסחה משלכם, למשל תווית לשורות שבהן Sales גדול מ-100, או שורות של Drinks עם הנחה. לחצו על שורה בבורר השורות כדי לראות את הפירוק לשלבים.<span class="m8-why">למה: הפירוק מראה את ערך כל חלק בנוסחה בשורה אחת, וזו שיטת העבודה בניפוי באגים.</span></li>
+</ol>
+<div class="m8-exp"><p><b>תוצאה צפויה:</b></p>
+<ul>
+<li><b>ניסוי 1:</b> Weekend <span class="n">3,412</span> מול <span class="n">2,672</span>.</li>
+<li><b>ניסוי 2:</b> שגיאה, ואחריה <span class="n">47,037.2</span>.</li>
+<li><b>ניסוי 4:</b> על כל הקובץ, NEW ב-Ashdod וב-Rehovot, DOWN ב-Beer Sheva, UP בשישה הסניפים האחרים.</li>
+<li><b>ניסוי 5:</b> OK בכל השורות, ואחרי התיקון Alert ב-<span class="n">525</span> שורות.</li>
+</ul>
+<p><b>ניסוי 3</b> (על כל הקובץ):</p>
+<div class="tw"><table class="tbl m8-tb"><thead><tr><th>Category</th><th class="num">Profit Margin</th><th class="num">Avg Row Margin</th></tr></thead><tbody>
+<tr><td>Cones</td><td class="num">0.5294</td><td class="num">0.5169</td></tr>
+<tr><td>Cups</td><td class="num">0.5204</td><td class="num">0.5082</td></tr>
+<tr><td>Drinks</td><td class="num">0.6733</td><td class="num">0.687</td></tr>
+<tr><td>Sticks</td><td class="num">0.5159</td><td class="num">0.5163</td></tr>
+<tr><td>Sundaes</td><td class="num">0.2819</td><td class="num">0.2544</td></tr>
+</tbody></table></div></div>
+</div>
+
+<h3>שגרת הבדיקה: חמישה צעדים</h3>
+<p>כשנוסחה לא עובדת, או כשהמספר נראה מוזר, אל תנחשו. עוברים על חמישה צעדים לפי הסדר. ההנפשה מדגימה אותם על הטעות מסעיף 6: סוף שבוע שיצא 3,412 שורות.</p>
+
+<div class="anim" data-id="m8-anim-debug" data-speed="3600">
+<div class="stage"><svg viewBox="0 0 800 300" role="img" aria-label="הנפשה: חמשת הצעדים של ניפוי באגים בשדה מחושב, מקריאת ההודעה ועד תיקון ובדיקה חוזרת">
+<defs><marker id="m8d-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<g font-size="15" font-weight="800" text-anchor="middle">
+<g data-s="1" data-pulse><rect x="12" y="40" width="144" height="92" rx="14" fill="#fff" stroke="#3b82f6" stroke-width="2.5"/><circle cx="34" cy="62" r="14" fill="#3b82f6"/><text x="34" y="68" fill="#fff">1</text><text x="96" y="94" fill="#1e3a8a">קוראים את</text><text x="96" y="116" fill="#1e3a8a">התוצאה</text></g>
+<g data-s="2" data-pulse><rect x="170" y="40" width="144" height="92" rx="14" fill="#fff" stroke="#8b5cf6" stroke-width="2.5"/><circle cx="192" cy="62" r="14" fill="#8b5cf6"/><text x="192" y="68" fill="#fff">2</text><text x="254" y="94" fill="#5b21b6">מפרקים</text><text x="254" y="116" fill="#5b21b6">לחלקים</text></g>
+<g data-s="3" data-pulse><rect x="328" y="40" width="144" height="92" rx="14" fill="#fff" stroke="#f59e0b" stroke-width="2.5"/><circle cx="350" cy="62" r="14" fill="#f59e0b"/><text x="350" y="68" fill="#fff">3</text><text x="412" y="94" fill="#92400e">בודקים</text><text x="412" y="116" fill="#92400e">שורה אחת</text></g>
+<g data-s="4" data-pulse><rect x="486" y="40" width="144" height="92" rx="14" fill="#fff" stroke="#ef4444" stroke-width="2.5"/><circle cx="508" cy="62" r="14" fill="#ef4444"/><text x="508" y="68" fill="#fff">4</text><text x="570" y="94" fill="#991b1b">משווים למספר</text><text x="570" y="116" fill="#991b1b">שאתם מכירים</text></g>
+<g data-s="5" data-pulse><rect x="644" y="40" width="144" height="92" rx="14" fill="#fff" stroke="#22c55e" stroke-width="2.5"/><circle cx="666" cy="62" r="14" fill="#22c55e"/><text x="666" y="68" fill="#fff">5</text><text x="728" y="94" fill="#166534">מתקנים</text><text x="728" y="116" fill="#166534">ובודקים שוב</text></g></g>
+<g stroke="#94a3b8" stroke-width="2" fill="none"><path d="M156 86 L168 86" marker-end="url(#m8d-ar)"/><path d="M314 86 L326 86" marker-end="url(#m8d-ar)"/><path d="M472 86 L484 86" marker-end="url(#m8d-ar)"/><path d="M630 86 L642 86" marker-end="url(#m8d-ar)"/></g>
+<g font-size="14" text-anchor="middle" font-family="ui-monospace,Menlo,monospace">
+<g data-only="1"><rect x="12" y="160" width="776" height="100" rx="14" fill="#eff6ff" stroke="#93c5fd"/><text x="400" y="196" fill="#1e3a8a" font-size="16">Day Type: Weekend = 3,412 rows of 6,575 (52%)</text><text x="400" y="224" fill="#1e3a8a" font-size="16" font-family="Heebo,Arial,sans-serif">אין הודעה אדומה. אבל האם זה הגיוני? יש רק שני ימים מתוך שבעה.</text></g>
+<g data-only="2"><rect x="12" y="160" width="776" height="100" rx="14" fill="#f5f3ff" stroke="#c4b5fd"/><text x="400" y="196" fill="#5b21b6" font-size="16">ISO Weekday = DATEPART('iso-weekday', [Order Date])</text><text x="400" y="224" fill="#5b21b6" font-size="16" font-family="Heebo,Arial,sans-serif">שדה עזר קטן לכל חלק בנוסחה, שאפשר לראות בנפרד.</text></g>
+<g data-only="3"><rect x="12" y="160" width="776" height="100" rx="14" fill="#fffbeb" stroke="#fcd34d"/><text x="400" y="196" fill="#92400e" font-size="16">a Sunday row: ISO Weekday = 7  >=  5  ->  "Weekend"</text><text x="400" y="224" fill="#92400e" font-size="16" font-family="Heebo,Arial,sans-serif">הנה הבעיה: יום ראשון נכנס לסוף שבוע.</text></g>
+<g data-only="4"><rect x="12" y="160" width="776" height="100" rx="14" fill="#fef2f2" stroke="#fca5a5"/><text x="400" y="196" fill="#991b1b" font-size="16">Friday 1,292 + Saturday 1,380 = 2,672 rows</text><text x="400" y="224" fill="#991b1b" font-size="16" font-family="Heebo,Arial,sans-serif">המספר שאתם מכירים מגרף ה-ISO: 2,672, לא 3,412.</text></g>
+<g data-only="5"><rect x="12" y="160" width="776" height="100" rx="14" fill="#f0fdf4" stroke="#86efac"/><text x="400" y="196" fill="#166534" font-size="16">IN (5, 6)  ->  Weekend = 2,672 rows</text><text x="400" y="224" fill="#166534" font-size="16" font-family="Heebo,Arial,sans-serif">בודקים שוב מול אותו מספר, ורק אז ממשיכים לגרף.</text></g></g>
+</svg></div>
+<ol class="caps">
+<li>צעד 1. קוראים את התוצאה, בלי למהר לתקן. יש כאן 3,412 שורות של סוף שבוע. אין הודעה אדומה. האם זה הגיוני?</li>
+<li>צעד 2. מפרקים: שדה עזר שמחשב רק יום בשבוע. כל חלק בנוסחה אפשר לראות בנפרד.</li>
+<li>צעד 3. בוחרים שורה אחת ויודעים מה צריך לצאת. ב-Tableau אפשר להציב את התאריך הגולמי ואת העזר על Text ולראות שורה שורה. נמצאה שורה של יום ראשון שהוגדרה סוף שבוע.</li>
+<li>צעד 4. משווים למספר שאתם יודעים שנכון מחישוב אחר: שישי ושבת ביחד הם 2,672.</li>
+<li>צעד 5. מתקנים ובודקים שוב מול אותו מספר. אם הוא מתאים, ממשיכים. אם לא, חוזרים לצעד 2.</li>
+</ol></div>
+
+<div class="box try" data-id="m8-try-doctor">
+<p><b>חמש נוסחאות חולות.</b> כל אחת נשברת אחרת. העתיקו כל אחת למעבדה למעלה או ל-Tableau, אבחנו, תקנו, ובדקו את המספר.</p>
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>נוסחה</th><th>הסימפטום</th></tr></thead>
+<tbody>
+<tr><td><code>SUM([Sales]) / [Quantity]</code></td><td>הודעה אדומה על ערבוב</td></tr>
+<tr><td><code>IF [Discount] &gt; 0 THEN "Discounted" ELSE "Full price"</code></td><td>הודעה אדומה, הנוסחה &quot;נגמרת באמצע&quot;</td></tr>
+<tr><td><code>[Order Hour] + ":00"</code></td><td>הודעה על סוגים שלא מתאימים</td></tr>
+<tr><td><code>[Unit_Price] * [Quantity]</code></td><td>הודעה שהשדה לא קיים (בחלונית הנתונים אצלכם כתוב Unit Price)</td></tr>
+<tr><td><code>IF [Branch] = "Beer Sheva" THEN "Alert" ELSE "OK" END</code></td><td>אין הודעה. הכול יוצא OK. למה?</td></tr>
+</tbody></table></div>
+<ol>
+<li>אבחנו כל אחת. שאלו שלוש שאלות: מה ברמת שורה? מה מסכם? מה סוג כל חלק?<span class="m8-why">למה: רוב השגיאות נופלות על רמה או על סוג.</span></li>
+<li>תקנו, והריצו שוב. בנוסחה האחרונה, בדקו איזה ערכים יש בעמודה Branch (גררו אותה אל Rows).<span class="m8-why">למה: להבין למה &quot;Beer Sheva&quot; לא תואם לאף שורה.</span></li>
+</ol>
+<div class="m8-exp"><ul>
+<li><b>1.</b> רמה: להחליף ב-<code>SUM([Sales]) / SUM([Quantity])</code>, שנותן <span class="n">20.73</span>.</li>
+<li><b>2.</b> חסר <code>END</code> בסוף. אחרי התיקון: True ב-777 שורות, Full price ב-5,798.</li>
+<li><b>3.</b> מספר ועוד טקסט. <code>STR([Order Hour]) + ":00"</code>.</li>
+<li><b>4.</b> שם השדה. כתבו <code>[Unit Price]</code> כפי שהוא נראה אצלכם. התוצאה כמו <code>Full Price</code> בסעיף 1: סכום <span class="n">245,055</span>.</li>
+<li><b>5.</b> הערך המלא הוא <code>"Beer Sheva Grand Mall"</code>. אחרי תיקון, Alert ב-<span class="n">525</span> שורות. אפשר גם <code>CONTAINS([Branch], "Beer Sheva")</code>. השוואה בין טקסטים דורשת התאמה מדויקת, ואי התאמה לא מחזירה שגיאה, רק תוצאה לא נכונה.</li>
+</ul></div>
+</div>
+
+<h3>טבלת תקלות נפוצות</h3>
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>מה רואים</th><th>סיבה סבירה</th><th>מה בודקים</th></tr></thead>
+<tbody>
+<tr><td>הודעה אדומה &quot;contains errors&quot;</td><td>שם שדה שגוי, סוגריים, END חסר, פסיק</td><td>ללחוץ על ההודעה. ספרו סוגריים ו-END. התאימו שם שדה לחלונית הנתונים</td></tr>
+<tr><td>הודעה על ערבוב</td><td>חלק מהנוסחה בשורה וחלק מסכם</td><td>הכניסו את ה-SUM או AVG החוצה, או סכמו את שני הצדדים</td></tr>
+<tr><td>כל הערכים Null</td><td>תנאי שאף שורה לא עומדת בו, חילוק באפס, שדה ריק</td><td>הוסיפו ELSE, בדקו התאמה מדויקת של טקסט, ZN או IFNULL</td></tr>
+<tr><td>הכול &quot;True&quot; או כולם באותה קטגוריה</td><td>סדר תנאים שגוי, או &gt;= שתופס יותר מדי</td><td>סדרו מהמצומצם לרחב, וצרו שדה עזר לבדיקה</td></tr>
+<tr><td>המספר נראה סביר אבל שונה ממה שחשבתם</td><td>ממוצע של יחסים, או חיתוך שאיחד ערכים</td><td>בדקו רמה (שורה או מסכם) ומספר ערכים שונים</td></tr>
+<tr><td>התוצאה משתנה כשמוסיפים ממד</td><td>חישוב מסכם מחושב מחדש לכל סימן</td><td>זה תקין. להקפאת הרמה צריך FIXED (מודול 10)</td></tr>
+<tr><td>השדה לא מופיע במקום שציפיתם</td><td>הסוג קבע איפה הוא נוחת</td><td>טקסט בממדים, מספר במדדים. המירו אם צריך</td></tr>
+<tr><td>הפיל אדום עם סימן קריאה</td><td>שדה שנמחק או שנוסחתו נשברה</td><td>פתחו את השדה ותקנו, או החליפו אותו</td></tr>
+</tbody></table></div>
+
+<div class="box trap"><p><b>הקלדה בעברית.</b> אם המקלדת במצב עברית, הסוגריים וגרשיים עלולים להיראות לא נכון, ואותיות עבריות ייכנסו לתוך שם פונקציה. ודאו לפני כל נוסחה שהמקלדת באנגלית. גרשיים מסולסלים (&ldquo;כך&rdquo;) שהועתקו ממסמך Word או מדף אינטרנט אינם גרשיים תקינים בנוסחה. אם הנוסחה שהעתקתם נכשלת, מחקו את הגרשיים והקלידו אותם מחדש.</p></div>
+
+<div class="box meaning"><p>חמשת הצעדים הם רוטינה, לא כישרון. מי שתמיד מפרק לחלקים ובודק מול מספר ידוע לא ממציא את הגלגל בכל פעם. ובמקרה של שדות מחושבים, ההודעה האדומה היא הטובה: היא עוצרת אתכם. המסוכנת היא נוסחה שנראית בסדר ונותנת מספר אחר ממה שצריך, ולכן &quot;valid&quot; אינו סוף הבדיקה.</p></div>
+
+<div class="box real"><p>בכל מקצוע שכותבים בו נוסחאות, ב-Excel, ב-SQL או ב-Python, בודקים כך: מפרקים, בודקים שורה אחת מול חישוב ידני, ומשווים לסכום ידוע. אנליסטים נוהגים לשמור &quot;מספר בטיחות&quot;, למשל סך מכירות שמוכר מדוח אחר, ולבדוק מולו כל שדה חדש. כאן המספר הזה הוא 236,820.90.</p></div>
+
+<div class="box think" data-id="m8-th-trust"><p>עוד אחד שאומר לכם: &quot;השדה valid, אז אפשר להעלות לדשבורד&quot;. מה שלוש הבדיקות שתעשו קודם?</p>
+<div class="ans">(1) מספר ידוע: האם הסכום הכללי של השדה תואם לסכום שאני מכיר מחישוב אחר, למשל 236,820.90 למכירות? (2) שורה אחת: האם בשורה שאני יכול לחשב בראש, התוצאה כמו שציפיתי? (3) רמה: האם השדה ברמת שורה או מסכם, והאם הערך משתנה נכון כשמוסיפים ממד לגרף? ואחרי שלושתן, אם שדה עזר אינו נחוץ, אפשר להסתיר אותו.</div></div>
+
+<div class="quiz" data-id="m8-q-silent" data-a="3"><p class="qq">שדה מחושב עם <code>IF [Branch] = "Tel Aviv" THEN "Center" ELSE "Other" END</code> מחזיר Other לכל השורות. איפה כדאי להתחיל לחפש?</p>
+<button class="opt">בסדר הפונקציות, כי IF צריך להיות בסוף</button>
+<button class="opt">בסוגריים שחסרים, כי הנוסחה לא תקינה</button>
+<button class="opt">בערכים האמיתיים של Branch: אין סניף ששמו בדיוק &quot;Tel Aviv&quot;, והשוואה בין טקסטים דורשת התאמה מדויקת</button>
+<div class="why">הנוסחה תקינה ואין הודעה. הסניפים נקראים Tel Aviv Dizengoff ו-Tel Aviv Port, ולכן שום שורה לא שווה בדיוק ל-&quot;Tel Aviv&quot;. התיקון: <code>STARTSWITH([Branch], "Tel Aviv")</code> או <code>CONTAINS</code>.</div></div>
+
+<div class="quiz" data-id="m8-q-routine" data-a="2"><p class="qq">מה הצעד הראשון בשגרת הבדיקה, כשיש מספר מוזר?</p>
+<button class="opt">למחוק את השדה וליצור אותו מחדש</button>
+<button class="opt">לקרוא את התוצאה או ההודעה ולשאול אם היא הגיונית מול מספר שאני מכיר</button>
+<button class="opt">להחליף את כל ה-IF ב-CASE</button>
+<div class="why">קודם מבינים מה רואים. מחיקה והחלפה בלי אבחנה מחליפות בעיה אחת באחרת. הצעדים אחר כך: לפרק, לבדוק שורה, להשוות למספר ידוע, לתקן ולבדוק שוב.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> המעבדה היא הדמיה בדפדפן: אל תציגו אותה כ-Tableau. תנו לכיתה להריץ כמה נוסחאות לפני שפותחים את התוכנה, ובדקו שהתוצאות על 6,575 השורות תואמות למה שהם מקבלים ב-Tableau (3,412 מול 2,672, ו-47,037.2). נקודת עצירה: בקשו מכל סטודנט לשבור בכוונה נוסחה ולבקש מהשכן לאבחן אותה. נוסח ההודעות של Tableau אצלכם עשוי להיות שונה מההודעות במעבדה.</div>
+</section>
+<section class="sec" id="m8-11" data-t="סיכום ובדיקה">
+<div class="sec-h"><div class="sec-n">11</div><h2>סיכום: מה עשינו ואיך בודקים שהכול נכון</h2></div>
+<div class="box recap">
+<ul>
+<li><b>שדה מחושב</b> הוא שדה חדש מנוסחה. הוא לא משנה את הקובץ, והסוג של התוצאה (מספר, טקסט, אמת/שקר, תאריך) קובע אם הוא נוחת בין המדדים או הממדים.</li>
+<li><b>רמה:</b> חישוב ברמת שורה רץ בכל שורה לפני הסיכום. חישוב מסכם רץ אחרי הסיכום, לכל סימן בגרף. אחוז של קבוצה תמיד סכום חלקי סכום, לא ממוצע של אחוזים.</li>
+<li><b>ערבוב:</b> &quot;Cannot mix aggregate and non-aggregate&quot; אומרת שחלק מהנוסחה בשורה וחלק מסכם. מתקנים: <code>SUM( IF ... THEN [x] END )</code>, או <code>ATTR</code>, או סכום גם לצד השני.</li>
+<li><b>שש משפחות פונקציות:</b> מספרים, המרות, טקסט, תאריכים, לוגיקה ופונקציות מסכמות. עם כמה מהן בכל משפחה פותרים את רוב המקרים.</li>
+<li><b>Null</b> אינו אפס. <code>ISNULL</code>, <code>ZN</code> ו-<code>IFNULL</code> מטפלים בו, ובדיקה על Null עושים רק עם <code>ISNULL</code>.</li>
+<li><b>שם ברור, הערה בנוסחה, ובדיקה מול מספר ידוע.</b> &quot;The calculation is valid&quot; אומרת שהתחביר נכון, לא שהחישוב נכון.</li>
+</ul>
+</div>
+
+<h3>כרטיס בדיקה: כל השדות שבנינו ומה צריך לצאת</h3>
+<p>אם בניתם את כל השדות, כל אחד צריך לתת את המספר שלידו. אם משהו שונה, חזרו לצעדים של שגרת הבדיקה.</p>
+<div class="tw"><table class="tbl m8-tb">
+<thead><tr><th>שדה</th><th>נוסחה בקצרה</th><th>בדיקה על כל הקובץ</th></tr></thead>
+<tbody>
+<tr><td><code>Full Price</code></td><td><code>[Quantity] * [Unit Price]</code></td><td>SUM = 245,055</td></tr>
+<tr><td><code>Discount Amount</code></td><td><code>[Full Price] - [Sales]</code></td><td>SUM = 8,234.10</td></tr>
+<tr><td><code>Profit Margin</code></td><td><code>SUM([Profit]) / SUM([Sales])</code></td><td>51.0% (Sundaes 28.2%)</td></tr>
+<tr><td><code>Avg Row Margin</code></td><td><code>AVG([Profit] / [Sales])</code></td><td>52.6% (הטעות)</td></tr>
+<tr><td><code>Sundaes Sales</code></td><td><code>SUM( IF [Category] = "Sundaes" THEN [Sales] END )</code></td><td>47,037.20</td></tr>
+<tr><td><code>Revenue per Unit</code></td><td><code>SUM([Sales]) / SUM([Quantity])</code></td><td>20.73</td></tr>
+<tr><td><code>Line Band 20</code></td><td><code>FLOOR([Sales] / 20) * 20</code></td><td>0: 1,639, 20: 2,682, 40: 1,304, ... 160: 10 (סעיף 4)</td></tr>
+<tr><td><code>Hour Label</code></td><td><code>STR([Order Hour]) + ":00"</code></td><td>21:<bdi dir="ltr">00 = 938</bdi> שורות</td></tr>
+<tr><td><code>Profit per Unit</code></td><td><code>SUM([Profit]) / SUM([Quantity])</code></td><td>10.57</td></tr>
+<tr><td><code>Order Number</code></td><td><code>INT(SPLIT([Order ID], "-", 2))</code></td><td>MAX = 6,575</td></tr>
+<tr><td><code>Branch Tag</code></td><td>שלוש אותיות, מקף, שלוש אותיות של המילה האחרונה</td><td>9 ערכים שונים</td></tr>
+<tr><td><code>Is Pop-up</code></td><td><code>CONTAINS([Branch], "Pop-up")</code></td><td>True = 139 שורות</td></tr>
+<tr><td><code>Day Type</code></td><td>iso-weekday ב-(5, 6)</td><td>Weekend 2,672, Weekday 3,903</td></tr>
+<tr><td><code>Sales per Trading Day</code></td><td><code>SUM([Sales]) / COUNTD([Order Date])</code></td><td>Weekend 482.59, Weekday 263.91</td></tr>
+<tr><td><code>Season</code></td><td><code>IF MONTH(...) IN (...)</code></td><td>Summer 2,937 שורות, 105,895.30</td></tr>
+<tr><td><code>Hour Bucket</code></td><td><code>IF [Order Hour] &lt; 12 ...</code></td><td>Evening 2,524 שורות, 89,092.20</td></tr>
+<tr><td><code>Line Band</code></td><td><code>IF [Sales] &lt; 20 ...</code></td><td>Small 1,639, Medium 2,682, Large 1,912, XL 342</td></tr>
+<tr><td><code>Channel Group</code></td><td><code>CASE [Channel] ...</code></td><td>In store 4,523, Digital 2,052</td></tr>
+<tr><td><code>Is Discounted</code></td><td><code>[Discount] &gt; 0</code></td><td>True = 777 שורות</td></tr>
+<tr><td><code>Margin Category</code></td><td><code>IF [Profit Margin] &gt;= 0.55 ...</code></td><td>High 4, Medium 8, Low 3 מוצרים</td></tr>
+<tr><td><code>Sales Change %</code> ו-<code>Trend Arrow</code></td><td>2025 מול 2024 עם ZN</td><td>Beer Sheva -30.8%, שני סניפים NEW</td></tr>
+<tr><td><code>Loss Lines</code> ו-<code>Loss Amount</code></td><td><code>SUM(IIF([Profit] &lt; 0, 1, 0))</code></td><td>63 שורות, -747.00</td></tr>
+</tbody></table></div>
+
+<div class="quiz" data-id="m8-q-end-count" data-a="2"><p class="qq">איזו נוסחה סופרת את שורות ההנחה של 50 אחוז (292 שורות)?</p>
+<button class="opt"><code>COUNT([Discount] = 0.5)</code></button>
+<button class="opt"><code>SUM( IIF([Discount] = 0.5, 1, 0) )</code></button>
+<button class="opt"><code>IF [Discount] = 0.5 THEN COUNT([Order ID]) END</code></button>
+<div class="why">IIF נותנת 1 לשורה שעומדת בתנאי ו-0 לכל שאר, ו-SUM סופרת. האפשרות הראשונה סופרת את כל השורות, כי גם False הוא ערך שאינו Null. השלישית מערבבת תנאי ברמת שורה עם COUNT מסכם, ונכשלת בשגיאת הערבוב.</div></div>
+
+<div class="quiz" data-id="m8-q-end-agg" data-a="3"><p class="qq">איזה מהשדות האלה הוא חישוב מסכם (AGG)?</p>
+<button class="opt"><code>Day Type</code>, כי הוא נוחת בממדים</button>
+<button class="opt"><code>Is Discounted</code>, כי הוא מחזיר True או False</button>
+<button class="opt"><code>Margin Category</code>, כי הוא נשען על <code>Profit Margin</code>, שמסכם</button>
+<div class="why">Day Type ו-Is Discounted מחושבים בכל שורה. Margin Category משתמש ב-Profit Margin, שהוא SUM חלקי SUM, ולכן גם הוא ברמה מסכמת. שדה ברמת שורה אינו הופך למסכם מעצם היותו בוליאני, ושדה מסכם יכול להחזיר טקסט.</div></div>
+
+<div class="quiz" data-id="m8-q-end-diff" data-a="2"><p class="qq">מה מחזירה <code>DATEDIFF('month', #2025-01-31#, #2025-02-01#)</code>?</p>
+<button class="opt">0, כי עבר יום אחד בלבד</button>
+<button class="opt">1, כי DATEDIFF סופרת גבולות של חודשים ועברנו את הגבול בין ינואר לפברואר</button>
+<button class="opt">31, כי מדובר בהפרש הימים של ינואר</button>
+<div class="why">DATEDIFF לא סופרת &quot;חודשים שלמים&quot; אלא כמה פעמים עוברים גבול של היחידה שביקשתם. מ-31 בינואר ל-1 בפברואר עוברים גבול אחד. לכן הערך 1 גם כשעבר יום אחד.</div></div>
+
+<p class="srcline"><b>הלאה:</b> בנינו שדות שמחושבים בכל שורה או על סיכום. בחישובי טבלה מחשבים על מה שכבר מופיע בגרף: סכום רץ, אחוז מהסך, דירוג, שינוי מהחודש הקודם. <a class="tool" href="module9.html">מודול 9: חישובי טבלה וניתוח רץ</a> וגם <a class="tool" href="module10.html">מודול 10: פרמטרים ורמת פירוט</a> (שם תכירו את FIXED).</p>
+<div class="teach"><b>🎓 למרצה:</b> כרטיס הבדיקה הוא כלי שימושי להפסקה או לסיום: כל סטודנט משווה את המספרים שלו מול הטבלה. מי שהתרחק, כנראה כתב נוסחה שונה, ומה שחשוב הוא לשאול אותו מה הוא חישב. את מודול 9 כדאי לפתוח בשאלה &quot;ואם אני רוצה סכום מצטבר לפי חודש?&quot;.</div>
+</section>
+
+<div class="pager"><a href="module7.html">→ 7. מפות</a><a href="module9.html">9. חישובי טבלה וניתוח רץ ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>

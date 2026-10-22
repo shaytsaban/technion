@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3. סביבת העבודה והגרפים הראשונים · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=3;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public">1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים">2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים" class=on>3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות">6<small></small></a><a id="part7" href="module7.html" title="מפות">7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים">8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט">10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב">13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה">14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים">15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות">16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום">17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות">19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>סביבת העבודה<br><span>והגרפים הראשונים</span></h1>
+  <p>מכירים את המסך של Tableau Public ובונים עליו את חמשת הגרפים הראשונים של Scoop & Go: עמודות, קו, טבלת טקסט, תרשים פיזור וממוצעים. מבינים איך Tableau הופכת גרירה לגרף, ומה לעשות כשהיא מציירת משהו אחר ממה שרציתם.</p>
+  <div class="chips"><span>🧪 13 תרגילים בתוכנה</span><span>🎞️ 5 הנפשות</span><span>🎛️ מגרש משחקים: Tableau בדפדפן</span><span>🧮 כל מספר נבדק מול הנתונים</span><span>✅ הכול עובד ב-Tableau Public</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<style>
+.m3-why{display:block;font-size:.88rem;color:#64748b;margin-top:1px}
+.m3-exp{background:#ecfdf5;border:1px solid #a7f3d0;border-inline-start:5px solid #10b981;border-radius:10px;padding:8px 14px;margin:12px 0}
+.m3-exp>:last-child{margin-bottom:0}
+.m3-scroll{overflow-x:auto;margin:14px 0}
+.m3-ws{min-width:700px;margin:0}
+.m3-wsb{display:grid;grid-template-columns:150px 150px 1fr;min-height:300px}
+.m3-cards{background:#f4f6f8;border-right:1px solid #d5dbe3;padding:6px;display:flex;flex-direction:column;gap:6px}
+.m3-card{background:#fff;border:1px solid #d5dbe3;padding:4px 6px;font-size:.72rem;color:#475569}
+.m3-card b{display:block;font-size:.7rem;color:#475569;margin-bottom:2px}
+.m3-card.pg{min-height:34px}.m3-card.fl{min-height:40px}
+.m3-card .mkd{border:1px solid #c7cfd9;background:#fff;border-radius:3px;padding:1px 6px;font-size:.72rem;margin:2px 0 4px}
+.m3-status{display:flex;gap:16px;background:#e5e9ee;border-top:1px solid #c7cfd9;padding:3px 10px;font-size:.72rem;color:#475569}
+.m3-canvas{background:#fff;padding:6px 10px;flex:1}
+.m3-ttl{font-size:1.05rem;color:#475569;margin:2px 0 0 4px}
+.tws .co-n{width:18px;height:18px;font-size:.66rem;margin-inline-end:4px;vertical-align:middle;flex:none}
+.m3-find{border:1px solid #c7d2fe;border-radius:14px;background:#fff;padding:12px;margin:14px 0}
+.m3-find .q{font-weight:700;margin:0 0 8px;min-height:2.6em}
+.m3-fgrid{direction:ltr;display:grid;grid-template-columns:120px 100px 1fr;grid-template-rows:30px 30px 30px 40px 40px 40px 30px;gap:4px;font-size:.72rem;max-width:640px;margin:0 auto}
+.m3-fgrid button{font:inherit;font-size:.72rem;border:1px dashed #94a3b8;border-radius:4px;background:#f4f6f8;color:#334155;cursor:pointer;padding:2px 4px;text-align:left}
+.m3-fgrid button:hover{background:#fff7ed;border-color:#e8741f}
+.m3-fgrid button.ok{background:#d9f0d6;border-color:#2ca02c}
+.m3-fgrid button.bad{background:#fee2e2;border-color:#ef4444}
+.m3-msg{min-height:1.6em;margin-top:8px;font-weight:600}
+.m3-tb td.num,.m3-tb th.num{text-align:center}
+.m3-tb td.hi{background:#fef9c3;font-weight:700}
+.m3-cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:14px 0}
+.m3-cmp>div{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff}
+.m3-cmp>div.ok{border-color:#86efac;background:#f0fdf4}.m3-cmp>div.bad{border-color:#fca5a5;background:#fef2f2}
+.m3-cmp h4{margin:0 0 6px;font-size:1rem}
+.m3-big{font-size:1.7rem;font-weight:900;color:var(--navy);direction:ltr;unicode-bidi:isolate;display:inline-block}
+.m3-menu{display:inline-block;background:#fff;border:1px solid #b8c0cc;border-radius:4px;box-shadow:0 6px 18px rgba(15,23,42,.18);font-size:.82rem;direction:ltr;text-align:left;min-width:190px}
+.m3-menu div{padding:3px 14px}.m3-menu div.sel{background:#d7e7f5}.m3-menu hr{margin:3px 0;border:0;border-top:1px solid #d5dbe3}
+.m3-tt{display:inline-block;background:#fff;border:1px solid #b8c0cc;border-radius:4px;box-shadow:0 6px 18px rgba(15,23,42,.18);padding:6px 12px;font-size:.84rem;direction:ltr;text-align:left;line-height:1.5}
+.m3-ted{max-width:520px;margin:12px auto;border:1px solid #b8c0cc;border-radius:6px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.18);direction:ltr;text-align:left;font-size:.88rem;overflow:hidden}
+.m3-ted .hd{background:#e5e9ee;padding:5px 12px;font-weight:700;color:#334155}
+.m3-ted .tb{padding:6px 12px;border-bottom:1px solid #d5dbe3;color:#475569;font-size:.8rem}
+.m3-ted .bd{padding:10px 14px;font-family:ui-monospace,Menlo,monospace;font-size:.86rem;line-height:1.6;white-space:pre-wrap;min-height:70px}
+.m3-ted .bd .t{background:#e0ecf8;border-radius:3px;padding:0 3px}
+.m3-ted .ft{padding:8px 12px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid #d5dbe3}
+.m3-ted .ft i{font-style:normal;border:1px solid #9aa4b2;border-radius:3px;padding:1px 14px}.m3-ted .ft b{background:#1fb890;color:#fff;border-radius:3px;padding:1px 16px}
+.m3-sheets{display:flex;gap:2px;direction:ltr;align-items:flex-end;margin:8px 0}
+.m3-sheets span{padding:3px 14px;border:1px solid #c7cfd9;border-bottom:0;border-radius:6px 6px 0 0;background:#f4f6f8;font-size:.8rem}
+.m3-sheets span.on{background:#fff;font-weight:700}
+.m3-sim{border:1px solid #c7d2fe;border-radius:14px;background:#fff;padding:12px 14px;margin:14px 0}
+.m3-sim .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
+.m3-sim button.b{font:inherit;font-size:.86rem;border:1px solid #c7cfd9;background:#f8fafc;border-radius:8px;padding:3px 12px;cursor:pointer}
+.m3-sim button.b.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.m3-sim input[type=number],.m3-sim input[type=text]{width:130px;direction:ltr}
+.m3-sim label{font-size:.9rem}
+@media(max-width:640px){.m3-big{font-size:1.4rem}}
+</style>
+
+<div class="box note">
+<p><span class="lvl s">מתחילים</span> <b>מה נבנה במודול הזה.</b> מכירים את המסך של Tableau Public ובונים עליו את חמשת הגרפים הראשונים של Scoop & Go: עמודות של מכירות לפי קטגוריה, קו של מכירות לפי חודש, טבלת טקסט של קטגוריה מול ערוץ, תרשים פיזור של מכירות מול רווח לפי מוצר, ועמודות של ממוצע לשורה. בסוף יש לכם חוברת עבודה עם חמישה גיליונות עם שמות, מספרים שבדקתם מול הנתונים, והבנה של איך Tableau בונה גרף מגרירה.</p>
+<p><b>מה להכין.</b> קובץ <a class="tool" href="data/scoop_sales_2024_2025.csv" download>scoop_sales_2024_2025.csv</a> טעון ב-Tableau Public (איך מחברים: <a href="module2.html">מודול 2</a>), וגיליון ריק פתוח. אם עוד לא התקנתם, התחילו ב<a href="module1.html">מודול 1</a>.</p>
+<p><b>איך עובדים כאן.</b> כל גרף נבנה פעמיים. קודם במגרש המשחקים בדפדפן (הדמיה של Tableau, לא התוכנה עצמה), כדי להרגיש את הלוגיקה של המדפים בלי להתקין כלום. אחר כך ב-Tableau Public עצמו, צעד אחר צעד, עם תוצאה צפויה שחישבנו מהנתונים כדי שתוכלו לבדוק את עצמכם. כל מה שכאן עובד ב-Tableau Public בלבד. בעריכה בדפדפן (web authoring) הרעיונות זהים, ושמות הכפתורים בסרגל הכלים עשויים להיות שונים מעט.</p>
+</div>
+
+<section class="sec" id="m3-1" data-t="המסך של Tableau">
+<div class="sec-h"><div class="sec-n">1</div><h2>המסך של Tableau: איפה כל דבר נמצא</h2></div>
+<p class="lead">מנהלת Scoop & Go שואלת שאלה פשוטה: איזו קטגוריה מכניסה הכי הרבה כסף? כדי לענות ב-Tableau לא כותבים נוסחה. גוררים שדות למקומות הנכונים. לכן הצעד הראשון הוא לדעת איפה נמצא כל מקום, ומה הוא עושה.</p>
+
+<div class="defline"><b>גיליון (Worksheet):</b> מסך עבודה אחד שבו בונים גרף אחד. דוגמה: הלשונית <code>Sheet 1</code> שמראה מכירות לפי קטגוריה. כמה גיליונות יחד נשמרים בקובץ אחד שנקרא <b>חוברת עבודה</b> (Workbook).</div>
+<div class="defline"><b>כרטיס (Card):</b> חלונית קטנה בגיליון שאפשר להציג או להסתיר, כמו Filters, Marks, Pages ומקרא הצבעים. דוגמה: אם הכרטיס Filters מוסתר, לא רואים איפה שמים מסנן, והוא עדיין קיים.</div>
+
+<h3>הדמיה של המסך, עם הגרף הראשון שנבנה בהמשך</h3>
+<p>זו הדמיה סכמטית, לא צילום. המספרים זהים לאלה שבצילום האמיתי שמתחת.</p>
+<div class="m3-scroll"><div class="tws m3-ws" aria-label="הדמיה סכמטית של סביבת העבודה של Tableau Public עם Scoop & Go">
+  <div class="tws-top"><span class="co-n">10</span><b>Tableau Public - Book1</b><span class="tws-btn">Undo</span><span class="tws-btn">Redo</span><span class="tws-btn">New Worksheet</span><span class="tws-btn">Duplicate</span><span class="tws-btn">Clear Sheet</span><span class="tws-btn">Sort</span><span class="tws-btn">Show Mark Labels</span><span class="tws-btn" style="margin-inline-start:auto"><span class="co-n">6</span>Show Me</span></div>
+  <div class="m3-wsb">
+    <div class="tws-data">
+      <h6><span class="co-n">1</span>Data pane</h6>
+      <div style="font-size:.7rem;color:#64748b">scoop_sales_2024_2025</div>
+      <h6>Dimensions</h6>
+      <div><span class="fld dim"><i>Abc</i>Branch</span></div><div><span class="fld dim"><i>Abc</i>Category</span></div><div><span class="fld dim"><i>Abc</i>Channel</span></div><div><span class="fld dim"><i>Abc</i>City</span></div><div><span class="fld dim"><i>Abc</i>Item</span></div><div><span class="fld dim"><i>📅</i>Order Date</span></div><div><span class="fld dim"><i>Abc</i>Region</span></div><div style="font-size:.7rem;color:#94a3b8">...</div>
+      <h6>Measures</h6>
+      <div><span class="fld mea"><i>#</i>Profit</span></div><div><span class="fld mea"><i>#</i>Quantity</span></div><div><span class="fld mea"><i>#</i>Sales</span></div><div style="font-size:.7rem;color:#94a3b8">...</div>
+    </div>
+    <div class="m3-cards">
+      <div class="m3-card pg"><b><span class="co-n">9</span>Pages</b></div>
+      <div class="m3-card fl"><b><span class="co-n">5</span>Filters</b></div>
+      <div class="m3-card"><b><span class="co-n">4</span>Marks</b><div class="mkd">▮ Automatic ▾</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;text-align:center;font-size:.66rem"><div style="border:1px dashed #cbd5e1;padding:3px">Color</div><div style="border:1px dashed #cbd5e1;padding:3px">Size</div><div style="border:1px dashed #cbd5e1;padding:3px">Label</div><div style="border:1px dashed #cbd5e1;padding:3px">Detail</div><div style="border:1px dashed #cbd5e1;padding:3px;grid-column:1/3">Tooltip</div></div></div>
+    </div>
+    <div class="tws-main">
+      <div class="tws-shelf"><span><span class="co-n">2</span>Columns</span><span class="pill d">Category</span></div>
+      <div class="tws-shelf"><span><span class="co-n">3</span>Rows</span><span class="pill c sum">Sales</span></div>
+      <div class="m3-canvas"><span class="co-n">8</span><span class="m3-ttl">Sheet 1</span><svg viewBox="0 0 380 190" width="100%" role="img" aria-label="עמודות של מכירות לפי קטגוריה בסדר אלפביתי" style="direction:ltr;max-width:380px"><line x1="44" x2="372" y1="162.0" y2="162.0" stroke="#e5e9ee"/><text x="40" y="166.0" text-anchor="end" font-size="10" fill="#64748b">0</text><line x1="44" x2="372" y1="125.5" y2="125.5" stroke="#e5e9ee"/><text x="40" y="129.5" text-anchor="end" font-size="10" fill="#64748b">25,000</text><line x1="44" x2="372" y1="89.0" y2="89.0" stroke="#e5e9ee"/><text x="40" y="93.0" text-anchor="end" font-size="10" fill="#64748b">50,000</text><line x1="44" x2="372" y1="52.5" y2="52.5" stroke="#e5e9ee"/><text x="40" y="56.5" text-anchor="end" font-size="10" fill="#64748b">75,000</text><line x1="44" x2="372" y1="16.0" y2="16.0" stroke="#e5e9ee"/><text x="40" y="20.0" text-anchor="end" font-size="10" fill="#64748b">100,000</text><rect x="53.8" y="91.5" width="45.9" height="70.5" fill="#4e79a7"/><text x="76.8" y="180" text-anchor="middle" font-size="11" fill="#334155">Cones</text><rect x="119.4" y="60.6" width="45.9" height="101.4" fill="#4e79a7"/><text x="142.4" y="180" text-anchor="middle" font-size="11" fill="#334155">Cups</text><rect x="185.0" y="82.4" width="45.9" height="79.6" fill="#4e79a7"/><text x="208.0" y="180" text-anchor="middle" font-size="11" fill="#334155">Drinks</text><rect x="250.6" y="136.5" width="45.9" height="25.5" fill="#4e79a7"/><text x="273.6" y="180" text-anchor="middle" font-size="11" fill="#334155">Sticks</text><rect x="316.2" y="93.3" width="45.9" height="68.7" fill="#4e79a7"/><text x="339.2" y="180" text-anchor="middle" font-size="11" fill="#334155">Sundaes</text></svg></div>
+    </div>
+  </div>
+  <div class="tws-tabs"><span><span class="co-n">7</span>Data Source</span><span class="on">Sheet 1</span><span>+</span></div>
+  <div class="m3-status"><span class="co-n">11</span><span>5 marks</span><span>1 row by 5 columns</span><span>SUM(Sales): 236,821</span></div>
+</div></div>
+<ol class="callouts">
+<li><b>Data pane</b>: כל השדות של הקובץ. ממדים למעלה, מדדים למטה.</li>
+<li><b>Columns</b>: מה נפרס לרוחב.</li>
+<li><b>Rows</b>: מה נפרס לאורך.</li>
+<li><b>Marks</b>: סוג הסימן, צבע, גודל, תוויות, פירוט וטולטיפ.</li>
+<li><b>Filters</b>: סינון שורות.</li>
+<li><b>Show Me</b>: הצעה של גרף לפי השדות שנבחרו.</li>
+<li><b>Sheet tabs</b>: הגיליונות, עם כפתור להוספת גיליון.</li>
+<li><b>Canvas</b>: אזור הגרף, וגם כותרת הגיליון.</li>
+<li><b>Pages</b>: דף אחרי דף, כמו סרט.</li>
+<li><b>Toolbar</b>: ביטול, גיליון חדש, מיון, תוויות.</li>
+<li><b>Status bar</b>: ספירת סימנים וסכום של מה שנבחר.</li>
+</ol>
+
+<h3>אותו מסך בצילום אמיתי</h3>
+<figure class="shot"><img src="img/worksheet-annotated.png" alt="צילום מסך של Tableau Public עם גיליון ריק ושמונה סימונים">
+<figcaption>Tableau Public (macOS) עם גיליון ריק. הנתונים בצילום הם vgsales ולא Scoop & Go, אבל המסך זהה. 1 חלונית Data, 2 Columns, 3 Rows, 4 Marks, 5 Filters, 6 Show Me, 7 לשוניות הגיליונות, 8 אזור הגרף.</figcaption></figure>
+
+<div class="tw"><table class="tbl m3-tb">
+<thead><tr><th class="num">#</th><th>אנגלית על המסך</th><th>מה זה</th><th>מה עושים שם ב-Scoop & Go</th></tr></thead>
+<tbody>
+<tr><td class="num">1</td><td><code>Data pane</code></td><td>רשימת כל השדות בקובץ. ממדים (כחולים) מעל הקו הדק, מדדים (ירוקים) מתחתיו.</td><td>גוררים משם: <code>Category</code>, <code>Sales</code>, <code>Order Date</code>.</td></tr>
+<tr><td class="num">2</td><td><code>Columns</code></td><td>מדף. מה שמניחים בו נפרס לרוחב: כותרות מימין לשמאל, או ציר אופקי.</td><td>שמים <code>Category</code> ומקבלים חמש כותרות לרוחב.</td></tr>
+<tr><td class="num">3</td><td><code>Rows</code></td><td>מדף. מה שמניחים בו נפרס לאורך: כותרות בצד, או ציר אנכי.</td><td>שמים <code>SUM(Sales)</code> ומקבלים ציר אנכי של כסף.</td></tr>
+<tr><td class="num">4</td><td><code>Marks</code></td><td>כרטיס שקובע איך נראה כל סימן: סוג הסימן, ואז <code>Color</code>, <code>Size</code>, <code>Label</code>, <code>Detail</code>, <code>Tooltip</code>.</td><td>בוחרים עמודה או קו, צובעים לפי אזור, מוסיפים תוויות.</td></tr>
+<tr><td class="num">5</td><td><code>Filters</code></td><td>מדף שמסנן שורות לפני שהן מסוכמות.</td><td>למשל להשאיר רק <code>Channel = App</code>.</td></tr>
+<tr><td class="num">6</td><td><code>Show Me</code></td><td>כפתור שפותח לוח של סוגי גרפים. Tableau מדגישה את זה שמתאים לשדות שבחרתם.</td><td>בוחרים <code>Category</code> ו-<code>Sales</code> ולוחצים. נחזור לזה בסעיף 6.</td></tr>
+<tr><td class="num">7</td><td><code>Sheet tabs</code></td><td>לשוניות בתחתית: <code>Data Source</code> (החיבור), הגיליונות, וכפתורים לגיליון, דשבורד וסיפור חדשים.</td><td>עוברים בין <code>Sheet 1</code> לגיליון הבא, וגם משנים שם.</td></tr>
+<tr><td class="num">8</td><td><code>Canvas</code> (אזור הגרף)</td><td>השטח שבו הגרף מצויר. כשהוא ריק כתוב בו <code>Drop field here</code>.</td><td>אפשר לגרור שדה ישר לשם, ו-Tableau תבחר מדף.</td></tr>
+<tr><td class="num">9</td><td><code>Pages</code></td><td>מדף שמפצל את הגרף לדפים לפי שדה ומריץ אותם כמו סרט.</td><td>לא נשתמש בו במודול הזה. חשוב רק לדעת שהוא קיים.</td></tr>
+<tr><td class="num">10</td><td><code>Toolbar</code></td><td>שורת הכפתורים למעלה: ביטול, גיליון חדש, מיון, תוויות, ועוד.</td><td>נשתמש ב-<code>Undo</code>, <code>Sort</code>, <code>Show Mark Labels</code>.</td></tr>
+<tr><td class="num">11</td><td><code>Status bar</code></td><td>שורת המצב בתחתית. בדרך כלל כתוב בה כמה סימנים יש בגרף וסכום של מה שנבחר.</td><td>בודקים שיש <code>5 marks</code> בגרף הראשון.</td></tr>
+</tbody></table></div>
+<div class="cols2">
+<figure class="shot" style="max-width:340px;margin:12px auto"><img src="img/datapane-count.png" alt="חלונית Data עם ממדים וגם מדדים"><figcaption>חלונית <code>Data</code> בצילום אמיתי (vgsales). ממדים מעל הקו הדק, מדדים מתחתיו. השדות בנטוי הם שדות ש-Tableau יוצרת לבד: <code>Measure Names</code>, <code>Measure Values</code> וספירת השורות <code>(Count)</code>. בקובץ שלכם יופיע <code>scoop_sales_2024_2025.csv (Count)</code>.</figcaption></figure>
+<figure class="shot" style="max-width:340px;margin:12px auto"><img src="img/filters-shelf.png" alt="חלונית Data עם שדה נבחר, כרטיס Filters וכרטיס Marks"><figcaption>החלק העליון של החלונית ואחריו הכרטיסים <code>Filters</code> ו-<code>Marks</code>. שדה שנבחר מסומן בחלונית. מעל החלונית יש תיבת חיפוש שימושית כשיש הרבה שדות.</figcaption></figure>
+</div>
+<p>עוד כרטיסים שמופיעים כשצריך: מקרא (<code>Legend</code>) כשמשתמשים בצבע, כותרת הגיליון (<code>Title</code>) וכיתוב (<code>Caption</code>). כל הכרטיסים אפשר להציג ולהסתיר.</p>
+
+<div class="box meaning"><p>אפשר לחלק את המסך לשלושה חלקים: <b>חומר גלם</b> (חלונית Data), <b>מבנה</b> (Columns, Rows, Filters, Pages) ו<b>מראה</b> (כרטיס Marks). כל שאלה של &quot;למה הגרף נראה ככה&quot; נענית בדרך כלל בהסתכלות על המבנה ועל המראה, לא על החומר.</p></div>
+
+<h3>משחק קצר: מצאו את המקום</h3>
+<p>זו הדמיה של המסך. בכל שאלה לחצו על המקום הנכון. אחרי שמונה תשובות נכונות הפעילות נרשמת.</p>
+<div class="sim m3-sim" data-id="m3-sim-find"><div class="sh">מצאו את המקום על המסך</div>
+<div class="m3-find"><p class="q" id="m3-fq"></p>
+<div class="m3-fgrid" id="m3-fg">
+ <button data-r="toolbar" style="grid-area:1/1/2/3">Toolbar: Undo, Redo, Sort, Labels</button>
+ <button data-r="showme" style="grid-area:1/3/2/4;justify-self:end;width:110px">Show Me</button>
+ <button data-r="data" style="grid-area:2/1/7/2">Data pane<br>Dimensions<br>Measures</button>
+ <button data-r="pages" style="grid-area:2/2/3/3">Pages</button>
+ <button data-r="columns" style="grid-area:2/3/3/4">Columns</button>
+ <button data-r="filters" style="grid-area:3/2/4/3">Filters</button>
+ <button data-r="rows" style="grid-area:3/3/4/4">Rows</button>
+ <button data-r="marks" style="grid-area:4/2/7/3">Marks<br>Color Size<br>Label Detail<br>Tooltip</button>
+ <button data-r="canvas" style="grid-area:4/3/7/4;font-size:.9rem">Canvas (the view)</button>
+ <button data-r="tabs" style="grid-area:7/1/8/4">Sheet tabs: Data Source, Sheet 1, +</button>
+</div>
+<div class="m3-msg" id="m3-fm"></div></div></div>
+<script>(function(){FL.dom(function(){
+var box=FL.$('[data-id="m3-sim-find"]'); if(!box) return;
+var Q=[['data','איפה רואים את רשימת השדות של Scoop & Go?'],['columns','איזה מדף קובע מה ייפרס לרוחב, בכותרות או בציר אופקי?'],['rows','איזה מדף קובע מה ייפרס לאורך, בציר אנכי או בכותרות בצד?'],['marks','איפה משנים צבע, גודל ותוויות של הסימנים?'],['filters','איפה מוסיפים מסנן שמשאיר רק את ערוץ ה-App?'],['tabs','איפה פותחים גיליון חדש ועוברים בין גיליונות?'],['showme','איפה Tableau מציעה גרף מוכן לפי השדות שבחרתם?'],['canvas','איפה רואים את הגרף עצמו?'],['pages','איזה מדף מריץ את הגרף כמו סרט, דף אחרי דף?'],['toolbar','איפה נמצא הכפתור Undo?']];
+var order=Q.slice().sort(function(){return Math.random()-.5;}); var i=0, ok=0, tries=0;
+var qe=FL.$('#m3-fq',box), me=FL.$('#m3-fm',box), btns=FL.$$('#m3-fg button',box);
+var names={data:'Data pane',columns:'Columns',rows:'Rows',marks:'Marks',filters:'Filters',tabs:'Sheet tabs',showme:'Show Me',canvas:'Canvas',pages:'Pages',toolbar:'Toolbar'};
+function show(){ qe.textContent=(ok+1)+'. '+order[i][1]; btns.forEach(function(b){b.className='';}); }
+btns.forEach(function(b){ b.addEventListener('click',function(){
+  if(ok>=8) return;
+  if(b.dataset.r===order[i][0]){ b.className='ok'; ok++; me.textContent='נכון: '+names[b.dataset.r]+'. '+ok+' מתוך 8.'; me.style.color='#166534';
+    if(ok>=8){ qe.textContent='סיימתם: שמונה תשובות נכונות.'; FL.done('m3-sim-find'); return; }
+    i=(i+1)%order.length; setTimeout(show,700);
+  } else { b.className='bad'; me.textContent='זה '+names[b.dataset.r]+'. נסו שוב.'; me.style.color='#991b1b'; setTimeout(function(){ if(b.className==='bad') b.className=''; },900); }
+});});
+show();
+});})();</script>
+
+<div class="box try" data-id="m3-try-explore">
+<p><b>מכירים את המסך בתוכנה.</b> קובץ ה-CSV של Scoop & Go טעון ב-Tableau Public.</p>
+<ol>
+<li>לחצו על הלשונית <code>Sheet 1</code> בתחתית המסך.<span class="m3-why">למה: בעמוד <code>Data Source</code> רק מחברים נתונים. הגרפים נבנים בגיליון.</span></li>
+<li>בחלונית <code>Data</code> סמנו בעצמכם מה כחול ומה ירוק. ספרו כמה שדות יש מעל הקו הדק וכמה מתחתיו.<span class="m3-why">למה: זה מה ש-Tableau הבינה מהקובץ. אם משהו נראה לא הגיוני, עדיף לגלות עכשיו.</span></li>
+<li>מצאו את שמונת המקומות מהצילום (Data, Columns, Rows, Marks, Filters, Show Me, לשוניות, אזור הגרף) ואת שורת המצב בתחתית.<span class="m3-why">למה: ככה לא מחפשים מדף באמצע בנייה.</span></li>
+<li>העבירו את העכבר מעל <code>Show Me</code> ופתחו אותו בלחיצה אחת. אל תבחרו עדיין גרף. סגרו אותו.<span class="m3-why">למה: רק להכיר. הלוח ריק כל עוד לא בחרתם שדות.</span></li>
+<li>הסתירו את הכרטיס <code>Filters</code> והחזירו אותו: בכפתור <code>Show/Hide Cards</code> שבסרגל הכלים, או בתפריט <code>Worksheet</code> ואז <code>Show Cards</code>.<span class="m3-why">למה: במסך קטן כרטיסים תופסים מקום. כדאי לדעת שהם לא נעלמו, רק מוסתרים. בגרסה שלכם ייתכן שהכפתור נמצא במקום קצת אחר.</span></li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b> בחלונית <code>Data</code> בערך <span class="n">9</span> שדות כחולים (<code>Branch Code</code>, <code>Branch</code>, <code>Category</code>, <code>Channel</code>, <code>City</code>, <code>Item</code>, <code>Order Date</code>, <code>Order ID</code>, <code>Region</code>) ו-<span class="n">7</span> ירוקים (<code>Cost</code>, <code>Discount</code>, <code>Order Hour</code>, <code>Profit</code>, <code>Quantity</code>, <code>Sales</code>, <code>Unit Price</code>), ובסוף השורה <code>scoop_sales_2024_2025.csv (Count)</code> שהיא ספירת שורות. שימו לב ש-<code>Order Hour</code> ירוק אף על פי שהוא שעה, ולא מספר שמסכמים. נחזור אליו. אם <code>Order Date</code> לא מופיע עם סמל לוח שנה, חזרו ל<a href="module2.html">מודול 2</a> ותקנו את סוג הנתונים. באמצע המסך, בגיליון ריק, כתוב <code>Drop field here</code>.</p></div>
+<p>אם אתם בעריכה בדפדפן: אותה חלונית שדות, אותם מדפים ואותו כרטיס <code>Marks</code>. סרגל הכלים בנוי אחרת, וייתכן שחלק מהפעולות נמצאות בתפריטים.</p>
+</div>
+
+<figure class="shot"><img src="img/worksheet-full.png" alt="גיליון ריק ב-Tableau Public בלי סימונים">
+<figcaption>אותו מסך בלי סימונים. שימו לב לשורה התחתונה: משמאל <code>Data Source</code> ו-<code>Sheet 1</code> עם כפתורי גיליון, דשבורד וסיפור חדשים, ומימין שורת המצב.</figcaption></figure>
+
+<div class="quiz" data-id="m3-q-where" data-a="2"><p class="qq">רוצים שהגרף יראה רק את ערוץ ה-App. איפה מתחילים?</p>
+<button class="opt">בכרטיס Marks, בתיבה Color</button>
+<button class="opt">במדף Filters, עם השדה Channel</button>
+<button class="opt">בלשונית Data Source, מוחקים את שאר הערוצים</button>
+<div class="why">מדף Filters מסנן שורות. Color רק צובע, הוא לא מסיר כלום. בלשונית Data Source אפשר לסנן את מקור הנתונים, אבל זה כבר עניין לשיעורים על נתונים, ופחות נוח לשאלה של גיליון אחד.</div></div>
+
+<div class="box real"><p>גם בתוכנית ההדרכה הרשמית של Tableau הצעד הראשון הוא להסתכל על חלונית הנתונים ועל המדפים, ואז לבנות תצוגה אחת מגרירה של שני שדות. אנליסטים מנוסים שומרים על הכלל שגיליון אחד עונה על שאלה אחת, ונותנים לו שם. הדשבורדים נבנים אחר כך מגיליונות כאלה.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לפני הצילום הציגו את ההדמיה והראו את המספרים. בקשו מהכיתה לצעוק איפה Marks. בדקו בתוכנה לפני השיעור: (1) מיקום הכפתור Show/Hide Cards ושם התפריט Worksheet, Show Cards בגרסת Public שלכם. (2) האם שורת המצב מציגה את הטקסט כפי שנכתב כאן. (3) מה כתוב בשורת המצב ואם מופיעה המילה marks, ו-(4) כמה שדות כחולים וירוקים Tableau מזהה בקובץ ה-CSV, בעיקר אם <code>Order Hour</code> ו-<code>Branch Code</code> זוהו כצפוי. הצילומים במודול הם מ-macOS עם הנתונים vgsales, ולכן אצל חלק מהסטודנטים הכפתורים נראים קצת אחרת.</div>
+</section>
+
+<section class="sec" id="m3-2" data-t="איך גרירה הופכת לגרף">
+<div class="sec-h"><div class="sec-n">2</div><h2>איך Tableau בונה גרף מגרירה</h2></div>
+<p class="lead">כשגוררים שדה למדף, Tableau לא מציירת תמונה. היא מסכמת את הנתונים לטבלה קטנה ומציירת אותה. ארבעה כללים מספיקים כדי לחזות מראש מה תקבלו, ולהבין למה קיבלתם משהו אחר.</p>
+
+<div class="defline"><b>ממד (Dimension):</b> שדה שמחלק את השורות לקבוצות. דוגמה: <code>Category</code> מחלק את <span class="n">6,575</span> שורות הנתונים לחמש קבוצות: <span class="n">Cones 1,437</span>, <span class="n">Cups 1,974</span>, <span class="n">Drinks 1,606</span>, <span class="n">Sticks 801</span>, <span class="n">Sundaes 757</span> שורות.</div>
+<div class="defline"><b>מדד (Measure):</b> שדה של מספרים שאפשר לחשב עליהם. דוגמה: <code>Sales</code> הוא הסכום ששולם בכל שורה. <b>אגרגציה (Aggregation)</b> היא החישוב שמצמצם הרבה שורות למספר אחד, כמו סכום או ממוצע. הדוגמה: סכום המכירות של <span class="n">1,974</span> שורות ה-Cups הוא <span class="n">69,470.00</span>.</div>
+<div class="defline"><b>פיל (Pill):</b> הקפסולה הצבעונית שמייצגת שדה על מדף. כחולה היא <dfn data-d="בדיד: ערכים נפרדים, כל ערך הוא כותרת. למשל חמש הקטגוריות.">בדידה</dfn> וירוקה היא <dfn data-d="רציף: טווח מספרים על ציר, כמו מכירות מ-0 עד 70,000.">רציפה</dfn>. דוגמה: <span class="pill d">Category</span> <span class="pill c sum">Sales</span>. בפיל של מדד כתוב גם איך סיכמנו, כאן <code>SUM</code>.</div>
+
+<h3>ארבעה כללים</h3>
+<div class="cols2">
+<div class="card"><h4>1. ממד מפצל, מדד מסכם</h4><p>ממד על מדף מחלק את הנתונים לקבוצות. מדד על מדף מסכם את הקבוצה למספר אחד.</p></div>
+<div class="card"><h4>2. כחול יוצר כותרות, ירוק יוצר ציר</h4><p>פיל כחול (בדיד) על Columns או Rows נפרש לכותרות. פיל ירוק (רציף) נפרש לציר עם סקאלה.</p></div>
+<div class="card"><h4>3. סימן אחד לכל צירוף של ממדים</h4><p>הסימנים (Marks) הם העמודות, הנקודות והמספרים. יש סימן לכל צירוף שונה של ערכי הממדים שבגרף.</p></div>
+<div class="card"><h4>4. סוג הסימן נקבע לפי המדפים</h4><p>במצב <code>Automatic</code> Tableau בוחרת בלבד: ממד עם מדד נותן עמודות, תאריך עם מדד נותן קו, שני ממדים נותנים טקסט.</p></div>
+</div>
+
+<h3>הנפשה: גרירה אחת ועוד גרירה</h3>
+<p>עברו שלב אחר שלב. שימו לב ששני השדות לא עושים אותו דבר: אחד מפצל ואחד מסכם.</p>
+<div class="anim" data-id="m3-anim-drag" data-speed="3400"><div class="stage"><svg viewBox="0 0 800 350" role="img" aria-label="הנפשה: גוררים Category ל-Columns ו-Sales ל-Rows ומקבלים חמש עמודות"><defs><marker id="m3dr-ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#e8741f"/></marker></defs><rect x="8" y="8" width="170" height="334" rx="6" fill="#fff" stroke="#c7cfd9"/><text x="20" y="30" text-anchor="start" font-size="13" fill="#64748b" font-weight="700" >Data</text><text x="20" y="52" text-anchor="start" font-size="11" fill="#64748b" font-weight="400" >Dimensions</text><g ><rect x="20" y="58" width="110" height="24" rx="7" fill="#d7e7f5" stroke="#a9c9e3"/><text x="75.0" y="75" text-anchor="middle" font-size="13" fill="#14507a" font-weight="700" >Category</text></g><g ><rect x="20" y="88" width="110" height="24" rx="7" fill="#d7e7f5" stroke="#a9c9e3"/><text x="75.0" y="105" text-anchor="middle" font-size="13" fill="#14507a" font-weight="700" >Branch</text></g><text x="20" y="140" text-anchor="start" font-size="11" fill="#64748b" font-weight="400" >Measures</text><g ><rect x="20" y="146" width="110" height="24" rx="7" fill="#d9f0d6" stroke="#a8d4a3"/><text x="75.0" y="163" text-anchor="middle" font-size="13" fill="#1c6b1c" font-weight="700" >Sales</text></g><g ><rect x="20" y="176" width="110" height="24" rx="7" fill="#d9f0d6" stroke="#a8d4a3"/><text x="75.0" y="193" text-anchor="middle" font-size="13" fill="#1c6b1c" font-weight="700" >Profit</text></g><rect x="8" y="230" width="170" height="112" rx="6" fill="#f4f6f8" stroke="#c7cfd9"/><text x="20" y="250" text-anchor="start" font-size="12" fill="#64748b" font-weight="700" >Marks</text><rect x="20" y="258" width="146" height="24" rx="4" fill="#fff" stroke="#c7cfd9"/><g data-only="1,2,3,4"><text x="30" y="275" text-anchor="start" font-size="13" fill="#334155" font-weight="400" >Automatic</text></g><g data-only="5,6"><text x="30" y="275" text-anchor="start" font-size="13" fill="#1c6b1c" font-weight="700" >Automatic: Bar</text></g><rect x="20" y="292" width="46" height="26" rx="4" fill="#fff" stroke="#cbd5e1" stroke-dasharray="3 2"/><text x="43" y="309" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="400" >Color</text><rect x="70" y="292" width="46" height="26" rx="4" fill="#fff" stroke="#cbd5e1" stroke-dasharray="3 2"/><text x="93" y="309" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="400" >Size</text><rect x="120" y="292" width="46" height="26" rx="4" fill="#fff" stroke="#cbd5e1" stroke-dasharray="3 2"/><text x="143" y="309" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="400" >Label</text><rect x="190" y="8" width="602" height="30" fill="#fff" stroke="#c7cfd9"/><text x="200" y="28" text-anchor="start" font-size="13" fill="#64748b" font-weight="700" >Columns</text><rect x="190" y="42" width="602" height="30" fill="#fff" stroke="#c7cfd9"/><text x="200" y="62" text-anchor="start" font-size="13" fill="#64748b" font-weight="700" >Rows</text><rect x="190" y="78" width="602" height="264" fill="#fff" stroke="#c7cfd9"/><text x="220" y="100" text-anchor="start" font-size="16" fill="#64748b" font-weight="400" >Sheet 1</text><g data-only="1"><text x="500" y="215" text-anchor="middle" font-size="18" fill="#cbd5e1" font-weight="400" >Drop field here</text></g><path data-only="2" d="M134,70 C190,70 230,30 278,24" fill="none" stroke="#e8741f" stroke-width="3" marker-end="url(#m3dr-ar)"/><g data-s="2" data-pulse><rect x="282" y="11" width="110" height="24" rx="7" fill="#d7e7f5" stroke="#a9c9e3"/><text x="337.0" y="28" text-anchor="middle" font-size="13" fill="#14507a" font-weight="700" >Category</text></g><path data-only="4" d="M134,158 C190,158 230,70 278,60" fill="none" stroke="#e8741f" stroke-width="3" marker-end="url(#m3dr-ar)"/><g data-s="4" data-pulse><rect x="282" y="45" width="130" height="24" rx="7" fill="#d9f0d6" stroke="#a8d4a3"/><text x="347.0" y="62" text-anchor="middle" font-size="13" fill="#1c6b1c" font-weight="700" >SUM(Sales)</text></g><g data-s="4"><line x1="260" x2="780" y1="298.0" y2="298.0" stroke="#e5e9ee"/><text x="254" y="302.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >0</text></g><g data-s="4"><line x1="260" x2="780" y1="251.0" y2="251.0" stroke="#e5e9ee"/><text x="254" y="255.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >20,000</text></g><g data-s="4"><line x1="260" x2="780" y1="204.0" y2="204.0" stroke="#e5e9ee"/><text x="254" y="208.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >40,000</text></g><g data-s="4"><line x1="260" x2="780" y1="157.0" y2="157.0" stroke="#e5e9ee"/><text x="254" y="161.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >60,000</text></g><g data-s="4"><line x1="260" x2="780" y1="110.0" y2="110.0" stroke="#e5e9ee"/><text x="254" y="114.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >80,000</text></g><g data-s="3"><text x="312.0" y="318" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >Cones</text></g><g data-s="3"><text x="416.0" y="318" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >Cups</text></g><g data-s="3"><text x="520.0" y="318" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >Drinks</text></g><g data-s="3"><text x="624.0" y="318" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >Sticks</text></g><g data-s="3"><text x="728.0" y="318" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >Sundaes</text></g><g data-s="3"><line x1="260" x2="780" y1="298" y2="298" stroke="#94a3b8"/></g><g data-only="3"><text x="520" y="200" text-anchor="middle" font-size="16" fill="#64748b" font-weight="400" >5 כותרות, אין עדיין סימנים</text></g><rect data-s="5" x="279.8" y="184.5" width="64.5" height="113.5" fill="#4e79a7"/><g data-s="5"><text x="312.0" y="179.45505" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700" >48,317</text></g><rect data-s="5" x="383.8" y="134.7" width="64.5" height="163.3" fill="#4e79a7"/><g data-s="5"><text x="416.0" y="129.7455" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700" >69,470</text></g><rect data-s="5" x="487.8" y="169.8" width="64.5" height="128.2" fill="#4e79a7"/><g data-s="5"><text x="520.0" y="164.799745" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700" >54,553</text></g><rect data-s="5" x="591.8" y="257.0" width="64.5" height="41.0" fill="#4e79a7"/><g data-s="5"><text x="624.0" y="252.00801" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700" >17,443</text></g><rect data-s="5" x="695.8" y="187.5" width="64.5" height="110.5" fill="#4e79a7"/><g data-s="5"><text x="728.0" y="182.46258" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700" >47,037</text></g><g data-s="6"><rect x="260" y="86" width="520" height="20" rx="6" fill="#fff7ed" stroke="#e8741f"/><text x="520.0" y="101" text-anchor="middle" font-size="13" fill="#9a3412" font-weight="700" >הממד קבע 5 סימנים, והמדד קבע את הגובה של כל אחד</text></g><g data-s="6"><rect x="700" y="322" width="84" height="22" rx="11" fill="#e5e9ee"/><text x="742" y="337" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >5 marks</text></g></svg></div><ol class="caps"><li>גיליון ריק. אין עדיין שדות, ולכן אין מה לצייר.</li><li>גוררים את Category (כחול, ממד) אל Columns.</li><li>Tableau מחלקת את 6,575 השורות לחמש קבוצות ופורסת חמש כותרות. עדיין אין מדד, ולכן אין סימנים.</li><li>גוררים את Sales (ירוק, מדד) אל Rows. הוא נהיה SUM(Sales) ומקבל ציר.</li><li>בכל כותרת Tableau מסכמת את המכירות של הקטגוריה ומציירת עמודה. כרטיס Marks אומר Bar כי יש ממד אחד ומדד אחד.</li><li>הכלל: הממד קובע כמה סימנים יהיו, והמדד קובע את הגובה של כל אחד.</li></ol></div>
+
+<div class="box meaning"><p>זה גם מה שנקרא <b>רמת פירוט</b> (Level of Detail) של הגרף: הממדים שנמצאים בו קובעים כמה שורות של &quot;נתונים מסוכמים&quot; יש. עם <code>Category</code> בלבד יש חמש. אם תוסיפו <code>Region</code> יהיו עשרים, כי יש עשרים צירופים של קטגוריה ואזור בנתונים. מדד לא משנה את מספר הסימנים. הוא רק קובע מה הערך שלהם.</p></div>
+
+<figure class="shot"><img src="img/stacked-genre.png" alt="עמודות מוערמות של מכירות לפי שנה, צבועות לפי ז'אנר"><figcaption>צילום אמיתי (vgsales): <code>Year</code> על Columns, <code>SUM(Global Sales)</code> על Rows ו-<code>Genre</code> על <code>Color</code>. הממד שעל Color מוסיף סימנים בכל עמודה, והם נערמים זה על זה. בכל עמודה יש 12 סימנים, אחד לכל ז'אנר.</figcaption></figure>
+<h3>מגרש משחקים: מדפים ראשונים</h3>
+<p>זו הדמיה של Tableau בדפדפן, עם נתוני Scoop & Go אמיתיים. אפשר לגרור שדות, או ללחוץ על שדה ואז על מדף. המשימה הראשונה: לבנות את העמודות האופקיות של הרווח לפי סניף.</p>
+<div class="tfp" data-id="m3-pg-shelves" data-task="בנו עמודות אופקיות: שדה Branch על Rows, ו-SUM(Profit) על Columns. בכרטיס Marks צריך להופיע 9 סימנים."
+     data-goal='{"rows":["Branch"],"columns":["SUM(Profit)"],"mark":"bar","marks":9}'
+     data-fields="Branch,Category,Region,Channel,Order_Date,Sales,Profit,Quantity"></div>
+
+<div class="box think" data-id="m3-th-predict"><p>לפני שגוררים: שימו <code>Region</code> על Columns ו-<code>SUM(Profit)</code> על Rows. כמה סימנים תראו ומה סוג הסימן? ועכשיו הוסיפו <code>Channel</code> לתיבה Color בכרטיס Marks. כמה סימנים יהיו? נסו לחשוב לפני שאתם בודקים במגרש.</p>
+<div class="ans">ארבעה סימנים (Center, Jerusalem, North, South) והסוג הוא Bar, כי יש ממד אחד ומדד אחד. אחרי שמוסיפים את Channel לצבע יש <b>12 סימנים</b> (4 אזורים כפול 3 ערוצים), והעמודות נערמות זו על זו בכל אזור. הממד שנכנס ל-Color מוסיף סימנים, גם בלי כותרת חדשה.</div></div>
+
+<div class="quiz" data-id="m3-q-count" data-a="3"><p class="qq">בגרף יש <code>Region</code> על Columns, <code>Channel</code> על Color ו-<code>SUM(Sales)</code> על Rows. כמה סימנים בו?</p>
+<button class="opt">4, כמספר האזורים</button>
+<button class="opt">3, כמספר הערוצים</button>
+<button class="opt">12, צירוף של אזור וערוץ</button>
+<button class="opt">6,575, כמספר השורות</button>
+<div class="why">הסימנים הם צירופים של כל הממדים שבגרף, גם אלה שרק על Color. לכל אחד מ-4 האזורים יש מכירות בכל 3 הערוצים, ולכן 12. 6,575 היה יוצא רק אם הייתה ברמת השורה, למשל עם Order ID.</div></div>
+
+<div class="box trap"><p><b>צבע הפיל הוא לא סוג השדה.</b> בדרך כלל ממדים כחולים ומדדים ירוקים, ולכן אנשים חושבים שכחול שווה ממד. בפועל כחול וירוק אומרים בדיד או רציף. תאריך יכול להיות כחול או ירוק, ומספר יכול להיות מומר לכחול. הכלל לשינון: <b>כחול הוא כותרות, ירוק הוא ציר</b>. את זה נתרגל לעומק במודול 4.</p></div>
+
+<div class="box real"><p>הדרך הרשמית של Tableau ללמד את התצוגה הראשונה היא בדיוק כך: שני שדות, גרירה אחת לכל אחד, ואז לראות מה Tableau בחרה לצייר. אחר כך מתקנים בכרטיס Marks. אין &quot;לבחור גרף&quot; בהתחלה. בוחרים שדות.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> עצרו בשלב 3 של ההנפשה ושאלו: למה אין סימנים? (אין מדד.) בשלב 5 שאלו מה היה קורה אם Sales היה על Columns ו-Category על Rows. (אותו גרף, אופקי.) במגרש, בקשו מסטודנט אחד לשתף מסך ולגרור בקול רם. בדקו שהסטודנטים מבינים שהמגרש הוא הדמיה ולא התוכנה.</div>
+</section>
+
+<section class="sec" id="m3-3" data-t="גרף עמודות ראשון">
+<div class="sec-h"><div class="sec-n">3</div><h2>גרף העמודות הראשון: מכירות לפי קטגוריה</h2></div>
+<p class="lead">השאלה של מנהלת Scoop & Go: איזו קטגוריה מוכרת הכי הרבה? זה גרף עמודות פשוט: קטגוריה אחת לכל עמודה, וגובה שמראה את סכום המכירות. נבנה אותו קודם במגרש, ואז ב-Tableau Public.</p>
+
+<div class="defline"><b>גרף עמודות (Bar chart):</b> גרף שמשווה ערך בין קבוצות לפי אורך של עמודות. דוגמה: חמש עמודות, אחת לכל קטגוריה, וגובה העמודה הוא סכום המכירות שלה.</div>
+
+<h3>קודם במגרש</h3>
+<div class="tfp" data-id="m3-pg-bar" data-task="בנו גרף עמודות: Category על Columns ו-SUM(Sales) על Rows. בכרטיס Marks צריך להופיע 5 סימנים."
+     data-goal='{"columns":["Category"],"rows":["SUM(Sales)"],"mark":"bar","marks":5}'
+     data-fields="Category,Item,Region,Channel,Order_Date,Sales,Profit,Quantity"></div>
+<p>שימו לב להסבר הצהוב מתחת לגרף. הוא אומר מה Tableau עשתה ולמה. עכשיו הפכו את הצירים ומיינו, כמו בתוכנה האמיתית:</p>
+<div class="tfp" data-id="m3-pg-swap" data-task="הפכו את הצירים (החלפה) כך שהקטגוריות יהיו ב-Rows, ומיינו מהגדול לקטן."
+     data-goal='{"rows":["Category"],"columns":["SUM(Sales)"],"strict":true,"mark":"bar","sort":"desc"}'
+     data-preset='{"columns":["Category"],"rows":["SUM(Sales)"]}'
+     data-fields="Category,Item,Region,Channel,Order_Date,Sales,Profit,Quantity"></div>
+
+<h3>עכשיו ב-Tableau Public</h3>
+<div class="box try" data-id="m3-try-first-bar">
+<p><b>גרף עמודות: Sales לפי Category.</b> גיליון חדש וריק פתוח, עם נתוני Scoop & Go.</p>
+<ol>
+<li>גררו את <code>Category</code> מחלונית <code>Data</code> אל המדף <code>Columns</code>.<span class="m3-why">למה: Category הוא ממד. הוא מחלק את הנתונים לחמש קבוצות ויוצר חמש כותרות.</span></li>
+<li>גררו את <code>Sales</code> אל המדף <code>Rows</code>.<span class="m3-why">למה: Sales הוא מדד. Tableau מסכמת אותו לכל קטגוריה ומציירת עמודה. הפיל נהיה <code>SUM(Sales)</code> וצבעו ירוק.</span></li>
+<li>בדקו את הכרטיס <code>Marks</code>: כתוב בו <code>Automatic</code> עם סמל של עמודות.<span class="m3-why">למה: Tableau בחרה לבד עמודות כי יש ממד אחד ומדד אחד.</span></li>
+<li>העבירו את העכבר מעל העמודה של <code>Cups</code> ומעל זו של <code>Sticks</code>.<span class="m3-why">למה: ה-Tooltip הוא הדרך הראשונה לקרוא מספר מדויק.</span></li>
+<li>הסתכלו בשורת המצב בתחתית המסך.<span class="m3-why">למה: זה בדיקה מהירה שהגרף בנוי כמו שחשבתם.</span></li>
+<li>לחצו על <code>Sort Descending</code> בסרגל הכלים (חץ שמצביע למטה עם עמודות).<span class="m3-why">למה: מיון מהגדול לקטן הופך את הגרף למענה על השאלה &quot;מי ראשונה&quot;.</span></li>
+<li>לחצו על <code>Swap Rows and Columns</code> בסרגל הכלים, ואז על <code>Show Mark Labels</code>.<span class="m3-why">למה: עמודות אופקיות קל לקרוא, והתוויות נותנות מספר בלי להסתכל על הציר.</span></li>
+<li>שנו את שם הגיליון: קליק ימני על הלשונית <code>Sheet 1</code>, <code>Rename</code>, והקלידו <code>Sales by Category</code>.<span class="m3-why">למה: בהמשך נעבוד עם הרבה גיליונות, ושם ברור חוסך חיפוש.</span></li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b> חמישה סימנים. לפני המיון הסדר אלפביתי, וערכי <code>SUM(Sales)</code> הם: <span class="n">Cones 48,317.00</span>, <span class="n">Cups 69,470.00</span>, <span class="n">Drinks 54,553.30</span>, <span class="n">Sticks 17,443.40</span>, <span class="n">Sundaes 47,037.20</span>. אחרי מיון יורד הסדר הוא <span class="n">Cups, Drinks, Cones, Sundaes, Sticks</span>. סכום חמש העמודות הוא <span class="n">236,820.90</span>. Tableau עשויה להציג מספרים מעוגלים (69,470 או 54,553), לפי פורמט ברירת המחדל. בשורת המצב אמורים להופיע <code>5 marks</code> וליד זה בדרך כלל הסכום של מה שנבחר.</p></div>
+<p>דרך מקוצרת: שמים את <code>Sales</code> ב-Rows קודם, ואז גוררים את <code>Category</code> ל-Columns. בעריכה בדפדפן הצעדים זהים, ושם הכפתורים בסרגל הכלים עשוי להיות שונה מעט.</p>
+</div>
+
+<figure class="shot" data-shot="m3-bar-category">
+<div class="fb"><svg viewBox="0 0 520 230" width="100%" role="img" aria-label="עמודות אופקיות ממוינות של מכירות לפי קטגוריה" style="direction:ltr;max-width:520px"><line x1="70.0" x2="70.0" y1="8" y2="206" stroke="#e5e9ee"/><text x="70.0" y="222" text-anchor="middle" font-size="10" fill="#64748b">0</text><line x1="172.5" x2="172.5" y1="8" y2="206" stroke="#e5e9ee"/><text x="172.5" y="222" text-anchor="middle" font-size="10" fill="#64748b">25,000</text><line x1="275.0" x2="275.0" y1="8" y2="206" stroke="#e5e9ee"/><text x="275.0" y="222" text-anchor="middle" font-size="10" fill="#64748b">50,000</text><line x1="377.5" x2="377.5" y1="8" y2="206" stroke="#e5e9ee"/><text x="377.5" y="222" text-anchor="middle" font-size="10" fill="#64748b">75,000</text><line x1="480.0" x2="480.0" y1="8" y2="206" stroke="#e5e9ee"/><text x="480.0" y="222" text-anchor="middle" font-size="10" fill="#64748b">100,000</text><rect x="70" y="13.9" width="284.8" height="27.7" fill="#4e79a7"/><text x="65" y="31.8" text-anchor="end" font-size="11" fill="#334155">Cups</text><text x="358.8" y="31.8" font-size="10" fill="#1e293b">69,470</text><rect x="70" y="53.5" width="223.7" height="27.7" fill="#4e79a7"/><text x="65" y="71.4" text-anchor="end" font-size="11" fill="#334155">Drinks</text><text x="297.7" y="71.4" font-size="10" fill="#1e293b">54,553</text><rect x="70" y="93.1" width="198.1" height="27.7" fill="#4e79a7"/><text x="65" y="111.0" text-anchor="end" font-size="11" fill="#334155">Cones</text><text x="272.1" y="111.0" font-size="10" fill="#1e293b">48,317</text><rect x="70" y="132.7" width="192.9" height="27.7" fill="#4e79a7"/><text x="65" y="150.6" text-anchor="end" font-size="11" fill="#334155">Sundaes</text><text x="266.9" y="150.6" font-size="10" fill="#1e293b">47,037</text><rect x="70" y="172.3" width="71.5" height="27.7" fill="#4e79a7"/><text x="65" y="190.2" text-anchor="end" font-size="11" fill="#334155">Sticks</text><text x="145.5" y="190.2" font-size="10" fill="#1e293b">17,443</text></svg><div class="need">צילום מסך נדרש: Tableau Public, גיליון Sales by Category עם Scoop & Go: Category על Rows, SUM(Sales) על Columns, ממוין יורד, עם תוויות, ושורת המצב בתחתית עם 5 marks.</div></div>
+<figcaption>הגרף שאמור להיות אצלכם בסוף הצעדים (הדמיה). הערכים הם הסכומים האמיתיים מהקובץ.</figcaption></figure>
+
+<h3>הנפשה: מיון והחלפת צירים</h3>
+<div class="anim" data-id="m3-anim-sort" data-speed="3200"><div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="הנפשה: מיון עמודות ממכירות גבוהות לנמוכות, אחר כך החלפת צירים"><rect x="8" y="6" width="784" height="34" rx="6" fill="#e5e9ee" stroke="#c7cfd9"/><rect x="20" y="11" width="120" height="24" rx="4" fill="#fff" stroke="#c7cfd9"/><text x="80" y="28" text-anchor="middle" font-size="12" fill="#334155" font-weight="400" >Undo</text><rect x="150" y="11" width="120" height="24" rx="4" fill="#fff" stroke="#c7cfd9"/><text x="210" y="28" text-anchor="middle" font-size="12" fill="#334155" font-weight="400" >Swap</text><rect x="280" y="11" width="120" height="24" rx="4" fill="#fff" stroke="#c7cfd9"/><text x="340" y="28" text-anchor="middle" font-size="12" fill="#334155" font-weight="400" >Sort Asc</text><rect x="410" y="11" width="120" height="24" rx="4" fill="#fff" stroke="#c7cfd9"/><text x="470" y="28" text-anchor="middle" font-size="12" fill="#334155" font-weight="400" >Sort Desc</text><rect x="540" y="11" width="120" height="24" rx="4" fill="#fff" stroke="#c7cfd9"/><text x="600" y="28" text-anchor="middle" font-size="12" fill="#334155" font-weight="400" >Show Mark Labels</text><rect data-only="2" x="410" y="9" width="124" height="28" rx="5" fill="none" stroke="#e8741f" stroke-width="3"/><rect data-only="3" x="150" y="9" width="124" height="28" rx="5" fill="none" stroke="#e8741f" stroke-width="3"/><rect data-only="4" x="540" y="9" width="144" height="28" rx="5" fill="none" stroke="#e8741f" stroke-width="3"/><g data-only="1,2"><line x1="80" x2="780" y1="290.0" y2="290.0" stroke="#e5e9ee"/><text x="74" y="294.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="80" x2="780" y1="232.5" y2="232.5" stroke="#e5e9ee"/><text x="74" y="236.5" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >20,000</text><line x1="80" x2="780" y1="175.0" y2="175.0" stroke="#e5e9ee"/><text x="74" y="179.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >40,000</text><line x1="80" x2="780" y1="117.5" y2="117.5" stroke="#e5e9ee"/><text x="74" y="121.5" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >60,000</text><line x1="80" x2="780" y1="60.0" y2="60.0" stroke="#e5e9ee"/><text x="74" y="64.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >80,000</text></g><g data-only="1,2" data-move="1:0,0|2:280.0,0"><rect x="108.0" y="151.1" width="84.0" height="138.9" fill="#4e79a7"/><text x="150.0" y="308" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >Cones</text><text x="150.0" y="146.088625" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700" >48,317</text></g><g data-only="1,2" data-move="1:0,0|2:-140.0,0"><rect x="248.0" y="90.3" width="84.0" height="199.7" fill="#4e79a7"/><text x="290.0" y="308" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >Cups</text><text x="290.0" y="85.27375" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700" >69,470</text></g><g data-only="1,2" data-move="1:0,0|2:-140.0,0"><rect x="388.0" y="133.2" width="84.0" height="156.8" fill="#4e79a7"/><text x="430.0" y="308" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >Drinks</text><text x="430.0" y="128.1592625" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700" >54,553</text></g><g data-only="1,2" data-move="1:0,0|2:140.0,0"><rect x="528.0" y="239.9" width="84.0" height="50.1" fill="#4e79a7"/><text x="570.0" y="308" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >Sticks</text><text x="570.0" y="234.850225" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700" >17,443</text></g><g data-only="1,2" data-move="1:0,0|2:-140.0,0"><rect x="668.0" y="154.8" width="84.0" height="135.2" fill="#4e79a7"/><text x="710.0" y="308" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >Sundaes</text><text x="710.0" y="149.76805" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700" >47,037</text></g><g data-only="3,4"><line x1="140.0" x2="140.0" y1="56" y2="276" stroke="#e5e9ee"/><text x="140.0" y="294" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="290.0" x2="290.0" y1="56" y2="276" stroke="#e5e9ee"/><text x="290.0" y="294" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >20,000</text><line x1="440.0" x2="440.0" y1="56" y2="276" stroke="#e5e9ee"/><text x="440.0" y="294" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >40,000</text><line x1="590.0" x2="590.0" y1="56" y2="276" stroke="#e5e9ee"/><text x="590.0" y="294" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >60,000</text><line x1="740.0" x2="740.0" y1="56" y2="276" stroke="#e5e9ee"/><text x="740.0" y="294" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >80,000</text></g><g data-only="3,4"><rect x="140" y="64.4" width="521.0" height="27.3" fill="#4e79a7"/><text x="132" y="83.0" text-anchor="end" font-size="14" fill="#334155" font-weight="700" >Cups</text></g><g data-only="4"><text x="667.025" y="83.0" text-anchor="start" font-size="13" fill="#1e293b" font-weight="700" >69,470</text></g><g data-only="3,4"><rect x="140" y="108.4" width="409.1" height="27.3" fill="#4e79a7"/><text x="132" y="127.0" text-anchor="end" font-size="14" fill="#334155" font-weight="700" >Drinks</text></g><g data-only="4"><text x="555.14975" y="127.0" text-anchor="start" font-size="13" fill="#1e293b" font-weight="700" >54,553</text></g><g data-only="3,4"><rect x="140" y="152.4" width="362.4" height="27.3" fill="#4e79a7"/><text x="132" y="171.0" text-anchor="end" font-size="14" fill="#334155" font-weight="700" >Cones</text></g><g data-only="4"><text x="508.3775" y="171.0" text-anchor="start" font-size="13" fill="#1e293b" font-weight="700" >48,317</text></g><g data-only="3,4"><rect x="140" y="196.4" width="352.8" height="27.3" fill="#4e79a7"/><text x="132" y="215.0" text-anchor="end" font-size="14" fill="#334155" font-weight="700" >Sundaes</text></g><g data-only="4"><text x="498.779" y="215.0" text-anchor="start" font-size="13" fill="#1e293b" font-weight="700" >47,037</text></g><g data-only="3,4"><rect x="140" y="240.4" width="130.8" height="27.3" fill="#4e79a7"/><text x="132" y="259.0" text-anchor="end" font-size="14" fill="#334155" font-weight="700" >Sticks</text></g><g data-only="4"><text x="276.82550000000003" y="259.0" text-anchor="start" font-size="13" fill="#1e293b" font-weight="700" >17,443</text></g></svg></div><ol class="caps"><li>ברירת המחדל: הכותרות בסדר אלפביתי. Cups הכי גבוהה, אבל קשה לראות את הדירוג.</li><li>לוחצים Sort Descending בסרגל הכלים. העמודות מסתדרות מהגבוהה לנמוכה: <span class="n">Cups, Drinks, Cones, Sundaes, Sticks</span>.</li><li>לוחצים Swap Rows and Columns. אותו גרף, אופקי: שמות הקטגוריות נקראים בקלות והדירוג יורד מלמעלה למטה.</li><li>לוחצים Show Mark Labels והמספר מופיע על כל עמודה. אפשר לקרוא את התשובה בלי ציר.</li></ol></div>
+
+<h3>אותו דבר בצילום אמיתי, עם נתוני משחקי וידאו</h3>
+<figure class="shot"><img src="img/sorted-genre.png" alt="גרף עמודות ממוין של מכירות לפי ז'אנר ב-Tableau Public">
+<figcaption>צילום אמיתי מ-Tableau Public עם הקובץ vgsales: <code>Genre</code> על Columns, <code>SUM(Global Sales)</code> על Rows, ממוין יורד. שימו לב לסמל המיון קטן ליד הפיל של <code>Genre</code> ועל הציר. הנתונים אחרים, הצעדים אותם צעדים.</figcaption></figure>
+
+<div class="quiz" data-id="m3-q-hbars" data-a="1"><p class="qq">איזה פיל צריך להיות על Columns כדי שהעמודות יהיו אופקיות?</p>
+<button class="opt">פיל ירוק של מדד, כמו SUM(Sales)</button>
+<button class="opt">פיל כחול של ממד, כמו Category</button>
+<button class="opt">אי אפשר לשנות, העמודות תמיד אנכיות</button>
+<div class="why">כשהמדד על Columns והממד על Rows, ציר המדד אופקי והעמודות נפרשות לרוחב. כשהממד על Columns והמדד על Rows, העמודות אנכיות. כפתור Swap הופך ביניהם בלחיצה.</div></div>
+
+<div class="box meaning"><p>מה הגרף אומר: Cups היא הקטגוריה המובילה, עם <span class="n">69,470.00</span>, בערך <span class="n">29.3%</span> מכל המכירות. Sticks היא האחרונה עם <span class="n">17,443.40</span>, כ-<span class="n">7.4%</span>. שימו לב שבין Cones ל-Sundaes הפער קטן, כ-<span class="n">1,280</span>, ואילו Sticks רחוקה מכולן.</p></div>
+
+<div class="box trap"><p><b>גרף שנראה נכון הוא לא בהכרח נכון.</b> העמודות יצאו יפות, אבל האם הסכום הוא באמת מכל הנתונים? בדקו כל גרף בשני מקומות: מספר הסימנים בשורת המצב, וסכום אחד שאתם מכירים. כאן סכום חמש העמודות חייב להיות <span class="n">236,820.90</span>. אם יצא מספר אחר, כנראה נשאר מסנן פעיל, או שהשדה שגרר הוא לא Sales.</p></div>
+
+<div class="box real"><p>כלל עבודה מוכר: מיינו עמודות מהגדול לקטן אלא אם יש סדר טבעי (חודשים, ימי שבוע). סדר אלפביתי גורם לקורא לחפש, ולא לראות את הדירוג. ובכלל, עדיף עמודות אופקיות כשיש שמות ארוכים.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בנו את הגרף מול הכיתה באיטיות, ובקשו מכל סטודנט להקריא לפני הלחיצה את המספר שהוא מצפה לראות. בדקו בתוכנה: שם הכפתור של המיון בסרגל (ב-Tableau 2026 הוא נראה כחץ עם עמודות), האם <code>Swap Rows and Columns</code> נמצא באותו מקום, והאם בשורת המצב מופיע <code>5 marks</code>. אם מישהו מקבל <code>SUM(Sales)</code> אחד בלבד ואין עמודות, כנראה Category נפל על Filters או על Marks, ולא על Columns.</div>
+</section>
+
+<section class="sec" id="m3-4" data-t="SUM, ממוצע וספירה">
+<div class="sec-h"><div class="sec-n">4</div><h2>למה Tableau כתבה SUM: סכום, ממוצע וספירה</h2></div>
+<p class="lead">המנהלת שואלת: &quot;ומה הממוצע לקנייה בכל קטגוריה?&quot; אותו גרף, אותם שדות, וקטגוריה אחרת מובילה. הכול תלוי בשאלה אחת קטנה: איך מסכמים את השורות?</p>
+
+<div class="defline"><b>סוג אגרגציה:</b> הדרך שבה Tableau מצמצמת הרבה שורות למספר אחד. הנפוצות: סכום (<code>SUM</code>), ממוצע (<code>AVG</code>), חציון (<code>MEDIAN</code>), ספירה (<code>COUNT</code>), מינימום ומקסימום. דוגמה: ב-<span class="n">1,974</span> שורות Cups, הסכום הוא <span class="n">69,470.00</span> והממוצע לשורה <span class="n">35.19</span>.</div>
+<div class="tw"><table class="tbl m3-tb"><thead><tr><th>סוג</th><th class="num">Cups</th><th>מה הוא עונה</th></tr></thead><tbody>
+<tr><td><code>SUM(Sales)</code></td><td class="num">69,470.00</td><td>כמה כסף נכנס בסך הכול</td></tr>
+<tr><td><code>AVG(Sales)</code></td><td class="num">35.19</td><td>כמה שורה ממוצעת שווה</td></tr>
+<tr><td><code>MEDIAN(Sales)</code></td><td class="num">24.00</td><td>הערך האמצעי: חצי מהשורות מעליו וחצי מתחתיו</td></tr>
+<tr><td><code>MIN(Sales)</code> / <code>MAX(Sales)</code></td><td class="num"><bdi dir="ltr">10.00 / 96.00</bdi></td><td>השורה הקטנה והגדולה ביותר</td></tr>
+<tr><td><code>COUNT(Sales)</code></td><td class="num">1,974</td><td>כמה שורות יש</td></tr>
+</tbody></table></div>
+<p>הממוצע (35.19) גדול מהחציון (24.00) כי כמה שורות גדולות, כמו קנייה של כמה מנות, מושכות אותו למעלה. זה עוד סיבה לא להסתפק בסוג אחד.</p>
+
+<h3>סימולציה: אותו קובץ, סוג סיכום אחר</h3>
+<p>בחרו מדד וסוג אגרגציה וראו איך משתנה הדירוג של חמש הקטגוריות. המספרים מחושבים עכשיו, בדפדפן, מ-6,575 השורות האמיתיות. ההדמיה לא Tableau, אבל המספרים זהים לאלה שתקבלו.</p>
+<div class="sim m3-sim" data-id="m3-sim-agg"><div class="sh">סכום, ממוצע וספירה לפי קטגוריה</div>
+<div class="row"><b>מדד:</b><span id="m3a-meas"></span></div>
+<div class="row"><b>סוג סיכום:</b><span id="m3a-agg"></span></div>
+<div class="out" id="m3a-out" style="direction:ltr;text-align:left"></div>
+<div class="m3-msg" id="m3a-msg"></div>
+<p style="font-size:.85rem;color:#64748b">ניסיתם <b id="m3a-n">0</b> צירופים. מספיק 6 כדי שהפעילות תירשם.</p></div>
+<script>(function(){FL.dom(function(){
+var box=FL.$('[data-id="m3-sim-agg"]'); if(!box) return;
+TF.loadScoop(function(D){
+ var cat=D.cols.Category, dict=cat.dict, N=D.n;
+ var MEAS=[['Sales','Sales',1],['Profit','Profit',1],['Quantity','Quantity',1],['Unit_Price','Unit Price',0],['Discount','Discount',0],['Order_Hour','Order Hour',0]];
+ var AGG=['SUM','AVG','MEDIAN','MIN','MAX','COUNT'];
+ var curM=0, curA=0, seen={};
+ function stat(vals,a){ if(a==='COUNT') return vals.length; if(a==='SUM'){var s=0;vals.forEach(function(x){s+=x;});return s;} if(a==='AVG'){var t=0;vals.forEach(function(x){t+=x;});return t/vals.length;}
+  var v=vals.slice().sort(function(x,y){return x-y;}); if(a==='MIN') return v[0]; if(a==='MAX') return v[v.length-1]; var m=v.length>>1; return v.length%2?v[m]:(v[m-1]+v[m])/2; }
+ var groups=dict.map(function(){return {};}); 
+ function calc(){ var col=D.cols[MEAS[curM][0]].v, g=dict.map(function(){return [];}); for(var i=0;i<N;i++) g[cat.v[i]].push(col[i]); return dict.map(function(n,k){return {n:n,v:stat(g[k],AGG[curA])};}).sort(function(a,b){return b.v-a.v;}); }
+ function fmt(x){ return AGG[curA]==='COUNT'?x.toLocaleString('en-US'):x.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+ function draw(){
+  var r=calc(), mx=Math.max.apply(null,r.map(function(x){return Math.abs(x.v);}))||1;
+  FL.$('#m3a-out',box).innerHTML=r.map(function(x){ return '<div style="display:flex;align-items:center;gap:8px;margin:3px 0"><span style="width:70px;text-align:right">'+FL.esc(x.n)+'</span><span style="display:block;height:18px;background:#4e79a7;width:'+Math.max(2,Math.round(240*Math.abs(x.v)/mx))+'px"></span><b style="font-size:.85rem">'+fmt(x.v)+'</b></div>'; }).join('');
+  var label=AGG[curA]+'('+MEAS[curM][1]+')';
+  var warn=(MEAS[curM][2]===0 && AGG[curA]==='SUM') ? ' אזהרה: סכום של '+MEAS[curM][1]+' הוא מספר בלי משמעות עסקית. מחיר, הנחה ושעה לא מסכמים.' : '';
+  FL.$('#m3a-msg',box).textContent=label+': המקום הראשון הוא '+r[0].n+', והאחרון '+r[r.length-1].n+'.'+warn;
+  FL.$('#m3a-msg',box).style.color=warn?'#991b1b':'#1e293b';
+  seen[curM+'_'+curA]=1; var n=Object.keys(seen).length; FL.$('#m3a-n',box).textContent=n; if(n>=6) FL.done('m3-sim-agg');
+ }
+ function btns(id,arr,get,set){ var el=FL.$(id,box); el.innerHTML=''; arr.forEach(function(a,i){ var b=document.createElement('button'); b.type='button'; b.className='b'+(get()===i?' on':''); b.style.margin='0 3px 3px 0'; b.textContent=Array.isArray(a)?a[1]:a; b.addEventListener('click',function(){ set(i); FL.$$('button',el).forEach(function(x,j){x.className='b'+(j===i?' on':'');}); draw(); }); el.appendChild(b); }); }
+ btns('#m3a-meas',MEAS,function(){return curM;},function(i){curM=i;});
+ btns('#m3a-agg',AGG,function(){return curA;},function(i){curA=i;});
+ draw();
+});
+});})();</script>
+
+<div class="tfp" data-id="m3-pg-agg" data-task="שנו את הסיכום: בחרו בפיל SUM(Sales) ובתפריט שלו בחרו Average, כך ש-AVG(Sales) יהיה על Rows."
+     data-goal='{"columns":["Category"],"rows":["AVG(Sales)"],"mark":"bar","marks":5}'
+     data-preset='{"columns":["Category"],"rows":["SUM(Sales)"]}'
+     data-fields="Category,Item,Region,Channel,Sales,Profit,Quantity,Unit_Price,Discount,Order_Hour"></div>
+
+<div class="box try" data-id="m3-try-agg">
+<p><b>חילופי סיכום בגיליון.</b> הגיליון <code>Sales by Category</code> מהסעיף הקודם פתוח, עם <code>SUM(Sales)</code> על Rows.</p>
+<ol>
+<li>קליק ימני על הלשונית <code>Sales by Category</code>, ואז <code>Duplicate</code>. קראו לעותק <code>Avg Sales by Category</code>.<span class="m3-why">למה: ככה הגרף הראשון נשאר שלם, ואנחנו בונים את הקודם בלי לדרוס אותו.</span></li>
+<li>בעותק לחצו על החץ הקטן בפיל <code>SUM(Sales)</code>, בחרו <code>Measure (Sum)</code> ואז <code>Average</code>.<span class="m3-why">למה: זו הדרך לשנות איך Tableau מסכמת. הפיל משנה שם ל-<code>AVG(Sales)</code>.</span></li>
+<li>מיינו שוב מהגדול לקטן, וקראו את המספרים בתוויות.<span class="m3-why">למה: ממוצע של כל קטגוריה שונה מאוד מהסכום שלה.</span></li>
+<li>החליפו ל-<code>Median</code>, ואז ל-<code>Count</code>, באותו תפריט. כל פעם רשמו מי ראשונה ומי אחרונה.<span class="m3-why">למה: כל סוג סיכום עונה על שאלה אחרת.</span></li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b></p>
+<ul>
+<li><code>AVG(Sales)</code>: <span class="n">Sundaes 62.14</span>, <span class="n">Cups 35.19</span>, <span class="n">Drinks 33.97</span>, <span class="n">Cones 33.62</span>, <span class="n">Sticks 21.78</span>.</li>
+<li><code>MEDIAN(Sales)</code>: <span class="n">Sundaes 40.00</span>, <span class="n">Cones 26.00</span>, <span class="n">Drinks 26.00</span>, <span class="n">Cups 24.00</span>, <span class="n">Sticks 21.60</span> (שימו לב לשוויון בין Cones ל-Drinks).</li>
+<li><code>COUNT(Sales)</code>: <span class="n">Cups 1,974</span>, <span class="n">Drinks 1,606</span>, <span class="n">Cones 1,437</span>, <span class="n">Sticks 801</span>, <span class="n">Sundaes 757</span>. סכום חמש הספירות הוא <span class="n">6,575</span>.</li>
+</ul><p>Sundaes, שהייתה רביעית לפי סכום, היא ראשונה לפי ממוצע וחציון, ואחרונה לפי ספירה. תפריט הפיל עשוי להיראות קצת שונה בגרסה שלכם.</p></div>
+</div>
+
+<div class="box think" data-id="m3-th-avg"><p>המנהלת רוצה להחליט על איזו קטגוריה להתמקד בקמפיין. Sundaes ראשונה בממוצע לשורה, אבל רביעית בסכום וחמישית בספירה. מה אתם עונים לה, ובאיזה גרף?</p>
+<div class="ans">אין תשובה אחת בלי לדעת מה רוצים. אם המטרה היא כסף כולל, הסכום הוא המדד, ו-Cups מובילה. אם רוצים להבין איזו קנייה שווה הכי הרבה ללקוח, הממוצע מצביע על Sundaes: <span class="n">62.14</span> לשורה מול <span class="n">35.19</span> של Cups. הספירה מגלה שיש רק <span class="n">757</span> שורות Sundaes, כלומר פחות לקוחות קונים אותה. אפשר להראות את שלושת הגרפים ביחד ולהציע לקדם מכירות של Sundaes כדי שיותר אנשים יקנו אותה.</div></div>
+
+<h3>כשהשדה הוא מספר אבל לא מדד</h3>
+<div class="box try" data-id="m3-try-notmeasure">
+<p><b>מספרים שלא מסכמים.</b> גיליון חדש וריק.</p>
+<ol>
+<li>גררו את <code>Order Hour</code> אל <code>Rows</code> ורשמו את המספר.<span class="m3-why">למה: Tableau סיכמה את כל השעות בקובץ. אפשר לראות איך זה נראה כשסיכום לא הגיוני.</span></li>
+<li>החליפו את <code>Order Hour</code> ב-<code>Unit Price</code> ואז ב-<code>Discount</code>, ורשמו כל מספר.</li>
+<li>החזירו את <code>Order Hour</code> ל-Rows. קליק ימני עליו בחלונית <code>Data</code>, <code>Convert to Dimension</code>. אם הפיל אחרי זה ירוק, קליק ימני עליו ו-<code>Discrete</code>.<span class="m3-why">למה: שעה היא קבוצה (בין 10 ל-23), לא כמות. ממד בדיד יוצר כותרות.</span></li>
+<li>גררו את <code>Sales</code> ל-Rows והעבירו את <code>Order Hour</code> ל-Columns.</li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b> <code>SUM(Order Hour)</code> = <span class="n">118,214</span>, <code>SUM(Unit Price)</code> = <span class="n">141,095</span>, <code>SUM(Discount)</code> = <span class="n">199.9</span>. מספרים תקינים טכנית, וחסרי משמעות: הממוצעים הם שעה <span class="n">17.98</span>, מחיר <span class="n">21.46</span>, הנחה <span class="n">0.03</span>. אחרי ההמרה יש <span class="n">14</span> סימנים, לשעות 10 עד 23. השעה הגבוהה ביותר היא <span class="n">21</span> עם <span class="n">32,727.60</span>, אחריה 20 עם <span class="n">30,717.00</span> ו-22 עם <span class="n">27,691.30</span>.</p></div>
+</div>
+<div class="tfp" data-id="m3-pg-hour" data-task="הפכו את Order Hour לממד: בפיל SUM(Order_Hour) בחרו Dimension, ושימו אותו על Columns עם SUM(Sales) על Rows. צריך להיות 14 סימנים."
+     data-goal='{"columns":["DIM(Order_Hour)"],"rows":["SUM(Sales)"],"marks":14}'
+     data-fields="Order_Hour,Category,Channel,Region,Sales,Profit,Quantity,Unit_Price,Discount"></div>
+<p style="font-size:.9rem;color:#64748b">שימו לב: במגרש הפיל נהיה כחול מיד אחרי &quot;Dimension&quot;. ב-Tableau עצמה אחרי Convert to Dimension הפיל עשוי להישאר ירוק, ואז צריך עוד פעולה אחת: Discrete.</p>
+
+<div class="quiz" data-id="m3-q-sumprice" data-a="2"><p class="qq">מה הבעיה ב-<code>SUM(Unit Price)</code> לפי קטגוריה?</p>
+<button class="opt">אין בעיה, Tableau תמיד מחשבת נכון</button>
+<button class="opt">המחיר הוא מחיר של יחידה, וסכום של מחירים לא עונה על שאלה עסקית</button>
+<button class="opt">Tableau לא מאפשרת לסכם מחירים</button>
+<div class="why">Tableau תחשב כל סכום שתבקשו. היא לא יודעת מה הגיוני. כאן הסכום מכפיל את המחיר במספר השורות, ולכן קטגוריה עם הרבה קניות נראית &quot;יקרה&quot;. השאלה העסקית היא מחיר ממוצע, ולכן AVG(Unit Price).</div></div>
+
+<div class="box trap"><p><b>Tableau מסכמת כל מספר, גם כשאין טעם.</b> שדות כמו <code>Order Hour</code>, <code>Unit Price</code> ו-<code>Discount</code> הם מספרים, ולכן Tableau שמה אותם בין המדדים ומסכמת. התוצאה נראית כמו מספר רגיל ושקט, אבל משמעותה אפסית. בדקו כל פעם: האם הגיוני לחבר את הערכים האלה? אם לא, או שזה ממוצע, או שזה ממד.</p></div>
+
+<div class="box trap"><p><b>Order ID הוא לא כמות הזמנות, וספירה אינה סכום.</b> בקובץ הזה כל <code>Order ID</code> מופיע פעם אחת, <span class="n">6,575</span> מזהים בדיוק כמו <span class="n">6,575</span> שורות. לכן ספירה של שורות וספירה של מזהים שונים (<code>Count (Distinct)</code>) נותנות אותו מספר כאן. בקובץ אחר, שבו הזמנה יש לה כמה שורות, הן ייתנו מספרים שונים. כדאי לדעת מה בדיוק סופרים.</p></div>
+
+<div class="box meaning"><p>הדירוג לא תלוי רק בנתונים, אלא בשאלה שבחרתם. אותה קטגוריה יכולה להיות ראשונה ואחרונה לפי סוג סיכום אחר. כשמישהו מראה לכם גרף, שאלו קודם: מה כתוב בפיל, <code>SUM</code>, <code>AVG</code> או <code>COUNT</code>?</p></div>
+
+<div class="box real"><p>בעבודה אנליטית בודקים כל גרף מול סכום ידוע (למשל סך המכירות שהנהלת החשבונות מכירה). הרגל זה תופס טעויות של סוג סיכום, מסנן שנשאר פעיל, או שורות שנעלמו, לפני שהגרף מגיע לחדר ישיבות.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> במגרש <code>m3-pg-hour</code>, ההמרה ל-Dimension הופכת את הפיל לכחול מיד. ב-Tableau האמיתית לא בדקנו אם אחרי Convert to Dimension הפיל ירוק (רציף) או כחול. לבדוק בתוכנה לפני השיעור, ולתאם עם הסטודנטים אם צריך שלב Discrete נוסף. התפריט <code>Measure (Sum)</code> בפיל הוא ב-Tableau Desktop, וב-Public כנראה זהה. בדקו.</div>
+</section>
+
+<section class="sec" id="m3-5" data-t="גרף קו ראשון">
+<div class="sec-h"><div class="sec-n">5</div><h2>גרף הקו הראשון: מכירות לפי חודש</h2></div>
+<p class="lead">עכשיו המנהלת שואלת: מתי בשנה מוכרים? זו שאלה על זמן. כשיש תאריך, Tableau בוחרת גרף קו: נקודה לכל תקופה, ומחברים ביניהן כדי לראות מגמה.</p>
+
+<div class="defline"><b>גרף קו (Line chart):</b> גרף שמחבר נקודות לפי סדר הזמן, כדי לראות עלייה, ירידה ועונתיות. דוגמה: מכירות כל חודש, 24 נקודות מחוברות מינואר 2024 עד דצמבר 2025.</div>
+
+<h3>קודם במגרש</h3>
+<p>גררו את <code>Order Date</code> ל-Columns ואת <code>Sales</code> ל-Rows. שימו לב לכמה סימנים יש, ואיזה גרף Tableau בחרה. אחר כך לחצו על הפיל של התאריך ושנו אותו.</p>
+<div class="tfp" data-id="m3-pg-line" data-task="בנו קו של 24 חודשים: Order Date על Columns כחודש רציף (Month ירוק, כמו Jan 2024), ו-SUM(Sales) על Rows. בכרטיס Marks צריכים להיות 24 סימנים."
+     data-goal='{"columns":["MONTH(Order_Date):c"],"rows":["SUM(Sales)"],"mark":"line","marks":24}'
+     data-fields="Order_Date,Category,Region,Channel,Branch,Sales,Profit,Quantity"></div>
+<div class="tfp" data-id="m3-pg-month12" data-task="עכשיו בנו את אותו גרף אבל עם חודש בדיד (כחול): 12 סימנים, כל חודש משתי השנים יחד."
+     data-goal='{"columns":["MONTH(Order_Date)"],"rows":["SUM(Sales)"],"mark":"line","marks":12}'
+     data-fields="Order_Date,Category,Region,Channel,Branch,Sales,Profit,Quantity"></div>
+
+<h3>הנפשה: מה בוחרים בפיל של התאריך</h3>
+<div class="anim" data-id="m3-anim-datepill" data-speed="3600"><div class="stage"><svg viewBox="0 0 800 360" role="img" aria-label="הנפשה: תאריך על Columns, איך מגיעים מחודשי שנה לקו של 24 חודשים ולמה הרצף הוא ירוק"><rect x="8" y="8" width="784" height="30" fill="#fff" stroke="#c7cfd9"/><text x="20" y="28" text-anchor="start" font-size="13" fill="#64748b" font-weight="700" >Columns</text><rect x="8" y="42" width="784" height="30" fill="#fff" stroke="#c7cfd9"/><text x="20" y="62" text-anchor="start" font-size="13" fill="#64748b" font-weight="700" >Rows</text><g ><rect x="100" y="45" width="130" height="24" rx="7" fill="#d9f0d6" stroke="#a8d4a3"/><text x="165.0" y="62" text-anchor="middle" font-size="13" fill="#1c6b1c" font-weight="700" >SUM(Sales)</text></g><g data-only="1,2"><g ><rect x="100" y="11" width="160" height="24" rx="7" fill="#d7e7f5" stroke="#a9c9e3"/><text x="180.0" y="28" text-anchor="middle" font-size="13" fill="#14507a" font-weight="700" >YEAR(Order Date)</text></g></g><g data-only="3"><g ><rect x="100" y="11" width="190" height="24" rx="7" fill="#d9f0d6" stroke="#a8d4a3"/><text x="195.0" y="28" text-anchor="middle" font-size="13" fill="#1c6b1c" font-weight="700" >MONTH(Order Date)</text></g></g><g data-only="4"><g ><rect x="100" y="11" width="190" height="24" rx="7" fill="#d7e7f5" stroke="#a9c9e3"/><text x="195.0" y="28" text-anchor="middle" font-size="13" fill="#14507a" font-weight="700" >MONTH(Order Date)</text></g></g><g data-only="1,2"><line x1="90" x2="780" y1="310.0" y2="310.0" stroke="#e5e9ee"/><text x="84" y="314.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="90" x2="780" y1="257.5" y2="257.5" stroke="#e5e9ee"/><text x="84" y="261.5" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >35,000</text><line x1="90" x2="780" y1="205.0" y2="205.0" stroke="#e5e9ee"/><text x="84" y="209.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >70,000</text><line x1="90" x2="780" y1="152.5" y2="152.5" stroke="#e5e9ee"/><text x="84" y="156.5" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >105,000</text><line x1="90" x2="780" y1="100.0" y2="100.0" stroke="#e5e9ee"/><text x="84" y="104.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >140,000</text></g><g data-only="1,2"><polyline fill="none" stroke="#4e79a7" stroke-width="2.4" points="283.2,149.4 586.8,115.3"/><circle cx="283.2" cy="149.4" r="5" fill="#4e79a7"/><circle cx="586.8" cy="115.3" r="5" fill="#4e79a7"/><text x="283.20000000000005" y="332" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >2024</text><text x="586.8" y="332" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >2025</text><text x="283.20000000000005" y="139.4286" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700" >107,048</text><text x="586.8" y="105.34004999999999" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700" >129,773</text></g><g data-only="2"><rect x="334" y="78" width="220" height="188" rx="4" fill="#fff" stroke="#94a3b8"/><text x="344" y="98" text-anchor="start" font-size="11" fill="#94a3b8" font-weight="400" >Order Date menu</text><text x="344" y="118" text-anchor="start" font-size="12" fill="#14507a" font-weight="700" >Year  Quarter  Month  Day</text><text x="344" y="136" text-anchor="start" font-size="11" fill="#64748b" font-weight="400" >upper group: date parts (blue)</text><line x1="334" x2="554" y1="146" y2="146" stroke="#cbd5e1"/><rect x="338" y="152" width="212" height="26" fill="#d7e7f5"/><text x="344" y="170" text-anchor="start" font-size="13" fill="#1c6b1c" font-weight="700" >Month  May 2015</text><text x="344" y="196" text-anchor="start" font-size="12" fill="#1c6b1c" font-weight="400" >Year  Quarter  Day  (values)</text><text x="344" y="214" text-anchor="start" font-size="11" fill="#64748b" font-weight="400" >lower group: date values (green)</text><line x1="334" x2="554" y1="226" y2="226" stroke="#cbd5e1"/><text x="344" y="246" text-anchor="start" font-size="12" fill="#334155" font-weight="400" >Exact Date  More  Attribute</text></g><g data-only="3"><line x1="90" x2="780" y1="310.0" y2="310.0" stroke="#e5e9ee"/><text x="84" y="314.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="90" x2="780" y1="257.5" y2="257.5" stroke="#e5e9ee"/><text x="84" y="261.5" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >7,500</text><line x1="90" x2="780" y1="205.0" y2="205.0" stroke="#e5e9ee"/><text x="84" y="209.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >15,000</text><line x1="90" x2="780" y1="152.5" y2="152.5" stroke="#e5e9ee"/><text x="84" y="156.5" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >22,500</text><line x1="90" x2="780" y1="100.0" y2="100.0" stroke="#e5e9ee"/><text x="84" y="104.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >30,000</text><polyline fill="none" stroke="#4e79a7" stroke-width="2.4" points="104.4,281.0 133.1,280.1 161.9,268.1 190.6,259.8 219.4,242.9 248.1,227.6 276.9,192.5 305.6,186.1 334.4,224.6 363.1,257.6 391.9,275.1 420.6,275.4 449.4,266.3 478.1,281.3 506.9,265.3 535.6,255.7 564.4,246.9 593.1,208.0 621.9,157.4 650.6,147.2 679.4,208.9 708.1,236.3 736.9,263.9 765.6,274.3"/><circle cx="104.4" cy="281.0" r="3.2" fill="#4e79a7"/><circle cx="133.1" cy="280.1" r="3.2" fill="#4e79a7"/><circle cx="161.9" cy="268.1" r="3.2" fill="#4e79a7"/><circle cx="190.6" cy="259.8" r="3.2" fill="#4e79a7"/><circle cx="219.4" cy="242.9" r="3.2" fill="#4e79a7"/><circle cx="248.1" cy="227.6" r="3.2" fill="#4e79a7"/><circle cx="276.9" cy="192.5" r="3.2" fill="#4e79a7"/><circle cx="305.6" cy="186.1" r="3.2" fill="#4e79a7"/><circle cx="334.4" cy="224.6" r="3.2" fill="#4e79a7"/><circle cx="363.1" cy="257.6" r="3.2" fill="#4e79a7"/><circle cx="391.9" cy="275.1" r="3.2" fill="#4e79a7"/><circle cx="420.6" cy="275.4" r="3.2" fill="#4e79a7"/><circle cx="449.4" cy="266.3" r="3.2" fill="#4e79a7"/><circle cx="478.1" cy="281.3" r="3.2" fill="#4e79a7"/><circle cx="506.9" cy="265.3" r="3.2" fill="#4e79a7"/><circle cx="535.6" cy="255.7" r="3.2" fill="#4e79a7"/><circle cx="564.4" cy="246.9" r="3.2" fill="#4e79a7"/><circle cx="593.1" cy="208.0" r="3.2" fill="#4e79a7"/><circle cx="621.9" cy="157.4" r="3.2" fill="#4e79a7"/><circle cx="650.6" cy="147.2" r="3.2" fill="#4e79a7"/><circle cx="679.4" cy="208.9" r="3.2" fill="#4e79a7"/><circle cx="708.1" cy="236.3" r="3.2" fill="#4e79a7"/><circle cx="736.9" cy="263.9" r="3.2" fill="#4e79a7"/><circle cx="765.6" cy="274.3" r="3.2" fill="#4e79a7"/><text x="104.375" y="330" text-anchor="middle" font-size="11" fill="#334155" font-weight="400" >Jan 2024</text><text x="276.875" y="330" text-anchor="middle" font-size="11" fill="#334155" font-weight="400" >Jul 2024</text><text x="449.375" y="330" text-anchor="middle" font-size="11" fill="#334155" font-weight="400" >Jan 2025</text><text x="621.875" y="330" text-anchor="middle" font-size="11" fill="#334155" font-weight="400" >Jul 2025</text><text x="765.625" y="330" text-anchor="middle" font-size="11" fill="#334155" font-weight="400" >Dec 2025</text><circle cx="650.6" cy="147.2" r="8" fill="none" stroke="#e8741f" stroke-width="2.5"/><text x="638.625" y="151.1807" text-anchor="end" font-size="13" fill="#b45309" font-weight="700" >Aug 2025: 23,260</text><circle cx="478.1" cy="281.3" r="8" fill="none" stroke="#e8741f" stroke-width="2.5"/><text x="478.125" y="267.321" text-anchor="middle" font-size="12" fill="#b45309" font-weight="700" >Feb 2025: 4,097</text><text x="98" y="94" text-anchor="start" font-size="13" fill="#14507a" font-weight="700" >24 marks</text></g><g data-only="4"><line x1="90" x2="780" y1="310.0" y2="310.0" stroke="#e5e9ee"/><text x="84" y="314.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="90" x2="780" y1="257.5" y2="257.5" stroke="#e5e9ee"/><text x="84" y="261.5" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >12,500</text><line x1="90" x2="780" y1="205.0" y2="205.0" stroke="#e5e9ee"/><text x="84" y="209.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >25,000</text><line x1="90" x2="780" y1="152.5" y2="152.5" stroke="#e5e9ee"/><text x="84" y="156.5" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >37,500</text><line x1="90" x2="780" y1="100.0" y2="100.0" stroke="#e5e9ee"/><text x="84" y="104.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >50,000</text><polyline fill="none" stroke="#4e79a7" stroke-width="2.4" points="118.8,266.4 176.2,274.8 233.8,258.0 291.2,247.3 348.8,231.9 406.2,199.4 463.8,147.9 521.2,138.0 578.8,198.1 636.2,234.3 693.8,261.4 751.2,267.8"/><circle cx="118.8" cy="266.4" r="4" fill="#4e79a7"/><circle cx="176.2" cy="274.8" r="4" fill="#4e79a7"/><circle cx="233.8" cy="258.0" r="4" fill="#4e79a7"/><circle cx="291.2" cy="247.3" r="4" fill="#4e79a7"/><circle cx="348.8" cy="231.9" r="4" fill="#4e79a7"/><circle cx="406.2" cy="199.4" r="4" fill="#4e79a7"/><circle cx="463.8" cy="147.9" r="4" fill="#4e79a7"/><circle cx="521.2" cy="138.0" r="4" fill="#4e79a7"/><circle cx="578.8" cy="198.1" r="4" fill="#4e79a7"/><circle cx="636.2" cy="234.3" r="4" fill="#4e79a7"/><circle cx="693.8" cy="261.4" r="4" fill="#4e79a7"/><circle cx="751.2" cy="267.8" r="4" fill="#4e79a7"/><text x="118.75" y="330" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >Jan</text><text x="176.25" y="330" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >Feb</text><text x="233.75" y="330" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >Mar</text><text x="291.25" y="330" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >Apr</text><text x="348.75" y="330" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >May</text><text x="406.25" y="330" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >Jun</text><text x="463.75" y="330" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >Jul</text><text x="521.25" y="330" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >Aug</text><text x="578.75" y="330" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >Sep</text><text x="636.25" y="330" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >Oct</text><text x="693.75" y="330" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >Nov</text><text x="751.25" y="330" text-anchor="middle" font-size="12" fill="#334155" font-weight="700" >Dec</text><circle cx="521.2" cy="138.0" r="8" fill="none" stroke="#e8741f" stroke-width="2.5"/><text x="533.25" y="141.9554" text-anchor="start" font-size="13" fill="#b45309" font-weight="700" >Aug: 40,963</text><text x="98" y="94" text-anchor="start" font-size="13" fill="#14507a" font-weight="700" >12 marks</text><text x="190" y="94" text-anchor="start" font-size="13" fill="#14507a" font-weight="700" >אותו חודש משתי השנים ביחד</text></g></svg></div><ol class="caps"><li>גוררים את Order Date ל-Columns ואת Sales ל-Rows. Tableau נותנת ברירת מחדל: YEAR(Order Date), בכחול. יש רק שני סימנים, 2024 ו-2025, מחוברים בקו.</li><li>קליק ימני על הפיל. בתפריט שתי קבוצות. למעלה חלקי תאריך (Year, Quarter, Month) ולמטה ערכי תאריך (Month כמו May 2015). בוחרים Month מהקבוצה התחתונה.</li><li>הפיל נהיה ירוק והציר רציף: 24 חודשים בסדר זמן אמיתי. אפשר לראות שיא באוגוסט 2025 (23,259.90) ושפל בפברואר 2025 (4,097.00).</li><li>אם בוחרים Month מהקבוצה העליונה, הפיל כחול ויש 12 סימנים בלבד: כל חודש משתי השנים מחובר לסימן אחד. אוגוסט הוא 40,963.00, סכום של 2024 ו-2025.</li></ol></div>
+
+<div class="box try" data-id="m3-try-line">
+<p><b>קו של מכירות לפי חודש.</b> גיליון חדש וריק עם נתוני Scoop & Go.</p>
+<ol>
+<li>גררו את <code>Order Date</code> אל <code>Columns</code>.<span class="m3-why">למה: Tableau שמה תאריך בעמודות כברירת מחדל, בדרך כלל ברמת שנה, והפיל נקרא <code>YEAR(Order Date)</code>.</span></li>
+<li>גררו את <code>Sales</code> אל <code>Rows</code>.<span class="m3-why">למה: זה המדד שמסכמים לכל תקופה.</span></li>
+<li>בכרטיס <code>Marks</code> בדקו מה כתוב.<span class="m3-why">למה: עם תאריך ומדד Tableau בוחרת קו, ולא עמודות.</span></li>
+<li>קליק ימני על הפיל <code>YEAR(Order Date)</code> ב-Columns. בתפריט בחרו <code>Month</code> מהקבוצה <b>התחתונה</b>, זו עם הדוגמה כמו May 2015.<span class="m3-why">למה: הקבוצה העליונה היא חלקי תאריך, והתחתונה היא ערכי תאריך על ציר רציף. אנחנו רוצים ציר זמן אמיתי של 24 חודשים.</span></li>
+<li>העבירו את העכבר מעל הנקודה הגבוהה ביותר ומעל הנמוכה ביותר וקראו את ה-Tooltip.<span class="m3-why">למה: ככה מוצאים את השיא ואת השפל.</span></li>
+<li>עכשיו שנו את אותו פיל ל-<code>Month</code> מהקבוצה <b>העליונה</b>, ואז חזרו (Undo) לתצוגה הרציפה.<span class="m3-why">למה: להשוות בעיניים בין חודש שנספר בנפרד לבין כל החודשים בשתי השנים יחד.</span></li>
+<li>שנו את שם הגיליון ל-<code>Sales by Month</code>.</li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b> אחרי הצעד הראשון ושני: שני סימנים, 2024 עם <span class="n">107,047.60</span> ו-2025 עם <span class="n">129,773.30</span>. אחרי חודש רציף (ירוק): <span class="n">24</span> סימנים בקו אחד. השיא הוא אוגוסט 2025 עם <span class="n">23,259.90</span>, אחריו יולי 2025 עם <span class="n">21,796.60</span> ואוגוסט 2024 עם <span class="n">17,703.10</span>. השפל הוא פברואר 2025 עם <span class="n">4,097.00</span>, נמוך אפילו מינואר 2024 (<span class="n">4,139.30</span>). בחודש בדיד (כחול) יש <span class="n">12</span> סימנים: אוגוסט <span class="n">40,963.00</span>, יולי <span class="n">38,588.80</span>, פברואר <span class="n">8,373.80</span> הנמוך ביותר. הכותרות של התפריט עשויות להיראות קצת אחרת בגרסה שלכם.</p></div>
+<p><b>למי שסיים מהר:</b> בגרסת החודש הבדיד גררו את <code>Order Date</code> השני אל Color והפכו אותו ל-<code>Year</code>. תקבלו שני קווים, 2024 ו-2025, <span class="n">24</span> סימנים בסך הכול, ותראו שלא רק החודשים משתנים אלא גם הגובה: אוגוסט 2024 <span class="n">17,703.10</span> ואוגוסט 2025 <span class="n">23,259.90</span>.</p>
+</div>
+
+<figure class="shot" data-shot="m3-line-month">
+<div class="fb"><svg viewBox="0 0 580 220" width="100%" role="img" aria-label="קו של מכירות לפי חודש, 24 חודשים" style="direction:ltr;max-width:580px"><line x1="46" x2="570" y1="194.0" y2="194.0" stroke="#e5e9ee"/><text x="42" y="198.0" text-anchor="end" font-size="10" fill="#64748b">0</text><line x1="46" x2="570" y1="149.0" y2="149.0" stroke="#e5e9ee"/><text x="42" y="153.0" text-anchor="end" font-size="10" fill="#64748b">6,250</text><line x1="46" x2="570" y1="104.0" y2="104.0" stroke="#e5e9ee"/><text x="42" y="108.0" text-anchor="end" font-size="10" fill="#64748b">12,500</text><line x1="46" x2="570" y1="59.0" y2="59.0" stroke="#e5e9ee"/><text x="42" y="63.0" text-anchor="end" font-size="10" fill="#64748b">18,750</text><line x1="46" x2="570" y1="14.0" y2="14.0" stroke="#e5e9ee"/><text x="42" y="18.0" text-anchor="end" font-size="10" fill="#64748b">25,000</text><polyline fill="none" stroke="#4e79a7" stroke-width="2.2" points="46.0,164.2 68.8,163.2 91.6,150.9 114.3,142.4 137.1,125.0 159.9,109.2 182.7,73.1 205.5,66.5 228.3,106.1 251.0,140.1 273.8,158.1 296.6,158.4 319.4,149.0 342.2,164.5 365.0,148.0 387.7,138.1 410.5,129.1 433.3,89.1 456.1,37.1 478.9,26.5 501.7,90.0 524.4,118.2 547.2,146.6 570.0,157.3"/><circle cx="46.0" cy="164.2" r="2.3" fill="#4e79a7"/><circle cx="68.8" cy="163.2" r="2.3" fill="#4e79a7"/><circle cx="91.6" cy="150.9" r="2.3" fill="#4e79a7"/><circle cx="114.3" cy="142.4" r="2.3" fill="#4e79a7"/><circle cx="137.1" cy="125.0" r="2.3" fill="#4e79a7"/><circle cx="159.9" cy="109.2" r="2.3" fill="#4e79a7"/><circle cx="182.7" cy="73.1" r="2.3" fill="#4e79a7"/><circle cx="205.5" cy="66.5" r="2.3" fill="#4e79a7"/><circle cx="228.3" cy="106.1" r="2.3" fill="#4e79a7"/><circle cx="251.0" cy="140.1" r="2.3" fill="#4e79a7"/><circle cx="273.8" cy="158.1" r="2.3" fill="#4e79a7"/><circle cx="296.6" cy="158.4" r="2.3" fill="#4e79a7"/><circle cx="319.4" cy="149.0" r="2.3" fill="#4e79a7"/><circle cx="342.2" cy="164.5" r="2.3" fill="#4e79a7"/><circle cx="365.0" cy="148.0" r="2.3" fill="#4e79a7"/><circle cx="387.7" cy="138.1" r="2.3" fill="#4e79a7"/><circle cx="410.5" cy="129.1" r="2.3" fill="#4e79a7"/><circle cx="433.3" cy="89.1" r="2.3" fill="#4e79a7"/><circle cx="456.1" cy="37.1" r="2.3" fill="#4e79a7"/><circle cx="478.9" cy="26.5" r="2.3" fill="#4e79a7"/><circle cx="501.7" cy="90.0" r="2.3" fill="#4e79a7"/><circle cx="524.4" cy="118.2" r="2.3" fill="#4e79a7"/><circle cx="547.2" cy="146.6" r="2.3" fill="#4e79a7"/><circle cx="570.0" cy="157.3" r="2.3" fill="#4e79a7"/><circle cx="478.9" cy="26.5" r="5" fill="none" stroke="#e8741f" stroke-width="2"/><text x="470.9" y="30.5" text-anchor="end" font-size="11" fill="#b45309" font-weight="700">23,260</text><text x="46.0" y="212" text-anchor="middle" font-size="10" fill="#334155">Jan 2024</text><text x="182.7" y="212" text-anchor="middle" font-size="10" fill="#334155">Jul 2024</text><text x="319.4" y="212" text-anchor="middle" font-size="10" fill="#334155">Jan 2025</text><text x="456.1" y="212" text-anchor="middle" font-size="10" fill="#334155">Jul 2025</text></svg><div class="need">צילום מסך נדרש: Tableau Public, גיליון Sales by Month עם Scoop & Go: MONTH(Order Date) ירוק על Columns, SUM(Sales) על Rows, 24 סימנים, שורת המצב ו-Tooltip על אוגוסט 2025.</div></div>
+<figcaption>הדמיה של הקו שאמור לצאת: 24 נקודות, שיא באוגוסט 2025.</figcaption></figure>
+
+<h3>אותו הדבר בצילום אמיתי, עם נתוני משחקי וידאו</h3>
+<div class="cols2">
+<figure class="shot"><img src="img/line-year-sales.png" alt="גרף קו של מכירות גלובליות לפי שנה"><figcaption>הקו שאמור לצאת: <code>Year</code> על Columns ו-<code>SUM(Global Sales)</code> על Rows, סוג סימן קו.</figcaption></figure>
+<figure class="shot"><img src="img/bar-year-sales.png" alt="אותו גרף כעמודות"><figcaption>אותם שדות, אבל סוג הסימן עמודות (Bar). שינוי אחד בכרטיס Marks מחליף את הצורה. שימו לב ל-<code>1 null</code> בפינה: שורה בלי שנה.</figcaption></figure>
+</div>
+<figure class="shot"><img src="img/pills-year-sales.png" alt="שני פילים ירוקים על Columns ו-Rows"><figcaption>בצילום הזה <code>Year</code> ירוק (רציף), ולכן יש ציר ולא כותרות. בקובץ שלכם הפיל <code>Order Date</code> יהיה כחול כל עוד לא בחרתם ערך תאריך. את הסיבה נלמד במודול 4.</figcaption></figure>
+
+<div class="quiz" data-id="m3-q-12or24" data-a="3"><p class="qq">שמתם <code>Order Date</code> כחודש בדיד (כחול). כמה סימנים בקו?</p>
+<button class="opt">24, כי יש 24 חודשים בנתונים</button>
+<button class="opt">2, כי יש שתי שנים</button>
+<button class="opt">12, כי כל חודש משתי השנים מצטבר לסימן אחד</button>
+<div class="why">חודש בדיד הוא חלק מתאריך: כל הינוארים יחד, כל הפברוארים יחד. לכן 12. כדי לקבל 24 חודשים בסדר זמן צריך חודש רציף, הירוק שבקבוצה התחתונה של התפריט.</div></div>
+
+<div class="box think" data-id="m3-th-gap"><p>בגרף של 12 החודשים הבדידים, אוגוסט הוא <span class="n">40,963.00</span>. בגרף של 24 החודשים אוגוסט 2025 הוא <span class="n">23,259.90</span>. למה המספרים שונים, ואיזה גרף הייתם מראים למנהלת כדי לענות על &quot;האם מוכרים יותר מאשר לפני שנה?&quot;</p>
+<div class="ans">הגרף הבדיד סוכם את אוגוסט 2024 (<span class="n">17,703.10</span>) ואוגוסט 2025 (<span class="n">23,259.90</span>) לסימן אחד, ולכן <span class="n">40,963.00</span>. כדי לענות על השוואה בין שנים צריך לראות את שתי השנים בנפרד: או 24 חודשים רציפים, או 12 חודשים עם <code>Year</code> על Color. הגרף הבדיד הפשוט מתאים רק לשאלה &quot;באיזה חודש בדרך כלל מוכרים יותר&quot;.</div></div>
+
+<div class="box meaning"><p>הקו מראה עונתיות ברורה: בשתי השנים הוא עולה באביב, מגיע לשיא ביולי ובאוגוסט, ויורד בסתיו. הרבעון השלישי של 2025 (<span class="n">59,496.60</span>) גדול פי <span class="n">3.6</span> בערך מהרבעון הראשון (<span class="n">16,728.70</span>). יולי ואוגוסט 2025 יחד הם <span class="n">45,056.50</span>, כ-<span class="n">35%</span> מכל המכירות של 2025. זה הגיוני לרשת גלידה. מה זה אומר למנהלת: כדאי לתכנן כוח אדם ומלאי לפי העונה.</p></div>
+
+<div class="box trap"><p><b>חודש בדיד מחבר את השנים.</b> אם בחרתם Month מהקבוצה העליונה של התפריט וקיבלתם 12 סימנים, זה לא באג. כך מוגדר חלק של תאריך. אבל אם רציתם להשוות 2024 ל-2025, הסתרתם את ההבדל בלי לשים לב. תמיד שאלו: כמה סימנים צריכים להיות כאן?</p></div>
+
+<div class="box trap"><p><b>קו מחבר רק כשיש סדר.</b> אם תשימו <code>Item</code> על Columns ותשנו ל-Line, תקבלו קו שמחבר בין Milkshake ל-Pistachio Cup. אין שום משמעות לשיפוע שבין שני מוצרים. קו מתאים לזמן או לסדר טבעי אחר. למוצרים צריך עמודות.</p></div>
+
+<div class="box real"><p>גם התרגיל הראשון במדריך הרשמי של Tableau הוא תצוגת זמן שנבנית משתי גרירות: תאריך ל-Columns ומדד ל-Rows. זו תצורה כל כך נפוצה ש-Tableau בוחרת בה לבד, וקל להבין למה: שאלות כמו &quot;איך הלך לנו&quot; הן כמעט תמיד שאלות על זמן.</p></div>
+
+<div class="box note"><p><b>הערה על 2025 מול 2024.</b> מכירות 2025 גבוהות ב-<span class="n">21%</span> בערך מ-2024 (<span class="n">129,773.30</span> מול <span class="n">107,047.60</span>). חלק מהגידול מגיע מסניפים חדשים שנפתחו בשנת 2025 בלבד, והסניפים האחרים לא כולם גדלו. את זה נבדוק במודולים הבאים. בינתיים שימו לב שגרף של סך הכול יכול להסתיר סיפור על סניפים.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בדקו בתוכנה לפני השיעור: (1) שהפיל של Order Date הוא באמת YEAR(Order Date) בכחול לאחר הגרירה, (2) איך נראה התפריט של הפיל בגרסה שלכם ואיפה הקו המפריד בין שתי הקבוצות, (3) האם Tableau בוחרת Line אוטומטית כשהתאריך בדיד (לפי התיעוד כן). עצרו בצעד 4 ובקשו מהסטודנטים לספור סימנים לפני שהם ממשיכים. בנקודת ההבחנה בין הקבוצות כדאי לצלם את התפריט לעתיד.</div>
+</section>
+
+<section class="sec" id="m3-6" data-t="טבלת טקסט ולחיצה כפולה">
+<div class="sec-h"><div class="sec-n">6</div><h2>טבלת טקסט, ולחיצה כפולה שמחליטה בשבילכם</h2></div>
+<p class="lead">לפעמים לא צריך גרף אלא מספרים מדויקים. המנהלת רוצה לדעת כמה כל קטגוריה מכניסה בכל ערוץ: הליכה, אפליקציה, משלוחים. זו טבלה, ו-Tableau יודעת לבנות אותה.</p>
+
+<div class="defline"><b>טבלת טקסט (Text table):</b> טבלה של מספרים בשורות ובעמודות, ללא עמודות או קווים. מתאימה כשהקורא צריך ערך מדויק. דוגמה: קטגוריה בשורות, ערוץ בעמודות, ובכל תא מכירות.</div>
+
+<figure class="shot" data-shot="m3-text-table"><div class="fb"><div class="tw"><table class="tbl m3-tb" style="max-width:560px;direction:ltr">
+<thead><tr><th>Category</th><th class="num">App</th><th class="num">Delivery</th><th class="num">Walk-in</th></tr></thead><tbody>
+<tr><td>Cones</td><td class="num">7,441.10</td><td class="num">6,399.50</td><td class="num">34,476.40</td></tr>
+<tr><td>Cups</td><td class="num">10,586.80</td><td class="num">10,878.40</td><td class="num">48,004.80</td></tr>
+<tr><td>Drinks</td><td class="num">8,771.70</td><td class="num">8,748.90</td><td class="num">37,032.70</td></tr>
+<tr><td>Sticks</td><td class="num">2,454.40</td><td class="num">2,706.00</td><td class="num">12,283.00</td></tr>
+<tr><td>Sundaes</td><td class="num">7,703.80</td><td class="num">6,362.40</td><td class="num">32,971.00</td></tr>
+</tbody></table></div><div class="need">צילום מסך נדרש: Tableau Public, גיליון Category x Channel עם Scoop & Go: Category על Rows, Channel על Columns, SUM(Sales) על Text, 15 marks בשורת המצב.</div></div><figcaption>הטבלה שאנחנו בונים (הדמיה). הצילום מתעדכן כשיש תמונה אמיתית.</figcaption></figure>
+<p>זה מה שאנחנו בונים עכשיו. שימו לב: אין כאן עמודות אלא <b>15 סימנים</b>, אחד לכל תא. כל סימן הוא טקסט.</p>
+
+<h3>קודם במגרש</h3>
+<div class="tfp" data-id="m3-pg-text" data-task="בנו טבלת טקסט: Category על Rows, Channel על Columns, ו-SUM(Sales) על Label. צריכים להיות 15 סימנים."
+     data-goal='{"rows":["Category"],"columns":["Channel"],"label":["SUM(Sales)"],"mark":"text","marks":15}'
+     data-fields="Category,Channel,Region,Item,Order_Date,Sales,Profit,Quantity"></div>
+
+<div class="box try" data-id="m3-try-texttable">
+<p><b>טבלת טקסט של קטגוריה מול ערוץ.</b> גיליון חדש וריק.</p>
+<ol>
+<li>גררו את <code>Category</code> ל-<code>Rows</code> ואת <code>Channel</code> ל-<code>Columns</code>.<span class="m3-why">למה: ממדים בשני המדפים יוצרים רשת של כותרות. עדיין אין בה מספרים.</span></li>
+<li>גררו את <code>Sales</code> אל התיבה <code>Text</code> בכרטיס <code>Marks</code>.<span class="m3-why">למה: Text הוא המקום של המספר שמופיע בתוך התא. במצב עמודות או קו אותה תיבה נקראת Label.</span></li>
+<li>בדקו שבכרטיס <code>Marks</code> כתוב סימן של טקסט (<code>Automatic</code> עם הסמל T).<span class="m3-why">למה: Tableau בוחרת טקסט כשיש ממדים בשני המדפים.</span></li>
+<li>בונוס: בתפריט <code>Analysis</code> בחרו <code>Totals</code> והציגו סיכומים לשורות ולעמודות (<code>Show Row Grand Totals</code> ו-<code>Show Column Grand Totals</code>).<span class="m3-why">למה: לבדוק את עצמכם מול סכום ידוע. שמות הפקודות בגרסה שלכם עשויים להיות שונים מעט.</span></li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b> 5 שורות ו-3 עמודות, <span class="n">15</span> סימנים. כל התאים כמו בטבלה למעלה, למשל Cups בהליכה <span class="n">48,004.80</span> ו-Sticks באפליקציה <span class="n">2,454.40</span>. סכום השורות: <span class="n">Cups 69,470.00</span> (כמו בגרף העמודות). סכום העמודות: <span class="n">Walk-in 164,767.90</span>, <span class="n">Delivery 35,095.20</span>, <span class="n">App 36,957.80</span>, ובסך הכול <span class="n">236,820.90</span>. Tableau עשויה להציג בלי העשרונים (48,005).</p></div>
+</div>
+
+<figure class="shot" style="max-width:260px;margin:12px auto"><img src="img/marks-card.png" alt="כרטיס Marks עם Color, Size, Text, Detail, Tooltip"><figcaption>כרטיס <code>Marks</code> במצב טקסט: התיבות הן <code>Color</code>, <code>Size</code>, <code>Text</code>, <code>Detail</code>, <code>Tooltip</code>. כשסוג הסימן עמודה או קו, התיבה <code>Text</code> נקראת <code>Label</code>.</figcaption></figure>
+
+<h3>לחיצה כפולה: נוח, ותלוי בסדר</h3>
+<div class="defline"><b>לחיצה כפולה על שדה (Double-click):</b> דרך מהירה להוסיף שדה לגיליון בלי לגרור. Tableau מחליטה לבד באיזה מדף לשים אותו, לפי מה שכבר קיים בגיליון. דוגמה: לחיצה כפולה על <code>Sales</code> בגיליון ריק שמה אותו ב-<code>Rows</code>.</div>
+<p>אותן שתי לחיצות כפולות, בסדר שונה, נותנות שני גרפים שונים. נסו במגרש:</p>
+<div class="tfp" data-id="m3-pg-dbl1" data-task="לחצו פעמיים על Sales ואחר כך פעמיים על Category (או סמנו שדה ולחצו על כפתור ההוספה האוטומטית). אתם אמורים לקבל עמודות אנכיות, 5 סימנים."
+     data-goal='{"columns":["Category"],"rows":["SUM(Sales)"],"strict":true,"mark":"bar","marks":5}'
+     data-fields="Category,Channel,Order_Date,Sales,Profit"></div>
+<div class="tfp" data-id="m3-pg-dbl2" data-task="נקו את הגיליון ועכשיו בסדר ההפוך: קודם לחיצה כפולה על Category ואז על Sales. מה Tableau בנתה? צריכה להיות טבלת טקסט עם 5 סימנים."
+     data-goal='{"rows":["Category"],"label":["SUM(Sales)"],"mark":"text","marks":5}'
+     data-fields="Category,Channel,Order_Date,Sales,Profit"></div>
+
+<div class="tw"><table class="tbl m3-tb"><thead><tr><th>מה כבר בגיליון</th><th>לוחצים פעמיים על</th><th>Tableau מניחה</th><th>מה יוצא</th></tr></thead><tbody>
+<tr><td>ריק</td><td>מדד, כמו <code>Sales</code></td><td><code>Rows</code></td><td>עמודה אחת של הסכום הכולל</td></tr>
+<tr><td>רק מדד ב-Rows</td><td>ממד, כמו <code>Category</code></td><td><code>Columns</code></td><td>עמודות לפי קטגוריה</td></tr>
+<tr><td>ריק</td><td>ממד, כמו <code>Category</code></td><td><code>Rows</code></td><td>כותרות בלבד, עוד אין מספרים</td></tr>
+<tr><td>רק ממד</td><td>מדד</td><td><code>Text</code> או <code>Label</code></td><td>טבלת טקסט</td></tr>
+<tr><td>ריק</td><td>תאריך, כמו <code>Order Date</code></td><td><code>Columns</code></td><td>כותרות של שנים</td></tr>
+<tr><td>מדד ב-Rows</td><td>מדד שני</td><td><code>Columns</code></td><td>תרשים פיזור (סעיף 8)</td></tr>
+</tbody></table></div>
+<p style="font-size:.88rem;color:#64748b">הטבלה מבוססת על הדוגמאות בתיעוד הרשמי של Tableau לגרירה ולחיצה כפולה. בגרסה שלכם ייתכן הבדל קטן, ולכן תמיד קראו איפה כל פיל נחת.</p>
+
+<div class="box try" data-id="m3-try-dblclick">
+<p><b>לחיצה כפולה בשני סדרים.</b> גיליון חדש וריק.</p>
+<ol>
+<li>לחצו פעמיים על <code>Sales</code> ואחר כך פעמיים על <code>Category</code>.<span class="m3-why">למה: מדד קודם, ואז ממד. Tableau שמה את הממד ב-Columns והסיכון הוא עמודות.</span></li>
+<li>נקו את הגיליון: <code>Clear Sheet</code> בסרגל הכלים, בסמל של מחק עם X. אפשר גם <code>Undo</code> פעמיים.<span class="m3-why">למה: להתחיל מאפס, בלי שאריות.</span></li>
+<li>עכשיו לחצו פעמיים על <code>Category</code> ואחר כך פעמיים על <code>Sales</code>.<span class="m3-why">למה: אותם שדות בסדר הפוך. הפעם הממד נכנס ראשון.</span></li>
+<li>לחצו פעמיים על <code>Order Date</code>.<span class="m3-why">למה: לראות איפה תאריך נוחת כשיש כבר טבלה.</span></li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b> אחרי הצעד הראשון: <span class="n">5</span> עמודות אנכיות, אותם ערכים כמו בגרף של סעיף 3. אחרי הצעד השלישי: טבלת טקסט של <span class="n">5</span> שורות עם סכום אחד בכל אחת (<span class="n">Cups 69,470.00</span>). אחרי הצעד הרביעי, בדרך כלל, השנים נפרשות כעמודות ונוצרים <span class="n">10</span> סימנים. Cups ב-2024 <span class="n">31,702.40</span> וב-2025 <span class="n">37,767.60</span>, <span class="n">Sticks 7,559.60</span> ו-<span class="n">9,883.80</span>. אם משהו נראה אחרת אצלכם, פתחו את כרטיס <code>Marks</code> וקראו איפה כל פיל נוחת.</p></div>
+</div>
+
+<div class="quiz" data-id="m3-q-dbl" data-a="2"><p class="qq">בגיליון ריק: לחצתם פעמיים על <code>Category</code> ואז פעמיים על <code>Sales</code>. מה תקבלו?</p>
+<button class="opt">עמודות אנכיות, אחת לכל קטגוריה</button>
+<button class="opt">טבלת טקסט, שורה לכל קטגוריה עם הסכום</button>
+<button class="opt">תרשים פיזור</button>
+<div class="why">ממד ראשון נכנס ל-Rows כרשימת כותרות. המדד שנכנס אחריו, כשיש רק ממדים, הולך ל-Text. עמודות היו יוצאות בסדר ההפוך (מדד ואז ממד). פיזור נוצר רק משני מדדים.</div></div>
+
+<div class="box trap"><p><b>הלחיצה הכפולה לא קוראת מחשבות.</b> אותם שדות נותנים תוצאה אחרת לפי הסדר והמצב הקיים של הגיליון. כשהתוצאה לא מה שרציתם, אל תתחילו מאפס. פתחו את המדפים וראו מה Tableau בחרה, ואז גררו את הפיל למקום הנכון, או <code>Undo</code>. ככה לומדים את הכללים.</p></div>
+
+<div class="box meaning"><p>טבלת טקסט היא לא &quot;גרף גרוע&quot;. כשרוצים לקרוא ערך מדויק או לאמת מספר, היא הכי טובה. כאן היא מראה ש-<span class="n">69.6%</span> מהמכירות (<span class="n">164,767.90</span> מתוך <span class="n">236,820.90</span>) עוברות בהליכה, ושבכל קטגוריה המשלוחים והאפליקציה קרובים זה לזה. גרף עמודות היה מראה את אותו הדבר, אבל לא את המספר המדויק.</p></div>
+
+<div class="box real"><p>בדשבורדים רבים משלבים גרף וטבלת טקסט: הגרף מראה את התמונה, והטבלה מאפשרת לקורא לבדוק מספר. מי שבונה דשבורד לכספים או לתפעול כמעט תמיד צריך לפחות טבלת טקסט אחת.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בדקו בתוכנה לפני השיעור איפה נוחת התאריך בצעד 4, בגיליון שבו יש כבר טבלת טקסט (לפי התיעוד: Columns). את הכפתור Clear Sheet ומיקומו בסרגל כדאי להראות. סכומי Totals: בדקו את שם הפקודה בתפריט Analysis.</div>
+</section>
+
+<section class="sec" id="m3-7" data-t="Show Me">
+<div class="sec-h"><div class="sec-n">7</div><h2>Show Me: כשמבקשים מ-Tableau להציע גרף</h2></div>
+<p class="lead">עד עכשיו בחרתם שדות ואז גררתם. יש גם דרך הפוכה: בוחרים שדות ו-Tableau מציעה גרפים. היא נוחה, ויש לה גבולות. כדאי להכיר את שניהם.</p>
+
+<div class="defline"><b>Show Me:</b> כפתור בפינה הימנית העליונה שפותח לוח של 24 סוגי גרפים. אחרי שבוחרים שדות בחלונית Data, Tableau מדגישה בכתום את הגרף המומלץ, ואפשר ללחוץ על כל גרף זמין כדי לבנות אותו. דוגמה: בוחרים <code>Category</code> ו-<code>Sales</code>, לוחצים על עמודות אופקיות ומקבלים את הגרף מסעיף 3.</div>
+
+<style>
+.m3-sm{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;direction:ltr;max-width:420px;margin:10px auto;background:#fff;border:1px solid #c7cfd9;border-radius:8px;padding:10px;box-shadow:0 10px 28px rgba(15,23,42,.12)}
+.m3-sm div{border:1px solid #d5dbe3;border-radius:4px;padding:8px 4px;text-align:center;font-size:.72rem;color:#475569;background:#f8fafc;line-height:1.25;min-height:46px;display:flex;align-items:center;justify-content:center}
+.m3-sm div.rec{border:2px solid #e8741f;background:#fff7ed;color:#9a3412;font-weight:700}
+.m3-sm .ft{grid-column:1/4;background:none;border:0;text-align:left;font-size:.76rem;color:#64748b;min-height:0}
+</style>
+<h3>הלוח, בהדמיה ובצילום אמיתי</h3>
+<div class="cols2">
+<div><div class="m3-sm" aria-label="הדמיה סכמטית של לוח Show Me">
+<div>Text Table</div><div>Heat Map</div><div>Highlight Table</div>
+<div>Symbol Map</div><div>Filled Map</div><div>Pie Chart</div>
+<div class="rec">Horizontal Bars</div><div>Stacked Bars</div><div>Side-by-side Bars</div>
+<div>Treemap</div><div>Circle Views</div><div>Side-by-side Circles</div>
+<div>Continuous Lines</div><div>Discrete Lines</div><div>Dual Lines</div>
+<div>Continuous Area</div><div>Discrete Area</div><div>Dual Combination</div>
+<div>Scatter Plot</div><div>Histogram</div><div>Box-and-Whisker</div>
+<div>Gantt Chart</div><div>Bullet Graph</div><div>Packed Bubbles</div>
+<div class="ft">הדמיה סכמטית. כאן מסומן בכתום מה ש-Tableau מציעה בדרך כלל כשבוחרים ממד אחד ומדד אחד.</div></div></div>
+<figure class="shot" style="max-width:280px;margin:10px auto"><img src="img/showme.png" alt="לוח Show Me במצב שבו לא נבחרו שדות"><figcaption>צילום אמיתי: הלוח כשלא נבחרו שדות. הגרפים חיוורים, ובתחתית כתוב להשתמש ב-Shift או ב-Cmd כדי לבחור כמה שדות.</figcaption></figure>
+</div>
+
+<h3>איך משתמשים: שלושה צעדים</h3>
+<ol>
+<li><b>בוחרים שדות</b> בחלונית Data: קליק על שדה אחד, ובמקש <code>Ctrl</code> (ב-Mac <code>Cmd</code>) קליק על הבא. לפי הלוח, גם <code>Shift</code> עובד.</li>
+<li><b>פותחים את Show Me</b> ומרחפים מעל גרף. מחכים לטקסט הקטן שמסביר מה הגרף דורש: כמה ממדים וכמה מדדים.</li>
+<li><b>לוחצים על גרף זמין.</b> Tableau מניחה את הפילים במדפים. אפשר ללחוץ <code>Undo</code> ולנסות גרף אחר.</li>
+</ol>
+
+<h3>מה כל גרף דורש: מה שידוע מהתיעוד</h3>
+<div class="tw"><table class="tbl m3-tb"><thead><tr><th>גרף</th><th>דרישה</th><th>מקור</th></tr></thead><tbody>
+<tr><td>Histogram</td><td>מדד אחד, בלי ממדים</td><td>תיעוד רשמי</td></tr>
+<tr><td>Pie Chart, Packed Bubbles</td><td>ממד אחד או יותר, ומדד אחד או שניים</td><td>תיעוד רשמי</td></tr>
+<tr><td>Box-and-Whisker</td><td>לפחות מדד אחד</td><td>תיעוד רשמי</td></tr>
+<tr><td>Treemap</td><td>כל מספר של ממדים. המדדים נכנסים ל-Size ול-Color</td><td>תיעוד רשמי</td></tr>
+<tr><td>Text Table</td><td>ממד אחד או יותר ו/או מדד אחד או יותר</td><td>לפי מדריכים מקובלים</td></tr>
+<tr><td>Heat Map</td><td>ממד אחד או יותר, ומדד אחד או שניים</td><td>לפי מדריכים מקובלים</td></tr>
+<tr><td>Highlight Table</td><td>ממד אחד או יותר, ומדד אחד בדיוק</td><td>לפי מדריכים מקובלים</td></tr>
+<tr><td>כל השאר</td><td>רחפו מעל האריח בתוכנה: הדרישה כתובה שם</td><td>אין דף רשמי שמרכז אותן</td></tr>
+</tbody></table></div>
+
+<h3>סימולציה: איזה גרף יהיה זמין?</h3>
+<p>זו הדמיה שמבוססת על הדרישות בטבלה. בחרו כמה ממדים וכמה מדדים בחרתם, וראו מה אמור להיות זמין. בתוכנה האמיתית הלוח הוא האמת, ולכן רחפו מעל כל אריח.</p>
+<div class="sim m3-sim" data-id="m3-sim-showme"><div class="sh">איזה גרף זמין לפי השדות שבחרתי</div>
+<div class="row"><b>ממדים שבחרתי:</b><span id="m3s-d"></span></div>
+<div class="row"><b>מדדים שבחרתי:</b><span id="m3s-m"></span></div>
+<div class="out" id="m3s-out" style="direction:ltr;text-align:left"></div>
+<p style="font-size:.85rem;color:#64748b">ניסיתם <b id="m3s-n">0</b> צירופים. מספיק 4.</p></div>
+<script>(function(){FL.dom(function(){
+var box=FL.$('[data-id="m3-sim-showme"]'); if(!box) return;
+var R=[['Histogram',function(d,m){return m===1&&d===0;},'A'],['Pie Chart',function(d,m){return d>=1&&m>=1&&m<=2;},'A'],['Packed Bubbles',function(d,m){return d>=1&&m>=1&&m<=2;},'A'],['Box-and-Whisker',function(d,m){return m>=1;},'A'],['Treemap',function(d,m){return m>=1;},'A'],['Text Table',function(d,m){return d>=1||m>=1;},'C'],['Heat Map',function(d,m){return d>=1&&m>=1&&m<=2;},'C'],['Highlight Table',function(d,m){return d>=1&&m===1;},'C']];
+var d=1,m=1,seen={};
+function mk(id,get,set){ var el=FL.$(id,box); [0,1,2,3].forEach(function(i){ var b=document.createElement('button'); b.type='button'; b.className='b'+(get()===i?' on':''); b.style.marginInlineEnd='4px'; b.textContent=i; b.addEventListener('click',function(){ set(i); FL.$$('button',el).forEach(function(x,j){x.className='b'+(j===i?' on':'');}); draw(); }); el.appendChild(b); }); }
+function draw(){
+ var h='<table class="tbl" style="width:auto"><tbody>'+R.map(function(r){ var ok=r[1](d,m); return '<tr><td style="min-width:150px">'+r[0]+'</td><td style="min-width:100px;font-weight:700;color:'+(ok?'#166534':'#991b1b')+'">'+(ok?'זמין':'לא זמין')+'</td><td style="font-size:.8rem;color:#64748b">'+(r[2]==='C'?'לפי מדריכים':'לפי התיעוד')+'</td></tr>'; }).join('')+'</tbody></table><div style="font-size:.85rem;margin-top:6px">גרפים אחרים (מפות, קווים, עמודות, פיזור ועוד): רחפו בתוכנה.</div>';
+ FL.$('#m3s-out',box).innerHTML=h; seen[d+'_'+m]=1; var n=Object.keys(seen).length; FL.$('#m3s-n',box).textContent=n; if(n>=4) FL.done('m3-sim-showme'); }
+mk('#m3s-d',function(){return d;},function(i){d=i;}); mk('#m3s-m',function(){return m;},function(i){m=i;}); draw();
+});})();</script>
+
+<div class="box try" data-id="m3-try-showme">
+<p><b>סיור ב-Show Me.</b> גיליון חדש וריק.</p>
+<ol>
+<li>בחלונית <code>Data</code> סמנו <code>Category</code>, ואז הוסיפו את <code>Sales</code> בעזרת <code>Ctrl</code> (ב-Mac <code>Cmd</code>).<span class="m3-why">למה: Show Me עובד לפי השדות שנבחרו.</span></li>
+<li>פתחו <code>Show Me</code> ורחפו על כמה אריחים: Histogram, Pie Chart, Treemap. קראו מה כתוב.<span class="m3-why">למה: כך לומדים מה כל גרף דורש. זה המקור האמין, כי אין דף אחד שמרכז הכול.</span></li>
+<li>לחצו על <code>Horizontal Bars</code>. אחר כך פתחו את המדפים וראו איפה כל פיל.<span class="m3-why">למה: Show Me לא קסם. הוא פשוט מניח את אותם פילים שהייתם מניחים.</span></li>
+<li>לחצו <code>Treemap</code>, ואחר כך <code>Text Table</code>.<span class="m3-why">למה: אותם שדות, שלוש צורות. ראו איך סוג הסימן בכרטיס <code>Marks</code> משתנה.</span></li>
+<li>לחצו <code>Undo</code> שלוש פעמים עד לגיליון הריק.</li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b> בכל שלושת הגרפים <span class="n">5</span> סימנים, אחד לכל קטגוריה. עמודות אופקיות: <code>Category</code> על Rows ו-<code>SUM(Sales)</code> על Columns, מכירות הכי גבוהות <span class="n">Cups 69,470.00</span>. בתרשים עץ (Treemap) חמישה מלבנים, והגדול ביותר Cups. בטבלת טקסט חמש שורות עם הסכום בכל אחת. שימו לב איזה גרף Show Me הדגיש בכתום, והאם זה מה שציפיתם.</p></div>
+</div>
+
+<div class="box meaning"><p>Show Me טוב להתחלה ולהצעות, פחות טוב כשיודעים בדיוק מה רוצים: אז גוררים. גם מי שמשתמש בו ממשיך לתקן במדפים. מה שחשוב הוא להבין מה Show Me הניח, כי זה מה שיהיה צריך לשנות בהמשך.</p></div>
+
+<div class="box trap"><p><b>Show Me בנה לכם גרף אחר ממה שרצית, או שהגרף חיוור.</b> שתי סיבות נפוצות: (1) בחרתם את השדות לא נכון, למשל שני ממדים בלי מדד. (2) לחצתם על גרף כשבגיליון כבר היה משהו, וה-Show Me בנה מחדש ומחק פילים. התיקון: רחפו מעל האריח החיוור וקראו מה חסר, ואם הגיליון התבלגן, <code>Undo</code>.</p></div>
+
+<h3>Measure Names ו-Measure Values: אורחים שמגיעים בלי להזמין אותם</h3>
+<div class="defline"><b>Measure Values ו-Measure Names:</b> שני שדות ש-Tableau יוצרת לבד כדי להציג כמה מדדים יחד. <code>Measure Values</code> מחזיק את הערכים, ו-<code>Measure Names</code> (ממד) מחזיק את שמות המדדים. דוגמה: טבלה עם שתי עמודות, <code>Sales</code> ו-<code>Profit</code>, בנויה מהם. בחלונית Data הם מופיעים בנטוי.</div>
+<div class="box try" data-id="m3-try-measurenames">
+<p><b>להפעיל אותם בכוונה, ואז לשלוט.</b> גיליון חדש וריק.</p>
+<ol>
+<li>גררו <code>Category</code> ל-<code>Rows</code>, ואת <code>Sales</code> אל <code>Text</code> בכרטיס <code>Marks</code>.<span class="m3-why">למה: זו טבלת הטקסט הפשוטה מסעיף 6.</span></li>
+<li>גררו את <code>Profit</code> אל אותה תיבה, <code>Text</code>.<span class="m3-why">למה: כשיש שני מדדים בתיבה אחת, Tableau מוסיפה את Measure Names ו-Measure Values בעצמה.</span></li>
+<li>הסתכלו על הגיליון: מופיעים <code>Measure Names</code> על Columns ו-<code>Measure Values</code> בכרטיס Marks.<span class="m3-why">למה: ככה נראה KPI פשוט, שני מדדים זה לצד זה.</span></li>
+<li>גררו את <code>Measure Names</code> אל מחוץ למדף Columns, כדי להסיר אותו, וראו מה קורה. אחר כך <code>Undo</code>.<span class="m3-why">למה: לגלות שאפשר לשחרר אותם.</span></li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b> טבלה של 5 שורות ושתי עמודות, <code>Sales</code> ו-<code>Profit</code>. <span class="n">Cones 48,317.00</span> ו-<span class="n">25,581.00</span>. <span class="n">Cups 69,470.00</span> ו-<span class="n">36,152.50</span>. <span class="n">Drinks 54,553.30</span> ו-<span class="n">36,728.30</span>. <span class="n">Sticks 17,443.40</span> ו-<span class="n">8,999.90</span>. <span class="n">Sundaes 47,037.20</span> ו-<span class="n">13,261.20</span>. סכום הרווח <span class="n">120,722.90</span>. שימו לב ש-Drinks מובילה ברווח למרות ש-Cups מובילה במכירות.</p></div>
+</div>
+<div class="box trap"><p><b>אם ראיתם פתאום Measure Names על הגיליון ולא ידעתם למה,</b> כנראה שני מדדים נכנסו לאותו מקום, או שלחצתם על Show Me. זה לא תקלה. כדי להיפטר: גררו את הפיל מחוץ למדף או לחצו Undo. כדי להישאר איתם: סננו את Measure Names ל-Sales ול-Profit בלבד.</p></div>
+
+<div class="quiz" data-id="m3-q-showme" data-a="1"><p class="qq">Show Me מראה גרף חיוור ולא ניתן ללחיצה. מה עושים?</p>
+<button class="opt">מרחפים עליו וקוראים מה הוא דורש, ואז מוסיפים או מורידים שדות</button>
+<button class="opt">מתקינים מחדש את Tableau Public</button>
+<button class="opt">לוחצים עליו כמה פעמים עד שייפתח</button>
+<div class="why">חיוור אומר שהשדות שנבחרו לא עומדים בדרישות. הטקסט שמופיע בריחוף אומר בדיוק מה חסר, למשל ממד או מדד נוסף. אין קשר להתקנה, ולחיצות חוזרות לא ישנו כלום.</div></div>
+
+<div class="box real"><p>מדריכים רבים מציגים את Show Me כנקודת פתיחה בלבד: הוא נותן לראות מה אפשרי, ואחר כך עובדים ידנית. גם בתיעוד של Tableau Show Me אינו שלב נפרד בבניית תצוגה אלא דרך נוחה להתחיל.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הלוח משתנה בין גרסאות (בגרסאות חדשות קיימת אפשרות לבקש מ-Tableau לבחור בשבילכם). בדקו בתוכנה לפני השיעור: איך נראה הלוח אצלכם ואיך מוצג הטקסט בריחוף. שורות הדרישות של Text Table, Heat Map ו-Highlight Table הן ממדריכים ולא מתיעוד רשמי, ולכן בקשו מהסטודנטים לאמת אותן בריחוף. תרחיש Measure Names (גרירת מדד שני אל Text) לא נבדק בתוכנה לצורך המודול: לאמת שהוא מייצר את התוצאה שמתוארת.</div>
+</section>
+
+<section class="sec" id="m3-8" data-t="תרשים פיזור ו-Detail">
+<div class="sec-h"><div class="sec-n">8</div><h2>תרשים פיזור: למה רואים סימן אחד, ואיך Detail מתקן</h2></div>
+<p class="lead">המנהלת שואלת: האם המוצרים שמוכרים הרבה הם גם אלה שמרוויחים הרבה? זו שאלה על קשר בין שני מדדים, מכירות ורווח. הגרף שמתאים הוא תרשים פיזור. והטעות הראשונה בו כמעט מובטחת: תראו נקודה אחת.</p>
+
+<div class="defline"><b>תרשים פיזור (Scatter plot):</b> גרף של נקודות, כל נקודה במקום לפי שני מדדים: אחד על ציר X והשני על ציר Y. דוגמה: כל מוצר הוא נקודה, מכירות לרוחב ורווח לגובה.</div>
+<div class="defline"><b>פירוט (Detail):</b> תיבה בכרטיס Marks שמוסיפה ממד לגרף בלי להציג אותו ככותרת, ובכך מפצלת את הסימנים. דוגמה: <code>Item</code> על Detail הופך סימן אחד ל-15 סימנים, אחד לכל מוצר.</div>
+
+<h3>הנפשה: מסימן אחד ל-15</h3>
+<div class="anim" data-id="m3-anim-onemark" data-speed="3800"><div class="stage"><svg viewBox="0 0 800 360" role="img" aria-label="הנפשה: תרשים פיזור של מכירות מול רווח. בהתחלה סימן אחד, אחר כך Item על Detail מפצל ל-15, ו-Category על Color צובע"><rect x="8" y="8" width="690" height="26" fill="#fff" stroke="#c7cfd9"/><text x="18" y="26" text-anchor="start" font-size="12" fill="#64748b" font-weight="700" >Columns</text><g ><rect x="90" y="10" width="130" height="24" rx="7" fill="#d9f0d6" stroke="#a8d4a3"/><text x="155.0" y="27" text-anchor="middle" font-size="13" fill="#1c6b1c" font-weight="700" >SUM(Sales)</text></g><text x="250" y="26" text-anchor="start" font-size="12" fill="#64748b" font-weight="700" >Rows</text><g ><rect x="300" y="10" width="130" height="24" rx="7" fill="#d9f0d6" stroke="#a8d4a3"/><text x="365.0" y="27" text-anchor="middle" font-size="13" fill="#1c6b1c" font-weight="700" >SUM(Profit)</text></g><rect x="706" y="8" width="88" height="344" rx="6" fill="#f4f6f8" stroke="#c7cfd9"/><text x="716" y="28" text-anchor="start" font-size="12" fill="#64748b" font-weight="700" >Marks</text><g data-only="1"><text x="750" y="60" text-anchor="middle" font-size="14" fill="#334155" font-weight="700" >Marks: 1</text></g><g data-only="2,3,4"><text x="750" y="60" text-anchor="middle" font-size="14" fill="#14507a" font-weight="700" >Marks: 15</text></g><g data-s="2"><rect x="710" y="100" width="80" height="26" rx="4" fill="#d7e7f5" stroke="#a9c9e3"/><text x="715" y="117" text-anchor="start" font-size="10" fill="#14507a" font-weight="700" >Detail: Item</text></g><g data-s="3"><rect x="710" y="134" width="80" height="26" rx="4" fill="#d7e7f5" stroke="#a9c9e3"/><text x="714" y="151" text-anchor="start" font-size="9" fill="#14507a" font-weight="700" >Color: Category</text></g><g data-only="1"><line x1="90.0" x2="90.0" y1="50" y2="290" stroke="#eef2f7"/><text x="90.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="210.0" x2="210.0" y1="50" y2="290" stroke="#eef2f7"/><text x="210.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >50,000</text><line x1="330.0" x2="330.0" y1="50" y2="290" stroke="#eef2f7"/><text x="330.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >100,000</text><line x1="450.0" x2="450.0" y1="50" y2="290" stroke="#eef2f7"/><text x="450.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >150,000</text><line x1="570.0" x2="570.0" y1="50" y2="290" stroke="#eef2f7"/><text x="570.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >200,000</text><line x1="690.0" x2="690.0" y1="50" y2="290" stroke="#eef2f7"/><text x="690.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >250,000</text><line x1="90" x2="690" y1="290.0" y2="290.0" stroke="#eef2f7"/><text x="84" y="294.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="90" x2="690" y1="230.0" y2="230.0" stroke="#eef2f7"/><text x="84" y="234.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >35,000</text><line x1="90" x2="690" y1="170.0" y2="170.0" stroke="#eef2f7"/><text x="84" y="174.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >70,000</text><line x1="90" x2="690" y1="110.0" y2="110.0" stroke="#eef2f7"/><text x="84" y="114.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >105,000</text><line x1="90" x2="690" y1="50.0" y2="50.0" stroke="#eef2f7"/><text x="84" y="54.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >140,000</text><line x1="90" x2="690" y1="290" y2="290" stroke="#94a3b8"/><line x1="90" x2="90" y1="50" y2="290" stroke="#94a3b8"/><circle cx="658.4" cy="83.0" r="11" fill="none" stroke="#4e79a7" stroke-width="3"/><text x="642.37016" y="87.04645714285712" text-anchor="end" font-size="13" fill="#1e293b" font-weight="700" >SUM(Sales) 236,820.90</text><text x="642.37016" y="105.04645714285712" text-anchor="end" font-size="13" fill="#1e293b" font-weight="700" >SUM(Profit) 120,722.90</text><text x="380" y="330" text-anchor="middle" font-size="15" fill="#b45309" font-weight="700" >סימן אחד: אין עוד ממד שמפצל</text></g><g data-only="2"><line x1="90.0" x2="90.0" y1="50" y2="290" stroke="#eef2f7"/><text x="90.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="210.0" x2="210.0" y1="50" y2="290" stroke="#eef2f7"/><text x="210.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >5,000</text><line x1="330.0" x2="330.0" y1="50" y2="290" stroke="#eef2f7"/><text x="330.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >10,000</text><line x1="450.0" x2="450.0" y1="50" y2="290" stroke="#eef2f7"/><text x="450.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >15,000</text><line x1="570.0" x2="570.0" y1="50" y2="290" stroke="#eef2f7"/><text x="570.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >20,000</text><line x1="690.0" x2="690.0" y1="50" y2="290" stroke="#eef2f7"/><text x="690.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >25,000</text><line x1="90" x2="690" y1="290.0" y2="290.0" stroke="#eef2f7"/><text x="84" y="294.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="90" x2="690" y1="230.0" y2="230.0" stroke="#eef2f7"/><text x="84" y="234.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >4,000</text><line x1="90" x2="690" y1="170.0" y2="170.0" stroke="#eef2f7"/><text x="84" y="174.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >8,000</text><line x1="90" x2="690" y1="110.0" y2="110.0" stroke="#eef2f7"/><text x="84" y="114.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >12,000</text><line x1="90" x2="690" y1="50.0" y2="50.0" stroke="#eef2f7"/><text x="84" y="54.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >16,000</text><line x1="90" x2="690" y1="290" y2="290" stroke="#94a3b8"/><line x1="90" x2="90" y1="50" y2="290" stroke="#94a3b8"/><circle data-it="1" cx="468.9" cy="229.2" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="463.2" cy="222.9" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="307.6" cy="222.7" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="480.9" cy="159.9" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="391.0" cy="188.9" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="574.2" cy="133.0" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="291.1" cy="222.3" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="466.8" cy="219.0" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="480.7" cy="114.3" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="465.5" cy="159.5" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="410.9" cy="143.5" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="687.7" cy="61.4" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="582.8" cy="142.6" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="498.1" cy="155.7" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><circle data-it="1" cx="464.5" cy="164.3" r="8" fill="none" stroke="#4e79a7" stroke-width="2.4"/><text x="380" y="330" text-anchor="middle" font-size="15" fill="#b45309" font-weight="700" >15 סימנים: אחד לכל Item</text></g><g data-only="3,4"><circle cx="718" cy="190" r="6" fill="#4e79a7"/><text x="730" y="194" text-anchor="start" font-size="11" fill="#334155" font-weight="400" >Cones</text><circle cx="718" cy="212" r="6" fill="#f28e2b"/><text x="730" y="216" text-anchor="start" font-size="11" fill="#334155" font-weight="400" >Cups</text><circle cx="718" cy="234" r="6" fill="#e15759"/><text x="730" y="238" text-anchor="start" font-size="11" fill="#334155" font-weight="400" >Drinks</text><circle cx="718" cy="256" r="6" fill="#76b7b2"/><text x="730" y="260" text-anchor="start" font-size="11" fill="#334155" font-weight="400" >Sticks</text><circle cx="718" cy="278" r="6" fill="#59a14f"/><text x="730" y="282" text-anchor="start" font-size="11" fill="#334155" font-weight="400" >Sundaes</text></g><g data-only="3"><line x1="90.0" x2="90.0" y1="50" y2="290" stroke="#eef2f7"/><text x="90.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="210.0" x2="210.0" y1="50" y2="290" stroke="#eef2f7"/><text x="210.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >5,000</text><line x1="330.0" x2="330.0" y1="50" y2="290" stroke="#eef2f7"/><text x="330.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >10,000</text><line x1="450.0" x2="450.0" y1="50" y2="290" stroke="#eef2f7"/><text x="450.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >15,000</text><line x1="570.0" x2="570.0" y1="50" y2="290" stroke="#eef2f7"/><text x="570.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >20,000</text><line x1="690.0" x2="690.0" y1="50" y2="290" stroke="#eef2f7"/><text x="690.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >25,000</text><line x1="90" x2="690" y1="290.0" y2="290.0" stroke="#eef2f7"/><text x="84" y="294.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="90" x2="690" y1="230.0" y2="230.0" stroke="#eef2f7"/><text x="84" y="234.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >4,000</text><line x1="90" x2="690" y1="170.0" y2="170.0" stroke="#eef2f7"/><text x="84" y="174.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >8,000</text><line x1="90" x2="690" y1="110.0" y2="110.0" stroke="#eef2f7"/><text x="84" y="114.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >12,000</text><line x1="90" x2="690" y1="50.0" y2="50.0" stroke="#eef2f7"/><text x="84" y="54.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >16,000</text><line x1="90" x2="690" y1="290" y2="290" stroke="#94a3b8"/><line x1="90" x2="90" y1="50" y2="290" stroke="#94a3b8"/><circle cx="468.9" cy="229.2" r="9" fill="#59a14f" fill-opacity=".85" stroke="#fff"/><circle cx="463.2" cy="222.9" r="9" fill="#59a14f" fill-opacity=".85" stroke="#fff"/><circle cx="307.6" cy="222.7" r="9" fill="#76b7b2" fill-opacity=".85" stroke="#fff"/><circle cx="480.9" cy="159.9" r="9" fill="#f28e2b" fill-opacity=".85" stroke="#fff"/><circle cx="391.0" cy="188.9" r="9" fill="#4e79a7" fill-opacity=".85" stroke="#fff"/><circle cx="574.2" cy="133.0" r="9" fill="#4e79a7" fill-opacity=".85" stroke="#fff"/><circle cx="291.1" cy="222.3" r="9" fill="#76b7b2" fill-opacity=".85" stroke="#fff"/><circle cx="466.8" cy="219.0" r="9" fill="#59a14f" fill-opacity=".85" stroke="#fff"/><circle cx="480.7" cy="114.3" r="9" fill="#e15759" fill-opacity=".85" stroke="#fff"/><circle cx="465.5" cy="159.5" r="9" fill="#f28e2b" fill-opacity=".85" stroke="#fff"/><circle cx="410.9" cy="143.5" r="9" fill="#e15759" fill-opacity=".85" stroke="#fff"/><circle cx="687.7" cy="61.4" r="9" fill="#e15759" fill-opacity=".85" stroke="#fff"/><circle cx="582.8" cy="142.6" r="9" fill="#f28e2b" fill-opacity=".85" stroke="#fff"/><circle cx="498.1" cy="155.7" r="9" fill="#f28e2b" fill-opacity=".85" stroke="#fff"/><circle cx="464.5" cy="164.3" r="9" fill="#4e79a7" fill-opacity=".85" stroke="#fff"/><text x="380" y="330" text-anchor="middle" font-size="15" fill="#b45309" font-weight="700" >הצבע לפי קטגוריה, ועדיין 15 סימנים</text></g><g data-only="4"><line x1="90.0" x2="90.0" y1="50" y2="290" stroke="#eef2f7"/><text x="90.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="210.0" x2="210.0" y1="50" y2="290" stroke="#eef2f7"/><text x="210.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >5,000</text><line x1="330.0" x2="330.0" y1="50" y2="290" stroke="#eef2f7"/><text x="330.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >10,000</text><line x1="450.0" x2="450.0" y1="50" y2="290" stroke="#eef2f7"/><text x="450.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >15,000</text><line x1="570.0" x2="570.0" y1="50" y2="290" stroke="#eef2f7"/><text x="570.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >20,000</text><line x1="690.0" x2="690.0" y1="50" y2="290" stroke="#eef2f7"/><text x="690.0" y="308" text-anchor="middle" font-size="11" fill="#64748b" font-weight="400" >25,000</text><line x1="90" x2="690" y1="290.0" y2="290.0" stroke="#eef2f7"/><text x="84" y="294.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >0</text><line x1="90" x2="690" y1="230.0" y2="230.0" stroke="#eef2f7"/><text x="84" y="234.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >4,000</text><line x1="90" x2="690" y1="170.0" y2="170.0" stroke="#eef2f7"/><text x="84" y="174.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >8,000</text><line x1="90" x2="690" y1="110.0" y2="110.0" stroke="#eef2f7"/><text x="84" y="114.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >12,000</text><line x1="90" x2="690" y1="50.0" y2="50.0" stroke="#eef2f7"/><text x="84" y="54.0" text-anchor="end" font-size="11" fill="#64748b" font-weight="400" >16,000</text><line x1="90" x2="690" y1="290" y2="290" stroke="#94a3b8"/><line x1="90" x2="90" y1="50" y2="290" stroke="#94a3b8"/><circle cx="468.9" cy="229.2" r="9" fill="#59a14f" fill-opacity=".85" stroke="#fff"/><circle cx="463.2" cy="222.9" r="9" fill="#59a14f" fill-opacity=".85" stroke="#fff"/><circle cx="307.6" cy="222.7" r="9" fill="#76b7b2" fill-opacity=".85" stroke="#fff"/><circle cx="480.9" cy="159.9" r="9" fill="#f28e2b" fill-opacity=".85" stroke="#fff"/><circle cx="391.0" cy="188.9" r="9" fill="#4e79a7" fill-opacity=".85" stroke="#fff"/><circle cx="574.2" cy="133.0" r="9" fill="#4e79a7" fill-opacity=".85" stroke="#fff"/><circle cx="291.1" cy="222.3" r="9" fill="#76b7b2" fill-opacity=".85" stroke="#fff"/><circle cx="466.8" cy="219.0" r="9" fill="#59a14f" fill-opacity=".85" stroke="#fff"/><circle cx="480.7" cy="114.3" r="9" fill="#e15759" fill-opacity=".85" stroke="#fff"/><circle cx="465.5" cy="159.5" r="9" fill="#f28e2b" fill-opacity=".85" stroke="#fff"/><circle cx="410.9" cy="143.5" r="9" fill="#e15759" fill-opacity=".85" stroke="#fff"/><circle cx="687.7" cy="61.4" r="9" fill="#e15759" fill-opacity=".85" stroke="#fff"/><circle cx="582.8" cy="142.6" r="9" fill="#f28e2b" fill-opacity=".85" stroke="#fff"/><circle cx="498.1" cy="155.7" r="9" fill="#f28e2b" fill-opacity=".85" stroke="#fff"/><circle cx="464.5" cy="164.3" r="9" fill="#4e79a7" fill-opacity=".85" stroke="#fff"/><circle cx="468.9" cy="229.2" r="14" fill="none" stroke="#e8741f" stroke-width="2.5"/><text x="468.912" y="261.15999999999997" text-anchor="middle" font-size="12" fill="#b45309" font-weight="700" >Banana Split: 15,788 / 4,056</text><circle cx="480.7" cy="114.3" r="14" fill="none" stroke="#e8741f" stroke-width="2.5"/><text x="464.744" y="98.25999999999999" text-anchor="end" font-size="12" fill="#b45309" font-weight="700" >Iced Coffee: 16,281 / 11,716</text><text x="380" y="346" text-anchor="middle" font-size="15" fill="#b45309" font-weight="700" >אותה מכירה בערך, רווח שונה לגמרי</text></g></svg></div><ol class="caps"><li>שמים SUM(Sales) על Columns ו-SUM(Profit) על Rows. אין שום ממד, ולכן Tableau מסכמת את כל 6,575 השורות לסימן אחד: 236,820.90 מכירות ו-120,722.90 רווח.</li><li>גוררים את Item אל Detail בכרטיס Marks. הממד מפצל את הנקודה: יש עכשיו 15 סימנים, אחד לכל מוצר, בלי כותרות חדשות.</li><li>גוררים את Category אל Color. מספר הסימנים לא השתנה (15), כי כל Item שייך לקטגוריה אחת. רק הצבע נוסף, עם מקרא.</li><li>עכשיו אפשר לקרוא את הגרף: Banana Split (15,788 מכירות, 4,056 רווח) ו-Iced Coffee (16,281 מכירות, 11,716 רווח) מוכרים כמעט אותו דבר, אבל מרוויחים הרבה אחרת.</li></ol></div>
+
+<h3>במגרש</h3>
+<p>בנו את הפיזור ותראו בעיניים את הסימן האחד. אחר כך פצלו אותו.</p>
+<div class="tfp" data-id="m3-pg-onemark" data-task="שימו SUM(Sales) על Columns ו-SUM(Profit) על Rows. כמה סימנים תראו? (לפי הכרטיס Marks)."
+     data-goal='{"columns":["SUM(Sales)"],"rows":["SUM(Profit)"],"marks":1}'
+     data-fields="Sales,Profit,Quantity,Item,Category,Branch,Channel,Order_ID"></div>
+<div class="tfp" data-id="m3-pg-detail" data-task="הוסיפו את Item לתיבה Detail כדי לפצל. צריכים להיות 15 סימנים. אחר כך נסו להוסיף את Category ל-Color: האם המספר משתנה?"
+     data-goal='{"columns":["SUM(Sales)"],"rows":["SUM(Profit)"],"detail":["Item"],"marks":15}'
+     data-preset='{"columns":["SUM(Sales)"],"rows":["SUM(Profit)"]}'
+     data-fields="Sales,Profit,Quantity,Item,Category,Branch,Channel,Order_ID"></div>
+
+<div class="tw"><table class="tbl m3-tb"><thead><tr><th>מה על Detail</th><th class="num">סימנים</th><th>למה</th></tr></thead><tbody>
+<tr><td>כלום</td><td class="num">1</td><td>אין ממד, הכול מסוכם</td></tr>
+<tr><td><code>Channel</code></td><td class="num">3</td><td>הליכה, אפליקציה, משלוחים</td></tr>
+<tr><td><code>Category</code></td><td class="num">5</td><td>חמש קטגוריות</td></tr>
+<tr><td><code>Branch</code></td><td class="num">9</td><td>תשעה סניפים</td></tr>
+<tr><td><code>Item</code></td><td class="num">15</td><td>15 מוצרים</td></tr>
+<tr><td><code>Item</code> ו-<code>Branch</code></td><td class="num">135</td><td>כל צירוף שיש בנתונים: 15 מוצרים כפול 9 סניפים</td></tr>
+<tr><td><code>Order ID</code></td><td class="num">6,575</td><td>כל שורה היא מזהה אחר</td></tr>
+</tbody></table></div>
+
+<div class="box try" data-id="m3-try-scatter">
+<p><b>פיזור של מכירות מול רווח, לפי מוצר.</b> גיליון חדש וריק.</p>
+<ol>
+<li>גררו את <code>Sales</code> אל <code>Columns</code> ואת <code>Profit</code> אל <code>Rows</code>.<span class="m3-why">למה: שני מדדים, אחד בכל ציר. זה הבסיס לפיזור.</span></li>
+<li>הסתכלו: נקודה אחת. העבירו עליה עכבר וקראו. בדקו בשורת המצב: <code>1 mark</code>.<span class="m3-why">למה: אין ממד בגרף, ו-Tableau סיכמה את כל השורות לסימן אחד.</span></li>
+<li>גררו את <code>Item</code> אל התיבה <code>Detail</code> בכרטיס <code>Marks</code>.<span class="m3-why">למה: ממד בלי כותרת. הוא מפצל את הנקודה לנקודה לכל מוצר.</span></li>
+<li>גררו את <code>Category</code> אל <code>Color</code>.<span class="m3-why">למה: צבע לפי קטגוריה עוזר לקרוא. שימו לב שהוא לא מוסיף סימנים, כי Item כבר קובע את הרמה.</span></li>
+<li>בכרטיס <code>Marks</code> שנו את סוג הסימן מ-<code>Automatic</code> ל-<code>Circle</code>.<span class="m3-why">למה: ברירת המחדל בפיזור היא עיגולים ריקים (Shape). עיגולים מלאים קלים יותר לקריאה.</span></li>
+<li>העבירו עכבר מעל הנקודות של <code>Banana Split</code> ושל <code>Iced Coffee</code>.<span class="m3-why">למה: כך מוצאים נקודות חריגות.</span></li>
+<li>בדקו אפשרות נוספת: בתפריט <code>Analysis</code> כבו את <code>Aggregate Measures</code> (אם הוא זמין אצלכם). שימו לב לשורת המצב ואחר כך הדליקו חזרה.<span class="m3-why">למה: בלי סיכום כל שורה היא סימן, וזה מראה מה Tableau עושה כברירת מחדל.</span></li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b> סימן אחד עם <code>SUM(Sales)</code> = <span class="n">236,820.90</span> ו-<code>SUM(Profit)</code> = <span class="n">120,722.90</span>. עם Item על Detail: <span class="n">15</span> סימנים. Milkshake: <span class="n">24,902.80</span> מכירות ו-<span class="n">15,242.80</span> רווח. Iced Coffee: <span class="n">16,281.00</span> ו-<span class="n">11,716.00</span>. Banana Split: <span class="n">15,788.00</span> ו-<span class="n">4,056.00</span>. <span class="n">Lemonade Mint 13,369.50</span> ו-<span class="n">9,769.50</span>. עם Aggregate Measures כבוי: <span class="n">6,575</span> סימנים, שורה לכל סימן, והקטנות שבהן מכירות <span class="n">8</span> והגדולה <span class="n">160</span>.</p></div>
+</div>
+
+<figure class="shot" style="max-width:340px;margin:12px auto"><img src="img/marks-dropdown.png" alt="רשימת סוגי הסימנים בכרטיס Marks"><figcaption>צילום אמיתי: רשימת סוגי הסימן בכרטיס <code>Marks</code>: Automatic, Bar, Line, Area, Square, Circle, Shape, Text, Map, Pie, Gantt Bar, Polygon, Density. בפיזור בוחרים <code>Circle</code> לעיגולים מלאים.</figcaption></figure>
+<figure class="shot" data-shot="m3-scatter-item">
+<div class="fb"><svg viewBox="0 0 560 300" width="100%" role="img" aria-label="תרשים פיזור של מכירות מול רווח לפי מוצר" style="direction:ltr;max-width:560px"><line x1="60.0" x2="60.0" y1="20" y2="262" stroke="#eef2f7"/><text x="60.0" y="278" text-anchor="middle" font-size="11" fill="#64748b">0</text><line x1="156.0" x2="156.0" y1="20" y2="262" stroke="#eef2f7"/><text x="156.0" y="278" text-anchor="middle" font-size="11" fill="#64748b">5,000</text><line x1="252.0" x2="252.0" y1="20" y2="262" stroke="#eef2f7"/><text x="252.0" y="278" text-anchor="middle" font-size="11" fill="#64748b">10,000</text><line x1="348.0" x2="348.0" y1="20" y2="262" stroke="#eef2f7"/><text x="348.0" y="278" text-anchor="middle" font-size="11" fill="#64748b">15,000</text><line x1="444.0" x2="444.0" y1="20" y2="262" stroke="#eef2f7"/><text x="444.0" y="278" text-anchor="middle" font-size="11" fill="#64748b">20,000</text><text x="540" y="278" text-anchor="middle" font-size="11" fill="#64748b">25,000</text><line x1="60" x2="540" y1="262.0" y2="262.0" stroke="#eef2f7"/><text x="55" y="266.0" text-anchor="end" font-size="11" fill="#64748b">0</text><line x1="60" x2="540" y1="201.5" y2="201.5" stroke="#eef2f7"/><text x="55" y="205.5" text-anchor="end" font-size="11" fill="#64748b">4,000</text><line x1="60" x2="540" y1="141.0" y2="141.0" stroke="#eef2f7"/><text x="55" y="145.0" text-anchor="end" font-size="11" fill="#64748b">8,000</text><line x1="60" x2="540" y1="80.5" y2="80.5" stroke="#eef2f7"/><text x="55" y="84.5" text-anchor="end" font-size="11" fill="#64748b">12,000</text><line x1="60" x2="540" y1="20.0" y2="20.0" stroke="#eef2f7"/><text x="55" y="24.0" text-anchor="end" font-size="11" fill="#64748b">16,000</text><text x="300.0" y="294" text-anchor="middle" font-size="12" fill="#334155" font-weight="700">SUM(Sales)</text><text x="14" y="141.0" transform="rotate(-90 14 141.0)" text-anchor="middle" font-size="12" fill="#334155" font-weight="700">SUM(Profit)</text><circle cx="363.1" cy="200.7" r="7" fill="#59a14f" fill-opacity=".9" stroke="#fff"/><circle cx="358.6" cy="194.3" r="7" fill="#59a14f" fill-opacity=".9" stroke="#fff"/><circle cx="234.1" cy="194.2" r="7" fill="#76b7b2" fill-opacity=".9" stroke="#fff"/><circle cx="372.7" cy="130.8" r="7" fill="#f28e2b" fill-opacity=".9" stroke="#fff"/><circle cx="300.8" cy="160.1" r="7" fill="#4e79a7" fill-opacity=".9" stroke="#fff"/><circle cx="447.3" cy="103.7" r="7" fill="#4e79a7" fill-opacity=".9" stroke="#fff"/><circle cx="220.8" cy="193.7" r="7" fill="#76b7b2" fill-opacity=".9" stroke="#fff"/><circle cx="361.4" cy="190.4" r="7" fill="#59a14f" fill-opacity=".9" stroke="#fff"/><circle cx="372.6" cy="84.8" r="7" fill="#e15759" fill-opacity=".9" stroke="#fff"/><circle cx="360.4" cy="130.4" r="7" fill="#f28e2b" fill-opacity=".9" stroke="#fff"/><circle cx="316.7" cy="114.2" r="7" fill="#e15759" fill-opacity=".9" stroke="#fff"/><circle cx="538.1" cy="31.5" r="7" fill="#e15759" fill-opacity=".9" stroke="#fff"/><circle cx="454.2" cy="113.4" r="7" fill="#f28e2b" fill-opacity=".9" stroke="#fff"/><circle cx="386.5" cy="126.6" r="7" fill="#f28e2b" fill-opacity=".9" stroke="#fff"/><circle cx="359.6" cy="135.3" r="7" fill="#4e79a7" fill-opacity=".9" stroke="#fff"/><text x="528.1" y="35.5" text-anchor="end" font-size="11" fill="#1e293b">Milkshake</text><text x="382.6" y="88.8" font-size="11" fill="#1e293b">Iced Coffee</text><text x="373.1" y="204.7" font-size="11" fill="#1e293b">Banana Split</text><circle cx="70" cy="10" r="5" fill="#4e79a7"/><text x="78" y="14" font-size="11" fill="#334155">Cones</text><circle cx="162" cy="10" r="5" fill="#f28e2b"/><text x="170" y="14" font-size="11" fill="#334155">Cups</text><circle cx="254" cy="10" r="5" fill="#e15759"/><text x="262" y="14" font-size="11" fill="#334155">Drinks</text><circle cx="346" cy="10" r="5" fill="#76b7b2"/><text x="354" y="14" font-size="11" fill="#334155">Sticks</text><circle cx="438" cy="10" r="5" fill="#59a14f"/><text x="446" y="14" font-size="11" fill="#334155">Sundaes</text></svg><div class="need">צילום מסך נדרש: Tableau Public, Scoop & Go: SUM(Sales) על Columns, SUM(Profit) על Rows, Item על Detail, Category על Color, סוג סימן Circle, מקרא קטגוריות, שורת המצב עם 15 marks.</div></div>
+<figcaption>הדמיה של הפיזור שאמור לצאת, עם הערכים האמיתיים. כל נקודה היא מוצר.</figcaption></figure>
+
+<div class="quiz" data-id="m3-q-onemark" data-a="2"><p class="qq">בנתם פיזור עם SUM(Sales) ב-Columns ו-SUM(Profit) ב-Rows, וקיבלתם נקודה אחת. איך מפצלים אותה?</p>
+<button class="opt">מחליפים בין Columns ל-Rows</button>
+<button class="opt">גוררים ממד, כמו Item, לתיבה Detail</button>
+<button class="opt">משנים את SUM ל-AVG</button>
+<button class="opt">מוסיפים עוד מדד ל-Rows</button>
+<div class="why">נקודה אחת פירושה שאין בגרף ממד, ולכן הכול מסוכם. ממד על Detail מפצל לנקודה לכל ערך. החלפת צירים לא תשנה את מספר הסימנים. ממוצע ייתן עדיין סימן אחד. מדד נוסף ב-Rows יוסיף ציר, לא נקודות.</div></div>
+
+<div class="quiz" data-id="m3-q-detail15" data-a="1"><p class="qq">הגרף כולל Item על Detail (15 סימנים). מוסיפים את Category לצבע. כמה סימנים עכשיו?</p>
+<button class="opt">15, כי כל מוצר שייך לקטגוריה אחת בלבד</button>
+<button class="opt">20, צירוף של 15 מוצרים ו-5 קטגוריות</button>
+<button class="opt">5, כמספר הצבעים</button>
+<div class="why">הסימנים הם צירופי ממדים שקיימים בנתונים. כל Item תמיד באותה קטגוריה (Milkshake הוא Drinks), ולכן יש רק 15 צירופים. 75 היו יוצאים רק אם כל מוצר היה מופיע בכל קטגוריה.</div></div>
+
+<div class="box think" data-id="m3-th-scatter"><p>איזה מוצרים הייתם בודקים בבדיקת מחירים, ולמה גרף העמודות של מכירות לפי מוצר לא מספיק כדי לראות אותם?</p>
+<div class="ans">שלושת הסנדיי (Banana Split, Halva Sundae, Brownie Sundae) מוכרים בערך <span class="n">15,700</span> כל אחד, אבל מרוויחים רק <span class="n">4,000</span> עד <span class="n">4,700</span>, כלומר בערך רבע עד שליש ממה שנכנס. מוצר כמו Chocolate Cup, עם מכירות קרובות (<span class="n">16,288</span>), מרוויח <span class="n">8,674</span>. גרף עמודות של מכירות מראה ששניהם גדולים, וממסך את הפער ברווח. הפיזור מראה את שני המדדים יחד.</div></div>
+
+<div class="box trap"><p><b>נקודה אחת במקום פיזור.</b> זו הטעות הנפוצה ביותר בפיזור, ואין בה טעות: Tableau עושה בדיוק מה שביקשתם, מסכמת הכול. התיקון הוא תמיד אותו תיקון: ממד אחד על <code>Detail</code> (או על Color). שאלה לשאול כל פעם: מה הנקודה בגרף מייצגת, מוצר, סניף או הזמנה?</p></div>
+<div class="box trap"><p><b>הרבה יותר מדי נקודות.</b> אם תשימו <code>Order ID</code> על Detail, תקבלו <span class="n">6,575</span> נקודות, ענן שבו אי אפשר לקרוא שום דבר. בפיזור של סיכומים (מוצר, סניף, יום) נקודה היא סיכום. נקודה לכל שורה מתאימה רק כשמחפשים חריגים בודדים.</p></div>
+
+<div class="box meaning"><p>מה הפיזור אומר: מוצר שמוכר הרבה לא בהכרח מרוויח הרבה. Iced Coffee ו-Lemonade Mint הם מוצרים עם שולי רווח של <span class="n">72.0%</span> ו-<span class="n">73.1%</span>, ו-Banana Split רק <span class="n">25.7%</span>. אותו קשר גם בקטגוריות: ל-<span class="n">Drinks 67.3%</span> רווח מהמכירות, ול-<span class="n">Sundaes 28.2%</span>. מנהל שמסתכל רק על מכירות יקדם את הקטגוריה הלא נכונה.</p></div>
+
+<div class="box real"><p>תרשים פיזור הוא הכלי הרגיל לחיפוש חריגים ואשכולות: נקודות רחוקות מהשאר, או קבוצות שמתקבצות. אנליסטים שמחפשים מוצרים &quot;מוכרים הרבה ומרוויחים מעט&quot; בונים פיזור כזה כמעט תמיד, ומוסיפים לו אחר כך קו מגמה.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בקשו מהכיתה לנחש לפני הגרירה כמה סימנים יהיו. רוב הסטודנטים אומרים 15 או יותר, והסימן האחד הוא הפתעה טובה. בדקו בתוכנה לפני השיעור: האם הסימן ברירת מחדל הוא Shape (עיגולים ריקים) או משהו אחר בגרסה שלכם, ואיפה בדיוק <code>Aggregate Measures</code> (בתפריט Analysis). אם הפקודה לא קיימת בגרסת Public שלכם, מחקו את צעד 7. ההבדל בין Detail ל-Color: Color מפצל וגם צובע, Detail מפצל בלבד.</div>
+</section>
+
+<section class="sec" id="m3-9" data-t="מיון, תוויות, טולטיפ וכותרת">
+<div class="sec-h"><div class="sec-n">9</div><h2>מיון, תוויות, טולטיפ וכותרת: הופכים גרף נכון לגרף קריא</h2></div>
+<p class="lead">הגרף בנוי וגם נכון. אבל המנהלת לא תקרא אותו אם הוא לא ברור: העמודות לא ממוינות, אין מספרים, והכותרת כתוב עליה Sheet 1. ארבעה דברים קטנים משנים את זה.</p>
+
+<h3>1. מיון (Sort)</h3>
+<div class="defline"><b>מיון:</b> סידור הכותרות לפי ערך של מדד, מהגדול לקטן או להפך. דוגמה: מיון יורד לפי <code>SUM(Sales)</code> שם את Cups בראש, וב-Sticks בסוף.</div>
+<p>יש שתי דרכים נוחות. (1) כפתורי <code>Sort Ascending</code> ו-<code>Sort Descending</code> בסרגל הכלים, שממיינים את הכותרת הפנימית לפי המדד. (2) בהעברת עכבר מעל ציר או כותרת מופיע סמל קטן של מיון, ובלחיצה עליו הסדר משתנה. בצילום האמיתי בסעיף 3 רואים את הסמל ליד הפיל של <code>Genre</code>.</p>
+<div class="tfp" data-id="m3-pg-sortlabel" data-task="מיינו מהגדול לקטן והציגו תוויות עם הערכים (כפתורי מיון ותוויות בשורת הכלים של המגרש)."
+     data-goal='{"columns":["Category"],"rows":["SUM(Sales)"],"sort":"desc","labels":true}'
+     data-preset='{"columns":["Category"],"rows":["SUM(Sales)"]}'
+     data-fields="Category,Item,Region,Channel,Branch,Sales,Profit,Quantity"></div>
+
+<h3>2. תוויות (Labels)</h3>
+<div class="defline"><b>תווית (Label):</b> המספר או הטקסט שמודפס על הסימן עצמו. דוגמה: <span class="n">69,470</span> מעל העמודה של Cups. מפעילים בכפתור <code>Show Mark Labels</code> בסרגל, או בגרירת שדה לתיבה <code>Label</code> בכרטיס Marks.</div>
+<p>הכפתור מדפיס את המדד של הגרף. הגרירה מאפשרת לשים שדה אחר, למשל שם הסניף. אם תלחצו על <code>Label</code> בכרטיס Marks תוכלו גם לבחור לתייג רק את הערך הגבוה והנמוך (בבחירה <code>Marks to Label</code>).</p>
+<figure class="shot" style="max-width:260px;margin:12px auto"><img src="img/label-menu.png" alt="כרטיס Marks עם פיל Genre ותפריט שבו Label מסומן"><figcaption>צילום אמיתי: בכרטיס <code>Marks</code> לחיצה על הסמל שליד פיל פותחת רשימה (<code>Color</code>, <code>Label</code>, <code>Size</code>, <code>Path</code>, <code>Detail</code>, <code>Tooltip</code>) שמעבירה אותו בין התיבות.</figcaption></figure>
+
+<h3>3. טולטיפ (Tooltip)</h3>
+<div class="defline"><b>טולטיפ (Tooltip):</b> חלונית קטנה שקופצת כשמרחפים מעל סימן, ומראה פרטים. דוגמה: ריחוף על העמודה של Cups מראה את שם הקטגוריה ואת סכום המכירות שלה.</div>
+<p>אפשר לשנות את הטקסט בלחיצה על התיבה <code>Tooltip</code> בכרטיס <code>Marks</code>. נפתח חלון עם הטקסט, ושדות מופיעים בסוגריים משולשים, <code>&lt;Category&gt;</code>. אפשר גם לגרור שדה חדש אל התיבה, והוא יתווסף.</p>
+<div class="cols2">
+<figure class="shot" data-shot="m3-tooltip-edit" style="margin:12px 0"><div class="fb"><div class="m3-ted" aria-label="הדמיה סכמטית של חלון עריכת הטולטיפ">
+<div class="hd">Edit Tooltip</div><div class="tb">Arial · 9 · B I U · Insert ▾</div>
+<div class="bd"><span class="t">&lt;Category&gt;</span>: <span class="t">&lt;SUM(Sales)&gt;</span> in sales
+Profit: <span class="t">&lt;SUM(Profit)&gt;</span></div>
+<div class="ft"><i>Cancel</i><b>OK</b></div></div>
+<p style="font-size:.85rem;color:#64748b;text-align:center">הדמיה סכמטית של חלון העריכה.</p><div class="need">צילום מסך נדרש: Tableau Public, חלון Edit Tooltip עם הטקסט &lt;Category&gt;: &lt;SUM(Sales)&gt; in sales ושורת Profit.</div></div><figcaption>חלון עריכת הטולטיפ (הדמיה).</figcaption></figure>
+<div style="text-align:center"><div class="m3-tt"><b>Cups: 69,470 in sales</b><br>Profit: 36,152.50</div>
+<p style="font-size:.85rem;color:#64748b">מה שיקפוץ כשמרחפים על Cups. המספרים מעוגלים לפי הפורמט האוטומטי.</p></div>
+</div>
+
+<h3>4. כותרת וכיתוב (Title, Caption)</h3>
+<div class="defline"><b>כותרת (Title) וכיתוב (Caption):</b> שני כרטיסים של טקסט בגיליון. הכותרת למעלה, וברירת המחדל שלה היא שם הגיליון. הכיתוב למטה, ואפשר להציג אותו בתפריט <code>Worksheet</code>. דוגמה: כותרת &quot;Which category brings the most money?&quot; וכיתוב עם שם הקובץ.</div>
+<p>עורכים כותרת בלחיצה כפולה עליה (או בחץ שלה ו-<code>Edit Title</code>). בחלון העריכה אפשר להכניס שדות וערכים מהגרף בעזרת <code>Insert</code>. הצגה והסתרה: <code>Worksheet</code> ואז <code>Show Title</code> או <code>Show Caption</code>.</p>
+<div class="m3-scroll"><div class="mk" style="min-width:480px;max-width:560px"><div class="mk-bar"><i></i><i></i><i></i><span class="url">Sheet: Sales by Category (הדמיה סכמטית)</span></div>
+<div class="mk-body"><div style="font-size:1.1rem;color:#334155;margin-bottom:4px">Which category brings the most money?</div><svg viewBox="0 0 500 190" width="100%" role="img" aria-label="עמודות אופקיות עם כותרת וכיתוב" style="direction:ltr;max-width:500px"><line x1="70.0" x2="70.0" y1="8" y2="166" stroke="#e5e9ee"/><text x="70.0" y="182" text-anchor="middle" font-size="10" fill="#64748b">0</text><line x1="167.5" x2="167.5" y1="8" y2="166" stroke="#e5e9ee"/><text x="167.5" y="182" text-anchor="middle" font-size="10" fill="#64748b">25,000</text><line x1="265.0" x2="265.0" y1="8" y2="166" stroke="#e5e9ee"/><text x="265.0" y="182" text-anchor="middle" font-size="10" fill="#64748b">50,000</text><line x1="362.5" x2="362.5" y1="8" y2="166" stroke="#e5e9ee"/><text x="362.5" y="182" text-anchor="middle" font-size="10" fill="#64748b">75,000</text><line x1="460.0" x2="460.0" y1="8" y2="166" stroke="#e5e9ee"/><text x="460.0" y="182" text-anchor="middle" font-size="10" fill="#64748b">100,000</text><rect x="70" y="12.7" width="270.9" height="22.1" fill="#4e79a7"/><text x="65" y="27.8" text-anchor="end" font-size="11" fill="#334155">Cups</text><text x="344.9" y="27.8" font-size="10" fill="#1e293b">69,470</text><rect x="70" y="44.3" width="212.8" height="22.1" fill="#4e79a7"/><text x="65" y="59.4" text-anchor="end" font-size="11" fill="#334155">Drinks</text><text x="286.8" y="59.4" font-size="10" fill="#1e293b">54,553</text><rect x="70" y="75.9" width="188.4" height="22.1" fill="#4e79a7"/><text x="65" y="91.0" text-anchor="end" font-size="11" fill="#334155">Cones</text><text x="262.4" y="91.0" font-size="10" fill="#1e293b">48,317</text><rect x="70" y="107.5" width="183.4" height="22.1" fill="#4e79a7"/><text x="65" y="122.6" text-anchor="end" font-size="11" fill="#334155">Sundaes</text><text x="257.4" y="122.6" font-size="10" fill="#1e293b">47,037</text><rect x="70" y="139.1" width="68.0" height="22.1" fill="#4e79a7"/><text x="65" y="154.2" text-anchor="end" font-size="11" fill="#334155">Sticks</text><text x="142.0" y="154.2" font-size="10" fill="#1e293b">17,443</text></svg><div style="font-size:.78rem;color:#64748b;margin-top:4px">Source: scoop_sales_2024_2025.csv, 6,575 order lines, 2024 to 2025.</div></div></div></div>
+
+<div class="box try" data-id="m3-try-polish">
+<p><b>מלטשים את הגיליון Sales by Category.</b> הגיליון פתוח, בלי מיון ותוויות.</p>
+<ol>
+<li>מיינו יורד (<code>Sort Descending</code>), והציגו תוויות (<code>Show Mark Labels</code>).<span class="m3-why">למה: דירוג וקריאות. כאן אין צורך בציר, כי המספרים על העמודות.</span></li>
+<li>לחצו על <code>Tooltip</code> בכרטיס <code>Marks</code>. מחקו את הטקסט והקלידו: <code>&lt;Category&gt;: &lt;SUM(Sales)&gt; in sales</code> (אפשר להוסיף את השדות בעזרת <code>Insert</code>). לחצו <code>OK</code>.<span class="m3-why">למה: טולטיפ קצר וקריא. כתבנו באנגלית כדי לא להתעסק בכיוון הטקסט.</span></li>
+<li>גררו את <code>Profit</code> מחלונית Data אל התיבה <code>Tooltip</code> בכרטיס Marks.<span class="m3-why">למה: שדה בטולטיפ מוסיף מידע בלי להעמיס על הגרף.</span></li>
+<li>רחפו מעל Cups ומעל Drinks.</li>
+<li>לחצו פעמיים על הכותרת (או בחץ שלה, <code>Edit Title</code>) והחליפו ל-<code>Which category brings the most money?</code>.<span class="m3-why">למה: כותרת שאומרת את השאלה. השם Sheet 1 לא אומר שום דבר.</span></li>
+<li>בתפריט <code>Worksheet</code> בחרו <code>Show Caption</code> והקלידו כיתוב: <code>Source: scoop_sales_2024_2025.csv, 6,575 order lines</code>.<span class="m3-why">למה: ציון המקור והגודל של הנתונים נותן לקורא דרך לבדוק.</span></li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b> חמש תוויות. ריחוף על Cups: <code>Cups: 69,470 in sales</code> ו-Profit <span class="n">36,152.50</span> (Tableau עשויה להציג אותו מעוגל, לפי הפורמט). ריחוף על Drinks: <span class="n">54,553</span> מכירות ו-<span class="n">36,728.30</span> רווח. הכותרת החדשה למעלה והכיתוב למטה. אם בחלון Tooltip משהו נראה שונה, בגרסה שלכם ייתכן שהכפתורים בסדר אחר.</p></div>
+</div>
+
+<div class="quiz" data-id="m3-q-tooltip" data-a="3"><p class="qq">רוצים שבריחוף על עמודה יופיע גם הרווח, בלי שהוא יופיע על הגרף עצמו. איפה גוררים את Profit?</p>
+<button class="opt">אל Rows</button>
+<button class="opt">אל Label</button>
+<button class="opt">אל Tooltip בכרטיס Marks</button>
+<div class="why">Tooltip מוסיף מידע שמופיע רק בריחוף, בלי לשנות את מבנה הגרף. Rows היה מוסיף עוד ציר או שינוי בצורה. Label היה מדפיס את הרווח על כל עמודה, ואז הגרף עמוס.</div></div>
+
+<div class="box trap"><p><b>כותרת בעברית עלולה להתנהג מוזר.</b> אין ל-Tableau תמיכה מתועדת בכיוון מימין לשמאל, ולפי מדריכים סימני פיסוק או מספרים בקצה משפט בעברית עלולים לקפוץ למקום הלא נכון. נסו כותרת אחת בעברית לפני שמשקיעים. אם היא נראית שבורה, כתבו באנגלית (גם בתרגילים כאן אנחנו כותבים באנגלית).</p></div>
+
+<div class="box trap"><p><b>המספר על התווית לא תמיד זהה לטולטיפ.</b> Tableau מעגלת לפי פורמט המספרים של השדה. התווית עשויה להראות 69,470 והטולטיפ 69,470.00, או להפך. זה לא שגוי, זו אותה כמות. אם צריך עשרוניים, קליק ימני על הפיל ובחירה ב-<code>Format</code>.</p></div>
+
+<div class="box meaning"><p>הכותרת, התוויות והטולטיפ הם מה שהקורא רואה לפני שהוא מבין את הגרף. כותרת שהיא שאלה (&quot;איזו קטגוריה מכניסה הכי הרבה?&quot;) אומרת מה לחפש. תוויות חוסכות ציר. טולטיפ שומר פרטים בלי לחסום את הגרף.</p></div>
+
+<div class="box real"><p>בהנחיות העיצוב הרשמיות של Tableau מומלץ כותרת שהיא שאלה או מסקנה, ושימוש בטולטיפ לפרט משני. כדאי להוסיף גם כיתוב מקור, ובדשבורדים לוודא שכל גיליון בעל שם ברור.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הציגו כל אחד מארבעת הדברים על הגרף של הכיתה ובקשו מהסטודנטים לבחור שינוי אחד. בדקו בתוכנה: שם הכפתור Show Mark Labels, האם הלחיצה הכפולה על הכותרת פותחת Edit Title, והאם Worksheet, Show Caption קיים בגרסת Public. הטענה על כיוון הטקסט בעברית מבוססת על מדריכים ולא נבדקה: בדקו בעצמכם כותרת אחת בעברית ודווחו.</div>
+</section>
+
+<section class="sec" id="m3-10" data-t="ביטול, גיליונות ושמירה">
+<div class="sec-h"><div class="sec-n">10</div><h2>לטעות, לבטל, לנהל גיליונות ולשמור</h2></div>
+<p class="lead">עד עכשיו עבדנו על גיליון אחד. עוד מעט יהיו חמישה, ואחר כך דשבורד. כדאי לדעת לבטל בלי פחד, לשכפל לפני ניסויים, לתת שמות, ולשמור את העבודה על המחשב.</p>
+
+<h3>Undo ו-Redo</h3>
+<div class="defline"><b>ביטול (Undo) והחזרה (Redo):</b> שני החצים בפינה השמאלית של סרגל הכלים. <code>Undo</code> מבטל את הפעולה האחרונה, ו-<code>Redo</code> מחזיר אותה. דוגמה: גררתם בטעות את <code>Order ID</code> ל-Columns. Undo אחד והוא חוזר לחלונית.</div>
+<p>הקיצור הוא <kbd>Ctrl</kbd>+<kbd>Z</kbd> (ב-Mac <kbd>Cmd</kbd>+<kbd>Z</kbd>). לפי המדריך הרשמי של Tableau אין מגבלה על כמות הביטולים בגיליון. זה הכלל הכי חשוב לסטודנט חדש: אי אפשר לשבור כלום, אז מותר לנסות.</p>
+<div class="anim" data-id="m3-anim-undo" data-speed="3400"><div class="stage"><svg viewBox="0 0 800 250" role="img" aria-label="הנפשה: היסטוריית פעולות, ביטול והחזרה"><defs><marker id="m3un-ar" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#e8741f"/></marker></defs><text x="400" y="24" text-anchor="middle" font-size="15" fill="#334155" font-weight="700" >הפעולות שבוצעו בגיליון, לפי הסדר</text><rect x="20" y="50" width="112" height="64" rx="8" fill="#eef2f7" stroke="#cbd5e1"/><text x="76" y="76" text-anchor="middle" font-size="18" fill="#94a3b8" font-weight="800" >1</text><text x="76" y="98" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="400" >Category to Columns</text><g data-only="1,2,3"><rect x="20" y="50" width="112" height="64" rx="8" fill="#d7e7f5" stroke="#4e79a7" stroke-width="2"/><text x="76" y="76" text-anchor="middle" font-size="18" fill="#14507a" font-weight="800" >1</text><text x="76" y="98" text-anchor="middle" font-size="11" fill="#14507a" font-weight="700" >Category to Columns</text></g><rect x="146" y="50" width="112" height="64" rx="8" fill="#eef2f7" stroke="#cbd5e1"/><text x="202" y="76" text-anchor="middle" font-size="18" fill="#94a3b8" font-weight="800" >2</text><text x="202" y="98" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="400" >Sales to Rows</text><g data-only="1,2,3"><rect x="146" y="50" width="112" height="64" rx="8" fill="#d7e7f5" stroke="#4e79a7" stroke-width="2"/><text x="202" y="76" text-anchor="middle" font-size="18" fill="#14507a" font-weight="800" >2</text><text x="202" y="98" text-anchor="middle" font-size="11" fill="#14507a" font-weight="700" >Sales to Rows</text></g><rect x="272" y="50" width="112" height="64" rx="8" fill="#eef2f7" stroke="#cbd5e1"/><text x="328" y="76" text-anchor="middle" font-size="18" fill="#94a3b8" font-weight="800" >3</text><text x="328" y="98" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="400" >Sort Descending</text><g data-only="1,2,3"><rect x="272" y="50" width="112" height="64" rx="8" fill="#d7e7f5" stroke="#4e79a7" stroke-width="2"/><text x="328" y="76" text-anchor="middle" font-size="18" fill="#14507a" font-weight="800" >3</text><text x="328" y="98" text-anchor="middle" font-size="11" fill="#14507a" font-weight="700" >Sort Descending</text></g><rect x="398" y="50" width="112" height="64" rx="8" fill="#eef2f7" stroke="#cbd5e1"/><text x="454" y="76" text-anchor="middle" font-size="18" fill="#94a3b8" font-weight="800" >4</text><text x="454" y="98" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="400" >Swap Rows/Cols</text><g data-only="1,3"><rect x="398" y="50" width="112" height="64" rx="8" fill="#d7e7f5" stroke="#4e79a7" stroke-width="2"/><text x="454" y="76" text-anchor="middle" font-size="18" fill="#14507a" font-weight="800" >4</text><text x="454" y="98" text-anchor="middle" font-size="11" fill="#14507a" font-weight="700" >Swap Rows/Cols</text></g><rect x="524" y="50" width="112" height="64" rx="8" fill="#eef2f7" stroke="#cbd5e1"/><text x="580" y="76" text-anchor="middle" font-size="18" fill="#94a3b8" font-weight="800" >5</text><text x="580" y="98" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="400" >Labels on</text><g data-only="1"><rect x="524" y="50" width="112" height="64" rx="8" fill="#d7e7f5" stroke="#4e79a7" stroke-width="2"/><text x="580" y="76" text-anchor="middle" font-size="18" fill="#14507a" font-weight="800" >5</text><text x="580" y="98" text-anchor="middle" font-size="11" fill="#14507a" font-weight="700" >Labels on</text></g><rect x="650" y="50" width="112" height="64" rx="8" fill="#eef2f7" stroke="#cbd5e1"/><text x="706" y="76" text-anchor="middle" font-size="18" fill="#94a3b8" font-weight="800" >6</text><text x="706" y="98" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="400" >Region to Color</text><g data-only="1"><rect x="650" y="50" width="112" height="64" rx="8" fill="#d7e7f5" stroke="#4e79a7" stroke-width="2"/><text x="706" y="76" text-anchor="middle" font-size="18" fill="#14507a" font-weight="800" >6</text><text x="706" y="98" text-anchor="middle" font-size="11" fill="#14507a" font-weight="700" >Region to Color</text></g><g data-move="1:0,0|2:-378,0|3:-252,0|4:-700,0"><path d="M706,148 L706,126" stroke="#e8741f" stroke-width="3" marker-end="url(#m3un-ar)"/><text x="706" y="168" text-anchor="middle" font-size="13" fill="#b45309" font-weight="700" >now</text></g><g data-only="1"><text x="400" y="214" text-anchor="middle" font-size="15" fill="#1e293b" font-weight="700" >המצב עכשיו: 20 סימנים, עמודות מוערמות לפי אזור</text></g><g data-only="2"><text x="400" y="214" text-anchor="middle" font-size="15" fill="#1e293b" font-weight="700" >אחרי שלושה ביטולים: 5 סימנים, ממוין, עמודות אנכיות</text></g><g data-only="3"><text x="400" y="214" text-anchor="middle" font-size="15" fill="#1e293b" font-weight="700" >אחרי החזרה אחת: 5 סימנים, עמודות אופקיות</text></g><g data-only="4"><text x="400" y="214" text-anchor="middle" font-size="15" fill="#1e293b" font-weight="700" >אחרי ביטול עד הסוף: גיליון ריק</text></g></svg></div><ol class="caps"><li>שש פעולות הצטברו בגיליון. המצב הנוכחי הוא אחרי הפעולה השישית: 20 סימנים (5 קטגוריות כפול 4 אזורים).</li><li>לוחצים Undo שלוש פעמים. שלוש הפעולות האחרונות מתבטלות, והגרף חוזר למצב של אחרי הפעולה השלישית.</li><li>לוחצים Redo פעם אחת. הפעולה הרביעית חוזרת: הצירים מוחלפים והעמודות אופקיות.</li><li>ממשיכים ללחוץ Undo עד הסוף. לפי המדריך הרשמי של Tableau אין הגבלה על מספר הביטולים, ולכן אפשר להגיע עד גיליון ריק.</li></ol></div>
+
+<div class="box try" data-id="m3-try-undo">
+<p><b>מרתון Undo.</b> גיליון חדש וריק.</p>
+<ol>
+<li>בצעו בזה אחר זה את תשע הפעולות:
+<ol>
+<li><code>Category</code> ל-<code>Columns</code></li>
+<li><code>Sales</code> ל-<code>Rows</code></li>
+<li><code>Sort Descending</code></li>
+<li><code>Swap Rows and Columns</code></li>
+<li><code>Show Mark Labels</code></li>
+<li><code>Region</code> ל-<code>Color</code></li>
+<li><code>Channel</code> אל <code>Detail</code></li>
+<li>להחליף את <code>Region</code> ב-<code>Channel</code> על Color</li>
+<li>לשנות את הכותרת</li>
+</ol>
+<span class="m3-why">למה: צוברים הרבה פעולות, כדי לראות שלביטול אין בעיה עם עומק.</span></li>
+<li>אחרי כל פעולה הסתכלו על שורת המצב וכתבו כמה סימנים יש.<span class="m3-why">למה: כך מרגישים איך כל פעולה משנה את מספר הסימנים.</span></li>
+<li>לחצו <code>Undo</code> שוב ושוב, עד שהגיליון ריק.<span class="m3-why">למה: לראות שאפשר לחזור עד הרגע שבו הכול התחיל.</span></li>
+<li>לחצו <code>Redo</code> כמה פעמים וראו את הגרף נבנה מחדש.</li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b> אחרי פעולה 2: <span class="n">5</span> סימנים. אחרי פעולה 6: <span class="n">20</span> סימנים (קטגוריה כפול אזור), בעמודות מוערמות. אחרי פעולה 7: <span class="n">60</span> סימנים (קטגוריה כפול אזור כפול ערוץ). אחרי פעולה 8: <span class="n">15</span> סימנים (קטגוריה כפול ערוץ). כשהכול מבוטל, כתוב <code>Drop field here</code>.</p></div>
+</div>
+
+<h3>גיליונות: חדש, שכפול, שם, מחיקה</h3>
+<div class="defline"><b>גיליון חדש, שכפול וניקוי:</b> <code>New Worksheet</code> פותח גיליון ריק. <code>Duplicate</code> מעתיק גיליון שלם עם כל הפילים והעיצוב שלו. <code>Clear Sheet</code> מרוקן את הגיליון הנוכחי מכל הפילים אבל משאיר אותו קיים. דוגמה: משכפלים את <code>Sales by Category</code> לפני שמשנים אותו לממוצע.</div>
+<div class="cols2">
+<div><div class="m3-sheets"><span>Data Source</span><span class="on">Sales by Category</span><span>Sheet 2</span><span>+</span></div>
+<div class="m3-menu"><div>Rename</div><div class="sel">Duplicate</div><div>Delete</div><hr><div>Hide</div><div>Color</div></div>
+<p style="font-size:.85rem;color:#64748b">הדמיה סכמטית של התפריט שנפתח בקליק ימני על לשונית (Control-click ב-Mac). ייתכן שיש בו עוד פקודות.</p></div>
+<div><p><b>איזו פעולה מתי:</b></p>
+<ul>
+<li><b>Duplicate</b> לפני ניסוי, כדי לשמור את הגרסה הטובה.</li>
+<li><b>Rename</b> אחרי כל גרף, כי &quot;Sheet 7&quot; לא אומר כלום בדשבורד.</li>
+<li><b>Clear Sheet</b> כשרוצים להתחיל מחדש באותו גיליון.</li>
+<li><b>Delete</b> לגיליון שאין בו צורך. בגיליון שכבר בדשבורד זה ישבש אותו, לכן זהירות.</li>
+<li>גרירת לשונית משנה את הסדר.</li>
+</ul></div>
+</div>
+
+<div class="tfp" data-id="m3-pg-free" data-task="מגרש חופשי: בנו שני גרפים שונים לגמרי (למשל עמודות של קטגוריה וקו של חודשים). הכפתורים ביטול וניקוי בשורת הכלים של המגרש מדמים Undo ו-Clear Sheet."
+     data-fields="Category,Item,Region,Channel,Branch,Order_Date,Sales,Profit,Quantity"></div>
+
+<h3>שמירה</h3>
+<div class="defline"><b>שמירה מקומית:</b> שמירת חוברת העבודה כקובץ במחשב שלכם, בלי לפרסם ל-Tableau Public. דוגמה: <code>File</code> ואז <code>Save As</code> וקובץ בשם <code>scoop-first-look</code> בתיקייה שלכם. את העבודה אפשר לפתוח שוב בלחיצה כפולה.</div>
+<p>ב-Tableau Public Desktop אפשר לבחור: לשמור על המחשב, או לפרסם לפרופיל הציבורי. בינתיים רק שומרים על המחשב. כל מה שמפורסם ל-Tableau Public הוא ציבורי, וכל אחד יכול להוריד אותו עם הנתונים. נלמד לפרסם במודול 14. התוכנה גם שומרת אוטומטית כל כמה דקות (בתפריט <code>Help</code>, <code>Settings and Performance</code>, <code>Enable Autosave</code>), וקובצי השחזור מופיעים בהודעה כשהתוכנה נסגרת לא כשורה.</p>
+<div class="box note"><p><b>בעריכה בדפדפן (web authoring):</b> אותם גיליונות, מדפים וכרטיס Marks. השמירה נעשית בתפריט <code>File</code> ואז <code>Save</code>, והעבודה נשמרת בחשבון שלכם באתר. לפי התיעוד של Tableau Public כל מה שנשמר לפרופיל הוא ציבורי, ולכן בעריכה בדפדפן השתמשו רק בנתוני הקורס הבדויים. עריכה בדפדפן עובדת במחשב ולא בטלפון.</p></div>
+
+<div class="box try" data-id="m3-try-save">
+<p><b>סדר בחוברת ושמירה.</b> יש לכם גיליונות מהסעיפים הקודמים.</p>
+<ol>
+<li>מצאו את הגיליונות שבניתם:
+<ul>
+<li><code>Sales by Category</code></li>
+<li><code>Avg Sales by Category</code></li>
+<li><code>Sales by Month</code></li>
+</ul>
+אם יש גיליונות ריקים בשם <code>Sheet N</code>, מחקו אותם (קליק ימני, <code>Delete</code>).<span class="m3-why">למה: חוברת נקייה קל לנווט בה.</span></li>
+<li>הוסיפו שני גיליונות. הראשון, טבלת הטקסט, בשם <code>Category x Channel</code>. השני, הפיזור, בשם <code>Sales vs Profit by Item</code>. אם עוד לא בניתם אותם, בנו לפי הצעדים בסעיפים 6 ו-8.<span class="m3-why">למה: בסוף המודול החוברת צריכה להכיל חמישה גיליונות בעלי שם.</span></li>
+<li>סדרו את הלשוניות בגרירה לפי הסדר הזה:
+<ol>
+<li><code>Sales by Category</code></li>
+<li><code>Avg Sales by Category</code></li>
+<li><code>Sales by Month</code></li>
+<li><code>Category x Channel</code></li>
+<li><code>Sales vs Profit by Item</code></li>
+</ol></li>
+<li>בתפריט <code>File</code> בחרו <code>Save As</code> ושמרו על המחשב בשם <code>scoop-first-look</code>. אל תבחרו Save to Tableau Public.<span class="m3-why">למה: שמירה מקומית לא מפרסמת כלום.</span></li>
+<li>סגרו את Tableau ופתחו את הקובץ שוב מהתיקייה.</li>
+</ol>
+<div class="m3-exp"><p><b>תוצאה צפויה:</b> אחרי פתיחה מחדש יש לשונית <code>Data Source</code> ועוד <span class="n">5</span> לשוניות בשמות שנתתם. כל גיליון מראה את אותם מספרים: למשל <span class="n">Cups 69,470.00</span>, 24 סימנים בקו החודשי, 15 תאים בטבלת הטקסט, ו-15 סימנים בפיזור. אם התוכנה שואלת על חיבור לקובץ הנתונים, הצביעו על ה-CSV.</p></div>
+</div>
+
+<div class="quiz" data-id="m3-q-clear" data-a="2"><p class="qq">רוצים לנסות גרסה אחרת של גיליון בלי לאבד את המקור. מה עושים?</p>
+<button class="opt">Clear Sheet ובונים מחדש</button>
+<button class="opt">Duplicate ועובדים על העותק</button>
+<button class="opt">Delete ובונים את הגיליון מחדש מאפס</button>
+<div class="why">Duplicate שומר את המקור שלם ונותן עותק לניסוי. Clear Sheet מרוקן את הגיליון, וגם Delete מוחק אותו, ואז צריך לבנות מחדש (אם כי Undo יכול להחזיר).</div></div>
+
+<div class="quiz" data-id="m3-q-save" data-a="3"><p class="qq">איזו פעולה מפרסמת את העבודה לאינטרנט כך שכל אחד יכול לראות אותה?</p>
+<button class="opt">Save As לקובץ בתיקיית המסמכים</button>
+<button class="opt">Duplicate Sheet</button>
+<button class="opt">Save to Tableau Public (פרסום לפרופיל)</button>
+<div class="why">שמירה לקובץ בתיקייה היא מקומית. פרסום לפרופיל ב-Tableau Public הוא ציבורי: כל אחד יכול לצפות ובדרך כלל גם להוריד את הנתונים. רק בפרסום משתמשים בנתונים מותרים לפרסום.</div></div>
+
+<div class="box think" data-id="m3-th-sheets"><p>למה כדאי לתת שם לכל גיליון מיד כשהוא נבנה, ולא להשאיר את זה לסוף? חשבו על דשבורד עם שמונה גיליונות.</p>
+<div class="ans">בדשבורד ובסיפור רואים את שמות הגיליונות ברשימה. עם שמות כמו Sheet 5 ו-Sheet 8 צריך לפתוח כל אחד כדי להבין מה בו, ואפשר לגרור את הלא נכון. כשנותנים שם בשעת הבנייה זוכרים מה הגיליון עושה. שם טוב אומר מה הגרף מראה, למשל &quot;Sales by Month&quot;.</div></div>
+
+<div class="box trap"><p><b>Save to Tableau Public הוא לא &quot;שמירה&quot;.</b> בגרסאות שונות הפקודה הזאת מופיעה בתפריט File בסמוך לשמירה רגילה. אל תלחצו עליה בטעות: היא מפרסמת את החוברת ואת הנתונים לפרופיל ציבורי. בתרגילים של המודול הזה בוחרים רק <code>Save As</code> מקומי.</p></div>
+<div class="box trap"><p><b>גיליון בשם Sheet 1 עד Sheet 14.</b> אחרי כמה גרפים כבר אי אפשר לדעת מה בכל גיליון. שם הגיליון הוא גם שם הכרטיסייה בדשבורד. תנו שם מיד: מה הגרף עונה עליו.</p></div>
+<div class="box trap"><p><b>Clear Sheet לא מוחק את הגיליון.</b> הוא רק מרוקן את הפילים. אם לחצתם בטעות, Undo מחזיר הכול. אבל אם סגרתם את התוכנה ופתחתם אותה שוב, Undo כבר לא יעזור.</p></div>
+
+<div class="box meaning"><p>חוברת עבודה היא קובץ אחד עם הרבה &quot;שאלות&quot;. כל גיליון עונה על שאלה אחת, בשם שמסביר אותה. כשבונים את הדשבורד הראשון (מודול 13), תבחרו גיליונות מהרשימה הזאת, ושמות טובים יחסכו לכם זמן.</p></div>
+
+<div class="box real"><p>בספרי ההדרכה ל-Tableau יש טיפ קבוע: &quot;הכפתור Undo הוא החבר שלכם&quot;. אנליסטים מנוסים מתנסים הרבה, משכפלים גיליון לפני שינוי גדול, ושומרים גרסאות עם שמות שונים. זה מה שמאפשר לבנות במהירות בלי לפחד.</p></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בדקו בתוכנה: (1) תפריט File ב-Public ושמות הפקודות Save, Save As ו-Save to Tableau Public ואיפה הן נמצאות (המקור הרשמי מציג תפריט אחר), (2) סוג הקובץ שנשמר ללא פרסום (twb או twbx), (3) האם בחלון הקליק הימני על לשונית יש בדיוק Rename, Duplicate, Delete, (4) שהספירות במרתון (5, 20, 60, 15) מתקבלות בפועל. אחרי התרגיל בקשו מהכיתה לפתוח את הקובץ השמור כדי לוודא שהוא נפתח.</div>
+</section>
+
+<section class="sec" id="m3-11" data-t="סיכום ובדיקה">
+<div class="sec-h"><div class="sec-n">11</div><h2>חוברת עבודה ראשונה: בדיקה וסיכום</h2></div>
+<p class="lead">בנינו חמישה גיליונות. עכשיו בודקים שהם נכונים. הכלל שלמדנו בדרך: גרף בלי בדיקה הוא ניחוש. לכל גיליון יש מספר אחד שאפשר לאמת.</p>
+
+<div class="tw"><table class="tbl m3-tb"><thead><tr><th>גיליון</th><th>שדות</th><th>סוג סימן</th><th class="num">סימנים</th><th>מספר לבדיקה</th></tr></thead><tbody>
+<tr><td>Sales by Category</td><td><span class="pill d">Category</span> <span class="pill c sum">Sales</span></td><td>עמודות</td><td class="num">5</td><td>Cups: <span class="n">69,470.00</span></td></tr>
+<tr><td>Avg Sales by Category</td><td><span class="pill d">Category</span> <span class="pill c">AVG(Sales)</span></td><td>עמודות</td><td class="num">5</td><td>Sundaes: <span class="n">62.14</span></td></tr>
+<tr><td>Sales by Month</td><td><span class="pill c">MONTH(Order Date)</span> <span class="pill c sum">Sales</span></td><td>קו</td><td class="num">24</td><td>אוגוסט 2025: <span class="n">23,259.90</span></td></tr>
+<tr><td>Category x Channel</td><td><span class="pill d">Category</span> <span class="pill d">Channel</span> Text: <span class="pill c sum">Sales</span></td><td>טקסט</td><td class="num">15</td><td>Cups בהליכה: <span class="n">48,004.80</span></td></tr>
+<tr><td>Sales vs Profit by Item</td><td><span class="pill c sum">Sales</span> <span class="pill c sum">Profit</span> Detail: <span class="pill d">Item</span></td><td>עיגולים</td><td class="num">15</td><td>Milkshake: <span class="n">24,902.80</span> ו-<span class="n">15,242.80</span></td></tr>
+</tbody></table></div>
+
+<h3>בדיקה עצמית: חמישה מספרים</h3>
+<p>ענו מהחוברת שלכם ב-Tableau, והבדיקה תשווה אותם לחישוב מהקובץ. מותר להזין עם עיגול של Tableau (למשל 17,443).</p>
+<div class="sim m3-sim" data-id="m3-sim-check"><div class="sh">בדיקת חוברת העבודה</div>
+<div class="row"><label>1. <code>SUM(Sales)</code> של Sticks: <input type="text" id="m3c-1" inputmode="decimal" autocomplete="off"></label><span id="m3c-r1"></span></div>
+<div class="row"><label>2. כמה סימנים יש בפיזור עם Item ו-Branch על Detail? <input type="text" id="m3c-2" inputmode="numeric" autocomplete="off"></label><span id="m3c-r2"></span></div>
+<div class="row"><label>3. המכירות בחודש הגבוה ביותר (מבין 24): <input type="text" id="m3c-3" inputmode="decimal" autocomplete="off"></label><span id="m3c-r3"></span></div>
+<div class="row"><label>4. <code>AVG(Sales)</code> של Sundaes: <input type="text" id="m3c-4" inputmode="decimal" autocomplete="off"></label><span id="m3c-r4"></span></div>
+<div class="row"><label>5. <code>SUM(Profit)</code> של Drinks: <input type="text" id="m3c-5" inputmode="decimal" autocomplete="off"></label><span id="m3c-r5"></span></div>
+<div class="row"><button type="button" class="btn" id="m3c-go">בדיקה</button><span class="m3-msg" id="m3c-msg"></span></div></div>
+<script>(function(){FL.dom(function(){
+var box=FL.$('[data-id="m3-sim-check"]'); if(!box) return;
+TF.loadScoop(function(D){
+ var N=D.n, C=D.cols, cat=C.Category, cd=cat.dict;
+ function sumBy(k,val,agg){ var s=0,n=0; for(var i=0;i<N;i++){ if(cd[cat.v[i]]===k){ s+=C[val].v[i]; n++; } } return agg==='avg'?s/n:s; }
+ var pairs={}; for(var i=0;i<N;i++) pairs[C.Item.v[i]+'_'+C.Branch.v[i]]=1;
+ var months={}; for(var j=0;j<N;j++){ var m=C.Order_Date.v[j].slice(0,7); months[m]=(months[m]||0)+C.Sales.v[j]; }
+ var best=0; Object.keys(months).forEach(function(k){ if(months[k]>best) best=months[k]; });
+ var T=[[sumBy('Sticks','Sales','sum'),1],[Object.keys(pairs).length,0],[best,1],[sumBy('Sundaes','Sales','avg'),0.02],[sumBy('Drinks','Profit','sum'),1]];
+ function num(s){ return parseFloat(String(s).replace(/,/g,'').trim()); }
+ FL.$('#m3c-go',box).addEventListener('click',function(){
+  var ok=0;
+  T.forEach(function(t,i){ var v=num(FL.$('#m3c-'+(i+1),box).value), r=FL.$('#m3c-r'+(i+1),box); var good=isFinite(v)&&Math.abs(v-t[0])<=t[1];
+    r.textContent=good?'נכון':(isFinite(v)?'לא מדויק. בדקו שוב בגיליון':'הזינו מספר'); r.style.color=good?'#166534':'#991b1b'; r.style.fontWeight='700'; if(good) ok++; });
+  var msg=FL.$('#m3c-msg',box); msg.textContent=ok+' מתוך 5'; msg.style.color=ok===5?'#166534':'#1e293b';
+  if(ok===5){ msg.textContent='5 מתוך 5. החוברת שלכם נכונה.'; FL.done('m3-sim-check'); }
+ });
+});
+});})();</script>
+
+<div class="box recap">
+<ul>
+<li>המסך: <code>Data</code> לשדות, <code>Columns</code> ו-<code>Rows</code> למבנה, <code>Marks</code> למראה, <code>Filters</code> לסינון, <code>Show Me</code> להצעות, והלשוניות והסטטוס למטה.</li>
+<li>ממד מפצל ומדד מסכם. כחול נפרש לכותרות וירוק לציר. סימן אחד לכל צירוף של ממדים בגרף.</li>
+<li>סוג הסיכום (<code>SUM</code>, <code>AVG</code>, <code>COUNT</code>) משנה את התשובה: Cups מובילה בסכום, Sundaes בממוצע. מספר שאי אפשר לחבר לא מסכמים.</li>
+<li>תאריך על Columns נותן קו. חודש רציף נותן 24 סימנים, חודש בדיד 12. פיזור בלי ממד על Detail הוא סימן אחד.</li>
+<li>לחיצה כפולה ו-Show Me נוחים, אבל התוצאה תלויה בסדר ובשדות שנבחרו. תמיד קראו איפה כל פיל נחת.</li>
+<li>מיון, תוויות, טולטיפ וכותרת הופכים גרף נכון לקריא. Undo, Duplicate ושמות ברורים מאפשרים לנסות בלי פחד, ושמירה מקומית לא מפרסמת כלום.</li>
+</ul></div>
+
+<div class="quiz" data-id="m3-q-end1" data-a="2"><p class="qq">בגיליון יש <code>Item</code> על Columns, <code>SUM(Sales)</code> על Rows ו-<code>Channel</code> על Color. כמה סימנים?</p>
+<button class="opt">15, כמספר המוצרים</button>
+<button class="opt">45, כי כל מוצר מופיע בשלושת הערוצים</button>
+<button class="opt">3, כמספר הערוצים</button>
+<div class="why">הסימנים הם צירופי הממדים: 15 מוצרים כפול 3 ערוצים הם 45, ובנתונים יש מכירות לכל הצירופים. Color הוא ממד כמו כל ממד.</div></div>
+
+<div class="quiz" data-id="m3-q-end2" data-a="3"><p class="qq">איזה גרף מתאים לשאלה &quot;איך התפתחו המכירות לאורך 24 החודשים?&quot;</p>
+<button class="opt">טבלת טקסט של חודש מול קטגוריה</button>
+<button class="opt">תרשים פיזור של Sales מול Profit</button>
+<button class="opt">קו, עם Order Date כחודש רציף ו-SUM(Sales)</button>
+<div class="why">שאלה על התפתחות בזמן עונה בקו על ציר זמן רציף. פיזור משווה שני מדדים, לא זמן. טבלת טקסט נותנת מספרים אבל לא מגמה.</div></div>
+
+<div class="quiz" data-id="m3-q-end3" data-a="1"><p class="qq">קיבלתם <code>SUM(Order Hour)</code> = 118,214 ושאלתם מה זה אומר. מה נכון?</p>
+<button class="opt">זה מספר חסר משמעות: שעה לא מסכמים. צריך ממוצע, או הפיכה לממד</button>
+<button class="opt">זה מספר ההזמנות בשעות הערב</button>
+<button class="opt">Tableau טעתה, ואין לסמוך עליה</button>
+<div class="why">Tableau סיכמה את השעות של כל השורות, וזה חישוב נכון ובעל משמעות אפסית. לשאלה &quot;באיזו שעה מוכרים&quot; צריך להפוך את Order Hour לממד ולהציג מכירות לפי שעה.</div></div>
+
+<div class="srcline"><b>חומר מקור, באנגלית:</b>
+<a class="tool" href="https://help.tableau.com/current/pro/desktop/en-us/buildmanual_dragging.htm" target="_blank" rel="noopener">Drag and drop</a>
+<a class="tool" href="https://help.tableau.com/current/pro/desktop/en-us/viewparts_marks_marktypes.htm" target="_blank" rel="noopener">Mark types</a>
+<a class="tool" href="https://help.tableau.com/current/pro/desktop/en-us/buildauto_showme.htm" target="_blank" rel="noopener">Show Me</a>
+<a class="tool" href="https://help.tableau.com/current/pro/desktop/en-us/buildexamples_scatter.htm" target="_blank" rel="noopener">Scatter plot</a>
+<a class="tool" href="https://help.tableau.com/current/pro/desktop/en-us/public_faq.htm" target="_blank" rel="noopener">Tableau Public FAQ</a></div>
+
+<p>המשך: <a class="tool" href="module4.html">מודול 4: כחול וירוק, בדיד, רציף ותאריכים</a>. שם נבין לעומק למה חודש כחול ונותן 12 סימנים וחודש ירוק נותן 24, וגם איך תאריכים מתנהגים.</p>
+
+<div class="teach"><b>🎓 למרצה:</b> בקשו מהסטודנטים להקליד את החמש תשובות בפעילות ולהראות שמסך אחד תואם. אם מישהו מקבל 17,443 במקום 17,443.40, זה עיגול של Tableau ולא טעות. כדאי לאסוף את הקבצים השמורים scoop-first-look כדי לבדוק שהם נפתחים, לפני שממשיכים למודול 4.</div>
+</section>
+
+
+<div class="pager"><a href="module2.html">→ 2. מתחברים לנתונים</a><a href="module4.html">4. כחול וירוק: בדיד, רציף ותאריכים ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>

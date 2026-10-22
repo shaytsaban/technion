@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6. סינון, מיון, קיבוץ וסדר הפעולות · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=6;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public">1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים">2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים">3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות" class=on>6<small></small></a><a id="part7" href="module7.html" title="מפות">7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים">8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט">10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב">13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה">14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים">15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות">16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום">17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות">19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>סינון, מיון, קיבוץ<br><span>וסדר הפעולות</span></h1>
+  <p>הנתונים של Scoop & Go כבר בגרף, ועכשיו שואלים את השאלות האמיתיות: רק הדרום, רק הקיץ, רק שלושת המובילים. בונים מסננים, מיונים, קבוצות, סטים והיסטוגרמה, ומבינים למה Top 3 לפעמים מחזיר שני סניפים.</p>
+  <div class="chips"><span>🧪 14 תרגילים בתוכנה</span><span>🎞️ 7 הנפשות</span><span>🎛️ 3 הדמיות אינטראקטיביות</span><span>🧩 4 משימות במיני-Tableau</span><span>✅ תוצאות צפויות מחושבות מהנתונים</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<style>
+.m6-dlg{direction:ltr;text-align:left;border:1px solid #9aa5b1;border-radius:10px;background:#ececec;max-width:540px;margin:12px auto;box-shadow:0 8px 22px rgba(15,23,42,.18);font-size:.82rem;color:#1f2937}
+.m6-dlg .t{background:#dcdcdc;text-align:center;font-weight:700;padding:5px;border-bottom:1px solid #bbb;border-radius:10px 10px 0 0}
+.m6-dlg .tabs{display:flex;justify-content:center;margin:10px 0 0}
+.m6-dlg .tabs span{padding:3px 14px;border:1px solid #c4c4c4;background:#fafafa;margin-inline-start:-1px}
+.m6-dlg .tabs span.on{background:#2f7df6;color:#fff;border-color:#2f7df6}
+.m6-dlg .b{padding:10px 14px}
+.m6-dlg .list{border:1px solid #888;background:#fff;padding:4px 8px;line-height:1.55}
+.m6-dlg .r{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:5px 0}
+.m6-dlg .sel{border:1px solid #bbb;background:#fff;border-radius:6px;padding:0 8px}
+.m6-dlg .inp{border:1px solid #888;background:#fff;padding:0 8px;min-width:70px;display:inline-block}
+.m6-dlg .btns{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+.m6-dlg .btns span{border:1px solid #bbb;background:#fff;border-radius:6px;padding:2px 12px}
+.m6-dlg .btns .ok{background:#2f7df6;color:#fff;border-color:#2f7df6}
+.m6-dlg .sum{background:#dedede;border-radius:6px;padding:6px 10px;margin-top:8px}
+.m6-dlg .hl{outline:2px solid #e8741f;outline-offset:1px;border-radius:3px}
+.m6-fc{direction:ltr;text-align:left;display:inline-block;vertical-align:top;border:1px solid #c7cfd9;border-radius:8px;background:#fff;font-size:.8rem;min-width:150px;margin:6px;box-shadow:0 4px 12px rgba(15,23,42,.1)}
+.m6-fc .h{display:flex;justify-content:space-between;gap:10px;background:#f1f5f9;border-bottom:1px solid #d5dbe3;padding:3px 8px;font-weight:700;border-radius:8px 8px 0 0}
+.m6-fc .bd{padding:4px 8px;line-height:1.5}
+.m6-fc .sl{height:6px;background:#cbd5e1;border-radius:3px;position:relative;margin:10px 4px 4px}
+.m6-fc .sl i{position:absolute;top:-4px;height:14px;width:14px;border-radius:50%;background:#2f7df6}
+.m6-tip{direction:ltr;display:inline-flex;gap:0;border:1px solid #9aa5b1;border-radius:8px;overflow:hidden;background:#fff;font-size:.78rem;box-shadow:0 4px 12px rgba(15,23,42,.15)}
+.m6-tip span{padding:3px 10px;border-inline-end:1px solid #e2e8f0}
+.m6-tip span.hl{background:#fff7ed;outline:2px solid #e8741f;outline-offset:-2px}
+.m6-ch{display:inline-block;direction:ltr;border-radius:999px;padding:0 10px;margin:2px;font-size:.78rem;font-weight:600;border:1px solid #a8d4a3;background:#d9f0d6;color:#1c6b1c}
+.m6-ch.off{background:#f1f5f9;border-color:#e2e8f0;color:#94a3b8;text-decoration:line-through}
+.m6-ch.cut{background:#fee2e2;border-color:#fca5a5;color:#991b1b}
+.m6-ch.b{background:#d7e7f5;border-color:#a9c9e3;color:#14507a}
+.m6-st{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:10px 0}
+.m6-sc{background:#fff;border:2px solid #c7d2fe;border-radius:12px;padding:8px 10px;font-size:.86rem}
+.m6-sc.on{border-color:#4f46e5;background:#eef2ff}
+.m6-sc.idle{opacity:.55;border-style:dashed}
+.m6-sc h5{margin:0 0 4px;font-size:.92rem;color:var(--navy)}
+.m6-sc .nn{font-size:.74rem;color:var(--muted)}
+.m6-bar{display:flex;align-items:center;gap:8px;direction:ltr;margin:2px 0;font-size:.8rem}
+.m6-bar span{width:96px;flex:none;text-align:right}
+.m6-bar i{display:block;height:15px;background:#4e79a7;border-radius:2px}
+.m6-bar b{font-weight:600;color:#334155}
+.m6-lg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}
+.m6-opt{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:6px 0}
+.m6-opt label{font-size:.88rem;cursor:pointer;background:#fff;border:1px solid var(--line);border-radius:8px;padding:1px 9px}
+.m6-hdr{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.m6-need{font-size:.72rem;color:#94a3b8;text-align:center;padding:2px}
+.m6-grid{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin:12px 0}
+.m6-win{direction:ltr;text-align:left;border:1px solid #c7cfd9;border-radius:10px;background:#fff;overflow:hidden;font-size:.8rem;box-shadow:0 6px 16px rgba(15,23,42,.1)}
+.m6-win>b{display:block;background:#e5e9ee;padding:3px 10px;border-bottom:1px solid #c7cfd9}
+.m6-win .bd{padding:8px 10px}
+.m6-ok{color:#166534;font-weight:700}.m6-no{color:#991b1b;font-weight:700}
+</style>
+
+<div class="box note">
+<p><span class="lvl s">מתחילים</span><span class="lvl b">בונים</span> במודול הזה לומדים לשלוט במה שרואים בתצוגה: מה נשאר, באיזה סדר, ובאילו קבוצות. בסוף תהיה לכם תצוגה של <b>3 הסניפים המובילים באזור מסוים</b>, שנבנתה נכון, ותבינו למה אותה תצוגה נבנית לפעמים לא נכון.</p>
+<p><b>מה צריך מוכן:</b> Tableau Public (Desktop Public Edition) עם הקובץ <a class="tool" href="data/scoop_sales_2024_2025.csv">scoop_sales_2024_2025.csv</a> טעון (<a href="module2.html">מודול 2</a>), ושידעו להניח ממדים ומדדים על Columns ו-Rows (<a href="module3.html">מודול 3</a>). הנתונים בדויים: Scoop &amp; Go, רשת גלידריות עם 9 סניפים ו-<span class="n">6,575</span> שורות.</p>
+<p>כל התרגילים במודול רצים ב-Tableau Public בלבד. מה שמופיע כאן בסימן ״בדקו אם זמין אצלכם״ לא נדרש באף תרגיל. אם אתם עובדים ב-Web Authoring (בדפדפן) במקום באפליקציה, הרעיונות זהים, אבל חלק מהתפריטים נראים אחרת, וייתכן שסטים עם תנאי ויצירת היררכיות לא זמינים שם. אם משהו חסר אצלכם, עברו לאפליקציה.</p>
+</div>
+
+
+<section class="sec" id="m6-1" data-t="מסננים">
+<div class="sec-h"><div class="sec-n">1</div><h2>מסננים: מה נשאר בתצוגה</h2></div>
+<p class="lead">ההנהלה של Scoop &amp; Go שואלת בבוקר אחד שלוש שאלות. מה קורה רק בדרום? מה קרה רק בקיץ של 2025? ומי חמשת המוצרים המובילים? כל אחת מהשאלות האלה היא מסנן.</p>
+
+<div class="defline"><b>מסנן (<code>Filter</code>):</b> כלל שקובע אילו שורות או אילו סימנים נשארים בתצוגה, והשאר פשוט נעלמים ממנה. דוגמה: <code>Region = South</code> משאיר 3 סניפים מתוך 9, וסכום המכירות יורד מ-<span class="n">236,820.9</span> ל-<span class="n">55,575.4</span>.</div>
+
+<div class="tw"><table class="tbl">
+<thead><tr><th>Branch</th><th>Region</th><th>SUM(Sales)</th><th>אחרי <code>Region = South</code></th></tr></thead>
+<tbody>
+<tr><td>Tel Aviv Dizengoff</td><td>Center</td><td>44,194.1</td><td class="m6-no">נעלם</td></tr>
+<tr><td>Tel Aviv Port</td><td>Center</td><td>39,446.0</td><td class="m6-no">נעלם</td></tr>
+<tr><td>Jerusalem Mamilla</td><td>Jerusalem</td><td>33,450.8</td><td class="m6-no">נעלם</td></tr>
+<tr><td>Eilat Promenade</td><td>South</td><td>31,473.7</td><td class="m6-ok">נשאר</td></tr>
+<tr><td>Haifa German Colony</td><td>North</td><td>27,389.2</td><td class="m6-no">נעלם</td></tr>
+<tr><td>Netanya Beach</td><td>Center</td><td>26,840.2</td><td class="m6-no">נעלם</td></tr>
+<tr><td>Beer Sheva Grand Mall</td><td>South</td><td>18,797.2</td><td class="m6-ok">נשאר</td></tr>
+<tr><td>Rehovot Mall</td><td>Center</td><td>9,925.2</td><td class="m6-no">נעלם</td></tr>
+<tr><td>Ashdod Beach Pop-up</td><td>South</td><td>5,304.5</td><td class="m6-ok">נשאר</td></tr>
+</tbody></table></div>
+
+<h3>איפה מסנן גר</h3>
+<p>במסך של Tableau יש מדף שנקרא <code>Filters</code>. הוא יושב מעל כרטיס <code>Marks</code>, בצד שמאל של הגיליון. כל מסנן הוא פיל (pill) על המדף הזה.</p>
+<figure class="shot" style="max-width:380px;margin-inline:auto"><img src="img/filters-shelf.png" alt="מדף Filters ריק מעל כרטיס Marks, ובחלונית הנתונים רשימת שדות">
+<figcaption>מדף <code>Filters</code> ריק, מעל <code>Marks</code>. בצילום נתונים של משחקי וידאו, אצלכם יופיעו שדות של Scoop &amp; Go. שימו לב לשדה עם סמל האטב בחלונית הנתונים: זו קבוצה (Group), נגיע אליה בהמשך.</figcaption></figure>
+
+<p>יש שלוש דרכים להוסיף מסנן, ושלושתן מגיעות לאותו מקום:</p>
+<ol>
+<li>גוררים שדה מחלונית הנתונים אל המדף <code>Filters</code>. נפתח חלון סינון.</li>
+<li>לוחצים קליק ימני על פיל שכבר נמצא בתצוגה ובוחרים <code>Filter...</code>.</li>
+<li>קליק ימני על שדה בחלונית הנתונים, ואז <code>Show Filter</code>: נוסף מסנן וגם כרטיס סינון בצד התצוגה (על כרטיסים נדבר בהמשך). בגרסה שלכם ייתכן שהשם שונה מעט.</li>
+</ol>
+
+<h3>חמישה סוגי מסננים ומה בכל אחד</h3>
+<div class="tw"><table class="tbl">
+<thead><tr><th>סוג</th><th>מסנן על מה</th><th>דוגמה ב-Scoop &amp; Go</th><th>איפה במודול</th></tr></thead>
+<tbody>
+<tr><td>מסנן ממד</td><td>ערכים של שדה טקסט: רשימה, תבנית, תנאי, Top N</td><td><code>Region = South</code></td><td>סעיף 2</td></tr>
+<tr><td>מסנן מדד</td><td>טווח של מספר: לכל שורה או לסכום</td><td><code>SUM(Sales) &gt;= 30000</code></td><td>סעיף 3</td></tr>
+<tr><td>מסנן תאריך</td><td>טווח, תקופה יחסית או חלק מתאריך</td><td>יוני עד אוגוסט 2025</td><td>סעיף 3</td></tr>
+<tr><td>מסנן הקשר (Context)</td><td>מסנן ממד שרץ ראשון ומשמש בסיס לכל השאר</td><td><code>Region = Center</code> לפני Top 3</td><td>סעיף 9</td></tr>
+<tr><td>מסנן <dfn data-d="עותק של הנתונים ש-Tableau שומר בתוך הקובץ שלו. ב-Tableau Public הנתונים נטענים כ-extract">Extract</dfn> ומסנן <dfn data-d="מסנן על מקור הנתונים עצמו, שחל על כל הגיליונות. מגדירים אותו בעמוד Data Source">Data Source</dfn></td><td>הנתונים עצמם, עוד לפני הגיליון</td><td>רק שנת 2025 בכל הקובץ</td><td>סעיף 10 (בדקו אם זמין אצלכם)</td></tr>
+</tbody></table></div>
+
+<div class="box try" data-id="m6-try-branch-filter">
+<ol>
+<li>בגיליון חדש גררו <span class="pill c sum">Sales</span> אל <code>Columns</code> ו-<span class="pill d">Branch</span> אל <code>Rows</code>. <em>למה:</em> עמודות אופקיות עם שם סניף בכל שורה, קל לקרוא שמות ארוכים.</li>
+<li>בשורת המצב בתחתית החלון (status bar) קראו את מספר הסימנים והסכום. <em>למה:</em> זו נקודת הפתיחה, כדי שתראו מה משתנה אחרי הסינון.</li>
+<li>גררו <span class="pill d">Region</span> אל <code>Filters</code>. בחלון שנפתח לחצו <code>None</code> (הסרת הכל), סמנו רק <code>South</code>, ולחצו <code>OK</code>. <em>למה:</em> בחרנו את הערכים שנשארים. <code>None</code> ואז סימון אחד מהיר יותר מהסרה של שלושה.</li>
+<li>קראו שוב את שורת המצב. <em>למה:</em> לבדוק שהמסנן עשה מה שחשבתם.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> לפני הסינון 9 סימנים וסכום <span class="n">236,820.9</span>. אחרי הסינון 3 סימנים: <span class="n">Eilat Promenade <span class="n">31,473.7</span>, Beer Sheva Grand Mall <span class="n">18,797.2</span>, Ashdod Beach Pop-up <span class="n">5,304.5</span></span>, וסכום כולל <span class="n">55,575.4</span>. Tableau עשוי להציג את הסכומים מעוגלים לשקל; זה עיגול תצוגה בלבד.</p>
+</div>
+
+<p>רוצים להרגיש את זה לפני שפותחים את התוכנה? זה הדגם שלנו ל-Tableau, על אותם נתונים. הוא לא Tableau עצמו אבל החוקים דומים.</p>
+<div class="tfp" data-id="m6-pg-filter"
+     data-task="בנו עמודות של סכום המכירות לפי סניף, ואז סננו את Region כך שיישאר רק South. אמורים להישאר 3 סימנים."
+     data-goal='{"columns":["SUM(Sales)"],"rows":["Branch"],"filters":["Region"],"marks":3}'
+     data-preset='{"columns":["SUM(Sales)"],"rows":["Branch"]}'
+     data-hide-shelves="size,label,detail"
+     data-fields="Branch,Region,City,Category,Channel,Sales,Profit,Order_Date"></div>
+
+<div class="box meaning"><p>מסנן משנה את השאלה, לא רק את התמונה. אחרי <code>Region = South</code> כל מספר בגיליון הוא מספר של הדרום בלבד. מי שרואה את הגיליון ולא רואה את המסנן יחשוב שזה המספר של כל הרשת. לכן כותבים בכותרת מה מסונן, או מציגים את כרטיס הסינון.</p></div>
+
+<div class="box trap"><p>מסנן הוא לא מחיקה. ב-Tableau Public הנתונים של הגיליון יושבים בתוך הקובץ ששמרתם, ובדרך כלל כל אחד יכול להוריד את התצוגה ואת הנתונים שמאחוריה. אם משהו לא אמור להיות פומבי, לא מסתירים אותו במסנן. מסירים אותו מקובץ המקור לפני שטוענים. (לפי השאלות הנפוצות של Tableau Public; נכון לאוקטובר 2026, בדקו בתיעוד.)</p></div>
+
+<div class="box think" data-id="m6-th-1"><p>מנהלת שיווק מתקשרת: ״המספר בדשבורד של הדרום נמוך מהמספר שאני מכירה״. אילו שלוש שאלות על מסננים תשאלו לפני שתבדקו את הנתונים?</p>
+<div class="ans">אילו מסננים פעילים על הגיליון (גם כאלה שמוסתרים). באיזו תקופה. והאם המסנן חל על כל הגיליונות או רק על אחד. ברוב המקרים ההבדל הוא מסנן שנשכח, לא נתונים שגויים.</div></div>
+
+<div class="quiz" data-id="m6-q-1a" data-a="2"><p class="qq">התצוגה היא <code>SUM(Sales)</code> לפי <code>Branch</code>, עם 9 סימנים. מוסיפים מסנן <code>Region = South</code>. כמה סימנים נשארים?</p>
+<button class="opt">9, כי המסנן משנה רק את הסכומים</button><button class="opt">3</button><button class="opt">4, כי יש 4 אזורים</button><button class="opt">1, כי נבחר אזור אחד</button>
+<div class="why">3. בדרום יש שלושה סניפים (אילת, באר שבע ואשדוד), וכל סניף הוא סימן אחד. מסנן מוריד שורות, ולכן גם סימנים. האזור הוא רק הכלל, לא מה שנספר.</div></div>
+
+<div class="quiz" data-id="m6-q-1b" data-a="3"><p class="qq">מנהל ביקש ממכם להסתיר ממשתמשי הדשבורד הציבורי את נתוני סניף הפופ-אפ באשדוד. הפתרון הנכון?</p>
+<button class="opt">מסנן על Branch שמוציא את Ashdod, בלי להציג את הכרטיס</button><button class="opt">להסתיר את הגיליון</button><button class="opt">להסיר את השורות מקובץ המקור לפני הטעינה, כי כל מה שבקובץ יכול להיות מורד</button>
+<div class="why">מסנן ומסתיר רק את התצוגה. הנתונים נשארים בקובץ ששמרתם, וב-Tableau Public בדרך כלל אפשר להוריד אותם. מה שלא אמור להיות פומבי צריך לצאת מהמקור.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לפני התרגיל ביקשו מהכיתה לנחש כמה סימנים יישארו. אחרי הסינון הצביעו על שורת המצב (status bar) ואמרו שזו הדרך לבדוק כל מסנן בהמשך המודול. מסך הפתיחה: וודאו שכל הסטודנטים רואים את מדף Filters מעל Marks. בגרסאות שונות ייתכן שהפקודה Show Filter נמצאת בתפריט שונה, בדקו בתוכנה לפני השיעור.</div>
+</section>
+
+
+<section class="sec" id="m6-2" data-t="מסנן ממד">
+<div class="sec-h"><div class="sec-n">2</div><h2>מסנן על ממד: ארבע לשוניות</h2></div>
+<p class="lead">בקשה ממנהלת הרשת: ״תראו לי רק את המוצרים עם המילה Cup בשם. ואז רק את אלה שמכרו מעל 16,000. ואז רק את חמשת הראשונים.״ שלוש בקשות, ושלוש לשוניות שונות באותו חלון.</p>
+
+<p>כשגוררים ממד (למשל <span class="pill d">Item</span>) אל <code>Filters</code>, נפתח חלון עם ארבע לשוניות: <code>General</code>, <code>Wildcard</code>, <code>Condition</code> ו-<code>Top</code>. זה החלון האמיתי:</p>
+<figure class="shot" style="max-width:400px;margin-inline:auto"><img src="img/filter-dialog.png" alt="חלון Filter [Genre] עם לשוניות General, Wildcard, Condition, Top, רשימת ערכים עם תיבות סימון, כפתורי All ו-None, תיבת Exclude ואזור Summary">
+<figcaption>החלון <code>Filter</code> של ממד. בצילום השדה Genre ממשחקי וידאו, אצלכם יופיע Item או Branch. למטה אזור <code>Summary</code>: הוא מראה מה פעיל בכל לשונית.</figcaption></figure>
+
+<div class="cols2">
+<div class="card"><h4><code>General</code>: בוחרים מרשימה</h4><p>שלוש אפשרויות: <code>Select from list</code> (מסמנים ערכים), <code>Custom value list</code> (מקלידים רשימה משלכם) ו-<code>Use all</code> (הכל, ובעתיד גם ערכים חדשים). הכפתורים <code>All</code> ו-<code>None</code> מסמנים או מנקים את כל הרשימה.</p></div>
+<div class="card"><h4><code>Wildcard</code>: מתאימים תבנית טקסט</h4><p>מקלידים מילה ובוחרים איך להתאים: <code>Contains</code> (מכיל), <code>Starts with</code> (מתחיל ב-), <code>Ends with</code> (נגמר ב-) או <code>Exactly matches</code> (בדיוק). מתאים כשהרשימה ארוכה.</p></div>
+<div class="card"><h4><code>Condition</code>: בוחרים לפי תנאי על מספר</h4><p>״רק פריטים שהסכום שלהם גדול מ-...״. אפשר <code>By field</code> (שדה, אגרגציה, אופרטור, ערך) או <code>By formula</code> (נוסחה שאתם כותבים).</p></div>
+<div class="card"><h4><code>Top</code>: N הראשונים או האחרונים</h4><p><code>By field</code>: בוחרים <code>Top</code> או <code>Bottom</code>, כמה, לפי איזה שדה ואיזו אגרגציה. בצילום למטה: Bottom 5 לפי JP Sales, Sum.</p></div>
+</div>
+
+<figure class="shot" style="max-width:520px;margin-inline:auto"><img src="img/filter-top.png" alt="הלשונית Top: By field, Bottom, 5, by JP Sales, Sum">
+<figcaption>הלשונית <code>Top</code> אחרי מילוי: <code>Bottom</code>, <code>5</code>, לפי <code>JP Sales</code> עם <code>Sum</code>. הנתונים בצילום ממשחקי וידאו.</figcaption></figure>
+
+<p>ככה נראות שתי הלשוניות האחרות (הדמיה סכמטית של החלון):</p>
+<div class="m6-grid">
+<div class="m6-dlg"><div class="t">Filter [Item]</div><div class="tabs"><span>General</span><span class="on">Wildcard</span><span>Condition</span><span>Top</span></div><div class="b">
+<div class="r">Match value: <span class="inp hl">Cup</span></div>
+<div class="r"><span class="sel hl">● Contains</span> <span class="sel">Starts with</span> <span class="sel">Ends with</span> <span class="sel">Exactly matches</span></div>
+<div class="sum">Wildcard: contains &quot;Cup&quot;</div>
+<div class="btns"><span>Cancel</span><span class="ok">OK</span></div></div></div>
+<div class="m6-dlg"><div class="t">Filter [Item]</div><div class="tabs"><span>General</span><span>Wildcard</span><span class="on">Condition</span><span>Top</span></div><div class="b">
+<div class="r">● By field:</div>
+<div class="r"><span class="sel hl">Sales</span><span class="sel hl">Sum</span><span class="sel hl">&gt;=</span><span class="inp hl">16000</span></div>
+<div class="r">○ By formula</div>
+<div class="sum">Condition: SUM(Sales) &gt;= 16000</div>
+<div class="btns"><span>Cancel</span><span class="ok">OK</span></div></div></div>
+</div>
+
+<div class="defline"><b>Exclude (הוצא):</b> תיבה בלשונית <code>General</code> שהופכת את הבחירה: הערכים המסומנים הם אלה שמסירים, וכל השאר נשאר. דוגמה: מסמנים רק <code>Ashdod Beach Pop-up</code> ולוחצים <code>Exclude</code>, ונשארים 8 סניפים.</div>
+<p>למה זה חשוב? כשרוצים להוריד ערך אחד מרשימה ארוכה, <code>Exclude</code> חוסך לסמן את כל השאר. ולפי מדריכים מקובלים, כשהנתונים מתעדכנים ומגיעים ערכים חדשים, מסנן שמוציא ערכים מסוימים ממשיך להציג את החדשים, ומסנן שבוחר ערכים לא מציג אותם. ב-Tableau Public הקובץ שלכם נשאר אותו קובץ, אז זה פחות משנה, אבל כדאי להכיר.</p>
+
+<p>עכשיו נסו בעצמכם, על 15 המוצרים של הרשת. בחרו לשונית, שנו את ההגדרות, וראו מי נשאר.</p>
+<div class="sim" data-id="m6-sim-tabs"><div class="sh">מסנן ממד על Item: ארבע לשוניות</div>
+<div class="m6-opt" id="m6t-tabs"><label><input type="radio" name="m6t" value="g" checked> General</label><label><input type="radio" name="m6t" value="w"> Wildcard</label><label><input type="radio" name="m6t" value="c"> Condition</label><label><input type="radio" name="m6t" value="t"> Top</label></div>
+<div id="m6t-ctl"></div>
+<div class="out" id="m6t-out"></div>
+<p class="m6-need">הדמיה. הסכומים מחושבים מנתוני Scoop &amp; Go האמיתיים. בהדמיה התאמת טקסט לא מבחינה באותיות גדולות וקטנות; בדקו מה קורה בגרסה שלכם.</p></div>
+<script>(function(){FL.dom(function(){
+var box=FL.$('[data-id="m6-sim-tabs"]'); if(!box) return;
+TF.loadScoop(function(D){
+var c=D.cols, n=D.n, nm=c.Item.dict, tot=nm.map(function(){return 0;});
+for(var i=0;i<n;i++) tot[c.Item.v[i]]+=c.Sales.v[i];
+var list=nm.map(function(x,k){return {n:x,v:tot[k]};}).sort(function(a,b){return b.v-a.v;});
+var st={tab:'g',sel:{},excl:false,wm:'contains',wt:'Cup',cop:'>=',cv:16000,tm:'Top',tn:5}, seen={};
+list.forEach(function(x){st.sel[x.n]=true;});
+var ctl=FL.$('#m6t-ctl',box), out=FL.$('#m6t-out',box);
+function fmt(x){return x.toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1});}
+function alive(){
+ var r={}, k;
+ list.forEach(function(x){r[x.n]=true;});
+ if(st.tab==='g'){ list.forEach(function(x){ var s=!!st.sel[x.n]; r[x.n]= st.excl ? !s : s; }); }
+ else if(st.tab==='w'){ var t=st.wt.toLowerCase(); list.forEach(function(x){ var s=x.n.toLowerCase(); r[x.n]= !t ? true : st.wm==='contains'? s.indexOf(t)>=0 : st.wm==='starts'? s.indexOf(t)===0 : st.wm==='ends'? s.length>=t.length && s.lastIndexOf(t)===s.length-t.length : s===t; }); }
+ else if(st.tab==='c'){ var v=+st.cv; list.forEach(function(x){ r[x.n]= st.cop==='>='? x.v>=v : st.cop==='>'? x.v>v : st.cop==='<='? x.v<=v : x.v<v; }); }
+ else { var N=Math.max(0,Math.min(15,Math.floor(+st.tn)||0)), srt=list.slice(); if(st.tm==='Bottom') srt.reverse(); list.forEach(function(x){r[x.n]=false;}); srt.slice(0,N).forEach(function(x){r[x.n]=true;}); }
+ return r;
+}
+function draw(){
+ var a=alive(), cnt=0, sum=0, h='';
+ list.forEach(function(x){ if(a[x.n]){cnt++;sum+=x.v;} h+='<span class="m6-ch'+(a[x.n]?'':' off')+'">'+FL.esc(x.n)+' '+fmt(x.v)+'</span>'; });
+ var say={g:st.excl?'Exclude פעיל: המסומנים יוצאים, כל השאר נשאר.':'Select from list: נשארים רק המסומנים.',w:'Wildcard: נשארים השמות שמתאימים לתבנית.',c:'Condition: הסכום של כל פריט נבדק מול התנאי.',t:'Top: מדרגים לפי הסכום ולוקחים את ה-N הראשונים (או האחרונים).'}[st.tab];
+ out.innerHTML='<div><b>Marks: '+cnt+'</b> מתוך 15 &nbsp;·&nbsp; SUM(Sales) של הנשארים: <span class="n">'+fmt(sum)+'</span></div><div>'+h+'</div><div style="margin-top:6px;color:#475569">'+say+'</div>';
+ seen[st.tab]=1; if(Object.keys(seen).length>=4) FL.done('m6-sim-tabs');
+}
+function controls(){
+ var h='';
+ if(st.tab==='g'){ h='<div class="m6-opt" dir="ltr">'+list.map(function(x){return '<label><input type="checkbox" data-it="'+FL.esc(x.n)+'"'+(st.sel[x.n]?' checked':'')+'> '+FL.esc(x.n)+'</label>';}).join('')+'</div><div class="m6-opt"><label><input type="checkbox" data-k="excl"'+(st.excl?' checked':'')+'> Exclude</label><button class="btn sec2" data-k="all">All</button><button class="btn sec2" data-k="none">None</button></div>'; }
+ else if(st.tab==='w'){ h='<div class="m6-opt"><select data-k="wm"><option value="contains">Contains</option><option value="starts">Starts with</option><option value="ends">Ends with</option><option value="exact">Exactly matches</option></select><input type="text" data-k="wt" value="'+FL.esc(st.wt)+'" dir="ltr" aria-label="טקסט להתאמה"></div>'; }
+ else if(st.tab==='c'){ h='<div class="m6-opt" dir="ltr">By field: SUM(Sales) <select data-k="cop"><option>&gt;=</option><option>&gt;</option><option>&lt;=</option><option>&lt;</option></select><input type="number" data-k="cv" value="'+st.cv+'" step="1000"></div>'; }
+ else { h='<div class="m6-opt" dir="ltr"><select data-k="tm"><option>Top</option><option>Bottom</option></select><input type="number" data-k="tn" min="0" max="15" value="'+st.tn+'"> by SUM(Sales)</div>'; }
+ ctl.innerHTML=h;
+ var sel;
+ if(st.tab==='w'){ FL.$('[data-k=wm]',ctl).value=st.wm; }
+ if(st.tab==='c'){ FL.$('[data-k=cop]',ctl).value=st.cop; }
+ if(st.tab==='t'){ FL.$('[data-k=tm]',ctl).value=st.tm; }
+}
+box.addEventListener('change',function(e){ var t=e.target;
+ if(t.name==='m6t'){ st.tab=t.value; controls(); draw(); return; }
+ if(t.dataset.it!==undefined){ st.sel[t.dataset.it]=t.checked; draw(); return; }
+ var k=t.dataset.k; if(!k) return;
+ if(k==='excl') st.excl=t.checked; else st[k]=t.value; draw(); });
+box.addEventListener('input',function(e){ var t=e.target, k=t.dataset.k; if(!k||t.type==='checkbox') return; st[k]=t.value; draw(); });
+box.addEventListener('click',function(e){ var b=e.target.closest('button[data-k]'); if(!b) return; var on=b.dataset.k==='all'; list.forEach(function(x){st.sel[x.n]=on;}); controls(); draw(); });
+controls(); draw();
+});});})();</script>
+
+<div class="box try" data-id="m6-try-tabs">
+<ol>
+<li>בגיליון חדש: <span class="pill c sum">Sales</span> אל <code>Columns</code>, <span class="pill d">Item</span> אל <code>Rows</code>. <em>למה:</em> עמודה לכל מוצר, 15 סימנים.</li>
+<li>גררו <span class="pill d">Item</span> אל <code>Filters</code>, עברו ללשונית <code>Wildcard</code>, הקלידו <code>Cup</code>, בחרו <code>Contains</code> ו-<code>OK</code>. <em>למה:</em> כל השמות שמכילים Cup, בלי לסמן ידנית.</li>
+<li>בדקו את שורת המצב ואת העמודות. אחר כך הסירו את המסנן (גררו את הפיל החוצה מ-<code>Filters</code>, או Ctrl+Z / Cmd+Z). <em>למה:</em> כל לשונית נבדקת בנפרד, בלי שהמסננים יתערבבו.</li>
+<li>גררו שוב <span class="pill d">Item</span> אל <code>Filters</code>, לשונית <code>Condition</code>, <code>By field</code>: <code>Sales</code>, <code>Sum</code>, <code>&gt;=</code>, <code>16000</code>. <em>למה:</em> התנאי נבדק על הסכום של כל מוצר, לא על שורה בודדת.</li>
+<li>הסירו את המסנן וגררו שוב. הפעם לשונית <code>Top</code>: <code>By field</code>, <code>Top</code>, <code>5</code>, <code>Sales</code>, <code>Sum</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> (א) <code>Contains Cup</code>: 4 סימנים, <span class="n">Pistachio Cup <span class="n">20,532.0</span>, Vanilla Cup <span class="n">17,006.0</span>, Chocolate Cup <span class="n">16,288.0</span>, Lemon Sorbet Cup <span class="n">15,644.0</span></span>. (ב) <code>Sum &gt;= 16000</code>: 6 סימנים: <span class="n">Milkshake, Pistachio Cup, Double Cone, Vanilla Cup, Chocolate Cup, Iced Coffee</span>. (ג) <code>Top 5</code>: 5 סימנים, חמשת הראשונים מהרשימה של (ב), בלי Iced Coffee. שימו לב: ב-(ב) ו-(ג) התוצאות נבדלות בסימן אחד, כי Iced Coffee (<span class="n">16,281.0</span>) עובר את סף 16,000 אבל הוא רק שישי.</p>
+</div>
+
+<div class="box meaning"><p>שלוש הלשוניות עונות על שלוש שאלות שונות. <code>Wildcard</code> שואלת ״איך השם נראה?״. <code>Condition</code> שואלת ״כמה הוא מכר?״ ומשאירה כל מי שעבר את הסף, בלי הגבלה על המספר. <code>Top</code> שואלת ״מי ראשון?״ ומשאירה בדיוק N. כשהמנהלת אומרת ״הטובים״, שאלו אותה איזו מהשלוש היא מתכוונת.</p></div>
+
+<div class="box real"><p>אלה כלים שאתם מכירים. ב-Excel, <em>סינון טקסט &gt; מכיל</em> הוא <code>Wildcard</code>. ב-SQL, <code>WHERE Item LIKE '%Cup%'</code> הוא אותו דבר, ו-<code>HAVING SUM(Sales) &gt;= 16000</code> הוא <code>Condition</code>. ו-<code>ORDER BY ... LIMIT 5</code> הוא <code>Top</code>. (ל-SQL שלכם ב<a href="../final-lesson/part2.html">חלק 2 של השיעור המסכם</a>.)</p></div>
+
+<div class="box trap"><p><b>ממד שמסננים לפי מספר:</b> ב-<code>Condition</code> ו-<code>Top</code> הסינון הוא על ממד, אבל התנאי הוא על סכום. אם בגרירת <code>Item</code> אתם בוחרים <code>Condition</code> עם <code>Sales</code>, אתם לא מסננים שורות בודדות של מכירה, אלא מוצרים שהסכום שלהם עבר. כדי לסנן שורות בודדות, מסננים את <span class="pill c">Sales</span> עצמו כמדד (סעיף 3).</p></div>
+
+<div class="quiz" data-id="m6-q-2a" data-a="1"><p class="qq">במסנן על <code>Item</code>, מה יעשה <code>Wildcard &gt; Contains &gt; Cup</code> למוצר <code>Double Cone</code>?</p>
+<button class="opt">יוציא אותו, כי אין בשמו המילה Cup</button><button class="opt">ישאיר אותו, כי הוא מוצר מבוקש</button><button class="opt">ישאיר אותו, כי Cone ו-Cup באורך דומה</button>
+<div class="why">יוציא. Wildcard מסתכל רק על הטקסט של השם, לא על המכירות ולא על הקטגוריה. נשארים 4 מוצרים שיש להם Cup בשם.</div></div>
+
+<div class="quiz" data-id="m6-q-2b" data-a="2"><p class="qq">מה ההבדל בין <code>Condition: Sum of Sales &gt;= 16000</code> לבין <code>Top 5 by Sum of Sales</code> על מוצרי הרשת?</p>
+<button class="opt">אין הבדל, שניהם נותנים אותם מוצרים</button><button class="opt">Condition נותן 6 מוצרים ו-Top נותן 5, כי Condition מחזיר את כל מי שעבר את הסף</button><button class="opt">Top נותן יותר מוצרים כי הוא לא בודק סכום</button>
+<div class="why">Condition בודק סף ולא מגביל מספר, אז נכנסים 6 מוצרים, כולל Iced Coffee עם 16,281.0. Top לוקח בדיוק 5. אם המספר חשוב לכם בחרו Top, ואם הסף חשוב לכם בחרו Condition.</div></div>
+
+<div class="quiz" data-id="m6-q-2c" data-a="3"><p class="qq">מסמנים רק <code>Ashdod Beach Pop-up</code> בלשונית General ומפעילים <code>Exclude</code>. מה יוצג?</p>
+<button class="opt">רק אשדוד</button><button class="opt">שום סניף, כי אשדוד נבחר והוצא</button><button class="opt">8 סניפים, כולם חוץ מאשדוד</button>
+<div class="why">8 סניפים. Exclude הופך את הבחירה: מה שמסומן הוא מה שיוצא. בלי Exclude היה מוצג רק אשדוד.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הציגו את החלון האמיתי (קודם הצילום, אחר כך החיים). בדקו בתוכנה לפני השיעור איך הלשוניות משתלבות כשמפעילים כמה יחד, ומה כתוב באזור Summary. מומלץ להראות שאפשר לערוך מסנן קיים בקליק ימני על הפיל ובחירת Edit Filter.</div>
+</section>
+
+
+<section class="sec" id="m6-3" data-t="מדד ותאריך">
+<div class="sec-h"><div class="sec-n">3</div><h2>מסנן על מדד ומסנן על תאריך</h2></div>
+<p class="lead">שתי בקשות חדשות מהרשת. ״רק סניפים שמכרו מעל 30,000״, וגם ״רק הקיץ של 2025״. הראשונה מסננת מספר, והשנייה מסננת תאריך. בשתיהן יש שאלה אחת שקובעת הכל: מה בדיוק נבדק?</p>
+
+<div class="defline"><b>מסנן מדד (<code>Measure filter</code>):</b> מסנן שבודק מספר ולא טקסט. הוא יכול לבדוק כל שורה בנפרד, או סכום (או ממוצע וכו׳) של כל סימן. דוגמה: <code>Sales &gt;= 100</code> על שורה בודדת, מול <code>SUM(Sales) &gt;= 30000</code> על סניף שלם.</div>
+
+<p>כשגוררים מדד אל <code>Filters</code>, Tableau קודם שואל <b>איך לצבור אותו</b>, ורק אחר כך שואל על הטווח. ככה זה נראה (הדמיה סכמטית):</p>
+<div class="m6-grid">
+<div class="m6-dlg"><div class="t">Filter Field [Sales]</div><div class="b">
+<div class="list">Sum<br>Average<br>Median<br>Count<br>Count (Distinct)<br>Minimum<br>Maximum<br>Std. Dev<br>Variance<br><span class="hl">All Values</span></div>
+<div class="btns"><span>Cancel</span><span class="ok">Next &gt;</span></div></div></div>
+<div class="m6-dlg"><div class="t">Filter [Sum of Sales]</div><div class="b">
+<div class="r"><span class="sel hl">Range of values</span> <span class="sel">At least</span> <span class="sel">At most</span> <span class="sel">Special</span></div>
+<div class="r">Min: <span class="inp">5,304.5</span> Max: <span class="inp">44,194.1</span></div>
+<div class="sum">Slider between min and max. At least: &gt;= a value you type.</div>
+<div class="btns"><span>Cancel</span><span class="ok">OK</span></div></div></div>
+</div>
+<p>הרשימה בצד שמאל היא איך Tableau צובר לפני שהוא בודק. <code>All Values</code> אומר: בדוק את השורות עצמן, בלי לצבור. כל השאר אומרים: צבור קודם, ובדוק את התוצאה. בגרסה שלכם ייתכן שהשמות או הסדר שונים מעט.</p>
+
+<h3>שורה או סכום: אותה בקשה, שלוש תוצאות</h3>
+<p>נשים <span class="pill d">Branch</span> על <code>Rows</code> ו-<span class="pill c sum">Sales</span> על <code>Columns</code>, ונסנן בשלוש דרכים:</p>
+<div class="tw"><table class="tbl">
+<thead><tr><th>הגדרת המסנן</th><th>מה נבדק</th><th>מה נשאר</th></tr></thead>
+<tbody>
+<tr><td><code>Sales</code> עם <code>All Values</code>, לפחות <code>100</code></td><td>כל שורת מכירה בנפרד</td><td>9 סניפים, אבל כל סניף מראה רק שורות של 100 ומעלה: סך הכל <span class="n">195</span> שורות ו-<span class="n">23,179.8</span>. דוגמאות: <span class="n">Port <span class="n">4,380.4</span>, Eilat <span class="n">4,030.8</span>, Ashdod <span class="n">754.0</span></span></td></tr>
+<tr><td><code>Sum</code> של <code>Sales</code>, לפחות <code>100</code></td><td>הסכום של כל סניף</td><td>כל 9 הסניפים, עם הסכום המלא שלהם (<span class="n">Port <span class="n">39,446.0</span></span>), כי כל סניף עובר 100 בקלות</td></tr>
+<tr><td><code>Sum</code> של <code>Sales</code>, לפחות <code>30000</code></td><td>הסכום של כל סניף</td><td>4 סניפים: <span class="n">Dizengoff <span class="n">44,194.1</span>, Port <span class="n">39,446.0</span>, Mamilla <span class="n">33,450.8</span>, Eilat <span class="n">31,473.7</span></span></td></tr>
+</tbody></table></div>
+<p>שימו לב: הסימן הראשון משנה גם את <b>המספרים</b> של כל סניף (כי חלק מהשורות נעלמו), והשני והשלישי רק מחליטים <b>מי נשאר</b>.</p>
+
+<div class="tfp" data-id="m6-pg-measure"
+     data-task="הוסיפו מסנן על Sales (פתחו אותו בקליק על הפיל) והחליפו את המצב ל-Sum (סכום לכל סימן). הגדירו Min = 30000. אמורים להישאר 4 סימנים."
+     data-goal='{"columns":["SUM(Sales)"],"rows":["Branch"],"filters":["Sales"],"marks":4}'
+     data-preset='{"columns":["SUM(Sales)"],"rows":["Branch"]}'
+     data-hide-shelves="size,label,detail"
+     data-fields="Branch,Region,City,Category,Channel,Sales,Profit,Order_Date"></div>
+
+<div class="box meaning"><p>לפני שמוסיפים מסנן על מדד, שאלו ״על מה אני שואל: על שורה או על סימן?״. ״מכירה בודדת מעל 100״ היא שאלה על שורות. ״סניף שמכר מעל 30,000״ היא שאלה על סימנים. אם בוחרים לא נכון, הגרף נראה תקין ועונה על שאלה אחרת.</p></div>
+
+<div class="box real"><p>זה אותו הבדל כמו ב-SQL. מסנן שבודק שורות הוא <code>WHERE Sales &gt;= 100</code>. מסנן שבודק סכום הוא <code>GROUP BY Branch HAVING SUM(Sales) &gt;= 30000</code>. התיעוד של Tableau עצמו משווה: מסנני מדד מקבילים ל-<code>HAVING</code>, ומסנני ממד ל-<code>WHERE</code>. (ב<a href="../final-lesson/part2.html">חלק 2 של השיעור המסכם</a> כתבתם שניהם.)</p></div>
+
+<h3>מסנן תאריך: שלוש משפחות</h3>
+<p>תאריך הוא שדה מיוחד, ולכן כשגוררים אותו אל <code>Filters</code> הבחירה הראשונה היא איזה <b>סוג</b> מסנן רוצים (הדמיה סכמטית; הניסוח המדויק משתנה בין גרסאות):</p>
+<div class="m6-grid">
+<div class="m6-dlg"><div class="t">Filter Field [Order Date]</div><div class="b">
+<div class="list"><span class="hl">Relative Date</span><br><span class="hl">Range of Dates</span><br>Years<br>Quarters<br>Months<br>Days<br>...</div>
+<div class="btns"><span>Cancel</span><span class="ok">Next &gt;</span></div></div></div>
+<div class="m6-dlg"><div class="t">Filter [Order Date] (Range of Dates)</div><div class="b">
+<div class="r">Start date: <span class="inp hl"><bdi dir="ltr">2025-06-01</bdi></span></div>
+<div class="r">End date: <span class="inp hl"><bdi dir="ltr">2025-08-31</bdi></span></div>
+<div class="sum">מסנן רציף: כל תאריך בין שני הקצוות.</div>
+<div class="btns"><span>Cancel</span><span class="ok">OK</span></div></div></div>
+</div>
+<div class="tw"><table class="tbl">
+<thead><tr><th>סוג</th><th>איך מגדירים</th><th>דוגמה</th><th>מתי מתאים</th></tr></thead>
+<tbody>
+<tr><td><code>Relative Date</code><br>תאריך יחסי</td><td>תקופה ביחס לנקודת עוגן (ברירת מחדל: היום)</td><td>״3 החודשים האחרונים״</td><td>דשבורד שמתעדכן כל הזמן</td></tr>
+<tr><td><code>Range of Dates</code><br>טווח תאריכים</td><td>תאריך התחלה ותאריך סיום</td><td><span class="n">2025-06-01</span> עד <span class="n">2025-08-31</span></td><td>תקופה קבועה, כמו עונה</td></tr>
+<tr><td>חלקי תאריך<br>(שנה, רבעון, חודש...)</td><td>מסמנים ערכים מרשימה, כמו בממד</td><td>Year = 2025; Month = Jun, Jul, Aug</td><td>כשרוצים לבחור במפורש, ואולי לא ברצף</td></tr>
+</tbody></table></div>
+
+<div class="box trap"><p><b>״התאריך היחסי ריק״.</b> תאריך יחסי נמדד כברירת מחדל מ-<b>היום</b>. הנתונים של Scoop &amp; Go נגמרים ב-<span class="n">2025-12-31</span>. מסנן כמו ״3 החודשים האחרונים״ ייתן תצוגה ריקה או חלקית, כי אחרי התאריך הזה אין נתונים. בחלון של המסנן יש אפשרות להגדיר נקודת עוגן אחרת (<code>Anchor</code>, בגרסה שלכם ייתכן שהשם שונה מעט), ושם בוחרים את היום האחרון בנתונים.</p></div>
+
+<div class="box trap"><p><b>חודש שמופיע פעמיים.</b> אם מסמנים <code>Jun, Jul, Aug</code> ברשימת חודשים (חלק תאריך), מקבלים את שלושת החודשים של <b>כל</b> השנים בקובץ ביחד. אצלנו: <span class="n">46,269.4</span> מ-2024 ועוד <span class="n">59,625.9</span> מ-2025, סך הכל <span class="n">105,895.3</span>. מי שרוצה את קיץ 2025 בלבד צריך גם <code>Year = 2025</code>, או טווח תאריכים אחד.</p></div>
+
+<div class="box try" data-id="m6-try-date">
+<ol>
+<li>גיליון חדש: <span class="pill d">Category</span> אל <code>Columns</code>, <span class="pill c sum">Sales</span> אל <code>Rows</code>. <em>למה:</em> חמישה עמודות, הבסיס להשוואה.</li>
+<li>גררו <span class="pill c">Order Date</span> אל <code>Filters</code> ובחרו <code>Range of Dates</code>, <code>Next</code>. הקלידו <span class="n">2025-06-01</span> עד <span class="n">2025-08-31</span> ו-<code>OK</code>. <em>למה:</em> עונה אחת בדיוק, בלי תלות בשאר השנה.</li>
+<li>קראו את הערכים (העבירו עכבר על עמודות או הפעילו תוויות). אחר כך הסירו את המסנן.</li>
+<li>גררו שוב את <span class="pill c">Order Date</span> אל <code>Filters</code>, הפעם בחרו <code>Years</code> וסמנו רק <code>2025</code>. <em>למה:</em> הבדל בין טווח לבין חלק תאריך.</li>
+<li>הסירו, וגררו שוב: <code>Months</code>, סמנו רק <code>June</code>, <code>July</code>, <code>August</code>. <em>למה:</em> לראות בעיניים את החודשים שנאספים משתי השנים.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> (שלב 2) סך הכל <span class="n">59,625.9</span>, מתוך <span class="n">1,697</span> שורות: <span class="n">Cups <span class="n">17,426.8</span>, Drinks <span class="n">13,846.7</span>, Cones <span class="n">12,542.6</span>, Sundaes <span class="n">11,513.0</span>, Sticks <span class="n">4,296.8</span></span>. (שלב 4) כל 2025: <span class="n">129,773.3</span>, ו-<span class="n">Cups <span class="n">37,767.6</span></span>. (שלב 5) יוני עד אוגוסט של שתי השנים: <span class="n">105,895.3</span>, ו-<span class="n">Cups <span class="n">31,707.2</span></span>. Tableau עשוי להציג את הסכומים מעוגלים לשקל, וזה עיגול תצוגה בלבד.</p>
+</div>
+
+<div class="tfp" data-id="m6-pg-date"
+     data-task="הוסיפו מסנן על Order_Date (קליק על הפיל): בחרו רק את השנה 2025. התצוגה: סכום המכירות לפי קטגוריה."
+     data-goal='{"columns":["Category"],"rows":["SUM(Sales)"],"filters":["Order_Date"],"marks":5}'
+     data-preset='{"columns":["Category"],"rows":["SUM(Sales)"]}'
+     data-hide-shelves="size,label,detail"
+     data-fields="Category,Branch,Region,Channel,Sales,Order_Date"></div>
+<p>בהדמיה אפשר לבחור שנים וגם טווח תאריכים. מה שצפוי כשרק 2025 נבחרת: סך הכל <span class="n">129,773.3</span>.</p>
+
+<div class="box think" data-id="m6-th-3"><p>מנהל הסניף באילת רוצה דשבורד ש״תמיד מראה את החודש האחרון״. איזה סוג מסנן תאריך תבחרו, ומה הבעיה כשמדובר בקובץ הנתונים שלנו?</p>
+<div class="ans">תאריך יחסי, כי הוא זז לבד. הבעיה: ב-Tableau Public הנתונים הם קובץ סטטי שלא מתעדכן, וה״היום״ של המסנן ממשיך להתקדם. אחרי כמה חודשים התצוגה תהיה ריקה. בנתונים שאינם מתעדכנים בוחרים נקודת עוגן קבועה או טווח תאריכים קבוע.</div></div>
+
+<div class="quiz" data-id="m6-q-3a" data-a="2"><p class="qq">מסנן מדד על <code>Sales</code> במצב <code>All Values</code>, לפחות 100, על תצוגה של <code>SUM(Sales)</code> לפי <code>Branch</code>. מה קורה לסכום של Dizengoff?</p>
+<button class="opt">הוא נשאר 44,194.1, כי המסנן רק בוחר סניפים</button><button class="opt">הוא יורד ל-3,336.0, כי נספרות רק שורות של 100 ומעלה</button><button class="opt">הסניף נעלם, כי אף שורה בודדת לא עוברת 100</button>
+<div class="why">All Values בודק שורות. רק שורות של 100 ומעלה נכנסות לסכום של הסניף, ולכן הוא יורד ל-3,336.0. במצב Sum הסכום היה נשאר 44,194.1, והמסנן רק היה מחליט אם הסניף נשאר.</div></div>
+
+<div class="quiz" data-id="m6-q-3b" data-a="3"><p class="qq">מסננים חלק תאריך <code>Months</code> ל-Jun, Jul, Aug על קובץ של שתי שנים. כמה שורות ייכנסו?</p>
+<button class="opt">רק של 2025, השנה האחרונה</button><button class="opt">רק של 2024, השנה הראשונה</button><button class="opt">שלושת החודשים של שתי השנים: 2,937 שורות</button>
+<div class="why">חודש כחלק תאריך לא יודע על שנה. הוא אוסף את אותו חודש מכל השנים. כדי להגביל לשנה אחת מוסיפים מסנן שנה, או משתמשים בטווח תאריכים.</div></div>
+
+<div class="quiz" data-id="m6-q-3c" data-a="1"><p class="qq">איזה מסנן תאריך מתאים לבקשה ״הקיץ של 2025, יוני עד אוגוסט, תמיד אותו דבר״?</p>
+<button class="opt">טווח תאריכים קבוע (Range of Dates)</button><button class="opt">תאריך יחסי מהיום (Relative Date)</button><button class="opt">מסנן Months שמסמן רק Jun, Jul, Aug</button>
+<div class="why">טווח קבוע נותן בדיוק את התקופה, ולא משתנה עם הזמן. יחסי זז עם התאריך של היום, וחלק תאריך של חודשים אוסף שנים נוספות.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הלשוניות והתפריטים של מסנן תאריך (שמות הרשימה, מיקום Anchor) משתנים בין גרסאות. בדקו בתוכנה לפני השיעור, וצלמו מסך של החלון האמיתי של תאריך ושל מדד כדי להחליף את ההדמיות הסכמטיות. בפרט בדקו: האם יש אפשרות עוגן בחלון Relative Date בגרסה שלכם. שאלו את הכיתה מה יקרה אם ימשיכו להסתכל על הדשבורד בעוד חצי שנה.</div>
+</section>
+
+
+<section class="sec" id="m6-4" data-t="כרטיסים והחלה">
+<div class="sec-h"><div class="sec-n">4</div><h2>כרטיסי סינון, כמה גיליונות, ו-Keep Only</h2></div>
+<p class="lead">מנהלת הרשת רוצה לשחק עם הגרף בעצמה: היום דרום, מחר מרכז. אתם לא רוצים שתתקשר אליכם כל פעם. בשביל זה יש כרטיס סינון. ואם יש לכם שלושה גיליונות, צריך גם להחליט אם המסנן חל על כולם.</p>
+
+<div class="defline"><b>כרטיס סינון (<code>Filter card</code>, בעבר Quick Filter):</b> תיבה בצד התצוגה שנותנת לכל מי שמסתכל לשנות מסנן בלי לגעת בגיליון. דוגמה: רשימת סימון של <code>Region</code> עם ארבע האפשרויות.</div>
+
+<p>מוסיפים כרטיס בקליק ימני על הפיל של המסנן ב-<code>Filters</code> ובחירה ב-<code>Show Filter</code>. הכרטיס מופיע לצד התצוגה. בחץ הקטן שבראש הכרטיס יש רשימת <b>מצבים</b>, כלומר איך הכרטיס נראה ומה מותר לבחור. הנה חמישה מצבים נפוצים (הדמיה סכמטית):</p>
+<div style="text-align:center">
+<div class="m6-fc"><div class="h"><span>Region</span><span>▾</span></div><div class="bd">☑ Center<br>☑ Jerusalem<br>☑ North<br>☑ South</div></div>
+<div class="m6-fc"><div class="h"><span>Region</span><span>▾</span></div><div class="bd">(All) &nbsp; ▾<br>&nbsp;</div></div>
+<div class="m6-fc"><div class="h"><span>Region</span><span>▾</span></div><div class="bd">○ Center<br>○ Jerusalem<br>○ North<br>● South</div></div>
+<div class="m6-fc"><div class="h"><span>Item</span><span>▾</span></div><div class="bd">🔍 Cup<br>&nbsp;</div></div>
+<div class="m6-fc"><div class="h"><span>Sales</span><span>▾</span></div><div class="bd">8 &nbsp;&nbsp;&nbsp; 160<div class="sl"><i style="left:10%"></i><i style="left:80%"></i></div></div></div>
+</div>
+<div class="tw"><table class="tbl">
+<thead><tr><th>מצב בכרטיס</th><th>מה מותר</th><th>מתאים ל...</th></tr></thead>
+<tbody>
+<tr><td><code>Multiple Values (list)</code></td><td>כמה ערכים בו זמנית, ברשימה גלויה</td><td>שדה עם מעט ערכים, כמו אזור</td></tr>
+<tr><td><code>Multiple Values (dropdown)</code></td><td>כמה ערכים, ברשימה שנפתחת</td><td>דשבורד צפוף, חוסך מקום</td></tr>
+<tr><td><code>Single Value (list)</code></td><td>ערך אחד בכל פעם (כפתורי רדיו)</td><td>״הראה לי סניף אחד״</td></tr>
+<tr><td><code>Wildcard Match</code></td><td>תיבת חיפוש טקסט</td><td>שדה עם הרבה ערכים, כמו שמות</td></tr>
+<tr><td>מחוון (<code>slider</code>)</td><td>טווח של מספר או תאריך</td><td>מדד או תאריך</td></tr>
+</tbody></table></div>
+<p>שמות המצבים בתפריט עשויים להיות שונים מעט בגרסה שלכם, אבל הרעיון זהה. עוד אפשרות שכדאי להכיר בתפריט הכרטיס: <code>Only Relevant Values</code>. היא מציגה בכרטיס רק ערכים שעדיין קיימים אחרי המסננים האחרים. דוגמה: אחרי <code>Region = South</code>, כרטיס של <code>Branch</code> יציג רק שלושה סניפים. הצד השני: כרטיסים כאלה נוטים להאט תצוגות כבדות, ולכן המדריך של Tableau לביצועים ממליץ להשתמש בהם בזהירות.</p>
+
+<h3>מדף Filters מול כרטיס בדשבורד</h3>
+<p>המסנן עצמו נמצא תמיד על המדף <code>Filters</code>. הכרטיס הוא רק <b>ידית</b> לשינוי שלו. כשמניחים גיליון בדשבורד, אפשר להציג את הכרטיס לצד הגיליון, ואז הצופה (גם הצופה באינטרנט, ב-Tableau Public) יכול לשנות את המסנן. על דשבורדים ופעולות (<code>Use as Filter</code>) נדבר ב<a href="module13.html">מודול 13</a>. כאן חשוב לדעת: אם לא מציגים כרטיס, הצופה לא יכול לשנות את המסנן, ואם מציגים, הוא יכול לבטל אותו.</p>
+
+<h3>על אילו גיליונות המסנן חל?</h3>
+<p>מסנן חדש חל כברירת מחדל על הגיליון שלו בלבד (<code>Only This Worksheet</code>). אם יש לכם כמה גיליונות על אותם נתונים ורוצים שהסינון יחול גם עליהם, פותחים את התפריט של הפיל או של הכרטיס ובוחרים <code>Apply to Worksheets</code>, ואז אחת מארבע האפשרויות: <code>All Using Related Data Sources</code>, <code>All Using This Data Source</code>, <code>Selected Worksheets</code> או <code>Only This Worksheet</code>. בדשבורד נוספת גם אפשרות שמחילה על כל הגיליונות בו.</p>
+
+<div class="anim" data-id="m6-anim-apply" data-speed="3200"><div class="stage"><svg viewBox="0 0 800 380" role="img" aria-label="שני גיליונות: מסנן על גיליון אחד, תפריט Apply to Worksheets, והמסנן חל גם על הגיליון השני">
+<defs><marker id="m6apA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e8741f"/></marker></defs>
+<rect x="20.0" y="50.0" width="370.0" height="300" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+<text x="205" y="40" font-size="15" text-anchor="middle" font-weight="700" fill="#142a45" >Sheet 1: SUM(Sales) by Branch</text>
+<rect x="410.0" y="50.0" width="370.0" height="300" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+<text x="595" y="40" font-size="15" text-anchor="middle" font-weight="700" fill="#142a45" >Sheet 2: SUM(Sales) by Category</text>
+<g><rect x="30.0" y="60.0" width="150.0" height="26" rx="6" fill="#d7e7f5" stroke="#a9c9e3" stroke-width="1" /><text x="105.0" y="78.0" font-size="14" text-anchor="middle" font-weight="700" fill="#14507a" >Filters: Region</text></g>
+<g><text x="130" y="152" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Eilat</text><rect x="140.0" y="135.0" width="150.0" height="24" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="296.0" y="152" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >31,473.7</text><text x="130" y="194" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Beer Sheva</text><rect x="140.0" y="177.0" width="89.6" height="24" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="235.58527278330797" y="194" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >18,797.2</text><text x="130" y="236" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Ashdod</text><rect x="140.0" y="219.0" width="25.3" height="24" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="171.28063113011817" y="236" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >5,304.5</text></g>
+<g data-only="1,2"><text x="500" y="126" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Cups</text><rect x="510.0" y="110.0" width="150.0" height="22" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="666.0" y="126" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >69,470.0</text><text x="500" y="166" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Drinks</text><rect x="510.0" y="150.0" width="117.8" height="22" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="633.7917806247301" y="166" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >54,553.3</text><text x="500" y="206" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Cones</text><rect x="510.0" y="190.0" width="104.3" height="22" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="620.3263279113287" y="206" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >48,317.0</text><text x="500" y="246" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Sundaes</text><rect x="510.0" y="230.0" width="101.6" height="22" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="617.5629768245286" y="246" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >47,037.2</text><text x="500" y="286" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Sticks</text><rect x="510.0" y="270.0" width="37.7" height="22" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="553.6638836908018" y="286" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >17,443.4</text></g>
+<g data-only="3,4"><text x="500" y="126" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Cups</text><rect x="510.0" y="110.0" width="35.9" height="22" rx="0" fill="#e8741f" stroke="none" stroke-width="1" /><text x="551.9473153879372" y="126" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >16,648.4</text><text x="500" y="166" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Drinks</text><rect x="510.0" y="150.0" width="24.9" height="22" rx="0" fill="#e8741f" stroke="none" stroke-width="1" /><text x="540.8995249748093" y="166" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >11,531.8</text><text x="500" y="206" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Cones</text><rect x="510.0" y="190.0" width="24.3" height="22" rx="0" fill="#e8741f" stroke="none" stroke-width="1" /><text x="540.335324600547" y="206" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >11,270.5</text><text x="500" y="246" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Sundaes</text><rect x="510.0" y="230.0" width="26.1" height="22" rx="0" fill="#e8741f" stroke="none" stroke-width="1" /><text x="542.1069526414279" y="246" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >12,091.0</text><text x="500" y="286" font-size="14" text-anchor="end" font-weight="400" fill="#334155" >Sticks</text><rect x="510.0" y="270.0" width="8.7" height="22" rx="0" fill="#e8741f" stroke="none" stroke-width="1" /><text x="524.7095868720311" y="286" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >4,033.7</text></g>
+<g data-s="3"><rect x="420.0" y="60.0" width="150.0" height="26" rx="6" fill="#d7e7f5" stroke="#a9c9e3" stroke-width="1" /><text x="495.0" y="78.0" font-size="14" text-anchor="middle" font-weight="700" fill="#14507a" >Filters: Region</text></g>
+<g data-s="3"><path d="M185,73 L412,73" stroke="#e8741f" stroke-width="2.5" fill="none" marker-end="url(#m6apA)"/></g>
+<g data-only="2"><rect x="60.0" y="88.0" width="300.0" height="128" rx="6" fill="#ffffff" stroke="#64748b" stroke-width="1.5" /><text x="76" y="111" font-size="15" text-anchor="start" font-weight="400" fill="#1f2937" >All Using Related Data Sources</text><rect x="64.0" y="122.0" width="292.0" height="28" rx="4" fill="#fde68a" stroke="#e8741f" stroke-width="1.5" /><text x="76" y="141" font-size="15" text-anchor="start" font-weight="600" fill="#1f2937" >All Using This Data Source</text><text x="76" y="171" font-size="15" text-anchor="start" font-weight="400" fill="#1f2937" >Selected Worksheets...</text><text x="76" y="201" font-size="15" text-anchor="start" font-weight="400" fill="#1f2937" >Only This Worksheet</text></g>
+<g data-only="4"><rect x="60.0" y="88.0" width="300.0" height="128" rx="6" fill="#ffffff" stroke="#64748b" stroke-width="1.5" /><text x="76" y="111" font-size="15" text-anchor="start" font-weight="400" fill="#1f2937" >All Using Related Data Sources</text><text x="76" y="141" font-size="15" text-anchor="start" font-weight="400" fill="#1f2937" >All Using This Data Source</text><rect x="64.0" y="152.0" width="292.0" height="28" rx="4" fill="#fde68a" stroke="#e8741f" stroke-width="1.5" /><text x="76" y="171" font-size="15" text-anchor="start" font-weight="600" fill="#1f2937" >Selected Worksheets...</text><text x="76" y="201" font-size="15" text-anchor="start" font-weight="400" fill="#1f2937" >Only This Worksheet</text></g>
+</svg></div>
+<ol class="caps"><li>שני גיליונות על אותם נתונים. בגיליון 1 סינון <code>Region = South</code>: שלושה סניפים. גיליון 2 (מכירות לפי קטגוריה) לא יודע על זה, והוא עדיין מציג את כל הרשת.</li><li>קליק ימני על הפיל של Region, ואז <code>Apply to Worksheets</code>. מופיעות ארבע האפשרויות.</li><li>בוחרים <code>All Using This Data Source</code>. הפיל של Region מופיע גם בגיליון 2, והסכומים שלו יורדים לדרום בלבד.</li><li>אם רוצים רק חלק מהגיליונות, בוחרים <code>Selected Worksheets</code> וסומנים אותם ברשימה. בלי זה, המסנן נשאר בגיליון אחד.</li></ol></div>
+
+<div class="box try" data-id="m6-try-apply">
+<ol>
+<li>בגיליון 1: <span class="pill d">Branch</span> אל <code>Rows</code>, <span class="pill c sum">Sales</span> אל <code>Columns</code>, ומסנן <span class="pill d">Region</span> = <code>South</code> (כמו בסעיף 1). <em>למה:</em> גיליון אחד מסונן.</li>
+<li>פתחו גיליון חדש (Sheet 2). <span class="pill d">Category</span> אל <code>Columns</code>, <span class="pill c sum">Sales</span> אל <code>Rows</code>. קראו את הסכומים. <em>למה:</em> הוא עדיין לא מסונן, וצריך לראות את זה לפני התיקון.</li>
+<li>חזרו לגיליון 1, קליק ימני על הפיל <code>Region</code> שב-<code>Filters</code>, <code>Apply to Worksheets</code>, <code>All Using This Data Source</code>. <em>למה:</em> שני הגיליונות על אותו קובץ.</li>
+<li>עברו לגיליון 2 ובדקו: על <code>Filters</code> יש עכשיו פיל של <code>Region</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> לפני: <span class="n">Cups <span class="n">69,470.0</span>, Drinks <span class="n">54,553.3</span>, Cones <span class="n">48,317.0</span>, Sundaes <span class="n">47,037.2</span>, Sticks <span class="n">17,443.4</span></span>. אחרי (דרום בלבד): <span class="n">Cups <span class="n">16,648.4</span>, Sundaes <span class="n">12,091.0</span>, Drinks <span class="n">11,531.8</span>, Cones <span class="n">11,270.5</span>, Sticks <span class="n">4,033.7</span></span>, וסך הכל <span class="n">55,575.4</span>.</p>
+</div>
+
+<h3>סינון בלחיצה על סימנים: Keep Only ו-Exclude</h3>
+<p>יש דרך שלישית לסנן, בלי לפתוח שום חלון. בוחרים סימנים בתצוגה (לוחצים על עמודה, או גוררים מסגרת סביב כמה), וקופצת סרגל כלים קטן:</p>
+<div style="text-align:center"><div class="m6-tip"><span>Keep Only</span><span>Exclude</span><span>Group</span><span>Create Set</span><span>View Data</span></div></div>
+<p>(הדמיה סכמטית של הסרגל; הכפתורים והסדר שלהם עשויים להיות שונים מעט.) <code>Keep Only</code> משאיר את הסימנים שבחרתם, ו-<code>Exclude</code> מוריד אותם. בשני המקרים Tableau בונה לכם מסנן, ומוסיף אותו למדף <code>Filters</code>, אבל אתם לא בוחרים אותו בעצמכם.</p>
+
+<div class="defline"><b>Keep Only ו-Exclude:</b> קיצור דרך שהופך בחירת סימנים לבחירת מסנן. דוגמה: בוחרים את שני סניפי תל אביב ולוחצים <code>Keep Only</code>, ובמדף Filters נוצר מסנן שמשאיר שני סניפים.</div>
+
+<div class="box try" data-id="m6-try-keeponly">
+<ol>
+<li>בגיליון נקי: <span class="pill d">Branch</span> אל <code>Rows</code>, <span class="pill c sum">Sales</span> אל <code>Columns</code>. <em>למה:</em> תשעה סימנים לבחירה.</li>
+<li>לחצו על העמודה של Tel Aviv Dizengoff, החזיקו Ctrl (Cmd ב-Mac) ולחצו גם על Tel Aviv Port. בסרגל שקופץ בחרו <code>Keep Only</code>. <em>למה:</em> בחירה של שני סימנים, והשארה שלהם.</li>
+<li>הסתכלו במדף <code>Filters</code> ובשורת המצב. <em>למה:</em> זה התרגול האמיתי: לראות איזה מסנן נוצר בלי שבחרתם אותו.</li>
+<li>בטלו (Ctrl+Z / Cmd+Z). בחרו את Ashdod Beach Pop-up ולחצו <code>Exclude</code>. בדקו שוב.</li>
+<li>למתקדמים: בטלו, והוסיפו <span class="pill d">Region</span> אל <code>Rows</code> לפני <span class="pill d">Branch</span>. בחרו שוב את שני סניפי תל אביב ולחצו <code>Keep Only</code>. הסתכלו על השם של הפיל החדש במדף <code>Filters</code>. אם הוא שונה משם של שדה, זה מסנן מיוחד ש-Tableau בנה (בגרסאות מסוימות הוא נקרא <code>Inclusions</code>).</li>
+</ol>
+<p><b>תוצאה צפויה:</b> אחרי שלב 2: סימנים: 2. סכום: <span class="n">83,640.1</span> (<span class="n">44,194.1</span> ועוד <span class="n">39,446.0</span>). אחרי שלב 4: סימנים: 8, סכום <span class="n">231,516.4</span> (הכל פחות <span class="n">5,304.5</span>).</p>
+</div>
+
+<div class="box trap"><p><b>״מי הוסיף את המסנן הזה?״</b> אחרי Keep Only או Exclude הגיליון נראה כמו תמיד, אבל על <code>Filters</code> יושב מסנן שלא בניתם בעצמכם. זו הסיבה ל״חלק מהנתונים חסרים״ אחרי שהסתובבתם בגיליון ולחצתם על סימנים. הרגל טוב: אחרי כל Keep Only או Exclude, הסתכלו על <code>Filters</code>. וכשמשהו חסר בגיליון, זה המקום הראשון לבדוק. (לפי מדריך ההתחלה של Tableau, בסימנים שמוגדרים על ידי כמה ממדים מופיע מסנן מיוחד בשם <code>Inclusions</code>.)</p></div>
+
+<div class="box trap"><p><b>המסנן חל על גיליון אחד.</b> אתם מסננים בגיליון 1 ובגיליון 2 עדיין רואים את כל הרשת, ואתם משוכנעים ש״Tableau לא מסנן״. ברירת המחדל היא <code>Only This Worksheet</code>. בדקו תמיד איפה הסינון חל לפני שאתם מניחים שהוא כללי.</p></div>
+
+<div class="box meaning"><p>כרטיס סינון הוא החלטה על <b>מי שולט</b> בגרף. בלי כרטיס, המסנן הוא החלטה שלכם. עם כרטיס, הוא החלטה של הצופה. בדשבורד למנהלת הרשת כדאי כרטיס על אזור וכרטיס על תאריך. בדשבורד שמתפרסם בציבור, כל כרטיס הוא דרך שבה הצופה יכול לבטל מסנן שרציתם שיישאר.</p></div>
+
+<div class="box real"><p>ב-Excel יש בדיוק את זה: <em>Slicer</em> הוא כרטיס סינון, והחיבור שלו לכמה טבלאות צירים מקביל ל-<code>Apply to Worksheets</code>. אם עבדתם עם Slicer, הרעיון מוכר.</p></div>
+
+<div class="box think" data-id="m6-th-4"><p>דשבורד עם שישה גיליונות ושמונה כרטיסי סינון. הצופים מתלוננים שהוא מבלבל. מה תשנו?</p>
+<div class="ans">מורידים כרטיסים עד שנשארים שניים או שלושה שבאמת משנים את התשובה (אזור, תאריך). מסנן שרוב הצופים לא נוגעים בו עוזר יותר כמסנן קבוע. מגדירים בבירור על אילו גיליונות כל כרטיס חל, ובכותרת של הכרטיס כותבים מה הוא עושה. ועוד: פחות כרטיסים גם מקצרים את זמן הטעינה.</div></div>
+
+<div class="quiz" data-id="m6-q-4a" data-a="3"><p class="qq">הוספתם מסנן <code>Region</code> בגיליון 1. בגיליון 2, על אותם נתונים, כל הרשת עדיין מוצגת. למה?</p>
+<button class="opt">בגיליון 2 יש באג</button><button class="opt">מסנן חל רק על גיליון אחד אחרי שמגדירים כרטיס</button><button class="opt">ברירת המחדל היא Only This Worksheet, וצריך Apply to Worksheets</button>
+<div class="why">מסנן חדש חל על הגיליון שלו בלבד. כדי שיחול על גיליונות אחרים בוחרים Apply to Worksheets, ואז All Using This Data Source או Selected Worksheets.</div></div>
+
+<div class="quiz" data-id="m6-q-4b" data-a="1"><p class="qq">בחרתם באמצעות Ctrl שתי עמודות ולחצתם <code>Exclude</code>. מה קרה מאחורי הקלעים?</p>
+<button class="opt">Tableau בנה מסנן שמוציא את שני הסימנים ושם אותו על Filters</button><button class="opt">Tableau מחק את השורות מקובץ הנתונים</button><button class="opt">Tableau רק הסתיר את העמודות, בלי מסנן</button>
+<div class="why">נוצר מסנן, והוא נראה על Filters. הנתונים בקובץ לא נגעו. אפשר להסיר את המסנן בגרירה החוצה, או לבטל עם Ctrl+Z / Cmd+Z.</div></div>
+
+<div class="quiz" data-id="m6-q-4c" data-a="2"><p class="qq">איזה מצב כרטיס מתאים לדשבורד שבו הצופה צריך לבחור סניף אחד בכל פעם?</p>
+<button class="opt">Multiple Values (list)</button><button class="opt">Single Value (list) או Single Value (dropdown)</button><button class="opt">Wildcard Match</button>
+<div class="why">Single Value מאפשר ערך אחד בכל פעם. Multiple מאפשר לסמן כמה בו זמנית, שזה בדיוק מה שלא רוצים כאן. Wildcard מתאים לחיפוש טקסט, לא לבחירה מרשימה קצרה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הציגו את סרגל הכלים של הסימנים בתוכנה עצמה. בדקו מה כתוב על הכפתורים בגרסה שלכם ומה השם שנוצר ב-Filters אחרי Keep Only על שני ממדים (Inclusions וכדומה). את הניסוח של אפשרויות Apply to Worksheets (כולל אפשרות לדשבורד) בדקו בתוכנה לפני השיעור. סיכום: מי שולט בגרף, מי שבנה אותו או מי שצופה בו.</div>
+</section>
+
+
+<section class="sec" id="m6-5" data-t="מיון">
+<div class="sec-h"><div class="sec-n">5</div><h2>מיון: מי ראשון ומי אחרון</h2></div>
+<p class="lead">גרף עמודות שלא ממוין מכריח את העין לחפש. גרף ממוין עונה לבד: מי מוביל, מי בתחתית. ב-Scoop &amp; Go זה אפילו משנה את ההחלטה: המוצר השביעי במכירות הוא האחרון ברווח.</p>
+
+<div class="defline"><b>מיון (<code>Sort</code>):</b> הסדר שבו הסימנים או הכותרות מופיעים בתצוגה. דוגמה: <span class="pill d">Item</span> ממוין לפי <code>SUM(Sales)</code> מהגדול לקטן, ו-Milkshake (<span class="n">24,902.8</span>) נמצא ראשון.</div>
+
+<h3>ארבע דרכים למיין</h3>
+<ol>
+<li><b>כפתורי סרגל הכלים.</b> בוחרים בתצוגה, ולוחצים על אחד מכפתורי המיון (עולה או יורד). זה הכפתור (צילום אמיתי): <img src="img/sort-button.png" alt="כפתור Sort בסרגל הכלים" style="height:30px;vertical-align:middle;border:1px solid #cbd5e1;border-radius:4px">.</li>
+<li><b>אייקון על הציר או על הכותרת.</b> מעבירים עכבר על ציר של מדד או על כותרת של ממד, ומופיע אייקון מיון קטן. לחיצה עליו ממיינת, ולחיצה נוספת הופכת כיוון.</li>
+<li><b>חלון המיון המלא.</b> קליק ימני על הפיל של הממד ו-<code>Sort...</code>. שם בוחרים <code>Sort Order</code>: <code>Data source order</code> (כמו בקובץ), <code>Alphabetic</code>, <code>Field</code> (לפי שדה אחר, עם אגרגציה) או <code>Manual</code>.</li>
+<li><b>מיון ידני.</b> גוררים כותרת (header) למקום אחר, או מסדרים ברשימה של <code>Manual</code>.</li>
+</ol>
+<figure class="shot" style="max-width:640px;margin-inline:auto"><img src="img/sorted-genre.png" alt="גרף עמודות של Global Sales לפי Genre ממוין מהגבוה לנמוך, עם אייקון מיון על הפיל Genre ועל הציר">
+<figcaption>אחרי מיון יורד. שימו לב לאייקון המיון הקטן שמופיע על הפיל <code>Genre</code> ב-<code>Columns</code> ולצד הציר: כך רואים שהממד הזה ממוין ולפי מה. בצילום נתוני משחקי וידאו.</figcaption></figure>
+
+<p>ככה נראה חלון המיון (הדמיה סכמטית):</p>
+<div class="m6-dlg"><div class="t">Sort [Item]</div><div class="b">
+<div class="r">Sort order: <span class="sel hl">Field</span> <span class="sel">Data source order</span> <span class="sel">Alphabetic</span> <span class="sel">Manual</span></div>
+<div class="r">● Ascending &nbsp; ○ Descending</div>
+<div class="r">Sort by: <span class="sel hl">Profit</span> <span class="sel hl">Sum</span></div>
+<div class="btns"><span>Clear</span><span class="ok">OK</span></div></div></div>
+
+<h3>מיון מקונן ומיון מחושב</h3>
+<p>כשיש בתצוגה ממד אחד, מיון הוא פשוט. כשיש שניים, למשל <span class="pill d">Region</span> ובתוכו <span class="pill d">Branch</span>, צריך להחליט מה ממיינים.</p>
+<div class="defline"><b>מיון מקונן (<code>nested sort</code>):</b> ממיין את הממד הפנימי בתוך כל קבוצה של הממד החיצוני, בנפרד. דוגמה: הסניפים ממוינים בתוך כל אזור, והאזורים עצמם נשארים בסדר שלהם. זה מה שקורה בדרך כלל כשלוחצים על כפתור הסרגל או האייקון על כותרת פנימית.</div>
+<div class="defline"><b>מיון מחושב (<code>computed sort</code>):</b> נקבע בחלון <code>Sort</code> לפי שדה ואגרגציה, ומסדר את הממד כולו. דוגמה: מיון של <span class="pill d">Region</span> לפי <code>SUM(Sales)</code> מסדר את האזורים מהגדול לקטן: Center, South, Jerusalem, North.</div>
+<p>(הניסוח של שני המושגים לפי מה שמקובל בתיעוד ובמדריכים; בדקו בתוכנה איך הם נקראים אצלכם.)</p>
+<div class="tw"><table class="tbl">
+<thead><tr><th>הגדרה</th><th>סדר האזורים</th><th>סדר הסניפים בתוך Center</th><th>בתוך South</th></tr></thead>
+<tbody>
+<tr><td>אלפביתי</td><td>Center, Jerusalem, North, South</td><td><span class="n">Netanya, Rehovot, Dizengoff, Port</span></td><td><span class="n">Ashdod, Beer Sheva, Eilat</span></td></tr>
+<tr><td>מקונן: הסניפים לפי Sales יורד</td><td>Center, Jerusalem, North, South (לא השתנה)</td><td><span class="n">Dizengoff, Port, Netanya, Rehovot</span></td><td><span class="n">Eilat, Beer Sheva, Ashdod</span></td></tr>
+<tr><td>מחושב: האזורים לפי Sales יורד, ועוד מיון מקונן לסניפים</td><td>Center <span class="n">120,405.5</span>, <span class="n">South <span class="n">55,575.4</span>, Jerusalem <span class="n">33,450.8</span>, North <span class="n">27,389.2</span></span></td><td><span class="n">Dizengoff, Port, Netanya, Rehovot</span></td><td><span class="n">Eilat, Beer Sheva, Ashdod</span></td></tr>
+</tbody></table></div>
+<p>(שמות הסניפים מקוצרים: Dizengoff = Tel Aviv Dizengoff, Port = Tel Aviv Port, וכן הלאה.)</p>
+
+<p>נסו את שני המיונים ביחד, בהדמיה. שנו מיון של האזורים, מיון של הסניפים, ואת המדד שלפיו ממיינים:</p>
+<div class="sim" data-id="m6-sim-sort"><div class="sh">מיון של אזורים וסניפים</div>
+<div class="m6-opt"><label>אזורים: <select id="m6s-r"><option value="a">אלפביתי</option><option value="d">לפי מדד, יורד (מחושב)</option><option value="u">לפי מדד, עולה (מחושב)</option></select></label>
+<label>סניפים בתוך אזור: <select id="m6s-b"><option value="a">אלפביתי</option><option value="d">לפי מדד, יורד (מקונן)</option><option value="u">לפי מדד, עולה (מקונן)</option></select></label>
+<label>מדד: <select id="m6s-m"><option value="s">SUM(Sales)</option><option value="p">SUM(Profit)</option></select></label></div>
+<div class="out" id="m6s-out"></div>
+<p class="m6-need">הדמיה. הסכומים מחושבים מנתוני Scoop &amp; Go. Tableau עצמו כולל עוד אפשרויות.</p></div>
+<script>(function(){FL.dom(function(){
+var box=FL.$('[data-id="m6-sim-sort"]'); if(!box) return;
+TF.loadScoop(function(D){
+var c=D.cols,n=D.n,BD=c.Branch.dict,RD=c.Region.dict,br=BD.map(function(b){return {n:b,s:0,p:0,r:null};});
+for(var i=0;i<n;i++){var k=c.Branch.v[i]; br[k].s+=c.Sales.v[i]; br[k].p+=c.Profit.v[i]; br[k].r=RD[c.Region.v[i]];}
+var rs=FL.$('#m6s-r',box), bs=FL.$('#m6s-b',box), ms=FL.$('#m6s-m',box), out=FL.$('#m6s-out',box), changes=0;
+function fmt(x){return x.toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1});}
+function cmp(mode,key){ return function(a,b){ if(mode==='a') return String(a.n).localeCompare(String(b.n)); return mode==='d' ? b[key]-a[key] : a[key]-b[key]; }; }
+function draw(){
+ var key=ms.value, regs={};
+ br.forEach(function(b){ (regs[b.r]=regs[b.r]||{n:b.r,s:0,p:0,list:[]}); regs[b.r].s+=b.s; regs[b.r].p+=b.p; regs[b.r].list.push(b); });
+ var R=Object.keys(regs).map(function(k){return regs[k];}).sort(cmp(rs.value,key));
+ var mx=Math.max.apply(null,br.map(function(b){return b[key];})), h='';
+ R.forEach(function(r){
+  h+='<div style="margin-top:6px"><b>'+FL.esc(r.n)+'</b> <span class="n" style="color:#64748b">'+fmt(r[key])+'</span></div>';
+  r.list.sort(cmp(bs.value,key)).forEach(function(b){ h+='<div class="m6-bar"><span>'+FL.esc(b.n)+'</span><i style="width:'+Math.max(2,Math.round(b[key]/mx*220))+'px"></i><b>'+fmt(b[key])+'</b></div>'; });
+ });
+ out.innerHTML=h;
+}
+function chg(){ changes++; draw(); if(changes>=3) FL.done('m6-sim-sort'); }
+rs.addEventListener('change',chg); bs.addEventListener('change',chg); ms.addEventListener('change',chg);
+draw();
+});});})();</script>
+
+<div class="tfp" data-id="m6-pg-sort"
+     data-task="הציגו את סכום הרווח (SUM(Profit)) לפי Item, ומיינו מהרווחי ביותר לפחות רווחי בכפתור המיון שבסרגל. ראו איזה מוצר נמצא בתחתית."
+     data-goal='{"columns":["SUM(Profit)"],"rows":["Item"],"sort":"desc"}'
+     data-preset='{"columns":["SUM(Profit)"],"rows":["Item"]}'
+     data-hide-shelves="size,label,detail"
+     data-fields="Item,Category,Branch,Region,Sales,Profit,Cost"></div>
+
+<div class="box try" data-id="m6-try-sort">
+<ol>
+<li>בגיליון חדש: <span class="pill c sum">Sales</span> אל <code>Columns</code>, <span class="pill d">Item</span> אל <code>Rows</code>. <em>למה:</em> 15 עמודות אופקיות, עדיין לא ממוינות (אלפביתי).</li>
+<li>לחצו על כפתור המיון היורד בסרגל הכלים. <em>למה:</em> הדרך המהירה, מיון לפי המדד שבתצוגה.</li>
+<li>קליק ימני על הפיל <span class="pill d">Item</span>, <code>Sort...</code>. בחרו <code>Field</code>, <code>Descending</code>, <code>Sort by: Profit</code> ו-<code>Sum</code>. אל תשנו את המדד שבתצוגה. <em>למה:</em> לראות שהסדר הוא לפי רווח, וכל עמודה עדיין מציגה מכירות.</li>
+<li>הסירו את <span class="pill d">Item</span> מ-<code>Rows</code>, והניחו שם את <span class="pill d">Region</span> ואחריו <span class="pill d">Branch</span>. מיינו את <span class="pill d">Region</span> לפי <code>Sales</code> יורד (חלון Sort, <code>Field</code>), ואת <span class="pill d">Branch</span> בכפתור הסרגל. <em>למה:</em> מיון מחושב לאזורים ומקונן לסניפים.</li>
+<li>גררו כותרת של Region למקום אחר. <em>למה:</em> לראות שגרירה הופכת את המיון לידני.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלב 2: ראשון <span class="n">Milkshake <span class="n">24,902.8</span></span>, אחרון <span class="n">Fruit Stick</span> <span class="n">8,377.2</span>. שלב 3: סדר לפי רווח: ראשון <span class="n">Milkshake</span> (רווח <span class="n">15,242.8</span>), אחרון <span class="n">Banana Split</span> (רווח <span class="n">4,056.0</span>), ועמודות המכירות שלו לא השתנו: Banana Split נשאר בעמודה באורך של <span class="n">15,788.0</span>. שלב 4: האזורים לפי הסדר Center, South, Jerusalem, North; בתוך Center: <span class="n">Dizengoff, Port, Netanya, Rehovot</span>.</p>
+</div>
+
+<div class="box meaning"><p>הסדר הוא חלק מהתשובה. ממוינים לפי מכירות, Banana Split הוא מקום שביעי מתוך 15, והוא נראה בסדר. ממוינים לפי רווח, הוא אחרון, עם <span class="n">4,056.0</span> בלבד, וזה מידע שמשנה החלטה על התפריט. ספרו לצופה לפי מה ממיינים, בכותרת או בציר.</p></div>
+
+<div class="box real"><p>ב-Excel זה <em>Sort &amp; Filter</em>, וב-SQL זה <code>ORDER BY SUM(Profit) DESC</code>. כמעט כל תרשים שאתם רואים בכתבות עיתון, מדד דירוג או טבלת מובילים, ממוין לפי מדד. מיון הוא ברוב המקרים הצעד הראשון לתרשים שמוכן להצגה.</p></div>
+
+<div class="box trap"><p><b>המיון זוכר את המדד הישן.</b> ממיינים עמודות לפי Sales, ואחר כך מחליפים את המדד שבתצוגה ל-Profit. לפי מדריכים מקובלים, הסדר יכול להישאר לפי הבחירה המקורית, והעמודות נראות ״מבולגנות״ (בגרסה שלכם בדקו מה קורה בדיוק). הפתרון: פתחו שוב את <code>Sort...</code> ובדקו לפי איזה שדה מיינתם, או לחצו על כפתור המיון מחדש.</p></div>
+
+<div class="box trap"><p><b>סדר ידני לא מתעדכן.</b> אחרי שגוררים כותרות ידנית, Tableau זוכר את הסדר שהכנתם. אם יגיעו ערכים חדשים (ברשת עם סניף נוסף), הם לא יופיעו במקום הנכון, ובדרך כלל יתווספו בסוף. אם הסדר צריך להשתנות עם הנתונים, מיינו לפי שדה ולא ידנית.</p></div>
+
+<div class="box think" data-id="m6-th-5"><p>למה מיון מחושב של <span class="pill d">Region</span> לפי Sales לא משנה את סדר הסניפים בתוך כל אזור, ומה צריך כדי שגם הם יהיו מסודרים?</p>
+<div class="ans">כי המיון המחושב חל על הממד שבחרתם, כאן האזורים. הסניפים בתוך כל אזור הם ממד אחר ואין להם מיון משלהם. כדי לסדר גם אותם ממיינים את Branch בנפרד, למשל בכפתור הסרגל (מיון מקונן) או בחלון Sort של הפיל Branch.</div></div>
+
+<div class="quiz" data-id="m6-q-5a" data-a="2"><p class="qq">התצוגה: <span class="pill d">Region</span> ואחריו <span class="pill d">Branch</span> על <code>Rows</code>. לוחצים על כפתור המיון היורד על הסניפים. מה קורה לסדר האזורים?</p>
+<button class="opt">האזורים ממוינים גם הם לפי סכום</button><button class="opt">האזורים נשארים בסדר שלהם (אלפביתי), והסניפים ממוינים בתוך כל אחד</button><button class="opt">שום דבר לא משתנה</button>
+<div class="why">מיון מקונן ממיין את הממד הפנימי בתוך כל קבוצה. כדי למיין גם את האזורים, ממיינים את Region בנפרד, בחלון Sort לפי Sales.</div></div>
+
+<div class="quiz" data-id="m6-q-5b" data-a="3"><p class="qq">ממיינים את <code>Item</code> לפי <code>Sort by: Profit</code> בחלון Sort, ובתצוגה עדיין מוצג <code>SUM(Sales)</code>. מי מופיע אחרון?</p>
+<button class="opt"><span class="n">Fruit Stick</span>, כי הוא אחרון במכירות</button><button class="opt">Milkshake, כי הוא ראשון בכל מדד</button><button class="opt"><span class="n">Banana Split</span>, כי הוא אחרון ברווח</button>
+<div class="why">הסדר נקבע לפי השדה שבחרתם בחלון Sort (Profit), לא לפי המדד שמוצג. לכן Banana Split אחרון, גם אם העמודה שלו מציגה מכירות רגילות.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הראו על המסך את האייקון שעל הפיל אחרי מיון, והבהירו שהוא מסמן שהממד ממוין. בדקו בתוכנה את מה שנאמר על ״מיון זוכר מדד ישן״ ואת שמות הכפתורים בחלון Sort לפני השיעור. הדגימו מיון על שני ממדים וראו אילו שני מיונים נוצרים.</div>
+</section>
+
+
+<section class="sec" id="m6-6" data-t="קבוצות">
+<div class="sec-h"><div class="sec-n">6</div><h2>קבוצות: לאחד כמה ערכים לאחד</h2></div>
+<p class="lead">בשיווק רוצים להשוות לקוחות ״דיגיטליים״ (אפליקציה ומשלוחים) מול מי שבא לסניף. אבל בנתונים יש שלושה ערוצים: <code>App</code>, <code>Delivery</code> ו-<code>Walk-in</code>. צריך שניים. אין עמודה כזאת בקובץ, אז בונים אותה בתוך Tableau.</p>
+
+<div class="defline"><b>קבוצה (<code>Group</code>):</b> שדה חדש שמאחד כמה ערכים של ממד לערך אחד עם שם. דוגמה: <code>App</code> ו-<code>Delivery</code> הופכים יחד ל-<code>Digital</code>, ו-<code>Walk-in</code> נשאר לבד.</div>
+
+<div class="tw"><table class="tbl">
+<thead><tr><th>Channel (המקור)</th><th>SUM(Sales)</th><th></th><th>Channel (group)</th><th>SUM(Sales)</th></tr></thead>
+<tbody>
+<tr><td>App</td><td>36,957.8</td><td rowspan="2">←</td><td rowspan="2">Digital</td><td rowspan="2">72,053.0</td></tr>
+<tr><td>Delivery</td><td>35,095.2</td></tr>
+<tr><td>Walk-in</td><td>164,767.9</td><td>←</td><td>Walk-in</td><td>164,767.9</td></tr>
+</tbody></table></div>
+
+<div class="anim" data-id="m6-anim-group" data-speed="3000"><div class="stage"><svg viewBox="0 0 800 260" role="img" aria-label="שני סימנים נבחרים, מקובצים לסימן אחד בשם Digital">
+<g data-only="1,2"><text x="150" y="63" font-size="16" text-anchor="end" font-weight="600" fill="#334155" >App</text><rect x="160.0" y="40.0" width="116.6" height="36" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="284.6371362383086" y="64" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >36,957.8</text><text x="150" y="118" font-size="16" text-anchor="end" font-weight="600" fill="#334155" >Delivery</text><rect x="160.0" y="95.0" width="110.8" height="36" rx="0" fill="#76a5cf" stroke="none" stroke-width="1" /><text x="278.7588553352929" y="119" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >35,095.2</text><text x="150" y="173" font-size="16" text-anchor="end" font-weight="600" fill="#334155" >Walk-in</text><rect x="160.0" y="150.0" width="520.0" height="36" rx="0" fill="#59a14f" stroke="none" stroke-width="1" /><text x="688.0" y="174" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >164,767.9</text></g>
+<g data-only="2"><rect x="154.0" y="34.0" width="121.6" height="48" rx="6" fill="none" stroke="#e8741f" stroke-width="3" /><rect x="154.0" y="89.0" width="115.8" height="48" rx="6" fill="none" stroke="#e8741f" stroke-width="3" /><rect x="470.0" y="40.0" width="300.0" height="34" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5" /><text x="485" y="63" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >Keep Only</text><text x="575" y="63" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >Exclude</text><rect x="645.0" y="44.0" width="118.0" height="26" rx="6" fill="#fff7ed" stroke="#e8741f" stroke-width="2" /><text x="704" y="63" font-size="14" text-anchor="middle" font-weight="700" fill="#9a3412" >Group</text></g>
+<g data-only="3,4"><rect x="160.0" y="40.0" width="116.6" height="36" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><rect x="276.6" y="40.0" width="110.8" height="36" rx="0" fill="#76a5cf" stroke="none" stroke-width="1" /><text x="395.39599157360146" y="64" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >72,053.0</text><text x="150" y="118" font-size="16" text-anchor="end" font-weight="600" fill="#334155" >Walk-in</text><rect x="160.0" y="95.0" width="520.0" height="36" rx="0" fill="#59a14f" stroke="none" stroke-width="1" /><text x="688.0" y="119" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >164,767.9</text></g>
+<g data-only="3"><text x="150" y="63" font-size="16" text-anchor="end" font-weight="600" fill="#334155" >App, Delivery</text></g>
+<g data-only="4"><text x="150" y="63" font-size="16" text-anchor="end" font-weight="700" fill="#e8741f" >Digital</text></g>
+<g data-only="3,4"><text x="160" y="200" font-size="16" text-anchor="start" font-weight="600" fill="#142a45" >Channel (group): שדה חדש עם אטב בחלונית הנתונים</text></g>
+</svg></div>
+<ol class="caps"><li>הממד <code>Channel</code> נותן שלושה סימנים: App, Delivery, Walk-in.</li><li>בוחרים את שני הסימנים שרוצים לאחד (Ctrl או Cmd + קליק). בסרגל שקופץ מחפשים את אייקון האטב, <code>Group</code>.</li><li>לוחצים. שני הסימנים הופכים לסימן אחד, וב-Tableau נוצר שדה חדש בחלונית הנתונים, עם אייקון אטב.</li><li>נותנים לקבוצה שם ברור (<code>Digital</code>). הסכום הוא הסכום של שני החברים: 72,053.0.</li></ol></div>
+
+<h3>איך יוצרים קבוצה</h3>
+<ol>
+<li><b>מתוך התצוגה:</b> בוחרים סימנים או כותרות ולוחצים על אייקון האטב בסרגל שקופץ.</li>
+<li><b>מחלונית הנתונים:</b> קליק ימני על שדה, <code>Create</code>, <code>Group...</code>. נפתח חלון: בוחרים כמה ערכים ולוחצים <code>Group</code>, ונותנים שם.</li>
+<li><b>לערוך:</b> קליק ימני על שדה הקבוצה (עם האטב) ו-<code>Edit Group...</code>.</li>
+</ol>
+<p>זה החלון (הדמיה סכמטית):</p>
+<div class="m6-dlg"><div class="t">Create Group [Channel]</div><div class="b">
+<div class="r">Field Name: <span class="inp">Channel (group)</span></div>
+<div class="list">&#128206; <b>Digital</b> (App, Delivery)<br>&nbsp;&nbsp;&nbsp;Walk-in</div>
+<div class="r" style="margin-top:6px"><span class="sel hl">Group</span> <span class="sel">Find...</span> <span class="sel">Rename</span> &nbsp; ☐ <span class="hl">Include &#39;Other&#39;</span></div>
+<div class="btns"><span>Cancel</span><span class="ok">OK</span></div></div></div>
+<p>הסימון <code>Include 'Other'</code> אומר: כל ערך שלא קיבצתם ייכנס לקבוצה אחת בשם <code>Other</code>. אם מסמנים אותו כשרק <code>App</code> ו-<code>Delivery</code> מקובצים, <code>Walk-in</code> יופיע כ-<code>Other</code>. נוח לרשימות ארוכות שרוצים לקבץ את ״הזנב״.</p>
+
+<div class="box try" data-id="m6-try-group">
+<ol>
+<li>גיליון חדש: <span class="pill c sum">Sales</span> אל <code>Columns</code>, <span class="pill d">Channel</span> אל <code>Rows</code>. <em>למה:</em> שלוש עמודות, ערוץ בכל אחת.</li>
+<li>לחצו על העמודה של App, Ctrl (Cmd) ולחצו על Delivery. בסרגל הקופץ לחצו על אייקון האטב (<code>Group</code>). <em>למה:</em> שני ערכים הופכים לסימן אחד.</li>
+<li>בחלונית הנתונים מופיע שדה חדש עם אטב, <code>Channel (group)</code>. התצוגה משתנה: Channel הוחלף בו. <em>למה:</em> Tableau מניח אותו במקום הממד המקורי.</li>
+<li>קליק ימני על שדה הקבוצה, <code>Edit Group...</code>. סמנו את <code>Include 'Other'</code> ולחצו <code>OK</code>. <em>למה:</em> לראות מה קורה לערך שנשאר בחוץ.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> אחרי שלב 3: שני סימנים. הקבוצה של App ו-Delivery (שמה בדרך כלל מורכב משני השמות, בגרסה שלכם ייתכן ניסוח אחר) <span class="n">72,053.0</span>, ו-<span class="n">Walk-in <span class="n">164,767.9</span></span>. אחרי שלב 4: <code>Walk-in</code> מופיע בשם <code>Other</code>, באותו סכום <span class="n">164,767.9</span>.</p>
+</div>
+
+<h3>דרך שנייה: שדה מחושב</h3>
+<p>אותה תוצאה אפשר לקבל בלי קבוצה, ב<dfn data-d="שדה חדש שמחושב בנוסחה מתוך שדות קיימים. דוגמה: מכירות פחות עלות">שדה מחושב</dfn>, כלומר בנוסחה קצרה. נכיר אותם ב<a href="module8.html">מודול 8</a>, אבל כדאי לראות את הנוסחה כבר עכשיו:</p>
+<pre class="code" data-lang="tableau">IF [Channel] = "Walk-in" THEN "Walk-in" ELSE "Digital" END</pre>
+<p>ההבדל: בנוסחה כל ערוץ חדש שיתווסף לקובץ יהפוך אוטומטית ל-<code>Digital</code>. בקבוצה, ערך חדש לא נכלל, אלא אם סימנתם <code>Include 'Other'</code>. קבוצה מהירה לבנייה, נוסחה גמישה יותר.</p>
+
+<h3>קבוצה לניקוי נתונים מלוכלכים</h3>
+<p>שימוש נפוץ נוסף: הנתונים שלכם מלוכלכים, ואותו סניף נכתב בכמה דרכים. קבוצה מאחדת אותם בלי לגעת בקובץ. דוגמה בדויה:</p>
+<div class="tw"><table class="tbl">
+<thead><tr><th>ערך בקובץ</th><th>אחרי קבוצה ב-Tableau</th></tr></thead>
+<tbody>
+<tr><td>Tel Aviv</td><td rowspan="4">Tel Aviv</td></tr><tr><td>tel aviv</td></tr><tr><td>Tel-Aviv</td></tr><tr><td>Tel Aviv&nbsp;(עם רווח בסוף)</td></tr>
+</tbody></table></div>
+<p>זה עובד, אבל זה תיקון בתוך Tableau בלבד. אם אפשר לתקן במקור (<a href="module2.html">מודול 2</a> ו<a href="module11.html">מודול 11</a>), תקנו שם.</p>
+
+<div class="box trap"><p><b>קבוצה על שני ממדים.</b> אם יש בתצוגה שני ממדים וקיבצתם סימנים, Tableau יכול ליצור קבוצה על השילוב ביניהם. כך נוצר השדה <code>Genre &amp; Year (group)</code> שאתם רואים בחלונית הנתונים בצילום של מדף Filters בסעיף 1. התוצאה עובדת, אבל קשה לתחזק. אם רוצים קבוצה של ערוצים, קבצו כשבתצוגה רק <code>Channel</code>.</p></div>
+
+<div class="box trap"><p><b>הקבוצה לא גדלה לבד.</b> ברשת נפתח ערוץ חדש, ״Kiosk״. הוא לא נמצא באף קבוצה. הוא יופיע בשמו כסימן נפרד, או ב-<code>Other</code> אם סימנתם אותו. אם שכחתם, יוצא דוח שלא כולל ערוץ שלם בתוך אחת הקבוצות, ואף אחד לא שם לב.</p></div>
+
+<div class="box meaning"><p>קבוצה היא החלטה אנליטית, לא רק קיצור דרך. כשאתם מקבצים App ו-Delivery לדיגיטל, אתם קובעים שהם נבדלים מ-Walk-in באופן שחשוב לשאלה. אז כתבו את ההחלטה בכותרת: ״דיגיטלי = אפליקציה + משלוח״. מי שרואה רק ״Digital״ עלול לחשוב שזו עמודה שהגיעה מהמקור.</p></div>
+
+<div class="box real"><p>ב-Excel יש ב-PivotTable את <em>Group Selection</em> שעושה בדיוק את זה, ובשפת SQL זה <code>CASE WHEN Channel IN ('App','Delivery') THEN 'Digital' ELSE Channel END</code>. אצל אנליסטים זו אחת הפעולות הנפוצות ביותר: להפוך הרבה קטגוריות מפורטות לכמה קטגוריות שאפשר להסביר.</p></div>
+
+<div class="box think" data-id="m6-th-6"><p>מנהל מבקש ״קבוצה של הסניפים הקטנים״ בדשבורד. אילו שתי בעיות תיתקלו בהן אם תקבצו ידנית?</p>
+<div class="ans">אחת: מה זה ״קטן״? כדי שהקבוצה לא תהיה שרירותית צריך כלל, כמו ״מכירות מתחת ל-20,000״, וכלל כזה מתאים יותר לקבוצה דינמית (set, סעיף הבא) או לשדה מחושב. שתיים: בקבוצה ידנית, אם סניף יגדל, לא תבחינו בכך, והוא יישאר במקומו בקבוצה.</div></div>
+
+<div class="quiz" data-id="m6-q-6a" data-a="1"><p class="qq">מקבצים <code>App</code> ו-<code>Delivery</code> לקבוצה בשם <code>Digital</code>. מה הסכום של <code>Digital</code>?</p>
+<button class="opt">72,053.0, סכום שני הערוצים</button><button class="opt">36,957.8, של הערוץ הראשון בלבד</button><button class="opt">164,767.9, כי הוא הגדול ביותר</button>
+<div class="why">קבוצה מאחדת את השורות של כל חבריה, ולכן הסכום הוא 36,957.8 ועוד 35,095.2.</div></div>
+
+<div class="quiz" data-id="m6-q-6b" data-a="2"><p class="qq">לקבוצה של <code>App</code> ו-<code>Delivery</code> סימנתם <code>Include 'Other'</code>. איך יופיע <code>Walk-in</code>?</p>
+<button class="opt">הוא ייעלם מהתצוגה</button><button class="opt">כסימן בשם Other</button><button class="opt">בשמו, בלי שינוי</button>
+<div class="why">Include 'Other' אוסף את כל מי שלא נכנס לקבוצה לתוך ערך אחד בשם Other. ללא הסימון, Walk-in היה נשאר בשמו.</div></div>
+
+<div class="quiz" data-id="m6-q-6c" data-a="3"><p class="qq">מתי עדיף שדה מחושב (<code>IF ... ELSE ...</code>) על פני קבוצה?</p>
+<button class="opt">כשרוצים שהקיבוץ יהיה מהיר יותר לבנייה</button><button class="opt">כשיש רק שני ערכים בשדה</button><button class="opt">כשצפויים ערכים חדשים שצריכים להיכנס אוטומטית לאחת הקבוצות</button>
+<div class="why">בנוסחה, ערך חדש נכנס אוטומטית לענף ה-ELSE. בקבוצה, הוא לא נכלל אלא אם הפעלתם Include 'Other'. קבוצה מהירה לבנייה, וזה יתרון שלה, לא של הנוסחה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הראו על המסך את הצילום של חלונית הנתונים עם שדה הקבוצה (אטב). בדקו מה השם שנוצר לקבוצה בגרסה שלכם ואת הנוסח המדויק של החלון Create Group. שאלו: ״מה הייתם עושים אם נוסף ערוץ ביום ראשון?״.</div>
+</section>
+
+
+<section class="sec" id="m6-7" data-t="סטים">
+<div class="sec-h"><div class="sec-n">7</div><h2>Sets: קבוצות שמתעדכנות</h2></div>
+<p class="lead">״חמשת המוצרים המובילים״ הם לא אותה חמישיה כל חודש. קבוצה ידנית לא תעזור, כי היא קבועה. צריך קבוצה שהכלל שלה קובע מי בפנים. זה set.</p>
+
+<div class="defline"><b>סט (<code>Set</code>):</b> שדה על ממד שאומר לכל ערך שלו ״בפנים״ (In) או ״בחוץ״ (Out). דוגמה: הסט <code>Top 5 Items</code> אומר ל-Milkshake In, ול-Fruit Stick Out.</div>
+
+<h3>סט קבוע וסט דינמי</h3>
+<div class="tw"><table class="tbl">
+<thead><tr><th></th><th>סט קבוע (static / fixed)</th><th>סט דינמי (dynamic)</th></tr></thead>
+<tbody>
+<tr><td>איך בונים</td><td>בוחרים ערכים בעצמכם: מסמנים סימנים בתצוגה ו-<code>Create Set</code>, או מסמנים ברשימה בלשונית <code>General</code></td><td>מגדירים כלל בלשונית <code>Condition</code> או <code>Top</code></td></tr>
+<tr><td>מה קורה כשהנתונים משתנים</td><td>הרשימה נשארת</td><td>החברים מחושבים מחדש</td></tr>
+<tr><td>כמה ממדים</td><td>אחד או יותר</td><td>ממד אחד</td></tr>
+<tr><td>דוגמה</td><td>״ארבעת מוצרי ה-Cups״</td><td>״5 המוצרים עם הסכום הגבוה ביותר״</td></tr>
+</tbody></table></div>
+<p>עוד הבדל לפי התיעוד: בקרה שהצופה יכול לשנות (<code>Show Set Control</code>) מתאימה רק לסט דינמי.</p>
+
+<p>כך נראה החלון (הדמיה סכמטית). שימו לב שהלשוניות כמעט זהות לאלה של מסנן ממד, ומכאן ההקבלה:</p>
+<div class="m6-dlg"><div class="t">Create Set [Item]</div><div class="b">
+<div class="r">Name: <span class="inp">Top 5 Items</span></div>
+<div class="tabs" style="margin:6px 0"><span>General</span><span>Condition</span><span class="on">Top</span></div>
+<div class="r">● By field: <span class="sel hl">Top</span> <span class="inp hl">5</span> by <span class="sel hl">Sales</span> <span class="sel hl">Sum</span></div>
+<div class="btns"><span>Cancel</span><span class="ok">OK</span></div></div></div>
+<p>כדי לפתוח אותו: קליק ימני על הממד בחלונית הנתונים, <code>Create</code>, <code>Set...</code>. הסט החדש מופיע בחלונית הנתונים (בדרך כלל במקום נפרד, עם אייקון של שני עיגולים חופפים).</p>
+
+<h3>מה עושים עם סט</h3>
+<ul>
+<li><b>על Filters:</b> משאיר רק את ה-In.</li>
+<li><b>על Color:</b> צובע In ו-Out בצבעים שונים, וכל הערכים נשארים.</li>
+<li><b>In/Out:</b> קליק ימני על הסט ו-<code>Show In/Out of Set</code>. הסט הופך לממד עם שני ערכים, In ו-Out, אפשר לסכם לפי הערכים האלה.</li>
+</ul>
+<div class="tw"><table class="tbl">
+<thead><tr><th>הסט <code>Top 5 Items</code></th><th>חברים</th><th>SUM(Sales)</th></tr></thead>
+<tbody>
+<tr><td>In</td><td><span class="n">Milkshake, Pistachio Cup, Double Cone, Vanilla Cup, Chocolate Cup</span></td><td>98,902.2</td></tr>
+<tr><td>Out</td><td>10 המוצרים האחרים</td><td>137,918.7</td></tr>
+<tr><td>סך הכל</td><td>15</td><td>236,820.9</td></tr>
+</tbody></table></div>
+
+<h3>סטים משולבים: פעולות על שני סטים</h3>
+<p>מסמנים שני סטים של <b>אותו ממד</b> בחלונית הנתונים, קליק ימני, <code>Create</code>, <code>Combined Set...</code>. בוחרים איך לשלב. הנה הדוגמה שלנו: הסט <code>Top 5 Items</code> (דינמי) ועוד סט קבוע בשם <code>Cups</code> עם ארבעת מוצרי ה-Cups.</p>
+<div class="anim" data-id="m6-anim-venn" data-speed="3200"><div class="stage"><svg viewBox="0 0 800 430" role="img" aria-label="תרשים ון של הסט Top 5 Items והסט Cups, וארבעה אופני שילוב">
+<defs><clipPath id="m6vA"><circle cx="300" cy="200" r="170"/></clipPath><clipPath id="m6vB"><circle cx="510" cy="200" r="170"/></clipPath><mask id="m6vMA"><rect x="0" y="0" width="800" height="430" fill="white"/><circle cx="510" cy="200" r="170" fill="black"/></mask><mask id="m6vMB"><rect x="0" y="0" width="800" height="430" fill="white"/><circle cx="300" cy="200" r="170" fill="black"/></mask></defs>
+<g data-s="1"><circle cx="300" cy="200" r="170" fill="#4e79a7" fill-opacity=".16" stroke="#4e79a7" stroke-width="3"/><text x="230" y="34" font-size="16" text-anchor="middle" font-weight="700" fill="#1e4f7a" >Top 5 Items · דינמי</text></g>
+<g data-s="2"><circle cx="510" cy="200" r="170" fill="#e8741f" fill-opacity=".14" stroke="#e8741f" stroke-width="3"/><text x="580" y="34" font-size="16" text-anchor="middle" font-weight="700" fill="#9a3412" >Cups · קבוע</text></g>
+<g data-s="2"><text x="235" y="190" font-size="15" text-anchor="middle" font-weight="400" fill="#334155" >Double Cone</text><text x="235" y="216" font-size="15" text-anchor="middle" font-weight="400" fill="#334155" >Milkshake</text><text x="405" y="175" font-size="15" text-anchor="middle" font-weight="600" fill="#334155" >Chocolate Cup</text><text x="405" y="201" font-size="15" text-anchor="middle" font-weight="600" fill="#334155" >Pistachio Cup</text><text x="405" y="227" font-size="15" text-anchor="middle" font-weight="600" fill="#334155" >Vanilla Cup</text><text x="580" y="200" font-size="15" text-anchor="middle" font-weight="400" fill="#334155" >Lemon Sorbet Cup</text></g>
+<g data-only="3"><circle cx="300" cy="200" r="170" fill="#f59e0b" fill-opacity=".38"/><circle cx="510" cy="200" r="170" fill="#f59e0b" fill-opacity=".38"/></g>
+<g data-only="4"><circle cx="510" cy="200" r="170" fill="#16a34a" fill-opacity=".45" clip-path="url(#m6vA)"/></g>
+<g data-only="5"><circle cx="300" cy="200" r="170" fill="#4e79a7" fill-opacity=".45" mask="url(#m6vMA)"/></g>
+<g data-only="6"><circle cx="510" cy="200" r="170" fill="#e8741f" fill-opacity=".45" mask="url(#m6vMB)"/></g>
+<g data-only="3"><text x="400" y="412" font-size="17" text-anchor="middle" font-weight="700" fill="#142a45" >All Members in Both Sets: 6 items, 114,546.2</text></g>
+<g data-only="4"><text x="400" y="412" font-size="17" text-anchor="middle" font-weight="700" fill="#142a45" >Shared Members in Both Sets: 3 items, 53,826.0</text></g>
+<g data-only="5"><text x="400" y="412" font-size="17" text-anchor="middle" font-weight="700" fill="#142a45" >Top 5 Items, Except Shared: 2 items, 45,076.2</text></g>
+<g data-only="6"><text x="400" y="412" font-size="17" text-anchor="middle" font-weight="700" fill="#142a45" >Cups, Except Shared: 1 item, 15,644.0</text></g>
+</svg></div>
+<ol class="caps"><li>הסט הראשון: <code>Top 5 Items</code>. חמישה מוצרים.</li><li>הסט השני: <code>Cups</code>. ארבעה מוצרים. שלושה מהם נמצאים בשני הסטים.</li><li><code>All Members in Both Sets</code>: כל מי שבאחד מהם או בשניהם. 6 מוצרים, 114,546.2.</li><li><code>Shared Members in Both Sets</code>: רק מי שבשניהם. 3 מוצרים, 53,826.0.</li><li>הסט הראשון בלי המשותפים (באפשרות מסוג Except): Milkshake ו-Double Cone, סך הכל 45,076.2.</li><li>הסט השני בלי המשותפים: Lemon Sorbet Cup בלבד, 15,644.0.</li></ol></div>
+<p>שמות האפשרויות בחלון השילוב לפי התיעוד: <code>All Members in Both Sets</code>, <code>Shared Members in Both Sets</code> ו-<code>Except Shared Members</code>. את הניסוח המדויק של ה-Except (אחד לכל סט) בדקו בגרסה שלכם.</p>
+
+<div class="box try" data-id="m6-try-set">
+<ol>
+<li>גיליון חדש: <span class="pill c sum">Sales</span> אל <code>Columns</code>, <span class="pill d">Item</span> אל <code>Rows</code>. ממיינים יורד. <em>למה:</em> רשימה של 15 מוצרים בסדר מכירות.</li>
+<li>בחלונית הנתונים: קליק ימני על <code>Item</code>, <code>Create</code>, <code>Set...</code>. שם: <code>Top 5 Items</code>. לשונית <code>Top</code>, <code>By field</code>, <code>Top</code>, <code>5</code>, <code>Sales</code>, <code>Sum</code>. <em>למה:</em> סט דינמי, שהכלל שלו הוא חמשת הגדולים.</li>
+<li>גררו את הסט אל <code>Color</code>. <em>למה:</em> רואים מי In ומי Out בלי להוריד אף עמודה.</li>
+<li>קליק ימני על הסט, <code>Show In/Out of Set</code>. הסירו את <span class="pill d">Item</span> מ-<code>Rows</code> והניחו במקומו את הסט. <em>למה:</em> שני סימנים בלבד, סיכום In מול Out.</li>
+<li>צרו סט שני, קבוע: שם <code>Cups</code>, לשונית <code>General</code>, סמנו רק את ארבעת המוצרים עם Cup בשם. <em>למה:</em> סט שנבנה ביד.</li>
+<li>סמנו בחלונית הנתונים את שני הסטים (Ctrl או Cmd), קליק ימני, <code>Create</code>, <code>Combined Set...</code>. בחרו <code>Shared Members in Both Sets</code>. החזירו את <span class="pill d">Item</span> אל <code>Rows</code> וגררו את הסט המשולב אל <code>Color</code>. <em>למה:</em> לראות מי בשניהם.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלב 4: <code>In</code> <span class="n">98,902.2</span> ו-<code>Out</code> <span class="n">137,918.7</span>, סך הכל <span class="n">236,820.9</span>. שלב 6: 3 מוצרים: <span class="n">Chocolate Cup, Pistachio Cup, Vanilla Cup</span>, סך הכל <span class="n">53,826.0</span>. עם <code>All Members in Both Sets</code> היו 6 מוצרים ו-<span class="n">114,546.2</span>.</p>
+</div>
+
+<h3>קבוצה, סט, מסנן או שדה מחושב: מה לבחור?</h3>
+<div class="tw"><table class="tbl">
+<thead><tr><th>השאלה</th><th>הכלי</th></tr></thead>
+<tbody>
+<tr><td>לאחד כמה ערכים לערך אחד עם שם, ביד, ולהציג אותו</td><td>קבוצה (Group)</td></tr>
+<tr><td>״מי In ומי Out״ לפי כלל שמתעדכן (Top N, תנאי), ולהשוות</td><td>סט דינמי</td></tr>
+<tr><td>״רק את אלה״ ולא להציג את השאר</td><td>מסנן</td></tr>
+<tr><td>כלל מורכב או חישוב על השדה (טקסט, תאריך, מספר)</td><td>שדה מחושב (מודול 8)</td></tr>
+</tbody></table></div>
+
+<div class="box trap"><p><b>סט שנבנה על Top לא מושפע ממסנן אזור רגיל.</b> אם הסט <code>Top 5 Items</code> מחושב על כל הנתונים, ואתם מוסיפים אחר כך מסנן <code>Region = South</code>, חמשת המוצרים כבר נקבעו. זו אותה בעיה שנראה בסעיף 9 עם Top N (סטים רצים באותו שלב של Top N בסדר הפעולות), והפתרון זהה: מסנן הקשר.</p></div>
+
+<div class="box trap"><p><b>סט קבוע לא גדל.</b> הסט <code>Cups</code> נבנה מסימון ארבעה מוצרים. אם יתווסף מוצר חמישי עם Cup בשם, הוא לא ייכנס. כדי שזה יקרה צריך סט דינמי עם כלל (או שדה מחושב עם <code>CONTAINS</code>).</p></div>
+
+<div class="box trap"><p><b>סטים משולבים על ממדים שונים.</b> אי אפשר לשלב סט על <code>Item</code> עם סט על <code>Branch</code>. שני הסטים חייבים להיות מבוססים על אותם ממדים.</p></div>
+
+<div class="box meaning"><p>סט הוא הדרך שבה Tableau עונה על ״האם האיבר הזה נמצא ברשימה?״. זה שונה ממסנן: מסנן מוריד, סט <b>מסמן</b>. ככה אפשר להשוות בין In ל-Out באותו גרף: אצלנו, חמשת המובילים מוכרים 98,902.2 מתוך 236,820.9, כלומר 41.8% מהמכירות. ההשוואה הזאת לא אפשרית אם הורדתם את ה-Out.</p></div>
+
+<div class="box real"><p>ב-SQL זה תנאי <code>item IN (SELECT item FROM ... ORDER BY SUM(sales) DESC LIMIT 5)</code>. בניתוח עסקי, לסט כזה קוראים לפעמים ״הלקוחות הטובים״ או ״המוצרים המובילים״, והוא נבנה מחדש בכל פעם שהנתונים מתעדכנים. זה בדיוק מה שמבדיל אותו מקבוצה.</p></div>
+
+<div class="box think" data-id="m6-th-7"><p>רשת רוצה לדעת ״האם 20 אחוז מהמוצרים מייצרים 80 אחוז מהמכירות?״. איזה כלי תבחרו, ומה תשוו?</p>
+<div class="ans">סט דינמי עם Top (למשל 3 מוצרים מתוך 15, כלומר 20 אחוז) ו-In/Out. משווים את הסכום של In לסכום הכולל. אצלנו שלושת המובילים (Milkshake, Pistachio Cup, Double Cone) מוכרים 65,608.2 מתוך 236,820.9: בערך 27.7%, הרבה פחות מ-80 אחוז. כלומר ברשת הזו המכירות מפוזרות, ולא מרוכזות. את הכלל <bdi dir="ltr">80/20</bdi> אפשר לבדוק, לא לקבל כאמת.</div></div>
+
+<div class="quiz" data-id="m6-q-7a" data-a="2"><p class="qq">מה ההבדל בין סט דינמי <code>Top 5 Items</code> לבין קבוצה ידנית של חמשת המוצרים הנוכחיים?</p>
+<button class="opt">אין הבדל, שניהם מציגים את אותם מוצרים תמיד</button><button class="opt">הסט מחושב מחדש כשהנתונים משתנים, והקבוצה קבועה</button><button class="opt">הקבוצה מחושבת מחדש, והסט קבוע</button>
+<div class="why">סט דינמי מחזיק כלל (חמשת הגדולים) ומחשב את החברים מחדש. קבוצה ידנית מחזיקה רשימת שמות קבועה.</div></div>
+
+<div class="quiz" data-id="m6-q-7b" data-a="1"><p class="qq">בסט <code>Top 5 Items</code> (In = 98,902.2) מציגים <code>Show In/Out of Set</code>. כמה יהיה ה-<code>Out</code>?</p>
+<button class="opt">137,918.7</button><button class="opt">236,820.9, כל הנתונים</button><button class="opt">164,767.9</button>
+<div class="why">In ועוד Out חייבים להיות שווים לכל הנתונים: 236,820.9 פחות 98,902.2 זה 137,918.7.</div></div>
+
+<div class="quiz" data-id="m6-q-7c" data-a="3"><p class="qq">שני סטים על <code>Item</code>: A = Top 5 ו-B = ארבעת ה-Cups. מה נותן <code>Shared Members in Both Sets</code>?</p>
+<button class="opt">6 מוצרים, כל החברים של שניהם</button><button class="opt">מוצר אחד: Lemon Sorbet Cup</button><button class="opt">3 מוצרים: Pistachio, Vanilla ו-Chocolate</button>
+<div class="why">Shared הוא החיתוך. שלושה מוצרים נמצאים גם ב-Top 5 וגם ב-Cups. כל החברים של שניהם הם האיחוד (All Members), ו-Lemon Sorbet Cup נמצא רק ב-Cups.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בדקו בתוכנה: (א) האם סט שנבנה בלשונית General נחשב קבוע או דינמי בגרסה שלכם (בתיעוד שקראנו יש ניסוח שמיחס גם אותו לדינמי; ההבחנה בטבלה היא ההבחנה המעשית); (ב) ניסוח האפשרויות ב-Combined Set; (ג) האם סט דינמי עם Condition זמין ב-Web Authoring (לפי דף ההשוואה הרשמי, סטים מותנים לא זמינים שם; לא ידוע אם זה זהה ב-Public). הבהירו שסט הוא פעם הראשונה שבה מופיע שדה שמורכב מכלל ולא מנתון.</div>
+</section>
+
+
+<section class="sec" id="m6-8" data-t="היררכיה ובינים">
+<div class="sec-h"><div class="sec-n">8</div><h2>היררכיות, ירידה לפרטים ובינים</h2></div>
+<p class="lead">מנהלת הרשת מסתכלת על אזורים. מישהו שואל: ״ומה קורה בתוך המרכז?״, ואחר כך: ״ובתוך תל אביב?״. זו שאלה של ירידה לפרטים. ובצד אחר: ״כמה מהמכירות בקופה הן קטנות וכמה גדולות?״. זו שאלה של התפלגות.</p>
+
+<h3>היררכיה וירידה לפרטים</h3>
+<div class="defline"><b>היררכיה (<code>Hierarchy</code>):</b> סדר של ממדים מהכללי אל הפרטני, שאפשר לפתוח ולסגור בלחיצה. דוגמה: <code>Region</code> &gt; <code>City</code> &gt; <code>Branch</code>, כלומר אזור, ובתוכו עיר, ובתוכה סניף.</div>
+
+<p>בונים היררכיה כך: בחלונית הנתונים גוררים את <span class="pill d">City</span> ומניחים אותה על <span class="pill d">Region</span>. נפתח חלון ששואל איך לקרוא להיררכיה. אחרי זה גוררים את <span class="pill d">Branch</span> אל תוכה (או קליק ימני על שדה, <code>Hierarchy</code>, <code>Create Hierarchy</code>). ההיררכיה מופיעה בחלונית הנתונים עם השדות שלה בסדר.</p>
+<p>כשמניחים את השדה העליון על <code>Rows</code>, מופיע סימן <b>+</b> על הפיל. לחיצה עליו פותחת את הרמה הבאה, ולחיצה על <b>-</b> סוגרת אותה. תאריכים מגיעים עם היררכיה מוכנה: לחיצה על <b>+</b> ליד <code>YEAR(Order Date)</code> פותחת לרבעון, אחר כך לחודש, אחר כך ליום.</p>
+
+<div class="anim" data-id="m6-anim-drill" data-speed="3200"><div class="stage"><svg viewBox="0 0 800 440" role="img" aria-label="היררכיה Region, City, Branch: שלוש רמות של עמודות מכירות">
+<g data-only="1"><rect x="20.0" y="14.0" width="150.0" height="26" rx="6" fill="#d7e7f5" stroke="#a9c9e3" stroke-width="1" /><text x="95.0" y="32.0" font-size="14" text-anchor="middle" font-weight="700" fill="#14507a" >Region  +</text><text x="410" y="32" font-size="15" text-anchor="start" font-weight="700" fill="#166534" >SUM(Sales)</text></g>
+<g data-only="2"><rect x="20.0" y="14.0" width="110.0" height="26" rx="6" fill="#d7e7f5" stroke="#a9c9e3" stroke-width="1" /><text x="75.0" y="32.0" font-size="14" text-anchor="middle" font-weight="700" fill="#14507a" >Region</text><rect x="140.0" y="14.0" width="110.0" height="26" rx="6" fill="#d7e7f5" stroke="#a9c9e3" stroke-width="1" /><text x="195.0" y="32.0" font-size="14" text-anchor="middle" font-weight="700" fill="#14507a" >City  +</text><text x="410" y="32" font-size="15" text-anchor="start" font-weight="700" fill="#166534" >SUM(Sales)</text></g>
+<g data-only="3"><rect x="20.0" y="14.0" width="110.0" height="26" rx="6" fill="#d7e7f5" stroke="#a9c9e3" stroke-width="1" /><text x="75.0" y="32.0" font-size="14" text-anchor="middle" font-weight="700" fill="#14507a" >Region</text><rect x="140.0" y="14.0" width="110.0" height="26" rx="6" fill="#d7e7f5" stroke="#a9c9e3" stroke-width="1" /><text x="195.0" y="32.0" font-size="14" text-anchor="middle" font-weight="700" fill="#14507a" >City</text><rect x="260.0" y="14.0" width="110.0" height="26" rx="6" fill="#d7e7f5" stroke="#a9c9e3" stroke-width="1" /><text x="315.0" y="32.0" font-size="14" text-anchor="middle" font-weight="700" fill="#14507a" >Branch</text><text x="410" y="32" font-size="15" text-anchor="start" font-weight="700" fill="#166534" >SUM(Sales)</text></g>
+<g data-only="1"><text x="20" y="89" font-size="15" text-anchor="start" font-weight="700" fill="#334155" >Center</text><rect x="410.0" y="70.0" width="265.0" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="683.0" y="89" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >120,405.5</text><text x="20" y="133" font-size="15" text-anchor="start" font-weight="700" fill="#334155" >South</text><rect x="410.0" y="114.0" width="122.3" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="540.315683253672" y="133" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >55,575.4</text><text x="20" y="177" font-size="15" text-anchor="start" font-weight="700" fill="#334155" >Jerusalem</text><rect x="410.0" y="158.0" width="73.6" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="491.62173654857963" y="177" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >33,450.8</text><text x="20" y="221" font-size="15" text-anchor="start" font-weight="700" fill="#334155" >North</text><rect x="410.0" y="202.0" width="60.3" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="478.2807845156575" y="221" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >27,389.2</text></g>
+<g data-only="2"><text x="20" y="81" font-size="15" text-anchor="start" font-weight="700" fill="#334155" >Center</text><text x="140" y="81" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Tel Aviv-Yafo</text><rect x="410.0" y="62.0" width="184.1" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="602.0831731108628" y="81" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >83,640.1</text><text x="140" y="125" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Netanya</text><rect x="410.0" y="106.0" width="59.1" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="477.07249253564" y="125" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >26,840.2</text><text x="140" y="169" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Rehovot</text><rect x="410.0" y="150.0" width="21.8" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="439.8443343534971" y="169" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >9,925.2</text><text x="20" y="213" font-size="15" text-anchor="start" font-weight="700" fill="#334155" >South</text><text x="140" y="213" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Eilat</text><rect x="410.0" y="194.0" width="69.3" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="487.2703447932196" y="213" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >31,473.7</text><text x="140" y="257" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Beer Sheva</text><rect x="410.0" y="238.0" width="41.4" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="459.3706848939625" y="257" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >18,797.2</text><text x="140" y="301" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Ashdod</text><rect x="410.0" y="282.0" width="11.7" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="429.6746535664899" y="301" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >5,304.5</text><text x="20" y="345" font-size="15" text-anchor="start" font-weight="700" fill="#334155" >Jerusalem</text><text x="140" y="345" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Jerusalem</text><rect x="410.0" y="326.0" width="73.6" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="491.62173654857963" y="345" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >33,450.8</text><text x="20" y="389" font-size="15" text-anchor="start" font-weight="700" fill="#334155" >North</text><text x="140" y="389" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Haifa</text><rect x="410.0" y="370.0" width="60.3" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="478.2807845156575" y="389" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >27,389.2</text></g>
+<g data-only="3"><text x="20" y="81" font-size="15" text-anchor="start" font-weight="700" fill="#334155" >Center</text><text x="140" y="81" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Tel Aviv-Yafo</text><text x="262" y="81" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Dizengoff</text><rect x="410.0" y="62.0" width="97.3" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="515.2666240329553" y="81" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >44,194.1</text><text x="262" y="119" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Port</text><rect x="410.0" y="100.0" width="86.8" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="504.81654907790755" y="119" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >39,446.0</text><text x="140" y="157" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Netanya</text><text x="262" y="157" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Netanya</text><rect x="410.0" y="138.0" width="59.1" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="477.07249253564" y="157" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >26,840.2</text><text x="140" y="195" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Rehovot</text><text x="262" y="195" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Rehovot</text><rect x="410.0" y="176.0" width="21.8" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="439.8443343534971" y="195" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >9,925.2</text><text x="20" y="233" font-size="15" text-anchor="start" font-weight="700" fill="#334155" >South</text><text x="140" y="233" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Eilat</text><text x="262" y="233" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Eilat</text><rect x="410.0" y="214.0" width="69.3" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="487.2703447932196" y="233" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >31,473.7</text><text x="140" y="271" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Beer Sheva</text><text x="262" y="271" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Beer Sheva</text><rect x="410.0" y="252.0" width="41.4" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="459.3706848939625" y="271" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >18,797.2</text><text x="140" y="309" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Ashdod</text><text x="262" y="309" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Ashdod</text><rect x="410.0" y="290.0" width="11.7" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="429.6746535664899" y="309" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >5,304.5</text><text x="20" y="347" font-size="15" text-anchor="start" font-weight="700" fill="#334155" >Jerusalem</text><text x="140" y="347" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Jerusalem</text><text x="262" y="347" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Mamilla</text><rect x="410.0" y="328.0" width="73.6" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="491.62173654857963" y="347" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >33,450.8</text><text x="20" y="385" font-size="15" text-anchor="start" font-weight="700" fill="#334155" >North</text><text x="140" y="385" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Haifa</text><text x="262" y="385" font-size="15" text-anchor="start" font-weight="400" fill="#334155" >Haifa</text><rect x="410.0" y="366.0" width="60.3" height="26" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="478.2807845156575" y="385" font-size="14" text-anchor="start" font-weight="400" fill="#334155" >27,389.2</text></g>
+</svg></div>
+<ol class="caps"><li>רק <code>Region</code> על Rows: ארבעה סימנים. על הפיל מופיע <b>+</b>.</li><li>לחיצה על <b>+</b>: הרמה של <code>City</code> נפתחת, שמונה סימנים. התל אביבי הוא שני סניפים, ולכן עיר אחת בגודל 83,640.1.</li><li>עוד לחיצה על <b>+</b>: רמת <code>Branch</code>, תשעה סימנים. הסכום הכולל לא השתנה, רק הפירוט.</li></ol></div>
+<p>שימו לב: הסכומים לא משתנים כשיורדים לפרטים. רק מתפצלים הסימנים. ולכן ירידה לפרטים היא לא מסנן: שום דבר לא נעלם.</p>
+
+<div class="box try" data-id="m6-try-hier">
+<ol>
+<li>בחלונית הנתונים: גררו את <span class="pill d">City</span> על <span class="pill d">Region</span>, תנו שם <code>Location</code>. גררו את <span class="pill d">Branch</span> אל תוך ההיררכיה. <em>למה:</em> שלוש רמות, מהכללי לפרטי.</li>
+<li>גיליון חדש. גררו את <code>Region</code> מההיררכיה אל <code>Rows</code>, ואת <span class="pill c sum">Sales</span> אל <code>Columns</code>. <em>למה:</em> מתחילים מהרמה העליונה.</li>
+<li>לחצו על <b>+</b> שעל הפיל <code>Region</code>. <em>למה:</em> רמת City.</li>
+<li>לחצו שוב על <b>+</b> (על הפיל החדש). <em>למה:</em> רמת Branch.</li>
+<li>לחצו על <b>-</b> פעמיים כדי לחזור.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלב 2: 4 סימנים: <span class="n">Center <span class="n">120,405.5</span>, South <span class="n">55,575.4</span>, Jerusalem <span class="n">33,450.8</span>, North <span class="n">27,389.2</span></span>. שלב 3: 8 סימנים (בין השאר <span class="n">Tel Aviv-Yafo <span class="n">83,640.1</span></span>). שלב 4: 9 סימנים, ו-<span class="n">Tel Aviv Dizengoff <span class="n">44,194.1</span></span>. הסכום של כל הסימנים בכל שלב: <span class="n">236,820.9</span>.</p>
+</div>
+
+<div class="box trap"><p><b>הלחיצה על + פותחת את כל התצוגה.</b> כשלוחצים על + שעל הפיל, כל האזורים נפתחים ביחד. אם רוצים לפתוח רק את המרכז, בדקו אם בגרסה שלכם מופיע + גם על הכותרת של ערך מסוים, או השתמשו ב-<code>Keep Only</code> על המרכז ואז בפתיחה.</p></div>
+
+<h3>בינים והיסטוגרמה</h3>
+<div class="defline"><b>בין (<code>Bin</code>):</b> קטע באורך קבוע של מספר. Tableau חותך מדד לקטעים שווים וסופר כמה שורות נופלות בכל קטע. דוגמה: בקטעים של 20 על <code>Sales</code>, שורה של 25 שקל נכנסת לקטע ״20״ (הוא מכיל 20 עד 39.9).</div>
+<div class="defline"><b>היסטוגרמה (<code>Histogram</code>):</b> עמודות שמראות כמה שורות יש בכל בין. דוגמה: העמודה של 20 גבוהה מאלה של 80 ו-100, כי רוב השורות בקופה קטנות.</div>
+
+<p>כך נראה חלון הבינים האמיתי:</p>
+<figure class="shot" style="max-width:560px;margin-inline:auto"><img src="img/bins-dialog.png" alt="חלון Edit Bins של Year: שם השדה, Size of bins 5, כפתור Suggest Bin Size, וטווח הערכים Min, Max, Diff, CntD">
+<figcaption>החלון <code>Edit Bins</code>. תכתבו שם לשדה, גודל לבין (<code>Size of bins</code>), ואפשר ללחוץ <code>Suggest Bin Size</code> כדי ש-Tableau יציע גודל. למטה טווח הערכים: <code>Min</code>, <code>Max</code>. בצילום השדה Year ממשחקי וידאו; אצלכם נבנה על <code>Sales</code>.</figcaption></figure>
+<ol>
+<li>קליק ימני על המדד בחלונית הנתונים (<span class="pill c">Sales</span>), <code>Create</code>, <code>Bins...</code>.</li>
+<li>בחלון: בגודל הקטע מקלידים <code>20</code>.</li>
+<li>מתקבל שדה חדש, <code>Sales (bin)</code>, בצבע כחול (הוא ממד).</li>
+<li>היסטוגרמה: את <code>Sales (bin)</code> גוררים ל-<code>Columns</code>, ואת <span class="pill c">Sales</span> ל-<code>Rows</code> ומחליפים את <code>SUM</code> ב-<code>Count</code> (קליק על הפיל, <code>Measure</code>, <code>Count</code>). כדי שהעמודות ייגעו זו בזו, ממירים את ה-bin לרציף (<code>Convert to Continuous</code>).</li>
+<li>קיצור: בוחרים רק את <span class="pill c">Sales</span> בחלונית הנתונים ולוחצים על <code>Histogram</code> ב-<code>Show Me</code> (הוא זמין רק כשיש מדד אחד בלי ממדים). Tableau בונה לבד בין בגודל שהוא בחר, ואפשר לערוך אותו בקליק ימני עליו.</li>
+</ol>
+
+<div class="anim" data-id="m6-anim-bins" data-speed="3200"><div class="stage"><svg viewBox="0 0 800 340" role="img" aria-label="היסטוגרמה של Sales לפי בינים של 20, עם ספירת שורות בכל בין">
+<g data-s="1"><path d="M50,270 L770,270" stroke="#64748b" stroke-width="2"/><path d="M60.0,270 L60.0,60" stroke="#cbd5e1" stroke-dasharray="4 4"/><path d="M138.0,270 L138.0,60" stroke="#cbd5e1" stroke-dasharray="4 4"/><path d="M216.0,270 L216.0,60" stroke="#cbd5e1" stroke-dasharray="4 4"/><path d="M294.0,270 L294.0,60" stroke="#cbd5e1" stroke-dasharray="4 4"/><path d="M372.0,270 L372.0,60" stroke="#cbd5e1" stroke-dasharray="4 4"/><path d="M450.0,270 L450.0,60" stroke="#cbd5e1" stroke-dasharray="4 4"/><path d="M528.0,270 L528.0,60" stroke="#cbd5e1" stroke-dasharray="4 4"/><path d="M606.0,270 L606.0,60" stroke="#cbd5e1" stroke-dasharray="4 4"/><path d="M684.0,270 L684.0,60" stroke="#cbd5e1" stroke-dasharray="4 4"/><path d="M762.0,270 L762.0,60" stroke="#cbd5e1" stroke-dasharray="4 4"/><text x="60" y="290" font-size="14" text-anchor="middle" font-weight="400" fill="#334155" >0</text><text x="138" y="290" font-size="14" text-anchor="middle" font-weight="400" fill="#334155" >20</text><text x="216" y="290" font-size="14" text-anchor="middle" font-weight="400" fill="#334155" >40</text><text x="294" y="290" font-size="14" text-anchor="middle" font-weight="400" fill="#334155" >60</text><text x="372" y="290" font-size="14" text-anchor="middle" font-weight="400" fill="#334155" >80</text><text x="450" y="290" font-size="14" text-anchor="middle" font-weight="400" fill="#334155" >100</text><text x="528" y="290" font-size="14" text-anchor="middle" font-weight="400" fill="#334155" >120</text><text x="606" y="290" font-size="14" text-anchor="middle" font-weight="400" fill="#334155" >140</text><text x="684" y="290" font-size="14" text-anchor="middle" font-weight="400" fill="#334155" >160</text><text x="762" y="290" font-size="14" text-anchor="middle" font-weight="400" fill="#334155" >180</text><text x="410" y="314" font-size="15" text-anchor="middle" font-weight="700" fill="#142a45" >Sales (bin), size 20</text></g>
+<g data-only="1,2"><circle cx="216.0" cy="206.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="118.5" cy="204.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="208.2" cy="228.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="134.1" cy="243.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="262.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="177.0" cy="215.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="229.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="340.8" cy="208.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="134.1" cy="235.9" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="200.4" cy="208.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="242.9" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="118.5" cy="205.9" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="210.9" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="233.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="224.3" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="504.6" cy="214.3" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="200.4" cy="248.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="223.2" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="110.7" cy="205.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="130.2" cy="243.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="205.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="294.0" cy="214.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="202.9" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="106.8" cy="238.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="255.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="206.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="205.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="372.0" cy="230.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="106.8" cy="255.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="248.2" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="217.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="247.2" cy="241.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="106.8" cy="195.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="106.8" cy="220.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="340.8" cy="247.9" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="123.2" cy="216.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="236.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="434.4" cy="196.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="153.6" cy="198.3" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="118.5" cy="226.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="465.6" cy="216.9" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="106.8" cy="213.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="205.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="193.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="130.2" cy="260.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="262.8" cy="236.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="200.4" cy="219.9" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="240.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="247.2" cy="220.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="247.2" cy="255.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="144.2" cy="200.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="134.1" cy="225.2" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="122.4" cy="253.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="153.6" cy="215.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="240.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="102.1" cy="248.3" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="228.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="200.4" cy="252.3" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="247.3" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="201.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="213.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="177.0" cy="261.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="282.3" cy="207.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="260.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="340.8" cy="238.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="247.2" cy="198.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="294.0" cy="218.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="153.6" cy="240.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="235.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="528.0" cy="234.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="253.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="212.1" cy="192.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="153.6" cy="258.2" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="232.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="200.4" cy="209.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="234.2" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="356.4" cy="193.3" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="184.8" cy="244.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="242.5" cy="193.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="110.7" cy="199.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="134.1" cy="215.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="199.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="130.2" cy="230.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="203.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="106.8" cy="206.3" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="153.6" cy="225.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="130.2" cy="229.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="212.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="233.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="153.6" cy="256.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="209.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="112.7" cy="243.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="621.6" cy="227.9" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="99.0" cy="207.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="294.0" cy="250.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="118.5" cy="260.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="208.2" cy="253.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="208.2" cy="220.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="106.8" cy="236.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="208.2" cy="244.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="212.1" cy="230.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="197.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="134.1" cy="244.2" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="233.3" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="177.0" cy="200.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="134.1" cy="219.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="243.2" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="112.7" cy="228.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="262.8" cy="228.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="262.8" cy="252.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="97.0" cy="235.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="118.5" cy="240.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="110.7" cy="205.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="364.2" cy="239.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="215.9" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="481.2" cy="194.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="372.0" cy="197.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="235.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="262.8" cy="219.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="239.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="208.2" cy="234.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="118.5" cy="227.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="228.5" cy="206.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="153.6" cy="196.4" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="241.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="261.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="247.2" cy="230.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="294.0" cy="258.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="259.9" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="372.0" cy="207.8" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="200.4" cy="254.2" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="122.4" cy="211.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="118.5" cy="236.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="504.6" cy="196.3" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="202.3" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="257.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="372.0" cy="248.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="177.0" cy="195.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="219.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="232.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="161.4" cy="207.2" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="184.8" cy="205.1" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="356.4" cy="227.6" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="184.8" cy="229.2" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="364.2" cy="255.0" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="151.3" cy="236.7" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="110.7" cy="251.9" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="216.0" cy="218.2" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="219.5" r="3" fill="#4e79a7" fill-opacity=".55"/><circle cx="138.0" cy="251.9" r="3" fill="#4e79a7" fill-opacity=".55"/></g>
+<g data-only="2"><path d="M134.1,103 L134.1,270" stroke="#e8741f" stroke-width="1.5"/><circle cx="134.1" cy="95" r="8" fill="#e8741f"/><text x="120.1" y="100" font-size="15" text-anchor="end" font-weight="700" fill="#9a3412" >19</text><path d="M138.0,138 L138.0,270" stroke="#e8741f" stroke-width="1.5"/><circle cx="138.0" cy="130" r="8" fill="#e8741f"/><text x="152.0" y="135" font-size="15" text-anchor="start" font-weight="700" fill="#9a3412" >20</text><path d="M212.1,103 L212.1,270" stroke="#e8741f" stroke-width="1.5"/><circle cx="212.1" cy="95" r="8" fill="#e8741f"/><text x="198.1" y="100" font-size="15" text-anchor="end" font-weight="700" fill="#9a3412" >39</text><path d="M216.0,138 L216.0,270" stroke="#e8741f" stroke-width="1.5"/><circle cx="216.0" cy="130" r="8" fill="#e8741f"/><text x="230.0" y="135" font-size="15" text-anchor="start" font-weight="700" fill="#9a3412" >40</text></g>
+<g data-only="3,4"><rect x="64.0" y="147.8" width="70.0" height="122.22222222222223" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="99.0" y="141.77777777777777" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >1,639</text><rect x="142.0" y="70.0" width="70.0" height="200.00000000000003" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="177.0" y="63.99999999999997" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >2,682</text><rect x="220.0" y="172.8" width="70.0" height="97.24086502609994" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="255.0" y="166.75913497390007" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >1,304</text><rect x="298.0" y="224.7" width="70.0" height="45.3392990305742" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="333.0" y="218.6607009694258" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >608</text><rect x="376.0" y="259.0" width="70.0" height="10.961968680089486" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="411.0" y="253.0380313199105" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >147</text><rect x="454.0" y="260.7" width="70.0" height="9.321401938851604" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="489.0" y="254.67859806114842" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >125</text><rect x="532.0" y="267.9" width="70.0" height="2.0879940343027594" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="567.0" y="261.91200596569723" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >28</text><rect x="610.0" y="267.6" width="70.0" height="2.3862788963460106" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="645.0" y="261.613721103654" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >32</text><rect x="688.0" y="269.3" width="70.0" height="0.7457121551081283" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /><text x="723.0" y="263.25428784489185" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >10</text></g>
+<g data-only="4"><rect x="140.0" y="44.0" width="74.0" height="228.00000000000003" rx="4" fill="none" stroke="#e8741f" stroke-width="3" /><rect x="686.0" y="230.0" width="74.0" height="44" rx="4" fill="none" stroke="#e8741f" stroke-width="3" /></g>
+</svg></div>
+<ol class="caps"><li>הציר הוא <code>Sales</code> של שורה בודדת (מ-8 עד 160). כל נקודה היא שורה מהקובץ (דגימה). חותכים את הציר לבינים של 20.</li><li>איפה נופלת כל שורה? 19 נכנס לבין 0. 20 ו-39 נכנסים לבין 20. 40 נכנס לבין 40. הגבול התחתון שייך לבין, העליון לא.</li><li>סופרים כמה שורות נכנסו לכל בין: הרבה בקטנים, מעט בגדולים. סך הכל 6,575, כל שורות הקובץ.</li><li>הבין של 20 הוא הגבוה: 2,682 שורות. הבין של 160 הוא נמוך: 10 שורות, כל אחת עם בדיוק 160.</li></ol></div>
+
+<div class="box try" data-id="m6-try-bins">
+<ol>
+<li>בחלונית הנתונים: קליק ימני על <span class="pill c">Sales</span>, <code>Create</code>, <code>Bins...</code>, גודל <code>20</code>, <code>OK</code>. <em>למה:</em> בונים את הקטעים.</li>
+<li>גיליון חדש: <code>Sales (bin)</code> אל <code>Columns</code>. גררו את <span class="pill c">Sales</span> אל <code>Rows</code> והחליפו את האגרגציה ל-<code>Count</code>. <em>למה:</em> סופרים שורות, לא מסכמים מכירות.</li>
+<li>קליק ימני על <code>Sales (bin)</code> שב-<code>Columns</code>, <code>Convert to Continuous</code>. <em>למה:</em> ציר רציף, בלי רווחים בין עמודות.</li>
+<li>הסירו את שני הפילים מהתצוגה. צרו בין חדש על <span class="pill c">Order Hour</span> בגודל <code>2</code>, וחזרו על שלבים 2 ו-3 עם <code>Order Hour (bin)</code>. <em>למה:</em> התפלגות של שעות המכירה. (<code>Order Hour</code> נטען כמדד, ולכן אפשר לעשות לו בינים.)</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלבים 1 עד 3, ספירת שורות לכל בין: 0: <span class="n">1,639</span>; 20: <span class="n">2,682</span>; 40: <span class="n">1,304</span>; 60: <span class="n">608</span>; 80: <span class="n">147</span>; 100: <span class="n">125</span>; 120: <span class="n">28</span>; 140: <span class="n">32</span>; 160: <span class="n">10</span>. סך הכל <span class="n">6,575</span>. שלב 4, בינים של שעתיים: 10: <span class="n">287</span>; 12: <span class="n">757</span>; 14: <span class="n">766</span>; 16: <span class="n">684</span>; 18: <span class="n">1,224</span>; 20: <span class="n">1,797</span>; 22: <span class="n">1,060</span>. השיא בין 20 ל-22 בערב.</p>
+</div>
+
+<p>אם אתם צריכים לדעת את הבין בתוך חישוב, יש דרך בנוסחה (בבינים של Tableau אי אפשר להשתמש בתוך חישובים, לפי התיעוד):</p>
+<pre class="code" data-lang="tableau">FLOOR([Sales] / 20) * 20</pre>
+<p>ואם הקטעים לא שווים, למשל ״קטן, בינוני, גדול״, כותבים תנאי ב-<code>IF</code> (<a href="module8.html">מודול 8</a>).</p>
+
+<div class="box trap"><p><b>גבול תחתון שייך לבין.</b> שורה של בדיוק 20 שקל נכנסת לבין ״20״, לא לבין ״0״. בקובץ הזה יש 665 שורות כאלה. ובין ״160״ הוא הבין האחרון, והוא מכיל כאן רק שורות של בדיוק 160 (יש 10 כאלה, וזה גם הערך הגבוה ביותר בקובץ). מי שקורא את התווית ״20״ כ״עד 20״ טועה.</p></div>
+
+<div class="box trap"><p><b>היסטוגרמה שנראית כמו עמודה אחת גבוהה.</b> סימן שהשארתם <code>SUM</code> במקום <code>Count</code>, או שהבין גדול מדי. גם בין קטן מדי (בגודל 1, למשל) נותן עשרות עמודות מבולבלות. נסו כמה גדלים, ובחרו את זה שמראה את הצורה.</p></div>
+
+<div class="box meaning"><p>ההיסטוגרמה אומרת משהו שסכום לא יכול: מרבית השורות בקופה קטנות, בין 20 ל-39. סכום המכירות הכולל לא היה מגלה את זה. מי שמתכנן תפריט או מבצע צריך לדעת איך נראה ״הסל הרגיל״, לא רק את הסכום.</p></div>
+
+<div class="box real"><p>היסטוגרמה היא תרשים בסיסי בניתוח נתונים. ב-Excel יש כלי היסטוגרמה בסרגל, וב-Tableau Public זה אותו רעיון עם כלי הבינים. הגודל המומלץ של בין תלוי בנתונים: כפתור <code>Suggest Bin Size</code> מציע גודל לפי נוסחה על מספר הערכים השונים (לפי התיעוד), אבל תמיד כדאי לנסות עוד גדלים.</p></div>
+
+<div class="box think" data-id="m6-th-8"><p>רשת רוצה לתכנן מבצע ״מוצר ב-30 שקל״. איך תשתמשו בהיסטוגרמה כדי להחליט?</p>
+<div class="ans">מסתכלים איפה נמצאים רוב המכירות: הבין של 20 עד 39 (כ-2,682 שורות) ושל 0 עד 19 (כ-1,639). מבצע של 30 שקל נופל בבין הנפוץ ביותר, ולכן הוא יתחרה בהרבה שורות קיימות. אם רוצים להרים סכום ממוצע, כדאי מבצע שמעודד שורות גדולות יותר, אזור 40 עד 59.</div></div>
+
+<div class="quiz" data-id="m6-q-8a" data-a="3"><p class="qq">פותחים את ההיררכיה של Region ל-City בלחיצה על +. מה קרה לסכום הכולל של המכירות?</p>
+<button class="opt">ירד, כי נוספו פילטרים</button><button class="opt">עלה, כי יש עוד סימנים</button><button class="opt">לא השתנה, רק פוצלו הסימנים</button>
+<div class="why">ירידה לפרטים לא מסננת. כל השורות עדיין בתצוגה, והן רק מתחלקות בין יותר סימנים. הסכום הכולל נשאר 236,820.9.</div></div>
+
+<div class="quiz" data-id="m6-q-8b" data-a="1"><p class="qq">בבינים של 20, לאיזה בין נכנסת שורה עם <code>Sales = 40</code>?</p>
+<button class="opt">לבין 40</button><button class="opt">לבין 20</button><button class="opt">לבין 60</button>
+<div class="why">הגבול התחתון של כל בין שייך לו. הבין של 20 כולל 20 עד פחות מ-40, ו-40 עצמו כבר בבין הבא.</div></div>
+
+<div class="quiz" data-id="m6-q-8c" data-a="2"><p class="qq">רוצים היסטוגרמה של <code>Sales</code>. מה צריך לשים על Rows?</p>
+<button class="opt">SUM(Sales)</button><button class="opt">Count של Sales (או של שדה אחר)</button><button class="opt">Sales (bin)</button>
+<div class="why">ההיסטוגרמה סופרת כמה שורות יש בכל בין, ולכן על Rows שמים Count. הבין עצמו (Sales (bin)) הולך על Columns.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בדקו בתוכנה: (א) הצילום והתיבה של Show Me עבור היסטוגרמה בגרסה שלכם; (ב) האם יש + על כותרת בודדת בהיררכיה; (ג) יצירת היררכיה ב-Web Authoring (לפי דף ההשוואה הרשמי, אין יצירת היררכיה כששדות בתוך תיקייה; לא ידוע אם זה כך גם ב-Public). שימו לב ש-Order Hour נטען כמדד בקובץ הזה, ולכן אפשר לבנות עליו בינים. אם זה לא עובד אצלכם, בדקו את סוג הנתונים של העמודה.</div>
+</section>
+
+
+<section class="sec" id="m6-9" data-t="Top N והקשר">
+<div class="sec-h"><div class="sec-n">9</div><h2>Top N, והמסנן שמחזיר שני סניפים במקום שלושה</h2></div>
+<p class="lead">מנהלת הרשת מבקשת: ״תראו לי את שלושת הסניפים המובילים במרכז״. נשמע פשוט. אתם בונים, ורואים על המסך שני סניפים. לא טעיתם בקליק, והנתונים לא חסרים. כך Tableau עובד, ועכשיו נבין למה.</p>
+
+<h3>שלבים של הבקשה</h3>
+<p>מסנן <code>Top</code> על <span class="pill d">Branch</span> (לשונית <code>Top</code>, <code>By field</code>, <code>Top 3</code>, <code>Sales</code>, <code>Sum</code>) משאיר את שלושת הסניפים הגדולים ביותר. מסנן <code>Region = Center</code> משאיר את סניפי המרכז. כל אחד מהם בנפרד עובד נהדר. הבעיה מתחילה כששניהם יחד.</p>
+<div class="tw"><table class="tbl">
+<thead><tr><th>מה בנינו</th><th>מה Tableau מציג</th><th>סימנים</th></tr></thead>
+<tbody>
+<tr><td>רק <code>Top 3</code> על Branch</td><td>Dizengoff <span class="n">44,194.1</span>, <span class="n">Port <span class="n">39,446.0</span>, Mamilla <span class="n">33,450.8</span></span> (ירושלים!)</td><td>3</td></tr>
+<tr><td><code>Top 3</code> ועוד <code>Region = Center</code> כמסנן רגיל</td><td>Dizengoff <span class="n">44,194.1</span>, <span class="n">Port <span class="n">39,446.0</span></span>. סה״כ <span class="n">83,640.1</span></td><td class="m6-no">2</td></tr>
+<tr><td><code>Top 3</code> ועוד <code>Region = Center</code> כמסנן <b>הקשר</b></td><td>Dizengoff <span class="n">44,194.1</span>, <span class="n">Port <span class="n">39,446.0</span>, Netanya <span class="n">26,840.2</span></span>. סה״כ <span class="n">110,480.3</span></td><td class="m6-ok">3</td></tr>
+</tbody></table></div>
+<p>מה קרה בשורה השנייה? Tableau קודם קבע מי שלושת הסניפים הגדולים ברשת <b>כולה</b>. מקום שלישי הוא Mamilla בירושלים. רק אחר כך הוא הפעיל את מסנן המרכז, והוריד אותו. נשארו שניים. Netanya, שהיא הסניף השלישי בגודלו במרכז, אף פעם לא נכנסה כי היא רק מקום שישי ברשת.</p>
+
+<div class="defline"><b>מסנן הקשר (<code>Context filter</code>):</b> מסנן ממד שרץ לפני המסננים האחרים, ושאר המסננים בגיליון מתייחסים רק לשורות שנשארו אחריו. דוגמה: <code>Region = Center</code> כהקשר, ואז <code>Top 3</code> בוחר מתוך סניפי המרכז בלבד.</div>
+
+<div class="anim" data-id="m6-anim-lanes" data-speed="3400"><div class="stage"><svg viewBox="0 0 800 430" role="img" aria-label="שני סדרי פעולה על אותם תשעה סניפים: מסנן רגיל נותן שני סימנים, מסנן הקשר נותן שלושה">
+<text x="20" y="32" font-size="17" text-anchor="start" font-weight="700" fill="#142a45" >Region = Center כמסנן רגיל</text><g data-only="1,2,3,4"><rect x="60.0" y="70.0" width="54.0" height="100.0" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><text x="87" y="190" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Dizengoff</text><text x="87" y="64.0" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >44.2k</text><g data-only="1,2,3,4"><rect x="138.0" y="80.7" width="54.0" height="89.2562581883102" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><text x="165" y="190" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Port</text><text x="165" y="74.7437418116898" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >39.4k</text><g data-only="1,2"><rect x="216.0" y="94.3" width="54.0" height="75.69064648901099" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="3,4"><rect x="216.0" y="94.3" width="54.0" height="75.69064648901099" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="243" y="190" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Mamilla</text><text x="243" y="88.30935351098901" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >33.5k</text><g data-only="1"><rect x="294.0" y="98.8" width="54.0" height="71.21697240129339" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="2,3,4"><rect x="294.0" y="98.8" width="54.0" height="71.21697240129339" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="321" y="190" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Eilat</text><text x="321" y="92.78302759870661" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >31.5k</text><g data-only="1"><rect x="372.0" y="108.0" width="54.0" height="61.97478848986629" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="2,3,4"><rect x="372.0" y="108.0" width="54.0" height="61.97478848986629" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="399" y="190" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Haifa</text><text x="399" y="102.02521151013372" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >27.4k</text><g data-only="1"><rect x="450.0" y="109.3" width="54.0" height="60.732541221565775" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="2,3,4"><rect x="450.0" y="109.3" width="54.0" height="60.732541221565775" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="477" y="190" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Netanya</text><text x="477" y="103.26745877843422" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >26.8k</text><g data-only="1"><rect x="528.0" y="127.5" width="54.0" height="42.53327932914122" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="2,3,4"><rect x="528.0" y="127.5" width="54.0" height="42.53327932914122" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="555" y="190" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Beer Sheva</text><text x="555" y="121.46672067085878" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >18.8k</text><g data-only="1"><rect x="606.0" y="147.5" width="54.0" height="22.458201434128085" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="2,3,4"><rect x="606.0" y="147.5" width="54.0" height="22.458201434128085" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="633" y="190" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Rehovot</text><text x="633" y="141.54179856587191" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >9.9k</text><g data-only="1"><rect x="684.0" y="158.0" width="54.0" height="12.002733396539357" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="2,3,4"><rect x="684.0" y="158.0" width="54.0" height="12.002733396539357" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="711" y="190" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Ashdod</text><text x="711" y="151.99726660346064" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >5.3k</text><g data-only="2"><text x="780" y="58" font-size="15" text-anchor="end" font-weight="700" fill="#9a3412" >שלב 1: Top 3 (על כל הרשת)</text></g><g data-only="3"><text x="780" y="58" font-size="15" text-anchor="end" font-weight="700" fill="#9a3412" >שלב 2: Region = Center</text></g><g data-only="4"><text x="780" y="80" font-size="17" text-anchor="end" font-weight="700" fill="#991b1b" >2 סימנים</text></g>
+<text x="20" y="237" font-size="17" text-anchor="start" font-weight="700" fill="#142a45" >Region = Center כמסנן הקשר</text><g data-only="1,2,3,4"><rect x="60.0" y="275.0" width="54.0" height="100.0" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><text x="87" y="395" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Dizengoff</text><text x="87" y="269.0" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >44.2k</text><g data-only="1,2,3,4"><rect x="138.0" y="285.7" width="54.0" height="89.2562581883102" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><text x="165" y="395" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Port</text><text x="165" y="279.7437418116898" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >39.4k</text><g data-only="1"><rect x="216.0" y="299.3" width="54.0" height="75.69064648901099" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="2,3,4"><rect x="216.0" y="299.3" width="54.0" height="75.69064648901099" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="243" y="395" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Mamilla</text><text x="243" y="293.309353510989" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >33.5k</text><g data-only="1"><rect x="294.0" y="303.8" width="54.0" height="71.21697240129339" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="2,3,4"><rect x="294.0" y="303.8" width="54.0" height="71.21697240129339" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="321" y="395" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Eilat</text><text x="321" y="297.7830275987066" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >31.5k</text><g data-only="1"><rect x="372.0" y="313.0" width="54.0" height="61.97478848986629" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="2,3,4"><rect x="372.0" y="313.0" width="54.0" height="61.97478848986629" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="399" y="395" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Haifa</text><text x="399" y="307.0252115101337" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >27.4k</text><g data-only="1,2,3,4"><rect x="450.0" y="314.3" width="54.0" height="60.732541221565775" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><text x="477" y="395" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Netanya</text><text x="477" y="308.2674587784342" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >26.8k</text><g data-only="1"><rect x="528.0" y="332.5" width="54.0" height="42.53327932914122" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="2,3,4"><rect x="528.0" y="332.5" width="54.0" height="42.53327932914122" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="555" y="395" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Beer Sheva</text><text x="555" y="326.46672067085876" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >18.8k</text><g data-only="1,2"><rect x="606.0" y="352.5" width="54.0" height="22.458201434128085" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="3,4"><rect x="606.0" y="352.5" width="54.0" height="22.458201434128085" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="633" y="395" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Rehovot</text><text x="633" y="346.5417985658719" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >9.9k</text><g data-only="1"><rect x="684.0" y="363.0" width="54.0" height="12.002733396539357" rx="0" fill="#4e79a7" stroke="none" stroke-width="1" /></g><g data-only="2,3,4"><rect x="684.0" y="363.0" width="54.0" height="12.002733396539357" rx="0" fill="#cbd5e1" stroke="none" stroke-width="1" /></g><text x="711" y="395" font-size="14" text-anchor="middle" font-weight="600" fill="#334155" >Ashdod</text><text x="711" y="356.9972666034606" font-size="14" text-anchor="middle" font-weight="400" fill="#64748b" >5.3k</text><g data-only="2"><text x="780" y="263" font-size="15" text-anchor="end" font-weight="700" fill="#9a3412" >שלב 1: Region = Center (הקשר)</text></g><g data-only="3"><text x="780" y="263" font-size="15" text-anchor="end" font-weight="700" fill="#9a3412" >שלב 2: Top 3 (על מה שנשאר)</text></g><g data-only="4"><text x="780" y="285" font-size="17" text-anchor="end" font-weight="700" fill="#166534" >3 סימנים</text></g>
+<path d="M20,222 L780,222" stroke="#e2e8f0" stroke-width="2"/>
+</svg></div>
+<ol class="caps"><li>תשעת הסניפים, מהגבוה לנמוך. למעלה: <code>Region</code> כמסנן רגיל. למטה: <code>Region</code> כמסנן הקשר.</li><li>למעלה, Top 3 פועל ראשון, על כל הרשת: נשארים Dizengoff, Port, Mamilla. למטה, מסנן ההקשר פועל ראשון: נשארים סניפי המרכז בלבד (ארבעה).</li><li>למעלה, מסנן המרכז מוריד את Mamilla. למטה, Top 3 בוחר מבין ארבעת סניפי המרכז: Dizengoff, Port, Netanya.</li><li>התוצאה: למעלה שני סימנים (לא מה שביקשו), למטה שלושה (בדיוק מה שביקשו).</li></ol></div>
+
+<h3>איך מוסיפים הקשר</h3>
+<ol>
+<li>קליק ימני על הפיל של המסנן, כאן <code>Region</code>, שב-<code>Filters</code>.</li>
+<li><code>Add to Context</code>.</li>
+<li>הפיל הופך לאפור ועובר לראש המדף. זה הסימן שהוא עכשיו הקשר.</li>
+</ol>
+<p>אם רוצים לבטל, קליק ימני על הפיל האפור ואפשרות להסיר אותו מההקשר (בגרסה שלכם ייתכן ניסוח אחר). אותה בעיה קיימת גם בדוגמה שבתיעוד הרשמי של Tableau על מסנני הקשר (עם נתוני Superstore): 10 תתי-קטגוריות מובילות ועוד קטגוריה אחת כמסנן רגיל משאירות 3, וכמסנן הקשר משאירות 4.</p>
+
+<div class="box try" data-id="m6-try-topn">
+<ol>
+<li>גיליון חדש: <span class="pill d">Branch</span> אל <code>Rows</code>, <span class="pill c sum">Sales</span> אל <code>Columns</code>, מיון יורד. <em>למה:</em> רואים את כל התשעה.</li>
+<li>גררו <span class="pill d">Branch</span> אל <code>Filters</code>, לשונית <code>Top</code>, <code>By field</code>: <code>Top</code>, <code>3</code>, <code>Sales</code>, <code>Sum</code>. <em>למה:</em> שלושת הגדולים ברשת.</li>
+<li>גררו <span class="pill d">Region</span> אל <code>Filters</code>. <code>None</code>, סמנו <code>Center</code>, <code>OK</code>. <em>למה:</em> מסנן רגיל. זה הדבר שמשבש את התוצאה.</li>
+<li>קראו את מספר הסימנים בשורת המצב. <em>למה:</em> ביקשנו 3 ויש פחות. זה הסימן לבעיה.</li>
+<li>קליק ימני על הפיל <code>Region</code> ב-<code>Filters</code>, <code>Add to Context</code>. <em>למה:</em> Tableau ישאיר ראשית את סניפי המרכז, ורק אז יבחר 3.</li>
+<li>הסירו את ההקשר ובדקו שחזרתם ל-2 סימנים, ואז החזירו אותו. <em>למה:</em> לראות את ההבדל בשתי הדרכים.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלב 2: 3 סימנים, 44,194.1 ו-39,446.0 ו-33,450.8. שלב 4: 2 סימנים, סכום <span class="n">83,640.1</span>. שלב 5: 3 סימנים: <span class="n">Dizengoff <span class="n">44,194.1</span>, Port <span class="n">39,446.0</span>, Netanya <span class="n">26,840.2</span></span>, סכום <span class="n">110,480.3</span>. הפיל <code>Region</code> אפור.</p>
+</div>
+
+<div class="box try" data-id="m6-try-topn2">
+<ol>
+<li>אותה תצוגה, אבל עם <span class="pill d">Item</span> על <code>Rows</code>. מסנן <code>Top 3</code> על <span class="pill d">Item</span> לפי <code>Sum of Sales</code>. <em>למה:</em> שלושת המוצרים הגדולים ברשת.</li>
+<li>הוסיפו מסנן רגיל <span class="pill d">Category</span> = <code>Cups</code>. <em>למה:</em> ״שלושת מוצרי ה-Cups המובילים״.</li>
+<li>קראו את התוצאה. אחר כך הוסיפו את Category להקשר, וקראו שוב.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלושת המוצרים המובילים ברשת: <span class="n">Milkshake, Pistachio Cup, Double Cone</span>. עם Category כמסנן רגיל נשאר סימן אחד: <span class="n">Pistachio Cup <span class="n">20,532.0</span></span>. עם Category כהקשר: 3 סימנים, <span class="n">Pistachio Cup, Vanilla Cup, Chocolate Cup</span>, סך הכל <span class="n">53,826.0</span>.</p>
+</div>
+
+<div class="box meaning"><p>כלל אצבע: <b>כשאתם מבקשים N, ויש פחות מ-N סימנים, יש בעיה בסדר המסננים.</b> התוצאה נראית מסודרת, ואין שום שגיאה, אז מי שרואה לא יידע שחסר סניף. את המספר כדאי לבדוק מול מה שביקשו.</p></div>
+
+<div class="box real"><p>ב-SQL הבקשה הייתה פשוטה: <code>WHERE region = 'Center' ORDER BY sales DESC LIMIT 3</code>. שם ה-<code>WHERE</code> רץ לפני ה-<code>LIMIT</code>, ולכן התוצאה נכונה מהרגע הראשון. ב-Tableau, Top N רץ לפני מסנן הממד הרגיל, ולכן צריך הקשר כדי לקבל אותו סדר פעולות כמו ב-SQL. (ב<a href="../final-lesson/part2.html">חלק 2 של השיעור המסכם</a> כתבתם שאילתות כאלה.)</p></div>
+
+<div class="box trap"><p><b>הקשר בכל מקום.</b> אחרי שמבינים את העיקרון, מתפתים להפוך כל מסנן להקשר. התיעוד ממליץ על מסנן הקשר אחד שמקטין בהרבה את הנתונים. מסננים רגילים הם עדיין ברירת המחדל.</p></div>
+
+<div class="box trap"><p><b>״Top 3 בכל אזור״.</b> מסנן Top N בוחר N מהרשימה <b>כולה</b>, לא N בתוך כל אזור. אם הבקשה היא ״שלושת המובילים בכל אזור״, מסנן Top לא יעזור (גם לא הקשר). צריך דירוג בתוך אזור, וזה נעשה בחישוב טבלה (<a href="module9.html">מודול 9</a>).</p></div>
+
+<div class="box trap"><p><b>N קבוע בקוד.</b> כתבתם 3 בחלון, ומנהל ביקש 5. תצטרכו לפתוח את המסנן ולשנות. כדי שהצופה ישנה בעצמו, N יכול להיות <dfn data-d="ערך שהצופה יכול לשנות, והוא משמש במסננים ובחישובים. דוגמה: המספר N של ה-Top">פרמטר</dfn> (<a href="module10.html">מודול 10</a>): בלשונית Top בוחרים פרמטר במקום מספר.</p></div>
+
+<div class="box think" data-id="m6-th-9"><p>מנהל אזור שואל: ״למה הדשבורד אמר 3 המובילים ורואים רק 2?״. מה תענו לו בשפה פשוטה?</p>
+<div class="ans">״Tableau בחר קודם את שלושת הגדולים ברשת כולה, ורק אחר כך סינן לפי האזור שלך. אחד מהשלושה היה מאזור אחר, אז נשארו שניים. תיקנתי כך שהאזור ייבחר ראשון, ואז ייבחרו שלושת המובילים בו.״</div></div>
+
+<div class="quiz" data-id="m6-q-9a" data-a="2"><p class="qq">Top 3 על Branch ועוד <code>Region = South</code> כמסנן רגיל. הסניפים המובילים ברשת הם Dizengoff, Port, Mamilla. כמה סימנים יוצגו?</p>
+<button class="opt">3: שלושת הסניפים בדרום</button><button class="opt">0, תצוגה ריקה</button><button class="opt">1, רק Mamilla</button>
+<div class="why">0. Top 3 בחר קודם את שלושת המובילים ברשת, ואף אחד מהם לא בדרום. מסנן הדרום מוריד את שלושתם, ונשארת תצוגה ריקה. עם Region כהקשר היו מופיעים שלושת סניפי הדרום (Eilat, Beer Sheva, Ashdod).</div></div>
+
+<div class="quiz" data-id="m6-q-9b" data-a="1"><p class="qq">איך מזהים בגיליון שמסנן הוא מסנן הקשר?</p>
+<button class="opt">הפיל שלו אפור ומופיע בראש מדף Filters</button><button class="opt">הפיל שלו אדום</button><button class="opt">יש עליו סימן V</button>
+<div class="why">מסנן הקשר מוצג כפיל אפור בראש המדף. את זה כדאי לבדוק כשמשהו בתוצאה נראה מוזר.</div></div>
+
+<div class="quiz" data-id="m6-q-9c" data-a="3"><p class="qq">ביקשו ״שלושת הסניפים המובילים בכל אזור״. מה מתאים?</p>
+<button class="opt">Top 3 עם Region כמסנן רגיל</button><button class="opt">Top 3 עם Region כהקשר</button><button class="opt">דירוג בתוך כל אזור בחישוב טבלה</button>
+<div class="why">גם עם הקשר, Top בוחר N מהרשימה שאחרי ההקשר, ולא N לכל אזור. דירוג בתוך אזור הוא עניין של חישוב טבלה (partition), בדומה ל-RANK ב-SQL.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> זה אחד הרגעים החשובים במודול. בנו את התצוגה על המסך בשלבים, ובקשו מהכיתה לנבא את מספר הסימנים לפני כל שלב. בדקו בתוכנה לפני השיעור את הניסוח של הסרת ההקשר בקליק ימני על הפיל האפור. מומלץ להציג את הדוגמה הרשמית של Tableau (Superstore, תתי-קטגוריות) רק כהפניה, ולהישאר על Scoop &amp; Go.</div>
+</section>
+
+
+<section class="sec" id="m6-10" data-t="סדר הפעולות">
+<div class="sec-h"><div class="sec-n">10</div><h2>סדר הפעולות: מי רץ לפני מי</h2></div>
+<p class="lead">בסעיף הקודם ראינו ש-Tableau לא מפעיל מסננים לפי הסדר שבו הוספתם אותם. יש לו סדר קבוע, והוא קובע גם מי נשאר וגם מה המספרים. אם מבינים אותו פעם אחת, חצי מההפתעות במסננים נעלמות.</p>
+
+<div class="defline"><b>סדר הפעולות (<code>Order of Operations</code>):</b> הרצף הקבוע שבו Tableau מפעיל מסננים וחישובים. כל שלב רואה רק מה ששרד את השלבים שלפניו. דוגמה: מסנן ממד רגיל רץ אחרי Top N, ולכן Top N לא יודע עליו.</div>
+
+<p>הנה הרצף, כפי שהוא מצויר בתיעוד של Tableau (ציור מחדש שלנו). בנינו אותו על הדוגמה מהסעיף הקודם: <code>Top 3</code> על Branch, ועוד <code>Region = Center</code> כמסנן <b>רגיל</b>. עקבו אחרי תשעת הסניפים משמאל לימין:</p>
+
+<p>שני מושגים יופיעו ברצף, ונלמד אותם כראוי במודולים הבאים: <dfn data-d="חישוב שמקבע את רמת הפירוט שלו לפי ממדים שכתבתם בנוסחה, ולא לפי מה שרואים בתצוגה">FIXED</dfn> ו<dfn data-d="חישוב שרץ על הערכים שמוצגים בתצוגה, כמו דירוג (RANK) או אחוז מהסך הכל">חישוב טבלה</dfn>. כרגע מספיק לדעת שהם קיימים ובאיזה שלב הם רצים.</p>
+
+<div class="anim" data-id="m6-anim-order" data-speed="3400"><div class="stage"><svg viewBox="0 0 800 560" role="img" aria-label="עשרת השלבים של סדר הפעולות, ותשעה סניפים שנעלמים בשלב Top N ובשלב מסנן הממד">
+<rect x="20.0" y="14.0" width="420.0" height="40" rx="10" fill="#ffffff" stroke="#c7d2fe" stroke-width="1.5" />
+<g data-s="2"><rect x="20.0" y="14.0" width="420.0" height="40" rx="10" fill="#eef2ff" stroke="#818cf8" stroke-width="1.5" /></g>
+<g data-only="2"><rect x="20.0" y="14.0" width="420.0" height="40" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="3" /></g>
+<circle cx="46" cy="34" r="14" fill="#4f46e5"/><text x="46" y="40" font-size="15" text-anchor="middle" font-weight="700" fill="#ffffff" >1</text>
+<text x="72" y="40" font-size="16" text-anchor="start" font-weight="600" fill="#142a45" >Extract Filters</text>
+<path d="M230,54 L230,66" stroke="#94a3b8" stroke-width="2"/>
+<rect x="20.0" y="66.0" width="420.0" height="40" rx="10" fill="#ffffff" stroke="#c7d2fe" stroke-width="1.5" />
+<g data-s="3"><rect x="20.0" y="66.0" width="420.0" height="40" rx="10" fill="#eef2ff" stroke="#818cf8" stroke-width="1.5" /></g>
+<g data-only="3"><rect x="20.0" y="66.0" width="420.0" height="40" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="3" /></g>
+<circle cx="46" cy="86" r="14" fill="#4f46e5"/><text x="46" y="92" font-size="15" text-anchor="middle" font-weight="700" fill="#ffffff" >2</text>
+<text x="72" y="92" font-size="16" text-anchor="start" font-weight="600" fill="#142a45" >Data Source Filters</text>
+<path d="M230,106 L230,118" stroke="#94a3b8" stroke-width="2"/>
+<rect x="20.0" y="118.0" width="420.0" height="40" rx="10" fill="#ffffff" stroke="#c7d2fe" stroke-width="1.5" />
+<g data-s="4"><rect x="20.0" y="118.0" width="420.0" height="40" rx="10" fill="#eef2ff" stroke="#818cf8" stroke-width="1.5" /></g>
+<g data-only="4"><rect x="20.0" y="118.0" width="420.0" height="40" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="3" /></g>
+<circle cx="46" cy="138" r="14" fill="#4f46e5"/><text x="46" y="144" font-size="15" text-anchor="middle" font-weight="700" fill="#ffffff" >3</text>
+<text x="72" y="144" font-size="16" text-anchor="start" font-weight="600" fill="#142a45" >Context Filters</text>
+<path d="M230,158 L230,170" stroke="#94a3b8" stroke-width="2"/>
+<rect x="20.0" y="170.0" width="420.0" height="40" rx="10" fill="#ffffff" stroke="#c7d2fe" stroke-width="1.5" />
+<g data-s="5"><rect x="20.0" y="170.0" width="420.0" height="40" rx="10" fill="#eef2ff" stroke="#818cf8" stroke-width="1.5" /></g>
+<g data-only="5"><rect x="20.0" y="170.0" width="420.0" height="40" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="3" /></g>
+<circle cx="46" cy="190" r="14" fill="#4f46e5"/><text x="46" y="196" font-size="15" text-anchor="middle" font-weight="700" fill="#ffffff" >4</text>
+<text x="72" y="196" font-size="16" text-anchor="start" font-weight="600" fill="#142a45" >Sets, Conditional, Top N, FIXED</text>
+<path d="M230,210 L230,222" stroke="#94a3b8" stroke-width="2"/>
+<rect x="20.0" y="222.0" width="420.0" height="40" rx="10" fill="#ffffff" stroke="#c7d2fe" stroke-width="1.5" />
+<g data-s="6"><rect x="20.0" y="222.0" width="420.0" height="40" rx="10" fill="#eef2ff" stroke="#818cf8" stroke-width="1.5" /></g>
+<g data-only="6"><rect x="20.0" y="222.0" width="420.0" height="40" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="3" /></g>
+<circle cx="46" cy="242" r="14" fill="#4f46e5"/><text x="46" y="248" font-size="15" text-anchor="middle" font-weight="700" fill="#ffffff" >5</text>
+<text x="72" y="248" font-size="16" text-anchor="start" font-weight="600" fill="#142a45" >Dimension Filters</text>
+<path d="M230,262 L230,274" stroke="#94a3b8" stroke-width="2"/>
+<rect x="20.0" y="274.0" width="420.0" height="40" rx="10" fill="#ffffff" stroke="#c7d2fe" stroke-width="1.5" />
+<g data-s="7"><rect x="20.0" y="274.0" width="420.0" height="40" rx="10" fill="#eef2ff" stroke="#818cf8" stroke-width="1.5" /></g>
+<g data-only="7"><rect x="20.0" y="274.0" width="420.0" height="40" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="3" /></g>
+<circle cx="46" cy="294" r="14" fill="#4f46e5"/><text x="46" y="300" font-size="15" text-anchor="middle" font-weight="700" fill="#ffffff" >6</text>
+<text x="72" y="300" font-size="16" text-anchor="start" font-weight="600" fill="#142a45" >INCLUDE/EXCLUDE, Blending</text>
+<path d="M230,314 L230,326" stroke="#94a3b8" stroke-width="2"/>
+<rect x="20.0" y="326.0" width="420.0" height="40" rx="10" fill="#ffffff" stroke="#c7d2fe" stroke-width="1.5" />
+<g data-s="8"><rect x="20.0" y="326.0" width="420.0" height="40" rx="10" fill="#eef2ff" stroke="#818cf8" stroke-width="1.5" /></g>
+<g data-only="8"><rect x="20.0" y="326.0" width="420.0" height="40" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="3" /></g>
+<circle cx="46" cy="346" r="14" fill="#4f46e5"/><text x="46" y="352" font-size="15" text-anchor="middle" font-weight="700" fill="#ffffff" >7</text>
+<text x="72" y="352" font-size="16" text-anchor="start" font-weight="600" fill="#142a45" >Measure Filters</text>
+<path d="M230,366 L230,378" stroke="#94a3b8" stroke-width="2"/>
+<rect x="20.0" y="378.0" width="420.0" height="40" rx="10" fill="#ffffff" stroke="#c7d2fe" stroke-width="1.5" />
+<g data-s="9"><rect x="20.0" y="378.0" width="420.0" height="40" rx="10" fill="#eef2ff" stroke="#818cf8" stroke-width="1.5" /></g>
+<g data-only="9"><rect x="20.0" y="378.0" width="420.0" height="40" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="3" /></g>
+<circle cx="46" cy="398" r="14" fill="#4f46e5"/><text x="46" y="404" font-size="15" text-anchor="middle" font-weight="700" fill="#ffffff" >8</text>
+<text x="72" y="404" font-size="16" text-anchor="start" font-weight="600" fill="#142a45" >Table Calcs, Totals, Forecast</text>
+<path d="M230,418 L230,430" stroke="#94a3b8" stroke-width="2"/>
+<rect x="20.0" y="430.0" width="420.0" height="40" rx="10" fill="#ffffff" stroke="#c7d2fe" stroke-width="1.5" />
+<g data-s="10"><rect x="20.0" y="430.0" width="420.0" height="40" rx="10" fill="#eef2ff" stroke="#818cf8" stroke-width="1.5" /></g>
+<g data-only="10"><rect x="20.0" y="430.0" width="420.0" height="40" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="3" /></g>
+<circle cx="46" cy="450" r="14" fill="#4f46e5"/><text x="46" y="456" font-size="15" text-anchor="middle" font-weight="700" fill="#ffffff" >9</text>
+<text x="72" y="456" font-size="16" text-anchor="start" font-weight="600" fill="#142a45" >Table Calc Filters</text>
+<path d="M230,470 L230,482" stroke="#94a3b8" stroke-width="2"/>
+<rect x="20.0" y="482.0" width="420.0" height="40" rx="10" fill="#ffffff" stroke="#c7d2fe" stroke-width="1.5" />
+<g data-s="11"><rect x="20.0" y="482.0" width="420.0" height="40" rx="10" fill="#eef2ff" stroke="#818cf8" stroke-width="1.5" /></g>
+<g data-only="11"><rect x="20.0" y="482.0" width="420.0" height="40" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="3" /></g>
+<circle cx="46" cy="502" r="14" fill="#4f46e5"/><text x="46" y="508" font-size="15" text-anchor="middle" font-weight="700" fill="#ffffff" >10</text>
+<text x="72" y="508" font-size="16" text-anchor="start" font-weight="600" fill="#142a45" >Trend and Reference Lines</text>
+<text x="640" y="20" font-size="16" text-anchor="middle" font-weight="700" fill="#142a45" >תשעת הסניפים</text>
+<g data-only="1,2,3,4,5,6,7,8,9,10,11"><rect x="480.0" y="34.0" width="300.0" height="34" rx="8" fill="#d9f0d6" stroke="#a8d4a3" stroke-width="1.5" /><text x="494" y="57" font-size="15" text-anchor="start" font-weight="700" fill="#1c6b1c" >Dizengoff</text><text x="640" y="57" font-size="14" text-anchor="middle" font-weight="400" fill="#1c6b1c" >44,194.1</text><text x="768" y="57" font-size="14" text-anchor="end" font-weight="400" fill="#1c6b1c" >Center</text></g>
+<g data-only="1,2,3,4,5,6,7,8,9,10,11"><rect x="480.0" y="78.0" width="300.0" height="34" rx="8" fill="#d9f0d6" stroke="#a8d4a3" stroke-width="1.5" /><text x="494" y="101" font-size="15" text-anchor="start" font-weight="700" fill="#1c6b1c" >Port</text><text x="640" y="101" font-size="14" text-anchor="middle" font-weight="400" fill="#1c6b1c" >39,446.0</text><text x="768" y="101" font-size="14" text-anchor="end" font-weight="400" fill="#1c6b1c" >Center</text></g>
+<g data-only="1,2,3,4,5"><rect x="480.0" y="122.0" width="300.0" height="34" rx="8" fill="#d9f0d6" stroke="#a8d4a3" stroke-width="1.5" /><text x="494" y="145" font-size="15" text-anchor="start" font-weight="700" fill="#1c6b1c" >Mamilla</text><text x="640" y="145" font-size="14" text-anchor="middle" font-weight="400" fill="#1c6b1c" >33,450.8</text><text x="768" y="145" font-size="14" text-anchor="end" font-weight="400" fill="#1c6b1c" >Jerusalem</text></g>
+<g data-only="6,7,8,9,10,11"><rect x="480.0" y="122.0" width="300.0" height="34" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1.5" /><text x="494" y="145" font-size="15" text-anchor="start" font-weight="400" fill="#94a3b8" text-decoration="line-through">Mamilla</text><text x="768" y="145" font-size="14" text-anchor="end" font-weight="400" fill="#94a3b8" >Jerusalem</text></g>
+<g data-only="1,2,3,4"><rect x="480.0" y="166.0" width="300.0" height="34" rx="8" fill="#d9f0d6" stroke="#a8d4a3" stroke-width="1.5" /><text x="494" y="189" font-size="15" text-anchor="start" font-weight="700" fill="#1c6b1c" >Eilat</text><text x="640" y="189" font-size="14" text-anchor="middle" font-weight="400" fill="#1c6b1c" >31,473.7</text><text x="768" y="189" font-size="14" text-anchor="end" font-weight="400" fill="#1c6b1c" >South</text></g>
+<g data-only="5,6,7,8,9,10,11"><rect x="480.0" y="166.0" width="300.0" height="34" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1.5" /><text x="494" y="189" font-size="15" text-anchor="start" font-weight="400" fill="#94a3b8" text-decoration="line-through">Eilat</text><text x="768" y="189" font-size="14" text-anchor="end" font-weight="400" fill="#94a3b8" >South</text></g>
+<g data-only="1,2,3,4"><rect x="480.0" y="210.0" width="300.0" height="34" rx="8" fill="#d9f0d6" stroke="#a8d4a3" stroke-width="1.5" /><text x="494" y="233" font-size="15" text-anchor="start" font-weight="700" fill="#1c6b1c" >Haifa</text><text x="640" y="233" font-size="14" text-anchor="middle" font-weight="400" fill="#1c6b1c" >27,389.2</text><text x="768" y="233" font-size="14" text-anchor="end" font-weight="400" fill="#1c6b1c" >North</text></g>
+<g data-only="5,6,7,8,9,10,11"><rect x="480.0" y="210.0" width="300.0" height="34" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1.5" /><text x="494" y="233" font-size="15" text-anchor="start" font-weight="400" fill="#94a3b8" text-decoration="line-through">Haifa</text><text x="768" y="233" font-size="14" text-anchor="end" font-weight="400" fill="#94a3b8" >North</text></g>
+<g data-only="1,2,3,4"><rect x="480.0" y="254.0" width="300.0" height="34" rx="8" fill="#d9f0d6" stroke="#a8d4a3" stroke-width="1.5" /><text x="494" y="277" font-size="15" text-anchor="start" font-weight="700" fill="#1c6b1c" >Netanya</text><text x="640" y="277" font-size="14" text-anchor="middle" font-weight="400" fill="#1c6b1c" >26,840.2</text><text x="768" y="277" font-size="14" text-anchor="end" font-weight="400" fill="#1c6b1c" >Center</text></g>
+<g data-only="5,6,7,8,9,10,11"><rect x="480.0" y="254.0" width="300.0" height="34" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1.5" /><text x="494" y="277" font-size="15" text-anchor="start" font-weight="400" fill="#94a3b8" text-decoration="line-through">Netanya</text><text x="768" y="277" font-size="14" text-anchor="end" font-weight="400" fill="#94a3b8" >Center</text></g>
+<g data-only="1,2,3,4"><rect x="480.0" y="298.0" width="300.0" height="34" rx="8" fill="#d9f0d6" stroke="#a8d4a3" stroke-width="1.5" /><text x="494" y="321" font-size="15" text-anchor="start" font-weight="700" fill="#1c6b1c" >Beer Sheva</text><text x="640" y="321" font-size="14" text-anchor="middle" font-weight="400" fill="#1c6b1c" >18,797.2</text><text x="768" y="321" font-size="14" text-anchor="end" font-weight="400" fill="#1c6b1c" >South</text></g>
+<g data-only="5,6,7,8,9,10,11"><rect x="480.0" y="298.0" width="300.0" height="34" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1.5" /><text x="494" y="321" font-size="15" text-anchor="start" font-weight="400" fill="#94a3b8" text-decoration="line-through">Beer Sheva</text><text x="768" y="321" font-size="14" text-anchor="end" font-weight="400" fill="#94a3b8" >South</text></g>
+<g data-only="1,2,3,4"><rect x="480.0" y="342.0" width="300.0" height="34" rx="8" fill="#d9f0d6" stroke="#a8d4a3" stroke-width="1.5" /><text x="494" y="365" font-size="15" text-anchor="start" font-weight="700" fill="#1c6b1c" >Rehovot</text><text x="640" y="365" font-size="14" text-anchor="middle" font-weight="400" fill="#1c6b1c" >9,925.2</text><text x="768" y="365" font-size="14" text-anchor="end" font-weight="400" fill="#1c6b1c" >Center</text></g>
+<g data-only="5,6,7,8,9,10,11"><rect x="480.0" y="342.0" width="300.0" height="34" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1.5" /><text x="494" y="365" font-size="15" text-anchor="start" font-weight="400" fill="#94a3b8" text-decoration="line-through">Rehovot</text><text x="768" y="365" font-size="14" text-anchor="end" font-weight="400" fill="#94a3b8" >Center</text></g>
+<g data-only="1,2,3,4"><rect x="480.0" y="386.0" width="300.0" height="34" rx="8" fill="#d9f0d6" stroke="#a8d4a3" stroke-width="1.5" /><text x="494" y="409" font-size="15" text-anchor="start" font-weight="700" fill="#1c6b1c" >Ashdod</text><text x="640" y="409" font-size="14" text-anchor="middle" font-weight="400" fill="#1c6b1c" >5,304.5</text><text x="768" y="409" font-size="14" text-anchor="end" font-weight="400" fill="#1c6b1c" >South</text></g>
+<g data-only="5,6,7,8,9,10,11"><rect x="480.0" y="386.0" width="300.0" height="34" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1.5" /><text x="494" y="409" font-size="15" text-anchor="start" font-weight="400" fill="#94a3b8" text-decoration="line-through">Ashdod</text><text x="768" y="409" font-size="14" text-anchor="end" font-weight="400" fill="#94a3b8" >South</text></g>
+<g data-only="1,2,3,4"><text x="630" y="454" font-size="17" text-anchor="middle" font-weight="700" fill="#142a45" >9 סימנים</text></g>
+<g data-only="5"><text x="630" y="454" font-size="17" text-anchor="middle" font-weight="700" fill="#9a3412" >3 סימנים</text></g>
+<g data-only="6,7,8,9,10,11"><text x="630" y="454" font-size="17" text-anchor="middle" font-weight="700" fill="#991b1b" >2 סימנים</text></g>
+<g data-only="5"><text x="630" y="482" font-size="15" text-anchor="middle" font-weight="600" fill="#9a3412" >Top 3 על הרשת כולה</text></g>
+<g data-only="6"><text x="630" y="482" font-size="15" text-anchor="middle" font-weight="600" fill="#9a3412" >Mamilla ירדה: Region = Center</text></g>
+<g data-only="9"><text x="630" y="482" font-size="15" text-anchor="middle" font-weight="600" fill="#9a3412" >חישובי טבלה רואים רק שניים</text></g>
+</svg></div>
+<ol class="caps">
+<li>כל הנתונים נכנסים: תשעה סניפים. הדוגמה: <code>Top 3</code> ועוד <code>Region = Center</code> כמסנן רגיל.</li>
+<li><b>מסנני Extract</b>: מחוץ לגיליון. מגבילים אילו שורות נכנסות ל-extract. בדוגמה אין (בדקו אם זמין אצלכם).</li>
+<li><b>מסנני Data Source</b>: גם הם מחוץ לגיליון, ומגבילים מה כל הגיליונות רואים. בדוגמה אין.</li>
+<li><b>מסנני הקשר</b>: רצים ראשונים בתוך הגיליון. בדוגמה אין, וזה הפתרון שהוספנו בסעיף הקודם.</li>
+<li><b>סטים, מסננים עם תנאי, Top N, ו-FIXED</b>: כאן Top 3 בוחר את שלושת הגדולים. הוא רואה את הרשת כולה (כי אין הקשר), ומשאיר Dizengoff, Port, Mamilla. שישה סניפים נעלמו.</li>
+<li><b>מסנני ממד רגילים</b>: <code>Region = Center</code>. Mamilla היא בירושלים ולכן יורדת. נשארו שניים. כאן נולדה הבעיה.</li>
+<li><b>INCLUDE ו-EXCLUDE (חישובי LOD, רמת פירוט) ושילוב נתונים (blending)</b>: רצים אחרי מסנני הממד (מודולים 10 ו-11).</li>
+<li><b>מסנני מדד</b>: למשל <code>SUM(Sales) &gt;= 40000</code>. בודקים את הסימנים שעדיין שרדו.</li>
+<li><b>חישובי טבלה, סכומים כוללים, חיזוי ואשכולות</b>: רצים על מה שנשאר בתצוגה. <code>Percent of Total</code> או <code>RANK</code> רואים רק את שני הסניפים.</li>
+<li><b>מסנני חישוב טבלה</b>: מסננים לפי תוצאה של חישוב טבלה. ככה אפשר לקבל Top 3 אחרי מסנן הממד.</li>
+<li><b>קווי מגמה וקווי ייחוס</b>: אחרונים, על מה שהוצג.</li>
+</ol></div>
+
+<div class="box note"><p>בתיעוד הרשמי של Tableau יש סתירה קטנה: בטקסט של הדף מופיעים Top N ומסנן ממד רגיל כשניים ש״פועלים בו זמנית״, ואילו בתרשים שלו Top N, הסטים ו-FIXED נמצאים בשלב נפרד, לפני מסנני הממד. הדוגמה שהדף עצמו נותן (Top 10 ברשת ולא Top 10 בעיר) מתאימה לתרשים. לכן אנחנו מלמדים לפי התרשים, וזה מה שרואים גם בתוכנה.</p></div>
+
+<h3>ארבעה כללים שמספיקים</h3>
+<ol>
+<li><b>מסנן משפיע רק על מה שרץ אחריו.</b> מסנן הקשר משפיע על כולם. מסנן ממד רגיל לא משפיע על Top N, על סטים ועל FIXED.</li>
+<li><b>Top N, סטים ו-FIXED נמצאים באותו שלב.</b> שלושתם מתעלמים ממסנן ממד רגיל ומתחשבים בהקשר.</li>
+<li><b>חישובי טבלה רצים כמעט אחרונים.</b> לכן הם רואים רק מה שנשאר, ומחשבים מחדש אחרי כל מסנן.</li>
+<li><b>סדר הפילים על המדף לא קובע.</b> השלב של כל מסנן נקבע לפי סוגו, לא לפי איפה הנחתם אותו.</li>
+</ol>
+
+<h3>גם המספרים תלויים בסדר, לא רק מי נשאר</h3>
+<p>נתבונן בסניף Dizengoff בתצוגה של <code>Top 3</code> ועוד <code>Region = Center</code>, ונחשב לו ״כמה אחוז הוא מהסך הכל״ בארבע דרכים. (חישובי טבלה ב<a href="module9.html">מודול 9</a>, ו-FIXED ב<a href="module10.html">מודול 10</a>. כאן רק רואים שהסדר משנה את המספר.)</p>
+<div class="tw"><table class="tbl">
+<thead><tr><th>איך מחשבים את המכנה</th><th>Region כמסנן רגיל</th><th>Region כהקשר</th></tr></thead>
+<tbody>
+<tr><td>חישוב טבלה: האחוז מסך הסימנים שמוצגים</td><td>52.8% (מתוך 83,640.1, שני סניפים)</td><td>40.0% (מתוך 110,480.3, שלושה סניפים)</td></tr>
+<tr><td><code>FIXED</code>: האחוז מסכום קבוע שנחשב בשלב Top N</td><td>18.7% (מתוך 236,820.9, כל הרשת)</td><td>36.7% (מתוך 120,405.5, כל המרכז)</td></tr>
+</tbody></table></div>
+<p>חישוב הטבלה זז אחרי כל מסנן, כי הוא רץ אחרון. ה-FIXED עומד במקום, ומשתנה רק כשמוסיפים הקשר (כי הקשר רץ לפניו). הרעיון: חישוב טבלה ״רואה את המסך״, ו-FIXED ״רואה את הנתונים״. הנוסחה של FIXED תיכתב במודול 10.</p>
+
+<p>ועכשיו הכלי המרכזי של המודול: סימולציה של הצינור על הנתונים האמיתיים. בחרו אזור, סוג מסנן אזור, Top N ומסנן מדד, ותראו איפה כל סניף נעלם.</p>
+<div class="sim" data-id="m6-sim-pipeline"><div class="sh">צינור המסננים של Scoop &amp; Go</div>
+<div class="m6-opt" id="m6p-presets"><button class="btn sec2" data-p="problem">הבעיה: Top 3 + מרכז רגיל</button><button class="btn sec2" data-p="ctx">התיקון: מרכז כהקשר</button><button class="btn sec2" data-p="rank">התיקון: RANK</button><button class="btn sec2" data-p="south">Top 3 + דרום רגיל</button></div>
+<div class="m6-lg">
+<div class="card"><h4>מסנן Region</h4><div class="m6-opt" id="m6p-regs"></div>
+<div class="m6-opt"><label><input type="radio" name="m6pk" value="o" checked> רגיל (שלב 5)</label><label><input type="radio" name="m6pk" value="c"> הקשר (שלב 3)</label></div></div>
+<div class="card"><h4>Top N על Branch</h4><div class="m6-opt"><label><input type="checkbox" id="m6p-top" checked> פעיל</label><label>N: <select id="m6p-n"></select></label></div>
+<div class="m6-opt"><label><input type="radio" name="m6pi" value="f" checked> מסנן Top (שלב 4)</label><label><input type="radio" name="m6pi" value="r"> חישוב טבלה RANK (שלבים 8 ו-9)</label></div></div>
+<div class="card"><h4>מסנן מדד</h4><div class="m6-opt"><label><input type="checkbox" id="m6p-me"> פעיל</label></div><div class="m6-opt" dir="ltr">SUM(Sales) &gt;= <b id="m6p-mv">0</b> <input type="range" id="m6p-ms" min="0" max="45000" step="1000" value="0"></div></div>
+</div>
+<div class="m6-st" id="m6p-st"></div>
+<div class="out" id="m6p-out"></div>
+<p class="m6-need">הדמיה. הסימולציה מחשבת מנתוני Scoop &amp; Go האמיתיים ומפעילה את הסדר המתועד של Tableau; היא לא מריצה את Tableau.</p></div>
+<script>(function(){FL.dom(function(){
+var box=FL.$('[data-id="m6-sim-pipeline"]'); if(!box) return;
+TF.loadScoop(function(D){
+var c=D.cols,n=D.n,BD=c.Branch.dict,RD=c.Region.dict,br=BD.map(function(b){return {n:b,v:0,r:null};});
+for(var i=0;i<n;i++){var k=c.Branch.v[i]; br[k].v+=c.Sales.v[i]; br[k].r=RD[c.Region.v[i]];}
+br.sort(function(a,b){return b.v-a.v;});
+var regs=RD.slice().sort(), st={reg:{},ctx:false,top:true,N:3,rank:false,me:false,mv:0}, touched=0;
+regs.forEach(function(r){st.reg[r]=(r==='Center');});
+var regBox=FL.$('#m6p-regs',box), nSel=FL.$('#m6p-n',box), stEl=FL.$('#m6p-st',box), out=FL.$('#m6p-out',box);
+regBox.innerHTML=regs.map(function(r){return '<label><input type="checkbox" data-r="'+FL.esc(r)+'"> '+FL.esc(r)+'</label>';}).join('');
+for(var q=1;q<=9;q++){var o=document.createElement('option'); o.value=q; o.textContent=q; nSel.appendChild(o);} nSel.value='3';
+function fmt(x){return x.toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1});}
+function pc(x){return (x*100).toFixed(1)+'%';}
+function sum(a){return a.reduce(function(s,x){return s+x.v;},0);}
+function inReg(b){return st.reg[b.r];}
+function topN(a,N){return a.slice().sort(function(x,y){return y.v-x.v;}).slice(0,N);}
+function sync(){
+ FL.$$('[data-r]',box).forEach(function(e){e.checked=!!st.reg[e.dataset.r];});
+ FL.$$('input[name=m6pk]',box).forEach(function(e){e.checked=(e.value==='c')===st.ctx;});
+ FL.$$('input[name=m6pi]',box).forEach(function(e){e.checked=(e.value==='r')===st.rank;});
+ FL.$('#m6p-top',box).checked=st.top; nSel.value=String(st.N); FL.$('#m6p-me',box).checked=st.me;
+ FL.$('#m6p-ms',box).value=st.mv; FL.$('#m6p-mv',box).textContent=st.mv.toLocaleString('en-US');
+}
+var SH={'Tel Aviv Dizengoff':'Dizengoff','Tel Aviv Port':'Port','Jerusalem Mamilla':'Mamilla','Eilat Promenade':'Eilat','Haifa German Colony':'Haifa','Netanya Beach':'Netanya','Beer Sheva Grand Mall':'Beer Sheva','Rehovot Mall':'Rehovot','Ashdod Beach Pop-up':'Ashdod'};
+function card(title,note,list,prev,active,extra){
+ var h='<div class="m6-sc'+(active?' on':' idle')+'"><h5>'+title+'</h5><div class="nn">'+note+'</div><div>';
+ br.forEach(function(b){ var alive=list.indexOf(b)>=0, was=prev.indexOf(b)>=0; h+='<span class="m6-ch'+(alive?'':(was?' cut':' off'))+'">'+FL.esc(SH[b.n]||b.n)+'</span>'; });
+ return h+'</div><div class="nn" style="margin-top:4px"><b>'+(active?'נשארו '+list.length:'לא בשימוש')+'</b>'+(extra||'')+'</div></div>';
+}
+function draw(){
+ var s0=br.slice(), s3=st.ctx?s0.filter(inReg):s0, denom=sum(s3);
+ var topF=st.top&&!st.rank, topR=st.top&&st.rank;
+ var s4=topF?topN(s3,st.N):s3, s5=st.ctx?s4:s4.filter(inReg), s7=st.me?s5.filter(function(b){return b.v>=st.mv;}):s5, s8=topR?topN(s7,st.N):s7;
+ stEl.innerHTML=
+  card('3. מסנן הקשר','Region כהקשר',s3,s0,st.ctx)+
+  card('4. Top N, סטים, FIXED','Top '+st.N+' על מה שהגיע',s4,s3,topF,topF?'':'')+
+  card('5. מסנן ממד רגיל','Region כמסנן רגיל',s5,s4,!st.ctx)+
+  card('7. מסנן מדד','SUM(Sales) &gt;= '+st.mv.toLocaleString('en-US'),s7,s5,st.me)+
+  card('8 ו-9. חישוב טבלה','RANK &lt;= '+st.N,s8,s7,topR);
+ var fin=s8.slice().sort(function(a,b){return b.v-a.v;}), vis=sum(fin), mx=fin.length?fin[0].v:1;
+ var h='<div><b>מה מוצג בגרף: '+fin.length+' סימנים</b></div>';
+ if(!fin.length) h+='<div class="m6-no">תצוגה ריקה</div>';
+ fin.forEach(function(b){ h+='<div class="m6-bar"><span>'+FL.esc(b.n)+'</span><i style="width:'+Math.max(2,Math.round(b.v/mx*200))+'px"></i><b>'+fmt(b.v)+' · חישוב טבלה '+pc(b.v/vis)+' · FIXED '+pc(b.v/denom)+'</b></div>'; });
+ var msg='';
+ if(st.top && !st.rank && !st.ctx && s4.length>s5.length){ msg='Top '+st.N+' נקבע בשלב 4 על הרשת כולה, ורק אחר כך מסנן הממד (שלב 5) הוריד '+(s4.length-s5.length)+' מהם. לכן ביקשתם '+st.N+' ויש '+s8.length+'.'; }
+ else if(st.top && !st.rank && st.ctx){ msg='הקשר רץ ראשון (שלב 3), אז Top '+st.N+' נבחר מתוך '+s3.length+' סניפים באזורים שבחרתם.'; }
+ else if(st.top && st.rank){ msg='RANK הוא חישוב טבלה (שלב 8), והוא רץ אחרי מסנן הממד. לכן הוא מדרג רק את מי שנשאר: '+s8.length+' סימנים.'; }
+ else if(st.top){ msg='הפעם מסנן Region הרגיל לא הוריד אף סימן ש-Top '+st.N+' בחר, ולכן אין הבדל. נסו אזור אחר, למשל South.'; }
+ else { msg='אין Top N פעיל, אז הסדר לא משנה את מי שנשאר. הפעילו Top N כדי לראות את ההבדל.'; }
+ h+='<div style="margin-top:6px;color:#334155">'+msg+'</div><div class="m6-need">המכנה של FIXED: '+fmt(denom)+' (כל מה ששרד את שלב 3). המכנה של חישוב הטבלה: '+fmt(vis)+' (מה שמוצג).</div>';
+ out.innerHTML=h;
+}
+function chg(){ touched++; sync(); draw(); if(touched>=4) FL.done('m6-sim-pipeline'); }
+var P={problem:{reg:['Center'],ctx:false,top:true,N:3,rank:false,me:false,mv:0},ctx:{reg:['Center'],ctx:true,top:true,N:3,rank:false,me:false,mv:0},rank:{reg:['Center'],ctx:false,top:true,N:3,rank:true,me:false,mv:0},south:{reg:['South'],ctx:false,top:true,N:3,rank:false,me:false,mv:0}};
+box.addEventListener('click',function(e){ var b=e.target.closest('button[data-p]'); if(!b) return; var p=P[b.dataset.p]; regs.forEach(function(r){st.reg[r]=p.reg.indexOf(r)>=0;}); st.ctx=p.ctx; st.top=p.top; st.N=p.N; st.rank=p.rank; st.me=p.me; st.mv=p.mv; chg(); });
+box.addEventListener('change',function(e){ var t=e.target;
+ if(t.dataset.r!==undefined) st.reg[t.dataset.r]=t.checked;
+ else if(t.name==='m6pk') st.ctx=(t.value==='c');
+ else if(t.name==='m6pi') st.rank=(t.value==='r');
+ else if(t.id==='m6p-top') st.top=t.checked;
+ else if(t.id==='m6p-n') st.N=+t.value;
+ else if(t.id==='m6p-me') st.me=t.checked;
+ else return; chg(); });
+box.addEventListener('input',function(e){ if(e.target.id==='m6p-ms'){ st.mv=+e.target.value; chg(); } });
+sync(); draw();
+});});})();</script>
+
+<div class="box try" data-id="m6-try-order">
+<ol>
+<li>קודם נחשו, ורשמו, ורק אחר כך בדקו: <code>Top 3</code> על Branch, <code>Region = Center</code> כמסנן רגיל, ועוד מסנן מדד <code>SUM(Sales) &gt;= 40000</code>. כמה סימנים נשארים? <em>למה:</em> התרגול הוא בניבוי לפי שלבי הרצף, לא בקליקים.</li>
+<li>בנו את זה ב-Tableau. מסנן מדד על <span class="pill c">Sales</span>: גררו אותו אל <code>Filters</code>, בחרו <code>Sum</code>, <code>Next</code>, <code>At least</code> והקלידו <code>40000</code>. <em>למה:</em> אגרגציה על הסניף, לא על שורה.</li>
+<li>עכשיו הוסיפו את <code>Region</code> להקשר. נחשו שוב, ובדקו. <em>למה:</em> האם ההקשר משנה את התשובה הזו?</li>
+<li>בהדמיה שלמעלה, בדקו שני תרחישים נוספים: Top 3 עם Region = South כרגיל, ואותו תרחיש עם הקשר.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלב 1: כשאין מסנן מדד, 2 סימנים. עם מסנן המדד, סימן אחד: <span class="n">Dizengoff <span class="n">44,194.1</span></span> (Port עם <span class="n">39,446.0</span> לא עובר 40,000). שלב 3: עם הקשר, Top 3 הוא Dizengoff, Port, Netanya ומסנן המדד משאיר שוב רק Dizengoff: סימן אחד. שלב 4: Top 3 עם דרום כמסנן רגיל: 0 סימנים. עם הקשר: 3 סימנים: <span class="n">Eilat <span class="n">31,473.7</span>, Beer Sheva <span class="n">18,797.2</span>, Ashdod <span class="n">5,304.5</span></span>.</p>
+</div>
+
+<div class="box meaning"><p>סדר הפעולות הוא לא פרט טכני. הוא קובע מה ״הכל״ עבור כל חישוב. Top N שואל ״הכי גדולים מתוך מה?״, אחוז מהסך הכל שואל ״מתוך סך הכל של מה?״. התשובה לשתי השאלות היא ״מתוך מה ששרד את השלבים שלפניי״. מי שמעביר דוח לאחרים צריך לדעת לומר את זה במשפט אחד.</p></div>
+
+<div class="box real"><p>גם ב-SQL יש סדר קבוע שבו המסד מפעיל את חלקי השאילתה: <code>FROM</code>, אחר כך <code>WHERE</code>, אחר כך <code>GROUP BY</code>, אחר כך <code>HAVING</code>, אחר כך <code>ORDER BY</code>, ובסוף <code>LIMIT</code>. אי אפשר להחליף ביניהם בלי לשנות את התוצאה. ה-<code>WHERE</code> של Tableau הוא מסנן הממד, וה-<code>HAVING</code> הוא מסנן המדד (לפי התיעוד של Tableau עצמו).</p></div>
+
+<div class="box trap"><p><b>״הוספתי מסנן, והוא לא עושה כלום״.</b> אולי הוא עושה, אבל בשלב שאחרי החישוב שאתם מסתכלים עליו. מסנן ממד רגיל לא ישנה Top N, סט או FIXED. אם משהו שמוצג נראה ״תקוע״, שאלו: באיזה שלב נמצא החישוב שאני מסתכל עליו, ובאיזה שלב נמצא המסנן?</p></div>
+
+<div class="box trap"><p><b>הוספתי הקשר ושינתי מספר שלא ציפיתי לו.</b> הקשר משפיע גם על FIXED. אם בניתם אחוז מסך הכל עם FIXED, והפכתם מסנן להקשר, המכנה משתנה (בטבלה למעלה: מ-18.7% ל-36.7% עבור אותו סניף). זה לא באג. זו התוצאה של הסדר.</p></div>
+
+<div class="box think" data-id="m6-th-10"><p>מנהלת שיווק רוצה: ״איזה אחוז מהמכירות של המרכז מגיע משני הסניפים הגדולים בו?״. איך תבנו את זה כך שהמכנה יהיה כל המרכז ולא רק שני הסניפים שמוצגים?</p>
+<div class="ans">מכנה שנקבע בשלב מוקדם: חישוב FIXED של סכום המכירות, עם Region = Center כמסנן הקשר (כי FIXED מתחשב בהקשר) או כמסנן בנוסחה. אז כל סימן מחולק ב-120,405.5, ולא בסכום הסימנים המוצגים. עם חישוב טבלה רגיל, המכנה היה רק סכום הסימנים הגלויים, והאחוזים היו גבוהים מהאמת. את הנוסחה עצמה נכתוב במודול 10.</div></div>
+
+<div class="quiz" data-id="m6-q-10a" data-a="1"><p class="qq">איזה מהמסננים הבאים רץ ראשון בתוך הגיליון?</p>
+<button class="opt">מסנן הקשר</button><button class="opt">מסנן ממד רגיל</button><button class="opt">מסנן מדד</button>
+<div class="why">מסנני הקשר רצים ראשונים בגיליון (אחרי מסנני Extract ו-Data Source, שהם מחוץ לגיליון). אחריהם בא השלב של Top N, סטים ו-FIXED, אחריו מסנני ממד רגילים, ואחריהם מסנני מדד.</div></div>
+
+<div class="quiz" data-id="m6-q-10b" data-a="3"><p class="qq">יש אחוז מהסך הכל שחישבתם עם <code>FIXED</code>, ומסנן <code>Region = Center</code> כמסנן ממד רגיל. מה יקרה לאחוז אם תפעילו את מסנן Region?</p>
+<button class="opt">הוא יעלה, כי יש פחות סימנים</button><button class="opt">הוא ישתנה לפי הסימנים שנשארו</button><button class="opt">הוא לא ישתנה, כי FIXED מתעלם ממסנן ממד רגיל</button>
+<div class="why">FIXED נמצא באותו שלב של Top N, לפני מסנני הממד הרגילים, ולכן הוא לא רואה אותם. אם תהפכו את המסנן להקשר, המכנה ישתנה, כי הקשר רץ קודם.</div></div>
+
+<div class="quiz" data-id="m6-q-10c" data-a="2"><p class="qq">איך מקבלים Top 3 בתוך המרכז בלי מסנן הקשר?</p>
+<button class="opt">מוסיפים עוד מסנן Top 3 על Region</button><button class="opt">מדרגים בחישוב טבלה (RANK &lt;= 3) כמסנן, שרץ אחרי מסנן הממד</button><button class="opt">מעבירים את מסנן Region לראש המדף</button>
+<div class="why">חישוב טבלה רץ אחרי מסנני הממד, ולכן RANK מדרג רק את סניפי המרכז. סדר הפילים על המדף לא משנה את השלב של כל מסנן, ולכן העברה לראש המדף לא תעזור.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> התחילו מהסימולציה. הציגו את ״הבעיה״ ובקשו מהכיתה להסביר, ורק אחר כך הציגו את הציור המונפש. בדקו בתוכנה לפני השיעור: (א) שה-Top N אכן נשאר לא מושפע ממסנן ממד רגיל בגרסה שלכם; (ב) ש-FIXED מתחשב בהקשר; (ג) האפשרות של Extract ו-Data Source filters ב-Public (לא נדרשת בתרגילים). הניסוח בדף הרשמי של Tableau משתמש בטקסט שונה מהתרשים, ואנחנו מלמדים לפי התרשים.</div>
+</section>
+
+
+<section class="sec" id="m6-11" data-t="סיכום">
+<div class="sec-h"><div class="sec-n">11</div><h2>תרגול משולב וסיכום</h2></div>
+<p class="lead">מנהלת המוצר שואלת שאלה אחת, והיא דורשת כמה מהכלים של המודול: ״מי שני מוצרי ה-Cups המובילים בקיץ של 2025?״ בנו את התשובה, ובדקו אותה מול התוצאה הצפויה.</p>
+
+<div class="box try" data-id="m6-try-final">
+<ol>
+<li>גיליון חדש: <span class="pill d">Item</span> אל <code>Rows</code>, <span class="pill c sum">Sales</span> אל <code>Columns</code>. <em>למה:</em> בסיס של עמודה לכל מוצר.</li>
+<li>מסנן <span class="pill d">Category</span> = <code>Cups</code>, ואחר כך <code>Add to Context</code>. <em>למה:</em> הקשר, כדי שהדירוג יהיה רק בין ה-Cups.</li>
+<li>מסנן <span class="pill c">Order Date</span>, <code>Range of Dates</code>: <span class="n">2025-06-01</span> עד <span class="n">2025-08-31</span>, וגם הוא <code>Add to Context</code>. <em>למה:</em> אם נשאיר אותו רגיל, הדירוג ייעשה על כל השנים.</li>
+<li>מסנן <span class="pill d">Item</span>, לשונית <code>Top</code>: <code>Top</code>, <code>2</code>, <code>Sales</code>, <code>Sum</code>. מיינו יורד. <em>למה:</em> שני המובילים, מסודרים.</li>
+<li>בדקו את התוצאה. אחר כך החזירו את התאריך למסנן רגיל (<code>Remove from Context</code>), ובדקו שוב. <em>למה:</em> לראות מה קורה כשהדירוג נעשה על תקופה לא נכונה.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלב 4, שניהם בהקשר: 2 סימנים: <span class="n">Pistachio Cup</span> <span class="n">5,164.8</span>, ו-<span class="n">Chocolate Cup</span> <span class="n">4,158.0</span>. שלב 5 (Category בהקשר, תאריך רגיל): 2 סימנים, אבל השני הוא <span class="n">Vanilla Cup</span> עם <span class="n">4,076.0</span> (המקום השני בכל השנים, לא בקיץ). שימו לב ש-<span class="n">Pistachio Cup</span> זהה בשני המקרים (<span class="n">5,164.8</span>), ורק המקום השני משתנה, ולכן קל לפספס. סך מכירות ה-Cups בתקופה: <span class="n">17,426.8</span> (בלי Top).</p>
+</div>
+
+<div class="box recap">
+<ul>
+<li>מסנן שואל מה נשאר. ממד: רשימה, תבנית, תנאי או Top. מדד: שורה או סכום. תאריך: יחסי, טווח או חלק.</li>
+<li>כרטיס סינון נותן לצופה שליטה. ברירת המחדל היא סינון על גיליון אחד, ו-<code>Apply to Worksheets</code> מרחיב.</li>
+<li>מיון מקונן מסדר את הממד הפנימי בתוך כל קבוצה, ומיון מחושב מסדר את הממד כולו לפי שדה.</li>
+<li>קבוצה מאחדת ערכים ביד, סט עושה את זה לפי כלל. היררכיה מאפשרת לרדת לפרטים. בין חותך מספר לטווחים להיסטוגרמה.</li>
+<li>Top N, סטים ו-FIXED רצים לפני מסנן ממד רגיל. מסנן הקשר רץ לפניהם. חישוב טבלה רץ אחרי.</li>
+<li>כשביקשתם N ויש פחות סימנים, בדקו את סדר הפעולות.</li>
+</ul>
+</div>
+
+<h3>איזה כלי לשאלה הזו</h3>
+<div class="tw"><table class="tbl">
+<thead><tr><th>השאלה</th><th>הכלי</th></tr></thead>
+<tbody>
+<tr><td>״רק הדרום״</td><td>מסנן ממד, <code>General</code></td></tr>
+<tr><td>״מוצרים עם Cup בשם״</td><td>מסנן ממד, <code>Wildcard</code></td></tr>
+<tr><td>״סניפים שמכרו מעל 30,000״</td><td>מסנן מדד במצב <code>Sum</code></td></tr>
+<tr><td>״קיץ 2025״</td><td>מסנן תאריך, טווח</td></tr>
+<tr><td>״N המובילים בתוך אזור״</td><td>Top N עם הקשר</td></tr>
+<tr><td>״אפליקציה ומשלוח ביחד״</td><td>קבוצה</td></tr>
+<tr><td>״מי ב-Top 5 ומי לא״</td><td>סט דינמי, In/Out</td></tr>
+<tr><td>״ומה בתוך המרכז?״</td><td>היררכיה</td></tr>
+<tr><td>״איך מתפלגות המכירות?״</td><td>בין והיסטוגרמה</td></tr>
+</tbody></table></div>
+
+<div class="quiz" data-id="m6-q-11a" data-a="1"><p class="qq">מנהלת רוצה ״רק מוצרים שמכרו מעל 16,000, בלי הגבלה על כמה יש״. מה מתאים?</p>
+<button class="opt">מסנן ממד, לשונית Condition: Sum של Sales &gt;= 16000</button><button class="opt">מסנן ממד, לשונית Top: Top 5</button><button class="opt">מסנן מדד על Sales במצב All Values</button>
+<div class="why">Condition בודק סכום לכל ערך ולא מגביל את המספר. Top נותן בדיוק N. מסנן מדד במצב All Values בודק שורות בודדות, ולא את הסכום של כל מוצר.</div></div>
+
+<div class="quiz" data-id="m6-q-11b" data-a="2"><p class="qq">ביקשתם Top 3 על Item ועוד מסנן Category רגיל, ונשארו פחות מ-3 סימנים. מה הצעד הנכון?</p>
+<button class="opt">להסיר את Top ולהשאיר רק Category</button><button class="opt">להפוך את Category למסנן הקשר</button><button class="opt">להעלות את N ל-10</button>
+<div class="why">הבעיה היא הסדר: Top N רץ לפני מסנן רגיל. הקשר רץ לפניו, ואז הדירוג נעשה רק בתוך הקטגוריה. הסרת Top משנה את השאלה, והעלאת N לא פותרת את הבעיה.</div></div>
+
+<div class="quiz" data-id="m6-q-11c" data-a="3"><p class="qq">איזה כלי נותן לכם לראות כמה שורות מכירה יש בכל טווח של 20 שקל?</p>
+<button class="opt">קבוצה (Group)</button><button class="opt">סט (Set)</button><button class="opt">בין (Bin) והיסטוגרמה</button>
+<div class="why">בין חותך מספר לטווחים שווים, וספירת שורות לכל טווח היא היסטוגרמה. קבוצה וסט פועלים על ממד (ערכים של טקסט), לא על טווחי מספרים.</div></div>
+
+<p>במודול הבא אנחנו עוברים למפות. כל מה שלמדתם כאן ממשיך לעבוד שם: מסננים על אזור וסניף, מיון, וגם סדר הפעולות. <a class="tool" href="module7.html">מודול 7: מפות</a></p>
+<div class="teach"><b>🎓 למרצה:</b> התרגיל המסכם הוא הזדמנות לראות אם הכיתה מבינה את הסדר: בקשו מהם לנבא לפני שלב 5. בדקו בתוכנה שטווח תאריכים רציף מתנהג כמסנן ממד (שלב 5 בצינור) ושניתן להפוך אותו להקשר בקליק ימני. אם לא, תארו את מה שרואים בפועל.</div>
+</section>
+
+<div class="pager"><a href="module5.html">→ 5. צבע, גודל וקטלוג הגרפים הבסיסי</a><a href="module7.html">7. מפות ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>

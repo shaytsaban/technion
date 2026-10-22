@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>19. פתרון תקלות · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=19;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public">1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים">2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים">3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות">6<small></small></a><a id="part7" href="module7.html" title="מפות">7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים">8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט">10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב">13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה">14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים">15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות">16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום">17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות" class=on>19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>פתרון<br><span>תקלות</span></h1>
+  <p>ספריית תקלות לסטודנטים שעובדים לבד: מחפשים לפי מה שרואים על המסך ומקבלים סיבות לפי הסדר, תיקון עם הסבר ובדיקה שהוא עבד. יש מאתר תסמינים, אשף אבחון ופענח מספרים, ורוב התקלות מושחזות בכוונה על נתוני Scoop & Go.</p>
+  <div class="chips"><span>🔎 מאתר תסמינים</span><span>🧭 אשף אבחון</span><span>🧪 תרגילי תקלה מכוונת</span><span>🆓 רק Tableau Public</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<style>
+.m19-sym{border:1px solid var(--line);border-radius:12px;background:#fff;margin:10px 0;overflow:hidden}
+.m19-sym[open]{border-color:#93a8d8;box-shadow:0 6px 18px rgba(15,23,42,.08)}
+.m19-sym>summary{cursor:pointer;list-style:none;display:flex;gap:10px;align-items:center;padding:10px 14px;font-weight:700;line-height:1.45}
+.m19-sym>summary::-webkit-details-marker{display:none}
+.m19-sym>summary::after{content:"▾";margin-inline-start:auto;color:#64748b;flex:none}
+.m19-sym[open]>summary::after{content:"▴"}
+.m19-sym>summary:hover{background:#f8fafc}
+.m19-cat{font-size:.72rem;font-weight:800;border-radius:999px;padding:1px 10px;white-space:nowrap;flex:none}
+.m19-cat.install{background:#ede9fe;color:#5b21b6}.m19-cat.data{background:#dbeafe;color:#1e40af}.m19-cat.charts{background:#dcfce7;color:#166534}
+.m19-cat.calc{background:#fef3c7;color:#92400e}.m19-cat.dash{background:#fce7f3;color:#9d174d}.m19-cat.pub{background:#ffedd5;color:#9a3412}.m19-cat.embed{background:#ccfbf1;color:#115e59}
+.m19-b{padding:2px 16px 14px;border-top:1px solid var(--line)}
+.m19-b h4{margin:12px 0 4px;font-size:.92rem;color:#334155}
+.m19-b p{margin:6px 0}
+.m19-b ol{margin:4px 0}
+.m19-b li{margin:3px 0}
+.m19-why{display:block;font-size:.86rem;color:#64748b}
+.m19-ok{background:#ecfdf5;border:1px solid #a7f3d0;border-inline-start:5px solid #10b981;border-radius:10px;padding:6px 12px;margin:10px 0 6px}
+.m19-ft{font-size:.88rem;color:#475569;margin:8px 0 0}
+.m19-ft b{color:#334155}
+.m19-ft a{margin-inline-end:8px}
+.m19-chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.m19-chips button{font:inherit;font-size:.82rem;font-weight:700;border:1px solid #c7d2fe;background:#fff;color:#3730a3;border-radius:999px;padding:2px 12px;cursor:pointer}
+.m19-chips button.on{background:#3730a3;color:#fff;border-color:#3730a3}
+.m19-list{list-style:none;margin:6px 0 0;padding:0;max-height:340px;overflow:auto;display:grid;gap:4px}
+.m19-list li{margin:0}
+.m19-list a{display:flex;gap:8px;align-items:center;text-decoration:none;color:#1e293b;border:1px solid var(--line);border-radius:10px;padding:5px 10px;background:#fff}
+.m19-list a:hover{border-color:#6366f1;background:#f5f7ff}
+.m19-need{font-size:.84rem;color:#64748b;margin:8px 0 0}
+.m19-q{width:100%;max-width:520px}
+.m19-btns{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.m19-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:14px 0}
+.m19-fg{margin:0;border:2px solid #cbd5e1;border-radius:14px;background:#fff;padding:8px 10px;overflow:hidden}
+.m19-fg.bad{border-color:#fca5a5;background:#fffafa}.m19-fg.good{border-color:#86efac;background:#f7fef9}
+.m19-fg figcaption{font-weight:800;font-size:.9rem;margin:0 0 6px}
+.m19-fg.bad figcaption{color:#991b1b}.m19-fg.good figcaption{color:#166534}
+.m19-fg .sb{font-size:.8rem;color:#475569;border-top:1px solid #e2e8f0;margin-top:6px;padding-top:4px;direction:ltr;text-align:left}
+.m19-grid{direction:ltr;text-align:left;font-size:.82rem;overflow:auto}
+.m19-grid table{border-collapse:collapse;width:100%}
+.m19-grid th,.m19-grid td{border:1px solid #d5dbe3;padding:3px 8px;white-space:nowrap}
+.m19-grid th{background:#f1f5f9;font-weight:700}
+.m19-grid th small{display:block;font-weight:600;color:#64748b}
+.m19-ico{display:inline-block;font-weight:800;font-size:.72rem;border-radius:4px;padding:0 5px;margin-inline-end:4px}
+.m19-ico.t{background:#dbeafe;color:#14507a}.m19-ico.n{background:#d9f0d6;color:#1c6b1c}.m19-ico.d{background:#fde68a;color:#78350f}
+.m19-tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+.m19-tbl th,.m19-tbl td{border:1px solid var(--line);padding:5px 10px;text-align:start;vertical-align:top}
+.m19-tbl th{background:#f1f5f9}
+.m19-tbl td.l{direction:ltr;text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88rem;white-space:nowrap}
+.m19-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;direction:ltr}
+.m19-tiles div{border:1px solid #94a3b8;border-radius:6px;background:#e0e7ff;padding:10px 6px;text-align:center;font-size:.8rem;font-weight:700;color:#3730a3}
+.m19-float{position:relative;height:130px;direction:ltr}
+.m19-float div{position:absolute;border:1px solid #94a3b8;border-radius:6px;padding:8px;font-size:.8rem;font-weight:700;text-align:center}
+.m19-code{direction:ltr;text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.84rem;background:#0f172a;color:#e2e8f0;border-radius:8px;padding:8px 12px;overflow:auto;white-space:pre-wrap;word-break:break-all;margin:6px 0}
+.m19-code .bad{color:#fca5a5}.m19-code .good{color:#86efac}
+.m19-wiz-q{font-weight:800;margin:8px 0}
+.m19-wiz-path{font-size:.84rem;color:#64748b;margin:4px 0}
+.m19-res{background:#fff;border:1px solid #c7d2fe;border-radius:12px;padding:10px 14px;margin-top:8px}
+.m19-res ol{margin:4px 0}
+.m19-dec{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.m19-dec input{direction:ltr;text-align:left;min-width:170px}
+.m19-hit{border:1px solid var(--line);border-radius:10px;padding:6px 12px;margin:6px 0;background:#fff}
+.m19-hit.bad{border-color:#fca5a5;background:#fff7f7}.m19-hit.ok{border-color:#86efac;background:#f4fdf6}
+.m19-hit b.n{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.m19-kit{counter-reset:k;list-style:none;padding:0}
+.m19-kit li{counter-increment:k;display:flex;gap:10px;margin:6px 0;align-items:flex-start}
+.m19-kit li::before{content:counter(k);flex:none;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center;margin-top:2px}
+@media(max-width:640px){.m19-sym>summary{padding:9px 10px}.m19-b{padding:2px 10px 12px}}
+</style>
+
+<div class="box note">
+<p><span class="lvl s">מתחילים</span> <b>מה יש בעמוד הזה.</b> זה לא מודול שבונים בו גרף אחד מההתחלה ועד הסוף. זו ספריית תקלות: 36 דברים שקורים לסטודנטים ב-Tableau Public, מסודרים לפי מה שרואים על המסך. לכל תקלה יש איך היא נראית, הסיבות לפי הסדר, תיקון צעד אחר צעד עם הסבר, בדיקה שהוא עבד, מקום בקורס שבו זה נלמד, ודרך למנוע אותה. בנוסף יש מאתר תסמינים לחיפוש חופשי, אשף אבחון ששואל כמה שאלות, .</p>
+<p><b>מה להכין.</b> Tableau Public (האפליקציה, או עריכה בדפדפן) וחוברת עם הקובץ <a class="tool" href="data/scoop_sales_2024_2025.csv" download>scoop_sales_2024_2025.csv</a> טעון (<a href="module2.html">מודול 2</a>). רוב התרגילים כאן בונים תקלה בכוונה ומתקנים אותה, ולכן כדאי להכיר את הבסיס ממודולים 3 עד 10. את העמוד אפשר לפתוח גם באמצע עבודה, בלי לקרוא קודם את כל מה שלפניו.</p>
+<p><b>הכלל של העמוד.</b> הפתרונות כאן מבוססים על התיעוד של Tableau ועל מה שנלמד במודולים. כשפתרון תלוי בשם של כפתור שמשתנה בין גרסאות, כתוב מה הכפתור עושה ולא רק איך קוראים לו, ובגרסה שלכם ייתכן שהשם שונה מעט. את ההסתייגויות לגבי מה שלא נבדק בתוכנה תמצאו בהערות המרצה.</p>
+</div>
+
+<section class="sec" id="m19-1" data-t="איך עובדים כשמשהו לא יוצא">
+<div class="sec-h"><div class="sec-n">1</div><h2>איך עובדים כשמשהו לא יוצא</h2></div>
+<p class="lead">הגרף מראה נקודה אחת. הסכום קטן ממה שחישבתם באקסל. המפה כתובה עליה unknown. זה קורה גם למי שעובד ב-Tableau שנים. ההבדל בין מי שנתקע לשעה למי שפותר בדקה הוא סדר: בודקים לפי סדר קבוע, ומשנים דבר אחד בכל פעם.</p>
+
+<div class="defline"><b>אבחון:</b> לקבוע מה הסיבה לפני שמשנים משהו. דוגמה: הגרף מראה סימן אחד, אז קודם קוראים בשורת המצב (<code>1 mark</code>) ושואלים איזה ממד חסר, ורק אחר כך גוררים.</div>
+
+<p>הסדר הקבוע הוא מהמקור אל התצוגה. אם הנתונים נטענו לא נכון, כל מה שאחריהם נראה לא נכון, ולכן מתחילים משם. ההנפשה מראה חמש תחנות ובכל אחת מה נראה כשהיא התקלה.</p>
+
+<div class="anim" data-id="m19-anim-ladder" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="הנפשה: חמש תחנות לבדיקה לפי הסדר, מהנתונים ועד החישובים, ולכל תחנה תסמין אופייני">
+<g data-s="1" data-pulse><rect x="20" y="14" width="760" height="52" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/><circle cx="752" cy="40" r="18" fill="#0b1f3a"/><text x="752" y="46" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">1</text><text x="722" y="37" text-anchor="end" font-size="18" font-weight="800" fill="#0f172a">הנתונים</text><text x="722" y="57" text-anchor="end" font-size="14" fill="#475569">כמה שורות נטענו, איזה סוג לכל שדה, איך נראית העברית</text><rect x="34" y="24" width="230" height="32" rx="16" fill="#fef3c7" stroke="#f59e0b"/><text x="149" y="45" text-anchor="middle" font-size="14" fill="#78350f">מספר שורות לא מסתדר</text></g>
+<g data-s="2" data-pulse><rect x="20" y="76" width="760" height="52" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/><circle cx="752" cy="102" r="18" fill="#0b1f3a"/><text x="752" y="108" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">2</text><text x="722" y="99" text-anchor="end" font-size="18" font-weight="800" fill="#0f172a">המדפים והפילים</text><text x="722" y="119" text-anchor="end" font-size="14" fill="#475569">מה על המדפים, ואיזה צבע יש לכל פיל: כחול או ירוק</text><rect x="34" y="86" width="230" height="32" rx="16" fill="#fef3c7" stroke="#f59e0b"/><text x="149" y="107" text-anchor="middle" font-size="14" fill="#78350f">קו במקום עמודות</text></g>
+<g data-s="3" data-pulse><rect x="20" y="138" width="760" height="52" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/><circle cx="752" cy="164" r="18" fill="#0b1f3a"/><text x="752" y="170" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">3</text><text x="722" y="161" text-anchor="end" font-size="18" font-weight="800" fill="#0f172a">כרטיס Marks</text><text x="722" y="181" text-anchor="end" font-size="14" fill="#475569">פירוט, צבע, ומספר הסימנים בשורת המצב</text><rect x="34" y="148" width="230" height="32" rx="16" fill="#fef3c7" stroke="#f59e0b"/><text x="149" y="169" text-anchor="middle" font-size="14" fill="#78350f">סימן אחד במקום הרבה</text></g>
+<g data-s="4" data-pulse><rect x="20" y="200" width="760" height="52" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/><circle cx="752" cy="226" r="18" fill="#0b1f3a"/><text x="752" y="232" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">4</text><text x="722" y="223" text-anchor="end" font-size="18" font-weight="800" fill="#0f172a">המסננים</text><text x="722" y="243" text-anchor="end" font-size="14" fill="#475569">המדף Filters: על אילו גיליונות הם חלים ובאיזה סדר</text><rect x="34" y="210" width="230" height="32" rx="16" fill="#fef3c7" stroke="#f59e0b"/><text x="149" y="231" text-anchor="middle" font-size="14" fill="#78350f">הסכום קטן מהצפוי</text></g>
+<g data-s="5" data-pulse><rect x="20" y="262" width="760" height="52" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/><circle cx="752" cy="288" r="18" fill="#0b1f3a"/><text x="752" y="294" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">5</text><text x="722" y="285" text-anchor="end" font-size="18" font-weight="800" fill="#0f172a">החישובים</text><text x="722" y="305" text-anchor="end" font-size="14" fill="#475569">שדות מחושבים, חישובי טבלה, רמת פירוט ופרמטרים</text><rect x="34" y="272" width="230" height="32" rx="16" fill="#fef3c7" stroke="#f59e0b"/><text x="149" y="293" text-anchor="middle" font-size="14" fill="#78350f">אחוזים משתנים עם מסנן</text></g>
+</svg></div>
+<ol class="caps">
+<li>תחנה 1, הנתונים. בדף Data Source בודקים כמה שורות נטענו (ב-Scoop &amp; Go: 6,575) ואיזה סוג יש לכל שדה. תסמין אופייני: מספר שורות שלא מסתדר, או עברית משובשת.</li>
+<li>תחנה 2, המדפים והפילים. מסתכלים על Columns ועל Rows ועל הצבע של כל pill. תסמין אופייני: קבלתם קו כשרציתם עמודות.</li>
+<li>תחנה 3, כרטיס Marks. קוראים בשורת המצב כמה סימנים יש ומה על Detail ועל Color. תסמין אופייני: סימן אחד במקום תשעה.</li>
+<li>תחנה 4, המסננים. פותחים את המדף Filters ובודקים מה יושב שם ועל אילו גיליונות זה חל. תסמין אופייני: סכום קטן מהצפוי.</li>
+<li>תחנה 5, החישובים. רק עכשיו נכנסים לנוסחאות, ל-Compute Using ול-LOD. תסמין אופייני: אחוזים שמשתנים כשמוסיפים מסנן.</li>
+</ol></div>
+
+<div class="defline"><b>נקודת ביקורת (checkpoint):</b> מספר שאתם יודעים מראש שחייב לצאת, כדי לבדוק את עצמכם בלי לנחש. דוגמה: אחרי הטעינה של Scoop &amp; Go יש <b class="n">6,575</b> שורות וסכום Sales של <b class="n">236,820.9</b>. אם יצא משהו אחר, יש בעיה, והמספר שיצא לרוב אומר איזו.</div>
+
+<p>בעמוד הזה יש שלוש דרכים למצוא את התקלה שלכם:</p>
+<ol>
+<li><b>מאתר התסמינים</b> (כאן למטה): כותבים במילים שלכם מה רואים, ומקבלים רשימה.</li>
+<li><b>הספרייה לפי נושאים</b> (סעיפים 2 עד 7): כל תקלה היא כרטיס שנפתח בלחיצה.</li>
+<li><b>אשף האבחון</b> (סעיף 8): עונים על שלוש עד חמש שאלות ומקבלים סיבה סבירה. </li>
+</ol>
+
+<div class="sim" data-id="m19-sim-finder"><div class="sh">מאתר התסמינים</div>
+<p style="margin:0 0 4px">כתבו מילה או שתיים ממה שרואים (למשל <code>unknown</code>, <code>ריק</code>, <code>אקסל</code>, <code>עברית</code>), או בחרו נושא. לחיצה על תקלה פותחת אותה ומגלגלת אליה.</p>
+<div class="row"><input type="text" class="m19-q" id="m19f-q" placeholder="חפשו תסמין" aria-label="חיפוש תסמין" autocomplete="off"></div>
+<div class="m19-chips" id="m19f-chips" role="group" aria-label="סינון לפי נושא"></div>
+<div class="m19-btns"><button class="btn sec2" type="button" id="m19f-open">פתחו את כל התקלות</button><button class="btn sec2" type="button" id="m19f-close">סגרו את כולן</button></div>
+<div class="out"><div id="m19f-count" style="font-weight:800"></div><ul class="m19-list" id="m19f-list"></ul></div>
+<p class="m19-need">החיפוש עובד על הטקסט של הכרטיסים בעמוד הזה, ומתחשב באנגלית וגם בעברית. הוא לא מבין משמעות: אם לא מצאתם, נסו מילה אחרת או את האשף.</p></div>
+<script>(function(){FL.dom(function(){
+var box=FL.$('[data-id="m19-sim-finder"]'); if(!box) return;
+var cats=[['all','הכול'],['install','התקנה וחשבון'],['data','נתונים'],['charts','גרפים ומסננים'],['calc','חישובים'],['dash','דשבורדים'],['pub','פרסום וקבצים'],['embed','הטמעה']];
+var catName={}; cats.forEach(function(c){catName[c[0]]=c[1];});
+var cards=FL.$$('details.m19-sym');
+var cur='all', qEl=FL.$('#m19f-q',box), chips=FL.$('#m19f-chips',box), list=FL.$('#m19f-list',box), cnt=FL.$('#m19f-count',box);
+var index=cards.map(function(d){ return {el:d,cat:d.dataset.cat,title:(d.querySelector('.m19-t')||{}).textContent||'',text:(d.textContent+' '+(d.dataset.kw||'')).toLowerCase()}; });
+function openCard(id,scroll){
+  var d=document.getElementById(id); if(!d) return;
+  d.open=true;
+  if(scroll){ try{ d.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){ d.scrollIntoView(); } }
+}
+function draw(){
+  var toks=qEl.value.toLowerCase().split(/\s+/).filter(Boolean), n=0, h='';
+  index.forEach(function(x){
+    if(cur!=='all' && x.cat!==cur) return;
+    for(var i=0;i<toks.length;i++){ if(x.text.indexOf(toks[i])<0) return; }
+    n++; h+='<li><a href="#'+x.el.id+'" data-id="'+x.el.id+'"><span class="m19-cat '+x.cat+'">'+FL.esc(catName[x.cat])+'</span><span>'+FL.esc(x.title)+'</span></a></li>';
+  });
+  list.innerHTML=h||'<li style="padding:6px 10px;color:#64748b">לא נמצאה תקלה. נסו מילה אחרת, או את אשף האבחון בסעיף 8.</li>';
+  cnt.textContent=n+' מתוך '+index.length+' תקלות';
+}
+chips.innerHTML=cats.map(function(c){return '<button type="button" data-c="'+c[0]+'"'+(c[0]==='all'?' class="on"':'')+'>'+FL.esc(c[1])+'</button>';}).join('');
+chips.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; cur=b.dataset.c; FL.$$('button',chips).forEach(function(x){x.classList.toggle('on',x===b);}); draw(); FL.done('m19-sim-finder'); });
+qEl.addEventListener('input',function(){ draw(); if(qEl.value.trim()) FL.done('m19-sim-finder'); });
+list.addEventListener('click',function(e){ var a=e.target.closest('a'); if(!a) return; e.preventDefault(); openCard(a.dataset.id,true); FL.done('m19-sim-finder'); });
+FL.$('#m19f-open',box).addEventListener('click',function(){ cards.forEach(function(d){d.open=true;}); });
+FL.$('#m19f-close',box).addEventListener('click',function(){ cards.forEach(function(d){d.open=false;}); });
+function fromHash(){ var h=(location.hash||'').slice(1); if(h && h.indexOf('m19-s-')===0) openCard(h,true); }
+window.addEventListener('hashchange',fromHash);
+draw(); setTimeout(fromHash,50);
+});})();</script>
+
+<div class="box trap"><p><b>לשנות כמה דברים ביחד.</b> כשמשהו לא יוצא, מתפתים לגרור, לסנן ולשנות נוסחה באותה דקה. אם זה פתאום עובד, אין לכם מושג מה תיקן. ואם זה נהיה גרוע יותר, אין לכם מושג מה הרס. הכלל: שינוי אחד, בדיקה אחת, ואז הלאה. ולפני ניסוי גדול לוחצים Duplicate על הגיליון (סעיף 8).</p></div>
+
+<div class="box think" data-id="m19-th-first"><p>חברה מהכיתה שולחת לכם הודעה: ״הגרף שלי שבור, תעזרו״. בלי לראות את המסך, מה אתם שואלים אותה קודם, ולמה בסדר הזה?</p>
+<div class="ans">קודם שואלים מה היא רואה ומה ציפתה לראות, כי ״שבור״ זה לא תסמין. אחר כך שואלים כמה סימנים כתוב בשורת המצב וכמה שורות נטענו, כי אלה שתי בדיקות שאורכות רגע וחוסכות ניחושים. רק אחרי זה שואלים על מסננים וחישובים. הסדר הוא מהמקור אל התצוגה, כמו בהנפשה: אם הנתונים לא נטענו נכון, אין טעם לבדוק נוסחה.</div></div>
+
+<div class="quiz" data-id="m19-q-first" data-a="2"><p class="qq">נטענו שורות, והסכום יצא קטן מ-236,820.9. מה הדבר הראשון שבודקים?</p>
+<button class="opt">הנוסחה של השדה המחושב, כי שם בדרך כלל הטעות</button>
+<button class="opt">כמה שורות נטענו, ואם יש מסנן פעיל על המדף Filters</button>
+<button class="opt">אם צריך להתקין מחדש את Tableau</button>
+<div class="why">התשובה השנייה. אם הספירה היא 6,575 והסכום קטן, כל השורות בקובץ, ולכן הבעיה במה שמסנן אותן או בסוג השדה. נוסחה בודקים רק אחרי שהנתונים והמסננים נבדקו. התקנה מחדש כמעט אף פעם לא פותרת סכום שגוי.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> להציג את ההנפשה ולהגיד בקול רם את חמש התחנות. להמליץ לכיתה לכתוב אותן בפתק ליד המחשב. לבקש מהכיתה לסמן בצ׳אט איזו תחנה הם חושבים שהם בה כשהם נתקעים. לבדוק בתוכנה לפני השיעור: שורת המצב בתחתית החלון (ב-Mac ובדפדפן), ושמות כפתורי הסינון במאתר: הם נבנו מהטקסט של הכרטיסים.</div>
+</section>
+
+<section class="sec" id="m19-2" data-t="התקנה, חשבון ופתיחה">
+<div class="sec-h"><div class="sec-n">2</div><h2>התקנה, חשבון ופתיחה של התוכנה</h2></div>
+<p class="lead">הבעיות הכי יקרות קורות לפני הגרף הראשון: מורידים את התוכנה הלא נכונה, ההתקנה נעצרת, האימייל לא מגיע. הן יקרות כי כל השאר תלוי בהן. כאן שש תקלות כאלה.</p>
+
+<p>קודם שלוש דרכים לעבוד, כי חלק גדול מהתקלות הן בלבול ביניהן:</p>
+<div class="tw"><table class="m19-tbl">
+<thead><tr><th>איך עובדים</th><th>שומרת ל-Tableau Public?</th><th>צריך להתקין?</th><th>הערה</th></tr></thead>
+<tbody>
+<tr><td><b>Tableau Desktop Public Edition</b></td><td>כן</td><td>כן</td><td>זו המהדורה של הקורס. אפשר לשמור גם במחשב, בלי לפרסם.</td></tr>
+<tr><td><b>Tableau Desktop Free Edition</b></td><td>לא</td><td>כן</td><td>הכפתור הגדול של ״הורדה בחינם״ ב-tableau.com מוריד אותה. לא מתאימה לקורס.</td></tr>
+<tr><td><b>עריכה בדפדפן (web authoring)</b></td><td>כן (File ואז Save)</td><td>לא</td><td>גיבוי למי שלא מצליח להתקין. אין שמירה במחשב, ולא עובד בטלפון.</td></tr>
+</tbody></table></div>
+<p style="font-size:.86rem;color:#64748b">לפי התיעוד של Tableau Public ושל דף ההשוואה בין המהדורות. נכון לאוקטובר 2026, בדקו בתיעוד.</p>
+
+<details class="m19-sym" id="m19-s-edition" data-cat="install" data-kw="save to tableau public free edition פרסום חסר תפריט file הורדה לא נכונה מהדורה public edition">
+<summary><span class="m19-cat install">התקנה</span><span class="m19-t">אין לי Save to Tableau Public בתפריט File</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> פותחים את התפריט <code>File</code> ולא מוצאים בו שום פריט עם המילים Tableau Public. כך נראה התפריט הנכון בצילום אמיתי (ב-Mac). שימו לב לשני הפריטים עם המילים Tableau Public:</p>
+<figure class="shot" style="max-width:340px;margin-inline:auto"><img src="img/file-menu.png" alt="תפריט File ב-Tableau Public עם הפריטים Save to Tableau Public ו-Save to Tableau Public As"><figcaption>התפריט <code>File</code> של Tableau Desktop Public Edition. אצלכם ייתכנו הבדלים קטנים לפי הגרסה.</figcaption></figure>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol>
+<li>התקנתם את <dfn data-d="Free Edition היא מהדורה חינמית נפרדת של Tableau Desktop. היא לא יכולה לשמור ל-Tableau Public, ולכן לא מתאימה לקורס. דוגמה: בתפריט File שלה אין Save to Tableau Public.">Tableau Desktop Free Edition</dfn> במקום Public Edition. הכפתור הגדול ״הורדה בחינם״ בדף של Tableau מוריד אותה.</li>
+<li>אתם בעריכה בדפדפן ולא באפליקציה. שם השמירה היא <code>File</code> ואז <code>Save</code>.</li>
+<li>הגיליון ריק. לפי התיעוד, הפקודה מופיעה רק כשיש בתצוגה לפחות שדה אחד.</li>
+</ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol>
+<li>גררו שדה אחד לגיליון (למשל <code>Sales</code> אל <code>Rows</code>) ופתחו שוב את <code>File</code>. <span class="m19-why">למה: לפי התיעוד של Tableau הפקודה מופיעה רק כשיש לפחות שדה אחד בתצוגה, וזה הסיבה הכי קלה לבדוק.</span></li>
+<li>אם עדיין אין שום פריט עם Tableau Public, הסירו את התוכנה כמו כל תוכנה אחרת במחשב. <span class="m19-why">למה: זה סימן שהותקנה המהדורה הלא נכונה. לפי התיעוד אפשר להתקין רק גרסה אחת של Public Edition בכל פעם, ועדיף לא להשאיר גם את Free Edition.</span></li>
+<li>היכנסו ל-<b>public.tableau.com</b>, ובתפריט <code>Create</code> בחרו <code>Tableau Desktop Public Edition</code>. הכפתור בטופס נקרא <code>Download the app</code>. <span class="m19-why">למה: זה המקור שמוודא את המהדורה הנכונה. שמות התפריטים באתר משתנים, ובגרסה שלכם ייתכן שהם שונים מעט.</span></li>
+</ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> בתפריט <code>File</code> מופיעים <code>Save to Tableau Public</code> ו-<code>Save to Tableau Public As</code>.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module1.html#m1-3">מודול 1, מה מורידים</a> <b>מניעה:</b> מורידים רק מ-public.tableau.com ובודקים את התפריט <code>File</code> לפני שמתחילים לבנות.</p>
+</div></details>
+
+<details class="m19-sym" id="m19-s-install-blocked" data-cat="install" data-kw="התקנה נעצרת חסימה mac windows smartscreen gatekeeper verifying open anyway מנהל הרשאות developer">
+<summary><span class="m19-cat install">התקנה</span><span class="m19-t">ההתקנה נעצרת, או שהמערכת חוסמת את התוכנה</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> ב-Mac: חלון <code>Verifying</code> שלא נגמר, או הודעה שאי אפשר לפתוח את הקובץ כי המפתח לא מאומת. ב-Windows: מסך כחול <code>Windows protected your PC</code>, או בקשה לסיסמת מנהל.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol>
+<li>מערכת ההפעלה בודקת קבצים שהורדו מהאינטרנט (<dfn data-d="Gatekeeper ב-Mac ו-SmartScreen ב-Windows הן בדיקות אבטחה של מערכת ההפעלה על קבצים שהורדו. הן עוצרות את ההתקנה עד שאתם מאשרים. דוגמה: הודעה שהמפתח של הקובץ לא מאומת.">בדיקת האבטחה של המערכת</dfn>) ועוצרת עד שמאשרים.</li>
+<li>אין לכם הרשאות מנהל במחשב. לפי התיעוד של Tableau, ההתקנה דורשת התחברות כמנהל.</li>
+<li>ב-Mac: הורדתם בנייה שלא מתאימה למעבד (Intel מול Apple silicon).</li>
+<li>המחשב שייך למכללה או לארגון וההתקנות בו חסומות.</li>
+</ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol>
+<li><b>Mac:</b> נסו לפתוח את ההתקנה פעם אחת. אחר כך פתחו <code>System Settings</code>, <code>Privacy &amp; Security</code>, גללו למטה ולחצו <code>Open Anyway</code> ליד שם הקובץ, ואשרו <code>Open</code>. <span class="m19-why">למה: כך מערכת ההפעלה שומרת חריגה לקובץ הזה בלבד. כך כתוב בעמוד התמיכה של Apple.</span></li>
+<li><b>Mac, כשחלון Verifying לא נגמר:</b> מאמר של Tableau מ-2024 מציע לפתוח את קובץ ה-pkg דרך האפליקציה Installer של המערכת. <span class="m19-why">למה: המאמר נכתב לפני גרסאות macOS החדשות, ולכן אם זה לא עוזר, עברו לעריכה בדפדפן (<a href="#m19-s-no-install">הכרטיס הבא</a>).</span></li>
+<li><b>Mac, בחירת הבנייה:</b> בתפריט Apple פתחו <code>About This Mac</code>. אם מופיע <code>Chip</code> ושם שמתחיל ב-Apple M, צריך את הבנייה של Apple silicon. אם כתוב Intel Core, צריך את בניית Intel. <span class="m19-why">למה: כך Tableau מסבירה איך מזהים.</span></li>
+<li><b>Windows, מסך כחול:</b> לחצו <code>More info</code> ואז <code>Run anyway</code>, ורק אם הקובץ הורד מ-public.tableau.com. <span class="m19-why">למה: זו בדיקת מוניטין כללית של Windows, והיא עוצרת לפעמים גם קבצים תקינים. אל תעשו את זה לקובץ שהגיע ממקום אחר.</span></li>
+<li>אם נדרשת סיסמת מנהל ואין לכם, זה מחשב שאתם לא מנהלים. עברו לעריכה בדפדפן או להתקנה במחשב אחר.</li>
+</ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> האפליקציה נפתחת, ומסך הפתיחה (<code>Start page</code>) מציג את רשימת החיבורים בצד שמאל.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module1.html#m1-4">מודול 1, חשבון והתקנה</a> <b>מניעה:</b> מתקינים ומפעילים את התוכנה פעם אחת מראש, לא ברגע שצריך אותה.</p>
+<div class="teach"><b>🎓 למרצה:</b> לא נבדק בתוכנה: האם Control ועוד קליק על Open עדיין עובד ב-macOS החדשים (במאמר של Tableau מ-2024 הוא מוצג כפתרון, ועמוד Apple מלמד Open Anyway). מומלץ ללמד קודם Open Anyway. לגבי Windows SmartScreen: זו התנהגות כללית של Windows, לא נבדקה עם ההתקנה של Tableau.</div>
+</div></details>
+
+<details class="m19-sym" id="m19-s-no-install" data-cat="install" data-kw="אי אפשר להתקין מחשב נעול מכללה chromebook טלפון טאבלט עריכה בדפדפן web authoring אנטי וירוס linux arm">
+<summary><span class="m19-cat install">התקנה</span><span class="m19-t">אי אפשר להתקין: מחשב נעול, Chromebook, טלפון, או שהתוכנה לא נפתחת</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> אין לכם הרשאות התקנה, או שהמכשיר לא ברשימת המערכות הנתמכות, או שהתוכנה מותקנת ולא עולה.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol>
+<li>מחשב של מכללה או של מקום עבודה, עם הרשאות מוגבלות. Tableau Public אינה מיועדת לשימוש מסחרי, ולכן לא עובדים בה עם נתונים של המעסיק.</li>
+<li>מערכת שלא נתמכת. ברשימת הדרישות של Tableau Public יש Windows ו-Mac, ואין Linux, ChromeOS, טלפונים וטאבלטים. גם Windows עם מעבד ARM לא מופיע ברשימה.</li>
+<li>ייתכן שגם תוכנת אבטחה חוסמת את ההתקנה. Tableau לא כותבת על זה בתיעוד, ולכן זה הניחוש האחרון ברשימה.</li>
+</ol>
+<h4>תיקון: עריכה בדפדפן</h4>
+<ol>
+<li>היכנסו ל-public.tableau.com והתחברו. <span class="m19-why">למה: <dfn data-d="עריכה בדפדפן (web authoring) היא בניית גרפים באתר Tableau Public, בלי להתקין כלום. דוגמה: ניגשים לאתר, בוחרים Create ואז Web Authoring, מעלים קובץ וגוררים שדות.">עריכה בדפדפן</dfn> דורשת חשבון, והיא נפתחת רק אחרי התחברות.</span></li>
+<li>בתפריט <code>Create</code> בחרו <code>Web Authoring</code>. <span class="m19-why">למה: זה הפריט שפותח עורך בלי התקנה. שם התפריט באתר משתנה לפעמים.</span></li>
+<li>העלו את <code>scoop_sales_2024_2025.csv</code> (או את ה-xlsx). <span class="m19-why">למה: לפי התיעוד אפשר להעלות xlsx, csv ו-tsv עד 1 GB לקובץ.</span></li>
+<li>שמרו עם <code>File</code> ואז <code>Save</code>. <span class="m19-why">למה: אין שמירה במחשב בעריכה בדפדפן. השמירה היא לפרופיל באתר, והיא ציבורית, ולכן עובדים רק עם נתוני הקורס הבדויים.</span></li>
+</ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> נטענו 6,575 שורות, והגרף הראשון נבנה כמו באפליקציה. אם משהו מהקורס לא עובד שם, ראו <a href="#m19-s-menus">הכרטיס על הבדלי התפריטים</a>.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module1.html#m1-4">מודול 1, חשבון והתקנה</a> <b>מניעה:</b> בודקים מראש שיש הרשאות. עריכה בדפדפן עובדת רק במחשב או בלפטופ, ולא בטלפון.</p>
+<div class="teach"><b>🎓 למרצה:</b> לבדוק לפני הקורס: האם עריכה בדפדפן מציגה את כל הפקודות של מודולים 3 עד 10 (בלי תחזית ואשכולות, לפי דף ההשוואה הכללי של Tableau, שאינו ספציפי ל-Public). האם Windows ARM מצליח להתקין (לא נבדק). האם תוכנת אנטי-וירוס חוסמת (אין תיעוד).</div>
+</div></details>
+
+<details class="m19-sym" id="m19-s-account" data-cat="install" data-kw="חשבון מייל הפעלה אימייל לא הגיע התחברות שוב ושוב עוגיות cookies spam ספאם סיסמה forgot password 48 שעות">
+<summary><span class="m19-cat install">חשבון</span><span class="m19-t">לא הגיע מייל הפעלה, או שהאתר מבקש להתחבר שוב ושוב</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> פתחתם חשבון והמייל לא הגיע. או שאתם מחוברים, ובכל כמה פעולות האתר מבקש התחברות מחדש.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol>
+<li>המייל בספאם או בקידומי מכירות, או שהכתובת הוקלדה עם שגיאה.</li>
+<li>קישור ההפעלה תקף 48 שעות, לפי השאלות הנפוצות של Tableau Public. אחרי זה צריך לבקש חדש.</li>
+<li>לא אישרתם <dfn data-d="עוגיות פונקציונליות (functional cookies) הן קבצים קטנים שהאתר שומר בדפדפן כדי לזכור שהתחברתם. בלעדיהן האתר שוכח. דוגמה: מבקש התחברות בכל דף.">עוגיות פונקציונליות</dfn>. לפי התיעוד, בלי הסכמה לעוגיות האלה האתר מבקש התחברות לעתים קרובות.</li>
+<li>אולי כבר יש לכם חשבון: לפי השאלות הנפוצות, האתר של Tableau וה-Tableau Public חולקים חשבון אחד.</li>
+</ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol>
+<li>חפשו את המייל בספאם ובקידומי מכירות, ובדקו את הכתובת שהקלדתם.</li>
+<li>בדף ההתחברות לחצו <code>Forgot password</code> ובקשו מייל חדש. <span class="m19-why">למה: לפי השאלות הנפוצות, זו הדרך לקבל קישור חדש כשהמקורי לא הגיע או פג.</span></li>
+<li>פתחו את הגדרות העוגיות של האתר (<code>Cookie Preferences</code>) ואשרו עוגיות פונקציונליות. <span class="m19-why">למה: זה מפסיק את בקשות ההתחברות החוזרות, ועל פי התיעוד ייתכן שזה קשור גם לחלון לבן בזמן פרסום (<a href="#m19-s-save-fails">הכרטיס על כשל בפרסום</a>).</span></li>
+<li>אם עדיין לא הולך, כתבו לכתובת התמיכה שמופיעה בשאלות הנפוצות של Tableau Public: public@tableau.com.</li>
+</ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> אחרי התחברות באתר public.tableau.com אתם רואים את דף הפרופיל שלכם.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module1.html#m1-4">מודול 1, חשבון והתקנה</a> <b>מניעה:</b> פותחים ומפעילים את החשבון בהתחלה, ושומרים צילום מסך של דף הפרופיל.</p>
+</div></details>
+
+<details class="m19-sym" id="m19-s-recovery" data-cat="install" data-kw="קרסה נסגרה פתאום שחזור autosave twbr אבד עבודה נעלמה שמירה אוטומטית">
+<summary><span class="m19-cat install">פתיחה</span><span class="m19-t">Tableau נסגרה פתאום והעבודה לא שם</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> התוכנה קרסה או נסגרה לפני ששמרתם. בפתיחה הבאה מופיע חלון שמציע לשחזר, או שהחוברת נראית ריקה.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol>
+<li>סגירה לא תקינה של התוכנה (קריסה, כיבוי המחשב).</li>
+<li>לא שמרתם, וההתאוששות לא נבחרה בפתיחה.</li>
+<li>הקובץ נשמר, אבל לא במקום שחשבתם.</li>
+</ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol>
+<li>פתחו את Tableau שוב ואשרו שחזור אם הוא מוצע. <span class="m19-why">למה: Tableau Public שומרת אוטומטית כל כמה דקות, ולכן סביר שרוב העבודה שם. לפי התיעוד קבצי ההתאוששות נקראים <code>twbr</code>.</span></li>
+<li>מיד אחרי השחזור שמרו עם <code>File</code> ואז <code>Save As</code> בשם חדש, למשל <code>scoop-recovered</code>. <span class="m19-why">למה: כך ההתאוששות הופכת לקובץ רגיל, ולא תלויה בפעם הבאה.</span></li>
+<li>בדקו שכל הגיליונות קיימים, ושבדף Data Source יש 6,575 שורות. <span class="m19-why">למה: זו נקודת הביקורת הכי מהירה שהנתונים חזרו שלמים.</span></li>
+<li>אם לא הוצע שחזור, חפשו את הקובץ האחרון בתיקיית <code>My Tableau Repository</code> בתוך Documents, שהיא ברירת המחדל. אם לא תמצאו, מתחילים מגיבוי: הקובץ האחרון ששמרתם.</li>
+<li>ודאו שהשמירה האוטומטית פועלת: <code>Help</code>, <code>Settings and Performance</code>, <code>Enable Autosave</code> (בגרסה שלכם ייתכן שהשם שונה מעט).</li>
+</ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> הגיליונות חזרו, והמספרים בבדיקה הראשונה (6,575 שורות, 236,820.9 במכירות) תואמים.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module3.html#m3-10">מודול 3, ביטול, גיליונות ושמירה</a> <b>מניעה:</b> שומרים אחרי כל סעיף בשם שאפשר לחזור אליו: scoop-m3-v2, scoop-m4-v1.</p>
+<div class="teach"><b>🎓 למרצה:</b> לבדוק בתוכנה: איך נראה חלון השחזור ב-Public Edition (הסיומת twbr מתועדת לגרסת Desktop הכללית), ואיפה נשמרים קבצי ההתאוששות.</div>
+</div></details>
+
+<details class="m19-sym" id="m19-s-menus" data-cat="install" data-kw="תפריט שונה צילום גרסה פקודה חסרה עריכה בדפדפן web authoring forecast cluster אשכולות תחזית help about מספר גרסה">
+<summary><span class="m19-cat install">פתיחה</span><span class="m19-t">התפריטים אצלי נראים אחרת מהצילומים, או שחסרה לי פקודה</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> בצילום או בהסבר יש פקודה, ואצלכם היא חסרה או במקום אחר. או שאתם בעריכה בדפדפן ופקודה שלמדתם לא קיימת.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol>
+<li>גרסה שונה. Tableau מתעדכנת כמה פעמים בשנה, ושמות ומקומות של פקודות משתנים.</li>
+<li>עריכה בדפדפן במקום האפליקציה. לפי דף ההשוואה הכללי של Tableau, בעריכה בדפדפן לא אפשר להוסיף או לשנות תחזית (<code>forecast</code>) ואשכולות (<code>cluster</code>), ופעולות בדשבורד מגדירים באפליקציה. הדף לא מתייחס ל-Tableau Public בנפרד, ולכן בדקו אם זה כך אצלכם.</li>
+<li>הפקודה יושבת בתפריט אחר: על ה-pill בתצוגה, ולא על השדה בחלונית <code>Data</code>.</li>
+</ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol>
+<li>בדקו מה הגרסה שלכם: <code>Help</code> ואז <code>About</code>. <span class="m19-why">למה: כך רואים אם אתם בגרסה אחרת מהצילום. קובץ שנשמר בגרסה חדשה לא ייפתח בגרסה ישנה (<a href="#m19-s-wb-wont-open">הכרטיס על קובץ שלא נפתח</a>).</span></li>
+<li>חפשו את הפקודה לפי שמה באנגלית, בשני המקומות: קליק ימני (ב-Mac: Control ועוד קליק) על ה-pill, ואז קליק ימני על השדה בחלונית <code>Data</code>. <span class="m19-why">למה: Tableau מחלקת פקודות בין התפריטים האלה, והשם באנגלית הוא מה שנשאר זהה בין גרסאות.</span></li>
+<li>אם הפקודה קיימת רק באפליקציה, עברו לאפליקציה (אם אפשר להתקין, ראו <a href="#m19-s-no-install">הכרטיס על התקנה שלא מצליחה</a>).</li>
+<li>כשאתם מבקשים עזרה, כתבו את שם הפקודה כפי שהוא מופיע אצלכם, ומספר גרסה (סעיף 8).</li>
+</ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> מצאתם את הפקודה, או שאתם יודעים בוודאות שהיא לא קיימת במהדורה שלכם.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module1.html#m1-2">מודול 1, המהדורות</a>, <a href="module3.html#m3-1">מודול 3, המסך של Tableau</a> <b>מניעה:</b> כולם מתקינים את אותה גרסה, ומחפשים לפי שם באנגלית.</p>
+</div></details>
+
+<div class="box meaning"><p><b>למה הסעיף הזה בא ראשון.</b> הסיבה הכי שכיחה לאבדן זמן בקורס היא התקנה, חשבון ופרסום, ולא Tableau עצמה. מי שמסדר אותם בהתחלה נשאר עם שאלות אמיתיות על נתונים. לכן כל סטודנט צריך, לפני שמתחילים לבנות, שלושה דברים בידיים: האפליקציה (או עריכה בדפדפן שעובדת), חשבון מופעל, ופרסום ניסיון אחד שנפתח בחלון פרטי (<a href="module1.html#m1-8">מודול 1</a>).</p></div>
+
+<div class="quiz" data-id="m19-q-edition" data-a="3"><p class="qq">התקנתם תוכנה חינמית של Tableau, ובתפריט File אין Save to Tableau Public. מה הכי סביר?</p>
+<button class="opt">נשבר משהו בחשבון, ואפשר לתקן עם התקנה מחדש של אותה תוכנה</button>
+<button class="opt">צריך לשלם כדי לפתוח את הפקודה</button>
+<button class="opt">התקנתם את Free Edition ולא את Public Edition</button>
+<div class="why">התשובה השלישית. הכפתור הגדול ״הורדה בחינם״ ב-tableau.com מוריד את Free Edition, והיא לא שומרת ל-Tableau Public. התקנה מחדש של אותה תוכנה לא תשנה. והפקודה אינה תלויה בתשלום: היא פשוט קיימת רק ב-Public Edition (ובעריכה בדפדפן, בצורה של File ואז Save).</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לבקש מכל סטודנט לפתוח את התפריט File ולכתוב בצ׳אט אם יש שם Save to Tableau Public. מי שאין לו, פותרים איתו עכשיו לפני שממשיכים. לבדוק לפני הקורס: שמות פריטי התפריט Create באתר (באוקטובר 2026 היו Web Authoring, Tableau Desktop Public Edition ו-Published Data Sources). דף תחזוקה מתוכנן יכול לעצור פרסום: בדקו את הבאנר באתר.</div>
+</section>
+
+<section class="sec" id="m19-3" data-t="נתונים">
+<div class="sec-h"><div class="sec-n">3</div><h2>נתונים: טעינה, סוגים ועברית</h2></div>
+<p class="lead">רוב התקלות מתחילות בטעינה. כאן הקלאסיקות.</p>
+<details class="m19-sym" id="m19-s-only-table" data-cat="data" data-kw="טבלה גרף data source sheet גיליון">
+<summary><span class="m19-cat data">נתונים</span><span class="m19-t">אני רואה רק טבלה ואין גרף</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> אחרי החיבור מופיעה טבלת שורות ועמודות, ואין מדפי Columns ו-Rows.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>אתם בדף <code>Data Source</code>, המסך הראשון אחרי החיבור. הוא נועד לבדוק נתונים, לא לצייר.</li><li>הגיליון פתוח אבל עוד ריק: לא גררתם שדות.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>לחצו על הלשונית <code>Sheet 1</code> בתחתית החלון. <span class="m19-why">למה: הגיליון הוא המקום לצייר.</span></li><li>גררו <code>Category</code> אל <code>Columns</code> ו-<code>Sales</code> אל <code>Rows</code>. <span class="m19-why">למה: כך נבנה הגרף הראשון.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> יש חמש עמודות (Cups, Drinks, Cones, Sundaes, Sticks) וסכום של 236,820.9 כשמחברים אותן.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module1.html#m1-5">מודול 1</a> <b>מניעה:</b> קוראים בקול את שם המסך: Data Source או גיליון.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-one-column" data-cat="data" data-kw="מפריד פסיק נקודה פסיק טאב text file properties delimiter csv">
+<summary><span class="m19-cat data">נתונים</span><span class="m19-t">כל השורה נכנסה לעמודה אחת</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> אחרי טעינת קובץ טקסט כל שורה מופיעה בשדה אחד, או שהשדות נחתכו במקום הלא נכון.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li><dfn data-d="מפריד שדות הוא התו שמפריד בין עמודות בקובץ טקסט: פסיק, נקודה-פסיק או טאב. דוגמה: 2024-01-01;19;Haifa">המפריד</dfn> שונה ממה ש-Tableau הניחה. אקסל בהגדרות אזוריות אחרות כותב נקודה-פסיק.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>על הקנבס פתחו את החץ של הטבלה ובחרו <code>Text File Properties</code>. <span class="m19-why">למה: שם משנים את Field separator (ואת Locale ו-Character set). בגרסה שלכם ייתכן שהשם שונה מעט.</span></li><li>בחרו את המפריד הנכון וראו איך הגריד משתנה. <span class="m19-why">למה: אם השדות מתיישרים, זו הייתה הבעיה.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> בדף Data Source כתוב 16 fields ו-6,575 rows.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module2.html#m2-2">מודול 2</a> <b>מניעה:</b> שומרים כ-xlsx, או כ-CSV רגיל עם פסיקים.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-row-count" data-cat="data" data-kw="שורות count header כותרת rows 100">
+<summary><span class="m19-cat data">נתונים</span><span class="m19-t">מספר השורות לא מסתדר (6,574 או 6,576)</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> אחרי הטעינה המספר שונה בשורה אחת ממה שציפיתם.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>שורת כותרת נספרה כנתונים, או שורת נתונים נקראה ככותרת.</li><li>שורת סיכום או הערה בסוף הקובץ.</li><li>קראתם את התיבה <code>100</code> ליד הגריד: זה גודל התצוגה המקדימה, לא מספר השורות.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>קראו את הכיתוב מעל הגריד: <code>16 fields 6575 rows</code>. <span class="m19-why">למה: זה מספר השורות של כל הקובץ.</span></li><li>בטבלת טקסט לחצו פעמיים על שדה הספירה <code>scoop_sales_2024_2025.csv (Count)</code>. <span class="m19-why">למה: כך מאמתים את המספר מחוץ לדף הנתונים.</span></li><li>בדקו את שורה 1 ואת השורה האחרונה בגריד, ותנו ל-Tableau לייצר שמות אם אין כותרת. <span class="m19-why">למה: כך בודקים אם הכותרת נקראה נכון.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> הספירה היא 6,575.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module2.html#m2-2">מודול 2</a> <b>מניעה:</b> עושים את שמונה בדיקות הבריאות מיד אחרי הטעינה.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-gibberish" data-cat="data" data-kw="עברית קידוד encoding utf-8 gibberish ג׳יבריש windows-1255">
+<summary><span class="m19-cat data">נתונים</span><span class="m19-t">העברית נראית כמו ג׳יבריש</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> במקום עברית רואים תווים כמו <span dir="ltr">����</span> או <span dir="ltr">×©×œ×•×</span>.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>זו בעיית קידוד של הקובץ, לא של Tableau ולא של הנתונים: הקובץ נשמר בקידוד אחד ונקרא בקידוד אחר.</li><li>שורת סימני שאלה ממש בקובץ: ייצוא שאיבד את האותיות. אי אפשר לשחזר.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>שמרו את המקור כ-<code>xlsx</code>. <span class="m19-why">למה: באקסל האותיות שמורות בלי ויכוח על קידוד, וזו הדרך הבטוחה.</span></li><li>אם חייבים CSV: <code>Save As</code> ואז <code>CSV UTF-8 (Comma delimited)</code>. <span class="m19-why">למה: זו האפשרות לטקסט שאינו אנגלית.</span></li><li>נסו גם <code>Text File Properties</code> ושנו את <code>Character set</code>. <span class="m19-why">למה: אולי הקידוד שנבחר לא מתאים. הרשימה תלויה במערכת ההפעלה.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> הערכים העבריים נראים נכון בדף Data Source.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module2.html#m2-5">מודול 2</a> <b>מניעה:</b> כותרות באנגלית, וקבצים בעברית ב-xlsx.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-date-text" data-cat="data" data-kw="תאריך טקסט dateparse abc dd/mm">
+<summary><span class="m19-cat data">נתונים</span><span class="m19-t">התאריך נטען כטקסט, או שהיום והחודש התחלפו</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> ליד השדה כתוב Abc במקום סמל תאריך, או ש-<bdi dir="ltr">03/04/2025</bdi> נקרא כ-4 במרץ.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>הפורמט לא מתאים להגדרות האזוריות: <bdi dir="ltr">03/04/2025</bdi> נקרא בשני אופנים, ו-<bdi dir="ltr">25/12/2025</bdi> רק כיום/חודש, ולכן חצי מהשורות מתחלפות וחצי הופכות ל-Null.</li><li>התאריך נשמר כטקסט במקור.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>לחצו על סמל הסוג ובחרו <code>Date</code>. אם הרבה ערכים הפכו ל-Null, חזרו ל-<code>String</code>. <span class="m19-why">למה: Tableau קוראת לפי ההגדרות האזוריות.</span></li><li>צרו שדה מחושב: <code>DATEPARSE("dd/MM/yyyy", [Date Text])</code>. <span class="m19-why">למה: הפורמט חייב לשקף בדיוק את הטקסט. MM גדולות הוא חודש ו-mm קטנות הן דקות.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> סמל התאריך מופיע, ו-<code>COUNT</code> של השדה שווה למספר השורות.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module2.html#m2-4">מודול 2</a> <b>מניעה:</b> תאריכי yyyy-mm-dd בקבצים.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-sum-year" data-cat="data" data-kw="sum year order hour מדד ממד convert to dimension">
+<summary><span class="m19-cat data">נתונים</span><span class="m19-t">Tableau מסכמת שנה, שעה או מזהה</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> מופיע SUM(Order Hour) = 118,214, או SUM(Year) = 32,758,598 ב-vgsales.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>מספר נטען כמדד ו-Tableau מסכמת אותו.</li><li>הזיהוי האוטומטי לפי שם שדה עובד באנגלית ובעוד שפות, לא בעברית.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>קליק ימני על השדה בחלונית <code>Data</code>, <code>Convert to Dimension</code>. <span class="m19-why">למה: כך הוא מפסיק להיות מספר שמחברים.</span></li><li>אם רוצים כותרות: <code>Convert to Discrete</code> על ה-pill. <span class="m19-why">למה: המרה לממד לבדה לא משנה את הציר.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> ה-pill כחול ויש 14 כותרות (שעות 10 עד 23).</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module4.html#m4-2">מודול 4</a> <b>מניעה:</b> בודקים סמל וצבע של כל שדה מספרי.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-null-indicator" data-cat="data" data-kw="null unknown filter data ערכים חסרים">
+<summary><span class="m19-cat data">נתונים</span><span class="m19-t">מופיעה הודעה על null או unknown בפינת התצוגה</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> בפינה הימנית התחתונה מופיעה הודעה קטנה עם מספר, והסכום קטן.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>ערכים ריקים (או N/A) שאי אפשר לצייר.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>לחצו על ההודעה ובחרו <code>Filter Data</code> או <code>Show Data at Default Position</code>. <span class="m19-why">למה: הראשונה מוציאה אותם מהגרף ומהחישובים, והשנייה מציירת אותם בנקודת ברירת מחדל ושומרת אותם בחישובים.</span></li><li>אל תבחרו <code>Hide Indicator</code> אלא אם הבנתם. <span class="m19-why">למה: הוא מסתיר רק את ההודעה, ו-Tableau ממליצה להשאיר אותה.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> אתם יודעים כמה שורות חסרות. ב-vgsales: 271 שורות בלי Year, והפער 8,920.44 מול 8,820.36 הוא 100.08.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module4.html#m4-9">מודול 4</a> <b>מניעה:</b> תא חסר נשאר ריק ולא N/A.</p>
+</div></details>
+</section>
+<section class="sec" id="m19-4" data-t="גרפים ומסננים">
+<div class="sec-h"><div class="sec-n">4</div><h2>גרפים ומסננים</h2></div>
+<details class="m19-sym" id="m19-s-one-mark" data-cat="charts" data-kw="סימן אחד נקודה detail marks">
+<summary><span class="m19-cat charts">גרפים ומסננים</span><span class="m19-t">יש סימן אחד במקום הרבה</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> בגרף פיזור רואים נקודה אחת, ובשורת המצב כתוב <code>1 mark</code>.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>בגיליון רק מדדים, ואין ממד שמחלק אותם לסימנים. Tableau מסכמת הכול לנקודה אחת.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>גררו את <code>Branch</code> אל <code>Detail</code> בכרטיס Marks. <span class="m19-why">למה: Detail מחלק לסימנים בלי לשנות את המראה.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> שורת המצב כותבת <code>9 marks</code>.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module3.html#m3-8">מודול 3</a> <b>מניעה:</b> שואלים: מה הנקודה מייצגת?</p>
+</div></details>
+<details class="m19-sym" id="m19-s-numbers-differ" data-cat="charts" data-kw="סכום שונה אקסל join הכפלה sum avg count">
+<summary><span class="m19-cat charts">גרפים ומסננים</span><span class="m19-t">המספרים שלי שונים מאקסל</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> הסכום ב-Tableau גדול או קטן ממה שחישבתם.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>Join שהכפיל שורות כי מפתח חוזר בטבלה השנייה (6,575 שורות הופכות ל-8,880 והסכום ל-320,461.0).</li><li>אגרגציה שגויה: SUM, AVG או COUNT. כמות היא 11,426 ושורות 6,575.</li><li>מסנן פעיל או ערכים ריקים (הסכום קטן).</li><li>רק עיגול: 236,821 במקום 236,820.9.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>בדקו בדף Data Source את מספר השורות. <span class="m19-why">למה: אחרי Join שמכפיל המספר גדל.</span></li><li>קראו מה כתוב על ה-pill: SUM, AVG או CNT. <span class="m19-why">למה: אגרגציה שגויה נותנת מספר סביר ושגוי.</span></li><li>בדקו את המדף <code>Filters</code>. <span class="m19-why">למה: מסנן שנשאר מקטין סכום.</span></li><li>עברו עם העכבר על הסימן. <span class="m19-why">למה: הטולטיפ מראה את המספר המלא.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> סכום Sales הוא 236,820.9 ושורות 6,575.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module2.html#m2-10">מודול 2, בדיקות בריאות</a> <b>מניעה:</b> בדיקה מול נקודות ביקורת אחרי כל חיבור.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-line-bars" data-cat="charts" data-kw="קו עמודות בדיד רציף כחול ירוק">
+<summary><span class="m19-cat charts">גרפים ומסננים</span><span class="m19-t">ביקשתי עמודות וקיבלתי קו (או להפך)</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> אותו שדה נותן פעם קו ופעם עמודות.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>ה-pill ירוק (רציף) ויוצר ציר וקו. כחול (בדיד) יוצר כותרות ועמודות.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>קליק ימני על ה-pill ובחרו <code>Discrete</code> או <code>Continuous</code>. <span class="m19-why">למה: כחול הוא כותרות, ירוק הוא ציר.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> ה-pill בצבע הנכון והגרף כמו שרציתם.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module4.html#m4-2">מודול 4</a> <b>מניעה:</b> קוראים את צבע ה-pill לפני הגרף.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-months-missing" data-cat="charts" data-kw="חודשים שנים חסרים בדיד רציף month">
+<summary><span class="m19-cat charts">גרפים ומסננים</span><span class="m19-t">יש 12 חודשים במקום 24</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> בגרף יש 12 נקודות לשנתיים.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>בחרתם Month מהחלק העליון של התפריט (חלק של תאריך): ינואר 2024 וינואר 2025 מתחברים.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>בחרו Month מהחלק התחתון של התפריט (ערך של תאריך, ירוק), או הוסיפו <code>Year</code> ל-Color. <span class="m19-why">למה: כך השנים לא מתחברות.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> 24 סימנים בשורת המצב.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module4.html#m4-3">מודול 4</a> <b>מניעה:</b> שואלים: כמה סימנים צריכים להיות?</p>
+</div></details>
+<details class="m19-sym" id="m19-s-filter-nothing" data-cat="charts" data-kw="מסנן apply to worksheets context top n">
+<summary><span class="m19-cat charts">גרפים ומסננים</span><span class="m19-t">המסנן לא עושה כלום</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> הוספתם מסנן והגרף, או גיליון אחר, לא השתנה.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>המסנן חל רק על הגיליון הנוכחי (ברירת מחדל).</li><li>החישוב שאתם מסתכלים עליו רץ לפני מסנן ממד רגיל: Top N, סט או FIXED.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>קליק ימני על ה-pill ב-<code>Filters</code>, <code>Apply to Worksheets</code>, <code>All Using This Data Source</code>. <span class="m19-why">למה: כך הוא חל על כל הגיליונות.</span></li><li>אם מדובר ב-Top N או FIXED: קליק ימני על המסנן ו-<code>Add to Context</code>. <span class="m19-why">למה: מסנן הקשר רץ קודם.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> בגיליון השני, אחרי סינון לדרום, הסכום הוא 55,575.4.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module6.html#m6-4">מודול 6</a> <b>מניעה:</b> שואלים באיזה שלב נמצא החישוב ובאיזה המסנן.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-topn" data-cat="charts" data-kw="top n שלושה מובילים הקשר context">
+<summary><span class="m19-cat charts">גרפים ומסננים</span><span class="m19-t">Top 3 מחזיר פחות משלושה</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> סינון Region = Center יחד עם Top 3 משאיר רק שני סניפים.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>Top N רץ לפני מסנן ממד רגיל: בוחר שלושה מכל הרשת (דיזנגוף, פורט, ממילא) ואז Jerusalem מוסר.</li><li>Top N בוחר N מהרשימה כולה, לא N בכל קבוצה.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>קליק ימני על מסנן <code>Region</code> ו-<code>Add to Context</code>. <span class="m19-why">למה: אז מדרגים רק את סניפי המרכז.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> שלושה סימנים: Tel Aviv Dizengoff 44,194.1, Tel Aviv Port 39,446.0, Netanya Beach 26,840.2.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module6.html#m6-9">מודול 6</a> <b>מניעה:</b> לשלושה בכל אזור צריך דירוג בחישוב טבלה (מודול 9).</p>
+</div></details>
+<details class="m19-sym" id="m19-s-hidden-filter" data-cat="charts" data-kw="מסנן מוסתר keep only exclude inclusions">
+<summary><span class="m19-cat charts">גרפים ומסננים</span><span class="m19-t">חלק מהנתונים נעלמו</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> הסכום קטן ואין מסנן שבניתם.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li><code>Keep Only</code> או <code>Exclude</code> יצרו מסנן.</li><li>מסנן ברמת מקור הנתונים (Data Source Filter).</li><li>ערכים ריקים (הודעת null).</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>פתחו את המדף <code>Filters</code> ובדקו כל פיל. <span class="m19-why">למה: שם יושב כל מסנן פעיל.</span></li><li>בדקו בדף Data Source אם יש מסנן מקור נתונים. <span class="m19-why">למה: הוא מקטין את כל החוברת.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> שורת המצב מראה את מספר הסימנים הצפוי.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module6.html#m6-4">מודול 6</a> <b>מניעה:</b> אחרי כל Keep Only מסתכלים על Filters.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-map-unknown" data-cat="charts" data-kw="מפה unknown edit locations קואורדינטות">
+<summary><span class="m19-cat charts">גרפים ומסננים</span><span class="m19-t">במפה כתוב unknown, או שהסימן באמצע האוקיינוס</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> חלק מהסימנים חסרים ובפינה כתוב <code>unknown</code>, או שיש סימן יחיד בים.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>שם לא מזוהה (שגיאת כתיבה, עברית שלא נבדקה, שם עמום).</li><li>קו רוחב וקו אורך מוחלפים, או מסוכמים (SUM) אחרי Join.</li><li>אין חיבור אינטרנט למפה.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>לחצו על ההודעה ובחרו <code>Edit Locations</code>. <span class="m19-why">למה: מתאימים כל שם למקום מוכר או מקלידים קואורדינטות.</span></li><li>בקואורדינטות: <code>Longitude</code> על Columns ו-<code>Latitude</code> על Rows, באגרגציה <code>Average</code>. <span class="m19-why">למה: כך כל עיר מקבלת את הקואורדינטה שלה.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> 8 marks, בלי unknown.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module7.html#m7-4">מודול 7</a> <b>מניעה:</b> עמודת שם באנגלית, וקובץ קואורדינטות כשצריך.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-measure-names" data-cat="charts" data-kw="measure names values show me">
+<summary><span class="m19-cat charts">גרפים ומסננים</span><span class="m19-t">הופיעו Measure Names ו-Measure Values</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> על המדפים הופיעו pills שלא גררתם.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>שני מדדים נכנסו לאותו מדף, או Show Me בנה טבלה.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>לחצו <code>Undo</code>, או גררו את ה-pill מחוץ למדף. <span class="m19-why">למה: זה מחזיר למצב הקודם.</span></li><li>אם רוצים להשאיר: סננו את <code>Measure Names</code> למדדים הרצויים. <span class="m19-why">למה: כך לא מוצגים מדדים מיותרים.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> הגרף חזר לצורה הקודמת.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module3.html#m3-7">מודול 3</a> <b>מניעה:</b> בודקים את המדפים אחרי Show Me.</p>
+</div></details>
+</section>
+<section class="sec" id="m19-5" data-t="חישובים">
+<div class="sec-h"><div class="sec-n">5</div><h2>חישובים, חישובי טבלה ורמת פירוט</h2></div>
+<details class="m19-sym" id="m19-s-mix" data-cat="calc" data-kw="mix aggregate שגיאה ערבוב sum if">
+<summary><span class="m19-cat calc">חישובים</span><span class="m19-t">Cannot mix aggregate and non-aggregate</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> השדה אדום והודעה כמו <code>Cannot mix aggregate and non-aggregate</code>.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>התנאי ב-IF ברמת שורה והתוצאה מסכמת, למשל <code>IF [Category] = "Cups" THEN SUM([Sales]) END</code>.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>הפכו לסכום מבחוץ: <code>SUM(IF [Category] = "Cups" THEN [Sales] END)</code>. <span class="m19-why">למה: כך כל הרכיבים ברמת שורה ואז מסכמים.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> התוצאה 69,470.0.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module8.html#m8-3">מודול 8</a> <b>מניעה:</b> עוטפים צבירה מחוץ ל-IF.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-red-calc" data-cat="calc" data-kw="שדה אדום נוסחה שגיאה גרשיים end">
+<summary><span class="m19-cat calc">חישובים</span><span class="m19-t">השדה המחושב אדום</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> החלון מציג הודעה אדומה ולא <code>The calculation is valid</code>.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>שם שדה שגוי, גרשיים מסולסלים שהועתקו מ-Word, מקלדת בעברית, סוגריים, או חסר <code>END</code>.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>קראו את ההודעה האדומה: היא מצביעה על המקום. <span class="m19-why">למה: כך מוצאים את הטעות.</span></li><li>הקלידו מחדש גרשיים ישרים ועברו למקלדת באנגלית. <span class="m19-why">למה: גרשיים מסולסלים אינם גרשיים בנוסחה.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> מופיע The calculation is valid.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module8.html#m8-10">מודול 8</a> <b>מניעה:</b> גוררים שדות מהרשימה במקום להקליד.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-ratio" data-cat="calc" data-kw="יחס אחוז רווח avg sum">
+<summary><span class="m19-cat calc">חישובים</span><span class="m19-t">אחוז הרווח יוצא לא נכון</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> אחוז הרווח שונה מאקסל.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li><code>AVG([Profit]/[Sales])</code> נותן 52.55%, בעוד יחס הסכומים הוא 50.98%.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>כתבו <code>SUM([Profit]) / SUM([Sales])</code>. <span class="m19-why">למה: מסכמים מונה ומכנה ואז מחלקים.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> התוצאה 50.98%.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module8.html#m8-2">מודול 8</a> <b>מניעה:</b> ליחסים תמיד סכום חלקי סכום.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-tcalc-filter" data-cat="calc" data-kw="חישוב טבלה אחוז מסך הכל מסנן table calc">
+<summary><span class="m19-cat calc">חישובים</span><span class="m19-t">חישוב הטבלה השתנה כשהוספתי מסנן</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> Cups היה 29.33% והפך ל-31.67% אחרי הוצאת Sticks.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>חישוב טבלה רץ אחרי המסננים על מה שנשאר בתצוגה.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>לצורך מכנה קבוע: <code>SUM([Sales]) / SUM({ FIXED : SUM([Sales]) })</code>. <span class="m19-why">למה: FIXED רץ לפני מסנן ממד רגיל.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> Cups נשאר 29.33%.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module9.html#m9-9">מודול 9</a> <b>מניעה:</b> שואלים אם המכנה צריך להשתנות עם המסנן.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-tcalc-direction" data-cat="calc" data-kw="compute using כיוון ריק 100%">
+<summary><span class="m19-cat calc">חישובים</span><span class="m19-t">חישוב הטבלה נותן 100% בכל מקום או ריק</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> האחוזים ריקים, 100% בכל תא, או שהתוצאה השתנתה אחרי הזזת pill.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li><code>Compute Using</code> לא מתאים לצורת הגרף. לסימן הראשון אין קודם, ולכן הוא ריק, וזה תקין.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>קליק ימני על ה-pill, <code>Compute Using</code>, ובחרו <code>Specific Dimensions</code> עם שמות. <span class="m19-why">למה: כך הכיוון לא משתנה כשמזיזים pill.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> סכום כל רצועה הוא 100%.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module9.html#m9-5">מודול 9</a> <b>מניעה:</b> אחרי כל הזזת pill בודקים שוב.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-lod-filter" data-cat="calc" data-kw="fixed lod מסנן הקשר context">
+<summary><span class="m19-cat calc">חישובים</span><span class="m19-t">ה-FIXED מתעלם מהמסנן שלי</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> המספר ב-FIXED לא משתנה כשמסננים.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>FIXED רץ לפני מסנני ממד רגילים. זה תקין.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>קדמו את המסנן להקשר: <code>Add to Context</code>. <span class="m19-why">למה: FIXED מכבד מסנן הקשר.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> חלק של דיזנגוף: 18.7% עם מסנן רגיל, 36.7% כשהמרכז הוא הקשר.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module10.html#m10-5">מודול 10</a> <b>מניעה:</b> מחליטים מראש אם המכנה צריך לכבד מסנן.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-parameter" data-cat="calc" data-kw="פרמטר parameter">
+<summary><span class="m19-cat calc">חישובים</span><span class="m19-t">הפרמטר זז והגרף לא משתנה</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> מזיזים סליידר ושום דבר לא משתנה.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>פרמטר הוא רק ערך. צריך שדה מחושב או מסנן שקורא לו.</li><li>ב-CASE כתבתם את התווית ולא את הערך (Value).</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>צרו שדה מחושב שמשתמש בפרמטר, ושימו אותו בתצוגה. <span class="m19-why">למה: רק מי שקורא לפרמטר מושפע.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> הגרף משתנה עם הפרמטר.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module10.html#m10-1">מודול 10</a> <b>מניעה:</b> שואלים מי קורא את הפרמטר.</p>
+</div></details>
+</section>
+<section class="sec" id="m19-6" data-t="דשבורדים">
+<div class="sec-h"><div class="sec-n">6</div><h2>דשבורדים</h2></div>
+<details class="m19-sym" id="m19-s-dash-filter" data-cat="dash" data-kw="use as filter דשבורד פעולה">
+<summary><span class="m19-cat dash">דשבורדים</span><span class="m19-t">הלחיצה בדשבורד לא משפיעה על שאר הגיליונות</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> לוחצים על עמודה ושאר הגיליונות לא משתנים.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>לא הופעל <code>Use as Filter</code> על הגיליון.</li><li>הגיליון השני לא מכיל את השדה.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>סמנו את הגיליון ולחצו על האייקון <code>Use as Filter</code>. <span class="m19-why">למה: כך לחיצה על סימן מסננת.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> לחיצה על Cups משאירה Cups בגיליון השני.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module13.html">מודול 13</a> <b>מניעה:</b> מנבאים מה תעשה לחיצה לפני שלוחצים.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-dash-size" data-cat="dash" data-kw="גודל דשבורד size">
+<summary><span class="m19-cat dash">דשבורדים</span><span class="m19-t">הדשבורד נחתך או גולל</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> יש פסי גלילה או שטח לבן.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>גודל קבוע גדול מהחלון, או Range מתחת למינימום או מעל למקסימום.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>בחלונית Dashboard פתחו <code>Size</code> ובחרו Fixed size, Range או Automatic. <span class="m19-why">למה: הגודל קובע איך הדשבורד נפרש.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> אין פסי גלילה בחלון הדפדפן.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module13.html">מודול 13</a> <b>מניעה:</b> בודקים את הקישור בחלון דפדפן רגיל.</p>
+</div></details>
+</section>
+<section class="sec" id="m19-7" data-t="פרסום והטמעה">
+<div class="sec-h"><div class="sec-n">7</div><h2>פרסום, קבצים והטמעה</h2></div>
+<details class="m19-sym" id="m19-s-save-fails" data-cat="pub" data-kw="פרסום נכשל חלון לבן שגיאה save to tableau public">
+<summary><span class="m19-cat pub">פרסום וקבצים</span><span class="m19-t">Save to Tableau Public נכשל או שהחלון לבן</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> מופיעה שגיאה או חלון לבן בזמן הפרסום.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>ההתחברות באתר לא פעילה.</li><li>עוגיות פונקציונליות לא אושרו.</li><li>האתר בתחזוקה או שהרשת חוסמת.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>היכנסו ל-public.tableau.com בדפדפן, ונסו שוב מהתוכנה. <span class="m19-why">למה: זה הפתרון שעבד במקרי חלון לבן.</span></li><li>בדקו בפרופיל באתר. <span class="m19-why">למה: לפעמים הפרסום הצליח.</span></li><li>שמרו במחשב ופרסמו מאוחר יותר. <span class="m19-why">למה: הקובץ השמור הוא הגיבוי.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> הוויז מופיע בפרופיל, והקישור נפתח בחלון פרטי.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module1.html#m1-8">מודול 1</a> <b>מניעה:</b> שומרים לפני כל פרסום.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-published-by-mistake" data-cat="pub" data-kw="פרסמתי בטעות מחיקה הסתרה הורדה פרטיות">
+<summary><span class="m19-cat pub">פרסום וקבצים</span><span class="m19-t">פרסמתי בטעות</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> פרסמתם ויז או נתונים שלא התכוונתם.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>כל מה שמפורסם ציבורי וניתן להורדה כברירת מחדל. הסתרה מסירה רק מהפרופיל, וכל מי שיש לו קישור רואה.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>מחקו את הוויז מהפרופיל אם הוא רגיש. <span class="m19-why">למה: לפי התיעוד אחרי מחיקה אי אפשר לשחזר, וקישורים והטמעות יציגו שגיאה.</span></li><li>כבו הורדה בהגדרות הוויז (<code>Allow Access</code>), אם הוא נשאר. <span class="m19-why">למה: התווית הדקה משתנה, בדקו בגרסה שלכם.</span></li><li>פרסמו מחדש גרסה נקייה בשם חדש. <span class="m19-why">למה: אי אפשר לקחת בחזרה מי שכבר הוריד.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> בחלון פרטי הקישור מציג שגיאה, או שאין כפתור Download.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module1.html#m1-9">מודול 1</a> <b>מניעה:</b> רק נתונים בדויים או שמותר לפרסם.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-extract-old" data-cat="pub" data-kw="extract ישן רענון google drive">
+<summary><span class="m19-cat pub">פרסום וקבצים</span><span class="m19-t">עדכנתי את הנתונים והוויז באתר לא התעדכן</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> באתר רואים את הגרסה הישנה.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>באתר יושב extract: עותק מרגע הפרסום.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>טענו מחדש את הנתונים ופרסמו שוב. <span class="m19-why">למה: רק Google Drive מתרענן אוטומטית אחת ל-24 שעות.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> המספרים באתר תואמים לקובץ החדש.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module2.html#m2-8">מודול 2</a> <b>מניעה:</b> מתכננים עדכון מראש.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-wb-wont-open" data-cat="pub" data-kw="twb twbx גרסה חדשה לא נפתח">
+<summary><span class="m19-cat pub">פרסום וקבצים</span><span class="m19-t">קובץ חוברת עבודה לא נפתח אצלי</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> מופיעה הודעה שהקובץ נוצר בגרסה חדשה, או שהנתונים חסרים.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>הקובץ נשמר בגרסה חדשה יותר משלכם.</li><li>קובץ twb בלי נתונים.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>עדכנו את ההתקנה לגרסה הנוכחית. <span class="m19-why">למה: גרסה ישנה לא פותחת קובץ מגרסה חדשה.</span></li><li>בקשו twbx או קישור לוויז. <span class="m19-why">למה: twbx כולל את הנתונים.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> הקובץ נפתח עם 6,575 שורות.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module1.html#m1-4">מודול 1</a> <b>מניעה:</b> מחליפים קישורים, לא קבצים.</p>
+</div></details>
+<details class="m19-sym" id="m19-s-embed-blank" data-cat="embed" data-kw="הטמעה iframe tableau-viz ריבוע ריק">
+<summary><span class="m19-cat embed">הטמעה</span><span class="m19-t">הוויז לא מופיע בדף שלי</span></summary>
+<div class="m19-b">
+<p><b>איך זה נראה.</b> במקום הוויז רואים ריבוע ריק.</p>
+<h4>הסיבות, מהסבירה לפחות סבירה</h4>
+<ol><li>הדבקתם את קישור דף הפרופיל, שלא ניתן להטמעה ב-iframe.</li><li>חסר <code>type="module"</code> או הספרייה.</li><li>הרשת חוסמת, או שהטעינה הראשונה איטית.</li></ol>
+<h4>תיקון, צעד אחר צעד</h4>
+<ol><li>העתיקו את שדה <code>Link</code> מחלון <code>Share</code> ושימו אותו ב-<code>src</code> של <code>&lt;tableau-viz&gt;</code>. <span class="m19-why">למה: זה הקישור הנכון.</span></li><li>ודאו שיש <code>&lt;script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.16.0.min.js"&gt;&lt;/script&gt;</code>. <span class="m19-why">למה: זו הספרייה שמציירת את הרכיב.</span></li></ol>
+<p class="m19-ok"><b>בדיקה שזה עבד.</b> הוויז מופיע, אחרי כמה שניות בטעינה ראשונה.</p>
+<p class="m19-ft"><b>נלמד ב:</b> <a href="module14.html">מודול 14</a> <b>מניעה:</b> מקבלים עם הקישור, לא עם Embed Code הישן.</p>
+</div></details>
+</section>
+
+<section class="sec" id="m19-8" data-t="אשף, תרגילים והרגלים">
+<div class="sec-h"><div class="sec-n">8</div><h2>אשף האבחון, תרגילי תקלה והרגלי עבודה</h2></div>
+<p class="lead">עונים על שלוש שאלות ומקבלים סיבה סבירה וקישור לכרטיס. האשף הוא עץ שאלות קבוע שכתבנו: הוא מצמצם, הוא לא מאבחן את החוברת שלכם.</p>
+
+<div class="sim" data-id="m19-sim-wizard"><div class="sh">אשף האבחון</div>
+<div id="m19w-path" class="m19-wiz-path"></div><div id="m19w-q" class="m19-wiz-q"></div><div id="m19w-o" class="m19-btns"></div><div id="m19w-r"></div>
+<div class="m19-btns"><button class="btn sec2" type="button" id="m19w-reset">התחלה מחדש</button></div>
+<p class="m19-need">האשף נותן סדר בדיקה לפי הסבירות, לא וודאות. את הבדיקה עושים ב-Tableau.</p></div>
+<script type="application/json" id="m19-tree">{"start": "q1", "nodes": {"q1": {"q": "מה הדבר הראשון שאתם רואים?", "o": [{"t": "מספר שלא נראה נכון", "n": "qn"}, {"t": "הגרף נראה אחרת ממה שרציתי", "n": "qs"}, {"t": "משהו ריק או חסר", "n": "qm"}]}, "qn": {"q": "איפה המספר שונה?", "o": [{"t": "גדול בהרבה מהצפוי", "n": "qn1"}, {"t": "קטן מהצפוי", "n": "qn2"}, {"t": "הוא משתנה כשמוסיפים מסנן", "n": "qn3"}]}, "qn1": {"q": "מה עשיתם בנתונים לפני כן?", "o": [{"t": "חיברתי שני קבצים", "n": "L_join"}, {"t": "לא שיניתי כלום בחיבור", "n": "L_agg"}]}, "qn2": {"q": "יש הודעה על null או unknown בפינת התצוגה?", "o": [{"t": "כן", "n": "L_null"}, {"t": "לא", "n": "L_hidden"}]}, "qn3": {"q": "איזה חישוב מציג את המספר?", "o": [{"t": "חישוב טבלה (Percent of Total, Rank, Running Total)", "n": "L_tcalc"}, {"t": "ביטוי עם סוגריים מסולסלים, FIXED", "n": "L_lod"}, {"t": "Top N", "n": "L_topn"}]}, "qs": {"q": "מה נראה לא כמו שרציתם?", "o": [{"t": "סימן אחד או נקודה אחת", "n": "qs1"}, {"t": "קו במקום עמודות, או להפך", "n": "qs2"}, {"t": "חסרים חודשים או שנים", "n": "qs3"}]}, "qs1": {"q": "יש ממד (Abc) כלשהו על הגיליון?", "o": [{"t": "אין, רק מדדים", "n": "L_one"}, {"t": "יש, ועדיין סימן אחד", "n": "L_hidden"}]}, "qs2": {"q": "באיזה צבע ה-pill של התאריך?", "o": [{"t": "ירוק (רציף)", "n": "L_line"}, {"t": "כחול (בדיד)", "n": "L_line"}]}, "qs3": {"q": "איזה חלק של התאריך בחרתם מהתפריט?", "o": [{"t": "מהחלק העליון (חלק של תאריך)", "n": "L_months"}, {"t": "מהחלק התחתון (ערך של תאריך)", "n": "L_hidden"}]}, "qm": {"q": "מה ריק או חסר?", "o": [{"t": "מפה", "n": "qm1"}, {"t": "אחוזים או KPI", "n": "qm2"}, {"t": "משהו אחרי הטעינה", "n": "qm3"}]}, "qm1": {"q": "מה כתוב בפינת המפה?", "o": [{"t": "unknown ומספר", "n": "L_map"}, {"t": "כלום, או סימן יחיד בים", "n": "L_map"}]}, "qm2": {"q": "אילו תאים ריקים?", "o": [{"t": "רק הראשון (או 12 הראשונים)", "n": "L_tdir"}, {"t": "כולם", "n": "L_tdir"}]}, "qm3": {"q": "מה רואים בדף Data Source?", "o": [{"t": "שדה אחד עם כל הטקסט", "n": "L_col"}, {"t": "עברית משובשת", "n": "L_gib"}, {"t": "מספר שורות שונה במעט", "n": "L_rows"}]}, "L_join": {"leaf": 1, "t": "Join שהכפיל שורות", "c": ["מפתח שחוזר בטבלה השנייה, ולכן שורות כפולות", "אגרגציה שגויה"], "chk": "בדקו את מספר השורות בדף Data Source. ב-Scoop & Go הוא 6,575.", "ids": ["numbers-differ"]}, "L_agg": {"leaf": 1, "t": "אגרגציה או סוג שדה שגויים", "c": ["SUM, AVG או COUNT לא נכון", "שדה מספרי שנטען כמדד"], "chk": "קראו מה כתוב על ה-pill.", "ids": ["numbers-differ", "sum-year"]}, "L_null": {"leaf": 1, "t": "ערכים ריקים שלא מצוירים", "c": ["null או N/A בעמודה"], "chk": "לחצו על ההודעה ובחרו בכוונה.", "ids": ["null-indicator"]}, "L_hidden": {"leaf": 1, "t": "מסנן או פירוט שלא בניתם", "c": ["Keep Only או Exclude", "מסנן מקור נתונים", "חסר ממד ב-Detail"], "chk": "פתחו את המדף Filters ובדקו את הממד על Detail.", "ids": ["hidden-filter", "one-mark"]}, "L_tcalc": {"leaf": 1, "t": "חישוב טבלה מחושב על מה שנשאר", "c": ["המסנן מקטין את מה ש-Tableau רואה"], "chk": "שימו מכנה קבוע עם FIXED.", "ids": ["tcalc-filter"]}, "L_lod": {"leaf": 1, "t": "FIXED רץ לפני מסנן ממד", "c": ["זה תקין ולא באג"], "chk": "קדמו את המסנן להקשר.", "ids": ["lod-filter"]}, "L_topn": {"leaf": 1, "t": "Top N רץ לפני מסנן ממד", "c": ["המסנן מוציא סימנים אחרי הבחירה"], "chk": "קדמו את המסנן להקשר.", "ids": ["topn", "filter-nothing"]}, "L_one": {"leaf": 1, "t": "אין ממד שמחלק לסימנים", "c": ["רק מדדים בגיליון"], "chk": "גררו ממד ל-Detail.", "ids": ["one-mark"]}, "L_line": {"leaf": 1, "t": "בדיד או רציף", "c": ["pill ירוק יוצר ציר וקו, כחול יוצר כותרות"], "chk": "קליק ימני על ה-pill ובחירה ב-Discrete או Continuous.", "ids": ["line-bars"]}, "L_months": {"leaf": 1, "t": "חודש כחלק של תאריך", "c": ["השנים מתחברות ל-12 נקודות"], "chk": "בחרו Month מהחלק התחתון.", "ids": ["months-missing"]}, "L_map": {"leaf": 1, "t": "מיקום שלא זוהה", "c": ["שם לא מזוהה", "קואורדינטות מוחלפות או מסוכמות", "אין חיבור"], "chk": "לחצו על ההודעה ובדקו Edit Locations.", "ids": ["map-unknown"]}, "L_tdir": {"leaf": 1, "t": "Compute Using או סימן ראשון", "c": ["הכיוון לא מתאים לגרף", "הסימן הראשון ריק בדרך כלל"], "chk": "פתחו Compute Using ובחרו Specific Dimensions.", "ids": ["tcalc-direction"]}, "L_col": {"leaf": 1, "t": "מפריד שגוי", "c": ["פסיק, נקודה-פסיק או טאב"], "chk": "Text File Properties.", "ids": ["one-column"]}, "L_gib": {"leaf": 1, "t": "בעיית קידוד", "c": ["הקובץ נשמר בקידוד אחר"], "chk": "שמרו כ-xlsx או CSV UTF-8.", "ids": ["gibberish"]}, "L_rows": {"leaf": 1, "t": "כותרת או שורת סיכום", "c": ["שורה נבלעה או נוספה"], "chk": "קראו 16 fields 6575 rows.", "ids": ["row-count"]}}}</script>
+<script>(function(){FL.dom(function(){
+var box=FL.$('[data-id="m19-sim-wizard"]'); if(!box) return;
+var T=JSON.parse(document.getElementById('m19-tree').textContent), N=T.nodes, path=[], cur=T.start;
+var qEl=FL.$('#m19w-q',box), oEl=FL.$('#m19w-o',box), rEl=FL.$('#m19w-r',box), pEl=FL.$('#m19w-path',box);
+function title(id){ var d=document.getElementById('m19-s-'+id); var t=d&&d.querySelector('.m19-t'); return t?t.textContent:id; }
+function draw(){
+  var n=N[cur]; pEl.textContent=path.length?('התשובות עד עכשיו: '+path.join(' > ')):'';
+  if(n.leaf){
+    qEl.textContent='הסיבה הסבירה ביותר: '+n.t; oEl.innerHTML='';
+    rEl.innerHTML='<div class="m19-res"><b>סיבות, לפי הסדר</b><ol>'+n.c.map(function(c){return '<li>'+FL.esc(c)+'</li>';}).join('')+'</ol><p><b>בדיקה ראשונה:</b> '+FL.esc(n.chk)+'</p><p><b>כרטיסי תקלה:</b> '+n.ids.map(function(i){return '<a href="#m19-s-'+i+'" data-i="'+i+'">'+FL.esc(title(i))+'</a>';}).join(' · ')+'</p></div>';
+    FL.done('m19-sim-wizard');
+  } else {
+    qEl.textContent=n.q; rEl.innerHTML='';
+    oEl.innerHTML=n.o.map(function(o,i){return '<button class="btn" type="button" data-i="'+i+'">'+FL.esc(o.t)+'</button>';}).join('');
+  }
+}
+oEl.addEventListener('click',function(e){var b=e.target.closest('button'); if(!b) return; var o=N[cur].o[+b.dataset.i]; path.push(o.t); cur=o.n; draw();});
+rEl.addEventListener('click',function(e){var a=e.target.closest('a'); if(!a) return; e.preventDefault(); var d=document.getElementById('m19-s-'+a.dataset.i); if(d){d.open=true; d.scrollIntoView({behavior:'smooth',block:'start'});}});
+FL.$('#m19w-reset',box).addEventListener('click',function(){path=[];cur=T.start;draw();});
+draw();
+});})();</script>
+
+<div class="box try" data-id="m19-try-hour"><p><b>תקלה בכוונה: סכום של שעות.</b></p>
+<ol>
+<li>גיליון חדש. גררו <code>Order Hour</code> אל <code>Text</code>. <span class="m19-why">למה: אם הוא כבר ממד אצלכם, לא תראו SUM, ודלגו לצעד 3.</span></li>
+<li>קראו את הערך. <span class="m19-why">למה: סכום של שעות הזמנה אין לו משמעות.</span></li>
+<li>קליק ימני על <code>Order Hour</code> בחלונית Data, <code>Convert to Dimension</code>. גררו אותו אל <code>Rows</code> (אם ה-pill ירוק, <code>Discrete</code>), ואת שדה הספירה <code>scoop_sales_2024_2025.csv (Count)</code> אל <code>Text</code>. <span class="m19-why">למה: ממד מחלק לשורות, וספירה אומרת כמה הזמנות.</span></li>
+</ol>
+<p><b>תוצאה צפויה:</b> בצעד 2: <b class="n">118,214</b>. בצעד 3: 14 שורות, שעות 10 עד 23. שעה 21 הכי עמוסה עם 938 שורות, שעה 20 עם 859, שעה 10 הכי חלשה עם 91. סכום 14 הספירות הוא 6,575.</p></div>
+
+<div class="box try" data-id="m19-try-topn"><p><b>תקלה בכוונה: Top 3 שמחזיר שניים.</b></p>
+<ol>
+<li><code>Branch</code> אל <code>Rows</code>, <code>Sales</code> אל <code>Columns</code>. הוסיפו מסנן על <code>Branch</code>, לשונית <code>Top</code>, 3 לפי <code>SUM(Sales)</code>. <span class="m19-why">למה: שלושת הסניפים הגדולים ברשת.</span></li>
+<li>גררו <code>Region</code> אל <code>Filters</code> ובחרו Center. <span class="m19-why">למה: מסנן ממד רגיל רץ אחרי Top N.</span></li>
+<li>קליק ימני על הפיל של Region, <code>Add to Context</code>. <span class="m19-why">למה: מסנן הקשר רץ קודם.</span></li>
+</ol>
+<p><b>תוצאה צפויה:</b> אחרי צעד 2: <b>2 marks</b>, Tel Aviv Dizengoff 44,194.1 ו-Tel Aviv Port 39,446.0 (Jerusalem Mamilla יצא). אחרי צעד 3: <b>3 marks</b>, ובנוסף Netanya Beach 26,840.2.</p></div>
+
+<div class="box try" data-id="m19-try-habits"><p><b>הרגל: לשכפל לפני ניסוי.</b></p>
+<ol>
+<li>קליק ימני על לשונית גיליון ו-<code>Duplicate</code>. <span class="m19-why">למה: הגרסה הטובה נשארת.</span></li>
+<li>שנו שם לגיליון המקורי (<code>Rename</code>) לשם שאומר מה הוא עונה.</li>
+<li>שמרו עם <code>File</code>, <code>Save As</code>, <code>twbx</code>, בשם עם מספר. ניסוי: גררו pill בטעות ולחצו <code>Undo</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שני גיליונות עם שמות ברורים, קובץ שמור, ו-Undo שמחזיר pill למקומו.</p></div>
+
+<div class="box trap"><p><b>להסתיר את ההודעה במקום להבין אותה.</b> <code>Hide Indicator</code> מסתיר רק את ההודעה על null או unknown. הנתונים עדיין חסרים. Tableau ממליצה להשאיר אותה כדי לדעת שיש חוסר.</p></div>
+<div class="box trap"><p><b>לסמוך על גרף שנראה נכון.</b> גרף יפה עם סכום שגוי עדיין שגוי. בודקים נקודת ביקורת: 6,575 שורות ו-236,820.9.</p></div>
+<div class="box meaning"><p>אבחון טוב הוא סדר: נתונים, מדפים, Marks, מסננים, חישובים. כל תקלה בעמוד הזה שייכת לתחנה אחת.</p></div>
+<div class="box meaning"><p>הרגלי עבודה חוסכים יותר זמן מכל טריק: שמירה בשם, Duplicate, ושינוי אחד בכל פעם.</p></div>
+<div class="box real"><p>בצוותי נתונים בודקים מספר שורות וסכום מיד אחרי כל טעינה, ומשווים למקור. זה נקרא בדיקת התאמה.</p></div>
+<div class="box real"><p>מי שמבקש עזרה בקהילות מקצועיות מצרף צילום מסך, גרסה ומה ציפה לראות. כך מקבלים תשובה מהר.</p></div>
+<div class="box real"><p>בכל כלי שמפרסם לציבור, מי שפרסם בטעות מוחק, מנקה ומפרסם מחדש. מה שכבר הועתק לא חוזר.</p></div>
+<div class="box real"><p>אנליסטים שומרים גרסאות בשמות עם מספר, כדי שתמיד יהיה לאן לחזור.</p></div>
+
+<h3>מתי מבקשים עזרה, ומה מצרפים</h3>
+<p>אם עברתם את הכרטיס ואת האשף ועדיין תקועים, מבקשים עזרה. מצרפים:</p>
+<ol class="m19-kit">
+<li>צילום מסך של הגיליון עם המדפים Columns, Rows, Filters וכרטיס Marks.</li>
+<li>צילום של דף Data Source עם מספר השורות והשדות.</li>
+<li>מספר גרסה (<code>Help</code>, <code>About</code>) ואם זו אפליקציה או עריכה בדפדפן.</li>
+<li>מה ציפיתם לראות, מה ראיתם, ומה כבר ניסיתם. בלי נתונים רגישים בצילום.</li>
+</ol>
+<p>המרצה הוא הכתובת הראשונה. אפשר גם קהילת Tableau Public (בדקו איפה היא פועלת היום, כי הפורום הישן עובר לקהילת Trailblazer) ושאלות נפוצות בכתובת: <a class="tool" href="https://help.tableau.com/current/pro/desktop/en-us/public_faq.htm" target="_blank" rel="noopener">השאלות הנפוצות של Tableau Public</a>.</p>
+
+<div class="box think" data-id="m19-th-help"><p>סטודנטית כותבת ״הגרף לא עובד״ וצירפה צילום של הגרף בלבד. מה חסר?</p><div class="ans">חסרים המדפים וכרטיס Marks, דף הנתונים, הגרסה, ומה ציפתה לראות. בלי אלה אי אפשר לאבחן.</div></div>
+<div class="box think" data-id="m19-th-safe"><p>למה Duplicate לפני ניסוי עדיף על Undo?</p><div class="ans">Undo מוגבל לפעולות של הגיליון בפעם הזו. אחרי סגירה של התוכנה הוא לא עוזר. גיליון משוכפל נשאר.</div></div>
+
+<div class="quiz" data-id="m19-q-null" data-a="1"><p class="qq">מה עושה Hide Indicator?</p>
+<button class="opt">מסתיר את ההודעה בלבד, והנתונים עדיין חסרים</button>
+<button class="opt">מוחק את השורות הריקות</button>
+<button class="opt">מתקן את הערכים החסרים</button>
+<div class="why">הראשונה. ההודעה נעלמת, והחוסר נשאר. לכן עדיף להשאיר אותה.</div></div>
+<div class="quiz" data-id="m19-q-topn" data-a="3"><p class="qq">Top 3 עם מסנן Region = Center רגיל מציג שני סניפים. מה הפתרון?</p>
+<button class="opt">להחליף ל-Top 2</button>
+<button class="opt">למחוק את מסנן Region</button>
+<button class="opt">להפוך את מסנן Region להקשר (Add to Context)</button>
+<div class="why">השלישית. Top N רץ לפני מסנן ממד רגיל. הקשר רץ קודם, ואז הדירוג רק בין סניפי המרכז.</div></div>
+<div class="quiz" data-id="m19-q-hide" data-a="2"><p class="qq">הסתרתם ויז בפרופיל. מי יכול לראות אותו?</p>
+<button class="opt">אף אחד</button>
+<button class="opt">כל מי שיש לו את הקישור</button>
+<button class="opt">רק מי שמחובר</button>
+<div class="why">השנייה. הסתרה מסירה מהפרופיל בלבד.</div></div>
+<div class="quiz" data-id="m19-q-wiz" data-a="2"><p class="qq">הסכום יצא 320,461.0 במקום 236,820.9. מה הסבירות הגבוהה?</p>
+<button class="opt">מסנן שנה</button>
+<button class="opt">Join שהכפיל שורות (למשל מפתח שחוזר)</button>
+<button class="opt">AVG במקום SUM</button>
+<div class="why">השנייה. הפער הוא 83,640.1, סכום תל אביב-יפו שהוכפל.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לבדוק בתוכנה לפני הקורס: Allow Access בהגדרות הוויז, שמות הכפתורים של Text File Properties, ושהתוצאות בתרגילים יוצאות אצלכם. הספרייה מכילה 36 תקלות; אפשר להרחיב.</div>
+</section>
+
+<section class="sec" id="m19-9" data-t="סיכום">
+<div class="sec-h"><div class="sec-n">9</div><h2>סיכום: מה לוקחים מהעמוד</h2></div>
+<div class="box recap"><ul>
+<li>קודם מאבחנים, אחר כך משנים: נתונים, מדפים, Marks, מסננים, חישובים, לפי הסדר.</li>
+<li>שינוי אחד בכל פעם, ו-Duplicate לפני ניסוי גדול.</li>
+<li>נקודת ביקורת אחרי כל טעינה: 6,575 שורות ו-236,820.9 במכירות.</li>
+<li>כל מה שמפורסם ב-Tableau Public ציבורי, והסתרה אינה פרטיות.</li>
+<li>כשמבקשים עזרה מצרפים צילום של המדפים ושל דף Data Source, מספר גרסה ומה ציפיתם לראות.</li>
+</ul></div>
+<p>חזרה לדף העזר ב<a href="module18.html">מודול 18</a>, או לפרויקטים ב<a href="module17.html">מודול 17</a>.</p>
+</section>
+
+
+<div class="pager"><a href="module18.html">→ 18. דף עזר</a><a href="index.html">חזרה למפת האתר ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>

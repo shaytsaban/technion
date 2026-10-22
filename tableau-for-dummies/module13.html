@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13. דשבורדים, פעולות ועיצוב · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=13;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public">1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים">2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים">3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות">6<small></small></a><a id="part7" href="module7.html" title="מפות">7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים">8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט">10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב" class=on>13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה">14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים">15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות">16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום">17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות">19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>דשבורדים, פעולות<br><span>ועיצוב</span></h1>
+  <p>בונים את דשבורד הניהול של Scoop &amp; Go: כרטיסי KPI, גרף סניפים, מגמה חודשית והרכב קטגוריות, עם מסנן ופעולות שמחברים ביניהם. לומדים לבחור גודל, לסדר מכולות, להפעיל את שש פעולות הדשבורד ולבדוק עיצוב לפני שמפרסמים.</p>
+  <div class="chips"><span>🧪 תרגילים בתוכנה עם תוצאה צפויה</span><span>🧱 בונה פריסה: צמוד, צף ומכולות</span><span>🖱️ שש פעולות על נתוני Scoop &amp; Go</span><span>🔍 מצאו את שמונה הטעויות</span><span>🎞️ הנפשות</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<style>
+.m13-cap{font-size:.82rem;color:#64748b;margin:2px 0 10px}
+.m13-ws{direction:ltr;text-align:left;display:grid;grid-template-columns:200px 1fr;grid-template-rows:1fr auto;border:1px solid #c7cfd9;border-radius:10px;overflow:hidden;background:#f4f6f8;font-size:.76rem;margin:12px 0}
+.m13-pane{background:#fff;border-right:1px solid #d5dbe3;padding:6px 8px;grid-row:1}
+.m13-tabs2{display:flex;gap:4px;margin-bottom:6px}.m13-tabs2 b{padding:2px 8px;border-bottom:2px solid transparent;color:#64748b}.m13-tabs2 b.on{border-color:#1f77b4;color:#0f172a}
+.m13-blk{position:relative;margin:6px 0;padding-right:22px}.m13-blk h6{margin:0 0 2px;font-size:.7rem;color:#64748b}
+.m13-hi{display:block;background:#e5e9ee;padding:1px 6px}.m13-sub{display:block;padding:1px 14px}.m13-btn{display:inline-block;border:1px solid #c7cfd9;border-radius:4px;padding:0 8px;margin-top:3px}
+.m13-sel{border:1px solid #c7cfd9;padding:1px 6px;border-radius:3px}.m13-li{padding:1px 4px}
+.m13-objs{display:grid;grid-template-columns:1fr 1fr;gap:2px}.m13-objs span{border:1px solid #d5dbe3;border-radius:3px;padding:0 4px}
+.m13-tog{display:flex;margin-top:4px}.m13-tog span{border:1px solid #c7cfd9;padding:0 8px}.m13-tog span.on{background:#d7e7f5}
+.m13-no{position:absolute;width:18px;height:18px;border-radius:50%;background:#e8741f;color:#fff;font-style:normal;font-weight:800;font-size:.7rem;display:flex;align-items:center;justify-content:center}
+.m13-canvas{position:relative;padding:8px;display:flex;flex-direction:column;gap:6px;background:#eef1f5;min-height:230px}
+.m13-dt{font-weight:800;font-size:1rem;color:#0f172a}.m13-row{display:flex;gap:6px}.m13-col{display:flex;flex-direction:column;gap:6px;flex:1}
+.m13-t{background:#fff;border:1px solid #d5dbe3;border-radius:6px;padding:5px 7px;min-width:0;flex:1}.m13-t h6{margin:0 0 3px;font-size:.72rem;color:#334155}
+.m13-hb i{display:block;height:9px;background:#4e79a7;margin:3px 0}
+.m13-tabsb{grid-column:1/3;display:flex;gap:2px;background:#e5e9ee;padding:3px 8px 0;border-top:1px solid #c7cfd9}.m13-tabsb span{padding:1px 10px;border:1px solid #c7cfd9;border-bottom:0;border-radius:5px 5px 0 0;background:#f4f6f8}.m13-tabsb span.on{background:#fff;font-weight:700}
+@media(max-width:700px){.m13-ws{grid-template-columns:1fr}.m13-tabsb{grid-column:1}}
+.m13-szv{direction:ltr;position:relative;height:120px;background:#dfe5ec;border-radius:8px;overflow:hidden;margin:8px 0}
+.m13-szw{position:absolute;left:0;top:0;height:100%;background:#fff;border-right:3px solid #64748b;overflow:hidden;display:flex}.m13-szw.scr{border-bottom:8px solid #94a3b8}
+.m13-szd{height:80%;margin-top:10px;background:#d7e7f5;border:2px solid #1f77b4;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#14507a;white-space:nowrap;overflow:hidden}
+.m13-ph{display:flex;flex-direction:column;gap:6px}.m13-phk{display:grid;grid-template-columns:1fr 1fr;gap:4px}.m13-phk div{background:#fff;border:1px solid #d5dbe3;border-radius:6px;padding:2px 6px;font-size:.7rem}.m13-phk b{display:block;font-size:1rem;color:#0f172a}
+.m13-tree{direction:ltr;text-align:left;background:#fff;border:1px solid #c7cfd9;border-radius:10px;padding:8px 12px;font-size:.84rem;max-width:460px;margin:10px auto}
+.m13-tree .t0{font-weight:800;color:#64748b;border-bottom:1px solid #e5e9ee;margin-bottom:4px}.m13-tree .l1{padding-left:16px}.m13-tree .l2{padding-left:32px}.m13-tree .l3{padding-left:48px}.m13-tree .fl{margin-top:4px;color:#9a4a0b}
+.m13-tree small{color:#64748b}
+.m13-lb{display:grid;grid-template-columns:210px 1fr;gap:10px}@media(max-width:820px){.m13-lb{grid-template-columns:1fr}}
+.m13-lb-side h6{margin:8px 0 3px;font-size:.78rem;color:#475569}
+.m13-btns{display:flex;flex-wrap:wrap;gap:4px}.m13-btns button,.m13-seg button{font:inherit;font-size:.78rem;border:1px solid #c7cfd9;background:#fff;border-radius:6px;padding:1px 8px;cursor:pointer}
+.m13-seg{display:flex}.m13-seg button{border-radius:0}.m13-seg button.on{background:#d7e7f5;border-color:#1f77b4;font-weight:700}
+.m13-lb-scr{overflow-x:auto}.m13-lb-view{direction:ltr;position:relative;min-width:600px;background:#cfd8e3;border-radius:8px;overflow:hidden}
+.m13-lb-win{position:absolute;left:0;top:0;height:100%;background:#fff;overflow:hidden;border-right:3px solid #64748b}
+.m13-lb-cv{position:absolute;top:0;height:100%;background:#f1f5f9;border-left:1px solid #94a3b8;border-right:1px solid #94a3b8}
+.m13-n{position:relative;min-width:0;min-height:0;font-size:11px}.m13-root{position:absolute;inset:0}
+.m13-c{display:flex;border:1px dashed #94a3b8}.m13-h{flex-direction:row}.m13-v{flex-direction:column}
+.m13-it{background:#fff;border:1px solid #c7cfd9;padding:2px 4px;overflow:hidden;display:flex;flex-direction:column}
+.m13-nm{font-weight:700;color:#334155;font-size:10px}.m13-pvb i{display:block;height:6px;background:#4e79a7;margin:2px 0}.m13-it svg{width:100%;height:100%;min-height:14px}
+.m13-it b{font-size:15px;color:#0f172a}.m13-k-kp{background:#eef6ff}.m13-k-tx{background:#fff}.m13-k-bl{background:repeating-linear-gradient(45deg,#f8fafc,#f8fafc 4px,#eef2f7 4px,#eef2f7 8px)}
+.m13-logo{display:inline-block;background:#e8741f;color:#fff;font-weight:800;padding:0 6px;border-radius:4px}.m13-fsel{border:1px solid #94a3b8;padding:0 6px;border-radius:3px}
+.m13-f{position:absolute;z-index:3;box-shadow:0 4px 12px rgba(0,0,0,.25);border-color:#e8741f;cursor:grab;touch-action:none}.m13-fl{font-size:9px;color:#9a4a0b}
+.m13-n.sel,.m13-f.sel{outline:2px solid #e8741f;outline-offset:-2px}.m13-tag{display:none;position:absolute;top:0;left:0;background:#e8741f;color:#fff;font-size:9px;padding:0 4px;z-index:2}.m13-c.sel>.m13-tag{display:block}
+.m13-empty{margin:auto;color:#94a3b8}
+.m13-lb-bot{display:grid;grid-template-columns:200px 1fr;gap:8px;margin-top:8px}@media(max-width:700px){.m13-lb-bot{grid-template-columns:1fr}}
+.m13-lb-tree{direction:ltr;text-align:left;background:#fff;border:1px solid #d5dbe3;border-radius:8px;padding:4px 6px;font-size:.76rem;max-height:200px;overflow:auto}
+.m13-lb-tree .t0{font-weight:800;color:#64748b}.m13-lb-tree .tr{cursor:pointer;padding:0 4px}.m13-lb-tree .tr.sel{background:#fde8d6}
+.m13-m{padding:4px 10px;border-radius:8px;margin:3px 0;font-size:.88rem}.m13-m.w{background:#fef3c7}.m13-m.i{background:#eef2ff}.m13-m.g{background:#d1fae5}
+.m13-fcs{direction:ltr;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:10px 0}
+.m13-fc{background:#fff;border:1px solid #c7cfd9;border-radius:6px;padding:6px 8px;font-size:.78rem}.m13-fc h6{margin:0 0 3px}.m13-fc label{display:block}.m13-fc small{color:#64748b}.m13-dd{border:1px solid #94a3b8;padding:1px 6px;border-radius:3px;margin-bottom:3px}
+.m13-dlg{direction:ltr;text-align:left;background:#f1f3f5;border:1px solid #c7cfd9;border-radius:10px;padding:10px 14px;font-size:.8rem;max-width:640px;margin:10px auto}
+.m13-dlg h5{margin:0 0 6px}.m13-dlg .r{display:grid;grid-template-columns:150px 1fr;gap:8px;margin:4px 0}.m13-dlg .f{background:#fff;border:1px solid #c7cfd9;border-radius:4px;padding:1px 8px}
+.m13-dlg .btns{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}.m13-dlg .btns span{border:1px solid #c7cfd9;background:#fff;border-radius:4px;padding:0 12px}.m13-dlg .btns .ok{background:#1f77b4;color:#fff}
+.m13-acp{display:flex;flex-wrap:wrap;gap:14px;margin:6px 0;font-size:.88rem}.m13-acp .g label{margin-inline-start:8px}
+.m13-ac{direction:ltr;text-align:left;display:grid;grid-template-columns:1fr 1.3fr;gap:8px;background:#eef1f5;padding:8px;border-radius:10px}
+.m13-ac-k{grid-column:1/3;display:flex;gap:8px}.m13-kp{background:#fff;border:1px solid #d5dbe3;border-radius:8px;padding:2px 12px}.m13-kp small{display:block;color:#64748b;font-size:.7rem}.m13-kp b{font-size:1.2rem}
+.m13-ac-g1,.m13-ac-g2 .m13-t{background:#fff;border:1px solid #d5dbe3;border-radius:6px;padding:6px 8px}.m13-ac-g2{display:flex;flex-direction:column;gap:8px}
+.m13-ac h6{margin:0 0 4px;font-size:.74rem;color:#334155}
+.m13-ar{display:grid;grid-template-columns:120px 1fr 52px;gap:4px;align-items:center;font-size:.72rem;cursor:pointer;padding:1px 0}.m13-ar .tr{background:#eef2f7;height:10px}.m13-ar .tr i{display:block;height:100%;background:#4e79a7}.m13-ar.on{background:#fde8d6}.m13-ar.dim{opacity:.4}.m13-ar em{font-style:normal;text-align:right}
+.m13-mk{color:#64748b;font-size:.7rem}
+@media(max-width:700px){.m13-ac{grid-template-columns:1fr}.m13-ac-k{grid-column:1}.m13-ar{grid-template-columns:100px 1fr 44px}}
+.m13-spot{direction:ltr;text-align:left;position:relative;background:#f1f5f9;border:1px solid #c7cfd9;border-radius:10px;padding:8px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:6px;font-size:.78rem}
+.m13-spot .z{background:#fff;border:2px solid transparent;border-radius:6px;padding:4px 6px;cursor:pointer;min-width:0}.m13-spot .z:hover{border-color:#94a3b8}.m13-spot .z.found{border-color:#16a34a;background:#f0fdf4}.m13-spot .z.fine.found{border-color:#94a3b8;background:#f8fafc}
+.m13-spot .full{grid-column:1/4}
+.m13-chk label{display:block;margin:2px 0}
+</style>
+<script>
+(function(){
+  if (window.M13) return;
+  var cache = null;
+  function labels(c){ return c.dict ? c.v.map(function(i){ return c.dict[i]; }) : c.v; }
+  window.M13 = {
+    fmt: function(x, d){ d = (d == null) ? 0 : d; return x.toLocaleString('en-US', {minimumFractionDigits: d, maximumFractionDigits: d}); },
+    data: function(cb){
+      if (cache) return cb(cache);
+      TF.loadScoop(function(D){
+        if (cache) return cb(cache);
+        var C = D.cols;
+        var S = {n: D.n, Branch: labels(C.Branch), Region: labels(C.Region), Category: labels(C.Category), Channel: labels(C.Channel), Item: labels(C.Item), Sales: C.Sales.v, Profit: C.Profit.v, Date: C.Order_Date.v, Hour: C.Order_Hour.v};
+        S.Month = S.Date.map(function(d){ return d.slice(0, 7); });
+        cache = S; cb(S);
+      });
+    }
+  };
+})();
+</script>
+
+<div class="box note"><b>מה נבנה במודול הזה</b> <span class="lvl s">מתחילים: דשבורד ראשון</span> <span class="lvl b">בונים: מכולות, מסננים ופעולות</span> <span class="lvl p">מתקדמים: עיצוב ובדיקה</span>
+<p>דשבורד ניהול אחד של Scoop &amp; Go. למעלה ארבעה כרטיסי KPI: מכירות, רווח, שולי רווח והזמנות. מתחת: גרף עמודות של הסניפים, קו של המכירות החודשיות וגרף של הרכב הקטגוריות. מסנן אזור בפינה, ולחיצה על סניף מסננת את כל השאר. בדרך בונים גם דשבורד שני לפירוט של סניף, ובודקים את כל שש הפעולות של Tableau: סינון, הדגשה, כתובת אינטרנט, מעבר לגיליון, פרמטר וקבוצה.</p>
+<p>מה צריך להיות מוכן: <a class="tool" href="data/scoop_sales_2024_2025.csv">scoop_sales_2024_2025.csv</a> טעון ב-Tableau Public (<a href="module2.html">מודול 2</a>), ואתם יודעים לבנות גרף עמודות וקו (<a href="module3.html">מודול 3</a>), ליצור שדה מחושב (<a href="module8.html">מודול 8</a>) ופרמטר (<a href="module10.html">מודול 10</a>). בסעיף הראשון יש טבלה שמרכזת את כל הגיליונות שצריך, אז גם מי שדילג יכול להתחיל. הכול נעשה ב-Tableau Desktop Public Edition. איפה שבגרסת הדפדפן (web authoring) משהו שונה, כתוב.</p>
+</div>
+
+<div class="teach"><b>🎓 למרצה:</b> המודול ארוך, וכדאי לחלק אותו לפי הסעיפים: דשבורד וגודל (1 ו-2), פריסה (3), מסננים ופעולות (4 עד 6), עיצוב ובדיקה (7 עד 10), ובנייה מלאה (11). פריטים שהמחקר לא אימת ב-Public וצריך להריץ בתוכנה לפני השיעור: (1) פעולות פרמטר וקבוצה (סעיף 6): מופיעות בתיעוד של Desktop, ובמחקר מסומנות &quot;כנראה זמין&quot;; (2) תרשים בתוך טולטיפ, Dynamic Zone Visibility, אובייקט Download ושכבות סימנים במפה: אין לגביהם אישור ל-Public, ולכן אינם תרגילים; (3) הוספת פעולות בדפדפן (web authoring): לפי דף ההשוואה הרשמי אפשר לראות אותן אבל להגדיר צריך ב-Desktop; (4) הסמל המדויק שמשמש את Use as Filter ושמות התפריטים בגרסה שהתקנתם; (5) הוספת פרמטר לכותרת גיליון (Insert). פתחו קובץ ריק ועברו על כל התרגילים פעם אחת, כדי לדעת איפה הגרסה שלכם שונה.</div>
+<section class="sec" id="m13-1" data-t="דשבורד ראשון">
+<div class="sec-h"><div class="sec-n">1</div><h2>מגיליונות לדשבורד</h2></div>
+<p class="lead">מנהלת הרשת של Scoop &amp; Go פותחת כל בוקר שבעה גיליונות, אחד אחרי השני, כדי לענות על שאלה אחת: איך הולכת הרשת? אפשר לחסוך לה את זה. מסך אחד, ושם הכול ביחד.</p>
+
+<div class="defline"><b>דשבורד (<code>Dashboard</code>, בעברית גם לוח מחוונים):</b> מסך אחד שמניח כמה גיליונות, מסננים וטקסטים זה ליד זה, כדי לענות על שאלה אחת של קהל אחד. דוגמה: מסך הבוקר של מנהלת הרשת, עם סך מכירות, סניפים, מגמה חודשית והרכב קטגוריות.</div>
+<p>דבר אחד צריך להבין כבר עכשיו: דשבורד לא מחשב כלום. הוא רק מסדר גיליונות שכבר בנויים. אם גיליון מציג מספר שגוי, הדשבורד יציג אותו שגוי, ובגדול. לכן בונים קודם גיליונות נכונים, ורק אחר כך דשבורד.</p>
+
+<div class="tw"><table class="tbl">
+<thead><tr><th>מי מסתכל</th><th>השאלה שלו</th><th>מה יהיה על המסך</th></tr></thead>
+<tbody>
+<tr><td>מנהלת הרשת, בבוקר</td><td>איך הולכת הרשת, ואיפה כדאי לבדוק קודם?</td><td>ארבעה מספרים גדולים, סניפים, מגמה חודשית, הרכב קטגוריות</td></tr>
+<tr><td>מנהל סניף</td><td>מה קורה אצלי לעומת שאר הרשת?</td><td>הסניף שלו מול הממוצע, שעות עומס, המוצרים הנמכרים</td></tr>
+<tr><td>מי שמחליט על מבצעים</td><td>האם הנחות מרוויחות או מפסידות?</td><td>רווח לפי גובה ההנחה, לפי סניף</td></tr>
+</tbody></table></div>
+<p>שלוש שאלות, שלושה דשבורדים. אי אפשר לעשות דשבורד אחד שעונה על הכול. את הראשון בונים עכשיו: זה של מנהלת הרשת.</p>
+
+<div class="anim" data-id="m13-anim-assemble" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 340" role="img" aria-label="הנפשה: גוררים שלושה גיליונות מהרשימה אל משטח הדשבורד והם מתחלקים בשטח">
+<rect x="10" y="30" width="170" height="300" rx="10" fill="#fff" stroke="#c7cfd9" stroke-width="2"/>
+<text x="95" y="22" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">Sheets</text>
+<g font-size="14" fill="#0f172a">
+<rect x="22" y="48" width="146" height="34" rx="6" fill="#eef2f7"/><text x="34" y="70">Branch Sales</text>
+<rect x="22" y="92" width="146" height="34" rx="6" fill="#eef2f7"/><text x="34" y="114">Monthly Sales</text>
+<rect x="22" y="136" width="146" height="34" rx="6" fill="#eef2f7"/><text x="34" y="158">Category Mix</text>
+</g>
+<g data-s="2"><circle cx="156" cy="65" r="8" fill="#16a34a"/><path d="M152,65 l3,3 l6,-6" stroke="#fff" stroke-width="2" fill="none"/></g>
+<g data-s="3"><circle cx="156" cy="109" r="8" fill="#16a34a"/><path d="M152,109 l3,3 l6,-6" stroke="#fff" stroke-width="2" fill="none"/></g>
+<g data-s="4"><circle cx="156" cy="153" r="8" fill="#16a34a"/><path d="M152,153 l3,3 l6,-6" stroke="#fff" stroke-width="2" fill="none"/></g>
+<text x="490" y="22" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">Dashboard</text>
+<rect x="200" y="30" width="590" height="300" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" stroke-dasharray="7 5"/>
+<g data-only="1"><text x="495" y="185" text-anchor="middle" font-size="16" fill="#94a3b8">משטח ריק</text></g>
+<g data-only="2" data-pulse><rect x="210" y="40" width="570" height="280" rx="8" fill="#fff" stroke="#3b82f6" stroke-width="2"/><text x="225" y="64" font-size="15" font-weight="700" fill="#1d4ed8">Branch Sales</text>
+<g fill="#4e79a7"><rect x="225" y="90" width="330" height="22"/><rect x="225" y="122" width="295" height="22"/><rect x="225" y="154" width="250" height="22"/><rect x="225" y="186" width="235" height="22"/><rect x="225" y="218" width="205" height="22"/><rect x="225" y="250" width="200" height="22"/></g></g>
+<g data-only="3,4"><rect x="210" y="40" width="280" height="280" rx="8" fill="#fff" stroke="#c7cfd9" stroke-width="2"/><text x="222" y="64" font-size="15" font-weight="700" fill="#1d4ed8">Branch Sales</text>
+<g fill="#4e79a7"><rect x="222" y="90" width="200" height="20"/><rect x="222" y="120" width="178" height="20"/><rect x="222" y="150" width="150" height="20"/><rect x="222" y="180" width="142" height="20"/><rect x="222" y="210" width="124" height="20"/><rect x="222" y="240" width="120" height="20"/></g></g>
+<g data-only="3" data-pulse><rect x="500" y="40" width="280" height="280" rx="8" fill="#fff" stroke="#3b82f6" stroke-width="2"/><text x="512" y="64" font-size="15" font-weight="700" fill="#1d4ed8">Monthly Sales</text>
+<polyline points="515,250 560,240 600,215 640,170 680,110 720,95 760,200" fill="none" stroke="#4e79a7" stroke-width="3"/></g>
+<g data-only="4"><rect x="500" y="40" width="280" height="136" rx="8" fill="#fff" stroke="#c7cfd9" stroke-width="2"/><text x="512" y="62" font-size="15" font-weight="700" fill="#1d4ed8">Monthly Sales</text>
+<polyline points="515,150 560,142 600,128 640,100 680,76 720,70 760,130" fill="none" stroke="#4e79a7" stroke-width="3"/></g>
+<g data-only="4" data-pulse><rect x="500" y="184" width="280" height="136" rx="8" fill="#fff" stroke="#3b82f6" stroke-width="2"/><text x="512" y="206" font-size="15" font-weight="700" fill="#1d4ed8">Category Mix</text>
+<g fill="#4e79a7"><rect x="512" y="218" width="200" height="16"/><rect x="512" y="240" width="156" height="16"/><rect x="512" y="262" width="138" height="16"/><rect x="512" y="284" width="134" height="16"/></g></g>
+</svg></div>
+<ol class="caps">
+<li>הגיליונות כבר בנויים והם ברשימה <code>Sheets</code>. המשטח של הדשבורד ריק.</li>
+<li>גוררים את הגיליון הראשון למשטח. הוא תופס את כל המקום.</li>
+<li>גוררים את הגיליון השני לצד הימני. המשטח מתחלק, והראשון מצטמצם לחצי.</li>
+<li>גוררים את השלישי מתחת לשני. אותם שלושה גיליונות, מסך אחד. שום חישוב לא השתנה.</li>
+</ol></div>
+
+<h3>איך נראה המקום שבו בונים</h3>
+<p>בתחתית החלון, ליד לשוניות הגיליונות, יש סמל של דשבורד חדש. אפשר גם מתפריט הסמל הראשון בסרגל הכלים.</p>
+<figure class="shot"><img src="img/dash-new.png" alt="תפריט הסמל של גיליון חדש בסרגל הכלים, עם שלוש שורות: New Worksheet, New Dashboard ו-New Story"><figcaption>התפריט שנפתח מהסמל של גיליון חדש בסרגל הכלים: <code>New Worksheet</code>, <code>New Dashboard</code> ו-<code>New Story</code>. הצילום מ-Tableau Public בגרסה שלי. אצלכם הסמלים עשויים להיראות קצת אחרת.</figcaption></figure>
+
+<p>אחרי הלחיצה על <code>New Dashboard</code> הצד השמאלי של המסך משתנה. במקום רשימת השדות מופיעה חלונית עם לשונית <code>Dashboard</code> ולשונית <code>Layout</code>. הנה מפה של המסך כולו:</p>
+<div class="m13-ws" aria-label="הדמיה סכמטית של מסך הדשבורד ב-Tableau Public">
+  <div class="m13-pane">
+    <div class="m13-tabs2"><b class="on">Dashboard</b><b>Layout</b></div>
+    <div class="m13-blk"><span class="m13-hi">Default</span><span class="m13-sub">Phone</span><span class="m13-btn">Device Preview</span><i class="m13-no" style="top:2px;right:2px">1</i></div>
+    <div class="m13-blk"><h6>Size</h6><div class="m13-sel">Range: min 1000x800, max 1200x900 ▾</div><i class="m13-no" style="top:0;right:2px">2</i></div>
+    <div class="m13-blk"><h6>Sheets</h6><div class="m13-li">▤ Branch Sales</div><div class="m13-li">▤ Monthly Sales</div><div class="m13-li">▤ Category Mix</div><div class="m13-li">▤ KPI Sales</div><i class="m13-no" style="top:0;right:2px">3</i></div>
+    <div class="m13-blk"><h6>Objects</h6><div class="m13-objs"><span>Horizontal</span><span>Vertical</span><span>Text</span><span>Image</span><span>Web Page</span><span>Blank</span><span>Navigation</span><span>Download</span><span>Extension</span></div><div class="m13-tog"><span class="on">Tiled</span><span>Floating</span></div><i class="m13-no" style="top:0;right:2px">4</i></div>
+    <div class="m13-blk"><label><input type="checkbox" checked disabled> Show dashboard title</label></div>
+  </div>
+  <div class="m13-canvas">
+    <i class="m13-no" style="top:4px;right:4px">5</i>
+    <div class="m13-dt">Dashboard 1</div>
+    <div class="m13-row" style="flex:1;min-height:170px">
+      <div class="m13-t" style="flex:1.1"><h6>Branch Sales</h6><div class="m13-hb"><i style="width:94%"></i><i style="width:84%"></i><i style="width:71%"></i><i style="width:67%"></i><i style="width:58%"></i></div></div>
+      <div class="m13-col" style="flex:1"><div class="m13-t"><h6>Monthly Sales</h6><svg viewBox="0 0 200 50" width="100%" height="50"><polyline points="0,44 25,40 50,34 75,24 100,12 125,8 150,18 175,34 200,40" fill="none" stroke="#4e79a7" stroke-width="2.5"/></svg></div><div class="m13-t"><h6>Category Mix</h6><div class="m13-hb"><i style="width:90%"></i><i style="width:70%"></i><i style="width:62%"></i></div></div></div>
+    </div>
+  </div>
+  <div class="m13-tabsb"><span>Branch Sales</span><span>Monthly Sales</span><span>Category Mix</span><span class="on">Practice</span><span>+</span></div>
+</div>
+<p class="m13-cap">הדמיה סכמטית. המספרים על המסך לא מייצגים נתונים.</p>
+<ol class="callouts">
+<li><code>Default</code> ו-<code>Phone</code>: הפריסות של הדשבורד. <code>Default</code> היא של המחשב. הכפתור <code>Device Preview</code> מראה איך הדשבורד ייראה במכשירים אחרים (סעיף 2).</li>
+<li><code>Size</code>: הגודל של הדשבורד. קובעים אותו לפני שמסדרים את הפריטים (סעיף 2).</li>
+<li><code>Sheets</code>: כל הגיליונות בחוברת. גוררים משם למשטח. גיליון שכבר על המשטח מסומן בוי קטן.</li>
+<li><code>Objects</code>: דברים שאינם גיליון: מכולות, טקסט, תמונה, כפתור ניווט ועוד. מתחתם המתג <code>Tiled</code> ו-<code>Floating</code> (סעיף 3).</li>
+<li>המשטח עצמו. כל גיליון שעליו הוא פריט, ולכל פריט יש חץ קטן בפינה שפותח תפריט.</li>
+</ol>
+
+<h3>מכינים גיליונות, ואז בונים</h3>
+<p>לפני הדשבורד צריך גיליונות. הטבלה מרכזת שמונה מהם, עם בדיקה לכל אחד. מי שבנה כבר גרפים כאלה במודולים 3 עד 8 יכול לשנות רק את השמות. השמות באנגלית, כי זה מה שיופיע בלשוניות ובדשבורד.</p>
+<div class="tw"><table class="tbl">
+<thead><tr><th>שם הגיליון</th><th>מה בו</th><th>בדיקה: מה אמור לצאת</th></tr></thead>
+<tbody>
+<tr><td><code>KPI Sales</code></td><td><span class="pill c sum">Sales</span> ב-<code>Text</code></td><td>מספר אחד: <span class="n">236,821</span> (הערך המדויק <span class="n">236,820.9</span>)</td></tr>
+<tr><td><code>KPI Profit</code></td><td><span class="pill c sum">Profit</span> ב-<code>Text</code></td><td><span class="n">120,723</span> (המדויק <span class="n">120,722.9</span>)</td></tr>
+<tr><td><code>KPI Margin</code></td><td>שדה מחושב <code>Profit Margin</code> ב-<code>Text</code></td><td><span class="n">51.0%</span></td></tr>
+<tr><td><code>KPI Orders</code></td><td>שדה הספירה של הקובץ ב-<code>Text</code></td><td><span class="n">6,575</span></td></tr>
+<tr><td><code>Branch Sales</code></td><td><span class="pill d">Branch</span> ב-<code>Rows</code>, <span class="pill c sum">Sales</span> ב-<code>Columns</code>, ממוינים יורד</td><td>9 סימנים. למעלה Tel Aviv Dizengoff, <span class="n">44,194.1</span>. למטה Ashdod Beach Pop-up, <span class="n">5,304.5</span></td></tr>
+<tr><td><code>Monthly Sales</code></td><td><span class="pill c">MONTH(Order Date)</span> רציף ב-<code>Columns</code>, <span class="pill c sum">Sales</span> ב-<code>Rows</code></td><td>קו עם 24 סימנים. שיא באוגוסט 2025: <span class="n">23,259.9</span>. שפל בפברואר 2025: <span class="n">4,097.0</span></td></tr>
+<tr><td><code>Category Mix</code></td><td><span class="pill d">Category</span> ב-<code>Rows</code>, <span class="pill c sum">Sales</span> ב-<code>Columns</code>, ממוינים יורד</td><td>5 סימנים. Cups <span class="n">69,470.0</span>, Drinks <span class="n">54,553.3</span>, Cones <span class="n">48,317.0</span>, Sundaes <span class="n">47,037.2</span>, Sticks <span class="n">17,443.4</span></td></tr>
+</tbody></table></div>
+
+<div class="box try" data-id="m13-try-prep-sheets">
+<p><b>שבעה גיליונות להתחלה</b></p>
+<ol>
+<li>פתחו גיליון חדש בחוברת עם Scoop &amp; Go. גררו <span class="fld mea"><i>#</i>Sales</span> אל הכפתור <code>Text</code> בכרטיס <code>Marks</code>. אם הכפתור נקרא <code>Label</code> אצלכם, גררו אליו. <i>למה: גיליון שכל תוכנו מספר אחד הוא כרטיס KPI.</i></li>
+<li>בכרטיס <code>Marks</code> לחצו על הפיל <span class="pill c sum">Sales</span> בכפתור הימני, <code>Format</code>, ובחלונית שנפתחת בחרו בלשונית <code>Numbers</code> מספר שלם, בלי ספרות אחרי הנקודה. שנו את שם הלשונית ל-<code>KPI Sales</code> (לחיצה כפולה עליה). <i>למה: אפשר לקרוא את הגיליון בקלות כשבונים את הדשבורד, ואפשר להבדיל בין ארבעה כרטיסים.</i></li>
+<li>לחצו על הלשונית בכפתור הימני, <code>Duplicate</code>, ושנו את השם ל-<code>KPI Profit</code>. גררו את <span class="fld mea"><i>#</i>Profit</span> מעל <span class="pill c sum">Sales</span> שב-<code>Text</code> כדי להחליף אותו. <i>למה: שכפול חוסך לכם את העיצוב, ורק המדד מתחלף.</i></li>
+<li>צרו שדה מחושב (<code>Analysis</code>, <code>Create Calculated Field</code>) בשם <code>Profit Margin</code>:
+<pre class="code" data-lang="tableau">SUM([Profit]) / SUM([Sales])</pre>
+בחלונית הנתונים לחצו עליו בכפתור הימני, <code>Default Properties</code>, <code>Number Format</code>, <code>Percentage</code> עם ספרה אחת אחרי הנקודה. שכפלו שוב, קראו ל-<code>KPI Margin</code>, והחליפו את המדד. <i>למה: אחוז רווח הוא מנה של שני סכומים. מחשבים אותו כמנה של הסכומים ולא כממוצע של אחוזים (ראו מודול 8).</i></li>
+<li>שכפלו לגיליון <code>KPI Orders</code> וגררו אל <code>Text</code> את שדה הספירה בתחתית רשימת המדדים. שמו כולל את שם הקובץ, למשל <code>scoop_sales_2024_2025.csv (Count)</code>. <i>למה: בקובץ הזה כל שורה היא הזמנה אחת, כך שהספירה היא מספר ההזמנות.</i></li>
+<li>גיליון חדש <code>Branch Sales</code>: <span class="pill d">Branch</span> ל-<code>Rows</code>, <span class="pill c sum">Sales</span> ל-<code>Columns</code>, ואז מיון יורד בכפתור המיון שבסרגל הכלים. <i>למה: גרף עמודות ממוין נקרא כדירוג.</i></li>
+<li>גיליון חדש <code>Monthly Sales</code>: גררו <span class="fld dim"><i>📅</i>Order Date</span> ל-<code>Columns</code>, פתחו את החץ של הפיל ובחרו <code>Month</code> מהקבוצה השנייה בתפריט (זו שהדוגמה בה היא May 2015, והפיל יוצא ירוק). גררו <span class="pill c sum">Sales</span> ל-<code>Rows</code>. <i>למה: חודש רציף מציג ציר זמן אמיתי, בלי לערבב שנים (מודול 4).</i></li>
+<li>גיליון חדש <code>Category Mix</code>: <span class="pill d">Category</span> ל-<code>Rows</code>, <span class="pill c sum">Sales</span> ל-<code>Columns</code>, מיון יורד.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> לפי הטבלה למעלה. כמה בדיקות נוספות: בשורת המצב בתחתית החלון של <code>Branch Sales</code> כתוב <code>9 marks</code> וסך <code>SUM(Sales): 236,821</code>. ב-<code>Monthly Sales</code> כתוב <code>24 marks</code>. ב-<code>Category Mix</code> כתוב <code>5 marks</code>. Tableau עשוי להציג עיגול אחר בכרטיס (<span class="n">236,821</span> לעומת <span class="n">236,820.9</span>). הערך באמת <span class="n">236,820.9</span>. אם יצא לכם אחר, בדקו שהקובץ נטען במלואו: שורות <span class="n">6,575</span>.</p>
+</div>
+
+<div class="box try" data-id="m13-try-first-dash">
+<p><b>הדשבורד הראשון: שלושה גיליונות על משטח אחד</b></p>
+<ol>
+<li>לחצו על סמל הדשבורד החדש בתחתית החלון (או <code>Dashboard</code>, <code>New Dashboard</code>). שנו את שם הלשונית ל-<code>Practice</code>. <i>למה: זה דשבורד לתרגול. את דשבורד הניהול הסופי נבנה בסעיף האחרון.</i></li>
+<li>בחלונית <code>Sheets</code> גררו את <code>Branch Sales</code> אל מרכז המשטח. <i>למה: ככה מתחילים. הגיליון הראשון תופס את כל המשטח.</i></li>
+<li>גררו את <code>Monthly Sales</code> לצד הימני של הגיליון הראשון. תראו אזור אפור שמסמן איפה יונח. שחררו. <i>למה: גרירה לקצה מחלקת את המשטח, וגרירה למרכז מחליפה את הגיליון.</i></li>
+<li>גררו את <code>Category Mix</code> אל החלק התחתון של <code>Monthly Sales</code>. <i>למה: הגרף הקטן עדיף לצד גרף שכבר נקרא כמגמה.</i></li>
+<li>לחצו על אחד הגיליונות. בפינה הימנית העליונה שלו יופיעו סמלים קטנים. החץ הקטן הוא התפריט של הפריט. בתפריט אפשר להפעיל ולכבות את <code>Title</code> של הגיליון (בגרסה שלכם ייתכן ששמות הפריטים שונים מעט). בדקו את הכותרות: אם הכותרת של הגיליון זהה לשם הלשונית ולא מוסיפה מידע, כבו אותה. <i>למה: כל כותרת תופסת מקום, והמקום בדשבורד יקר.</i></li>
+<li>אם גרף לא ממלא את הריבוע שלו, לחצו עליו ובסרגל הכלים פתחו את רשימת ה-Fit ובחרו <code>Entire View</code>. <i>למה: ככה הגרף מתאים את עצמו לגודל הפריט.</i></li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלושה פריטים: גרף הסניפים משמאל (<span class="n">9</span> עמודות), קו המכירות החודשיות מימין למעלה (<span class="n">24</span> נקודות), ומתחתיו גרף הקטגוריות (<span class="n">5</span> עמודות). המספרים בגרפים זהים לגיליונות המקוריים: למשל Tel Aviv Dizengoff עדיין <span class="n">44,194.1</span>. בלשונית <code>Layout</code>, ב-<code>Item hierarchy</code>, תראו מכולה אחת בתוך השנייה (עוד נחזור לזה בסעיף 3).</p>
+</div>
+<figure class="shot"><img src="img/dash-first.png" alt="דשבורד ראשון בתוכנה: החלונית השמאלית עם Default ו-Phone, Size, ורשימת הגיליונות, ועל המשטח שני גיליונות אחד מעל השני"><figcaption>דשבורד ראשון בצילום אמיתי (נתוני משחקי וידאו, לא Scoop &amp; Go). משמאל: <code>Default</code> ו-<code>Phone</code>, <code>Size</code> ורשימת <code>Sheets</code>. גיליון שהוסף מסומן בוי. הגיליון התחתון נבחר, ולכן בפינה שלו כלי הפריט: X להסרה, סמל מעבר לגיליון, משפך (<code>Use as Filter</code>) וחץ התפריט.</figcaption></figure>
+
+<div class="box meaning"><p>הדשבורד הוא שכבת הצגה. החישוב, המסננים והמיון נמצאים בגיליונות. מי שרוצה לשנות מספר, חוזר לגיליון ומשנה שם, והשינוי מופיע בכל דשבורד שמשתמש בו. זה מה שהופך דשבורדים לקלים לתחזוקה, וגם מה שמסביר למה גיליון שבור מקלקל את כולם.</p></div>
+
+<div class="box real"><p>בארגונים רבים הדשבורד של הנהלה נפתח במסך אחד ובו שורה של מספרים גדולים בראש, ומתחתיה גרפים שמסבירים אותם. את הסדר הזה תראו בעשרות דוגמאות ציבוריות. בסעיף 9 נדבר על למה הוא עובד.</p></div>
+
+<div class="box trap"><p><b>לא כל גיליון עולה לדשבורד.</b> מי שמכניס לדשבורד כל גיליון שבנה ברגע שהוא נראה יפה, מקבל מסך שאי אפשר לקרוא. כל פריט שמוסיפים צריך לענות על השאלה של הקהל. אם לא, הוא נשאר גיליון ולא עולה למסך.</p></div>
+
+<div class="box think" data-id="m13-th-which-sheets"><p>שאלה: יש לכם בחוברת עשרה גיליונות על Scoop &amp; Go, והמנהלת רוצה לדעת &quot;איפה כדאי לבדוק קודם?&quot;. אילו מהם הייתם מעלים לדשבורד, ואילו משאירים בחוברת? מה השאלה שהייתם שואלים את המנהלת לפני שאתם בוחרים?</p>
+<div class="ans">מעלים רק גיליונות שעונים על &quot;איפה&quot;: דירוג סניפים, מגמה חודשית שמראה אם משהו נחלש, והרכב קטגוריות כהקשר. גיליון של שעות היום או של ערוצי מכירה נשאר בחוברת, אלא אם היא ביקשה אותו. השאלה למנהלת: &quot;מה תעשי אחרי שתראי את המסך?&quot;. אם ההחלטה היא &quot;להתקשר למנהל סניף&quot;, מספיק דירוג וסימון של מי שנחלש. אם היא &quot;לשנות מבצעים&quot;, צריך גם נתוני הנחות.</div></div>
+
+<div class="quiz" data-id="m13-q-dash-def" data-a="3"><p class="qq">מה הדשבורד עושה בנתונים?</p>
+<button class="opt">מחשב את הסכומים מחדש, כדי שיתאימו למסך</button>
+<button class="opt">מחליף את הגיליונות הקיימים בגיליונות חדשים</button>
+<button class="opt">מסדר על מסך אחד גיליונות שכבר בנויים, ואינו מחשב כלום בעצמו</button>
+<button class="opt">שומר עותק של הנתונים, כדי שהצופה לא יצטרך את הקובץ</button>
+<div class="why">נכון: דשבורד הוא מסגרת. כל חישוב, מסנן ומיון נשארים בגיליון. תשובה א שגויה כי הסכומים מחושבים בגיליונות. תשובה ב שגויה כי הגיליונות המקוריים נשארים. בתשובה ד, ב-Tableau Public הנתונים נשמרים בקובץ שמפורסם עם החוברת, לא בדשבורד כשלעצמו.</div></div>
+
+<div class="quiz" data-id="m13-q-drop-edge" data-a="1"><p class="qq">גוררים גיליון שני אל קצה ימין של גיליון שכבר על המשטח. מה קורה?</p>
+<button class="opt">המשטח מתחלק, והגיליון החדש יושב ליד הקודם</button>
+<button class="opt">הגיליון החדש מחליף את הקודם</button>
+<button class="opt">הגיליון החדש נהיה צף מעל הקודם</button>
+<div class="why">גרירה לקצה של פריט מחלקת את השטח ביניהם. גרירה למרכז של פריט מחליפה פריט בפריט (<code>Swap</code>). צף נהיה פריט רק אם בחרתם <code>Floating</code> לפני הגרירה או החזקתם <code>Shift</code> בזמן הגרירה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> אם יש חיבור, בנו לפני הכיתה את שבעת הגיליונות מהטבלה כדי לוודא שהמספרים תואמים בגרסה שלכם. בשלב 5 של התרגיל השני (תפריט הפריט) בדקו מה שם הכפתור בגרסה שלכם: בגרסאות שונות הוא <code>Title</code> או <code>Show Title</code>. שאלו את הכיתה &quot;מה עדיף: לבנות דשבורד גדול אחד או שניים קטנים?&quot; ותנו לסעיף 9 לענות.</div>
+</section>
+<section class="sec" id="m13-2" data-t="גודל ומכשירים">
+<div class="sec-h"><div class="sec-n">2</div><h2>גודל הדשבורד ופריסות למכשירים</h2></div>
+<p class="lead">המנהלת פותחת את הדשבורד על מחשב נייד. הבעלים של הרשת פותח אותו בטלפון. ואתם מטמיעים אותו באתר, בעמודה שאתם לא שולטים ברוחב שלה. אותו דשבורד, שלושה מסכים. לכן קובעים גודל לפני שמסדרים.</p>
+
+<div class="defline"><b>גודל הדשבורד (<code>Size</code>):</b> הגדרה שקובעת איך הדשבורד מתנהג כשחלון הצפייה משתנה: נשאר קבוע, נמתח בטווח, או ממלא את החלון. דוגמה: <code>Range</code> עם מינימום 1000x800 ומקסימום 1200x900.</div>
+
+<div class="tw"><table class="tbl">
+<thead><tr><th>אפשרות</th><th>מה קורה כשהחלון משתנה</th><th>מתאים ל</th><th>סיכון</th></tr></thead>
+<tbody>
+<tr><td><code>Fixed size</code></td><td>גודל קבוע בפיקסלים. חלון קטן ממנו: פסי גלילה. חלון גדול ממנו: רווח ריק סביב.</td><td>פריסה מדויקת עם פריטים צפים, או צילום מסך להדפסה</td><td>על מסך קטן הצופה גולל. בהטמעה באתר זה לא גמיש</td></tr>
+<tr><td><code>Range</code></td><td>מתכווץ ומתרחב בין מינימום למקסימום. מתחת למינימום יש גלילה, מעל המקסימום רווח ריק.</td><td>מסכים שדומים בצורתם: מחשב נייד ושולחני, או הטמעה באתר</td><td>צריך לבחור טווח הגיוני ולבדוק את שני הקצוות</td></tr>
+<tr><td><code>Automatic</code></td><td>ממלא את החלון כולו.</td><td>פריסה צמודה (<code>Tiled</code>), אחרי בדיקה</td><td>התוצאה על מסכים שונים עלולה להיות לא צפויה</td></tr>
+</tbody></table></div>
+<p>המלצה מקובלת למי שמטמיע דשבורד ב-Tableau Public: <code>Automatic</code> או <code>Range</code>, ולא <code>Fixed</code>. כך כתוב בשאלות הנפוצות הרשמיות של Public. למי שרוצה נקודת התחלה: <code>Range</code> עם מינימום 1000x800 ומקסימום 1200x900 (זו המלצה שלי לשימוש בדף אינטרנט, לא כלל של Tableau).</p>
+
+<div class="cols2">
+<figure class="shot" style="margin:0"><img src="img/dash-pane.png" alt="חלונית הדשבורד: לשוניות Dashboard ו-Layout, שורות Default ו-Phone, כפתור Device Preview והגדרת Size על Automatic"><figcaption>החלונית של הדשבורד: <code>Default</code> ו-<code>Phone</code> (פריסות), <code>Device Preview</code> ומתחתם <code>Size</code>. בצילום הגודל <code>Automatic</code>.</figcaption></figure>
+<figure class="shot" style="margin:0"><img src="img/dash-size.png" alt="תפריט הגודל פתוח עם שלוש אפשרויות: Fixed size, Automatic ו-Range"><figcaption>רשימת הגודל פתוחה: <code>Fixed size</code>, <code>Automatic</code>, <code>Range</code>. ברירת המחדל משתנה בין גרסאות. תמיד פתחו את <code>Size</code> ובחרו בעצמכם.</figcaption></figure>
+</div>
+
+<h3>בואו נראה מה הצופה רואה</h3>
+<p>ההדמיה חישבה את הכללים מהטבלה למעלה. בחרו אפשרות והזיזו את רוחב החלון. שימו לב מתי מופיעה גלילה ומתי נשאר רווח ריק.</p>
+<div class="sim" data-id="m13-sim-size"><div class="sh">גודל הדשבורד מול חלון הצפייה</div>
+  <div class="row"><b>גודל הדשבורד:</b>
+    <label><input type="radio" name="m13-sz-mode" value="fixed"> Fixed 1000</label>
+    <label><input type="radio" name="m13-sz-mode" value="range" checked> Range 1000 עד 1200</label>
+    <label><input type="radio" name="m13-sz-mode" value="auto"> Automatic</label></div>
+  <div class="row"><b>רוחב החלון:</b> <input type="range" id="m13-sz-win" min="360" max="1600" step="10" value="1100"> <span class="n" id="m13-sz-winv">1100</span> px</div>
+  <div class="m13-szv" id="m13-sz-view"><div class="m13-szw" id="m13-sz-w"><div class="m13-szd" id="m13-sz-d"></div></div></div>
+  <div class="out" id="m13-sz-out"></div>
+</div>
+<script>(function(){ FL.dom(function(){
+  var box = FL.$('[data-id="m13-sim-size"]'); if (!box) return;
+  var win = 1100, mode = 'range', used = {}, MAXW = 1600;
+  var W = FL.$('#m13-sz-w', box), D = FL.$('#m13-sz-d', box), out = FL.$('#m13-sz-out', box), sl = FL.$('#m13-sz-win', box), lab = FL.$('#m13-sz-winv', box);
+  function render(){
+    var w = mode === 'fixed' ? 1000 : mode === 'range' ? Math.max(1000, Math.min(1200, win)) : win;
+    var scroll = w > win, space = Math.max(0, win - w);
+    W.style.width = (win / MAXW * 100) + '%';
+    var dw = Math.min(w, win);
+    D.style.width = (dw / win * 100) + '%';
+    D.style.marginInlineStart = scroll ? '0' : (space / 2 / win * 100) + '%';
+    D.className = 'm13-szd' + (scroll ? ' cut' : '');
+    D.textContent = w + ' px' + (scroll ? ' (נחתך, צריך גלילה)' : '');
+    W.classList.toggle('scr', scroll);
+    var t = 'רוחב הדשבורד: <b class="n">' + w + '</b> px. ';
+    t += scroll ? '<b>יש פס גלילה אופקי:</b> הצופה רואה רק חלק מהדשבורד (' + Math.round(win / w * 100) + '%).' : (space > 0 ? 'נשאר רווח ריק של <b class="n">' + Math.round(space) + '</b> px (בערך חצי מכל צד).' : 'הדשבורד ממלא את החלון בדיוק.');
+    out.innerHTML = t;
+    used[mode] = 1;
+    if (Object.keys(used).length >= 3 && win !== 1100) FL.done('m13-sim-size');
+  }
+  FL.$$('input[name="m13-sz-mode"]', box).forEach(function(r){ r.addEventListener('change', function(){ mode = r.value; render(); }); });
+  sl.addEventListener('input', function(){ win = +sl.value; lab.textContent = win; render(); });
+  render();
+}); })();</script>
+
+<div class="box try" data-id="m13-try-size">
+<p><b>קובעים גודל ובודקים שני קצוות</b></p>
+<ol>
+<li>בדשבורד <code>Practice</code>, בחלונית השמאלית, פתחו את <code>Size</code> ובחרו <code>Range</code>. הקלידו מינימום 1000 על 800 ומקסימום 1200 על 900. <i>למה: טווח שומר על קריאות במחשב נייד קטן וגם במסך גדול.</i></li>
+<li>שנו את רוחב החלון של Tableau (גררו את הקצה). כשהחלון צר מ-1000 אמורים להופיע פסי גלילה. <i>למה: זה המינימום שקבעתם.</i></li>
+<li>שנו את <code>Size</code> ל-<code>Fixed size</code> על 1200 על 800. פתחו שוב את הדשבורד בחלון צר יותר. <i>למה: ככה רואים שפריסה קבועה אינה מצטמצמת, וצריך לגלול.</i></li>
+<li>החזירו ל-<code>Range</code> עם אותם ערכים.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בשדה <code>Size</code> מופיע טקסט שמתחיל ב-<code>min 1000x800</code> ומסתיים ב-<code>max 1200x900</code>, כמו בצילום של דף הגודל (שם הערכים אחרים). הנתונים לא משתנים: Branch Sales עדיין <span class="n">9</span> סימנים.</p>
+</div>
+
+<h3>פריסות למכשירים: אותו דשבורד, מסך אחר</h3>
+<div class="defline"><b>פריסת מכשיר (<code>Device Layout</code>):</b> גרסה נוספת של אותו דשבורד, מסודרת למסך אחר. הנתונים והגיליונות זהים, ורק הסידור משתנה. דוגמה: בטלפון כרטיסי ה-KPI יושבים אחד מתחת לשני, ובמחשב כולם בשורה.</div>
+<p>בחלונית של הדשבורד לחצו על <code>Device Preview</code>. מעל הדשבורד נפתח סרגל שבו בוחרים סוג מכשיר (מחשב, טאבלט, טלפון). הכפתור <code>Add Phone Layout</code> יוצר פריסת טלפון, והיא מופיעה מתחת ל-<code>Default</code>, כמו בצילום <code>dash-pane</code> למעלה. מה שחשוב לדעת:</p>
+<ul>
+<li>פריסת טלפון חדשה נוצרת אוטומטית מהפריסה הרגילה. סמל מנעול <b>פתוח</b> אומר שהיא עדיין מסונכרנת איתה. מנעול <b>סגור</b> אומר שאתם מסדרים אותה בנפרד.</li>
+<li>בסרגל יש אפשרויות גודל לפריסה: <code>Default</code>, <code>Fit All</code> ו-<code>Fit Width</code>. ההמלצה לטלפון היא <code>Fit Width</code>: הרוחב מתאים למסך והגובה ממשיך כלפי מטה בגלילה.</li>
+<li>אפשר להוסיף לפריסה רק פריט שכבר קיים בפריסה הרגילה. הסרת פריט מפריסת טלפון משאירה אותו בפריסה הרגילה.</li>
+</ul>
+
+<div class="mk mk-phone" style="width:230px" aria-label="הדמיה סכמטית של פריסת טלפון"><div class="notch"></div><div class="mk-body" style="min-height:0;padding:8px"><div class="m13-ph">
+<div class="m13-phk"><div><b>236,821</b><small>Sales</small></div><div><b>120,723</b><small>Profit</small></div><div><b>51.0%</b><small>Margin</small></div><div><b>6,575</b><small>Orders</small></div></div>
+<div class="m13-t"><h6>Branch Sales</h6><div class="m13-hb"><i style="width:94%"></i><i style="width:84%"></i><i style="width:71%"></i><i style="width:67%"></i></div></div>
+<div class="m13-t"><h6>Monthly Sales</h6><svg viewBox="0 0 200 44" width="100%" height="44"><polyline points="0,38 25,34 50,28 75,20 100,8 125,6 150,16 175,30 200,34" fill="none" stroke="#4e79a7" stroke-width="2.5"/></svg></div>
+</div></div></div>
+<p class="m13-cap">הדמיה סכמטית: פריסת טלפון, פריטים אחד מתחת לשני.</p>
+
+<div class="anim" data-id="m13-anim-breakpoints" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 300" role="img" aria-label="הנפשה: לפי רוחב המסגרת שבה הדשבורד מוטמע, נבחרת פריסת טלפון, טאבלט או מחשב">
+<text x="400" y="26" text-anchor="middle" font-size="16" font-weight="700" fill="#334155">הדשבורד מוטמע באתר. מה Tableau מציג?</text>
+<g data-only="1" data-pulse>
+<rect x="320" y="50" width="160" height="230" rx="10" fill="#fff" stroke="#e8741f" stroke-width="3"/>
+<g fill="#4e79a7"><rect x="334" y="64" width="62" height="26" rx="4" opacity=".75"/><rect x="404" y="64" width="62" height="26" rx="4" opacity=".75"/><rect x="334" y="98" width="132" height="70" rx="4" opacity=".55"/><rect x="334" y="176" width="132" height="90" rx="4" opacity=".4"/></g>
+<text x="400" y="298" text-anchor="middle" font-size="15" font-weight="700" fill="#9a4a0b">מסגרת צרה (עד 500 px): Phone</text></g>
+<g data-only="2" data-pulse>
+<rect x="250" y="50" width="300" height="230" rx="10" fill="#fff" stroke="#e8741f" stroke-width="3"/>
+<g fill="#4e79a7"><rect x="264" y="64" width="62" height="26" rx="4" opacity=".75"/><rect x="334" y="64" width="62" height="26" rx="4" opacity=".75"/><rect x="404" y="64" width="62" height="26" rx="4" opacity=".75"/><rect x="474" y="64" width="62" height="26" rx="4" opacity=".75"/><rect x="264" y="98" width="130" height="168" rx="4" opacity=".55"/><rect x="404" y="98" width="132" height="168" rx="4" opacity=".4"/></g>
+<text x="400" y="298" text-anchor="middle" font-size="15" font-weight="700" fill="#9a4a0b">מסגרת בינונית (501 עד 800 px): Tablet</text></g>
+<g data-only="3" data-pulse>
+<rect x="110" y="50" width="580" height="230" rx="10" fill="#fff" stroke="#e8741f" stroke-width="3"/>
+<g fill="#4e79a7"><rect x="126" y="64" width="124" height="26" rx="4" opacity=".75"/><rect x="262" y="64" width="124" height="26" rx="4" opacity=".75"/><rect x="398" y="64" width="124" height="26" rx="4" opacity=".75"/><rect x="534" y="64" width="144" height="26" rx="4" opacity=".75"/><rect x="126" y="100" width="250" height="168" rx="4" opacity=".55"/><rect x="388" y="100" width="290" height="80" rx="4" opacity=".4"/><rect x="388" y="188" width="290" height="80" rx="4" opacity=".3"/></g>
+<text x="400" y="298" text-anchor="middle" font-size="15" font-weight="700" fill="#9a4a0b">מסגרת רחבה (מעל 800 px): Default</text></g>
+</svg></div>
+<ol class="caps">
+<li>המסגרת צרה, עד 500 פיקסלים. Tableau מציג את פריסת הטלפון, אם הגדרתם אחת: הכול בעמודה אחת.</li>
+<li>המסגרת בין 501 ל-800. מוצגת פריסת הטאבלט, אם יש. אין פריסה כזאת? בדרך כלל מוצגת הפריסה הרגילה.</li>
+<li>מעל 800: הפריסה הרגילה, <code>Default</code>. לפי התיעוד הבחירה נעשית לפי הממד הקטן של המסגרת. כדי לבדוק, מטמיעים ומקטינים את החלון (מודול 14).</li>
+</ol></div>
+
+<div class="box try" data-id="m13-try-device">
+<p><b>רואים את הדשבורד בטלפון</b></p>
+<ol>
+<li>בדשבורד <code>Practice</code> לחצו על <code>Device Preview</code>. <i>למה: ככה רואים את הדשבורד בגודל של מכשיר בלי לעבור למכשיר.</i></li>
+<li>בסרגל שמעל הדשבורד בחרו סוג מכשיר <code>Phone</code> (או לחצו על סמל הטלפון) וצפו בתצוגה. <i>למה: אנחנו בודקים לפני שמוסיפים פריסה.</i></li>
+<li>לחצו על <code>Add Phone Layout</code>. בחלונית השמאלית מופיעה שורת <code>Phone</code> מתחת ל-<code>Default</code>. <i>למה: מעכשיו יש פריסה נפרדת למכשיר הזה.</i></li>
+<li>בגודל של הפריסה בחרו <code>Fit Width</code>.</li>
+<li>חזרו ל-<code>Default</code> בלחיצה על השורה שלה.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בפריסת הטלפון שלושת הגיליונות מסודרים בעמודה אחת: Branch Sales, Monthly Sales ו-Category Mix, ואפשר לגלול למטה. בפריסה הרגילה שום דבר לא השתנה. אם אתם משנים משהו בפריסת הטלפון ומוחקים פריט, הוא עדיין קיים ב-<code>Default</code>.</p>
+</div>
+
+<div class="box meaning"><p>גודל הוא החלטה על הצופה, לא על הדשבורד. שאלו קודם: על איזה מסך הוא יפתח? אם התשובה &quot;מחשב נייד וטלפון&quot;, מתכננים שתי פריסות. אם &quot;כל מי שנכנס לאתר&quot;, בוחרים <code>Range</code> או <code>Automatic</code> ובודקים בשני הקצוות.</p></div>
+
+<div class="box real"><p>בשאלות הנפוצות של Tableau Public כתוב מפורשות להגדיר גודל דשבורד <code>Automatic</code> או <code>Range</code> כשמטמיעים באתר, או לבנות דשבורדים נפרדים לגדלים שונים ולהחליף ביניהם. את ההטמעה עצמה נראה במודול 14.</p></div>
+
+<div class="box trap"><p><b>פריסות מכשירים ו-<code>Show sheets as tabs</code>.</b> לפי התיעוד, כשמפרסמים דשבורד עם פריסות מכשירים לא מסמנים את האפשרות להציג את הגיליונות כלשוניות, כי זה מפריע לזיהוי גודל הדפדפן. בגרסה של Tableau Public השם של האפשרות עשוי להיות שונה (<code>Show workbook sheets as tabs</code>). נחזור לזה בפרסום.</p></div>
+
+<div class="box trap"><p><b>גודל קבוע גדול מדי.</b> דשבורד <code>Fixed</code> של 1920 על 1080 נראה מצוין על המסך שבנית עליו. על מחשב נייד של 1366 פיקסלים הצופה יגלול הצידה כדי לראות חצי מהמסך. בונים לפי הצופה הצר ביותר, לא לפי המסך הגדול שלכם.</p></div>
+
+<div class="box think" data-id="m13-th-embed-size"><p>שאלה: אתם מטמיעים את דשבורד Scoop &amp; Go בדף של הרשת. הרוחב של העמודה באתר משתנה בין 400 ל-900 פיקסלים בין מחשב לטלפון. איזה גודל תבחרו, ומה עוד תבדקו לפני שתפרסמו?</p>
+<div class="ans"><code>Range</code> או <code>Automatic</code>, לא <code>Fixed</code>, כי העמודה משתנה. ובנוסף פריסת טלפון, כי בין 400 ל-500 פיקסלים הדשבורד מציג את פריסת הטלפון. בודקים בשלושה רוחבים: צר, בינוני, רחב. בודקים גם שהטקסטים נשארים קריאים, ושכל פריט נשאר ברוחב סביר.</div></div>
+
+<div class="quiz" data-id="m13-q-size-modes" data-a="2"><p class="qq">הדשבורד הוא <code>Fixed size</code> של 1000 פיקסלים, והחלון של הצופה רחב 1400. מה הוא רואה?</p>
+<button class="opt">הדשבורד נמתח ל-1400</button>
+<button class="opt">הדשבורד נשאר ברוחב 1000, עם רווח ריק משני הצדדים</button>
+<button class="opt">פס גלילה אופקי</button>
+<button class="opt">Tableau מעביר אוטומטית ל-Range</button>
+<div class="why">גודל קבוע לא מתמתח. כשהחלון רחב ממנו נשאר רווח ריק. כשהחלון צר ממנו מופיעות פסי גלילה (תשובה ג היא ההפך). רק <code>Automatic</code> ממלא את החלון.</div></div>
+
+<div class="quiz" data-id="m13-q-phone-layout" data-a="3"><p class="qq">מחקתם את Category Mix מפריסת הטלפון. מה קרה לו בפריסה הרגילה?</p>
+<button class="opt">נמחק גם משם</button>
+<button class="opt">עבר לפריסת הטאבלט</button>
+<button class="opt">נשאר בפריסה הרגילה. פריסת הטלפון היא רק עוד סידור של אותם פריטים</button>
+<div class="why">הסרת פריט מפריסת מכשיר משאירה אותו ב-<code>Default</code>. ולהפך: אפשר להוסיף לפריסת מכשיר רק פריט שכבר נמצא ב-<code>Default</code>.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בדקו מראש (1) איזו ברירת מחדל של <code>Size</code> יש בגרסה שלכם (בצילום שלי: Automatic); (2) איך נקרא כפתור הפריסה (<code>Add Phone Layout</code>); (3) סף הבחירה בין פריסות (500 ו-800) בהטמעה אמיתית: המחקר מציין שהבחירה נעשית לפי הממד הקטן של המסגרת, ובדרך כלל זה הרוחב. מומלץ להטמיע את הדשבורד בדף בדיקה, לשנות את רוחב החלון ולראות. זה מתחבר לעמוד ההטמעה במודול 14.</div>
+</section>
+<section class="sec" id="m13-3" data-t="אובייקטים ומכולות">
+<div class="sec-h"><div class="sec-n">3</div><h2>אובייקטים, מכולות וצמוד מול צף</h2></div>
+<p class="lead">בדשבורד של Scoop &amp; Go צריך לא רק גרפים: כותרת, שורה של ארבעה כרטיסי KPI, אולי לוגו ומשפט שמסביר איך משתמשים. כל זה נכנס למשטח, והשאלה היא איך מסדרים שזה יישאר מסודר כשהחלון משתנה.</p>
+
+<h3>מה אפשר להניח על המשטח</h3>
+<p>בחלונית של הדשבורד, מתחת לרשימת הגיליונות, יש רשימה של <code>Objects</code>. הנה מה שיש בה, ומה כדאי לדעת על כל אחד:</p>
+<div class="tw"><table class="tbl">
+<thead><tr><th>אובייקט</th><th>בשביל מה</th><th>מה כדאי לדעת</th></tr></thead>
+<tbody>
+<tr><td><code>Horizontal</code> ו-<code>Vertical</code></td><td>מכולות: מחזיקות פריטים בשורה או בעמודה</td><td>עיקר הסעיף הזה</td></tr>
+<tr><td><code>Text</code></td><td>כותרת, הסבר, הערת מקור</td><td>טקסט עשיר: גופן, צבע, גודל. הטקסט קבוע. טקסט שמשתנה עם הבחירה בונים בגיליון (סעיף 7)</td></tr>
+<tr><td><code>Image</code></td><td>לוגו או איור</td><td>מקובץ או מכתובת. כתובת חייבת להתחיל ב-<code>https</code>. תמונה שמוטמעת בחוברת מגדילה אותה, אז קטנים ומכווצים</td></tr>
+<tr><td><code>Web Page</code></td><td>מציג דף אינטרנט בתוך הדשבורד</td><td>חלק מהאתרים אוסרים הצגה בתוך דף אחר, ואז תראו מסגרת ריקה</td></tr>
+<tr><td><code>Blank</code></td><td>ריווח</td><td>שימושי בתוך מכולה כדי לדחוף פריט הצידה</td></tr>
+<tr><td><code>Navigation</code></td><td>כפתור שעובר לדשבורד, לגיליון או לסיפור אחר</td><td>בזמן עריכה הכפתור עובד בלחיצה עם <code>Alt</code> (ב-Windows) או <code>Option</code> (ב-Mac)</td></tr>
+<tr><td><code>Download</code></td><td>כפתור שמייצא את הדשבורד ל-PDF, PowerPoint או תמונה</td><td>לא הוכח שהוא מופיע לצופים ב-Tableau Public. בדקו אם זמין אצלכם</td></tr>
+<tr><td><code>Extension</code></td><td>תוסף מבחוץ</td><td>ב-Public דורש הרשאה בהגדרות הפרסום. לא נתרגל</td></tr>
+</tbody></table></div>
+<p>ויש עוד כפתור שאינו ברשימה: בתפריט של פריט (החץ בפינה) יש <code>Add Show/Hide Button</code>, שמוסיף כפתור שמסתיר ומציג את הפריט. מניחים פריט כזה בתוך מכולה משלו, אחרת כשהוא נסגר נשאר חור.</p>
+
+<h3>צמוד או צף</h3>
+<div class="defline"><b>צמוד (<code>Tiled</code>):</b> פריט בשכבה אחת שחולק את המשטח עם שכניו ומתכווץ ומתרחב כשהדשבורד משתנה. דוגמה: גרף הסניפים וגרף החודשים זה לצד זה, כל אחד תופס חצי.</div>
+<div class="defline"><b>צף (<code>Floating</code>):</b> פריט שיושב מעל פריטים אחרים, במיקום ובגודל שקבעתם. דוגמה: לוגו שמונח מעל הפינה של הכותרת.</div>
+<p>צמוד הוא ברירת המחדל וגם ההמלצה. צף לוקחים רק למה שחייב לשבת מעל משהו. איך הופכים פריט לצף: בוחרים <code>Floating</code> ברשימת <code>Objects</code> לפני הגרירה, או מחזיקים <code>Shift</code> בזמן הגרירה, או בתפריט של פריט קיים בוחרים <code>Floating</code>.</p>
+
+<div class="anim" data-id="m13-anim-tiled-float" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="הנפשה: פריט צמוד מחלק את המשטח עם שכניו, פריט צף מונח מעליהם, והקטנת החלון משפיעה על השניים אחרת">
+<g data-only="1,2,3">
+<rect x="20" y="30" width="760" height="270" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/></g>
+<g data-only="4"><rect x="20" y="30" width="520" height="270" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/></g>
+<g data-only="1"><rect x="30" y="40" width="370" height="250" rx="8" fill="#fff" stroke="#c7cfd9" stroke-width="2"/><text x="215" y="170" text-anchor="middle" font-size="17" fill="#475569">Branch Sales</text>
+<rect x="410" y="40" width="360" height="250" rx="8" fill="#fff" stroke="#c7cfd9" stroke-width="2"/><text x="590" y="170" text-anchor="middle" font-size="17" fill="#475569">Monthly Sales</text></g>
+<g data-only="2,3"><rect x="30" y="40" width="240" height="250" rx="8" fill="#fff" stroke="#c7cfd9" stroke-width="2"/><text x="150" y="170" text-anchor="middle" font-size="17" fill="#475569">Branch Sales</text>
+<rect x="280" y="40" width="240" height="250" rx="8" fill="#fff" stroke="#c7cfd9" stroke-width="2"/><text x="400" y="170" text-anchor="middle" font-size="17" fill="#475569">Monthly Sales</text></g>
+<g data-only="2" data-pulse><rect x="530" y="40" width="240" height="250" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="3"/><text x="650" y="162" text-anchor="middle" font-size="17" font-weight="700" fill="#1d4ed8">Category Mix</text><text x="650" y="186" text-anchor="middle" font-size="14" fill="#1d4ed8">צמוד: כולם מצטמצמים</text></g>
+<g data-only="3"><rect x="530" y="40" width="240" height="250" rx="8" fill="#fff" stroke="#c7cfd9" stroke-width="2"/><text x="650" y="170" text-anchor="middle" font-size="17" fill="#475569">Category Mix</text></g>
+<g data-only="3" data-pulse><rect x="480" y="50" width="150" height="70" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="3"/><text x="555" y="80" text-anchor="middle" font-size="16" font-weight="800" fill="#9a4a0b">Logo</text><text x="555" y="102" text-anchor="middle" font-size="14" fill="#9a4a0b">צף: מעל הכול</text></g>
+<g data-only="4"><rect x="30" y="40" width="160" height="250" rx="8" fill="#fff" stroke="#c7cfd9" stroke-width="2"/><text x="110" y="170" text-anchor="middle" font-size="15" fill="#475569">Branch Sales</text>
+<rect x="196" y="40" width="160" height="250" rx="8" fill="#fff" stroke="#c7cfd9" stroke-width="2"/><text x="276" y="170" text-anchor="middle" font-size="15" fill="#475569">Monthly Sales</text>
+<rect x="362" y="40" width="168" height="250" rx="8" fill="#fff" stroke="#c7cfd9" stroke-width="2"/><text x="446" y="170" text-anchor="middle" font-size="15" fill="#475569">Category Mix</text></g>
+<g data-only="4" data-pulse><rect x="300" y="50" width="150" height="70" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="3"/><text x="375" y="80" text-anchor="middle" font-size="16" font-weight="800" fill="#9a4a0b">Logo</text><text x="375" y="102" text-anchor="middle" font-size="14" fill="#9a4a0b">מכסה גרף</text></g>
+</svg></div>
+<ol class="caps">
+<li>שני פריטים צמודים. כל אחד תופס חצי מהמשטח.</li>
+<li>מוסיפים פריט צמוד שלישי. השטח מתחלק מחדש בין שלושתם, ואף אחד לא מכסה אחר.</li>
+<li>מוסיפים לוגו כפריט צף. הוא יושב מעל הכול, במקום שקבעתם, ולא לוקח שטח מאף אחד.</li>
+<li>החלון מצטמצם. הפריטים הצמודים מצטמצמים יחד. הלוגו הצף נשאר בגודל שהגדרתם, ועלול לכסות חלק מגרף. לכן בודקים כל פריסה עם פריטים צפים בכל גודל שחשוב לכם.</li>
+</ol></div>
+<p class="m13-cap">ההנפשה מראה את הרעיון בצורה פשוטה. בתוכנה, ההתנהגות המדויקת של פריט צף כשהגודל משתנה תלויה בסוג הגודל שקבעתם. מדריכי Tableau ממליצים לתת לפריטים צפים גודל קבוע על דשבורד בגודל קבוע.</p>
+
+<h3>מכולות</h3>
+<div class="defline"><b>מכולה (<code>Container</code>):</b> פריט שמחזיק פריטים אחרים ומסדר אותם בשורה (אופקית) או בעמודה (אנכית). דוגמה: מכולה אופקית שמחזיקה את ארבעת כרטיסי ה-KPI.</div>
+<ul>
+<li><b>מכולה אופקית</b> (<code>Horizontal</code>) מחלקת את הרוחב בין הפריטים שבתוכה. <b>מכולה אנכית</b> (<code>Vertical</code>) מחלקת את הגובה.</li>
+<li>כשגוררים גיליון לצד גיליון אחר, Tableau יוצר מכולות בעצמו. בלשונית <code>Layout</code> רשימה בשם <code>Item hierarchy</code> מראה את העץ של המכולות והפריטים. זה המקום להבין למה פריט יושב איפה שהוא יושב.</li>
+<li><code>Distribute Evenly</code> בתפריט של מכולה נותן לכל הפריטים שבה אותו גודל. לפי התיעוד זה עובד על מכולות שהוספתם בעצמכם (בגרסה שלכם הפקודה עשויה להופיע תחת <code>Distribute Contents</code>).</li>
+<li><code>Remove Container</code> משחרר את הפריטים ומוחק את המכולה.</li>
+<li>אל תוסיפו מכולות סתם. כל מכולה מוסיפה עבודה, ולפי התיעוד מכולות מיותרות מאטות את הציור.</li>
+</ul>
+
+<div class="m13-tree" aria-label="הדמיה סכמטית של Item hierarchy">
+<div class="t0">Item hierarchy</div>
+<div class="l0"><b>Dashboard</b> <small>(Vertical)</small></div>
+<div class="l1"><b>Horizontal</b> <small>שורת הכותרת</small></div>
+<div class="l2">▤ Text: Scoop &amp; Go</div>
+<div class="l2">▤ Blank</div>
+<div class="l1"><b>Horizontal</b> <small>שורת ה-KPI. Distribute Evenly</small></div>
+<div class="l2">▤ KPI Sales</div><div class="l2">▤ KPI Profit</div><div class="l2">▤ KPI Margin</div><div class="l2">▤ KPI Orders</div>
+<div class="l1"><b>Horizontal</b> <small>השורה הראשית</small></div>
+<div class="l2">▤ Branch Sales</div>
+<div class="l2"><b>Vertical</b></div>
+<div class="l3">▤ Monthly Sales</div><div class="l3">▤ Category Mix</div>
+<div class="l0 fl"><b>Floating</b></div>
+<div class="l1">▤ Image: Logo</div>
+</div>
+<p class="m13-cap">הדמיה סכמטית. זה העץ שנבנה בסוף הסעיף ובדשבורד הסופי.</p>
+
+<h3>בונים פריסה בעצמכם</h3>
+<p>זה המקום לנסות בלי לקלקל כלום. בנו כמה פריסות, הזיזו פריט צף, ושנו את רוחב החלון. ההדמיה בודקת את הפריסה שלכם ומעירה כשמשהו לא טוב. ההדמיה פשוטה יותר מהתוכנה: כאן בוחרים מכולה ולוחצים על &quot;הוסף&quot;, ובתוכנה גוררים.</p>
+<div class="sim" data-id="m13-sim-layout"><div class="sh">בונה פריסה: צמוד, צף ומכולות</div>
+<div class="m13-lb">
+  <div class="m13-lb-side">
+    <h6>הוספה</h6>
+    <div class="m13-seg" id="m13-lb-mode"><button type="button" data-m="tiled" class="on">צמוד Tiled</button><button type="button" data-m="floating">צף Floating</button></div>
+    <div class="m13-btns" id="m13-lb-add"></div>
+    <h6>מכולות</h6>
+    <div class="m13-btns"><button type="button" data-c="h">+ מכולה אופקית</button><button type="button" data-c="v">+ מכולה אנכית</button></div>
+    <h6>הפריט הנבחר</h6>
+    <div class="m13-btns" id="m13-lb-ops"><button type="button" data-o="grow">הרחב</button><button type="button" data-o="shrink">צמצם</button><button type="button" data-o="even">Distribute Evenly</button><button type="button" data-o="float">צף / צמוד</button><button type="button" data-o="del">הסר</button></div>
+    <h6>גודל הדשבורד</h6>
+    <div class="m13-seg" id="m13-lb-size"><button type="button" data-s="fixed" class="on">Fixed 640</button><button type="button" data-s="range">Range <bdi dir="ltr">480-720</bdi></button><button type="button" data-s="auto">Automatic</button></div>
+    <div class="m13-sl"><input type="range" id="m13-lb-win" min="300" max="900" step="10" value="760"> <span class="n" id="m13-lb-winv">760</span></div>
+    <div class="m13-btns"><button type="button" data-g="ex">פריסה לדוגמה</button><button type="button" data-g="clear">ניקוי</button></div>
+  </div>
+  <div class="m13-lb-main">
+    <div class="m13-lb-scr"><div class="m13-lb-view" id="m13-lb-view"><div class="m13-lb-win" id="m13-lb-winel"><div class="m13-lb-cv" id="m13-lb-cv"></div></div></div></div>
+    <div class="m13-lb-bot"><div class="m13-lb-tree" id="m13-lb-tree"></div><div class="m13-lb-msg" id="m13-lb-msg"></div></div>
+  </div>
+</div></div>
+<script>(function(){ FL.dom(function(){
+  var box = FL.$('[data-id="m13-sim-layout"]'); if (!box) return;
+  var VW = 900, VH = 420, FW = 640, RMIN = 480, RMAX = 720;
+  var K = {
+    B: {n: 'Branch Sales', c: 'sh'}, M: {n: 'Monthly Sales', c: 'sh'}, C: {n: 'Category Mix', c: 'sh'},
+    P: {n: 'KPI card', c: 'kp'}, T: {n: 'Text', c: 'tx'}, L: {n: 'Image (logo)', c: 'lg'}, F: {n: 'Filter: Region', c: 'fl'}, X: {n: 'Blank', c: 'bl'}
+  };
+  var PV = {
+    B: '<div class="m13-pvb"><i style="width:92%"></i><i style="width:78%"></i><i style="width:64%"></i><i style="width:52%"></i></div>',
+    M: '<svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,26 12,22 25,18 38,11 50,4 62,3 75,10 88,20 100,24" fill="none" stroke="#4e79a7" stroke-width="2.5"/></svg>',
+    C: '<div class="m13-pvb"><i style="width:90%"></i><i style="width:70%"></i><i style="width:60%"></i></div>',
+    P: '<b>236,821</b>', T: '<span>Scoop &amp; Go: how is the chain doing?</span>', L: '<span class="m13-logo">S&amp;G</span>', F: '<span class="m13-fsel">Region ▾</span>', X: ''
+  };
+  var uid = 0, root, floats, sel, mode = 'tiled', size = 'fixed', win = 760, flags = {adds: 0, cont: 0, fl: 0, win: 0}, k = 1;
+  var view = FL.$('#m13-lb-view', box), winEl = FL.$('#m13-lb-winel', box), cv = FL.$('#m13-lb-cv', box), treeEl = FL.$('#m13-lb-tree', box), msgEl = FL.$('#m13-lb-msg', box);
+  function mk(type, kind){ uid++; return {id: 'n' + uid, type: type, kind: kind || null, w: 1, ch: []}; }
+  function reset(){ uid = 0; root = mk('v'); root.id = 'r0'; floats = []; sel = 'r0'; }
+  function find(id, n, par){ n = n || root; if (n.id === id) return {n: n, p: par || null}; for (var i = 0; i < n.ch.length; i++){ var r = find(id, n.ch[i], n); if (r) return r; } return null; }
+  function target(){ var r = sel && find(sel); if (!r) return root; if (r.n.type !== 'i') return r.n; return r.p || root; }
+  function cw(){ return size === 'fixed' ? FW : size === 'range' ? Math.max(RMIN, Math.min(RMAX, win)) : win; }
+  function addItem(kind){
+    flags.adds++;
+    if (mode === 'floating'){ var o = (floats.length % 6) * 22; uid++; floats.push({id: 'f' + uid, kind: kind, x: 24 + o, y: 24 + o, w: 150, h: 76}); sel = floats[floats.length - 1].id; flags.fl = 1; }
+    else { var n = mk('i', kind); target().ch.push(n); sel = n.id; }
+    render();
+  }
+  function addCont(t){ flags.cont = 1; var n = mk(t); target().ch.push(n); sel = n.id; render(); }
+  function ops(o){
+    var s = sel; if (!s) return;
+    if (o === 'del'){
+      if (s === 'r0') return;
+      if (s.charAt(0) === 'f'){ floats = floats.filter(function(f){ return f.id !== s; }); sel = 'r0'; }
+      else { var r = find(s); if (!r || !r.p) return; var idx = r.p.ch.indexOf(r.n); var rep = r.n.type === 'i' ? [] : r.n.ch; r.p.ch.splice.apply(r.p.ch, [idx, 1].concat(rep)); sel = r.p.id; }
+    } else if (o === 'grow' || o === 'shrink'){
+      var q = find(s); if (!q || !q.p) return; q.n.w = Math.max(.3, Math.min(5, o === 'grow' ? q.n.w * 1.4 : q.n.w / 1.4));
+    } else if (o === 'even'){
+      var c = find(s); if (!c || c.n.type === 'i') return; c.n.ch.forEach(function(x){ x.w = 1; });
+    } else if (o === 'float'){
+      if (s.charAt(0) === 'f'){
+        var i = floats.findIndex(function(f){ return f.id === s; }); if (i < 0) return;
+        var f = floats.splice(i, 1)[0]; var n = mk('i', f.kind); root.ch.push(n); sel = n.id;
+      } else {
+        var r2 = find(s); if (!r2 || r2.n.type !== 'i' || !r2.p) return;
+        var el = cv.querySelector('[data-id="' + s + '"]'); if (!el) return;
+        var cr = cv.getBoundingClientRect(), er = el.getBoundingClientRect();
+        r2.p.ch.splice(r2.p.ch.indexOf(r2.n), 1); uid++;
+        floats.push({id: 'f' + uid, kind: r2.n.kind, x: (er.left - cr.left) / k, y: (er.top - cr.top) / k, w: Math.max(er.width / k, 90), h: Math.max(er.height / k, 50)});
+        sel = 'f' + uid; flags.fl = 1;
+      }
+    }
+    render();
+  }
+  function example(){
+    reset(); flags.adds = Math.max(flags.adds, 4); flags.cont = 1;
+    var title = mk('h'); title.w = .5; var t = mk('i', 'T'); t.w = 2; title.ch = [t, mk('i', 'X')];
+    var kp = mk('h'); kp.w = .7; for (var i = 0; i < 4; i++) kp.ch.push(mk('i', 'P'));
+    var main = mk('h'); main.w = 3; var l = mk('i', 'B'); l.w = 1.2; var rv = mk('v'); rv.ch = [mk('i', 'M'), mk('i', 'C')]; main.ch = [l, rv];
+    root.ch = [title, kp, main]; uid++;
+    floats = [{id: 'f' + uid, kind: 'L', x: FW - 112, y: 6, w: 100, h: 38}]; sel = 'r0'; flags.fl = 1;
+    render();
+  }
+  function pv(kind){ return '<span class="m13-nm">' + K[kind].n + '</span>' + PV[kind]; }
+  function nodeEl(n){
+    var d = document.createElement('div'); d.dataset.id = n.id; d.style.flex = n.w + ' 1 0';
+    if (n.type === 'i'){ d.className = 'm13-n m13-it m13-k-' + K[n.kind].c; d.innerHTML = pv(n.kind); }
+    else {
+      d.className = 'm13-n m13-c m13-' + n.type;
+      if (n.ch.length === 0 && n !== root) d.innerHTML = '<span class="m13-empty">מכולה ריקה</span>';
+      n.ch.forEach(function(c){ d.appendChild(nodeEl(c)); });
+      var tg = document.createElement('span'); tg.className = 'm13-tag'; tg.textContent = n.type === 'h' ? 'Horizontal' : 'Vertical'; d.appendChild(tg);
+    }
+    if (n.id === sel) d.classList.add('sel');
+    return d;
+  }
+  function layoutBox(){
+    k = view.clientWidth / VW; var c = cw();
+    view.style.height = (VH * k) + 'px';
+    winEl.style.width = (win * k) + 'px';
+    var left = c <= win ? (win - c) / 2 : 0;
+    cv.style.width = (c * k) + 'px'; cv.style.left = (left * k) + 'px';
+  }
+  function render(){
+    layoutBox();
+    cv.innerHTML = '';
+    var r = nodeEl(root); r.classList.add('m13-root'); r.style.flex = ''; cv.appendChild(r);
+    floats.forEach(function(f){
+      var d = document.createElement('div'); d.className = 'm13-f m13-it m13-k-' + K[f.kind].c; d.dataset.id = f.id; d.tabIndex = 0;
+      d.style.left = (f.x * k) + 'px'; d.style.top = (f.y * k) + 'px'; d.style.width = (f.w * k) + 'px'; d.style.height = (f.h * k) + 'px';
+      d.innerHTML = pv(f.kind) + '<span class="m13-fl">Floating</span>'; if (f.id === sel) d.classList.add('sel'); cv.appendChild(d);
+    });
+    FL.$$('#m13-lb-mode button', box).forEach(function(b){ b.classList.toggle('on', b.dataset.m === mode); });
+    FL.$$('#m13-lb-size button', box).forEach(function(b){ b.classList.toggle('on', b.dataset.s === size); });
+    renderTree(); check();
+    if (flags.adds >= 4 && flags.cont && flags.fl && flags.win) FL.done('m13-sim-layout');
+  }
+  function renderTree(){
+    var h = '<div class="t0">Item hierarchy</div>';
+    (function walk(n, d){
+      var lab = n === root ? 'Dashboard (Vertical)' : n.type === 'i' ? '▤ ' + K[n.kind].n : (n.type === 'h' ? 'Horizontal' : 'Vertical');
+      h += '<div class="tr' + (n.id === sel ? ' sel' : '') + '" data-tid="' + n.id + '" style="padding-inline-start:' + (d * 14) + 'px">' + lab + '</div>';
+      n.ch.forEach(function(c){ walk(c, d + 1); });
+    })(root, 0);
+    if (floats.length){ h += '<div class="tr fl0"><b>Floating</b></div>'; floats.forEach(function(f){ h += '<div class="tr' + (f.id === sel ? ' sel' : '') + '" data-tid="' + f.id + '" style="padding-inline-start:14px">▤ ' + K[f.kind].n + '</div>'; }); }
+    treeEl.innerHTML = h;
+  }
+  function check(){
+    var m = [], sheets = 0, empties = 0, depth = 0, items = 0;
+    (function walk(n, d){ if (n.type === 'i'){ items++; if ('BMC'.indexOf(n.kind) >= 0) sheets++; return; } if (n !== root && !n.ch.length) empties++; if (n !== root) depth = Math.max(depth, d); n.ch.forEach(function(c){ walk(c, d + 1); }); })(root, 0);
+    floats.forEach(function(f){ items++; if ('BMC'.indexOf(f.kind) >= 0) sheets++; });
+    var cr = cv.getBoundingClientRect(), small = 0, over = [];
+    FL.$$('.m13-n.m13-it', cv).forEach(function(e){ var r = e.getBoundingClientRect(); if (r.width / k < 70 || r.height / k < 36) small++; });
+    FL.$$('.m13-f', cv).forEach(function(fe){
+      var fr = fe.getBoundingClientRect(), fk = fe.className.indexOf('m13-k-bl') >= 0;
+      FL.$$('.m13-n.m13-it.m13-k-sh, .m13-n.m13-it.m13-k-kp', cv).forEach(function(e){
+        var r = e.getBoundingClientRect(); var iw = Math.min(fr.right, r.right) - Math.max(fr.left, r.left), ih = Math.min(fr.bottom, r.bottom) - Math.max(fr.top, r.top);
+        if (iw > 0 && ih > 0 && (iw * ih) / (r.width * r.height) > .08){ var nm = FL.$('.m13-nm', e); over.push(nm ? nm.textContent : 'פריט'); }
+      });
+    });
+    if (!items) m.push(['i', 'הפריסה ריקה. הוסיפו גיליון או לחצו על &quot;פריסה לדוגמה&quot;.']);
+    if (over.length) m.push(['w', 'פריט צף מכסה את <b>' + over[0] + '</b>. צף צריך לשבת מעל רווח, לא מעל גרף.']);
+    if (floats.length >= 3) m.push(['w', 'שלושה פריטים צפים או יותר: כל שינוי גודל מסכן את הפריסה. כדאי להשאיר צף רק למה שחייב.']);
+    if (empties) m.push(['w', 'יש מכולה ריקה. מכולות ריקות רק מוסיפות בלגן.']);
+    if (depth > 3) m.push(['w', 'מכולה בתוך מכולה בתוך מכולה. כל מכולה מוסיפה עבודה לציור, אז צמצמו.']);
+    if (sheets > 3) m.push(['w', 'יותר משלושה גרפים. לפי הנחיות Tableau, שניים או שלושה גרפים בדשבורד, ואת השאר מפצלים לדשבורד נוסף.']);
+    if (small) m.push(['w', small + ' פריטים צמודים קטנים מדי לקריאה. הרחיבו אותם או הסירו פריט.']);
+    var c = cw();
+    if (c > win) m.push(['w', 'החלון צר מהדשבורד (' + c + ' מול ' + win + '): הצופה צריך לגלול הצידה.']);
+    else if (size !== 'auto' && win - c > 80) m.push(['i', 'נשאר רווח ריק של ' + Math.round(win - c) + ' פיקסלים. זה מה שקורה כשהחלון רחב מהמקסימום.']);
+    if (!m.length && sheets >= 2) m.push(['g', 'פריסה נקייה: אין מכסים, אין מכולות ריקות, ואין גלילה. נסו לשנות את רוחב החלון ולראות אם זה נשאר כך.']);
+    msgEl.innerHTML = m.map(function(x){ return '<div class="m13-m ' + x[0] + '">' + x[1] + '</div>'; }).join('');
+  }
+  // building the add buttons
+  var addB = FL.$('#m13-lb-add', box);
+  'BMCPTLFX'.split('').forEach(function(c){ var b = document.createElement('button'); b.type = 'button'; b.dataset.k = c; b.textContent = '+ ' + K[c].n; addB.appendChild(b); });
+  addB.addEventListener('click', function(e){ var b = e.target.closest('button'); if (b) addItem(b.dataset.k); });
+  FL.$$('[data-c]', box).forEach(function(b){ b.addEventListener('click', function(){ addCont(b.dataset.c); }); });
+  FL.$('#m13-lb-ops', box).addEventListener('click', function(e){ var b = e.target.closest('button'); if (b) ops(b.dataset.o); });
+  FL.$('#m13-lb-mode', box).addEventListener('click', function(e){ var b = e.target.closest('button'); if (b){ mode = b.dataset.m; render(); } });
+  FL.$('#m13-lb-size', box).addEventListener('click', function(e){ var b = e.target.closest('button'); if (b){ size = b.dataset.s; flags.win = 1; render(); } });
+  FL.$('[data-g="ex"]', box).addEventListener('click', example);
+  FL.$('[data-g="clear"]', box).addEventListener('click', function(){ reset(); render(); });
+  var sl = FL.$('#m13-lb-win', box), lab = FL.$('#m13-lb-winv', box);
+  sl.addEventListener('input', function(){ win = +sl.value; lab.textContent = win; flags.win = 1; render(); });
+  treeEl.addEventListener('click', function(e){ var t = e.target.closest('.tr[data-tid]'); if (t){ sel = t.dataset.tid; render(); } });
+  cv.addEventListener('click', function(e){ var t = e.target.closest('[data-id]'); if (t && !drag){ sel = t.dataset.id; render(); } });
+  // dragging floating items, and arrow keys (1 px, Shift for 10 px)
+  var drag = null;
+  cv.addEventListener('pointerdown', function(e){
+    var t = e.target.closest('.m13-f'); if (!t) return;
+    var f = floats.filter(function(x){ return x.id === t.dataset.id; })[0]; if (!f) return;
+    sel = f.id; drag = {f: f, sx: e.clientX, sy: e.clientY, x: f.x, y: f.y, el: t, moved: false};
+    try { t.setPointerCapture(e.pointerId); } catch (x) {}
+    e.preventDefault();
+  });
+  cv.addEventListener('pointermove', function(e){
+    if (!drag) return; var dx = (e.clientX - drag.sx) / k, dy = (e.clientY - drag.sy) / k; if (Math.abs(dx) + Math.abs(dy) > 3) drag.moved = true;
+    var c = cw(); drag.f.x = Math.max(0, Math.min(c - drag.f.w, drag.x + dx)); drag.f.y = Math.max(0, Math.min(VH - drag.f.h, drag.y + dy));
+    drag.el.style.left = (drag.f.x * k) + 'px'; drag.el.style.top = (drag.f.y * k) + 'px';
+  });
+  function endDrag(){ if (!drag) return; var moved = drag.moved; drag = null; render(); }
+  cv.addEventListener('pointerup', endDrag); cv.addEventListener('pointercancel', endDrag);
+  cv.addEventListener('keydown', function(e){
+    var t = e.target.closest('.m13-f'); if (!t) return; var f = floats.filter(function(x){ return x.id === t.dataset.id; })[0]; if (!f) return;
+    var s = e.shiftKey ? 10 : 1, d = {ArrowLeft: [-s, 0], ArrowRight: [s, 0], ArrowUp: [0, -s], ArrowDown: [0, s]}[e.key]; if (!d) return;
+    f.x = Math.max(0, f.x + d[0]); f.y = Math.max(0, f.y + d[1]); e.preventDefault(); sel = f.id; render(); var nf = FL.$('[data-id="' + f.id + '"]', cv); if (nf) nf.focus();
+  });
+  window.addEventListener('resize', function(){ render(); });
+  reset(); render();
+}); })();</script>
+<p class="m13-cap">נסו: לחצו על &quot;פריסה לדוגמה&quot;. אחר כך צמצמו את החלון ל-400 ובדקו מה ההדמיה אומרת. גררו את הלוגו על גרף. לחצו עליו ובחרו מקשי חצים (עם <kbd>Shift</kbd> זזים עשרה פיקסלים בכל לחיצה, כמו בתוכנה).</p>
+
+<div class="box try" data-id="m13-try-containers">
+<p><b>שורת כרטיסי KPI ושורה ראשית, עם מכולות</b></p>
+<ol>
+<li>בדשבורד <code>Practice</code>, בלשונית <code>Layout</code>, ראו את <code>Item hierarchy</code>. אם הוא לא מסודר כמו העץ שלמעלה, נסדר עכשיו. <i>למה: כשרואים את העץ, מבינים מה אפשר לגרור לאן.</i></li>
+<li>גררו מרשימת <code>Objects</code> מכולה <code>Horizontal</code> אל החלק העליון של המשטח (מעל כל הגיליונות). שחררו כשהקו האפור מופיע לאורך כל הרוחב. <i>למה: זו שורת ה-KPI.</i></li>
+<li>גררו אל תוכה, אחד אחרי השני, את <code>KPI Sales</code>, <code>KPI Profit</code>, <code>KPI Margin</code> ו-<code>KPI Orders</code>. בכל גרירה שחררו בקצה הימני של הפריט הקודם. <i>למה: בכל שחרור כזה Tableau מוסיף את הפריט לאותה שורה.</i></li>
+<li>לחצו על המכולה (על הקו שלה, לא על כרטיס), פתחו את החץ בפינה ובחרו <code>Distribute Evenly</code>. אם אין לכם, חפשו תחת <code>Distribute Contents</code>. <i>למה: ארבעה כרטיסים באותו רוחב נראים מסודרים.</i></li>
+<li>לכל כרטיס KPI: הסתירו את הכותרת (<code>Title</code> בתפריט הפריט) וקבעו <code>Fit</code> ל-<code>Entire View</code>. <i>למה: מה שחשוב הוא המספר, וכותרת של גיליון רק תופסת מקום.</i></li>
+<li>בדקו ש-<code>Monthly Sales</code> ו-<code>Category Mix</code> יושבים אחד מעל השני באותה מכולה אנכית מימין לגרף הסניפים. כך הם נבנו בסעיף 1. אם לא, גררו מכולה <code>Vertical</code> לצד הימני של הגרף והניחו בה את שניהם. <i>למה: שני גרפים משתפים עמודה אחת.</i></li>
+</ol>
+<p><b>תוצאה צפויה:</b> ב-<code>Item hierarchy</code> רואים מכולה אופקית אחת עם ארבעה כרטיסי KPI שרוחבם שווה (כל אחד בערך ברבע מהרוחב), ומתחתיה מכולה אופקית שבה גרף הסניפים משמאל ומכולה אנכית עם גרף החודשים והקטגוריות מימין. הערכים בכרטיסים: <span class="n">236,821</span>, <span class="n">120,723</span>, <span class="n">51.0%</span>, <span class="n">6,575</span>.</p>
+</div>
+
+<div class="box try" data-id="m13-try-floating-logo">
+<p><b>לוגו צף בדשבורד נפרד לבדיקה</b></p>
+<ol>
+<li>צרו דשבורד חדש בשם <code>Float Test</code>. קבעו <code>Size</code> ל-<code>Fixed size</code> על 1200 על 800. <i>למה: פריטים צפים עובדים הכי טוב על גודל קבוע. לא נקלקל את <code>Practice</code>.</i></li>
+<li>גררו את <code>Branch Sales</code> למשטח. <i>למה: צריך משהו צמוד מתחת לצף.</i></li>
+<li>ברשימת <code>Objects</code> לחצו על <code>Floating</code>, ואז גררו אובייקט <code>Text</code> אל הפינה הימנית העליונה. כתבו <code>Scoop &amp; Go</code> בגופן גדול. <i>למה: ככה עושים כותרת צפה שלא דוחפת את הגרף.</i></li>
+<li>בלשונית <code>Layout</code>, בקטע של הפריט הנבחר, קבעו מיקום <code>x = 20</code>, <code>y = 10</code> ורוחב <code>240</code> וגובה <code>50</code>. <i>למה: מיקום מדויק בפיקסלים שלמים, כמו שאומרת ההמלצה לדשבורד בגודל קבוע.</i></li>
+<li>לחצו על הפריט ולחצו על מקש חץ ימינה כמה פעמים. אחר כך <kbd>Shift</kbd> וחץ. <i>למה: חץ זז פיקסל אחד, ועם Shift עשרה.</i></li>
+<li>פתחו את <code>Item hierarchy</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> ב-<code>Item hierarchy</code> הטקסט מופיע בקבוצה נפרדת של פריטים צפים, מתחת לעץ הצמוד. הוא יושב מעל הגרף. אם הזזתם את הטקסט למקום שבו הוא מכסה עמודה של הגרף, העמודה נעלמת מאחוריו. זו הסיבה שמניחים צף רק מעל רווח.</p>
+</div>
+
+<div class="box meaning"><p>דשבורד יציב נבנה מצמוד, ומשאירים צף לדברים קטנים שחייבים לשבת מעל אחרים: לוגו, מקרא על מפה, כפתור. בלשונית <code>Layout</code> ה-<code>Item hierarchy</code> הוא הדרך להבין מה עושה מה. מי שמתחיל מצף לכל פריט מקבל מסך שנראה טוב רק בגודל שבנה בו.</p></div>
+
+<div class="box real"><p>קל לזהות דשבורד שנבנה על צף: מקטינים את החלון והפריטים מתחילים לעלות זה על זה. לעומת זאת דשבורד שנבנה מצמוד ומכולות מתכווץ בצורה אחידה. זו הסיבה שבהנחיות של Tableau למעצבים רואים שוב ושוב את ההמלצה להשתמש במכולות.</p></div>
+
+<div class="box trap"><p><b>פריט מוסתר משאיר חור.</b> אם משתמשים ב-<code>Add Show/Hide Button</code> על פריט שיושב ישירות במכולה הראשית, אחרי ההסתרה נשאר חלל ריק שאף אחד לא מילא. הפתרון: להניח את הפריט שרוצים להסתיר בתוך מכולה משלו, כדי שהמכולה תתכווץ.</p></div>
+
+<div class="box trap"><p><b>גוררים ופוגעים בפריט הלא נכון.</b> כשלוחצים על גרף בדשבורד, Tableau בוחר לפעמים את המכולה ולא את הגרף. אם ההגדרות שאתם משנים לא משפיעות על הגרף, בדקו מה נבחר: בלשונית <code>Layout</code> הפריט הנבחר מודגש ב-<code>Item hierarchy</code>. לחיצה על שם הפריט בעץ היא הדרך הבטוחה לבחור אותו.</p></div>
+
+<div class="box think" data-id="m13-th-kpi-row"><p>שאלה: למה שורת כרטיסי ה-KPI יושבת במכולה אופקית ולא בארבעה פריטים צפים ליד זה, כל אחד במקום מדויק?</p>
+<div class="ans">מכולה נותנת לארבעת הכרטיסים רוחב שווה לפי רוחב הדשבורד, ושומרת על הסדר כשהחלון משתנה. ארבעה צפים צריכים ארבע קואורדינטות, ואם הדשבורד מצטמצם אחד מהם יכסה את השני. עם מכולה, <code>Distribute Evenly</code> אחת פותרת הכול. שימו לב גם שאם אחד הכרטיסים מוסר, שלושת האחרים נמתחים ומתמלאים, ואין חור.</div></div>
+
+<div class="quiz" data-id="m13-q-tiled-float" data-a="2"><p class="qq">איזה פריט נכון להפוך לצף?</p>
+<button class="opt">גרף הסניפים, כדי שיהיה גדול יותר</button>
+<button class="opt">לוגו קטן שצריך לשבת מעל הפינה של הכותרת</button>
+<button class="opt">כל ארבעת כרטיסי ה-KPI, כדי לשלוט במיקום של כל אחד</button>
+<button class="opt">מסנן האזור, כדי שלא יחלק את הדשבורד</button>
+<div class="why">צף שמור לדברים שחייבים לשבת מעל משהו, כמו לוגו. גרף שהופכים לצף לא מתאים את עצמו לחלון (א). ארבעה כרטיסים צפים עושים פריסה שבירה, ומכולה אופקית עושה אותה טובה (ג). מסנן צמוד בתוך מכולה נשאר מסודר גם כשהחלון משתנה (ד).</div></div>
+
+<div class="quiz" data-id="m13-q-container-dir" data-a="1"><p class="qq">שורת ה-KPI היא מכולה אופקית עם ארבעה כרטיסים. מה עושה <code>Distribute Evenly</code>?</p>
+<button class="opt">נותנת לכל ארבעת הכרטיסים רוחב שווה</button>
+<button class="opt">נותנת לכל כרטיס גובה שווה</button>
+<button class="opt">הופכת את הכרטיסים לפריטים צפים</button>
+<button class="opt">מוחקת את המכולה ומשחררת את הכרטיסים</button>
+<div class="why">מכולה אופקית מחלקת את <b>הרוחב</b>, ו-<code>Distribute Evenly</code> שמה לכולם אותו חלק (תשובה ב מתאימה למכולה אנכית). מחיקת מכולה היא <code>Remove Container</code> (ד). הפיכה לצף היא פקודה אחרת (ג).</div></div>
+
+<div class="quiz" data-id="m13-q-hide-gap" data-a="3"><p class="qq">מוסיפים <code>Show/Hide Button</code> למסנן שיושב ישירות בשורה הראשית, ואחרי הסגירה נשאר חור. מה הפתרון?</p>
+<button class="opt">להגדיל את המסנן, כדי שיתפוס את החור</button>
+<button class="opt">להפוך את כל הדשבורד לצף</button>
+<button class="opt">להניח את המסנן בתוך מכולה משלו, כך שהיא תיסגר איתו</button>
+<div class="why">פריט שמוסתר מכולה שמחזיקה אותו נעלם. כשהמכולה הראשית ממשיכה לשמור את המקום, נשאר חור. במכולה משלו, הכול נסגר יחד והשכנים מתמלאים.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> אחרי ההדמיה בקשו מכל סטודנט לבנות במדויק את העץ שבאיור, ולצמצם את החלון. כדי להמחיש את הבעיה של צף: הציבו לוגו צף, צמצמו וראו מה נחתך. בדקו בתוכנה את התפריט של מכולה (<code>Distribute Evenly</code> או <code>Distribute Contents</code>) ואת שדות המיקום ב-<code>Layout</code>: שמות הקטעים משתנים בין גרסאות. ב-web authoring של Public לפי הדף הרשמי יש תמיכה במכולות ובאובייקטים. אובייקט <code>Download</code> ותוספים לא נכללים בתרגילים, כי הזמינות שלהם ב-Public לא אומתה. אם יש סטודנט שהלוגו שלו עצמו לא נטען, בדקו שהכתובת מתחילה ב-https.</div>
+</section>
+<section class="sec" id="m13-4" data-t="מסננים בדשבורד">
+<div class="sec-h"><div class="sec-n">4</div><h2>מסננים בדשבורד: לאילו גיליונות הם מגיעים</h2></div>
+<p class="lead">המנהלת של אזור הדרום אומרת: &quot;אני רוצה לראות רק את הדרום.&quot; אתם לא רוצים שתי גרסאות של הדשבורד. מוסיפים מסנן, והוא משנה את הכול. או שלא משנה את הכול. כאן קורית רוב הבלבול, ולכן שווה להבין את זה היטב.</p>
+
+<div class="defline"><b>כרטיס מסנן (<code>Filter card</code>):</b> תיבה על הדשבורד שבה הצופה בוחר ערכים, והגיליונות מתעדכנים. דוגמה: רשימת האזורים ובה בחירה ב-South, כך שרק שלושת סניפי הדרום נשארים.</div>
+
+<p>כרטיס מסנן הוא פריט בדשבורד, אבל הוא שייך לגיליון. כדי להציג אותו: בגיליון הרצוי שמים את <span class="pill d">Region</span> ב-<code>Filters</code> (מודול 6). בדשבורד לוחצים על הגיליון, פותחים את החץ שבפינה שלו, וב-<code>Filters</code> מסמנים את <span class="pill d">Region</span>. הכרטיס מופיע ליד הגיליון.</p>
+<p>שני דברים נקבעים בתפריט של הכרטיס (החץ הקטן שבפינה שלו): <b>איך הוא נראה</b> ו<b>לאילו גיליונות הוא פועל</b>.</p>
+
+<h3>איך הכרטיס נראה</h3>
+<p>בתפריט הכרטיס בוחרים את סוג התצוגה. הנה הרשימה, עם דוגמה לכל אחת מהאזורים של Scoop &amp; Go (<code>Center</code>, <code>Jerusalem</code>, <code>North</code>, <code>South</code>):</p>
+<div class="m13-fcs" aria-label="הדמיה סכמטית של כרטיסי מסנן בסוגי תצוגה שונים">
+  <div class="m13-fc"><h6>Region</h6><div class="m13-fl"><label><input type="checkbox" checked disabled> (All)</label><label><input type="checkbox" checked disabled> Center</label><label><input type="checkbox" checked disabled> Jerusalem</label><label><input type="checkbox" checked disabled> North</label><label><input type="checkbox" checked disabled> South</label></div><small>Multiple Values (list)</small></div>
+  <div class="m13-fc"><h6>Region</h6><div class="m13-fl"><label><input type="radio" disabled> Center</label><label><input type="radio" disabled> Jerusalem</label><label><input type="radio" disabled> North</label><label><input type="radio" checked disabled> South</label></div><small>Single Value (list)</small></div>
+  <div class="m13-fc"><h6>Region</h6><div class="m13-dd">South ▾</div><small>Single Value (dropdown)</small></div>
+  <div class="m13-fc"><h6>Region</h6><div class="m13-dd">(All) ▾</div><small>Multiple Values (dropdown)</small></div>
+</div>
+<p class="m13-cap">הדמיה סכמטית. בנוסף יש <code>Wildcard Match</code> (הקלדה של חלק מהטקסט) ותצוגת מחוון לערכים מספריים. השמות המדויקים עשויים להשתנות בגרסה שלכם.</p>
+<p>איך בוחרים? אזורים הם ארבעה ערכים בלבד, ולכן אפשר רשימה. תשעת הסניפים עדיפים כרשימה נפתחת, כי היא תופסת שורה אחת. כלל פשוט: ככל שיש יותר ערכים, התצוגה צריכה להיות קטנה יותר.</p>
+
+<h3>לאילו גיליונות הוא פועל</h3>
+<p>ברירת המחדל מפתיעה: מסנן שנוצר בגיליון אחד פועל רק עליו. כדי שיגיע לשאר הגיליונות פותחים את תפריט הכרטיס, <code>Apply to Worksheets</code>, ובוחרים:</p>
+<ul>
+<li><code>Only This Worksheet</code>: רק הגיליון שבו נוצר.</li>
+<li><code>Selected Worksheets...</code>: מסמנים אילו גיליונות (רשימה).</li>
+<li><code>All Using This Data Source</code>: כל הגיליונות שמבוססים על אותו מקור נתונים.</li>
+</ul>
+<p>(יש גם אפשרות של מקורות קשורים, אצלנו לא רלוונטית. בגרסה שלכם ייתכן שהשמות שונים מעט.) בדשבורד שכל גיליונותיו על קובץ אחד, <code>All Using This Data Source</code> היא הבחירה הרגילה.</p>
+
+<div class="anim" data-id="m13-anim-filter-scope" data-speed="3600">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="הנפשה: אותו מסנן אזור עם שלוש הגדרות של Apply to Worksheets, ומה משתנה בארבעה גיליונות">
+<rect x="270" y="14" width="260" height="38" rx="8" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+<g data-only="1"><text x="400" y="39" text-anchor="middle" font-size="16" font-weight="700" fill="#0f172a">Region: (All)</text></g>
+<g data-only="2,3,4"><text x="400" y="39" text-anchor="middle" font-size="16" font-weight="700" fill="#0f172a">Region: South</text></g>
+<g data-only="2"><text x="400" y="74" text-anchor="middle" font-size="15" font-weight="700" fill="#e8741f">Only This Worksheet (נוצר ב-Branch Sales)</text></g>
+<g data-only="3"><text x="400" y="74" text-anchor="middle" font-size="15" font-weight="700" fill="#e8741f">Selected Worksheets: KPI, Branch, Monthly</text></g>
+<g data-only="4"><text x="400" y="74" text-anchor="middle" font-size="15" font-weight="700" fill="#e8741f">All Using This Data Source</text></g>
+<g font-size="15" font-weight="700" fill="#334155" text-anchor="middle">
+<text x="105" y="112">KPI Sales</text><text x="302" y="112">Branch Sales</text><text x="500" y="112">Monthly Sales: שיא</text><text x="698" y="112">Category Mix: Cups</text></g>
+<g fill="#fff" stroke="#c7cfd9" stroke-width="2">
+<rect x="14" y="124" width="182" height="170" rx="10"/><rect x="211" y="124" width="182" height="170" rx="10"/><rect x="409" y="124" width="182" height="170" rx="10"/><rect x="607" y="124" width="182" height="170" rx="10"/></g>
+<g fill="none" stroke="#e8741f" stroke-width="4">
+<g data-only="3,4"><rect x="14" y="124" width="182" height="170" rx="10"/></g>
+<g data-only="2,3,4"><rect x="211" y="124" width="182" height="170" rx="10"/></g>
+<g data-only="3,4"><rect x="409" y="124" width="182" height="170" rx="10"/></g>
+<g data-only="4"><rect x="607" y="124" width="182" height="170" rx="10"/></g></g>
+<g font-size="30" font-weight="800" fill="#0f172a" text-anchor="middle">
+<g data-only="1,2"><text x="105" y="222">236,821</text></g><g data-only="3,4"><text x="105" y="222">55,575</text></g>
+<g data-only="1"><text x="302" y="222">9 bars</text></g><g data-only="2,3,4"><text x="302" y="222">3 bars</text></g>
+<g data-only="1,2"><text x="500" y="222">23,259.9</text></g><g data-only="3,4"><text x="500" y="222">5,402.1</text></g>
+<g data-only="1,2,3"><text x="698" y="222">69,470.0</text></g><g data-only="4"><text x="698" y="222">16,648.4</text></g></g>
+<g font-size="14" fill="#64748b" text-anchor="middle">
+<text x="105" y="252">סך המכירות</text><text x="302" y="252">עמודות</text>
+<g data-only="1,2"><text x="500" y="252">Aug 2025</text></g><g data-only="3,4"><text x="500" y="252">Jul 2025</text></g>
+<text x="698" y="252">מכירות Cups</text></g>
+<g data-only="2,3"><text x="400" y="318" text-anchor="middle" font-size="15" font-weight="700" fill="#b91c1c">שימו לב: מספרים של דרום לצד מספרים של כל הרשת</text></g>
+<g data-only="4"><text x="400" y="318" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">הכול מראה את אותה קבוצה: הדרום</text></g>
+</svg></div>
+<ol class="caps">
+<li>אין סינון. כל הרשת: 236,821 מכירות, 9 סניפים, שיא באוגוסט 2025 ו-Cups על 69,470.0.</li>
+<li>בוחרים South והמסנן נוצר ב-<code>Branch Sales</code> עם <code>Only This Worksheet</code>. רק גרף הסניפים משתנה: 3 עמודות. הכרטיס של סך המכירות עדיין מראה את כל הרשת.</li>
+<li><code>Selected Worksheets</code> עם סימון על כרטיס המכירות, גרף הסניפים וגרף החודשים. הם מראים דרום: 55,575 ושיא של 5,402.1 ביולי 2025. אבל <code>Category Mix</code> עדיין מראה את כל הרשת.</li>
+<li><code>All Using This Data Source</code>: כל ארבעת הגיליונות מתייחסים לדרום. Cups: 16,648.4.</li>
+</ol></div>
+
+<div class="box try" data-id="m13-try-filter-card">
+<p><b>מסנן אזור על כל הדשבורד</b></p>
+<ol>
+<li>בדשבורד <code>Practice</code> לחצו על <code>Branch Sales</code>. אם <span class="pill d">Region</span> לא ב-<code>Filters</code> של הגיליון, עברו אליו וגררו אותו לשם (בחלון המסנן סמנו הכול). חזרו לדשבורד. <i>למה: רק מסנן שנמצא בגיליון אפשר להציג כרטיס שלו.</i></li>
+<li>לחצו על <code>Branch Sales</code>, פתחו את החץ בפינה, <code>Filters</code>, וסמנו <span class="pill d">Region</span>. כרטיס מסנן נוסף לדשבורד. <i>למה: ככה הצופה מקבל ידית.</i></li>
+<li>בכרטיס בחרו <code>South</code> בלבד. שימו לב מה משתנה: רק גרף הסניפים. כרטיסי ה-KPI ושאר הגרפים נשארים כמו שהיו. <i>למה: זו ברירת המחדל. מסנן שנוצר בגיליון פועל רק עליו.</i></li>
+<li>בתפריט הכרטיס: <code>Apply to Worksheets</code>, <code>All Using This Data Source</code>. <i>למה: ככה הוא מגיע לכל הגיליונות.</i></li>
+<li>חזרו על הניסוי עם <code>Selected Worksheets...</code> (בחרו את כל הגיליונות פרט ל-<code>Category Mix</code>), ואז עם <code>Only This Worksheet</code>.</li>
+</ol>
+<p><b>תוצאה צפויה</b> עם South בכרטיס:</p>
+<div class="tw"><table class="tbl">
+<thead><tr><th>הגדרה</th><th>KPI Sales</th><th>Branch Sales</th><th>שיא ב-Monthly Sales</th><th>העמודה Cups</th></tr></thead>
+<tbody>
+<tr><td><code>Only This Worksheet</code></td><td><span class="n">236,821</span></td><td>3 עמודות</td><td><span class="n">23,259.9</span> (Aug 2025)</td><td><span class="n">69,470.0</span></td></tr>
+<tr><td><code>Selected Worksheets</code> בלי Category Mix</td><td><span class="n">55,575</span></td><td>3 עמודות</td><td><span class="n">5,402.1</span> (Jul 2025)</td><td><span class="n">69,470.0</span></td></tr>
+<tr><td><code>All Using This Data Source</code></td><td><span class="n">55,575</span></td><td>3 עמודות</td><td><span class="n">5,402.1</span> (Jul 2025)</td><td><span class="n">16,648.4</span></td></tr>
+</tbody></table></div>
+<p>שלושת סניפי הדרום בגרף הסניפים: Eilat Promenade <span class="n">31,473.7</span>, Beer Sheva Grand Mall <span class="n">18,797.2</span>, Ashdod Beach Pop-up <span class="n">5,304.5</span> (סכום <span class="n">55,575.4</span>). גרף החודשים של הדרום נשאר עם <span class="n">24</span> סימנים, כי שלושת הסניפים פעלו כל התקופה.</p>
+</div>
+
+<div class="box try" data-id="m13-try-filter-clean">
+<p><b>כרטיס מסנן נקי, שאפשר להבין</b></p>
+<ol>
+<li>בתפריט של כרטיס <span class="pill d">Region</span> בחרו <code>Multiple Values (dropdown)</code>. <i>למה: רשימה נפתחת תופסת שורה אחת ולא חמש.</i></li>
+<li>בתפריט של הכרטיס בחרו <code>Edit Title...</code> וכתבו <code>Select a region</code>. <i>למה: כותרת שאומרת מה לעשות עדיפה על שם שדה.</i></li>
+<li>שימו את הכרטיס במכולה האופקית העליונה, מעל הגרפים. <i>למה: מסנן שהצופה רואה ראשון הוא מסנן שבאמת משתמשים בו.</i></li>
+<li>אם יש כמה כרטיסים של אותו מסנן (בגלל שהצגתם אותו מכמה גיליונות), השאירו אחד והסירו את השאר בעזרת ה-X שבפינה של הכרטיס. <i>למה: כמה כרטיסים זהים מבלבלים את הצופה, וגם במדריך ההתחלה הרשמי של Tableau מסירים כרטיסים כפולים.</i></li>
+</ol>
+<p><b>תוצאה צפויה:</b> כרטיס אחד בשם <code>Select a region</code>, בגובה שורה, שמציג <code>(All)</code> כשלא בחרתם דבר. כשבוחרים <code>South</code> ו-<code>North</code> יחד, ב-<code>Branch Sales</code> נשארות <span class="n">4</span> עמודות: Eilat, Beer Sheva, Ashdod וגם Haifa German Colony. סכום המכירות שלהן: <span class="n">82,964.6</span> (<span class="n">55,575.4</span> של הדרום ועוד <span class="n">27,389.2</span> של הצפון).</p>
+</div>
+
+<div class="box meaning"><p>מסנן הוא החלטה על כל הדשבורד, לא על גרף אחד. אם רק חלק מהגיליונות מסוננים, הצופה רואה מספרים של קבוצות שונות זה ליד זה ובטוח שהם שייכים לאותה קבוצה. לכן כמעט תמיד בוחרים <code>All Using This Data Source</code>. רק כשגיליון מציג בכוונה את כל הרשת כנקודת ייחוס, מוציאים אותו מהסינון, ואומרים את זה בכותרת שלו.</p></div>
+
+<div class="box real"><p>בדשבורדים של הנהלה יש בדרך כלל מסנן או שניים בלבד, ואחריהם פעולות לחיצה על הגרפים (הסעיף הבא). כשיש הרבה כרטיסי מסנן, הדשבורד נראה כמו טופס ומאט. בהנחיות הביצועים של Tableau מומלץ להשתמש בפעולות סינון במקום בהרבה מסננים מהירים.</p></div>
+
+<div class="box trap"><p><b>הצופה רואה שני מספרים שלא מסתדרים.</b> סיננתם South, והכרטיס אומר 236,821 בזמן שגרף הסניפים מראה שלוש עמודות בלבד. הסיבה כמעט תמיד: המסנן נוצר בגיליון אחד ופועל רק עליו. בודקים <code>Apply to Worksheets</code>.</p></div>
+
+<div class="box trap"><p><b><code>Only Relevant Values</code>.</b> בכרטיס יש אפשרות להציג רק ערכים שרלוונטיים לבחירות אחרות. היא נוחה, אבל לפי הנחיות הביצועים של Tableau היא מוסיפה שאילתות ומאטה, והרשימה משתנה בכל בחירה. בדשבורד קטן אין בכך בעיה, בדשבורד גדול כדאי להימנע.</p></div>
+
+<div class="box think" data-id="m13-th-filter-scope"><p>שאלה: מי שרואה את הדשבורד מבקש &quot;שהכרטיס של סך הרשת יישאר תמיד על הכול, גם כשבוחרים אזור, כדי להשוות&quot;. איך תעשו את זה, ומה תכתבו על הכרטיס כדי לא לבלבל?</p>
+<div class="ans">מוציאים את הכרטיס מהסינון: בתפריט של המסנן, <code>Selected Worksheets</code>, ומסירים את הסימון מהגיליון הזה. את הכותרת של הכרטיס משנים ל-<code>Whole chain, not filtered</code> (סך הרשת, לא מסונן). בלי הכותרת הצופה יניח שהמספר שייך לאזור שבחר.</div></div>
+
+<div class="quiz" data-id="m13-q-filter-default" data-a="1"><p class="qq">יצרתם מסנן Region ב-<code>Branch Sales</code> והצגתם אותו בדשבורד. בלי לשנות שום הגדרה, על אילו גיליונות הוא פועל?</p>
+<button class="opt">רק על Branch Sales</button>
+<button class="opt">על כל הגיליונות בדשבורד</button>
+<button class="opt">על כל הגיליונות שיש בהם את השדה Region בתצוגה</button>
+<button class="opt">אף אחד, עד שמפעילים אותו בהגדרות הדשבורד</button>
+<div class="why">מסנן נוצר בגיליון ופועל רק עליו, עד שמשנים את <code>Apply to Worksheets</code>. תשובה ב היא הפירוש הנפוץ והשגוי. ג מתבלבלת בין מסנן לפעולה (הסעיף הבא).</div></div>
+
+<div class="quiz" data-id="m13-q-filter-numbers" data-a="3"><p class="qq">בכרטיס Region בחרתם South עם <code>All Using This Data Source</code>. כמה עמודות יהיו ב-<code>Branch Sales</code>, ומה הסכום שלהן?</p>
+<button class="opt">9 עמודות, 236,820.9</button>
+<button class="opt">4 עמודות, 82,964.6</button>
+<button class="opt">3 עמודות, 55,575.4</button>
+<button class="opt">1 עמודה, 55,575.4</button>
+<div class="why">South כולל שלושה סניפים: Eilat, Beer Sheva ו-Ashdod, וסכומם 55,575.4. תשובה א היא בלי סינון. תשובה ב היא South וגם North (ארבעה סניפים).</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> אם יש זמן, הציגו את שלושת המצבים בטבלה על לוח, וקבלו הערכה מהכיתה לפני שפותחים את התוכנה: &quot;מה יהיה ה-KPI?&quot;. בדקו את שמות הפריטים בתפריט הכרטיס בגרסה שלכם (<code>Apply to Worksheets</code>, <code>Edit Title...</code>, שמות סוגי התצוגה). הסעיף לא מחייב מסננים על ממדים עם הרבה ערכים: אם הסטודנטים רוצים Branch ככרטיס, תשעה ערכים בלבד, וזה בסדר.</div>
+</section>
+<section class="sec" id="m13-5" data-t="פעולות: סינון והדגשה">
+<div class="sec-h"><div class="sec-n">5</div><h2>פעולות: לוחצים על גרף וכל השאר מגיב</h2></div>
+<p class="lead">המנהלת רואה שהדרום חלש. היא לא רוצה לפתוח מסנן ולבחור אזור. היא רוצה ללחוץ על הסניף ולראות מה קורה שם: המגמה החודשית שלו, הקטגוריות שלו, המספרים שלו. בשביל זה יש פעולות.</p>
+
+<div class="defline"><b>פעולה (<code>Action</code>):</b> כלל בדשבורד שאומר: כשהצופה לוחץ על סימן בגיליון אחד או מעביר עליו עכבר, יקרה משהו בגיליון אחר או מחוץ לדשבורד. דוגמה: לחיצה על העמודה של Tel Aviv Dizengoff מסננת את שאר הגיליונות לסניף הזה.</div>
+
+<p>יש שש פעולות. בסעיף הזה נבנה שתיים, ובסעיף הבא את ארבע האחרות. הטבלה מראה את כולן, כל אחת עם דוגמה מ-Scoop &amp; Go.</p>
+<div class="tw"><table class="tbl">
+<thead><tr><th>פעולה</th><th>מה קורה</th><th>דוגמה</th></tr></thead>
+<tbody>
+<tr><td><code>Filter</code></td><td>גיליונות אחרים מסוננים לפי הסימן שנבחר</td><td>לחיצה על סניף: המגמה והקטגוריות מראות רק אותו</td></tr>
+<tr><td><code>Highlight</code></td><td>סימנים תואמים נצבעים, והשאר מעומעמים</td><td>עכבר על סניף: הקו שלו בין תשעה קווים מודגש</td></tr>
+<tr><td><code>Go to URL</code></td><td>נפתחת כתובת אינטרנט שמשתמשת בערך של הסימן</td><td>לחיצה על מוצר: חיפוש של שמו</td></tr>
+<tr><td><code>Go to Sheet</code></td><td>עוברים לגיליון, דשבורד או סיפור אחר</td><td>לחיצה על סניף: נפתח דשבורד הפירוט שלו</td></tr>
+<tr><td><code>Change Parameter</code></td><td>ערך של פרמטר משתנה לפי הסימן</td><td>לחיצה על קטגוריה: הפרמטר הופך ל-Cups</td></tr>
+<tr><td><code>Change Set Values</code></td><td>חברי קבוצה (<code>Set</code>) משתנים לפי הסימן</td><td>בחירת סניפים: הם הופכים לקבוצה, והקטגוריות מושוות להם</td></tr>
+</tbody></table></div>
+
+<p>כל פעולה מוגדרת בשלושה חלקים: <b>מי מפעיל</b> (גיליון מקור), <b>מתי</b> (טריגר), ו<b>מה קורה</b> (גיליונות יעד או יעד אחר). שלושה טריגרים אפשריים:</p>
+<ul>
+<li><code>Hover</code>: העברת עכבר מעל סימן.</li>
+<li><code>Select</code>: לחיצה על סימן. הטריגר הרגיל לסינון.</li>
+<li><code>Menu</code>: לחיצה על סימן נבחר ואז הפעולה מוצעת בתפריט הצף של הסימן.</li>
+</ul>
+<p>איפה מגדירים: <code>Dashboard</code> בתפריט העליון, <code>Actions...</code>, ואז <code>Add Action</code>. כשכמה פעולות מופעלות מאותה לחיצה, Tableau מריץ אותן בסדר קבוע: פרמטר, קבוצה, סינון, מעבר לגיליון, הדגשה, כתובת. לפי דף ההשוואה הרשמי של Tableau אפשר לראות פעולות בדפדפן (web authoring), אבל להגדיר אותן צריך ב-Desktop. בגלל זה כל התרגילים כאן ב-Tableau Desktop Public Edition.</p>
+
+<h3>איך Tableau מריץ פעולה: הנפשה</h3>
+<div class="anim" data-id="m13-anim-action-flow" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 320" role="img" aria-label="הנפשה: לחיצה על עמודה בגרף הסניפים, הפעולה קוראת את הסניף ומסננת את שני הגיליונות האחרים">
+<defs><marker id="m13a4-ar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#e8741f"/></marker></defs>
+<rect x="14" y="24" width="250" height="280" rx="10" fill="#fff" stroke="#c7cfd9" stroke-width="2"/>
+<text x="139" y="20" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">Branch Sales (מקור)</text>
+<g font-size="13" fill="#334155"><text x="24" y="62">Dizengoff</text><text x="24" y="102">Port</text><text x="24" y="142">Mamilla</text><text x="24" y="182">Eilat</text></g>
+<g>
+<rect x="100" y="46" width="150" height="26" fill="#4e79a7" data-s="1"/><rect x="100" y="86" width="134" height="26" fill="#4e79a7"/><rect x="100" y="126" width="113" height="26" fill="#4e79a7"/><rect x="100" y="166" width="107" height="26" fill="#4e79a7"/></g>
+<g data-s="2"><rect x="100" y="46" width="150" height="26" fill="#4e79a7" stroke="#e8741f" stroke-width="3"/><rect x="100" y="86" width="134" height="26" fill="#cbd5e1"/><rect x="100" y="126" width="113" height="26" fill="#cbd5e1"/><rect x="100" y="166" width="107" height="26" fill="#cbd5e1"/></g>
+<g data-only="2" data-pulse><circle cx="236" cy="60" r="12" fill="none" stroke="#e8741f" stroke-width="3"/><text x="139" y="236" text-anchor="middle" font-size="15" font-weight="700" fill="#e8741f">1. לחיצה על Dizengoff</text></g>
+<g data-s="3"><path d="M268,150 L330,150" stroke="#e8741f" stroke-width="3" fill="none" marker-end="url(#m13a4-ar)"/></g>
+<g data-s="3"><rect x="332" y="100" width="136" height="100" rx="10" fill="#fff7ed" stroke="#e8741f" stroke-width="2"/><text x="400" y="128" text-anchor="middle" font-size="14" font-weight="800" fill="#9a4a0b">Filter action</text><text x="400" y="150" text-anchor="middle" font-size="13" fill="#9a4a0b">Select</text><text x="400" y="170" text-anchor="middle" font-size="13" fill="#9a4a0b">Branch = Dizengoff</text></g>
+<g data-s="4"><path d="M470,130 L520,100" stroke="#e8741f" stroke-width="3" fill="none" marker-end="url(#m13a4-ar)"/><path d="M470,170 L520,220" stroke="#e8741f" stroke-width="3" fill="none" marker-end="url(#m13a4-ar)"/></g>
+<rect x="524" y="24" width="262" height="130" rx="10" fill="#fff" stroke="#c7cfd9" stroke-width="2"/><text x="655" y="20" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">Monthly Sales (יעד)</text>
+<polyline points="540,128 575,116 610,100 650,70 690,50 730,56 770,110" fill="none" stroke="#cbd5e1" stroke-width="3"/>
+<g data-s="4"><polyline points="540,138 575,134 610,126 650,112 690,100 730,104 770,132" fill="none" stroke="#e8741f" stroke-width="3.5"/><text x="655" y="148" text-anchor="middle" font-size="12" fill="#9a4a0b">44,194 (Dizengoff)</text></g>
+<rect x="524" y="170" width="262" height="134" rx="10" fill="#fff" stroke="#c7cfd9" stroke-width="2"/><text x="655" y="166" text-anchor="middle" font-size="15" font-weight="700" fill="#334155" data-s="1"></text>
+<g fill="#cbd5e1"><rect x="540" y="186" width="200" height="16"/><rect x="540" y="208" width="157" height="16"/><rect x="540" y="230" width="139" height="16"/><rect x="540" y="252" width="136" height="16"/></g>
+<g data-s="4" fill="#e8741f"><rect x="540" y="186" width="90" height="16"/><rect x="540" y="208" width="74" height="16"/><rect x="540" y="230" width="62" height="16"/><rect x="540" y="252" width="53" height="16"/></g>
+<text x="655" y="290" text-anchor="middle" font-size="13" fill="#64748b">Category Mix (יעד)</text>
+</svg></div>
+<ol class="caps">
+<li>גרף הסניפים הוא המקור. כל הסניפים מוצגים, והגרפים האחרים מראים את כל הרשת.</li>
+<li>הצופה לוחץ על העמודה של Tel Aviv Dizengoff. עמודה זו נבחרת, והאחרות מתעממות.</li>
+<li>הפעולה (טריגר <code>Select</code>) קוראת את הערך <code>Branch = Tel Aviv Dizengoff</code>.</li>
+<li>הפעולה מסננת את הגיליונות היעד. המגמה החודשית והקטגוריות מראות עכשיו רק את Dizengoff. גרף המקור עצמו לא מסונן: כל העמודות נשארות.</li>
+</ol></div>
+
+<h3>הקיצור: <code>Use as Filter</code></h3>
+<p>כשלוחצים על גיליון בדשבורד, בפינה שלו מופיע סרגל כלים קטן. אחד הסמלים בו הוא משפך. זה <code>Use as Filter</code>, ולחיצה עליו יוצרת פעולת סינון בלי להגדיר כלום. זו הדרך המהירה, והיא עובדת מצוין לרוב המקרים: הגיליון הופך למקור, ושאר הגיליונות על אותו מקור נתונים הופכים ליעדים. אפשר לראות את הסמלים בצילום של הדשבורד הראשון בסעיף 1.</p>
+
+<div class="box try" data-id="m13-try-use-filter">
+<p><b>לוחצים על סניף וכל הדשבורד מגיב</b></p>
+<ol>
+<li>בדשבורד <code>Practice</code> לחצו על <code>Branch Sales</code> (על רווח בפריט, לא על עמודה). בסרגל שבפינה לחצו על המשפך (<code>Use as Filter</code>). <i>למה: זה הקיצור שהופך את הגיליון למקור של פעולת סינון.</i></li>
+<li>לחצו על העמודה של <code>Tel Aviv Dizengoff</code>. <i>למה: זה מפעיל את הפעולה.</i></li>
+<li>לחצו על העמודה של <code>Ashdod Beach Pop-up</code>.</li>
+<li>לחצו על רווח ריק בתוך <code>Branch Sales</code>, כדי לבטל את הבחירה.</li>
+<li>פתחו את <code>Dashboard</code>, <code>Actions...</code>. ראו את הפעולה שנוצרה ובדקו את שמה וההגדרות שלה.</li>
+</ol>
+<p><b>תוצאה צפויה:</b></p>
+<div class="tw"><table class="tbl">
+<thead><tr><th>מה נבחר</th><th>KPI Sales</th><th>KPI Profit</th><th>KPI Margin</th><th>KPI Orders</th><th>Monthly Sales</th><th>Category Mix</th></tr></thead>
+<tbody>
+<tr><td>כלום</td><td><span class="n">236,821</span></td><td><span class="n">120,723</span></td><td><span class="n">51.0%</span></td><td><span class="n">6,575</span></td><td>24 סימנים</td><td>5 עמודות, Cups <span class="n">69,470.0</span></td></tr>
+<tr><td>Tel Aviv Dizengoff</td><td><span class="n">44,194</span></td><td><span class="n">22,979</span></td><td><span class="n">52.0%</span></td><td><span class="n">1,235</span></td><td>24 סימנים, שיא <span class="n">4,091.2</span> (Jul 2024)</td><td>Cups <span class="n">13,311.6</span>, Drinks <span class="n">10,943.6</span>, Cones <span class="n">9,273.0</span>, Sundaes <span class="n">7,852.2</span>, Sticks <span class="n">2,813.7</span></td></tr>
+<tr><td>Ashdod Beach Pop-up</td><td><span class="n">5,305</span></td><td><span class="n">2,585</span></td><td><span class="n">48.7%</span></td><td><span class="n">139</span></td><td><b>3</b> סימנים: <span class="n">1,010.0</span>, <span class="n">2,017.8</span>, <span class="n">2,276.7</span> (Jun עד Aug 2025)</td><td>Cups <span class="n">1,761.2</span>, Sundaes <span class="n">1,160.0</span>, Cones <span class="n">1,041.4</span>, Drinks <span class="n">885.7</span>, Sticks <span class="n">456.2</span></td></tr>
+</tbody></table></div>
+<p>בגרף הסניפים עצמו כל תשע העמודות נשארות, והנבחרת מודגשת. הפעולה לא מסננת את גיליון המקור. Ashdod הוא סניף שפעל שלושה חודשים בלבד, ולכן יש לו שלושה סימנים בקו. זה לא באג. הציר עשוי להצטמצם לאותם החודשים.</p>
+</div>
+
+<h3>הגדרה מלאה, ושליטה על מה מסונן</h3>
+<p>הקיצור מסנן הכול. כשרוצים שליטה, מגדירים בעצמכם. בחלון <code>Add Action</code>, <code>Filter...</code> רואים את אותן ההגדרות שמסתתרות מאחורי המשפך:</p>
+<div class="m13-dlg" aria-label="הדמיה סכמטית של חלון הגדרת פעולת סינון">
+<h5>Add Filter Action</h5>
+<div class="r"><b>Name</b><div class="f">Branch to Charts</div></div>
+<div class="r"><b>Source Sheets</b><div class="f">Dashboard: Practice ▾ &nbsp; ☑ Branch Sales &nbsp; ☐ Monthly Sales &nbsp; ☐ Category Mix</div></div>
+<div class="r"><b>Run action on</b><div class="f">○ Hover &nbsp; ● Select &nbsp; ○ Menu</div></div>
+<div class="r"><b>Target Sheets</b><div class="f">Dashboard: Practice ▾ &nbsp; ☐ Branch Sales &nbsp; ☑ Monthly Sales &nbsp; ☑ Category Mix &nbsp; ☐ KPI...</div></div>
+<div class="r"><b>Clearing the selection will</b><div class="f">○ Leave the filter &nbsp; ● Show all values &nbsp; ○ Exclude all values</div></div>
+<div class="r"><b>Target Filters</b><div class="f">● All Fields &nbsp; ○ Selected Fields</div></div>
+<div class="btns"><span>Cancel</span><span class="ok">OK</span></div>
+</div>
+<p class="m13-cap">הדמיה סכמטית. הפריטים והשמות עשויים להיראות קצת שונה בגרסה שלכם.</p>
+<ul>
+<li><b>Source Sheets:</b> מי מפעיל. <b>Target Sheets:</b> מי מושפע.</li>
+<li><b>Run action on:</b> הטריגר.</li>
+<li><b>Clearing the selection will:</b> מה קורה כשמבטלים את הבחירה. <code>Show all values</code> מחזיר הכול. <code>Leave the filter</code> משאיר את הסינון האחרון. <code>Exclude all values</code> מסתיר הכול.</li>
+<li><b>Target Filters:</b> לפי אילו שדות מסננים. <code>All Fields</code> משתמש בכל הממדים של הסימן. <code>Selected Fields</code> מאפשר לבחור, למשל רק <span class="pill d">Branch</span>.</li>
+</ul>
+
+<div class="box try" data-id="m13-try-filter-action">
+<p><b>פעולת סינון בהגדרה מלאה: כרטיסי ה-KPI נשארים על כל הרשת</b></p>
+<ol>
+<li><code>Dashboard</code>, <code>Actions...</code>. בחרו את הפעולה שנוצרה מהקיצור (השם שלה מתחיל ב-<code>Filter</code> ומסתיים ב-<code>(generated)</code>) ומחקו אותה בכפתור <code>Remove</code>. <i>למה: אנחנו מגדירים אותה מחדש בעצמנו.</i></li>
+<li><code>Add Action</code>, <code>Filter...</code>. שם: <code>Branch to Charts</code>. <i>למה: שם ברור עוזר למי שיבוא אחריכם.</i></li>
+<li>ב-<code>Source Sheets</code> סמנו רק את <code>Branch Sales</code>. ב-<code>Target Sheets</code> סמנו רק את <code>Monthly Sales</code> ואת <code>Category Mix</code>. <i>למה: ככה הכרטיסים הגדולים נשארים על כל הרשת.</i></li>
+<li><code>Run action on</code>: <code>Select</code>. <code>Clearing the selection will</code>: <code>Show all values</code>. <code>Target Filters</code>: <code>Selected Fields</code>, וסמנו רק <span class="pill d">Branch</span>. אישור.</li>
+<li>לחצו על Tel Aviv Dizengoff. אחר כך לחצו עליו שוב כדי לבטל.</li>
+<li>חזרו להגדרות ושנו את <code>Clearing the selection will</code> ל-<code>Leave the filter</code>. חזרו על שלב 5.</li>
+<li>החזירו ל-<code>Show all values</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בשלב 5 הכרטיסים ממשיכים להציג <span class="n">236,821</span>, <span class="n">120,723</span>, <span class="n">51.0%</span>, <span class="n">6,575</span> גם כשהסניף נבחר, וגרף החודשים מראה שיא <span class="n">4,091.2</span> (Dizengoff) והקטגוריות Cups <span class="n">13,311.6</span>. אחרי לחיצה שנייה הכול חוזר לכל הרשת. בשלב 6, אחרי הלחיצה השנייה, המגמה והקטגוריות <b>נשארות</b> על Dizengoff, למרות שהבחירה בוטלה. זה הכוח של <code>Leave the filter</code>, והסכנה שלו.</p>
+</div>
+
+<h3>הדגשה: לראות במקום לסנן</h3>
+<p>סינון מסיר מהמסך את מה שלא נבחר. לפעמים צריך לראות את הבחירה <b>בתוך</b> ההקשר. תשעה קווים של תשעה סניפים הם ספגטי, וצריך להבין איפה אחד מהם. זה מה ש-<code>Highlight</code> עושה: הסימנים התואמים נשארים בצבע, והשאר מעומעמים.</p>
+
+<div class="box try" data-id="m13-try-highlight">
+<p><b>עכבר על סניף מדגיש את הקו שלו</b></p>
+<ol>
+<li>גיליון חדש <code>Monthly by Branch</code>: <span class="fld dim"><i>📅</i>Order Date</span> ל-<code>Columns</code> כחודש רציף, <span class="pill c sum">Sales</span> ל-<code>Rows</code>, ו-<span class="pill d">Branch</span> ל-<code>Color</code>. <i>למה: קו לכל סניף, כדי שאפשר יהיה להדגיש אחד מהם.</i></li>
+<li>דשבורד חדש <code>Highlight Test</code>. גררו אליו את <code>Branch Sales</code> ואת <code>Monthly by Branch</code>. <i>למה: דשבורד נפרד שלא מתערבב בפעולת הסינון של Practice.</i></li>
+<li><code>Dashboard</code>, <code>Actions...</code>, <code>Add Action</code>, <code>Highlight...</code>. שם: <code>Hover Branch</code>. מקור: <code>Branch Sales</code> בדשבורד <code>Highlight Test</code>. הרצה: <code>Hover</code>. יעד: <code>Monthly by Branch</code>. <i>למה: הדגשה נעשית בדרך כלל בהעברת עכבר, כי היא לא משנה את הנתונים.</i></li>
+<li>ב-<code>Target Highlighting</code> בחרו <code>Selected Fields</code> וסמנו <span class="pill d">Branch</span>. אישור. <i>למה: ככה ההדגשה מחפשת התאמה רק לפי סניף.</i></li>
+<li>העבירו עכבר על העמודות בגרף הסניפים.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> ב-<code>Monthly by Branch</code> יש <span class="n">178</span> סימנים בתשעה קווים (שבעה סניפים עם 24 חודשים כל אחד, Rehovot Mall עם 7 ו-Ashdod Beach Pop-up עם 3). כשהעכבר על Tel Aviv Dizengoff, הקו שלו נשאר צבוע ושמונת האחרים הופכים אפורים. כשהעכבר על Ashdod, רואים קו קצר של שלוש נקודות בסוף 2025.</p>
+</div>
+
+<h3>ננסה בלי לקלקל: הדמיה על הנתונים</h3>
+<p>ההדמיה בנויה על מכירות Scoop &amp; Go (6,575 שורות). בחרו סוג פעולה וטריגר, ואז לחצו על העמודות. נסו גם את <code>Leave the filter</code>: בחרו סניף, בטלו את הבחירה, וראו מה קורה.</p>
+<div class="sim" data-id="m13-sim-actions"><div class="sh">פעולות סינון והדגשה</div>
+<div class="m13-acp">
+  <div class="g"><b>פעולה</b><label><input type="radio" name="m13-ac-t" value="filter" checked> Filter</label><label><input type="radio" name="m13-ac-t" value="highlight"> Highlight</label><label><input type="radio" name="m13-ac-t" value="none"> בלי פעולה</label></div>
+  <div class="g"><b>טריגר</b><label><input type="radio" name="m13-ac-g" value="select" checked> Select</label><label><input type="radio" name="m13-ac-g" value="hover"> Hover</label></div>
+  <div class="g"><b>כשמבטלים בחירה</b><label><input type="radio" name="m13-ac-c" value="all" checked> Show all values</label><label><input type="radio" name="m13-ac-c" value="leave"> Leave the filter</label></div>
+</div>
+<div class="m13-ac" id="m13-ac-wrap"><div class="m13-ac-k" id="m13-ac-k"></div><div class="m13-ac-g1" id="m13-ac-a"></div><div class="m13-ac-g2"><div class="m13-t"><h6>Monthly sales by Branch</h6><div id="m13-ac-b"></div></div><div class="m13-t"><h6>Sales by Category</h6><div id="m13-ac-c"></div></div></div></div>
+<div class="out" id="m13-ac-out">טוענים נתונים...</div>
+</div>
+<script>(function(){ FL.dom(function(){
+  var box = FL.$('[data-id="m13-sim-actions"]'); if (!box) return;
+  var PAL = ['#4e79a7','#f28e2b','#e15759','#76b7b2','#59a14f','#edc948','#b07aa1','#ff9da7','#9c755f'];
+  var st = {type: 'filter', trig: 'select', clr: 'all', sel: [], last: null}, used = {}, picks = 0, D = null;
+  var elA = FL.$('#m13-ac-a', box), elB = FL.$('#m13-ac-b', box), elC = FL.$('#m13-ac-c', box), elK = FL.$('#m13-ac-k', box), out = FL.$('#m13-ac-out', box);
+  M13.data(function(S){
+    var tot = {}, ord = {}, bm = {}, bc = {}, months = {}, cats = {};
+    for (var i = 0; i < S.n; i++){
+      var b = S.Branch[i], m = S.Month[i], c = S.Category[i], v = S.Sales[i];
+      tot[b] = (tot[b] || 0) + v; ord[b] = (ord[b] || 0) + 1; months[m] = 1; cats[c] = 1;
+      (bm[b] = bm[b] || {})[m] = ((bm[b][m]) || 0) + v; (bc[b] = bc[b] || {})[c] = ((bc[b][c]) || 0) + v;
+    }
+    var br = Object.keys(tot).sort(function(a, b){ return tot[b] - tot[a]; });
+    var ml = Object.keys(months).sort(), cl = Object.keys(cats);
+    var ymax = 0; br.forEach(function(b){ ml.forEach(function(m){ if (bm[b][m] > ymax) ymax = bm[b][m]; }); }); ymax = Math.ceil(ymax / 500) * 500;
+    D = {br: br, tot: tot, ord: ord, bm: bm, bc: bc, ml: ml, cl: cl, ymax: ymax, all: br.slice()};
+    render();
+  });
+  function effective(){
+    if (st.type !== 'filter') return D.all;
+    if (st.sel.length) return st.sel;
+    if (st.clr === 'leave' && st.last) return st.last;
+    return D.all;
+  }
+  function fmt(x){ return M13.fmt(x, 1); }
+  function render(){
+    if (!D) return;
+    var eff = effective(), full = eff.length === D.all.length;
+    // KPI
+    var s = 0, o = 0; eff.forEach(function(b){ s += D.tot[b]; o += D.ord[b]; });
+    elK.innerHTML = '<div class="m13-kp"><small>Sales</small><b>' + M13.fmt(s, 0) + '</b></div><div class="m13-kp"><small>Orders</small><b>' + M13.fmt(o, 0) + '</b></div><div class="m13-kp"><small>Branches in view</small><b>' + eff.length + '</b></div>';
+    // A: branch bars
+    var mx = D.tot[D.br[0]], h = '';
+    D.br.forEach(function(b, i){
+      var on = st.sel.indexOf(b) >= 0, dim = st.sel.length && !on;
+      h += '<div class="m13-ar' + (on ? ' on' : '') + (dim ? ' dim' : '') + '" data-b="' + FL.esc(b) + '"><span>' + FL.esc(b) + '</span><div class="tr"><i style="width:' + Math.round(D.tot[b] / mx * 100) + '%"></i></div><em>' + M13.fmt(D.tot[b], 0) + '</em></div>';
+    });
+    elA.innerHTML = '<h6>Sales by Branch (מקור)</h6>' + h;
+    // B: lines
+    var W = 360, H = 150, L = 34, svg = '<svg viewBox="0 0 ' + W + ' ' + (H + 20) + '" role="img" aria-label="מכירות חודשיות לפי סניף">';
+    svg += '<line x1="' + L + '" y1="' + H + '" x2="' + W + '" y2="' + H + '" stroke="#94a3b8"/><text x="2" y="12" font-size="10" fill="#64748b">' + M13.fmt(D.ymax, 0) + '</text><text x="2" y="' + H + '" font-size="10" fill="#64748b">0</text><text x="' + L + '" y="' + (H + 14) + '" font-size="10" fill="#64748b">Jan 24</text><text x="' + (W - 36) + '" y="' + (H + 14) + '" font-size="10" fill="#64748b">Dec 25</text>';
+    var order = D.br.slice(), hi = st.type === 'highlight' ? st.sel : [];
+    if (hi.length) order.sort(function(a, b){ return (hi.indexOf(a) >= 0) - (hi.indexOf(b) >= 0); });
+    var marks = 0;
+    order.forEach(function(b){
+      var idx = D.br.indexOf(b), show = st.type === 'filter' ? eff.indexOf(b) >= 0 : true;
+      if (!show) return;
+      var col = PAL[idx % PAL.length], sw = 2;
+      if (st.type === 'highlight' && hi.length){ if (hi.indexOf(b) >= 0){ sw = 3.2; } else { col = '#d5dbe3'; sw = 1.5; } }
+      var pts = [];
+      D.ml.forEach(function(m, j){ var v = D.bm[b][m]; if (v == null) return; marks++; pts.push((L + j * (W - L - 4) / (D.ml.length - 1)).toFixed(1) + ',' + (H - v / D.ymax * (H - 14)).toFixed(1)); });
+      svg += '<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + col + '" stroke-width="' + sw + '" stroke-linejoin="round"/>';
+    });
+    elB.innerHTML = svg + '</svg><small class="m13-mk">' + marks + ' marks</small>';
+    // C: category bars (reacts to filter only)
+    var cs = {}; D.cl.forEach(function(c){ cs[c] = 0; }); eff.forEach(function(b){ D.cl.forEach(function(c){ cs[c] += D.bc[b][c] || 0; }); });
+    var cl = D.cl.slice().sort(function(a, b){ return cs[b] - cs[a]; }), cm = Math.max.apply(null, cl.map(function(c){ return cs[c]; })), hc = '';
+    cl.forEach(function(c){ hc += '<div class="m13-ar"><span>' + c + '</span><div class="tr"><i style="width:' + Math.round(cs[c] / cm * 100) + '%"></i></div><em>' + M13.fmt(cs[c], 1) + '</em></div>'; });
+    elC.innerHTML = hc;
+    // explanation
+    var t = '';
+    if (st.type === 'none') t = 'בלי פעולה לחיצה על עמודה רק בוחרת אותה. שאר הגרפים לא מגיבים: זה מה שרואים בדשבורד שלא הוגדרו בו פעולות.';
+    else if (st.type === 'filter'){
+      if (st.sel.length) t = '<b>Filter:</b> הגרף החודשי, הקטגוריות והכרטיסים מראים רק ' + st.sel.map(FL.esc).join(', ') + ' (' + marks + ' סימנים בגרף הקווים). גרף המקור לא מסונן.';
+      else if (st.clr === 'leave' && st.last) t = '<b>Leave the filter:</b> ביטלתם את הבחירה, אבל המסנן האחרון נשאר: ' + st.last.map(FL.esc).join(', ') + '. כדי לראות הכול צריך לשנות את ההגדרה ל-<code>Show all values</code>.';
+      else t = 'לא נבחר סניף, ולכן הכול מוצג. לחצו (או העבירו עכבר) על עמודה.';
+    } else {
+      if (st.sel.length) t = '<b>Highlight:</b> הקו של ' + st.sel.map(FL.esc).join(', ') + ' נשאר צבוע, והשאר מעומעמים. שימו לב: גרף הקטגוריות והכרטיסים לא השתנו, כי אין בהם סניף שאפשר להדגיש.';
+      else t = 'לא נבחר סניף. כל הקווים צבועים. העבירו עכבר או לחצו על עמודה.';
+    }
+    out.innerHTML = t;
+  }
+  function choose(b, multi){
+    var i = st.sel.indexOf(b);
+    if (st.trig === 'hover'){ st.sel = [b]; }
+    else if (multi){ if (i >= 0) st.sel.splice(i, 1); else st.sel.push(b); }
+    else { st.sel = (i >= 0 && st.sel.length === 1) ? [] : [b]; }
+    if (st.sel.length){ st.last = st.sel.slice(); picks++; }
+    used[st.type] = 1;
+    if (used.filter && used.highlight && picks >= 3) FL.done('m13-sim-actions');
+    render();
+  }
+  elA.addEventListener('click', function(e){ if (st.trig !== 'select') return; var r = e.target.closest('.m13-ar'); if (r) choose(r.dataset.b, e.ctrlKey || e.metaKey || e.shiftKey); else { st.sel = []; render(); } });
+  elA.addEventListener('mouseover', function(e){ if (st.trig !== 'hover') return; var r = e.target.closest('.m13-ar'); if (r && !(st.sel.length === 1 && st.sel[0] === r.dataset.b)) choose(r.dataset.b, false); });
+  elA.addEventListener('mouseleave', function(){ if (st.trig !== 'hover') return; st.sel = []; render(); });
+  FL.$$('input[name="m13-ac-t"]', box).forEach(function(r){ r.addEventListener('change', function(){ st.type = r.value; st.sel = []; st.last = null; render(); }); });
+  FL.$$('input[name="m13-ac-g"]', box).forEach(function(r){ r.addEventListener('change', function(){ st.trig = r.value; st.sel = []; render(); }); });
+  FL.$$('input[name="m13-ac-c"]', box).forEach(function(r){ r.addEventListener('change', function(){ st.clr = r.value; render(); }); });
+}); })();</script>
+<p class="m13-cap">בהדמיה Ctrl או Shift עם לחיצה מוסיפים עוד סניף. בטריגר Hover אין מסך מגע: אם אתם בטלפון, עברו ל-Select.</p>
+
+<div class="box meaning"><p>פעולה הופכת דשבורד מתמונה לכלי. במקום לשאול &quot;מה בדרום?&quot; ולבנות מסנן, הצופה לוחץ ורואה. סינון מתאים כשהשאלה היא &quot;תראה לי רק את זה&quot;. הדגשה מתאימה כשהשאלה היא &quot;איפה זה בתוך הכול?&quot;.</p></div>
+
+<div class="box real"><p>בדשבורדים של הנהלה, גרף מרכזי שמסנן את שאר הגרפים בלחיצה הוא מבנה שחוזר שוב ושוב. הצופה לומד אותו מהר, והדשבורד לא צריך כרטיסי מסנן רבים.</p></div>
+
+<div class="box trap"><p><b>נשארתם עם סינון אחרי ביטול הבחירה.</b> אם <code>Clearing the selection will</code> מוגדר ל-<code>Leave the filter</code>, ביטול הבחירה משאיר את הסינון. הצופה חושב שהוא רואה הכול, וזה לא נכון. ברוב המקרים בוחרים <code>Show all values</code>.</p></div>
+
+<div class="box trap"><p><b>טריגר Hover לסינון.</b> סינון בהעברת עכבר גורם לדשבורד לקפוץ בכל תנועה, ובמסך מגע הוא בכלל לא עובד. סינון: <code>Select</code>. הדגשה: <code>Hover</code> מתאים.</p></div>
+
+<div class="box trap"><p><b>הדגשה שלא קורה כלום.</b> פעולת הדגשה מחפשת את הסימן בגיליון היעד לפי שדה. אם גיליון היעד לא מכיל את השדה (למשל גרף הקטגוריות לא מכיל סניף), אין מה להדגיש. הדגשה תעבוד רק על גיליון שמציג את אותו ממד.</p></div>
+
+<div class="box think" data-id="m13-th-subtitle"><p>שאלה: הצופה לוחץ על Dizengoff, ואחרי כמה שניות לא יודע איך לחזור לתצוגה של כל הרשת. מה תוסיפו לדשבורד, ואיפה?</p>
+<div class="ans">שורת הסבר קצרה מתחת לכותרת: <code>Click a branch to filter. Click it again to clear.</code> (לחצו על סניף כדי לסנן. לחצו שוב כדי לבטל.) זו העצה של Tableau: לומר בתת הכותרת איך מקיימים אינטראקציה. מוסיפים אותה כאובייקט <code>Text</code>. בנוסף כדאי שכותרת קטנה תגיד איזה סניף מוצג (סעיף 7).</div></div>
+
+<div class="quiz" data-id="m13-q-trigger" data-a="2"><p class="qq">איזה טריגר מתאים לפעולת סינון בדשבורד שגם מסכי מגע משתמשים בו?</p>
+<button class="opt"><code>Hover</code></button>
+<button class="opt"><code>Select</code></button>
+<button class="opt"><code>Menu</code></button>
+<div class="why"><code>Select</code> עובד בלחיצה או במגע, ולכן הוא הטריגר הרגיל לסינון. <code>Hover</code> דורש עכבר ומזיז את הדשבורד בכל תנועה. <code>Menu</code> דורש שלב נוסף, ומתאים לפעולות כמו מעבר לכתובת.</div></div>
+
+<div class="quiz" data-id="m13-q-highlight-field" data-a="1"><p class="qq">הגדרתם פעולת הדגשה לפי Branch מ-Branch Sales אל Category Mix, והיא לא עושה כלום. למה?</p>
+<button class="opt">אין ב-Category Mix את השדה Branch, ולכן אין סימן להדגיש</button>
+<button class="opt">הדגשה עובדת רק בטריגר Select</button>
+<button class="opt">Category Mix חייב להיות פריט צף</button>
+<button class="opt">צריך קודם ליצור פעולת סינון</button>
+<div class="why">הדגשה מתאימה סימנים לפי שדה. בגרף שאין בו את השדה אין סימנים תואמים. דרך אחת לתקן: להוסיף את הסניף לצבע בגיליון היעד, כמו ב-<code>Monthly by Branch</code>.</div></div>
+
+<div class="quiz" data-id="m13-q-source-filtered" data-a="3"><p class="qq">לחצתם על Dizengoff ב-<code>Branch Sales</code> שהוא מקור של פעולת סינון. מה קורה לתשע העמודות בגרף עצמו?</p>
+<button class="opt">נשארת רק העמודה של Dizengoff</button>
+<button class="opt">הגרף מתרוקן</button>
+<button class="opt">כולן נשארות, והנבחרת מודגשת</button>
+<div class="why">פעולת סינון משפיעה על גיליונות היעד, לא על גיליון המקור. לכן בגרף המקור רואים את כל הסניפים וגם את הבחירה, בניגוד למסנן רגיל.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בדקו מראש: (1) איזה סמל מייצג את <code>Use as Filter</code> בגרסה שלכם (משפך בצילום שלי); (2) מה שם הפעולה שנוצרת אוטומטית (בגרסאות שראינו: <code>Filter 1 (generated)</code>); (3) הטריגר <code>Hover</code> בהדגשה. אחרי שהסטודנטים מבצעים את ההדמיה, שאלו: &quot;למה בגרף הקטגוריות אין שינוי במצב Highlight?&quot;. אם מישהו מקבל פעולה שהוא לא הגדיר, בדקו אם נשארה פעולה מהקיצור ב-<code>Dashboard</code>, <code>Actions...</code>.</div>
+</section>
+<section class="sec" id="m13-6" data-t="ארבע פעולות נוספות">
+<div class="sec-h"><div class="sec-n">6</div><h2>ארבע פעולות נוספות: כתובת, גיליון, פרמטר וקבוצה</h2></div>
+<p class="lead">סינון והדגשה הם עיקר העבודה. ארבע הפעולות האחרות פותרות בעיות מוגדרות: לפתוח דף חיצוני, לעבור לדשבורד פירוט, לשנות פרמטר בלחיצה ולהשוות קבוצה נבחרת לשאר.</p>
+
+<h3>כתובת אינטרנט (<code>Go to URL</code>)</h3>
+<div class="box try" data-id="m13-try-url">
+<p><b>לחיצה על מוצר פותחת חיפוש</b></p>
+<ol>
+<li>גיליון חדש <code>Item Sales</code>: <span class="pill d">Item</span> ל-<code>Rows</code>, <span class="pill c sum">Sales</span> ל-<code>Columns</code>, מיון יורד. <i>למה: חמישה עשר מוצרים, ואפשר ללחוץ על כל אחד.</i></li>
+<li>דשבורד חדש <code>Branch Detail</code>, וגררו אליו את <code>Item Sales</code>. <i>למה: פעולות מוגדרות על דשבורד.</i></li>
+<li><code>Dashboard</code>, <code>Actions...</code>, <code>Add Action</code>, <code>Go to URL...</code>. שם: <code>Search item</code>. מקור: <code>Item Sales</code>. הרצה: <code>Menu</code>. <i>למה: כתובת חיצונית עדיף לפתוח בכוונה, לא בכל לחיצה.</i></li>
+<li>בשדה הכתובת הקלידו <code>https://www.google.com/search?q=&lt;Item&gt;</code> (אפשר גם להוסיף את <code>Item</code> מכפתור <code>Insert</code>). <code>URL Target</code>: <code>New Browser Tab</code>. אישור. <i>למה: חייבים קידומת <code>https://</code>, והשדה בסוגריים מוחלף בערך של הסימן.</i></li>
+<li>לחצו על העמודה של <code>Milkshake</code>, ואז על הפעולה שמופיעה בתפריט הצף.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> נפתחת לשונית דפדפן עם חיפוש של <code>Milkshake</code>. המוצר הנמכר ביותר ברשת הוא Milkshake: <span class="n">24,902.8</span> (אחריו Pistachio Cup <span class="n">20,532.0</span>). בגיליון <span class="n">15</span> עמודות. השדה חייב להיות בתצוגה: שדה מצטבר (SUM) לא מופיע ברשימת ההוספה.</p>
+</div>
+
+<h3>מעבר לגיליון (<code>Go to Sheet</code>)</h3>
+<div class="box try" data-id="m13-try-gotosheet">
+<p><b>לחיצה על סניף פותחת את דשבורד הפירוט שלו</b></p>
+<ol>
+<li>גיליון <code>Hour Sales</code>: <span class="fld mea"><i>#</i>Order Hour</span> הוסב לממד (<code>Convert to Dimension</code>) ב-<code>Columns</code>, <span class="pill c sum">Sales</span> ב-<code>Rows</code>. הוסיפו אותו ל-<code>Branch Detail</code> מעל <code>Item Sales</code>. <i>למה: פירוט של שעות היום.</i></li>
+<li>ב-<code>Practice</code> הוסיפו פעולת <code>Go to Sheet...</code> בשם <code>Open detail</code>: מקור <code>Branch Sales</code>, הרצה <code>Select</code>, יעד: הדשבורד <code>Branch Detail</code>. <i>למה: Select הוא הטריגר המתאים לניווט.</i></li>
+<li>הוסיפו פעולת סינון מ-<code>Branch Sales</code> אל <code>Item Sales</code> ו-<code>Hour Sales</code> (<code>Select</code>, <code>Show all values</code>). <i>למה: מעבר גיליון לא מעביר סינון. סינון עושה זאת.</i></li>
+<li>הוסיפו ל-<code>Branch Detail</code> אובייקט <code>Navigation</code> שחוזר ל-<code>Practice</code>. <i>למה: כך חוזרים בלי הלשוניות.</i></li>
+<li>לחצו על <code>Eilat Promenade</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> נפתח <code>Branch Detail</code> וה-<code>Item Sales</code> מראה <span class="n">15</span> מוצרים של Eilat: ראשון Milkshake <span class="n">3,348.8</span>, אחריו Brownie Sundae <span class="n">2,865.2</span>. ב-<code>Hour Sales</code> יש <span class="n">14</span> שעות (10 עד 23). השיא בשעה 21: <span class="n">4,365.8</span>.</p>
+</div>
+
+<h3>פרמטר וקבוצה</h3>
+<div class="box try" data-id="m13-try-param-action">
+<p><b>לחיצה על קטגוריה משנה פרמטר</b> (תרגיל בונוס: לפי המחקר פעולות פרמטר וקבוצה זמינות ב-Desktop, ו-Public היא אותה תוכנה. אם הן חסרות אצלכם, דלגו.)</p>
+<ol>
+<li>צרו פרמטר <code>Selected Category</code>, סוג <code>String</code>, ערך נוכחי <code>Cups</code>. <i>למה: פעולה יכולה לשנות רק פרמטר שקיים.</i></li>
+<li>שדה מחושב <code>Is Selected</code>: <pre class="code" data-lang="tableau">[Category] = [Selected Category]</pre> <i>למה: זה מה שמשתמש בפרמטר, ובלעדיו הוא לא עושה כלום.</i></li>
+<li>גיליון <code>Branch Cups Share</code>: <span class="pill d">Branch</span> ל-<code>Rows</code>, <span class="pill c sum">Sales</span> ל-<code>Columns</code>, <code>Is Selected</code> ל-<code>Color</code>. הציבו אותו עם <code>Category Mix</code> בדשבורד חדש <code>Actions Lab</code>.</li>
+<li>הוסיפו פעולת <code>Change Parameter...</code>: מקור <code>Category Mix</code>, <code>Select</code>, פרמטר <code>Selected Category</code>, שדה מקור <span class="pill d">Category</span>, צבירה <code>None</code>.</li>
+<li>לחצו על Drinks.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> כל עמודת סניף מתפצלת לשני חלקים: Cups ושאר. עם Cups: Tel Aviv Dizengoff <span class="n">13,311.6</span> מתוך <span class="n">44,194.1</span>. אחרי הלחיצה על Drinks החלק של Dizengoff הוא <span class="n">10,943.6</span>. בגיליון <span class="n">18</span> סימנים (9 סניפים כפול 2).</p>
+</div>
+
+<div class="box try" data-id="m13-try-set-action">
+<p><b>בחירת סניף הופכת אותו לקבוצה, והקטגוריות מושוות</b> (בונוס, כמו הקודם)</p>
+<ol>
+<li>לחצו על <span class="pill d">Branch</span> בכפתור ימני, <code>Create</code>, <code>Set...</code>. שם <code>Selected Branch</code>. סמנו כל סניף אחד ואשרו. <i>למה: פעולה משנה חברים בקבוצה קיימת.</i></li>
+<li>גיליון <code>Category In Out</code>: <span class="pill d">Category</span> ל-<code>Rows</code>, <span class="pill c sum">Sales</span> ל-<code>Columns</code>, <code>Selected Branch</code> ל-<code>Color</code>. הוסיפו ל-<code>Actions Lab</code>.</li>
+<li>פעולת <code>Change Set Values...</code>: מקור <code>Branch Sales</code>, <code>Select</code>, יעד <code>Selected Branch</code>. כשמנקים: <code>Add all values to set</code>.</li>
+<li>לחצו על Tel Aviv Dizengoff.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> <span class="n">10</span> עמודות (5 קטגוריות כפול In ו-Out). In: Cups <span class="n">13,311.6</span>, Drinks <span class="n">10,943.6</span>, Cones <span class="n">9,273.0</span>, Sundaes <span class="n">7,852.2</span>, Sticks <span class="n">2,813.7</span>. Out: Cups <span class="n">56,158.4</span>, Drinks <span class="n">43,609.7</span>, Cones <span class="n">39,044.0</span>, Sundaes <span class="n">39,185.0</span>, Sticks <span class="n">14,629.7</span>.</p>
+</div>
+
+<div class="box meaning"><p>הפעולות הללו מרחיבות את מה שהצופה יכול לעשות בלי לדעת Tableau: לחיצה אחת פותחת פירוט, חיפוש, שינוי מדד או השוואה. כל אחת מוסיפה גם משהו להסביר, לכן מוסיפים רק את מה ששואל את השאלה של הקהל.</p></div>
+<div class="box real"><p>ניווט בין דשבורד סיכום לדשבורד פירוט הוא מבנה נפוץ: מסך אחד לתמונה הגדולה, ומסך שני לבירור. הלחיצה מעבירה גם את הבחירה.</p></div>
+<div class="box trap"><p><b>כתובת בלי <code>https://</code></b> לא תיפתח כראוי. וגם: פרמטר שלא משתמשים בו בשום חישוב לא ישנה כלום, והפעולה &quot;תצליח&quot; בלי תוצאה.</p></div>
+<div class="box trap"><p><b>מעבר לגיליון בלי סינון.</b> <code>Go to Sheet</code> רק עובר. אם גיליון היעד נפתח עם כל הרשת, חסרה פעולת סינון באותה לחיצה.</p></div>
+<div class="box think" data-id="m13-th-which-action"><p>שאלה: המנהלת רוצה ללחוץ על סניף ולראות את הסניף ברקע של כל שאר הסניפים בקו החודשי, בלי להעלים את האחרים. איזו פעולה, ואיזה טריגר?</p><div class="ans"><code>Highlight</code> עם <code>Hover</code> (או <code>Select</code>), כי המטרה לראות את הבחירה בתוך ההקשר. סינון היה מעלים את האחרים.</div></div>
+
+<div class="quiz" data-id="m13-q-goto-filter" data-a="3"><p class="qq">מה צריך כדי שלחיצה על סניף תפתח דשבורד פירוט מסונן לאותו סניף?</p>
+<button class="opt">רק פעולת <code>Go to Sheet</code></button>
+<button class="opt">רק פעולת <code>Filter</code></button>
+<button class="opt"><code>Go to Sheet</code> ובנוסף פעולת <code>Filter</code> אל גיליונות הפירוט</button>
+<div class="why">המעבר לא מעביר בחירה. הסינון לבד לא מעביר למסך אחר. צריך את שניהם באותה לחיצה.</div></div>
+<div class="quiz" data-id="m13-q-param-used" data-a="1"><p class="qq">יצרתם פרמטר והגדרתם פעולת פרמטר, אבל הגרף לא משתנה. מה הסיבה הסבירה?</p>
+<button class="opt">שום שדה מחושב, מסנן או קו עזר לא משתמש בפרמטר</button>
+<button class="opt">הפרמטר חייב להיות מספרי</button>
+<button class="opt">צריך להפוך את הגיליון לצף</button>
+<div class="why">פרמטר הוא ערך בלבד. מישהו צריך לקרוא אותו, כמו בשדה <code>Is Selected</code>.</div></div>
+<div class="teach"><b>🎓 למרצה:</b> לא אומת בתוכנה: פעולות פרמטר וקבוצה ב-Public, והתפריט הצף של <code>Menu</code>. הריצו לפני השיעור. הכתובת של חיפוש גוגל מופיעה כדוגמה במחקר. אפשר לבחור כל כתובת https אחרת.</div>
+</section>
+<section class="sec" id="m13-7" data-t="עיצוב ובדיקה">
+<div class="sec-h"><div class="sec-n">7</div><h2>כותרות, צבע ועיצוב: איך בודקים דשבורד</h2></div>
+<p class="lead">דשבורד יכול להיות נכון ועדיין לא להיקרא. הסעיף הזה עוסק במה שהצופה רואה לפני שהוא קורא מספר: כותרת, היררכיה, צבע ורעש.</p>
+
+<h3>כותרות וטקסט שמשתנה</h3>
+<p>כותרת טובה שואלת שאלה או אומרת מה לעשות: <code>How is the chain doing?</code>. מתחתיה שורה שמסבירה איך משתמשים: <code>Click a branch to filter</code>. טקסט בדשבורד (<code>Text</code>) הוא קבוע. כדי שטקסט ישתנה עם הבחירה בונים גיליון קטן עם שדה מחושב.</p>
+<div class="box try" data-id="m13-try-dynamic-label">
+<p><b>תווית שאומרת איזה סניף מוצג</b></p>
+<ol>
+<li>שדה מחושב <code>Selection Label</code>:
+<pre class="code" data-lang="tableau">IF COUNTD([Branch]) = 1 THEN MIN([Branch]) ELSE STR(COUNTD([Branch])) + " branches" END</pre><i>למה: סניף אחד מציג את שמו, וכמה סניפים מציגים את המספר.</i></li>
+<li>גיליון חדש <code>Selection Label</code>: גררו את השדה אל <code>Text</code>. הגדילו גופן. הוסיפו אותו לשורת הכותרת של <code>Practice</code> והשאירו את פעולת הסינון בתוקף. <i>למה: הפעולה מסננת גם אותו.</i></li>
+<li>לחצו על סניפים שונים, ואחר כך סננו South בכרטיס.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בלי בחירה: <code>9 branches</code>. עם South: <code>3 branches</code>. אחרי לחיצה על Dizengoff: <code>Tel Aviv Dizengoff</code>.</p>
+</div>
+<p>טולטיפ (<code>Tooltip</code> בכרטיס <code>Marks</code>) הוא המקום לפרט שני. בעריכה אפשר להכניס שדות: <code>&lt;Branch&gt;</code>, <code>&lt;SUM(Sales)&gt;</code>. תרשים בתוך טולטיפ קיים ב-Desktop, אבל לא הוכח ב-Public, ולכן בדקו אם זמין אצלכם. כדי להסביר נקודה בגרף יש הערה: כפתור ימני על סימן, <code>Annotate</code>, <code>Mark</code>, למשל על שיא אוגוסט 2025 (<span class="n">23,259.9</span>).</p>
+
+<h3>צבע</h3>
+<ul>
+<li>רוב הדשבורד באפור וכחול, וצבע בולט אחד להדגשה. לא יותר משתי פלטות.</li>
+<li>לא מסתמכים על צבע בלבד: אדום וירוק נראים דומים לחלק מהצופים. כחול וכתום עדיפים, ו-<code>Color Blind</code> מוצע בעריכת הצבעים (<code>Edit Colors</code>).</li>
+<li>ניגודיות טקסט: לפחות 4.5 ל-1. טקסט <span class="n">#6b7280</span> על לבן הוא <span class="n">4.83</span> (עובר), <span class="n">#9ca3af</span> הוא <span class="n">2.54</span> (נכשל), וכתום <span class="n">#e8741f</span> הוא <span class="n">3.02</span> (נכשל כטקסט קטן).</li>
+<li>סדר העיצוב: חוברת, אחר כך גיליון, ורק אז פרט. גופן, צבע, גבולות, הצללה וריפוד נמצאים בתפריט <code>Format</code> ובתפריט של כל פריט.</li>
+</ul>
+<div class="box think" data-id="m13-th-rtl"><p>שאלה: ההנחיות של Tableau מדברות על סריקה משמאל לימין, והצופים שלכם קוראים עברית. מה עושים?</p><div class="ans">Tableau לא הופך דשבורד לימין לשמאל, וזו החלטה של המעצב. שמים את הכרטיס החשוב בראש, כותרת ברורה, ובודקים עם שני צופים מהקהל איפה העין מתחילה.</div></div>
+
+<h3>מצאו את שמונה הטעויות</h3>
+<p>זה דשבורד עם שמונה טעויות עיצוב. לחצו על מקומות חשודים. יש גם שני מקומות תקינים.</p>
+<div class="sim" data-id="m13-sim-spot"><div class="sh">שמונה טעויות בדשבורד אחד</div>
+<div class="m13-spot" id="m13-sp">
+<div class="z full" data-k="1"><b style="font-size:1.4rem;color:#0f172a">Dashboard 1</b> <span style="float:right;background:#e8741f;color:#fff;padding:8px 40px;font-size:1.4rem;font-weight:800" data-k="8">LOGO</span></div>
+<div class="z" data-k="7" style="display:flex;gap:6px"><span style="background:#16a34a;color:#fff;padding:2px 6px">Sales 236,821</span><span style="background:#dc2626;color:#fff;padding:2px 6px">Margin 51%</span></div>
+<div class="z" data-k="5">Region<br>Region<br>Region</div>
+<div class="z fine" data-k="0"><small>Click a branch to filter</small></div>
+<div class="z" data-k="3"><b>Sales by Branch (9 slices)</b><svg viewBox="0 0 100 60" width="100%" height="70" id="m13-sp-pie"></svg></div>
+<div class="z" data-k="2"><b>Sales by Branch</b><div id="m13-sp-bars"></div></div>
+<div class="z" data-k="4"><b>Sales by Category</b><div id="m13-sp-cat"></div></div>
+<div class="z" data-k="6"><small style="color:#cbd5e1">Source: Scoop and Go orders <bdi dir="ltr">2024-2025.</bdi> Margin = Profit / Sales.</small></div>
+<div class="z fine" data-k="0"><b>Monthly Sales</b><svg viewBox="0 0 100 30" width="100%" height="40"><polyline points="0,26 12,22 25,18 38,11 50,4 62,3 75,10 88,20 100,24" fill="none" stroke="#4e79a7" stroke-width="2"/></svg></div>
+</div>
+<div class="out" id="m13-sp-out">נמצאו 0 מתוך 8.</div>
+<div class="m13-btns" style="margin-top:6px"><button type="button" id="m13-sp-show">הראו לי את כולן</button></div>
+</div>
+<script>(function(){ FL.dom(function(){
+  var box = FL.$('[data-id="m13-sim-spot"]'); if (!box) return;
+  var MS = {1:'אין כותרת שאומרת מה השאלה. Dashboard 1 לא אומר כלום.', 2:'צבע שונה לכל עמודה. הצבע לא מוסיף מידע, כי השם כבר כתוב.', 3:'עוגה עם תשעה פרוסות: אי אפשר להשוות. עמודות עדיפות.', 4:'ציר שמתחיל ב-15,000: Sticks נראה קטן פי 22 מ-Cups, כשבפועל פי 4 בערך.', 5:'שלושה כרטיסי מסנן זהים. משאירים אחד.', 6:'טקסט אפור בהיר על לבן: ניגודיות נמוכה, לא קריא.', 7:'אדום וירוק בלבד: חלק מהצופים לא יבדילו. מוסיפים סימן או משתמשים בכחול וכתום.', 8:'לוגו גדול מהמספרים. אין היררכיה: הדבר החשוב צריך להיות הגדול.', 0:'זה תקין. אין כאן בעיה.'};
+  var found = {};
+  function upd(){ FL.$('#m13-sp-out', box).innerHTML = 'נמצאו <b>' + Object.keys(found).length + '</b> מתוך 8.'; if (Object.keys(found).length >= 8) FL.done('m13-sim-spot'); }
+  box.addEventListener('click', function(e){
+    var z = e.target.closest('[data-k]'); if (!z) return; var k = z.dataset.k; var zz = z.classList.contains('z') ? z : z.closest('.z');
+    var out = FL.$('#m13-sp-out', box); if (k !== '0') found[k] = 1; if (zz) zz.classList.add('found');
+    out.innerHTML = '<b>' + MS[k] + '</b> (נמצאו ' + Object.keys(found).length + ' מתוך 8)'; if (Object.keys(found).length >= 8) FL.done('m13-sim-spot');
+  });
+  FL.$('#m13-sp-show', box).addEventListener('click', function(){ FL.$$('.z', box).forEach(function(z){ z.classList.add('found'); }); FL.$('#m13-sp-out', box).innerHTML = '<ol>' + [1,2,3,4,5,6,7,8].map(function(i){ return '<li>' + MS[i] + '</li>'; }).join('') + '</ol>'; });
+  M13.data(function(S){
+    var tot = {}, cat = {}; for (var i = 0; i < S.n; i++){ tot[S.Branch[i]] = (tot[S.Branch[i]] || 0) + S.Sales[i]; cat[S.Category[i]] = (cat[S.Category[i]] || 0) + S.Sales[i]; }
+    var br = Object.keys(tot).sort(function(a, b){ return tot[b] - tot[a]; }), P = ['#4e79a7','#f28e2b','#e15759','#76b7b2','#59a14f','#edc948','#b07aa1','#ff9da7','#9c755f'], sum = 0; br.forEach(function(b){ sum += tot[b]; });
+    FL.$('#m13-sp-bars', box).innerHTML = br.map(function(b, i){ return '<div style="display:flex;gap:4px;font-size:.66rem"><span style="width:80px;overflow:hidden">' + FL.esc(b) + '</span><i style="display:block;height:8px;margin-top:4px;background:' + P[i] + ';width:' + Math.round(tot[b] / tot[br[0]] * 100) + '%"></i></div>'; }).join('');
+    var a = 0, pie = ''; br.forEach(function(b, i){ var f = tot[b] / sum, x1 = 50 + 28 * Math.cos(a * 6.2832 - 1.5708), y1 = 30 + 28 * Math.sin(a * 6.2832 - 1.5708); a += f; var x2 = 50 + 28 * Math.cos(a * 6.2832 - 1.5708), y2 = 30 + 28 * Math.sin(a * 6.2832 - 1.5708); pie += '<path d="M50,30 L' + x1.toFixed(1) + ',' + y1.toFixed(1) + ' A28,28 0 ' + (f > .5 ? 1 : 0) + ' 1 ' + x2.toFixed(1) + ',' + y2.toFixed(1) + ' Z" fill="' + P[i] + '"/>'; });
+    FL.$('#m13-sp-pie', box).innerHTML = pie;
+    var cl = Object.keys(cat).sort(function(a, b){ return cat[b] - cat[a]; }), base = 15000;
+    FL.$('#m13-sp-cat', box).innerHTML = cl.map(function(c){ return '<div style="display:flex;gap:4px;font-size:.66rem"><span style="width:60px">' + c + '</span><i style="display:block;height:8px;margin-top:4px;background:#4e79a7;width:' + Math.round((cat[c] - base) / (cat[cl[0]] - base) * 100) + '%"></i></div>'; }).join('');
+  });
+}); })();</script>
+
+<div class="box meaning"><p>עיצוב טוב הוא הסרה: כל פריט, צבע וקו שלא מוסיפים מידע, מוציאים. מה שנשאר הוא מה שהצופה צריך.</p></div>
+<div class="box real"><p>לפי הנחיות Tableau, שניים או שלושה גרפים בדשבורד, כותרת שאומרת איך משתמשים, ובדיקה כפי שהצופה רואה אותו (מכשיר, גודל).</p></div>
+<div class="box trap"><p><b>צבע שמסתמך על ירוק ואדום.</b> הוסיפו חץ או מילה, או עברו לכחול וכתום.</p></div>
+<div class="box trap"><p><b>הרבה גרפים בדשבורד אחד.</b> כל גיליון מוסיף שאילתות וזמן טעינה. כאן יש ארבעה כרטיסים ושלושה גרפים, והם נבנו בגיליון נפרד לכל כרטיס. בדשבורד כבד איחדו אותם. סימנים בתצוגה: פחות מ-1,000 לנגישות וביצועים. בתשעה סניפים יש 9 סימנים, בסניף לפי חודש 178, ובשורה לפי הזמנה 6,575.</p></div>
+
+<div class="quiz" data-id="m13-q-contrast" data-a="2"><p class="qq">איזה טקסט על רקע לבן עובר ניגודיות של 4.5 ל-1?</p>
+<button class="opt">אפור בהיר <span class="n">#9ca3af</span></button>
+<button class="opt">אפור כהה <span class="n">#6b7280</span> (4.83)</button>
+<button class="opt">כתום <span class="n">#e8741f</span></button>
+<div class="why">רק האפור הכהה עובר (4.83). האפור הבהיר 2.54 והכתום 3.02 נכשלים כטקסט קטן.</div></div>
+<div class="quiz" data-id="m13-q-pie" data-a="3"><p class="qq">איזה גרף מתאים להשוואת תשעה סניפים?</p>
+<button class="opt">עוגה</button>
+<button class="opt">עוגה תלת ממדית</button>
+<button class="opt">עמודות ממוינות</button>
+<div class="why">אורכים משווים בקלות. פרוסות לא.</div></div>
+<div class="teach"><b>🎓 למרצה:</b> ערכי הניגודיות חושבו לפי נוסחת WCAG. הצביעה הנגישה ב-Public: ההנחיות הרשמיות מניחות הטמעה בשרת או בענן, ולכן אל תבטיחו עמידה בתקן. שם התפריט <code>Color Blind</code> ושם <code>Annotate</code> בדקו בתוכנה.</div>
+</section>
+<section class="sec" id="m13-8" data-t="בונים ומסכמים">
+<div class="sec-h"><div class="sec-n">8</div><h2>בונים את דשבורד הניהול וסיכום</h2></div>
+<p class="lead">מרכיבים הכול: מכולות, כרטיסי KPI, גרפים, מסנן, פעולה ותווית. בכל שלב יש מספר לבדיקה. את המעבר לפרסום נעשה במודול הבא.</p>
+
+<div class="box try" data-id="m13-try-build-final">
+<p><b>דשבורד Scoop &amp; Go Management</b></p>
+<ol>
+<li>שכפלו את <code>Practice</code> (כפתור ימני על הלשונית, <code>Duplicate Dashboard</code>) וקראו ל-<code>Scoop Management</code>. קבעו <code>Range</code> מ-1000x800 עד 1200x900. <i>בדיקה: הגודל מופיע בחלונית.</i></li>
+<li>סדרו מכולות לפי העץ שבסעיף 3: שורת כותרת, שורת KPI עם <code>Distribute Evenly</code>, ושורה ראשית. <i>בדיקה: ארבעה כרטיסים: <span class="n">236,821</span>, <span class="n">120,723</span>, <span class="n">51.0%</span>, <span class="n">6,575</span>.</i></li>
+<li>ודאו שיש שלושה גרפים: <span class="n">9</span> עמודות, <span class="n">24</span> סימנים בקו, <span class="n">5</span> עמודות קטגוריה. הסירו כל גיליון תרגול אחר מהמסך.</li>
+<li>כרטיס מסנן <code>Select a region</code> עם <code>All Using This Data Source</code>, ופעולת <code>Use as Filter</code> על <code>Branch Sales</code>. הוסיפו את <code>Selection Label</code> לכותרת ושורת הסבר: <code>Click a branch to filter. Click again to clear.</code></li>
+<li>עיצוב: כחול ואפור בלבד, גופן אחד, כותרות גיליון כבויות, ריפוד קטן, טקסט כהה על בהיר.</li>
+<li>פריסת טלפון: <code>Fit Width</code>, הסירו ממנה את <code>Category Mix</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בדקו ארבעה מצבים:</p>
+<div class="tw"><table class="tbl">
+<thead><tr><th>מצב</th><th>Sales</th><th>Profit</th><th>Margin</th><th>Orders</th><th>תווית</th></tr></thead>
+<tbody>
+<tr><td>הכול</td><td><span class="n">236,821</span></td><td><span class="n">120,723</span></td><td><span class="n">51.0%</span></td><td><span class="n">6,575</span></td><td>9 branches</td></tr>
+<tr><td>South</td><td><span class="n">55,575</span></td><td><span class="n">27,915</span></td><td><span class="n">50.2%</span></td><td><span class="n">1,530</span></td><td>3 branches</td></tr>
+<tr><td>Tel Aviv Dizengoff</td><td><span class="n">44,194</span></td><td><span class="n">22,979</span></td><td><span class="n">52.0%</span></td><td><span class="n">1,235</span></td><td>Tel Aviv Dizengoff</td></tr>
+<tr><td>South, ואז Eilat Promenade</td><td><span class="n">31,474</span></td><td><span class="n">15,741</span></td><td><span class="n">50.0%</span></td><td><span class="n">866</span></td><td>Eilat Promenade</td></tr>
+</tbody></table></div>
+<p>Tableau עשוי להציג עיגול אחר בכרטיסים מהערך המדויק (למשל Sales של Dizengoff הוא <span class="n">44,194.1</span>).</p>
+</div>
+
+<div class="box note"><b>רשימת בדיקה לפני שמפרסמים:</b>
+<div class="m13-chk"><label><input type="checkbox"> יש כותרת שאומרת מה השאלה</label><label><input type="checkbox"> שלושה גרפים לכל היותר</label><label><input type="checkbox"> מספר אחד גדול לכל KPI</label><label><input type="checkbox"> אין צבע שלא מוסיף מידע</label><label><input type="checkbox"> לא מסתמכים על אדום וירוק</label><label><input type="checkbox"> ניגודיות טקסט 4.5 ל-1</label><label><input type="checkbox"> כרטיס מסנן אחד לכל מסנן</label><label><input type="checkbox"> נבדק בפריסת טלפון</label></div></div>
+
+<div class="box recap"><ul>
+<li>דשבורד מסדר גיליונות בנויים. קובעים גודל (<code>Range</code> להטמעה) ומוסיפים פריסת טלפון.</li>
+<li>צמוד ומכולות לבסיס, צף רק ללוגו. <code>Item hierarchy</code> מראה את העץ.</li>
+<li>מסנן נוצר בגיליון. <code>All Using This Data Source</code> מביא אותו לכולם.</li>
+<li>שש פעולות: סינון, הדגשה, כתובת, מעבר, פרמטר וקבוצה. סינון ב-<code>Select</code>, ובודקים <code>Clearing</code>.</li>
+<li>עיצוב הוא הסרה: כותרת ברורה, צבע מצומצם, ניגודיות, לא צבע בלבד.</li>
+</ul></div>
+
+<div class="quiz" data-id="m13-q-end-1" data-a="1"><p class="qq">בחרתם South והכרטיס עדיין מראה 236,821. מה בודקים?</p>
+<button class="opt"><code>Apply to Worksheets</code> של המסנן</button>
+<button class="opt">את גודל הדשבורד</button>
+<button class="opt">את הפלטה</button>
+<div class="why">מסנן שנוצר בגיליון פועל עליו בלבד, עד שמשנים את <code>Apply to Worksheets</code>.</div></div>
+<div class="quiz" data-id="m13-q-end-2" data-a="2"><p class="qq">לחצתם על Ashdod ובקו החודשי שלוש נקודות בלבד. מדוע?</p>
+<button class="opt">באג בסינון</button>
+<button class="opt">הסניף פעל שלושה חודשים (יוני עד אוגוסט 2025)</button>
+<button class="opt">הציר רציף ולכן חסרים חודשים</button>
+<div class="why">Ashdod Beach Pop-up פעל רק בקיץ 2025: <span class="n">1,010.0</span>, <span class="n">2,017.8</span>, <span class="n">2,276.7</span>.</div></div>
+<div class="quiz" data-id="m13-q-end-3" data-a="3"><p class="qq">מה מבדיל בין סינון להדגשה?</p>
+<button class="opt">הדגשה מסננת גם את גיליון המקור</button>
+<button class="opt">סינון עובד רק על גרפי קווים</button>
+<button class="opt">סינון מסיר את מה שלא נבחר, והדגשה משאירה אותו מעומעם בתצוגה</button>
+<div class="why">ושימו לב: הדגשה דורשת שהשדה יהיה בגיליון היעד.</div></div>
+
+<p>במודול הבא מפרסמים את הדשבורד ומטמיעים אותו: <a href="module14.html">מודול 14, סיפורים, פרסום והטמעה</a>.</p>
+<div class="teach"><b>🎓 למרצה:</b> לא אומת ב-Public: פעולות פרמטר וקבוצה, Dynamic Zone Visibility, תרשים בתוך טולטיפ, אובייקט Download, ושכבות סימנים. הסעיפים שקשורים לשמות תפריטים (Distribute Evenly, Use as Filter, Device Preview) דורשים בדיקה בגרסה המותקנת. צילומי מסך חסרים: m13-actions-dialog, m13-item-hierarchy.</div>
+</section>
+
+<div class="pager"><a href="module12.html">→ 12. גרפים מתקדמים ואנליטיקה</a><a href="module14.html">14. סיפורים, פרסום והטמעה ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>

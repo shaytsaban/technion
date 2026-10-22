@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2. מתחברים לנתונים · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=2;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public">1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים" class=on>2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים">3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות">6<small></small></a><a id="part7" href="module7.html" title="מפות">7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים">8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט">10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב">13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה">14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים">15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות">16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום">17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות">19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>מתחברים<br><span>לנתונים</span></h1>
+  <p>בונים חיבור נקי ל-Scoop & Go ב-Tableau Public ובודקים שהנתונים נטענו נכון: 6,575 שורות ושמונה סכומי ביקורת. בדרך לומדים מה Tableau Public יודע לקרוא, איך לקרוא את דף ה-Data Source, לתקן סוגי שדות, להתמודד עם קובץ בעברית ולנקות נתונים מבולגנים.</p>
+  <div class="chips"><span>🧪 17 תרגילים בתוכנה (13 חובה, 4 רשות)</span><span>🎞️ 4 הנפשות</span><span>🎛️ 10 הדמיות אינטראקטיביות</span><span>🔤 קובץ בעברית ובדיקת קידוד</span><span>✅ בודק נקודות ביקורת</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<div class="box note">
+<p><span class="lvl s">מתחילים</span> <b>מה נבנה במודול הזה:</b> חיבור נקי של Scoop &amp; Go ל-Tableau Public, ובדיקת בריאות מלאה של הנתונים: 16 שדות, 6,575 שורות וכמה סכומי ביקורת שמחשבים פעם אחת ומשווים למה שהמסך אומר. בדרך מתקנים סוגי שדות, שמות והסתרות, פוגשים קובץ בעברית שמתנהג מוזר, ולומדים מה Tableau Public יודע לקרוא ומה לא.</p>
+<p><b>מה צריך להיות מוכן:</b> Tableau Desktop Public Edition פתוח (אפשר גם web authoring בדפדפן, ובמקומות שבהם הוא שונה נאמר את זה), והקבצים של המודול: <a class="tool" href="data/scoop_sales_2024_2025.csv" download>scoop_sales_2024_2025.csv</a> <a class="tool" href="data/scoop_sales_2024_2025.xlsx" download>scoop_sales_2024_2025.xlsx</a> <a class="tool" href="data/sausage_hebrew_500.xlsx" download>sausage_hebrew_500.xlsx</a>. עדיף לשמור אותם בתיקייה קצרה, בלי רווחים ובלי עברית בנתיב. המודול הקודם: <a href="module1.html">מכירים את Tableau Public</a>.</p>
+</div>
+
+<section class="sec" id="m2-1" data-t="לאן מתחברים">
+<div class="sec-h"><div class="sec-n">1</div><h2>לאן Tableau Public יודע להתחבר, ולמה רק Extract</h2></div>
+<p class="lead">המנהלת של Scoop &amp; Go שולחת לכם קובץ עם 6,575 שורות מכירה משנתיים. לפני שבונים גרף שואלים שאלה אחת: Tableau Public בכלל יודע לקרוא את הקובץ הזה?</p>
+
+<div class="defline"><b>מקור נתונים (<code>Data Source</code>):</b> הקובץ או השירות ש-Tableau קורא ממנו את הנתונים. דוגמה: הקובץ <span class="n">scoop_sales_2024_2025.csv</span>. פותחים אותו באקסל ורואים שכל שורה היא שורת הזמנה אחת.</div>
+<div class="defline"><b>מחבר (<code>Connector</code>):</b> החלק ב-Tableau שיודע לקרוא סוג מסוים של מקור. דוגמה: המחבר <code>Text file</code> קורא קבצי CSV, והמחבר <code>Microsoft Excel</code> קורא קבצי xlsx.</div>
+
+<p>בואו נראה איך זה נראה במסך. זו חלונית <code>Connect</code> של Tableau Public, בצילום אמיתי. שימו לב לכותרת של החלון בגרסה שלכם: היא צריכה לומר Tableau Public.</p>
+<figure class="shot" style="max-width:560px;margin-inline:auto"><img src="img/connect-pane.png" alt="חלונית Connect ב-Tableau Public עם רשימת מחברי הקבצים"><figcaption>חלונית Connect. תחת <code>To a File</code> שישה סוגי קבצים: Excel, Text, JSON, PDF, Spatial, Statistical. תחת <code>To a Server</code> יש <code>OData</code> ו-<code>More...</code>, ושם אמורים להיות עוד מחברים (למשל Google Drive). בגרסה שלכם הסדר עשוי להיות שונה מעט.</figcaption></figure>
+
+<h3>הרשימה המלאה, עם מלכודת אחת לכל שורה</h3>
+<div class="tw"><table class="tbl m2-mx">
+<thead><tr><th>מקור</th><th>סוגי קבצים</th><th>מתאים ל...</th><th>המלכודת</th></tr></thead>
+<tbody>
+<tr><td><b>Excel</b></td><td><span class="n">.xlsx</span> (Excel 2007 ומעלה)</td><td>טבלאות עם כמה גיליונות</td><td>Tableau לא תומך בטבלת PivotTable של אקסל. מעתיקים ערכים לגיליון רגיל.</td></tr>
+<tr><td><b>Text</b></td><td><span class="n">.csv .txt .tsv .tab</span></td><td>ייצוא ממערכות, הקובץ הפשוט ביותר</td><td>מפריד שדות, קידוד ו-<dfn data-d="הגדרה של אזור ושפה שקובעת איך נכתבים תאריכים ומספרים, למשל נקודה או פסיק עשרוני">Locale</dfn> (סעיף 5).</td></tr>
+<tr><td><b>JSON</b></td><td><span class="n">.json</span></td><td>נתונים מ-<dfn data-d="דרך שבה תוכנה אחת מבקשת נתונים מתוכנה אחרת, ומקבלת אותם בפורמט כמו JSON">API</dfn> ומאתרים</td><td>Tableau סורק את 10,000 השורות הראשונות כדי להבין את המבנה.</td></tr>
+<tr><td><b>PDF</b></td><td><span class="n">.pdf</span></td><td>טבלאות שתקועות בדוח</td><td>אין תמיכה בעברית (ימין לשמאל): אותיות עלולות להתהפך.</td></tr>
+<tr><td><b>Spatial</b></td><td>Shapefile, KML, GeoJSON, MapInfo</td><td>גבולות ואזורים למפות</td><td>Shapefile הוא כמה קבצים ביחד. מכווצים ל-zip.</td></tr>
+<tr><td><b>Statistical</b></td><td>SAS, SPSS, R</td><td>קבצים מסטטיסטיקאים ומחקר</td><td>רלוונטי בעיקר למי שמקבל נתונים ממחקר.</td></tr>
+<tr><td><b>Google Drive</b></td><td>גיליון Google Sheets ועוד</td><td>קובץ משותף שמתעדכן</td><td>צריך חשבון Google. ריענון אוטומטי כל 24 שעות רק כאן.</td></tr>
+<tr><td><b>OData</b></td><td>כתובת של פיד נתונים</td><td>מערכות עסקיות שמפרסמות פיד</td><td>למתקדמים. מדלגים בקורס הזה.</td></tr>
+</tbody></table></div>
+<p class="n" style="display:block;font-size:.85rem;color:var(--muted)">המקור: דף הפיצ׳רים וה-FAQ של Tableau Public, כפי שנבדקו באוקטובר 2026. רשימות כאלה משתנות, ולכן בדקו בתיעוד לפני ששומרים אותה כמסמך קבוע.</p>
+
+<div class="sim" data-id="m2-sim-can"><div class="sh">אפשר או אי אפשר? לחצו על מקור</div>
+<div class="row" id="m2-can-btns"></div>
+<div class="out" id="m2-can-out" aria-live="polite">לחצו על מקור נתונים ותראו אם Tableau Public מתחבר אליו, ומה עושים כשלא.</div>
+<div class="row"><span>נבדקו: <b id="m2-can-n">0</b> מתוך <span id="m2-can-t">0</span></span><div class="meter" style="flex:1;min-width:140px"><i id="m2-can-m"></i></div></div>
+</div>
+
+
+<script>(function(){ FL.dom(function(){
+  var L=[
+   ['Excel (xlsx)','y','אפשר. המחבר Microsoft Excel. אם יש כמה גיליונות, בוחרים איזה להכניס.'],
+   ['CSV','y','אפשר. המחבר Text file. אם משהו נראה מוזר בעברית או בעמודות, בודקים מפריד וקידוד.'],
+   ['TSV או TXT','y','אפשר. גם הם נקראים בתור Text file, עם מפריד אחר.'],
+   ['JSON','y','אפשר. Tableau סורק את 10,000 השורות הראשונות כדי להבין את המבנה.'],
+   ['PDF באנגלית','y','אפשר. Tableau מחפש טבלאות בעמודים ומציע אותן.'],
+   ['PDF בעברית','a','אפשר, אבל Tableau לא תומך בכתיבה מימין לשמאל, ואותיות עלולות להתהפך. עדיף להשיג את הטבלה כ-Excel.'],
+   ['Shapefile (zip)','y','אפשר. מחבר Spatial. צריך את כל הקבצים של ה-Shapefile, ולכן מכווצים ל-zip.'],
+   ['SPSS (sav)','y','אפשר. מחבר Statistical, כמו SAS ו-R.'],
+   ['Google Drive','a','אפשר דרך המחבר Google Drive. צריך חשבון Google. הריענון האוטומטי (כל 24 שעות) קיים רק כאן.'],
+   ['OData','a','אפשר, אבל זה למתקדמים: כתובת של פיד נתונים. מדלגים בקורס.'],
+   ['PivotTable באקסל','a','Tableau לא תומך ב-PivotTable של אקסל. מעתיקים את הערכים לגיליון חדש (Paste Special, Values) וטוענים אותו.'],
+   ['Access (accdb)','n','לא ברשימה של Public. פותחים באקסס, מייצאים את הטבלה ל-CSV וטוענים אותו.'],
+   ['PostgreSQL, MySQL, SQL Server','n','אין מחבר למסדי נתונים. מריצים שאילתה, מייצאים CSV וטוענים אותו.'],
+   ['Snowflake, BigQuery','n','אין מחבר. אותו עיקרון: מייצאים תוצאה לקובץ וטוענים.'],
+   ['מקור מ-Tableau Cloud או Server','n','לא נתמך ב-Public. צריך מוצר מורשה, או לייצא את הנתונים לקובץ.'],
+   ['Web Data Connector','n','הוצא משימוש על ידי Tableau, ולכן לא משתמשים בו.']
+  ];
+  var cls={y:'chip g',a:'chip a',n:'chip r'}, nm={y:'אפשר',a:'אפשר עם סייג',n:'אי אפשר'};
+  var box=FL.$('#m2-can-btns'), out=FL.$('#m2-can-out'), seen={}, cnt=0;
+  FL.$('#m2-can-t').textContent=L.length;
+  L.forEach(function(it,i){ var b=document.createElement('button'); b.type='button'; b.className='btn sec2'; b.style.fontSize='.85rem'; b.style.padding='3px 10px'; b.textContent=it[0];
+    b.addEventListener('click',function(){ out.innerHTML='<b>'+FL.esc(it[0])+'</b> <span class="'+cls[it[1]]+'">'+nm[it[1]]+'</span><br>'+FL.esc(it[2]);
+      if(!seen[i]){seen[i]=1;cnt++;FL.$('#m2-can-n').textContent=cnt;FL.$('#m2-can-m').style.width=Math.round(100*cnt/L.length)+'%'; b.style.outline='2px solid '+(it[1]==='y'?'#22c55e':it[1]==='a'?'#eab308':'#ef4444'); if(cnt>=8) FL.done('m2-sim-can');} });
+    box.appendChild(b); });
+}); })();</script>
+
+<h3>למה רק Extract</h3>
+<p>ב-Tableau Public אין חיבור חי. התוכנה לוקחת את הנתונים מהקובץ ובונה מהם <b>Extract</b>, וכל הגרפים נבנים ממנו.</p>
+<div class="defline"><b>Extract:</b> עותק (צילום) של הנתונים בפורמט של Tableau, שנשמר ביחד עם הדוח. דוגמה: הקובץ שלכם מכיל 6,575 שורות, והצילום מכיל 6,575 שורות. מוסיפים שורה בקובץ, והצילום ממשיך להראות 6,575 עד שמרעננים אותו.</div>
+<div class="flow"><span class="nd">הקובץ: 6,575 שורות</span><span class="ar">←</span><span class="nd g">Extract: 6,575 שורות</span><span class="ar">←</span><span class="nd a">הגרף</span></div>
+<p>את התמונה המלאה, כולל מה קורה בפרסום, נראה בסעיף 8. כרגע מספיק לזכור: מה שעל המסך הוא צילום ולא הקובץ החי.</p>
+
+<div class="box note"><p><b>לא זמין ב-Tableau Public: ככה עובדים סביב זה.</b> אין מחבר למסד נתונים (SQL Server, MySQL, PostgreSQL, Oracle, Snowflake, BigQuery ועוד), אין חיבור חי, ואין ריענון מתוזמן (חוץ מ-Google Drive). הדרך עוקפת: מריצים את השאילתה בכלי של מסד הנתונים, מייצאים את התוצאה ל-CSV וטוענים את ה-CSV. אותו דבר שעשיתם ב-SQL במפגש המסכם, רק שהשלב האחרון הוא קובץ. נחזור לזה בסוף הקורס, ב<a href="module15.html">מודול 15</a>, ובמפגש המסכם ב<a href="../final-lesson/part2.html">חלק 2 (SQL)</a>.</p></div>
+
+<div class="box try" data-id="m2-try-connect-pane">
+<ol>
+<li>פתחו את Tableau Public. אם הוא נפתח על דף ההתחלה, זה בסדר. אם נפתח גיליון ריק, חזרו אל דף ההתחלה עם <code>File &gt; Show Start Page</code>. <em>למה: משם מתחברים.</em></li>
+<li>בחלונית <code>Connect</code> רשמו את שמות המחברים תחת <code>To a File</code> ותחת <code>To a Server</code>. <em>למה: זו הרשימה של מה שאפשר לעשות, ואין בה יותר.</em></li>
+<li>לחצו על <code>More...</code> ורשמו מה יש שם. אל תבחרו כלום ואל תתחברו לשום דבר. <em>למה: להכיר את המקום שבו מסתתר Google Drive.</em></li>
+<li>הסתכלו על כותרת החלון. <em>למה: אם כתוב Tableau Public, אתם בגרסה הנכונה.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> שישה מחברי קבצים (Excel, Text, JSON, PDF, Spatial, Statistical), ועוד <code>OData</code> ו-<code>More...</code>. בתוך <code>More...</code> אמורה להופיע רשימה קצרה, עם Google Drive. אם אתם רואים רשימה ארוכה של שרתי מסדי נתונים, כנראה זו לא Public Edition (המלכודת הבאה).</p>
+</div>
+
+<div class="box trap"><p><b>הורדתי את הגרסה הלא נכונה.</b> יש היום שתי הורדות חינמיות: Tableau Desktop Public Edition (שומרת גם ל-Tableau Public) ו-Tableau Desktop Free Edition, שיודעת להתחבר ליותר מקורות אבל <u>לא</u> שומרת ל-Tableau Public. הסימנים: רשימת חיבורים ארוכה במיוחד, וכפתור שמירה לאתר שחסר. הפתרון: חזרו להורדה מ-public.tableau.com (ראו מודול 1).</p></div>
+
+<div class="box meaning"><p>כשהנתונים הם צילום, יש להם תאריך. הקפידו לכתוב בגרף או בכותרת עד מתי הנתונים מגיעים (בדוגמה שלנו: 31.12.2025). מי שיפתח את הדוח בעוד שנה צריך לדעת שהוא לא רואה את מה שקרה מאז.</p></div>
+
+<div class="box real"><p>CSV הוא השפה המשותפת של העולם. כמעט כל מערכת, ממסד נתונים ועד מערכת קופות, יודעת לייצא אליו. לכן אנליסטים רבים עובדים כך: שואבים מהמערכת, מייצאים קובץ, וטוענים אותו לכלי הדוחות. זה בדיוק התהליך שיעבוד לכם ב-Tableau Public.</p></div>
+
+<div class="box think" data-id="m2-th-refresh"><p>המנהלת מבקשת דשבורד שמתעדכן כל בוקר ישירות ממסד הנתונים של הרשת. מה מזה אפשר לעשות ב-Tableau Public, ומה לא? מה תציעו לה?</p>
+<div class="ans">אי אפשר: חיבור למסד נתונים וחיבור חי. אפשר: לייצא CSV מהמסד, לטעון אותו ולפרסם מחדש בכל פעם. אפשרות נוספת: קובץ Google Sheets בכונן Google, כי רק הוא מתרענן אוטומטית כל 24 שעות. ויש עוד שאלה לפני הכול: האם מותר לפרסם את המכירות של הרשת? כל מה שמתפרסם ב-Tableau Public הוא ציבורי. למכירות אמיתיות צריך מוצר אחר, ולא ב-Public.</div></div>
+
+<div class="quiz" data-id="m2-q-connectors" data-a="2"><p class="qq">איזה חיבור אפשר לבנות ב-Tableau Public?</p>
+<button class="opt">חיבור חי למסד PostgreSQL של הרשת</button>
+<button class="opt">קובץ Excel מהמחשב, ואחרי זה גם קובץ CSV</button>
+<button class="opt">מקור נתונים שפורסם ב-Tableau Cloud של החברה</button>
+<button class="opt">חיבור ל-Snowflake עם ריענון מתוזמן</button>
+<div class="why">קבצים (Excel, Text, JSON, PDF, Spatial, Statistical) ושני מחברים, Google Drive ו-OData, הם כל הרשימה. מסדי נתונים, חיבורים חיים, מקורות מ-Cloud או Server וריענון מתוזמן (חוץ מ-Google Drive) לא זמינים ב-Public.</div></div>
+
+<div class="quiz" data-id="m2-q-snapshot" data-a="3"><p class="qq">פרסמתם דוח ואחר כך הוספתם 50 שורות לקובץ ה-Excel. מה רואים מי שפותח את הדוח באתר?</p>
+<button class="opt">את 50 השורות החדשות, כי הדוח מחובר לקובץ</button>
+<button class="opt">הודעת שגיאה, כי הקובץ השתנה</button>
+<button class="opt">את הנתונים כפי שהיו ברגע הפרסום, עד שתפרסמו שוב</button>
+<div class="why">הדוח מבוסס על Extract, צילום שנשמר בזמן הפרסום. הקובץ המקורי לא מחובר לאתר. כדי לעדכן, טוענים את הקובץ המעודכן ומפרסמים מחדש.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> להקרין את חלונית ה-Connect ולהקריא ביחד את הרשימה. לעצור על ״אין מסדי נתונים״ כי זה מה שמפתיע מי שמכיר SQL מהמפגש המסכם. לבדוק לפני השיעור: מה בתוך <code>More...</code> אצלכם, באיזה מקום מופיע Google Drive, והאם Public Edition פותח גם קובץ <span class="n">.xls</span> ישן (לא נדרש לתרגילים כאן, כולם xlsx). הרשימה בטבלה היא מהתיעוד הרשמי: Google Sheets כמחבר נפרד הופסק, ו-Web Data Connector הוצא משימוש, ולכן אין להם שורה.</div>
+</section>
+<section class="sec" id="m2-2" data-t="מתחברים צעד אחר צעד">
+<div class="sec-h"><div class="sec-n">2</div><h2>מתחברים צעד אחר צעד: טוענים את Scoop &amp; Go</h2></div>
+<p class="lead">קודם התמונה הקצרה של הדרך שהנתונים עוברים, ואחר כך לוחצים. כל מה שבמודול הזה קורה בחלק השני והשלישי של הדרך.</p>
+
+<div class="anim" data-id="m2-anim-flow" data-speed="3000">
+<div class="stage"><svg viewBox="0 0 800 250" role="img" aria-label="הדרך של הנתונים מקובץ אל גיליונות">
+<defs><marker id="m2f-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<line x1="80" y1="205" x2="700" y2="205" stroke="#cbd5e1" stroke-width="3" stroke-dasharray="6 6"/>
+<g data-s="1"><rect x="15" y="40" width="130" height="100" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="2.5"/><text x="80" y="85" text-anchor="middle" font-size="19" font-weight="800" fill="#3730a3">הקובץ</text><text x="80" y="112" text-anchor="middle" font-size="14" fill="#475569">CSV או Excel</text><text x="80" y="165" text-anchor="middle" font-size="14" fill="#64748b">סעיף 2</text></g>
+<g data-s="2"><path d="M147,90 L170,90" stroke="#64748b" stroke-width="2.5" marker-end="url(#m2f-arr)"/><rect x="170" y="40" width="130" height="100" rx="14" fill="#ecfeff" stroke="#0891b2" stroke-width="2.5"/><text x="235" y="85" text-anchor="middle" font-size="19" font-weight="800" fill="#155e75">Connect</text><text x="235" y="112" text-anchor="middle" font-size="14" fill="#475569">בוחרים מחבר</text><text x="235" y="165" text-anchor="middle" font-size="14" fill="#64748b">סעיף 2</text></g>
+<g data-s="3"><path d="M302,90 L325,90" stroke="#64748b" stroke-width="2.5" marker-end="url(#m2f-arr)"/><rect x="325" y="40" width="130" height="100" rx="14" fill="#fffbeb" stroke="#d97706" stroke-width="2.5"/><text x="390" y="85" text-anchor="middle" font-size="18" font-weight="800" fill="#92400e">Data Source</text><text x="390" y="112" text-anchor="middle" font-size="14" fill="#475569">בודקים ומתקנים</text><text x="390" y="165" text-anchor="middle" font-size="14" fill="#64748b">סעיפים 3 עד 7</text></g>
+<g data-s="4"><path d="M457,90 L480,90" stroke="#64748b" stroke-width="2.5" marker-end="url(#m2f-arr)"/><rect x="480" y="40" width="130" height="100" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="2.5"/><text x="545" y="85" text-anchor="middle" font-size="19" font-weight="800" fill="#065f46">Extract</text><text x="545" y="112" text-anchor="middle" font-size="14" fill="#475569">צילום של הנתונים</text><text x="545" y="165" text-anchor="middle" font-size="14" fill="#64748b">סעיף 8</text></g>
+<g data-s="5"><path d="M612,90 L635,90" stroke="#64748b" stroke-width="2.5" marker-end="url(#m2f-arr)"/><rect x="635" y="40" width="130" height="100" rx="14" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2.5"/><text x="700" y="85" text-anchor="middle" font-size="19" font-weight="800" fill="#5b21b6">גיליונות</text><text x="700" y="112" text-anchor="middle" font-size="14" fill="#475569">Sheet 1, Sheet 2...</text><text x="700" y="165" text-anchor="middle" font-size="14" fill="#64748b">מודול 3</text></g>
+<g data-move="1:0,0|2:155,0|3:310,0|4:465,0|5:620,0"><circle cx="80" cy="205" r="11" fill="#d8b862" stroke="#92400e" stroke-width="2"/></g>
+</svg></div>
+<ol class="caps">
+<li>מתחילים בקובץ במחשב: scoop_sales_2024_2025.csv, בתיקייה קצרה.</li>
+<li>Connect: בוחרים מחבר (Text file) ופותחים את הקובץ.</li>
+<li>דף Data Source: כאן בודקים שורות, סוגים ושמות, לפני שבונים גרף.</li>
+<li>Extract: Tableau שומר צילום של הנתונים, ומכאן עובדים רק איתו.</li>
+<li>גיליונות: כל גרף נבנה מהנתונים שנטענו, בלי לגעת בקובץ המקורי.</li>
+</ol></div>
+
+<div class="box try" data-id="m2-try-connect-csv">
+<ol>
+<li>שמרו את <a class="tool" href="data/scoop_sales_2024_2025.csv" download>scoop_sales_2024_2025.csv</a> בתיקייה קצרה, למשל <span class="n">C:\Vizu</span> או <span class="n">~/Vizu</span>, בלי רווחים ובלי עברית בנתיב. <em>למה: נתיב ארוך או עם עברית הוא מקור לתקלות שאין טעם להסתכן בהן.</em></li>
+<li>ב-Tableau Public, בחלונית <code>Connect</code>, תחת <code>To a File</code>, לחצו <code>Text file</code>. <em>למה: CSV הוא קובץ טקסט שהעמודות בו מופרדות בפסיקים.</em></li>
+<li>בחרו את הקובץ ולחצו <code>Open</code>. התוכנה עוברת לדף <code>Data Source</code>. <em>למה: זה המקום שבו בודקים את הנתונים לפני שבונים.</em></li>
+<li>מעל הגריד, חפשו את השורה שאומרת כמה שדות וכמה שורות יש. <em>למה: זו בדיקת השפיות הראשונה, ויש לה תשובה ידועה.</em></li>
+<li>הסתכלו על מה שמעל כל עמודה: סמל הסוג (<code>Abc</code>, <code>#</code>, תאריך) ושם השדה. רשמו אילו עמודות קיבלו <code>#</code>. <em>למה: נשתמש בזה בסעיף 4.</em></li>
+<li>השוו את השם <span class="n">Order ID</span> על המסך לשם <span class="n">Order_ID</span> שבקובץ. <em>למה: Tableau מחליף קו תחתון ברווח בשמות באנגלית, והשם המקורי נשאר מחוץ לעין, בעמודה Remote Field Name.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> בשורת הסטטוס: <span class="n">16 fields 6575 rows</span> (בלי פסיק; כך Tableau כותב). שורה ראשונה: <span class="n">SG-00001, 2024-01-01, 19, BR04, Haifa German Colony</span>. הקובץ עצמו מכיל 6,576 שורות כשסופרים את שורת הכותרת.</p>
+</div>
+
+<p>כך אמורות להיראות הנתונים בגריד (חמש שורות ראשונות, כל 16 העמודות). אם אצלכם משהו שונה, כנראה שטענתם קובץ אחר:</p>
+<div class="tw"><table class="tbl m2-g" dir="ltr">
+<thead><tr><th>Order ID</th><th>Order Date</th><th>Order Hour</th><th>Branch Code</th><th>Branch</th><th>City</th><th>Region</th><th>Channel</th><th>Category</th><th>Item</th><th>Quantity</th><th>Unit Price</th><th>Discount</th><th>Sales</th><th>Cost</th><th>Profit</th></tr></thead>
+<tbody>
+<tr><td>SG-00001</td><td><bdi dir="ltr">2024-01-01</bdi></td><td>19</td><td>BR04</td><td>Haifa German Colony</td><td>Haifa</td><td>North</td><td>Walk-in</td><td>Cups</td><td>Lemon Sorbet Cup</td><td>2</td><td>20</td><td>0</td><td>40</td><td>17</td><td>23</td></tr>
+<tr><td>SG-00002</td><td><bdi dir="ltr">2024-01-02</bdi></td><td>13</td><td>BR06</td><td>Eilat Promenade</td><td>Eilat</td><td>South</td><td>Walk-in</td><td>Cups</td><td>Pistachio Cup</td><td>1</td><td>24</td><td>0</td><td>24</td><td>12</td><td>12</td></tr>
+<tr><td>SG-00003</td><td><bdi dir="ltr">2024-01-02</bdi></td><td>16</td><td>BR02</td><td>Tel Aviv Port</td><td>Tel Aviv-Yafo</td><td>Center</td><td>Walk-in</td><td>Drinks</td><td>Milkshake</td><td>1</td><td>26</td><td>0</td><td>26</td><td>10</td><td>16</td></tr>
+<tr><td>SG-00004</td><td><bdi dir="ltr">2024-01-02</bdi></td><td>20</td><td>BR07</td><td>Netanya Beach</td><td>Netanya</td><td>Center</td><td>Walk-in</td><td>Cones</td><td>Classic Cone</td><td>1</td><td>16</td><td>0</td><td>16</td><td>7</td><td>9</td></tr>
+<tr><td>SG-00005</td><td><bdi dir="ltr">2024-01-03</bdi></td><td>18</td><td>BR01</td><td>Tel Aviv Dizengoff</td><td>Tel Aviv-Yafo</td><td>Center</td><td>Walk-in</td><td>Cones</td><td>Double Cone</td><td>1</td><td>26</td><td>0</td><td>26</td><td>12</td><td>14</td></tr>
+</tbody></table></div>
+<p style="font-size:.88rem;color:var(--muted)">הגריד מציג את השמות המתוקנים (עם רווח) ולא את הקו התחתון. בגרסה שלכם ייתכן עיצוב מעט שונה של המספרים.</p>
+
+<h3>אותו דבר מקובץ Excel</h3>
+<p>אותם נתונים קיימים גם כקובץ xlsx עם שני גיליונות: <span class="n">Sales</span> (6,575 שורות) ו-<span class="n">Branches</span> (תשעה סניפים, עם מנהל, תאריך פתיחה ושטח). בואו נראה מה שונה כשטוענים אותו.</p>
+
+<div class="box try" data-id="m2-try-connect-xlsx">
+<ol>
+<li>הורידו את <a class="tool" href="data/scoop_sales_2024_2025.xlsx" download>scoop_sales_2024_2025.xlsx</a>. חזרו לדף ההתחלה (<code>File &gt; Show Start Page</code>, או <code>Data &gt; New Data Source</code> אם אתם בתוך גיליון) ובחרו <code>Microsoft Excel</code>. <em>למה: זה מחבר אחר, עם התנהגות אחרת לגיליונות.</em></li>
+<li>בצד שמאל של דף ה-Data Source רשומים שני הגיליונות. גררו את <code>Sales</code> אל הקנבס (או לחצו עליו פעמיים). <em>למה: ב-Excel בוחרים בעצמכם אילו גיליונות נכנסים.</em></li>
+<li>אל תגררו את <code>Branches</code> עכשיו. רק לחצו עליו בלי לגרור וראו שהוא קיים. <em>למה: הוספת טבלה שנייה מחברת אותה לראשונה, ואת זה לומדים במודול 11.</em></li>
+<li>קראו את שורת הסטטוס, ואת סמל הסוג של <code>Order Date</code>. <em>למה: בקובץ xlsx התאריך הוא באמת תאריך, ואילו ב-CSV הוא טקסט ש-Tableau מפרש.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> <span class="n">16 fields 6575 rows</span>, בדיוק כמו ב-CSV. ב-<code>Branches</code> יש 9 שורות ו-7 שדות. במודולים הבאים נעבוד עם ה-CSV, אבל כל מה שנעשה עובד גם עם ה-xlsx.</p>
+</div>
+
+<div class="box trap"><p><b>הכול נכנס לעמודה אחת.</b> אם אחרי הטעינה כל השורה מופיעה בתוך שדה בודד, Tableau קרא את הקובץ עם מפריד שגוי (פסיק, נקודה-פסיק או טאב). הפתרון: על הקנבס לחצו על החץ של הטבלה, בחרו <code>Text File Properties</code> (בגרסה שלכם ייתכן שהשם שונה מעט) ושנו את <code>Field separator</code>. שם אפשר לשנות גם את <code>Character set</code> ואת <code>Locale</code>.</p></div>
+
+<div class="box trap"><p><b>מספר השורות לא מסתדר.</b> אם הוצג 6,574 או 6,576, הכותרת התפרשה אחרת: שורת נתונים נבלעה בתור כותרת, או שורת כותרת נספרה כנתונים. בקובץ בלי כותרות, Tableau לא יכול לנחש, ואפשר להגיד לו לייצר שמות בעצמו. הכלל: קודם בודקים את המספר, ורק אחר כך בונים.</p></div>
+
+<div class="box meaning"><p>כל שורה בקובץ היא שורת הזמנה אחת, ובשדה <span class="n">Order ID</span> יש 6,575 ערכים שונים, כלומר אין הזמנה שחוזרת. זה אומר ש-6,575 הוא גם מספר השורות וגם מספר ההזמנות. בקבצים אחרים זה לא תמיד כך (הזמנה אחת יכולה לפרוש על כמה שורות), ולכן שואלים מה בדיוק שורה מייצגת.</p></div>
+
+<div class="box real"><p>כשמעבירים נתונים ממערכת אחת לאחרת, אנשי נתונים עושים &quot;בדיקת התאמה&quot;: סופרים שורות וסוכמים עמודה כספית במקור וביעד, ומשווים. אם המספרים לא זהים, לא ממשיכים. זה בדיוק מה שאתם עושים כאן במספר השורות, ובסעיף 10 תעשו את זה בצורה מלאה.</p></div>
+
+<div class="box think" data-id="m2-th-count"><p>למה בודקים את מספר השורות לפני כל דבר אחר, ולא אחרי שבונים את הגרף הראשון?</p>
+<div class="ans">כי זו הבדיקה הכי זולה והכי חזקה: היא מהירה, ויש לה תשובה ידועה. אם המספר שונה, משהו הלך לאיבוד בדרך: כותרת, שורה ריקה, מפריד, קידוד. וכל גרף שתבנו על נתונים חסרים ייראה אמין ויהיה שגוי.</div></div>
+
+<div class="quiz" data-id="m2-q-rows" data-a="1"><p class="qq">בעורך טקסט, הקובץ scoop_sales_2024_2025.csv מראה 6,576 שורות, וב-Tableau כתוב 6575 rows. האם יש בעיה?</p>
+<button class="opt">אין בעיה: שורה אחת היא הכותרת, ו-6,575 הן שורות הנתונים</button>
+<button class="opt">יש בעיה: Tableau איבד שורה אחת</button>
+<button class="opt">יש בעיה: Tableau ספר שורה ריקה בסוף הקובץ</button>
+<div class="why">עורך טקסט סופר גם את שורת הכותרת. Tableau סופר רק שורות נתונים, ולכן 6,576 פחות 1 הוא 6,575. זה בדיוק מה שמצופה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לעבוד ביחד, צעד אחר צעד, ולעצור אחרי שלב 4: כל אחד מקריא את המספר שלו. מי שיש לו מספר אחר, מטפלים בו עכשיו (קובץ אחר, קידוד, מפריד). לבדוק מראש: באיזו שפה מופיעה שורת הסטטוס אצלכם, וכיצד נקראת אצלכם האפשרות של Text File Properties. הסיבה לכך שאנחנו לא גוררים את Branches: בקובץ יש תשעה סניפים, אבל לא אותם תשעה כמו בטבלת המכירות (Kiryat Shmona נפתח ב-2026 ואין לו מכירות, ו-Ashdod Beach Pop-up לא מופיע ב-Branches). נחזור לזה במודול 11.</div>
+</section>
+<section class="sec" id="m2-3" data-t="דף Data Source">
+<div class="sec-h"><div class="sec-n">3</div><h2>דף Data Source: מה יש על המסך ומה עושים בו</h2></div>
+<p class="lead">אחרי שטענתם את Scoop &amp; Go, נפתח מסך שרוב המתחילים רק עוברים דרכו. כדאי לעצור בו. כאן רואים את הנתונים לפני שבונים עליהם, ומכאן מתקנים אותם.</p>
+
+<div class="defline"><b>דף Data Source (<code>Data Source page</code>):</b> המסך שנפתח אחרי החיבור. מציג את המקור, את הטבלאות ואת השורות עצמן, ומאפשר לתקן שמות וסוגים. דוגמה: שורת הסטטוס שאומרת <span class="n">16 fields 6575 rows</span>.</div>
+
+<p>הנה הצילום האמיתי, מקובץ vgsales (קובץ ידוע של משחקי וידאו, רק כדי לראות את המסך):</p>
+<figure class="shot"><img src="img/datasource-page.png" alt="דף Data Source ב-Tableau Public עם הקובץ vgsales.csv"><figcaption>דף Data Source ב-Tableau Public. למעלה, בקנבס: הטבלה במלבן כחול והדרכה לצירוף טבלאות נוספות. באמצע: <span class="n">11 fields 16598 rows</span> ותיבה של מספר השורות שמוצגות (בצילום: 100). משמאל למטה: רשימת השדות עם Type, Field Name, Physical Table ו-Remote Field Name. מימין: הגריד, עם סמל סוג מעל כל עמודה.</figcaption></figure>
+
+<p>ועכשיו אותו מסך עם Scoop &amp; Go, בהדמיה. לחצו על כל אחד מהמספרים הכתומים ותראו מה אפשר לעשות באזור הזה.</p>
+
+<div class="sim" data-id="m2-sim-dsp"><div class="sh">דף Data Source: לחצו על המספרים</div>
+<div class="m2-dsp" dir="ltr" aria-label="הדמיה סכמטית של דף Data Source">
+ <div class="m2-dsp-top"><button type="button" class="m2-z" data-k="conn">1</button><b>Connections</b><span>scoop_sales_2024_2025.csv <i>Text file</i></span><span class="m2-sp"></span><b>Filters</b><span>0 | Add</span></div>
+ <div class="m2-dsp-body">
+  <div class="m2-left"><button type="button" class="m2-z" data-k="files">2</button><h6>Files</h6><div class="m2-it on">scoop_sales_2024_2025.csv</div><label class="m2-cb"><input type="checkbox" disabled> Use Data Interpreter</label></div>
+  <div class="m2-right">
+   <div class="m2-canvas"><button type="button" class="m2-z" data-k="canvas">3</button><div class="m2-card">scoop_sales_2024_2025.csv</div><span class="m2-hint">Drag tables here to relate them</span></div>
+   <div class="m2-bar"><button type="button" class="m2-z" data-k="count">4</button><span>scoop_sales_2024_2025.csv</span><span>16 fields 6575 rows</span><span class="m2-sp"></span><span>100 &rarr; rows</span></div>
+   <div class="m2-gwrap"><button type="button" class="m2-z" data-k="head" style="top:-4px;left:auto;right:4px">5</button><button type="button" class="m2-z" data-k="rows" style="top:auto;bottom:-4px;left:4px;right:auto">6</button><div class="m2-gw"><table class="m2-gt"><thead><tr><th><i class="ic s">Abc</i>Order ID</th><th><i class="ic d">&#128197;</i>Order Date</th><th><i class="ic n">#</i>Order Hour</th><th><i class="ic s">Abc</i>Branch</th><th><i class="ic s">Abc</i>City</th><th><i class="ic n">#</i>Sales</th></tr></thead>
+   <tbody><tr><td>SG-00001</td><td><bdi dir="ltr">2024-01-01</bdi></td><td>19</td><td>Haifa German Colony</td><td>Haifa</td><td>40</td></tr><tr><td>SG-00002</td><td><bdi dir="ltr">2024-01-02</bdi></td><td>13</td><td>Eilat Promenade</td><td>Eilat</td><td>24</td></tr><tr><td>SG-00003</td><td><bdi dir="ltr">2024-01-02</bdi></td><td>16</td><td>Tel Aviv Port</td><td>Tel Aviv-Yafo</td><td>26</td></tr></tbody></table></div></div>
+  </div>
+ </div>
+ <div class="m2-tabs"><button type="button" class="m2-z" data-k="tabs" style="top:-4px;left:auto;right:10px">7</button><span>Data Source</span><span class="on">Sheet 1</span></div>
+</div>
+<div class="out" id="m2-dsp-out" aria-live="polite">לחצו על מספר כדי לראות הסבר.</div>
+</div>
+
+<figure class="shot" data-shot="m2-scoop-datasource">
+<div class="fb"><div class="m2-dsp" dir="ltr"><div class="m2-dsp-top"><b>Connections</b><span>scoop_sales_2024_2025.csv <i>Text file</i></span></div><div class="m2-bar"><span>scoop_sales_2024_2025.csv</span><span>16 fields 6575 rows</span><span class="m2-sp"></span><span>100 &rarr; rows</span></div><div class="m2-gw"><table class="m2-gt"><thead><tr><th><i class="ic s">Abc</i>Order ID</th><th><i class="ic d">&#128197;</i>Order Date</th><th><i class="ic n">#</i>Order Hour</th><th><i class="ic s">Abc</i>Branch</th><th><i class="ic n">#</i>Sales</th></tr></thead><tbody><tr><td>SG-00001</td><td><bdi dir="ltr">2024-01-01</bdi></td><td>19</td><td>Haifa German Colony</td><td>40</td></tr></tbody></table></div></div>
+<div class="need">צילום מסך נדרש: Tableau Public, דף Data Source אחרי טעינת scoop_sales_2024_2025.csv, עם שורת הסטטוס 16 fields 6575 rows, הגריד עם סמלי הסוג והלשונית Sheet 1 בתחתית</div></div>
+<figcaption>דף Data Source אחרי טעינת Scoop &amp; Go (הדמיה סכמטית).</figcaption>
+</figure>
+
+<script>(function(){ FL.dom(function(){
+  var T={
+   conn:['1. Connections','כאן רשום המקור שחיברתם ואיזה מחבר קורא אותו (Text file, Excel...). הכפתור Add מוסיף מקור נוסף, ואותו נפגוש במודול 11.','מה עושים: בודקים שזה הקובץ הנכון.'],
+   files:['2. רשימת הקבצים או הגיליונות','ב-Excel רואים כאן את הגיליונות (Sales, Branches). בוחרים מה נכנס. אם יש אצלכם תיבה בשם Use Data Interpreter, היא מנסה לנקות גיליון מבולגן (סעיף 6).','מה עושים: גוררים או לוחצים פעמיים על מה שרוצים.'],
+   canvas:['3. הקנבס (Canvas)','האזור שבו טבלאות מונחות. טבלה אחת: אין מה לעשות. כשגוררים עוד טבלה, Tableau מציג קו שמחבר ביניהן (קשר או Join).','מה עושים: בינתיים כלום. זה המקום של מודול 11.'],
+   count:['4. שורת הסטטוס','כמה שדות (עמודות) וכמה שורות יש במקור. המספר הוא הסך הכול, לא מה שנראה בגריד. התיבה rows קובעת כמה שורות להציג בגריד.','מה עושים: משווים ל-6,575. זו הבדיקה הראשונה.'],
+   head:['5. כותרת עמודה','סמל הסוג (Abc, #, תאריך), שם השדה ותפריט. לחיצה על הסמל משנה סוג. החץ פותח תפריט: Rename, Hide ועוד.','מה עושים: מתקנים סוג שגוי ושמות לא ברורים (סעיפים 4 ו-7).'],
+   rows:['6. הגריד','מדגם של שורות, כמו גיליון אקסל. שורה היא רשומה אחת: כאן הזמנה אחת.','מה עושים: מסתכלים על שורות ראשונות ואחרונות, וזוכרים שזה רק מדגם.'],
+   tabs:['7. לשוניות בתחתית','Data Source הוא המסך שאתם בו. Sheet 1 הוא הגיליון הראשון, שבו בונים גרף. אפשר לחזור לכאן בכל רגע.','מה עושים: עוברים ל-Sheet 1 כשסיימתם לבדוק.']
+  };
+  var seen={},n=0,out=FL.$('#m2-dsp-out');
+  FL.$$('.m2-dsp .m2-z').forEach(function(b){ b.addEventListener('click',function(){ var t=T[b.dataset.k]; out.innerHTML='<b>'+FL.esc(t[0])+'</b><br>'+FL.esc(t[1])+'<br><span class="chip b">'+FL.esc(t[2])+'</span>';
+    FL.$$('.m2-dsp .m2-z').forEach(function(x){x.classList.remove('cur');}); b.classList.add('cur');
+    if(!seen[b.dataset.k]){seen[b.dataset.k]=1;n++; b.classList.add('seen'); if(n>=6) FL.done('m2-sim-dsp');} }); });
+}); })();</script>
+
+<h3>מה רואים ומה עושים: בקיצור</h3>
+<div class="tw"><table class="tbl">
+<thead><tr><th>איפה</th><th>מה רואים</th><th>מה בודקים</th></tr></thead>
+<tbody>
+<tr><td>שורת הסטטוס</td><td><span class="n">16 fields 6575 rows</span></td><td>מספר השורות מול המקור</td></tr>
+<tr><td>סמל מעל עמודה</td><td><span class="n">Abc</span> טקסט, <span class="n">#</span> מספר, סמל תאריך</td><td>האם הסוג הגיוני</td></tr>
+<tr><td>שם השדה</td><td><span class="n">Order ID</span> במקום <span class="n">Order_ID</span></td><td>האם השם ברור למי שיקרא את הדוח</td></tr>
+<tr><td>הגריד</td><td>שורות ראשונות</td><td>ערכים חריגים, ריקים, כותרות כפולות</td></tr>
+</tbody></table></div>
+
+<div class="box try" data-id="m2-try-tour">
+<ol>
+<li>חזרו לדף ה-Data Source של <span class="n">scoop_sales_2024_2025.csv</span>. <em>למה: זה המסך שנלמד.</em></li>
+<li>פתחו את התיבה של מספר השורות שמוצגות בגריד (ליד הכיתוב <code>rows</code>) וראו מה האפשרויות. <em>למה: הגריד הוא מדגם. כך מבינים כמה ממנו רואים.</em></li>
+<li>לחצו על החץ הקטן בכותרת של העמודה <code>Sales</code> וראו את התפריט. אל תשנו כלום. <em>למה: זה מקום שבו משנים שם ומסתירים שדה.</em></li>
+<li>לחצו על סמל הסוג מעל <code>Order Date</code> וראו את רשימת הסוגים. סגרו עם <kbd>Esc</kbd>. <em>למה: כאן מתקנים סוג שגוי.</em></li>
+<li>לחצו על <code>Sheet 1</code> בתחתית. משמאל מופיעה רשימת השדות. חזרו עם <code>Data Source</code>. <em>למה: להיווכח שהשינויים בדף הזה משפיעים על הגיליון.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> אתם יודעים להצביע על שבעת האזורים בלי לחשוב. ברשימת השדות של הגיליון יש, בדרך כלל, 9 ממדים (כחול) ו-7 מדדים (ירוק), עוד שדה ספירה בשם <span class="n">scoop_sales_2024_2025.csv (Count)</span>, ושני שדות מיוחדים בשם <span class="n">Measure Names</span> ו-<span class="n">Measure Values</span>. אם Order Hour אצלכם נמצא בין הממדים, Tableau ניחש אחרת ממה שנראה כאן, וזה בסדר: בסעיף 4 נבין למה.</p>
+</div>
+
+<div class="box note"><p><b>ב-web authoring (בדפדפן):</b> מעלים קובץ xlsx, csv או tsv (עד 1 GB לקובץ), ולכן את התרגילים עם קבצי Scoop &amp; Go ו-sausage אפשר לעשות גם שם. בדף הנתונים בדפדפן ייתכן שחלק מהכלים שבמודול חסרים או נמצאים במקום אחר, למשל שינוי סוג שדה, הסתרה ותפקיד גיאוגרפי: בדקו אם זמין אצלכם. JSON, PDF ו-Shapefile טוענים ב-Desktop.</p></div>
+
+<div class="box trap"><p><b>הגריד מציג רק מדגם.</b> בצילום למעלה הוא מציג 100 שורות מתוך 16,598. אם השורות הראשונות נראות תקינות, זה עדיין לא אומר שהקובץ תקין: בקובץ vgsales, למשל, הערך <span class="n">N/A</span> בעמודת השנה מופיע לראשונה רק בשורה 180, ובסך הכול ב-271 שורות. לכן לא מסתפקים במבט בגריד, ובסעיף 10 בודקים גם בסכומים.</p></div>
+
+<div class="box meaning"><p>הגריד מראה מה בעצם יש בקובץ: שורה היא רשומה אחת, ועמודה היא דבר אחד שמודדים עליה. אם הגריד נראה כמו דוח (כותרות באמצע, שורות סיכום), Tableau לא יידע לעבוד איתו, ובסעיף 9 נראה למה.</p></div>
+
+<div class="box real"><p>מי שמקבל קובץ מאדם אחר, בכל תחום, עושה אותו הדבר: מסתכל על השורות הראשונות, על האחרונות ועל כמה באמצע. בדרך כלל זה מהיר, וחוסך שעות של דיבוג בגרף שנראה שגוי.</p></div>
+
+<div class="box think" data-id="m2-th-remote"><p>בטבלת השדות יש עמודה בשם <code>Remote Field Name</code>, לצד <code>Field Name</code>. למה Tableau שומר את שני השמות, ומה קורה כשמשנים שם של שדה?</p>
+<div class="ans">Field Name הוא השם שאתם רואים ויכולים לשנות. Remote Field Name הוא השם של העמודה בקובץ, ובעזרתו Tableau מוצא אותה. שינוי שם ב-Tableau לא נוגע בקובץ. אם מישהו ישנה אחר כך את שם העמודה בקובץ, החיבור לשדה נשבר, והשדה יסומן באדום.</div></div>
+
+<div class="quiz" data-id="m2-q-status" data-a="2"><p class="qq">בדף ה-Data Source כתוב <span class="n">16 fields 6575 rows</span> והגריד מציג 100 שורות. מה זה אומר?</p>
+<button class="opt">בקובץ יש 100 שורות, ו-6,575 הוא מספר הערכים השונים</button>
+<button class="opt">בקובץ יש 6,575 שורות, והגריד מציג רק מדגם מהן</button>
+<button class="opt">נטענו רק 100 שורות, ובשאר צריך לטפל ידנית</button>
+<div class="why">שורת הסטטוס מדווחת על כל הנתונים במקור. התיבה rows קובעת רק כמה שורות מוצגות בגריד, כדי שהמסך יהיה מהיר.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> להקרין את ההדמיה ולעבור על שבעת המספרים. אחר כך לפתוח את המסך האמיתי ולתת לכל אחד למצוא אותם בעצמו. הצילום האמיתי מהקובץ של משחקי הווידאו משמש רק להמחשה, כי הוא נלקח מגרסה קודמת של המסך. לבדוק לפני השיעור: האם הכיתוב ב-Public הוא <code>rows</code> עם תיבה (כמו בצילום), מה האפשרויות בתיבה, והאם בגרסה שלכם יש גם כפתור Filters עם Add בפינה הימנית עליונה. ב-web authoring ייתכן שהמסך מצומצם יותר: לבדוק איפה מתקנים סוג שדה.</div>
+</section>
+<section class="sec" id="m2-4" data-t="סוגי נתונים">
+<div class="sec-h"><div class="sec-n">4</div><h2>סוגי נתונים: מה Tableau מנחש, ואיפה הוא טועה</h2></div>
+<p class="lead">בעמודה Order Hour כתוב 19, ובעמודה Quantity כתוב 2. שניהם מספרים. אבל 19 הוא שעה, ו-2 הוא כמות, ו-Tableau לא יודע את זה. הוא מנחש לפי מה שכתוב בתא.</p>
+
+<div class="defline"><b>סוג נתונים (<code>Data Type</code>):</b> מה Tableau חושב שיש בתוך עמודה: טקסט, מספר, תאריך ועוד. הסוג קובע מה אפשר לעשות עם השדה. דוגמה: <span class="n">2024-01-01</span> הוא תאריך, ולכן אפשר לחשב ממנו חודש. <span class="n">SG-00001</span> הוא טקסט, ולכן אי אפשר.</div>
+
+<div class="tw"><table class="tbl">
+<thead><tr><th>סמל</th><th>סוג</th><th>דוגמה מ-Scoop &amp; Go</th></tr></thead>
+<tbody>
+<tr><td><span class="fld dim"><i>Abc</i></span></td><td>טקסט (<code>String</code>)</td><td><span class="n">SG-00001</span>, <span class="n">Haifa</span></td></tr>
+<tr><td><span class="fld mea"><i>#</i></span></td><td>מספר שלם (<code>Number (whole)</code>)</td><td>Quantity: <span class="n">2</span>. Order Hour: <span class="n">19</span></td></tr>
+<tr><td><span class="fld mea"><i>#</i></span></td><td>מספר עם נקודה עשרונית (<code>Number (decimal)</code>)</td><td>Discount: <span class="n">0.1</span>. Sales: <span class="n">40.0</span></td></tr>
+<tr><td><span class="fld dim"><i>&#128197;</i></span></td><td>תאריך (<code>Date</code>)</td><td>Order Date: <span class="n">2024-01-01</span></td></tr>
+<tr><td><span class="fld dim"><i>&#128337;</i></span></td><td>תאריך ושעה (<code>Date &amp; Time</code>)</td><td>לא קיים ב-Scoop. למשל <span class="n">2026-03-02 19:20</span> בטבלת ההזמנות של יבגני (מודול 11)</td></tr>
+<tr><td><span class="fld dim"><i>T|F</i></span></td><td>אמת או שקר (<code>Boolean</code>)</td><td>שדה מחושב (<dfn data-d="שדה חדש שנוצר מנוסחה שכתבתם, בלי לשנות את הקובץ המקורי">שדה מחושב</dfn> הוא שדה כזה) <span class="n">[Profit] &lt; 0</span>: מקבל אמת ב-63 שורות</td></tr>
+</tbody></table></div>
+<p>יש גם סמל של גלובוס. זה לא סוג אלא <b>תפקיד גיאוגרפי</b> (למשל City), ונפגוש אותו בסעיף 7.</p>
+
+<div class="defline"><b>ממד ומדד (<code>Dimension</code>, <code>Measure</code>):</b> ממד הוא שדה שמחלק את הנתונים לקבוצות, ומדד הוא מספר ש-Tableau מחבר או מחשב ממנו ממוצע. דוגמה: Branch הוא ממד (תשעה סניפים), ו-Sales הוא מדד (הסכום שלו 236,820.90). סוג ותפקיד הם שני דברים שונים: מספר יכול להיות מדד, ואפשר להפוך אותו לממד. את שני התפקידים נלמד לעומק במודול 3, ואת בדיד ורציף במודול 4.</div>
+
+<div class="sim" data-id="m2-sim-types"><div class="sh">בלשי הסוגים: איזה סוג זה?</div>
+<div id="m2-ty-card"></div>
+<div class="row" id="m2-ty-btns"></div>
+<div class="out" id="m2-ty-out" aria-live="polite"></div>
+<div class="row"><span>ניקוד: <b id="m2-ty-sc">0</b> מתוך <span id="m2-ty-n">10</span></span><button type="button" class="btn sec2" id="m2-ty-next" disabled>הבא</button></div>
+</div>
+
+<script>(function(){ FL.dom(function(){
+  var TY=[['str','טקסט (Abc)'],['int','מספר שלם'],['dec','מספר עשרוני'],['date','תאריך'],['dt','תאריך ושעה'],['bool','אמת או שקר']];
+  var NM={};TY.forEach(function(t){NM[t[0]]=t[1];});
+  var Q=[
+   ['SG-00001','העמודה Order_ID','str','יש אותיות ומקף, אז זה טקסט.'],
+   ['2024-01-01','העמודה Order_Date בקובץ CSV','date','פורמט שנה-חודש-יום (ISO) הוא הפורמט שהכי קל ל-Tableau לזהות כתאריך.'],
+   ['19','העמודה Order_Hour','int','מספר שלם. Tableau יסווג אותו, בדרך כלל, כמדד, וסכום של שעות לא אומר כלום. את זה מתקנים בתפקיד (ממד), לא בסוג.'],
+   ['0.1','העמודה Discount','dec','יש נקודה עשרונית. בהמשך נציג אותו כאחוז.'],
+   ['BR04','העמודה Branch_Code','str','קוד סניף הוא טקסט, גם אם בקוד אחר היו רק ספרות.'],
+   ['2026-03-02 19:20','העמודה order_ts בטבלת ההזמנות של יבגני','dt','יש תאריך וגם שעה: Date &amp; Time.'],
+   ['0501234567','עמודת טלפון','str','לטלפון לא עושים חשבון, ולכן הוא טקסט. אם Tableau יקרא אותו כמספר, ה-0 בהתחלה ייעלם: 501234567.'],
+   ['03/04/2025','תאריך בפורמט ישראלי (יום/חודש/שנה)','date','תאריך, אבל איזה? 3 באפריל או 4 במרץ. זה תלוי ב-Locale. בודקים, או כותבים DATEPARSE עם פורמט מפורש.'],
+   ['2021','העמודה שנה בקובץ הנקניקים בעברית','int','מספר שלם. מכיוון שהשם בעברית, Tableau כנראה יסווג אותו כמדד (בדקו אצלכם). נהפוך אותו לממד.'],
+   ['true','התוצאה של [Profit] &lt; 0','bool','תוצאה של השוואה היא אמת או שקר. ב-Scoop &amp; Go, 63 שורות מקבלות אמת.']
+  ];
+  var i=0,sc=0,card=FL.$('#m2-ty-card'),btns=FL.$('#m2-ty-btns'),out=FL.$('#m2-ty-out'),nx=FL.$('#m2-ty-next'),ans=false;
+  FL.$('#m2-ty-n').textContent=Q.length;
+  function show(){ var q=Q[i]; ans=false; nx.disabled=true; out.innerHTML=''; nx.textContent=(i===Q.length-1?'סיום':'הבא');
+    card.innerHTML='<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><code style="font-size:1.35rem;padding:6px 14px">'+q[0]+'</code><span>'+q[1]+' ('+(i+1)+' מתוך '+Q.length+')</span></div>';
+    FL.$$('button',btns).forEach(function(b){b.disabled=false;b.className='btn sec2';}); }
+  TY.forEach(function(t){ var b=document.createElement('button'); b.type='button'; b.className='btn sec2'; b.dataset.k=t[0]; b.style.fontSize='.88rem'; b.textContent=t[1];
+    b.addEventListener('click',function(){ if(ans) return; ans=true; var q=Q[i], ok=(t[0]===q[2]); if(ok) sc++;
+      FL.$$('button',btns).forEach(function(x){ x.disabled=true; if(x.dataset.k===q[2]) x.className='btn ok'; });
+      if(!ok) b.className='btn'; b.style.background=ok?'':'#ef4444';
+      FL.$('#m2-ty-sc').textContent=sc;
+      out.innerHTML='<b>'+(ok?'נכון.':'לא בדיוק. התשובה: '+NM[q[2]]+'.')+'</b> '+q[3]; nx.disabled=false;
+      if(i===Q.length-1) FL.done('m2-sim-types'); });
+    btns.appendChild(b); });
+  nx.addEventListener('click',function(){ if(i<Q.length-1){i++;show();} else { i=0; sc=0; FL.$('#m2-ty-sc').textContent=0; show(); } });
+  show();
+}); })();</script>
+
+<h3>שלושה מקרים שחוזרים כל הזמן</h3>
+<div class="box trap"><p><b>תאריך שהוא טקסט.</b> בקובץ מישראלי כתוב <span class="n">03/04/2025</span>. האם זה 3 באפריל או 4 במרץ? שני הקריאות חוקיות. לעומת זאת <span class="n">25/12/2025</span> אפשר לקרוא רק כיום/חודש. בשנה רגילה יש 365 תאריכים, ו-132 מהם משנים משמעות אם קוראים אותם הפוך. התוצאה: חלק מהשורות נקראות בלי לשים לב ביום וחודש מוחלפים, וחלק הופכות ל-<dfn data-d="תא ריק: Tableau יודע שחסר שם ערך, והוא לא נחשב כאפס">Null</dfn>. הפתרון: תאריכים בפורמט <span class="n">2025-04-03</span> במקור, או שדה מחושב עם פורמט מפורש:</p>
+<pre class="code" data-lang="tableau">DATEPARSE("dd/MM/yyyy", [Date Text])</pre>
+<p>הפורמט חייב להתאים בדיוק לאופן שבו התאריך כתוב. <span class="n">MM</span> גדולות הוא חודש, ו-<span class="n">mm</span> קטנות הן דקות. את הפונקציה נלמד במודול 8.</p></div>
+
+<div class="box trap"><p><b>מספר זיהוי שהוא מספר.</b> אם עמודת מזהים (מספר הזמנה, מספר עובד, טלפון) נטענת כמספר, Tableau מניח שאפשר לחבר אותה. בדוגמה פשוטה, מזהים 1 עד 10 נותנים סכום של 55, מספר שאין לו שום משמעות. בטלפון זה גרוע יותר: <span class="n">0501234567</span> הופך ל-<span class="n">501234567</span>. התיקון: <code>Convert to Dimension</code> (לפי תפקיד), או <code>Change Data Type &gt; String</code> (לפי סוג). בקובץ Scoop &amp; Go אין לכם את הבעיה הזאת, כי <span class="n">Order ID</span> מכיל אותיות. אבל <span class="n">Order Hour</span> הוא המקרה הבא.</p></div>
+
+<div class="box trap"><p><b>שעה שהיא מדד.</b> Order Hour הוא מספר, ולכן Tableau, בדרך כלל, שם אותו בין המדדים. Tableau מחבר את העמודה כברירת מחדל (SUM, סוג של <dfn data-d="איך Tableau מצמצם הרבה שורות למספר אחד: סכום, ממוצע או ספירה">אגרגציה</dfn>), והסכום של כל השעות הוא 118,214, מספר שלם ונחמד שאין לו שום משמעות. מה שרוצים לדעת הוא כמה הזמנות היו בכל שעה. אז הופכים את השדה לממד, והוא מחלק את הנתונים ל-14 קבוצות (שעות 10 עד 23).</p></div>
+
+<div class="box try" data-id="m2-try-fix-types">
+<ol>
+<li>בדף ה-Data Source, ודאו שמעל <code>Order Date</code> יש סמל תאריך. אם יש <code>Abc</code>, לחצו על הסמל ובחרו <code>Date</code>. <em>למה: בלי סוג תאריך אי אפשר לעבוד עם חודשים ושנים (מודול 4).</em></li>
+<li>עברו ל-<code>Sheet 1</code> ולחצו פעמיים על <code>Order Hour</code> ברשימת השדות. רשמו את המספר שמופיע. <em>למה: זה מה שמקבלים משדה שהסוג או התפקיד שלו לא מתאימים: מספר בטוח בעצמו וחסר משמעות. אם Order Hour כבר בין הממדים (Tableau ניחש נכון), דלגו לשלב 4.</em></li>
+<li>בטלו (<kbd>Ctrl</kbd>+<kbd>Z</kbd>, או <kbd>Cmd</kbd>+<kbd>Z</kbd> ב-Mac). לחצו על <code>Order Hour</code> קליק ימני ובחרו <code>Convert to Dimension</code>. <em>למה: הוא עדיין מספר, אבל עכשיו הוא מחלק את הנתונים לקבוצות ולא מצטבר.</em></li>
+<li>לחצו פעמיים על <code>scoop_sales_2024_2025.csv (Count)</code>, ואז על <code>Order Hour</code>. <em>למה: סופרים שורות בכל שעה.</em></li>
+<li>עכשיו שנו את ההנחה: קליק ימני על <code>Discount</code>, <code>Convert to Dimension</code>, וגררו אותו במקום Order Hour. <em>למה: בודקים אותו כקבוצות.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> בשלב 2: <b>118,214</b>. בשלב 4: 14 שעות (10 עד 23). הגבוהה ביותר היא 21 עם <b>938</b> שורות, אחריה 20 עם 859, 22 עם 750 ו-19 עם 727. הנמוכה ביותר היא 10 עם 91. בשלב 5: ארבע קבוצות, <b>5,798</b> שורות בלי הנחה (0), <b>431</b> עם 10%, <b>54</b> עם 20% ו-<b>292</b> עם 50%. <bdi dir="ltr">5,798+431+54+292</bdi> הם בדיוק 6,575. אחרי הבדיקה אפשר לחזור ל-<code>Convert to Measure</code>.</p>
+</div>
+
+<div class="box meaning"><p>הסוג קובע מה אפשר לעשות עם שדה, והתפקיד (ממד או מדד) קובע איך Tableau משתמש בו. כשהגרף יוצא מוזר, בודקים את שניהם: האם השדה נקרא נכון, והאם הוא במקום הנכון. 21:00 היא שעת השיא של Scoop &amp; Go, ו-938 שורות באותה שעה הן כמעט כפולות מהשעה ה-18 (497). את זה אפשר לראות רק אחרי שהשעה הפכה לממד.</p></div>
+
+<div class="box real"><p>גם אקסל מנחש. הוא שומר תאריך כמספר סידורי: <span class="n">1.1.2024</span> הוא <span class="n">45292</span> מאחורי הקלעים, ולכן תאריך שמוצג פתאום כמספר חמש ספרות הוא תאריך שאיבד את הפורמט שלו. אותה בעיה, באותה צורה, מופיעה גם ב-Tableau כשסוג השדה שגוי.</p></div>
+
+<div class="box think" data-id="m2-th-hour"><p>מה השאלה העסקית שאפשר לענות עליה כש-Order Hour הוא ממד, ומה כשהוא מדד? מה תשאלו את המנהלת?</p>
+<div class="ans">כממד: באיזו שעה יש הכי הרבה הזמנות (תשובה: 21:00, עם 938), ומתי כדאי להחזיק יותר עובדים. כמדד אפשר רק לסכם או לחשב ממוצע שעות, ואין לזה שימוש: הממוצע (בערך 17.98) לא אומר מתי קונים. השאלה למנהלת: האם שעת ההזמנה מתעדת שעה עגולה או שעת התחלה של חלון? כי זה משנה איך קוראים את 21.</div></div>
+
+<div class="quiz" data-id="m2-q-hour" data-a="3"><p class="qq">Order Hour נטען כמספר ו-Tableau שם אותו בין המדדים. מה הכי נכון לעשות כדי לספור הזמנות לפי שעה?</p>
+<button class="opt">לשנות את הסוג לטקסט ולמחוק את הנתונים הישנים</button>
+<button class="opt">להשאיר אותו מדד ולהשתמש בסכום</button>
+<button class="opt">להמיר אותו לממד (Convert to Dimension)</button>
+<div class="why">הסכום של שעות חסר משמעות. כדי לספור לפי שעה צריך שהשדה יחלק את הנתונים לקבוצות, וזה תפקיד של ממד. אין צורך למחוק דבר, והסוג יכול להישאר מספר.</div></div>
+
+<div class="quiz" data-id="m2-q-dateparse" data-a="2"><p class="qq">עמודה מכילה <span class="n">03/04/2025</span> ו-<span class="n">25/12/2025</span> כטקסט. מה הכי בטוח לעשות?</p>
+<button class="opt">להניח ש-Tableau יבין לבד, כי הוא חכם</button>
+<button class="opt">להשתמש ב-DATEPARSE עם פורמט מפורש, או לתקן את התאריכים בקובץ לפורמט שנה-חודש-יום</button>
+<button class="opt">להסתכל על השורה הראשונה, ואם היא נראית טוב להמשיך</button>
+<div class="why">התאריך הראשון יכול להיות שני תאריכים שונים, והשורה הראשונה לא מוכיחה כלום על השאר. הפורמט המפורש מבטל את הניחוש.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> אחרי ״בלשי הסוגים״ לעצור על Order Hour ולשאול: מה הסכום? זה בדיוק 118,214, ועדיף שיגלו אותו בעצמם. לבדוק לפני השיעור: האם Order Hour מגיע אצלכם כמדד או כממד, והאם Order Date ב-CSV מזוהה כתאריך (פורמט ISO, ציפייה: כן). בהסבר על DATEPARSE אין צורך להיכנס לעומק, המודול על שדות מחושבים יחזור לזה. 132 תאריכים הם 12 ימים כפול 12 חודשים פחות 12 ימים שבהם היום והחודש זהים (1.1, 2.2 וכן הלאה).</div>
+</section>
+<section class="sec" id="m2-5" data-t="עברית וקידוד">
+<div class="sec-h"><div class="sec-n">5</div><h2>קובץ בעברית: מה עובד, ואיפה נתקעים</h2></div>
+<p class="lead">יבגני שולח קובץ של מכירות נקניקים, עם כותרות בעברית. Tableau עובד באנגלית, והנתונים שלכם בעברית. בואו נראה מה בסדר, ואיפה צריך להיזהר.</p>
+
+<div class="box note"><p><b>מה ידוע (לפי התיעוד של Tableau):</b> הממשק של Tableau Public לא קיים בעברית, ולכן כל התפריטים באנגלית. הנתונים עצמם בסדר: Tableau Public תומך ב-Unicode ובנתונים בכל שפה. שתי בעיות מוכרות: קידוד של קבצי CSV, ו-PDF בעברית, כי Tableau לא תומך בכתיבה מימין לשמאל.</p></div>
+
+<h3>קודם בודקים את הקובץ, מחוץ ל-Tableau</h3>
+<p>לפני שמעלים קובץ לא מוכר, שווה לבדוק אותו. זה קוד Python קצר שמדפיס את מספר השורות והעמודות ואת הסכום של עמודה. הרצתי אותו על הקובץ <a class="tool" href="data/sausage_hebrew_500.xlsx" download>sausage_hebrew_500.xlsx</a>, והנה מה שמצאתי:</p>
+<pre class="code" data-lang="python">import pandas as pd
+
+df = pd.read_excel("sausage_hebrew_500.xlsx")
+print(df.shape)                 # (500, 11)
+print(list(df.columns))         # 11 כותרות בעברית
+print(df["שנה"].sum())          # 1010544
+print(df["היקף מכירות (₪)"].min())   # -221.21</pre>
+<div class="kpis">
+<div class="kpi"><b>500</b><span>שורות</span></div>
+<div class="kpi"><b>11</b><span>עמודות</span></div>
+<div class="kpi"><b>0</b><span>תאים ריקים</span></div>
+<div class="kpi a"><b>4</b><span>כותרות עם סוגריים וסימנים</span></div>
+<div class="kpi r"><b>1</b><span>ערך שלילי במכירות (-221.21)</span></div>
+</div>
+<p>הגיליון נקרא <span class="n">Sheet1</span>, הכותרת בשורה הראשונה, אין תאים ממוזגים. מה כן מעניין: ארבע הכותרות <span class="n">משקל (גרם)</span>, <span class="n">ציון טעם (1-10)</span>, <span class="n">היקף מכירות (₪)</span> ו-<span class="n">אחוז רווח (%)</span> מכילות סוגריים, ספרות וסימנים. בעברית זה מקום קלאסי לבלבול בכיוון הכתיבה. והעמודה <span class="n">שנה</span> מכילה מספרים (2018 עד 2024), ושם בעברית כזה Tableau לא יזהה כשנה לבד.</p>
+
+<div class="sim" data-id="m2-sim-enc"><div class="sh">מעבדת הקידוד: אותו קובץ, קורא אחר</div>
+<p style="margin:0 0 6px">בחרו איך הקובץ נשמר ואיך Tableau (בהדמיה) קורא אותו, וראו מה יוצא. ההדמיה מחשבת את הבתים באמת ומפענחת אותם בדפדפן שלכם.</p>
+<div class="row">
+<label>טקסט: <select id="m2-en-txt"><option>שלום</option><option>פרנקפורטר</option><option>צ'וריסו</option><option>ציון טעם (<bdi dir="ltr">1-10</bdi>)</option><option>היקף מכירות (₪)</option></select></label>
+<label>הקובץ נשמר ב: <select id="m2-en-file"><option value="utf8">UTF-8</option><option value="bom">UTF-8 עם BOM</option><option value="w1255">windows-1255</option></select></label>
+<label>הקורא חושב ש: <select id="m2-en-read"><option value="utf8">UTF-8</option><option value="w1255">windows-1255</option><option value="w1252">windows-1252 (אנגלית מערבית)</option><option value="nobom">UTF-8, בלי טיפול ב-BOM</option></select></label>
+</div>
+<div class="out"><div>בתים בקובץ (הקסה): <code id="m2-en-hex"></code></div>
+<div style="margin-top:6px">מה הקורא רואה: <code id="m2-en-res" style="font-size:1.25rem;padding:4px 12px"></code></div>
+<div id="m2-en-dx" style="margin-top:8px" aria-live="polite"></div></div>
+</div>
+
+<script>(function(){ FL.dom(function(){
+  var sT=FL.$('#m2-en-txt'),sF=FL.$('#m2-en-file'),sR=FL.$('#m2-en-read'),hexE=FL.$('#m2-en-hex'),resE=FL.$('#m2-en-res'),dx=FL.$('#m2-en-dx'),used={};
+  function enc1255(s){ var a=[]; for(var i=0;i<s.length;i++){ var c=s.charCodeAt(i); if(c<128)a.push(c); else if(c>=0x5D0&&c<=0x5EA)a.push(0xE0+c-0x5D0); else if(c===0x20AA)a.push(0xA4); else a.push(63);} return new Uint8Array(a); }
+  function bytes(txt,f){ if(f==='w1255') return enc1255(txt); var u=new TextEncoder().encode(txt); if(f==='bom'){ var b=new Uint8Array(u.length+3); b.set([0xEF,0xBB,0xBF]); b.set(u,3); return b;} return u; }
+  function dec(b,r){ try{ if(r==='utf8') return new TextDecoder('utf-8').decode(b); if(r==='nobom') return new TextDecoder('utf-8',{ignoreBOM:true}).decode(b); if(r==='w1255') return new TextDecoder('windows-1255').decode(b); return new TextDecoder('windows-1252').decode(b);}catch(e){return '(הדפדפן לא תומך בקידוד הזה)';} }
+  function norm(f){return f==='bom'?'utf8':f;}
+  function run(){ var t=sT.value,f=sF.value,r=sR.value; var b=bytes(t,f); var h=[]; for(var i=0;i<Math.min(b.length,14);i++) h.push(('0'+b[i].toString(16)).slice(-2)); hexE.textContent=h.join(' ')+(b.length>14?' ...':'');
+    var s=dec(b,r); resE.textContent=s.replace(/﻿/g,'[BOM]'); resE.setAttribute('dir','auto');
+    var msg,ok=false; var fe=norm(f), re=(r==='nobom'?'utf8':r);
+    if(fe===re){ ok=true; msg=(f==='bom'&&r==='nobom')?'הטקסט נראה תקין, אבל לפני הכותרת הראשונה יושב תו נסתר (BOM). ב-Tableau זה עלול להיראות כשדה ראשון עם שם משובש או שלא מוצא. הפתרון: שמירה ב-UTF-8 בלי BOM, או קורא שמטפל בו.':'הקורא מצפה בדיוק לקידוד שבו הקובץ נשמר: הכול תקין.'; }
+    else if(fe==='w1255'&&re==='utf8') msg='סימני יהלום או שאלה במקום אותיות: הקובץ נשמר ב-windows-1255 והקורא חשב שהוא UTF-8. הפתרון: לשמור מחדש ב-UTF-8, או לבחור בהגדרות הקובץ את ה-Character set המתאים.';
+    else if(fe==='utf8'&&re==='w1255') msg='אותיות כפולות ומוזרות, כמו ג׳יבריש: הקובץ ב-UTF-8 והקורא חשב שהוא windows-1255.';
+    else if(fe==='utf8'&&re==='w1252') msg='אותיות לטיניות מוזרות במקום עברית (×©×œ): הקובץ ב-UTF-8 והקורא חשב שהוא קידוד מערבי.';
+    else if(fe==='w1255'&&re==='w1252') msg='אותיות לטיניות עם סימנים (ùìåí): הקובץ ב-windows-1255 והקורא חשב שהוא קידוד מערבי.';
+    else msg='הטקסט לא נראה כמו עברית: הקידוד של הקובץ והקורא לא תואמים.';
+    dx.innerHTML='<span class="chip '+(ok?'g':'r')+'">'+(ok?'תקין':'ג׳יבריש')+'</span> '+FL.esc(msg);
+    used[t+f+r]=1; if(Object.keys(used).length>=5) FL.done('m2-sim-enc'); }
+  [sT,sF,sR].forEach(function(e){e.addEventListener('change',run);}); run();
+}); })();</script>
+
+<div class="defline"><b>קידוד (<code>Encoding</code>):</b> הכלל שמתרגם את הבתים שבקובץ לאותיות. דוגמה: בהדמיה למעלה, אותה מילה &quot;שלום&quot; נשמרת כשלושה סוגי בתים, ואם הקורא מפענח לפי כלל אחר מקבלים ג׳יבריש. <dfn data-d="שלושה בתים בתחילת קובץ UTF-8 שמסמנים את הקידוד, ולפעמים מבלבלים את הקורא">BOM</dfn> הוא סימון כזה.  הנתונים לא נפגעו, רק הפענוח שגוי.</div>
+
+<div class="tw"><table class="tbl">
+<thead><tr><th>מה רואים</th><th>סיבה</th><th>מה עושים</th></tr></thead>
+<tbody>
+<tr><td>סימני שאלה או יהלומים</td><td>הקובץ ב-windows-1255, הקורא חשב UTF-8</td><td>לשמור מחדש כ-CSV UTF-8, או לשנות Character set</td></tr>
+<tr><td>אותיות כפולות מוזרות</td><td>הקובץ ב-UTF-8, הקורא חשב windows-1255</td><td>לשנות Character set ל-UTF-8</td></tr>
+<tr><td>אותיות לטיניות (×©×œ)</td><td>הקורא חשב קידוד מערבי</td><td>אותו דבר</td></tr>
+<tr><td>סימני שאלה אמיתיים בקובץ עצמו</td><td>ייצוא שאיבד את האותיות</td><td>אין תיקון בתוך Tableau. מייצאים שוב ממקור טוב.</td></tr>
+</tbody></table></div>
+
+<div class="box trap"><p><b>ג׳יבריש בעברית.</b> זו בעיית קידוד של הקובץ, לא של Tableau ולא של הנתונים. הדרך הבטוחה: לשמור קובץ בעברית כ-xlsx (אותיות Unicode בתוכו, בלי ויכוח על קידוד). אם חייבים CSV: באקסל <code>Save As</code> ובחירה ב-<code>CSV UTF-8</code>. אם הנתונים כבר מגיעים מקובץ שנראה משובש, ב-<code>Text File Properties</code> אפשר לשנות Character set. בגרסה שלכם ייתכן שהשם שונה מעט, ובדקו איזה קידוד מוצע כברירת מחדל.</p></div>
+
+<div class="box trap"><p><b>PDF בעברית.</b> התיעוד של Tableau אומר במפורש: אין תמיכה בשפות שנכתבות מימין לשמאל, ואם ב-PDF יש עברית, האותיות עלולות להיראות בסדר הפוך. כך זה עלול להיראות (הדמיה):</p>
+<div class="kpis"><div class="kpi"><b dir="rtl">שלום עולם</b><span>ב-PDF</span></div><div class="kpi r"><b dir="ltr">םלוע םולש</b><span>ב-Tableau (הדמיה של הסדר ההפוך)</span></div></div>
+<p>הפתרון: להשיג את הטבלה ב-Excel, או להעתיק אותה מה-PDF לאקסל, ולטעון את אקסל.</p></div>
+
+<div class="box try" data-id="m2-try-hebrew">
+<ol>
+<li>הורידו את <a class="tool" href="data/sausage_hebrew_500.xlsx" download>sausage_hebrew_500.xlsx</a>. ב-Tableau בחרו <code>Microsoft Excel</code> וגררו את <code>Sheet1</code> לקנבס. <em>למה: אותו תהליך כמו עם Scoop, רק שעכשיו הכותרות בעברית.</em></li>
+<li>קראו את שורת הסטטוס. <em>למה: בדיקת שורות לפני הכול.</em></li>
+<li>הסתכלו על ארבע הכותרות עם הסוגריים. כתבו איך הן נראות אצלכם בגריד וברשימת השדות. <em>למה: זו בדיקה בעיניים של מה שהדפדפן והתוכנה מציגים, ואין תשובה אחת נכונה מראש.</em></li>
+<li>עברו ל-<code>Sheet 1</code>. לחצו פעמיים על <code>שנה</code> ורשמו את המספר. <em>למה: להיווכח במה שקורה לשנה שהיא מדד.</em></li>
+<li>בטלו. קליק ימני על <code>שנה</code> ו-<code>Convert to Dimension</code>. גררו את <code>היקף מכירות (₪)</code> אל <code>Rows</code> ואת <code>שנה</code> אל <code>Columns</code>. <em>למה: מכירות לפי שנה, והשנה מחלקת.</em></li>
+<li>קליק ימני על כל אחד מארבעת השדות עם הסוגריים, <code>Rename</code>, והשמות החדשים: <b>משקל</b>, <b>ציון טעם</b>, <b>מכירות</b>, <b>אחוז רווח</b>. <em>למה: שמות קצרים בלי סימנים נקראים נכון ומקלים על כל מה שבא אחר כך.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> בשלב 2: <span class="n">11 fields 500 rows</span>. בשלב 4: <b>1,010,544</b> (סכום שנים חסר משמעות; הממוצע הוא 2,021.09). בשלב 5: 7 עמודות, אחת לכל שנה מ-2018 עד 2024. הגבוהה ביותר היא 2024 עם 411,443.83 (יוצג בערך כ-411,444), והנמוכה ביותר היא 2019 עם 325,095.41. הסכום של כל השנים הוא 2,504,511.22. אצלכם ייתכן עיגול, ואפשר לבדוק במספר המדויק דרך <dfn data-d="חלונית קטנה שקופצת כשמעבירים את העכבר על סימן בגרף ומציגה את הערכים המדויקים">Tooltip</dfn> (תיאור הכלים).</p>
+<div class="tw"><table class="tbl"><thead><tr><th>שנה</th><th>2018</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th></tr></thead><tbody><tr><td>מכירות</td><td>344,983.55</td><td>325,095.41</td><td>389,914.14</td><td>334,406.83</td><td>341,183.55</td><td>357,483.91</td><td>411,443.83</td></tr><tr><td>שורות</td><td>68</td><td>65</td><td>77</td><td>68</td><td>70</td><td>71</td><td>81</td></tr></tbody></table></div>
+</div>
+
+<div class="box trap"><p><b>שנה שנקראת כמספר.</b> בכל קובץ, ובעברית במיוחד, עמודה של שנים מגיעה כמספר. Tableau מזהה אוטומטית שדות באנגלית ששמם מכיל Year, Month או Day, אבל לא בעברית. בקובץ שלנו סכום עמודת השנה הוא 1,010,544. הפתרון: להמיר לממד, ובמודול 4 נלמד גם להפוך לתאריך אמיתי.</p></div>
+
+<div class="box meaning"><p>הערך השלילי של -221.21 במכירות אינו שגיאה בהכרח: אולי החזרה. אבל שימו לב שהוא יוריד את הסכום. כשרואים ערך כזה בנתונים, שואלים את הבעלים של הנתונים מה הוא אומר, ולא מוחקים אותו בעצמכם.</p></div>
+
+<div class="box real"><p>Unicode הוא התקן הנפוץ היום לכתיבת טקסט בכל השפות, ו-UTF-8 הוא הקידוד שלו שנפוץ ביותר באינטרנט. לכן ייצוא ל-UTF-8 הוא תמיד הברירה הבטוחה. כשמקבלים קובץ ישן ממערכת ותיקה, לפי מדריכים מקובלים, קורה שהוא מגיע בקידוד אחר, וכדאי לדעת לזהות את זה לפי צורת הג׳יבריש.</p></div>
+
+<div class="box think" data-id="m2-th-hebrew"><p>מה ההבדל בין קובץ שהעברית בו &quot;שבורה&quot; בגלל קידוד לבין קובץ שבו בכלל אין עברית (יש בו סימני שאלה)? איך מבדילים, ומה אפשר לעשות בכל מקרה?</p>
+<div class="ans">בבעיית קידוד האותיות קיימות בבתים, רק מפוענחות לא נכון: משנים קידוד או שומרים מחדש. כשבקובץ עצמו כתוב סימן שאלה, המידע אבד כבר בעת הייצוא, ואי אפשר להחזיר אותו מתוך Tableau. מבדילים כך: פותחים את הקובץ בעורך טקסט שיודע לבחור קידוד, ובודקים אם עם קידוד אחר העברית חוזרת.</div></div>
+
+<h3>עוד שני מחברים באנגלית: JSON ו-PDF (רשות)</h3>
+<p>ברשימת הקבצים להעלאה בדפדפן (web authoring) מופיעים רק xlsx, csv ו-tsv, ולכן את JSON ו-PDF טוענים ב-Tableau Desktop Public Edition. שני קבצי הדוגמה הרשמיים של Tableau נמצאים בדף <a class="tool" href="https://public.tableau.com/app/learn/sample-data" target="_blank" rel="noopener">Sample Data</a>. אנחנו לא מעתיקים אותם, מורידים משם.</p>
+
+<div class="box try" data-id="m2-try-json">
+<p><b>תרגיל רשות.</b> אין כאן מספר &quot;נכון&quot;, כי הקובץ של Tableau. המטרה: לראות איך נראה מקור שהמבנה שלו לא שטוח.</p>
+<ol>
+<li>מדף Sample Data הורידו את <span class="n">Star Wars Character Details</span> (קובץ JSON קטן). <em>למה: דוגמה רשמית, בלי נתונים אישיים.</em></li>
+<li>ב-Tableau: <code>Connect &gt; JSON file</code> ופתחו אותו. אם נפתח חלון לבחירת רמות המבנה (Select Schema Levels, או משהו דומה), סמנו הכול ולחצו OK. <em>למה: JSON יכול להכיל רשימות בתוך רשימות, ו-Tableau צריך לדעת אילו רמות לשטח לטבלה.</em></li>
+<li>רשמו את מספר השדות ואת מספר השורות, וקראו כמה שמות שדות. <em>למה: שמות של שדות משוטחים מכילים את הנתיב במבנה.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> טבלה שטוחה עם שורה לכל פריט. כשהקובץ מכיל יותר מ-10,000 שורות, Tableau סורק רק את הראשונות כדי לקבוע את המבנה.</p>
+</div>
+
+<div class="box try" data-id="m2-try-pdf">
+<p><b>תרגיל רשות.</b> שוב אין מספר &quot;נכון&quot;.</p>
+<ol>
+<li>מאותו דף הורידו את <span class="n">New Zealand Water Physical Stock Account</span> (PDF באנגלית). <em>למה: PDF באנגלית, כי העברית היא המלכודת שלמעלה.</em></li>
+<li>ב-Tableau: <code>Connect &gt; PDF file</code>. בחלונית משמאל יופיעו הטבלאות ש-Tableau מצא בעמודים. גררו אחת לקנבס. <em>למה: PDF הוא לא טבלה, ו-Tableau מחפש טבלאות בתוכו.</em></li>
+<li>בדקו בגריד אם שורת הכותרת זוהתה נכון, ואם המספרים נקראו כמספרים. <em>למה: קבצי PDF הם המקור הכי פחות אמין.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> גריד עם עמודות. לעיתים הכותרות ייקראו כשורת נתונים, וצריך לתקן. זה בדיוק המקום שבו מבינים למה עדיף לקבל Excel.</p>
+</div>
+
+<div class="quiz" data-id="m2-q-gibberish" data-a="1"><p class="qq">קובץ CSV בעברית נטען עם ג׳יבריש. מה הכי סביר?</p>
+<button class="opt">הקידוד של הקובץ לא תואם למה ש-Tableau קורא, והנתונים עצמם בסדר</button>
+<button class="opt">Tableau Public לא תומך בעברית, ולכן צריך מוצר מורשה</button>
+<button class="opt">הקובץ ניזוק ואי אפשר להשתמש בו</button>
+<div class="why">Tableau Public תומך ב-Unicode, וגם הנתונים בדרך כלל שלמים. בדרך כלל הפתרון הוא שמירה מחדש ב-UTF-8 או שינוי Character set. רק אם סימני שאלה כתובים בקובץ עצמו, המידע אבד.</div></div>
+
+<div class="quiz" data-id="m2-q-pdfrtl" data-a="3"><p class="qq">איזו דרך הכי טובה להכניס לטבלה נתונים מ-PDF בעברית?</p>
+<button class="opt">לטעון ישר ל-Tableau ולהאמין שהסדר נכון</button>
+<button class="opt">להגדיר ב-Tableau שהכיוון הוא מימין לשמאל</button>
+<button class="opt">להעתיק את הטבלה ל-Excel, לבדוק, ולטעון את קובץ ה-Excel</button>
+<div class="why">Tableau לא תומך בשפות שנכתבות מימין לשמאל במחבר ה-PDF, ואין הגדרה שמתקנת את זה. הדרך הבטוחה היא לעבור דרך קובץ שהוא טבלה אמיתית.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> חלק מהתשובות כאן תלויות במחשב של כל אחד, ולכן חשוב לבקש מהסטודנטים לרשום מה הם רואים. <b>לבדוק לפני השיעור (לא נבדק בתוכנה):</b> איך נראות כותרות עם סוגריים ו-₪ ו-% בגריד וברשימת השדות; האם <code>שנה</code> מגיעה כמדד; איך נראה שם שדה בעברית בתוך סוגריים מרובעים בעורך החישובים; מהו Character set כברירת מחדל ב-Text File Properties ואילו קידודים מוצעים; האם בגרסה שלכם יש תמיכה ב-BOM; מה יוצא מ-PDF העברית. אין להבטיח בכיתה מה יקרה. המספרים של שורת הסטטוס והסכומים חושבו מהקובץ ב-Python.</div>
+</section>
+<section class="sec" id="m2-6" data-t="ניקוי ושינוי צורה">
+<div class="sec-h"><div class="sec-n">6</div><h2>ניקוי ושינוי צורה: Data Interpreter, Pivot, Split ו-Union</h2></div>
+<p class="lead">יבגני מעביר לכם קובץ שנראה כמו דוח: כותרת גדולה למעלה, הערה, תאים ממוזגים. בני אדם מבינים אותו מיד. Tableau לא. בסעיף הזה נראה איך הופכים קובץ כזה לטבלה, ובאילו כלים.</p>
+
+<div class="box note"><p><b>בדקו אם זמין אצלכם.</b> Data Interpreter, Pivot, Union ו-Split קיימים בגרסאות המורשות של Tableau Desktop. התיעוד של Public לא מפרט אותם במפורש, ולכן שום תרגיל חובה כאן לא תלוי בהם. מה שעובד בוודאות ב-Public: לנקות את הקובץ במקור (Excel, Google Sheets או קוד Python), ושדות מחושבים כמו <code>SPLIT</code> ו-<code>DATEPARSE</code>. לכל כלי מופיע כאן גם הדרך שמובטחת. אם הכלי זמין לכם, מצוין, תנסו אותו כתרגיל רשות.</p></div>
+
+<h3>קובץ מבולגן: מה Data Interpreter עושה</h3>
+<div class="defline"><b>Data Interpreter:</b> כלי ש-Tableau מפעיל על גיליון Excel מבולגן, ומנסה לנחש איפה הטבלה האמיתית שלו: מדלג על כותרת, הערות והערות שוליים, ומפרק תאים ממוזגים. דוגמה: מתחת לרשימת הגיליונות מופיעה תיבה בשם <code>Use Data Interpreter</code>.</div>
+<p>סמנו את התיבה בהדמיה וראו אילו שורות נשארות. ההדמיה מראה את העיקרון, ולא את מה ש-Tableau עושה בדיוק בכל קובץ.</p>
+
+<div class="sim" data-id="m2-sim-di"><div class="sh">Data Interpreter: לפני ואחרי (הדמיה סכמטית)</div>
+<label class="m2-cb" style="font-size:1rem"><input type="checkbox" id="m2-di-cb"> Use Data Interpreter</label>
+<div class="tw"><table class="tbl m2-mess" dir="rtl" id="m2-di-t">
+<tbody>
+<tr data-j="1"><td colspan="3" style="text-align:center;font-weight:800;font-size:1.05rem">דוח מכירות לפי אזור</td></tr>
+<tr data-j="1"><td colspan="3">נכון ליום 31.12.2025 (טיוטה)</td></tr>
+<tr data-j="1"><td colspan="3">&nbsp;</td></tr>
+<tr class="hd"><td>אזור</td><td>2024</td><td>2025</td></tr>
+<tr><td>מרכז</td><td>52,302.8</td><td>68,102.7</td></tr>
+<tr><td>ירושלים</td><td>16,105.9</td><td>17,344.9</td></tr>
+<tr><td>צפון</td><td>12,982.0</td><td>14,407.2</td></tr>
+<tr><td>דרום</td><td>25,656.9</td><td>29,918.5</td></tr>
+<tr data-j="1"><td colspan="3">* הנתונים לפני החזרות</td></tr>
+</tbody></table></div>
+<div class="out" id="m2-di-out">בלי Data Interpreter: Tableau רואה 9 שורות, והשורה הראשונה (הכותרת הגדולה) היא שמות השדות.</div></div>
+<script>(function(){ FL.dom(function(){
+  var cb=FL.$('#m2-di-cb'), out=FL.$('#m2-di-out'), t=FL.$('#m2-di-t');
+  function r(){ var on=cb.checked; FL.$$('tr[data-j]',t).forEach(function(tr){ tr.style.opacity=on?'.25':'1'; tr.style.textDecoration=on?'line-through':'none'; });
+    out.textContent=on?'עם Data Interpreter: הכותרת, ההערה, השורה הריקה והערת השוליים מדולגות. הטבלה האמיתית היא שורת הכותרת ו-4 שורות נתונים.':'בלי Data Interpreter: Tableau רואה 9 שורות, והשורה הראשונה (הכותרת הגדולה) היא שמות השדות.';
+    if(on) FL.done('m2-sim-di'); }
+  cb.addEventListener('change',r);
+}); })();</script>
+<p>הדרך שמובטחת ב-Public: פותחים את הקובץ באקסל ומוחקים את שורות הכותרת וההערה, מבטלים תאים ממוזגים וכותבים את הכותרות בשורה הראשונה. זה קל, ואז הקובץ נקי לכל כלי.</p>
+
+<div class="box trap"><p><b>PivotTable של אקסל אינה Pivot של Tableau.</b> התיעוד אומר ש-Tableau לא תומך ב-PivotTable של אקסל (הטבלה הדינמית עם Row Labels ו-Grand Total). אם הקובץ שקיבלתם הוא כזה, מעתיקים את הערכים לגיליון חדש (<code>Paste Special &gt; Values</code>) וטוענים אותו. ה-Pivot של Tableau הוא דבר אחר, וגם הוא לא קשור לטבלה דינמית: הוא מחליף עמודות בשורות, ונראה אותו עכשיו.</p></div>
+
+<h3>Pivot: מעמודות לשורות</h3>
+<div class="defline"><b>Pivot:</b> הפיכת עמודות לשורות. במקום עמודה לכל שנה, יש עמודה אחת בשם Year ועמודה אחת בשם Sales. דוגמה: טבלה עם עמודות 2024 ו-2025 והאזורים בשורות, הופכת לטבלה עם שלוש עמודות ושמונה שורות.</div>
+
+<div class="anim" data-id="m2-anim-pivot" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 350" role="img" aria-label="הפיכת טבלה רחבה של אזורים ושנים לטבלה ארוכה"><defs><marker id="m2p-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d97706"/></marker></defs><g data-s="1"><text x="20" y="36" font-size="16" font-weight="800" fill="#3730a3" text-anchor="start">טבלה רחבה: עמודה לכל שנה</text><rect x="20" y="48" width="110" height="30" fill="#e0e7ff" stroke="#94a3b8" stroke-width="1"/><text x="28" y="68" font-size="15" font-weight="800" fill="#0f172a" text-anchor="start">Region</text><rect x="130" y="48" width="100" height="30" fill="#e0e7ff" stroke="#94a3b8" stroke-width="1"/><text x="138" y="68" font-size="15" font-weight="800" fill="#0f172a" text-anchor="start">2024</text><rect x="230" y="48" width="100" height="30" fill="#e0e7ff" stroke="#94a3b8" stroke-width="1"/><text x="238" y="68" font-size="15" font-weight="800" fill="#0f172a" text-anchor="start">2025</text><rect x="20" y="78" width="110" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="28" y="98" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">Center</text><rect x="130" y="78" width="100" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="138" y="98" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">52,302.8</text><rect x="230" y="78" width="100" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="238" y="98" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">68,102.7</text><rect x="20" y="108" width="110" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="28" y="128" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">Jerusalem</text><rect x="130" y="108" width="100" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="138" y="128" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">16,105.9</text><rect x="230" y="108" width="100" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="238" y="128" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">17,344.9</text><rect x="20" y="138" width="110" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="28" y="158" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">North</text><rect x="130" y="138" width="100" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="138" y="158" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">12,982.0</text><rect x="230" y="138" width="100" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="238" y="158" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">14,407.2</text><rect x="20" y="168" width="110" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="28" y="188" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">South</text><rect x="130" y="168" width="100" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="138" y="188" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">25,656.9</text><rect x="230" y="168" width="100" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="238" y="188" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">29,918.5</text></g><g data-s="2" data-pulse><rect x="130" y="44" width="200" height="158" rx="6" fill="none" stroke="#d97706" stroke-width="3.5"/><text x="230" y="226" font-size="14" font-weight="700" fill="#92400e" text-anchor="middle">בוחרים את שתי עמודות השנים</text></g><g data-s="3"><path d="M345,125 L445,125" stroke="#d97706" stroke-width="4" marker-end="url(#m2p-arr)"/><text x="395" y="110" font-size="17" font-weight="800" fill="#92400e" text-anchor="middle">Pivot</text></g><g data-s="3"><text x="470" y="36" font-size="16" font-weight="800" fill="#166534" text-anchor="start">טבלה ארוכה: שורה לכל אזור ושנה</text><rect x="470" y="48" width="110" height="30" fill="#dcfce7" stroke="#94a3b8" stroke-width="1"/><text x="478" y="68" font-size="15" font-weight="800" fill="#0f172a" text-anchor="start">Region</text><rect x="580" y="48" width="70" height="30" fill="#dcfce7" stroke="#94a3b8" stroke-width="1"/><text x="588" y="68" font-size="15" font-weight="800" fill="#0f172a" text-anchor="start">Year</text><rect x="650" y="48" width="120" height="30" fill="#dcfce7" stroke="#94a3b8" stroke-width="1"/><text x="658" y="68" font-size="15" font-weight="800" fill="#0f172a" text-anchor="start">Sales</text></g><g data-s="4"><rect x="470" y="78" width="110" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="478" y="98" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">Center</text><rect x="580" y="78" width="70" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="588" y="98" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">2024</text><rect x="650" y="78" width="120" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="658" y="98" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">52,302.8</text><rect x="470" y="108" width="110" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="478" y="128" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">Center</text><rect x="580" y="108" width="70" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="588" y="128" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">2025</text><rect x="650" y="108" width="120" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="658" y="128" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">68,102.7</text><rect x="470" y="138" width="110" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="478" y="158" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">Jerusalem</text><rect x="580" y="138" width="70" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="588" y="158" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">2024</text><rect x="650" y="138" width="120" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="658" y="158" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">16,105.9</text><rect x="470" y="168" width="110" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="478" y="188" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">Jerusalem</text><rect x="580" y="168" width="70" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="588" y="188" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">2025</text><rect x="650" y="168" width="120" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="658" y="188" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">17,344.9</text><rect x="470" y="198" width="110" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="478" y="218" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">North</text><rect x="580" y="198" width="70" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="588" y="218" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">2024</text><rect x="650" y="198" width="120" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="658" y="218" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">12,982.0</text><rect x="470" y="228" width="110" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="478" y="248" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">North</text><rect x="580" y="228" width="70" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="588" y="248" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">2025</text><rect x="650" y="228" width="120" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="658" y="248" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">14,407.2</text><rect x="470" y="258" width="110" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="478" y="278" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">South</text><rect x="580" y="258" width="70" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="588" y="278" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">2024</text><rect x="650" y="258" width="120" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="658" y="278" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">25,656.9</text><rect x="470" y="288" width="110" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="478" y="308" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">South</text><rect x="580" y="288" width="70" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="588" y="308" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">2025</text><rect x="650" y="288" width="120" height="30" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/><text x="658" y="308" font-size="14" font-weight="400" fill="#0f172a" text-anchor="start">29,918.5</text><text x="620" y="344" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">4 אזורים כפול 2 שנים הם 8 שורות</text></g></svg></div>
+<ol class="caps">
+<li>טבלה רחבה: כל שנה היא עמודה משלה. אלה המכירות האמיתיות של Scoop &amp; Go לפי אזור ושנה.</li>
+<li>בוחרים את שתי עמודות השנים. הן אלה שהופכות לשורות.</li>
+<li>Pivot: Tableau (בגרסאות המורשות) יוצר שני שדות חדשים, אחד לשם העמודה (כאן Year) ואחד לערך (כאן Sales).</li>
+<li>טבלה ארוכה: 4 אזורים כפול 2 שנים הם 8 שורות. כעת Year הוא ממד שאפשר לצבוע, לסנן ולהשוות.</li>
+</ol></div>
+
+<div class="sim" data-id="m2-sim-files"><div class="sh">מכינים קבצים מ-Scoop &amp; Go: רחב, ארוך ומפוצל</div>
+<p style="margin:0 0 6px">הכפתורים כאן מחשבים קבצים מהנתונים האמיתיים בדפדפן שלכם, ומאפשרים להוריד אותם ולטעון ל-Tableau. זו גם הדרך שמובטחת ב-Public: משנים צורה במקור, לפני הטעינה.</p>
+<div class="row"><button type="button" class="btn" id="m2-fm-wide">קובץ רחב (אזור, 2024, 2025)</button><button type="button" class="btn" id="m2-fm-tall">קובץ ארוך (אזור, שנה, מכירות)</button><button type="button" class="btn" id="m2-fm-split">שני קבצים: 2024 ו-2025</button></div>
+<div class="out" id="m2-fm-out">לחצו על אחד הכפתורים.</div></div>
+<script>(function(){ FL.dom(function(){
+  var out=FL.$('#m2-fm-out'), used={};
+  function dl(name,csv){ var a=document.createElement('a'); a.className='tool'; a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download=name; a.textContent='הורדת '+name; a.style.margin='4px'; return a; }
+  function fmt(n){ return n.toLocaleString('en-US',{maximumFractionDigits:1,minimumFractionDigits:0}); }
+  function tbl(head,rows,max){ var h='<div class="tw"><table class="tbl" dir="ltr"><thead><tr>'+head.map(function(x){return '<th>'+FL.esc(x)+'</th>';}).join('')+'</tr></thead><tbody>'; rows.slice(0,max||12).forEach(function(r){h+='<tr>'+r.map(function(x){return '<td>'+FL.esc(x)+'</td>';}).join('')+'</tr>';}); return h+'</tbody></table></div>'; }
+  function go(kind){ TF.loadScoop(function(S){
+    if(!S){ out.textContent='נתוני Scoop לא נטענו.'; return; }
+    var n=S.n, R=S.cols.Region, D=S.cols.Order_Date, SA=S.cols.Sales, sum={}, i, k;
+    for(i=0;i<n;i++){ var reg=R.dict[R.v[i]], yr=D.v[i].slice(0,4); k=reg+'|'+yr; sum[k]=(sum[k]||0)+SA.v[i]; }
+    var regs=R.dict.slice().sort(), yrs=['2024','2025'], html='', links=document.createElement('div');
+    if(kind==='wide'){ var rows=regs.map(function(r){ return [r].concat(yrs.map(function(y){ return (Math.round(sum[r+'|'+y]*10)/10).toFixed(1); })); }); var csv='Region,2024,2025\n'+rows.map(function(r){return r.join(',');}).join('\n')+'\n';
+      html='<b>קובץ רחב: '+rows.length+' שורות, 3 שדות.</b>'+tbl(['Region','2024','2025'],rows); links.appendChild(dl('wide_region_year.csv',csv)); }
+    if(kind==='tall'){ var rows2=[]; regs.forEach(function(r){ yrs.forEach(function(y){ rows2.push([r,y,(Math.round(sum[r+'|'+y]*10)/10).toFixed(1)]); }); }); var csv2='Region,Year,Sales\n'+rows2.map(function(r){return r.join(',');}).join('\n')+'\n'; var tot=0; rows2.forEach(function(r){tot+=+r[2];});
+      html='<b>קובץ ארוך: '+rows2.length+' שורות, 3 שדות. סכום המכירות: '+fmt(Math.round(tot*10)/10)+'</b>'+tbl(['Region','Year','Sales'],rows2); links.appendChild(dl('tall_region_year.csv',csv2)); }
+    if(kind==='split'){ var keys=['Order_ID','Order_Date','Order_Hour','Branch_Code','Branch','City','Region','Channel','Category','Item','Quantity','Unit_Price','Discount','Sales','Cost','Profit'], BC={'Tel Aviv Dizengoff':'BR01','Tel Aviv Port':'BR02','Jerusalem Mamilla':'BR03','Haifa German Colony':'BR04','Beer Sheva Grand Mall':'BR05','Eilat Promenade':'BR06','Netanya Beach':'BR07','Rehovot Mall':'BR08','Ashdod Beach Pop-up':'POP01'}, parts={'2024':[],'2025':[]}, cnt={'2024':0,'2025':0};
+      for(i=0;i<n;i++){ var y=D.v[i].slice(0,4), row=keys.map(function(c){ if(c==='Branch_Code') return BC[S.cols.Branch.dict[S.cols.Branch.v[i]]]; var C=S.cols[c], v=C.v[i]; return C.t==='c'?C.dict[v]:v; }); parts[y].push(row.join(',')); cnt[y]++; }
+      var head=keys.join(',')+'\n'; html='<b>שני קבצים, אותן 16 עמודות: 2024 עם '+fmt(cnt['2024'])+' שורות, 2025 עם '+fmt(cnt['2025'])+' שורות. יחד: '+fmt(cnt['2024']+cnt['2025'])+'.</b>';
+      links.appendChild(dl('scoop_2024.csv',head+parts['2024'].join('\n')+'\n')); links.appendChild(dl('scoop_2025.csv',head+parts['2025'].join('\n')+'\n')); }
+    out.innerHTML=html; out.appendChild(links); used[kind]=1; if(Object.keys(used).length>=2) FL.done('m2-sim-files'); }); }
+  FL.$('#m2-fm-wide').addEventListener('click',function(){go('wide');});
+  FL.$('#m2-fm-tall').addEventListener('click',function(){go('tall');});
+  FL.$('#m2-fm-split').addEventListener('click',function(){go('split');});
+}); })();</script>
+
+<div class="box try" data-id="m2-try-reshape">
+<ol>
+<li>בהדמיה למעלה לחצו על <b>קובץ רחב</b> והורידו את <span class="n">wide_region_year.csv</span>. טענו אותו ב-Tableau כ-<code>Text file</code>. <em>למה: זו הצורה שבה רבים מהקבצים מגיעים, עם עמודה לכל שנה.</em></li>
+<li>רשמו את שורת הסטטוס. אחר כך נסו להציג את שתי השנים באותו גרף, כשכל שנה היא עמודה בצבע אחר. שימו לב כמה זה מסורבל. <em>למה: כל שנה היא מדד נפרד, ואין שדה אחד שאפשר לצבוע לפיו.</em></li>
+<li>חזרו להדמיה, הורידו את <b>קובץ ארוך</b> (<span class="n">tall_region_year.csv</span>) וטענו אותו כמקור חדש (<code>Data &gt; New Data Source</code>). <em>למה: אותם נתונים בצורה אחרת.</em></li>
+<li>אם <code>Year</code> נכנס לבין המדדים, המירו אותו לממד. גררו <code>Region</code> אל <code>Rows</code>, <code>Sales</code> אל <code>Columns</code> ו-<code>Year</code> אל <code>Color</code>. <em>למה: כעת שנה היא ממד שאפשר לצבוע, ומשווים בקלות.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> בקובץ הרחב: <span class="n">3 fields 4 rows</span>. בקובץ הארוך: <span class="n">3 fields 8 rows</span>, וסכום המכירות הוא 236,820.90 (אותו סכום שיש לכל Scoop &amp; Go). בגרף: ארבעה פסים (אחד לכל אזור), וכל פס מחולק לשני צבעים, 8 קטעים בסך הכול. הקטע הגדול ביותר הוא Center ב-2025 עם 68,102.7. שני הקבצים מכילים בדיוק אותם נתונים. רק הצורה שונה, והצורה מכריעה כמה קל לבנות גרף.</p>
+</div>
+
+<div class="box try" data-id="m2-try-pivot-native">
+<p><b>תרגיל רשות: רק אם יש לכם Pivot.</b> אין כאן דבר שחובה.</p>
+<ol>
+<li>טענו שוב את הקובץ הרחב. בגריד של דף ה-Data Source סמנו את שתי עמודות השנים (<kbd>Ctrl</kbd> או <kbd>Cmd</kbd> לבחירה כפולה). <em>למה: אלה העמודות שהופכות לשורות.</em></li>
+<li>קליק ימני על אחת הכותרות. אם יש אפשרות <code>Pivot</code>, בחרו בה. <em>למה: אם אין, בגרסה שלכם הכלי לא קיים, ודי בקובץ הארוך שבתרגיל הקודם.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> שני שדות חדשים, <span class="n">Pivot Field Names</span> ו-<span class="n">Pivot Field Values</span>, ו-8 שורות, כמו בקובץ הארוך.</p>
+</div>
+
+<h3>Split: מחתכים עמודה של טקסט</h3>
+<div class="defline"><b>Split:</b> חיתוך עמודת טקסט לכמה חלקים לפי תו מפריד. דוגמה: <span class="n">SG-00001</span> נחתך לפי המקף ל-<span class="n">SG</span> ול-<span class="n">00001</span>.</div>
+<p>ב-Public מה שמובטח הוא הפונקציה <code>SPLIT</code> בתוך שדה מחושב. היא מקבלת את הטקסט, את התו המפריד ואת מספר החלק:</p>
+<pre class="code" data-lang="tableau">INT( SPLIT([Order ID], "-", 2) )</pre>
+<p><code>SPLIT([Order ID], "-", 2)</code> מחזיר את החלק השני, <span class="n">"00001"</span> (טקסט), ו-<code>INT</code> הופך אותו למספר <span class="n">1</span> (האפסים בהתחלה נעלמים).</p>
+
+<div class="box try" data-id="m2-try-split-calc">
+<ol>
+<li>ב-<code>Sheet 1</code>, קליק ימני על <code>Order ID</code> ברשימת השדות, <code>Create &gt; Calculated Field...</code>. <em>למה: מכאן יוצרים שדה חדש מחישוב. את הכלי נלמד לעומק במודול 8.</em></li>
+<li>בשם כתבו <b>Order Number</b>, ובחלון הנוסחה את השורה שלמעלה. כשכתוב בתחתית The calculation is valid, לחצו <code>OK</code>. <em>למה: זה השדה החדש, והקובץ המקורי לא משתנה.</em></li>
+<li>לחצו פעמיים על <code>Order Number</code>. קליק ימני על הכדור שנוצר, <code>Measure</code>, <code>Minimum</code>, ובדקו. אחר כך <code>Maximum</code>. <em>למה: בודקים את הטווח של המספרים, ולא רק מסתכלים עליהם.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> Minimum הוא <b>1</b> ו-Maximum הוא <b>6,575</b>, בדיוק כמו מספר השורות, מכיוון שהמספרים הרצים הם 1 עד 6,575 בלי כפילויות. הסכום (SUM, ברירת המחדל) יוצא 21,618,600, מספר ענק וחסר משמעות, והוא הדגמה נוספת למה צריך לבדוק איזו אגרגציה בוחרים.</p>
+</div>
+
+<h3>Union: מצמידים קבצים זה מתחת לזה</h3>
+<div class="defline"><b>Union:</b> הצמדת טבלאות עם אותן עמודות זו מתחת לזו, לטבלה ארוכה אחת. דוגמה: קובץ של 2024 (2,898 שורות) וקובץ של 2025 (3,677 שורות) הופכים לקובץ אחד של 6,575 שורות. זה שונה מ-Join, שמצמיד טבלאות זו ליד זו לפי מפתח, והוא נושא של מודול 11.</div>
+
+<div class="anim" data-id="m2-anim-union" data-speed="3000">
+<div class="stage"><svg viewBox="0 0 800 315" role="img" aria-label="הצמדת שני קבצים עם אותן עמודות לטבלה אחת"><defs><marker id="m2u-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs><g data-s="1"><rect rx="12" x="30" y="50" width="250" height="90" fill="#eef2ff" stroke="#4f46e5" stroke-width="2.5"/><text x="155" y="85" font-size="18" font-weight="800" fill="#3730a3" text-anchor="middle">scoop_2024.csv</text><text x="155" y="110" font-size="15" font-weight="400" fill="#475569" text-anchor="middle">2,898 שורות, 16 עמודות</text><rect rx="12" x="30" y="170" width="250" height="90" fill="#ecfdf5" stroke="#059669" stroke-width="2.5"/><text x="155" y="205" font-size="18" font-weight="800" fill="#065f46" text-anchor="middle">scoop_2025.csv</text><text x="155" y="230" font-size="15" font-weight="400" fill="#475569" text-anchor="middle">3,677 שורות, 16 עמודות</text></g><g data-s="2"><path d="M285,95 L400,130" stroke="#64748b" stroke-width="3.5" marker-end="url(#m2u-arr)"/><path d="M285,215 L400,185" stroke="#64748b" stroke-width="3.5" marker-end="url(#m2u-arr)"/><text x="340" y="60" font-size="17" font-weight="800" fill="#92400e" text-anchor="middle">Union</text></g><g data-s="3"><rect x="410" y="30" width="250" height="250" rx="12" fill="#ffffff" stroke="#334155" stroke-width="2.5"/><rect x="412" y="32" width="246" height="107" fill="#c7d2fe"/><rect x="412" y="139" width="246" height="139" fill="#a7f3d0"/><text x="535" y="80" font-size="16" font-weight="800" fill="#3730a3" text-anchor="middle">2,898 שורות מ-2024</text><text x="535" y="215" font-size="16" font-weight="800" fill="#065f46" text-anchor="middle">3,677 שורות מ-2025</text><text x="535" y="20" font-size="17" font-weight="800" fill="#0f172a" text-anchor="middle">טבלה אחת: 6,575 שורות</text></g><g data-s="4"><rect x="670" y="30" width="120" height="250" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="2.5"/><text x="730" y="52" font-size="14" font-weight="800" fill="#92400e" text-anchor="middle">Table Name</text><text x="730" y="88" font-size="14" font-weight="400" fill="#475569" text-anchor="middle">scoop_2024.csv</text><text x="730" y="205" font-size="14" font-weight="400" fill="#475569" text-anchor="middle">scoop_2025.csv</text><text x="535" y="304" font-size="16" font-weight="800" fill="#0f172a" text-anchor="middle">2,898 + 3,677 = 6,575</text></g></svg></div>
+<ol class="caps">
+<li>שני קבצים עם אותן 16 עמודות: מכירות 2024 (2,898 שורות) ומכירות 2025 (3,677 שורות).</li>
+<li>Union: Tableau מצמיד אותם זה מתחת לזה.</li>
+<li>התוצאה היא טבלה אחת עם 6,575 שורות. שמות העמודות והסוגים צריכים להתאים.</li>
+<li>בגרסאות המורשות נוסף שדה בשם Table Name שאומר מאיזה קובץ הגיעה כל שורה. 2,898 ועוד 3,677 הם בדיוק 6,575.</li>
+</ol></div>
+
+<div class="box try" data-id="m2-try-union">
+<p><b>תרגיל רשות: רק אם יש לכם Union.</b> הדרך שמובטחת ב-Public היא לטעון את הקובץ השלם <span class="n">scoop_sales_2024_2025.csv</span>.</p>
+<ol>
+<li>בהדמיה של שינוי הצורה לחצו על <b>שני קבצים: 2024 ו-2025</b>, והורידו את שניהם. <em>למה: יש לכם שני קבצים שאתם רוצים לאחד.</em></li>
+<li>ב-Tableau טענו את <span class="n">scoop_2024.csv</span>. גררו את <span class="n">scoop_2025.csv</span> אל האפשרות <code>New Union</code> בקנבס (אם היא קיימת). <em>למה: כך מצמידים את הקבצים.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> <span class="n">6575 rows</span>. אם יש לכם שדה <code>Table Name</code>, ספירה לפיו נותנת 2,898 ו-3,677.</p>
+</div>
+
+<div class="box meaning"><p>שלושה כלים, ושלוש שאלות שונות. Pivot עונה על ״איך הופכים עמודות של שנים לשדה אחד של שנה״. Union עונה על ״איך מאחדים שני קבצים של אותה טבלה״. Split עונה על ״איך מוציאים חלק מתוך טקסט״. מי שמבלבל ביניהם גורם לנתונים להיראות תקינים ולהיות שגויים, ולכן כל אחד מהם בא עם בדיקה: מספר השורות אחרי.</p></div>
+
+<div class="box real"><p>הרבה נתונים פתוחים מהעולם, למשל טבלאות של אינדיקטורים לפי מדינה, מגיעים עם עמודה לכל שנה. כדי להשוות שנים, כל אנליסט מבצע את אותה פעולה, שינוי צורה מרחב לארוך, בכלי כלשהו: ב-Tableau, ב-Excel או בקוד. אנשי נתונים אומרים על זה ״מסדרים את הנתונים לפני שמציירים״.</p></div>
+
+<div class="box think" data-id="m2-th-reshape"><p>למה בטבלה הרחבה קשה להשוות שנים בגרף אחד, ובטבלה הארוכה קל? מה עוד היה נהיה קל אם הנתונים היו ארוכים?</p>
+<div class="ans">בטבלה הרחבה כל שנה היא מדד נפרד, ו-Tableau צריך מדד אחד שאפשר לצייר. בארוכה יש שדה אחד של ערך ושדה אחד של שנה, ולכן אפשר לצבוע, לסנן ולמיין לפי שנה. וכשמתווספת שנה, 2026, בטבלה הארוכה מתווספות שורות. בטבלה הרחבה צריך להוסיף עמודה ולתקן כל גרף.</div></div>
+
+<div class="quiz" data-id="m2-q-reshape" data-a="1"><p class="qq">יש לכם קובץ עם עמודות <span class="n">2022, 2023, 2024, 2025</span>, ואתם רוצים גרף שמשווה בין שנים עם צבע לכל שנה. מה הצעד הנכון?</p>
+<button class="opt">להפוך את עמודות השנים לשורות (Pivot, או שינוי צורה במקור) כך שיהיה שדה אחד בשם Year</button>
+<button class="opt">להצמיד את הטבלה לעצמה עם Union</button>
+<button class="opt">לחתוך את הכותרות עם Split</button>
+<div class="why">צריך שדה אחד של שנה, ולכן הופכים עמודות לשורות. Union מצמיד טבלאות עם אותן עמודות (לא מועיל כאן), ו-Split חותך טקסט.</div></div>
+
+<div class="quiz" data-id="m2-q-union" data-a="3"><p class="qq">קובץ של 2024 עם 2,898 שורות וקובץ של 2025 עם 3,677 שורות, לאותן 16 עמודות. כמה שורות יהיו אחרי Union?</p>
+<button class="opt">3,677, כי Tableau לוקח את הקובץ הגדול</button>
+<button class="opt">2,898, כי הוא הקובץ הראשון</button>
+<button class="opt">6,575, הסכום של שניהם</button>
+<div class="why">Union מצמיד שורות, לכן הסכום. אם מספר השורות אחרי איחוד שונה מהסכום, משהו לא התאים: שמות עמודות, סוגים או גיליון חסר.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> <b>לבדוק לפני השיעור (לא נבדק בתוכנה):</b> האם Public מציג תיבת Use Data Interpreter, ובאילו קבצים; האם אפשרות Pivot זמינה בתפריט של עמודות בגריד ושמות השדות Pivot Field Names ו-Pivot Field Values; האם New Union קיים בקנבס של קבצי טקסט, ואם שדה Table Name נוצר. התרגילים החובה לא תלויים בכל אלה: הקבצים נוצרים בדפדפן ונטענים כרגיל, ו-SPLIT הוא שדה מחושב שקיים ב-Public. אפשר להסביר את ההבדל בין Union ל-Join בשורה: Union מוסיף שורות, Join מוסיף עמודות. המספר 21,618,600 הוא 6,575 כפול 6,576 חלקי 2.</div>
+</section>
+<section class="sec" id="m2-7" data-t="שמות, הסתרה ותפקידים">
+<div class="sec-h"><div class="sec-n">7</div><h2>שמות, הסתרה, תפקידים גיאוגרפיים ומאפייני ברירת מחדל</h2></div>
+<p class="lead">את הדוח יקראו אנשים אחרים. <span class="n">Unit Price</span> ברור לכם, אבל מה יבין מי שרואה שדה בשם Discount עם הערך 0.1? ולמה בכלל יש לו על המסך שדה כמו Branch Code, שמכפיל את Branch? שדה שלא ברור או לא נחוץ מפריע, והתיקון לוקח שניות.</p>
+
+<p>כל הפעולות כאן נעשות מאותו תפריט: קליק ימני על שדה ברשימת השדות. הנה התפריט האמיתי ב-Tableau Public (שדה Global Sales מקובץ vgsales):</p>
+<figure class="shot" style="max-width:520px;margin-inline:auto"><img src="img/create-menu-calc.png" alt="תפריט קליק ימני על שדה ב-Tableau Public"><figcaption>התפריט של שדה. מהאפשרויות שנעבוד איתן: <code>Rename</code>, <code>Hide</code>, <code>Convert to Dimension</code>, <code>Change Data Type</code>, <code>Default Properties</code>, <code>Geographic Role</code> ו-<code>Folders</code>. תחת <code>Create</code>: <code>Calculated Field...</code>, <code>Group...</code>, <code>Bins...</code>, <code>Parameter...</code>. אותו תפריט קיים לפי ההקשר גם בכותרות העמודות בדף ה-Data Source.</figcaption></figure>
+
+<div class="cols2">
+<div class="card"><h4>שינוי שם (<code>Rename</code>)</h4><p>משנה את השם שמוצג ב-Tableau, בלי לגעת בקובץ. דוגמה: <span class="n">Unit Price</span> הופך ל-<span class="n">Price per Unit</span>, וכך הוא מופיע בכל הגיליונות. השם המקורי נשאר ב-Remote Field Name.</p></div>
+<div class="card"><h4>הסתרה (<code>Hide</code>)</h4><p>השדה נשאר במקור, אבל נעלם מרשימת השדות. דוגמה: מסתירים את <span class="n">Branch Code</span>, כי יש כבר Branch. מחזירים עם <code>Unhide</code>, או מציגים את המוסתרים עם <code>Show Hidden Fields</code>.</p></div>
+<div class="card"><h4>תפקיד גיאוגרפי (<code>Geographic Role</code>)</h4><p>תיוג של שדה כמקום (מדינה, עיר ועוד), כדי ש-Tableau ידע לצייר אותו על מפה. דוגמה: <span class="n">City</span> מתויג כ-City, ומקבל סמל גלובוס, ו-Tableau יוצר לו קווי רוחב ואורך.</p></div>
+<div class="card"><h4>מאפייני ברירת מחדל (<code>Default Properties</code>)</h4><p>הגדרות קבועות של שדה, שחלות בכל גיליון: פורמט מספר, אגרגציה ברירת מחדל, הערה. דוגמה: <span class="n">Discount</span> שמוצג תמיד כאחוזים, ו-0.1 הופך ל-10%.</p></div>
+</div>
+
+<div class="box trap"><p><b>מסתירים, אבל הנתונים עדיין שם.</b> הסתרה של שדה רק מנקה את המסך. השדה עדיין חלק מהנתונים שנטענו, ומה שמפורסם ב-Tableau Public ניתן להורדה, כולל הנתונים. לכן אם יש עמודה שאסור לפרסם (שם, מספר זהות, מחיר פנימי), לא מסתירים אותה: מוחקים אותה מהקובץ <u>לפני</u> הטעינה. ב-Scoop &amp; Go הכול בדוי ואין סיכון, אבל זה ההרגל שצריך לבנות מההתחלה.</p></div>
+
+<div class="box trap"><p><b>תפקיד גיאוגרפי לשדה שהוא לא מקום.</b> השדה <span class="n">Region</span> ב-Scoop &amp; Go מכיל Center, North, South ו-Jerusalem: אלה אזורי מכירות של הרשת, ולא אזורים גיאוגרפיים רשמיים. אם תתייגו אותו כמקום, Tableau ינסה לנחש מה זה &quot;Center&quot;, ויכול להציב סימנים במקומות שאין להם שום קשר. מתייגים רק שדות שבאמת מקומות, כמו City. ובמודול 7 נראה מה עושים כשכמה ערכים לא מזוהים.</p></div>
+
+<div class="box try" data-id="m2-try-rename-hide">
+<ol>
+<li>ב-<code>Sheet 1</code>, קליק ימני על <code>Unit Price</code>, <code>Rename</code>, ושנו ל-<b>Price per Unit</b>. <em>למה: שם ברור יותר לקורא. נחזיר אותו בסוף, כי המודולים הבאים משתמשים בשם המקורי.</em></li>
+<li>קליק ימני על <code>Branch Code</code> ובחרו <code>Hide</code>. <em>למה: הוא מכפיל את Branch ומיותר ברשימה.</em></li>
+<li>קליק ימני על <code>City</code>, <code>Geographic Role</code> ובחרו <code>City</code>. <em>למה: כך Tableau יידע לצייר את הערים על מפה, במודול 7.</em></li>
+<li>קליק ימני על <code>Discount</code>, <code>Default Properties</code>, <code>Number Format...</code>, בחרו <code>Percentage</code> עם 0 מקומות עשרוניים. <em>למה: הנחה נקראת כאחוז.</em></li>
+<li>גררו את <code>Discount</code> אל <code>Text</code> בכרטיס <code>Marks</code>. קליק ימני על הכדור, <code>Measure</code>, <code>Average</code>. <em>למה: אם הוא הוגדר כאחוז, הממוצע יוצג באחוזים.</em></li>
+<li>החזירו: שם <code>Unit Price</code> למקור, <code>Unhide</code> ל-<code>Branch Code</code> (בתפריט של הרשימה: <code>Show Hidden Fields</code>, ואז קליק ימני על השדה). <em>למה: שנקבל אותו מצב התחלתי בכל מודול.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלב 1: הכדור נקרא <span class="n">Price per Unit</span> בכל מקום. שלב 2: השדה נעלם, ובין הממדים נשארים 8. שלב 3: סמל גלובוס ליד City, ובין המדדים מופיעים לבסוף <span class="n">Latitude (generated)</span> ו-<span class="n">Longitude (generated)</span>. שלב 5: הממוצע הוא <b>3%</b> (המספר המדויק 3.04%: סך ההנחות 199.9 לחלק ל-6,575 שורות). רק 777 שורות מתוך 6,575 הן עם הנחה בכלל, כלומר 11.8%.</p>
+</div>
+
+<div class="box meaning"><p>שם הוא ממשק. הדוח שאתם בונים ייקרא על ידי אנשים שלא ראו את הקובץ, וכל שדה צריך להסביר את עצמו: <span class="n">Sales</span> אחרי הנחה, <span class="n">Cost</span> עלות השורה, <span class="n">Profit</span> הפרש ביניהם. ב-Scoop &amp; Go עמודת Sales היא כבר אחרי הנחה (Quantity כפול Unit Price כפול אחד פחות Discount), ולכן אין צורך לחשב אותה מחדש.</p></div>
+
+<div class="box real"><p>צוותי נתונים בארגונים מקפידים על כללי שמות: שם ברור, באותו סגנון בכל הטבלאות, בלי קיצורים שרק מי שכתב מבין. הסיבה היא שהדוח משמש הרבה אנשים, וכשאין הסבר, כל אחד מנחש אחרת, ואז מתווכחים על מספרים שהם בעצם זהים.</p></div>
+
+<div class="box think" data-id="m2-th-hide"><p>איזה שדות הייתם מסתירים ב-Scoop &amp; Go, ואיזה לא, ולמה? ומה ההבדל בין הסתרה של שדה לבין מחיקה שלו מהקובץ?</p>
+<div class="ans">מסתירים כפילויות טכניות כמו Branch Code (יש Branch), ושדות שאף אחד לא ישאל עליהם. לא מסתירים את Cost, אף על פי ש-Profit כבר מחושב, כי אנשים ירצו לראות עלות. הסתרה רק מנקה את המסך, והנתונים נשארים בנתונים שנטענו, ובפרסום ב-Tableau Public גם ניתנים להורדה. מחיקה מהקובץ לפני הטעינה היא היחידה שמבטיחה שהמידע לא יצא.</div></div>
+
+<div class="quiz" data-id="m2-q-hide" data-a="2"><p class="qq">הסתרתם ב-Tableau עמודה עם מספרי זהות, ופרסמתם ל-Tableau Public. מה נכון?</p>
+<button class="opt">העמודה נמחקה ולא תופיע בשום מקום</button>
+<button class="opt">העמודה לא נראית ברשימת השדות, אבל הנתונים שלה עדיין חלק מהנתונים שפורסמו</button>
+<button class="opt">רק אתם יכולים להוריד את העמודה, כי היא מוסתרת</button>
+<div class="why">הסתרה מנקה את המסך בלבד. ב-Tableau Public כל מי שרואה את הדוח יכול, כברירת מחדל, להוריד אותו עם הנתונים. מידע שאסור לפרסם מוחקים מהקובץ לפני הטעינה.</div></div>
+
+<div class="quiz" data-id="m2-q-geo" data-a="1"><p class="qq">איזה שדה ב-Scoop &amp; Go כדאי לתייג בתפקיד גיאוגרפי?</p>
+<button class="opt">City</button>
+<button class="opt">Region</button>
+<button class="opt">Channel</button>
+<button class="opt">Branch Code</button>
+<div class="why">City הוא שם של עיר, ולכן מתאים. Region הוא חלוקה של הרשת (Center, South), ולא מקום רשמי. Channel הוא ערוץ מכירה, ו-Branch Code הוא קוד.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הדגמה חיה של חמש הפעולות על המסך המשותף ואז תרגול. <b>לבדוק לפני השיעור:</b> שמות הערים כפי ש-Tableau מזהה אותם (Tel Aviv-Yafo, Beer Sheva, Eilat, Rehovot, Ashdod; לא נבדק, ובמודול 7 נבנית המפה); האם Show Hidden Fields נמצא בתפריט הרשימה; באיזו אפשרות בדיוק נמצא Number Format בתפריט Default Properties. ההצמדה של שם המקור חשובה כדי שכל אחד ימשיך מאותה נקודה: מי שנתקע, טוען מחדש את הקובץ. ממוצע ההנחה: 199.9 לחלק ל-6,575 הוא 0.0304. מספר הקווים עם הנחה: 777 (431 עם 10%, 54 עם 20%, 292 עם 50%).</div>
+</section>
+<section class="sec" id="m2-8" data-t="Extract ומגבלות">
+<div class="sec-h"><div class="sec-n">8</div><h2>Extract, מגבלת 15 מיליון השורות, ומה זה אומר על פרסום</h2></div>
+<p class="lead">בסעיף 1 אמרנו ש-Tableau Public עובד עם צילום של הנתונים. עכשיו נראה מה בדיוק קורה לצילום הזה, מתי הוא מתיישן, ומה המגבלות.</p>
+
+<div class="anim" data-id="m2-anim-extract" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 280" role="img" aria-label="הקובץ, ה-Extract והאתר, ומה קורה כשהקובץ משתנה"><defs><marker id="m2e-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs><g data-s="1"><rect x="20" y="50" width="230" height="150" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="2.5"/><text x="135" y="85" font-size="18" font-weight="800" fill="#3730a3" text-anchor="middle" >הקובץ במחשב</text><text x="135" y="112" font-size="14" font-weight="400" fill="#475569" text-anchor="middle" >scoop_sales.csv</text><g data-only="1,2,3"><text x="135" y="160" font-size="22" font-weight="800" fill="#3730a3" text-anchor="middle" >6,575 שורות</text></g><g data-only="4,5"><text x="135" y="160" font-size="22" font-weight="800" fill="#b91c1c" text-anchor="middle" >6,625 שורות</text><text x="135" y="186" font-size="14" font-weight="700" fill="#b91c1c" text-anchor="middle" >הוספתם 50 שורות</text></g></g><g data-s="2"><path d="M252,125 L298,125" stroke="#64748b" stroke-width="3" marker-end="url(#m2e-arr)"/><rect x="300" y="50" width="200" height="150" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="2.5"/><text x="400" y="85" font-size="18" font-weight="800" fill="#065f46" text-anchor="middle" >Extract</text><text x="400" y="112" font-size="14" font-weight="400" fill="#475569" text-anchor="middle" >צילום (קובץ hyper)</text><g data-only="2,3,4"><text x="400" y="160" font-size="22" font-weight="800" fill="#065f46" text-anchor="middle" >6,575 שורות</text></g><g data-only="5"><text x="400" y="160" font-size="22" font-weight="800" fill="#065f46" text-anchor="middle" >6,625 שורות</text></g></g><g data-s="3"><path d="M502,125 L548,125" stroke="#64748b" stroke-width="3" marker-end="url(#m2e-arr)"/><rect x="550" y="50" width="230" height="150" rx="14" fill="#fffbeb" stroke="#d97706" stroke-width="2.5"/><text x="665" y="85" font-size="18" font-weight="800" fill="#92400e" text-anchor="middle" >Tableau Public באתר</text><text x="665" y="112" font-size="14" font-weight="400" fill="#475569" text-anchor="middle" >ציבורי, כל אחד יכול לראות</text><g data-only="3,4"><text x="665" y="160" font-size="22" font-weight="800" fill="#92400e" text-anchor="middle" >6,575 שורות</text></g><g data-only="5"><text x="665" y="160" font-size="22" font-weight="800" fill="#065f46" text-anchor="middle" >6,625 שורות</text></g><g data-only="4"><text x="665" y="186" font-size="14" font-weight="700" fill="#b91c1c" text-anchor="middle" >האתר עדיין מראה את הישן</text></g></g><g data-only="2"><text x="400" y="250" font-size="16" font-weight="700" fill="#065f46" text-anchor="middle" >Tableau בונה צילום ועובד איתו</text></g><g data-only="3"><text x="400" y="250" font-size="16" font-weight="700" fill="#92400e" text-anchor="middle" >פרסום: הצילום עולה לאתר</text></g><g data-only="4"><text x="400" y="250" font-size="16" font-weight="700" fill="#b91c1c" text-anchor="middle" >שינוי בקובץ לא משנה את מה שפורסם</text></g><g data-only="5"><text x="400" y="250" font-size="16" font-weight="700" fill="#065f46" text-anchor="middle" >פרסום מחדש מעדכן את האתר</text></g></svg></div>
+<ol class="caps">
+<li>יש לכם קובץ עם 6,575 שורות על המחשב.</li>
+<li>Tableau בונה ממנו Extract, צילום של 6,575 שורות, ומכאן הגרפים נבנים מהצילום.</li>
+<li>כשמפרסמים, הצילום עולה לאתר Tableau Public. מי שפותח את הדוח רואה 6,575 שורות.</li>
+<li>נניח שהוספתם 50 שורות לקובץ. האתר לא יודע על זה: הוא עדיין מראה 6,575.</li>
+<li>כדי לעדכן, מרעננים את הצילום ומפרסמים מחדש. רק אז האתר מראה 6,625.</li>
+</ol></div>
+<p style="font-size:.85rem;color:var(--muted)">המספר 6,625 הוא דוגמה לצורך ההדגמה, ואין שורות כאלה בקובץ שלכם.</p>
+
+<div class="box note"><p><b>לא זמין ב-Tableau Public: ככה עובדים סביב זה.</b> אין ריענון מתוזמן. הדרך: מעדכנים את הקובץ ומפרסמים מחדש בעצמכם. היוצא מן הכלל הוא Google Drive: קובץ Google Sheets שמחוברים אליו מתרענן אוטומטית כל 24 שעות. כדי לאוטמט את הכנת הקובץ עצמו, כותבים סקריפט (Python או SQL) שמכין את ה-CSV, ואותו טוענים. את זה נראה במודולים 15 ו-16.</p></div>
+
+<h3>כמה גדול זה 15 מיליון</h3>
+<p>נכון לאוקטובר 2026, בדקו בתיעוד: Tableau Public מוגבל ל-15 מיליון שורות, ויש 10 GB של אחסון לכל חשבון. מי שמטעין קובץ דרך הדפדפן (web authoring) מוגבל ל-1 GB לקובץ. הנה אתם מתנסים בגודל:</p>
+
+<div class="sim" data-id="m2-sim-limit"><div class="sh">כמה שורות נכנסות ב-Tableau Public?</div>
+<div class="row"><label>שורות: <b id="m2-lim-v" class="n">6,575</b></label><input type="range" id="m2-lim-r" min="0" max="100" value="18" style="flex:1;min-width:200px"></div>
+<div class="row"><button type="button" class="btn sec2" data-p="6575">Scoop &amp; Go</button><button type="button" class="btn sec2" data-p="1000000">מיליון</button><button type="button" class="btn sec2" data-p="10000000">10 מיליון</button><button type="button" class="btn sec2" data-p="15000000">15 מיליון</button><button type="button" class="btn sec2" data-p="20000000">20 מיליון</button></div>
+<div class="out"><div id="m2-lim-st"></div><div class="meter" style="margin:8px 0"><i id="m2-lim-m"></i></div>
+<div>בגודל של Scoop &amp; Go זה: <b id="m2-lim-c" class="n"></b> עותקים של הקובץ שלנו.</div>
+<div>גודל קובץ CSV כזה, בערך: <b id="m2-lim-mb" class="n"></b></div></div></div>
+<script>(function(){ FL.dom(function(){
+  var r=FL.$('#m2-lim-r'), moves=0, LIM=15000000, BYTES=738012/6575;
+  function rows(){ return Math.round(Math.pow(10,3+r.value/100*4.5)); }
+  function fmt(n){ return n.toLocaleString('en-US'); }
+  function draw(n){ FL.$('#m2-lim-v').textContent=fmt(n); var ok=n<=LIM; FL.$('#m2-lim-st').innerHTML='<span class="chip '+(ok?'g':'r')+'">'+(ok?'בתוך המגבלה':'מעל המגבלה')+'</span> '+(ok?'אפשר לטעון ולפרסם.':'Tableau Public לא יקבל את זה. מקצצים שורות או עמודות לפני הטעינה.');
+    FL.$('#m2-lim-m').style.width=Math.min(100,Math.round(100*n/LIM))+'%';
+    FL.$('#m2-lim-c').textContent=(n/6575).toLocaleString('en-US',{maximumFractionDigits:1});
+    var mb=n*BYTES/1e6; FL.$('#m2-lim-mb').textContent=(mb>=100?Math.round(mb):mb.toFixed(1))+' MB'; }
+  r.addEventListener('input',function(){ draw(rows()); moves++; if(moves>=3) FL.done('m2-sim-limit'); });
+  FL.$$('button[data-p]').forEach(function(b){ b.addEventListener('click',function(){ var n=+b.dataset.p; r.value=Math.round((Math.log10(n)-3)/4.5*100); draw(n); moves++; if(moves>=3) FL.done('m2-sim-limit'); }); });
+  draw(6575);
+}); })();</script>
+<p>Scoop &amp; Go מנצלת 0.04 אחוז מהמגבלה (6,575 מתוך 15,000,000). בקצב של שנתיים ל-6,575 שורות, 15 מיליון שורות היו מספיקות ליותר מ-4,500 שנה. לכן המגבלה לא תפריע לכם כאן, אבל מי שטוען קובץ של מערכת קופות אמיתית של רשת גדולה עלול להגיע אליה.</p>
+<p style="font-size:.85rem;color:var(--muted)">גודל הקובץ בהדמיה מחושב מהיחס של הקובץ שלנו (כ-112 בתים לשורה), ובקובץ אחר היחס שונה. בתיעוד נאמר &quot;15M rows per workbook&quot; בדף אחד ו-&quot;data source rows&quot; בדף אחר, ולכן אם אתם קרובים למגבלה, בדקו.</p>
+
+<div class="box try" data-id="m2-try-save-local">
+<ol>
+<li>ב-Tableau, <code>File &gt; Save As...</code> (לא <code>Save to Tableau Public As...</code>). שמרו בתיקייה שלכם עם השם <b>scoop-m2</b>. <em>למה: שמירה מקומית לא מפרסמת כלום ולא חושפת את הנתונים לאף אחד.</em></li>
+<li>עכשיו <code>File &gt; Export Packaged Workbook...</code>, ושמרו כקובץ נוסף. <em>למה: חבילה כוללת בתוכה גם את הנתונים, ולכן אפשר לפתוח אותה במחשב אחר.</em></li>
+<li>סגרו את Tableau ופתחו את הקובץ שנשמר. עברו ל-<code>Data Source</code> ובדקו את שורת הסטטוס. <em>למה: להיווכח שהכול חזר כמו שהיה.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> שני קבצים. אחרי הפתיחה: <span class="n">16 fields 6575 rows</span>, ושמות השדות כפי ששיניתם. קובץ החבילה מסתיים, בדרך כלל, ב-<span class="n">twbx</span> והוא גדול יותר מהקובץ הרגיל, כי הנתונים בתוכו. אם הוא נפתח אצלכם בלי שה-CSV נמצא באותה תיקייה, הוא באמת ארוז.</p>
+</div>
+
+<div class="box trap"><p><b>שיניתי את הקובץ ולא רואים שינוי.</b> זה לא באג, זה Extract. אחרי שמשנים את הקובץ המקורי, צריך לרענן את החיבור (בגרסה שלכם ייתכן שיש לזה כפתור בדף ה-Data Source, או שפשוט טוענים שוב) ולפרסם מחדש. ובדוח שכבר פורסם, שום דבר לא משתנה עד הפרסום הבא.</p></div>
+
+<div class="box trap"><p><b>הסתרתי מהפרופיל, ואני חושב שזה פרטי.</b> ב-Tableau Public אפשר להסתיר דוח מהפרופיל, אבל כל מי שיש לו את הכתובת עדיין יכול לראות אותו. ומה שפורסם ניתן להורדה, עם הנתונים, כברירת מחדל. לכן הכלל פשוט: מפרסמים רק נתונים שהייתם שמחים לתלות על שלט חוצות. ב-Scoop &amp; Go הכול בדוי, ולכן אין בעיה.</p></div>
+
+<div class="box meaning"><p>כשהנתונים הם צילום, יש להם גיל. דוח שפורסם לפני חצי שנה מראה את מה שהיה לפני חצי שנה, ושום סימן בגרף לא אומר את זה. לכן כותבים בכותרת או בהערת שוליים: ״נתונים עד 31.12.2025״. זו שורה אחת שמונעת מהקורא להסיק מסקנות על היום.</p></div>
+
+<div class="box real"><p>במוצרים המורשים של Tableau, ובכלי דוחות אחרים, אפשר לתזמן ריענון אוטומטי של הצילום, למשל כל לילה. ב-Public אין, וזו אחת הסיבות שמשתמשים בו ללימוד, לתיק עבודות ולנתונים ציבוריים שמשתנים לאט, ולא לדשבורד תפעולי שצריך להתעדכן כל יום.</p></div>
+
+<div class="box think" data-id="m2-th-age"><p>פרסמתם דוח של Scoop &amp; Go עד 31.12.2025. מה הייתם כותבים בדוח כדי שמי שפותח אותו בעוד שנה לא יטעה? ומה הייתם עושים כדי לעדכן אותו?</p>
+<div class="ans">בכותרת או בהערה: ״נתונים עד 31.12.2025״. לעדכון: מוסיפים את החודשים החדשים לקובץ, טוענים מחדש, בודקים את מספר השורות ומפרסמים שוב (ראו מודול 14 על שמירת הקישור).</div></div>
+
+<div class="quiz" data-id="m2-q-limit" data-a="2"><p class="qq">מהי, נכון לאוקטובר 2026 (ובדקו בתיעוד), מגבלת השורות בדוח ב-Tableau Public?</p>
+<button class="opt">מיליון שורות</button>
+<button class="opt">15 מיליון שורות</button>
+<button class="opt">אין מגבלה, רק 10 GB</button>
+<div class="why">התיעוד הרשמי אומר 15 מיליון שורות (ולא 10 מיליון, שמופיע עדיין בבלוגים ישנים). 10 GB הוא האחסון הכולל בחשבון, ולא מגבלת שורות.</div></div>
+
+<div class="quiz" data-id="m2-q-refresh" data-a="3"><p class="qq">איזה מקור נתונים מתרענן אוטומטית ב-Tableau Public?</p>
+<button class="opt">כל קובץ Excel שנמצא באותה תיקייה</button>
+<button class="opt">קובץ CSV שהועלה לאתר</button>
+<button class="opt">קובץ Google Sheets שמחוברים אליו דרך Google Drive, כל 24 שעות</button>
+<div class="why">ריענון אוטומטי קיים רק ל-Google Drive. כל שאר המקורות, כמו Excel ו-CSV, דורשים טעינה ופרסום מחדש.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> להקריא ״נכון לאוקטובר 2026״ בכל פעם שמזכירים את 15M. <b>לא נבדק בתוכנה:</b> האם Save As מציע twb או twbx; האם קיים כפתור Refresh או Update Now בדף ה-Data Source של Public; ההתנהגות של מסנן ברמת מקור הנתונים (Data Source Filter) כשמפרסמים: התיעוד של Public לא אומר אם שורות שסוננו נשארות בנתונים המפורסמים, ולכן אל תבטיחו ללא בדיקה. הדרך הבטוחה למידע רגיש היא פשוטה: לא להכניס אותו לקובץ. מודול 14 עוסק בפרסום, ולכן כאן לא מפרסמים דבר.</div>
+</section>
+<section class="sec" id="m2-9" data-t="היגיינת נתונים">
+<div class="sec-h"><div class="sec-n">9</div><h2>היגיינת נתונים: כללים שחוסכים חצי מהצרות</h2></div>
+<p class="lead">רוב הבעיות שראינו עד עכשיו, טקסט במקום תאריך, ערכים כמו N/A, כותרות באמצע, נפתרות לפני ש-Tableau בכלל נפתח. הנה הכללים, ואיך מזהים מי מפר אותם.</p>
+
+<div class="defline"><b>טבלה מסודרת:</b> טבלה שבה כל שורה היא רשומה אחת, כל עמודה מכילה דבר אחד, ויש שורת כותרת אחת בלבד. דוגמה: שורה אחת בקובץ Scoop &amp; Go היא הזמנה אחת, והעמודה Sales מכילה רק מחירים. בסטטיסטיקה קוראים לזה לפעמים ״tidy data״.</div>
+
+<div class="cols2">
+<div class="card"><h4>1. שורת כותרת אחת, למעלה</h4><p>בלי כותרת גדולה, בלי שורת הערה, בלי תאים ממוזגים בכותרת. השורה הראשונה היא שמות העמודות.</p></div>
+<div class="card"><h4>2. שורה היא רשומה אחת</h4><p>בלי שורות ריקות באמצע, ובלי שורות סיכום (Total). הסכום הוא מה ש-Tableau מחשב בעצמו.</p></div>
+<div class="card"><h4>3. עמודה היא דבר אחד</h4><p>לא עמודה לכל שנה (מרכז 2024, מרכז 2025) אלא עמודות אזור ושנה (Pivot, סעיף 6).</p></div>
+<div class="card"><h4>4. מספר הוא מספר</h4><p>בלי &quot;N/A&quot;, &quot;כ-100&quot;, ₪ או פסיק אלפים בתוך התא. יחידה כותבים בכותרת. תא חסר משאירים ריק.</p></div>
+<div class="card"><h4>5. תאריך בפורמט אחד</h4><p>שנה-חודש-יום: <span class="n">2025-07-01</span>. אף פעם לא <span class="n">5/7/25</span>.</p></div>
+<div class="card"><h4>6. אותו ערך, אותה כתיבה</h4><p>Walk-in ולא walk in. Tel Aviv-Yafo ולא Tel-Aviv. בלי רווחים מיותרים בסוף.</p></div>
+</div>
+
+<p>למה שורת סיכום מסוכנת? כי Tableau לא יודע שהיא סיכום. הוא רואה עוד שורה של נתונים, ומחבר אותה. בטבלה של מכירות לפי אזור ב-2024 הסכום האמיתי הוא 107,047.6. אם בקובץ יש גם שורת Total, ה-SUM שלכם יהיה <b>214,095.2</b>, בדיוק כפול, ואף אחד לא יבחין עד שהמספר ייראה מוזר.</p>
+
+<div class="sim" data-id="m2-sim-spot"><div class="sh">מצאו את 9 הבעיות בגיליון</div>
+<p style="margin:0 0 6px">לחצו על תא או שורה שנראים לכם שגויים, כדי לסמן. סמנו כמה שתמצאו ולחצו על &quot;בדיקה&quot;. טעיתם? תראו מה חיפשתם.</p>
+<div class="tw"><table class="tbl m2-spot" dir="ltr" id="m2-sp-t">
+<tbody>
+<tr data-p="title"><td colspan="4" style="text-align:center;font-weight:800">Scoop &amp; Go: weekly report</td></tr>
+<tr class="hd"><td>City</td><td>Date</td><td>Sales</td><td>Channel</td></tr>
+<tr><td>Haifa</td><td><bdi dir="ltr">2025-07-01</bdi></td><td>38</td><td>Walk-in</td></tr>
+<tr><td>Eilat</td><td><bdi dir="ltr">2025-07-01</bdi></td><td>41</td><td>App</td></tr>
+<tr><td>Tel Aviv-Yafo</td><td><bdi dir="ltr">2025-07-02</bdi></td><td>26</td><td>Walk-in</td></tr>
+<tr><td data-p="spell">Tel-Aviv</td><td><bdi dir="ltr">2025-07-02</bdi></td><td data-p="comma">1,250</td><td>Delivery</td></tr>
+<tr><td>Haifa</td><td data-p="date"><bdi dir="ltr">5/7/25</bdi></td><td>40</td><td data-p="case">walk in</td></tr>
+<tr><td>Eilat</td><td><bdi dir="ltr">2025-07-03</bdi></td><td data-p="na">N/A</td><td>App</td></tr>
+<tr data-p="blank"><td>&nbsp;</td><td></td><td></td><td></td></tr>
+<tr><td>Netanya</td><td><bdi dir="ltr">2025-07-04</bdi></td><td>24</td><td>Walk-in</td></tr>
+<tr data-p="total"><td>Total</td><td></td><td>1,419</td><td></td></tr>
+<tr data-p="note"><td colspan="4">* preliminary data, do not share</td></tr>
+</tbody></table></div>
+<div class="row"><button type="button" class="btn" id="m2-sp-go">בדיקה</button><button type="button" class="btn sec2" id="m2-sp-rs">איפוס</button><span>סימנתם: <b id="m2-sp-n">0</b></span></div>
+<div class="out" id="m2-sp-out" aria-live="polite">סמנו את מה שנראה לכם שגוי ולחצו על בדיקה.</div></div>
+<script>(function(){ FL.dom(function(){
+  var T=FL.$('#m2-sp-t'), out=FL.$('#m2-sp-out'), nEl=FL.$('#m2-sp-n');
+  var W={title:'כותרת ממוזגת בשורה הראשונה (הכותרת צריכה להיות שמות העמודות)',spell:'Tel-Aviv במקום Tel Aviv-Yafo: אותה עיר בשתי כתיבות',comma:'1,250 עם פסיק אלפים: טקסט ולא מספר',date:'5/7/25: תאריך בפורמט אחר, ואי אפשר לדעת אם זה 5 ביולי או 7 במאי',case:'walk in במקום Walk-in: ערך שיופיע כקבוצה נפרדת',na:'N/A בעמודת מספרים: Tableau עלול לקרוא את כל העמודה כטקסט',blank:'שורה ריקה באמצע',total:'שורת Total: תיחבר פעם נוספת',note:'הערה מתחת לטבלה'};
+  function cells(tr){ return FL.$$('td',tr); }
+  FL.$$('td',T).forEach(function(td){ td.addEventListener('click',function(){ td.classList.toggle('sel'); nEl.textContent=FL.$$('td.sel',T).length; }); });
+  function isSel(el){ if(el.tagName==='TR') return cells(el).some(function(c){return c.classList.contains('sel');}); return el.classList.contains('sel'); }
+  FL.$('#m2-sp-go').addEventListener('click',function(){
+    var probs=FL.$$('[data-p]',T), found=0, miss=[];
+    probs.forEach(function(p){ if(isSel(p)){found++;p.style.outline='3px solid #22c55e';} else {miss.push(W[p.dataset.p]); p.style.outline='3px dashed #ef4444';} });
+    var falseN=0; FL.$$('td.sel',T).forEach(function(td){ var tr=td.parentNode; if(!td.dataset.p && !tr.dataset.p) falseN++; });
+    var h='<b>מצאתם '+found+' מתוך '+probs.length+'.</b>'; if(falseN) h+=' סימנתם '+falseN+' תאים שהם תקינים.';
+    if(miss.length) h+='<br>מה שפספסתם (בקו אדום מקווקו):<ul><li>'+miss.map(FL.esc).join('</li><li>')+'</li></ul>'; else h+=' כל הבעיות נמצאו.';
+    out.innerHTML=h; if(found>=6) FL.done('m2-sim-spot'); });
+  FL.$('#m2-sp-rs').addEventListener('click',function(){ FL.$$('td.sel',T).forEach(function(t){t.classList.remove('sel');}); FL.$$('[data-p]',T).forEach(function(p){p.style.outline='';}); nEl.textContent=0; out.textContent='סמנו את מה שנראה לכם שגוי ולחצו על בדיקה.'; });
+}); })();</script>
+
+<h3>אותן בדיקות על Scoop &amp; Go, מחושבות עכשיו</h3>
+<p>האם הקובץ שלנו עומד בכללים? הכפתור מריץ את הבדיקות על כל 6,575 השורות, בדפדפן שלכם.</p>
+<div class="sim" data-id="m2-sim-hyg"><div class="sh">בדיקות היגיינה על Scoop &amp; Go</div>
+<div class="row"><button type="button" class="btn" id="m2-hy-go">הרצת הבדיקות</button></div>
+<div class="out" id="m2-hy-out">לחצו על הרצת הבדיקות.</div></div>
+<script>(function(){ FL.dom(function(){
+  var out=FL.$('#m2-hy-out');
+  FL.$('#m2-hy-go').addEventListener('click',function(){ TF.loadScoop(function(S){
+    if(!S){ out.textContent='נתוני Scoop לא נטענו.'; return; }
+    var n=S.n, C=S.cols, i, k, rows=[];
+    function lamp(ok){ return '<span class="lamp '+(ok?'g':'r')+'"></span>'; }
+    function add(t,v,ok){ rows.push('<tr><td>'+lamp(ok)+'</td><td>'+FL.esc(t)+'</td><td class="n">'+FL.esc(v)+'</td></tr>'); }
+    add('מספר שורות', n.toLocaleString('en-US'), n===6575);
+    var seen={},dup=0; for(i=0;i<n;i++){ var id=C.Order_ID.v[i]; if(seen[id]) dup++; seen[id]=1; }
+    add('Order ID כפולים', dup, dup===0);
+    var sp=0, empty=0, names=['Order_ID','Order_Date','Branch','City','Region','Channel','Category','Item'];
+    names.forEach(function(c){ var col=C[c]; for(i=0;i<n;i++){ var v=col.t==='c'?col.dict[col.v[i]]:col.v[i]; if(v===''||v==null) empty++; else if(String(v)!==String(v).trim()) sp++; } });
+    add('תאים ריקים בעמודות הטקסט והתאריך', empty, empty===0);
+    add('ערכי טקסט עם רווח בקצה', sp, sp===0);
+    var bad=0,badP=0, ts=['Quantity','Unit_Price','Discount','Sales','Cost','Profit']; ts.forEach(function(c){ for(i=0;i<n;i++){ if(typeof C[c].v[i]!=='number'||isNaN(C[c].v[i])) bad++; } });
+    add('ערכים שאינם מספר בעמודות המספרים', bad, bad===0);
+    var m1=0,m2=0; for(i=0;i<n;i++){ var q=C.Quantity.v[i],p=C.Unit_Price.v[i],d=C.Discount.v[i],s=C.Sales.v[i]; if(Math.abs(q*p*(1-d)-s)>0.01) m1++; if(Math.abs(s-C.Cost.v[i]-C.Profit.v[i])>0.01) m2++; }
+    add('Sales שונה מכמות כפול מחיר כפול (1 פחות הנחה)', m1, m1===0);
+    add('Profit שונה מ-Sales פחות Cost', m2, m2===0);
+    var dtb=0, mn='9999', mx='0000'; for(i=0;i<n;i++){ var dv=C.Order_Date.v[i]; if(!/^\d{4}-\d{2}-\d{2}$/.test(dv)) dtb++; if(dv<mn) mn=dv; if(dv>mx) mx=dv; }
+    add('תאריכים שלא בפורמט שנה-חודש-יום', dtb, dtb===0); add('טווח התאריכים', mn+' עד '+mx, mn==='2024-01-01'&&mx==='2025-12-31');
+    out.innerHTML='<table class="tbl"><tbody>'+rows.join('')+'</tbody></table><p style="margin:8px 0 0">כל הבדיקות עוברות: זה קובץ מסודר, ולכן אפשר לבנות עליו.</p>'; FL.done('m2-sim-hyg'); }); });
+}); })();</script>
+
+<div class="box try" data-id="m2-try-distinct">
+<ol>
+<li>ב-<code>Sheet 1</code> גררו את <code>City</code> אל <code>Rows</code>, ולחצו פעמיים על <code>scoop_sales_2024_2025.csv (Count)</code>. <em>למה: כך רואים את כל הערכים השונים של העמודה, וכמה פעמים כל אחד מופיע. כתיבה כפולה של אותו ערך הייתה מופיעה כשתי שורות.</em></li>
+<li>החליפו את <code>City</code> ב-<code>Channel</code> (גררו את הכדור החוצה, וגררו את Channel במקומו). <em>למה: אותה בדיקה לעמודה אחרת.</em></li>
+<li>עכשיו <code>Category</code>, ואז <code>Item</code>. <em>למה: אחרי ארבע בדיקות אנחנו יודעים שהעמודות המרכזיות נקיות.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> City: 8 ערכים: Tel Aviv-Yafo 2,305, Jerusalem 970, Eilat 866, Haifa 758, Netanya 732, Beer Sheva 525, Rehovot 280, Ashdod 139. Channel: Walk-in 4,523, App 1,057, Delivery 995. Category: Cups 1,974, Drinks 1,606, Cones 1,437, Sticks 801, Sundaes 757. Item: 15 ערכים. בכל בדיקה סכום הספירות הוא <b>6,575</b>.</p>
+</div>
+
+<div class="box trap"><p><b>N/A בעמודת מספרים.</b> בקובץ המשחקים vgsales, בעמודת השנה, כתוב N/A ב-271 שורות מתוך 16,598. Tableau קורא את העמודה כמספר ומשאיר את אלה ריקים (Null), ובגרף מופיעה הודעה קטנה בפינה שאומרת כמה ערכים לא ידועים. זה עוד מקרה טוב. אם עמודה אחרת מכילה גם מילים, Tableau עלול לקרוא את כולה כטקסט. הכלל: תא חסר נשאר ריק, ולא N/A.</p></div>
+
+<div class="box trap"><p><b>קובץ מעוצב יפה, מבולגן לתוכנה.</b> שורות כותרת מעוצבות, תאים ממוזגים, צבעים שמסמנים משמעות (שורה אדומה פירושה ״בוטל״). בני אדם קוראים צבע, ו-Tableau לא. אם משהו חשוב מסומן בצבע, הופכים אותו לעמודה: עמודת Status עם ערכים. ובפרט תאים ממוזגים: באקסל הערך נשמר רק בתא הראשון, והשאר ריקים, ולכן שורות נשארות בלי ערך.</p></div>
+
+<div class="box meaning"><p>כללי ההיגיינה לא נועדו לסדר את הקובץ לפי טעם. הם נועדו שהנתונים יהיו <b>ניתנים לחישוב</b>: שאפשר לסכום, לספור ולסנן בלי להפתיע. כל כלל הוא ביטוח נגד סוג מסוים של מספר שגוי, וכל הפרה יכולה להפיק מספר שנראה סביר ובכל זאת שגוי. ובדיקת ספירת ערכים שונים (כמו בתרגיל) היא הדרך המהירה למצוא את אלה שמתחבאים.</p></div>
+
+<div class="box real"><p>בארגונים, מי שמכין את הנתונים נקרא לפעמים מהנדס או אנליסט נתונים, ועיקר עבודתו היא ניקוי והתאמה לפני שמישהו מצייר גרף. זו הסיבה שאנשי נתונים אומרים שרוב הזמן הולך על הכנת הנתונים ולא על הגרפים. גם ב-Tableau, מה שחוסכים בהכנה משלמים אחר כך בבלבול.</p></div>
+
+<div class="box think" data-id="m2-th-source"><p>עדיף לתקן בעיה בנתונים במקור (בקובץ) או ב-Tableau? מתי אי אפשר לתקן במקור, ומה עושים אז?</p>
+<div class="ans">במקור עדיף: מתקנים פעם אחת, וכל מי שישתמש בקובץ נהנה, גם בריענון הבא. ב-Tableau מתקנים בכל חוברת מחדש. אבל לפעמים הקובץ מגיע ממערכת שאי אפשר לשנות. אז מתקנים ב-Tableau בעזרת שדות מחושבים (חיתוך, פורמט תאריך, ניקוי רווחים), ורושמים בהערה בחוברת מה תוקן ולמה, כדי שמי שימשיך אחריכם יידע.</div></div>
+
+<div class="quiz" data-id="m2-q-total" data-a="1"><p class="qq">בקובץ מכירות יש שורה אחרונה Total עם סכום כל המכירות. מה קורה כשטוענים אותו ל-Tableau ומחשבים SUM(Sales)?</p>
+<button class="opt">הסכום יוצא כפול, כי Tableau מחבר גם את שורת ה-Total</button>
+<button class="opt">Tableau מזהה שורת סיכום ומדלג עליה</button>
+<button class="opt">הסכום יוצא נכון, כי ה-Total זהה לסכום</button>
+<div class="why">ל-Tableau אין דרך לדעת שהשורה היא סיכום. היא נתונים בעיניו, ולכן נכללת בסכום פעם נוספת. מסירים שורות סיכום מהקובץ.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> ״מצאו את 9 הבעיות״ עובד טוב כתחרות בזוגות. אחריו להריץ את בדיקות Scoop &amp; Go: הקבוצה רואה שקובץ נקי נראה ככה. הסכום הכפול הוא 2 כפול 107,047.6. ההנחה על N/A בקובץ המשחקים מגיעה מבדיקה מוקדמת של הקובץ (271 שורות, הראשונה בשורה 180), ובתוכנה צריך לבדוק איך הוא מופיע. תאים ממוזגים: לא נבדק מה Tableau עושה בדיוק, ולכן לא להתעכב על פרטים.</div>
+</section>
+<section class="sec" id="m2-10" data-t="בדיקת בריאות">
+<div class="sec-h"><div class="sec-n">10</div><h2>בונים יחד: בדיקת בריאות ל-Scoop &amp; Go</h2></div>
+<p class="lead">המנהלת שואלת: ״אתה בטוח שהנתונים נטענו נכון?״. התשובה לא יכולה להיות ״נראה לי״. בסעיף הזה עושים שמונה בדיקות, ולכל אחת יש תשובה ידועה שחישבנו מראש מהקובץ.</p>
+
+<div class="kpis">
+<div class="kpi"><b>6,575</b><span>שורות</span></div>
+<div class="kpi"><b>16</b><span>שדות</span></div>
+<div class="kpi g"><b>236,820.90</b><span>סכום Sales</span></div>
+<div class="kpi g"><b>120,722.90</b><span>סכום Profit</span></div>
+<div class="kpi a"><b>116,098</b><span>סכום Cost</span></div>
+<div class="kpi"><b>11,426</b><span>סכום Quantity</span></div>
+<div class="kpi"><b>9</b><span>סניפים</span></div>
+<div class="kpi"><b><bdi dir="ltr">2,898 + 3,677</bdi></b><span>שורות ב-2024 וב-2025</span></div>
+</div>
+<p style="font-size:.88rem;color:var(--muted)">הערכים חושבו ב-Python מקובץ ה-CSV. Tableau עשוי להציג אותם מעוגלים (למשל 236,821), ואפשר לראות את המספר המלא בתיאור הכלים או על ידי פורמט עם שתי ספרות אחרי הנקודה. Profit הוא Sales פחות Cost בכל שורה, ולכן 236,820.90 פחות 116,098 הוא בדיוק 120,722.90.</p>
+
+<p>שדה הספירה, ״מספר הרשומות״, מופיע ברשימת השדות בתחתית. כך הוא נראה בצילום אמיתי (מקובץ vgsales):</p>
+<figure class="shot" style="max-width:300px;margin-inline:auto"><img src="img/datapane-count.png" alt="רשימת השדות ב-Tableau Public עם שדה הספירה בתחתית"><figcaption>רשימת השדות. בתחתית, באיטליק, שדה הספירה: בצילום <span class="n">vgsales.csv (Count)</span>, ואצלכם <span class="n">scoop_sales_2024_2025.csv (Count)</span>. הוא לא עמודה בקובץ: Tableau יוצר אותו בעצמו, ובכל פעם שסופרים שורות משתמשים בו. מתחתיו <span class="n">Measure Values</span>, ומעליו (באיטליק) <span class="n">Measure Names</span>, שני שדות מיוחדים שנלמד במודול 3.</figcaption></figure>
+
+<div class="box try" data-id="m2-try-health-kpis">
+<ol>
+<li>טענו את <span class="n">scoop_sales_2024_2025.csv</span> מחדש ל-<dfn data-d="חוברת עבודה: קובץ Tableau שמחזיק את מקור הנתונים ואת הגיליונות">workbook</dfn> חדש (<code>File &gt; New</code>), ולחצו על <code>Sheet 1</code>. <em>למה: מתחילים נקי, בלי השינויים של הניסויים הקודמים.</em></li>
+<li>ברשימת השדות לחצו על <code>Cost</code>, ואז, בזמן שאתם מחזיקים <kbd>Ctrl</kbd> (ב-Mac: <kbd>Cmd</kbd>), לחצו על <code>Profit</code>, <code>Quantity</code>, <code>Sales</code> ועל שדה הספירה <code>scoop_sales_2024_2025.csv (Count)</code>. <em>למה: בוחרים את כל המדדים שרוצים לראות ביחד.</em></li>
+<li>לחצו <dfn data-d="לוח בפינה שמציע סוג גרף מתאים לפי השדות שבחרתם">Show Me</dfn> (<code>Show Me</code>, בפינה הימנית העליונה) ובחרו בתרשים הראשון, טבלת הטקסט (<code>text tables</code>). <em>למה: טבלת טקסט מציגה מספרים ולא צורה, וזה מה שרוצים בבדיקה.</em></li>
+<li>השוו כל מספר לטבלה שלמעלה. <em>למה: כל מספר שונה הוא סימן לבעיה.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> חמש שורות. ספירה <b>6,575</b>, Cost <b>116,098</b>, Profit <b>120,722.9</b>, Quantity <b>11,426</b>, Sales <b>236,820.9</b> (או מעוגלים, בהתאם לפורמט, ובסדר שונה מזה). אם Show Me לא מציע טבלת טקסט, ודאו שבחרתם מספר שדות, והעבירו את העכבר על התרשים כדי לראות מה הוא דורש.</p>
+</div>
+
+<div class="box try" data-id="m2-try-health-dates">
+<ol>
+<li>גיליון חדש. גררו את <code>Order Date</code> אל <code>Rows</code>. <em>למה: Tableau מחלק אותו לשנים כברירת מחדל, ולכן רואים כמה שנים באמת יש.</em></li>
+<li>לחצו פעמיים על שדה הספירה, ואז גררו את <code>Sales</code> אל <code>Text</code> (או לחצו עליו פעמיים). <em>למה: ספירה וסכום לכל שנה.</em></li>
+<li>גררו את <code>Order ID</code> אל <code>Text</code>, קליק ימני על הכדור, <code>Measure</code>, <code>Count (Distinct)</code>. <em>למה: אם יש הזמנות שחוזרות, המספר יהיה קטן ממספר השורות.</em></li>
+<li>החליפו: את <code>Order ID</code> ב-<code>Branch</code> באותה דרך. <em>למה: בדיקת ערכים שונים אחרת.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> בשלב 2 שתי שורות בלבד: <b>2024</b> עם 2,898 שורות ו-107,047.6, ו-<b>2025</b> עם 3,677 שורות ו-129,773.3. שורה של Null או שנה אחרת פירושה תאריך שלא נקרא. בשלב 3: <b>6,575</b>, כלומר כל הזמנה מופיעה פעם אחת. בשלב 4: <b>9</b>.</p>
+</div>
+
+<div class="sim" data-id="m2-sim-check"><div class="sh">בודק נקודות הביקורת: הקלידו מה ראיתם</div>
+<p style="margin:0 0 6px">הקלידו מה שמופיע אצלכם במסך (פסיקים ועיגול מותרים), ולחצו על &quot;בדיקה&quot;. אם הערך שגוי, ההדמיה תנסה לנחש מה קרה.</p>
+<div class="tw"><table class="tbl" id="m2-ck-t"><tbody></tbody></table></div>
+<div class="row"><button type="button" class="btn" id="m2-ck-go">בדיקה</button><span id="m2-ck-s"></span></div></div>
+<script>(function(){ FL.dom(function(){
+  var F=[
+   ['rows','מספר השורות (שורת הסטטוס)',6575,0],['fields','מספר השדות (שורת הסטטוס)',16,0],['sales','סכום Sales',236820.9,1],['profit','סכום Profit',120722.9,1],
+   ['cost','סכום Cost',116098,1],['qty','סכום Quantity',11426,1],['branch','Branch שונים',9,0],['ids','Order ID שונים',6575,0],['y24','שורות ב-2024',2898,0]
+  ];
+  var tb=FL.$('#m2-ck-t tbody'), st=FL.$('#m2-ck-s');
+  F.forEach(function(f){ var tr=document.createElement('tr'); tr.innerHTML='<td style="width:34px"><span class="lamp" id="m2-ck-l-'+f[0]+'"></span></td><td>'+f[1]+'</td><td><input type="text" inputmode="decimal" dir="ltr" id="m2-ck-i-'+f[0]+'" style="width:130px"></td><td id="m2-ck-m-'+f[0]+'" style="font-size:.88rem"></td>'; tb.appendChild(tr); });
+  function num(s){ s=String(s).replace(/[,\s]/g,''); return s===''?NaN:parseFloat(s); }
+  function diag(k,v){
+    var near=function(a,b,t){return Math.abs(a-b)<=(t||0.6);};
+    if(k==='rows'){ if(v===6574) return 'חסרה שורה: אולי השורה הראשונה נקראה ככותרת, או שורה אחת נבלעה.'; if(v===6576) return 'שורת הכותרת נספרה כנתונים.'; if(near(v,11426,0.5)) return 'זה סכום Quantity, לא ספירת שורות.'; }
+    if(k==='fields'){ if(v===15) return 'שדה אחד חסר: הוסתר, או שהמפריד שגוי.'; if(v===17) return 'שדה אחד מיותר: אולי מפריד שגוי או עמודה ריקה.'; if(v===1) return 'הכול נכנס לשדה אחד: מפריד שגוי.'; }
+    if(k==='sales'){ if(near(v,36.02,0.05)) return 'זה הממוצע לשורה (AVG). בדקו שהאגרגציה היא SUM.'; if(near(v,120722.9)) return 'זה Profit.'; if(near(v,116098)) return 'זה Cost.'; if(near(v,118214)) return 'זה סכום Order Hour.'; if(near(v,6575)) return 'זו ספירת שורות.'; }
+    if(k==='profit'){ if(near(v,236820.9)) return 'זה Sales.'; if(near(v,116098)) return 'זה Cost.'; if(near(v,18.36,0.05)) return 'זה הממוצע לשורה (AVG).'; }
+    if(k==='cost'){ if(near(v,236820.9)) return 'זה Sales.'; if(near(v,120722.9)) return 'זה Profit.'; }
+    if(k==='qty'){ if(near(v,6575)) return 'זו ספירת שורות, לא סכום כמויות.'; if(near(v,1.74,0.02)) return 'זה הממוצע לשורה (AVG).'; }
+    if(k==='branch'){ if(v===8) return 'ספרתם ערים (8) או פספסתם את Ashdod Beach Pop-up.'; if(v===6575) return 'ספרתם שורות.'; }
+    if(k==='ids'){ if(v<6575) return 'יש הזמנות שחוזרות: בדקו אם נטען קובץ אחר.'; }
+    if(k==='y24'){ if(v===3677) return 'זו שנת 2025.'; if(v===6575) return 'זה סך כל השורות, ללא חלוקה לפי שנה.'; }
+    return 'הערך שונה מהצפוי. חזרו על הצעדים ובדקו מה נבחר (SUM מול AVG, ממד מול מדד).';
+  }
+  FL.$('#m2-ck-go').addEventListener('click',function(){ TF.loadScoop(function(S){
+    var ok=0,filled=0;
+    // sanity: real computed values from the data
+    var real={rows:S.n,sales:0,profit:0,cost:0,qty:0,y24:0}, br={}, ids={}; for(var i=0;i<S.n;i++){ real.sales+=S.cols.Sales.v[i]; real.profit+=S.cols.Profit.v[i]; real.cost+=S.cols.Cost.v[i]; real.qty+=S.cols.Quantity.v[i]; br[S.cols.Branch.v[i]]=1; ids[S.cols.Order_ID.v[i]]=1; if(S.cols.Order_Date.v[i].slice(0,4)==='2024') real.y24++; }
+    real.branch=Object.keys(br).length; real.ids=Object.keys(ids).length; real.fields=16;
+    F.forEach(function(f){ var k=f[0], exp=real[k]!==undefined?real[k]:f[2], inp=FL.$('#m2-ck-i-'+k), lp=FL.$('#m2-ck-l-'+k), m=FL.$('#m2-ck-m-'+k), v=num(inp.value);
+      if(isNaN(v)){ lp.className='lamp'; m.textContent=''; return; } filled++;
+      var tol=f[3]?0.51:0; if(Math.abs(v-exp)<=tol){ lp.className='lamp g'; ok++; m.textContent=(Math.abs(v-exp)>0.001?'תקין (עיגול)':'תקין'); }
+      else { lp.className='lamp r'; m.textContent=diag(k,v); } });
+    st.innerHTML='נכון: <b>'+ok+'</b> מתוך '+F.length+(filled<F.length?' (מילאתם '+filled+')':''); if(ok===F.length) FL.done('m2-sim-check'); }); });
+}); })();</script>
+
+<div class="box trap"><p><b>הסכום נראה שונה, אבל זה רק עיגול.</b> Tableau מציג, כברירת מחדל, מספר מעוגל: 236,821 במקום 236,820.9. זה לא שגיאה. כדי לבדוק, פתחו את התיאור (Tooltip) או הגדירו פורמט עם מקום עשרוני אחד. מה שחשוב הוא שהמספר זהה בקירוב, ולא ממש רחוק.</p></div>
+
+<div class="box trap"><p><b>SUM או AVG, ספירה או סכום.</b> 6,575 הוא מספר השורות, ו-11,426 הוא סכום הכמויות, כלומר כמה כדורים, גביעים ושתיות נמכרו בסך הכול. מי ששם בטעות Quantity במקום Count, או Average במקום Sum, מקבל מספר שנראה סביר ושגוי. בכל פעם שמספר שונה, הדבר הראשון לבדוק הוא איזו אגרגציה בחרתם: ב-pill של שדה כתוב SUM, AVG או CNT.</p></div>
+
+<div class="box meaning"><p>עכשיו אפשר לומר למנהלת: ״נטענו 6,575 שורות, בין 1.1.2024 ל-31.12.2025, ב-9 סניפים. סך המכירות 236,820.90 והרווח 120,722.90, והם תואמים לחישוב מחוץ ל-Tableau״. זו הכרזה שאפשר לעמוד מאחוריה. ואם יש לה דוח משלה מהמערכת, משווים אליו. התאמה למקור היא הבדיקה האמיתית, וחישוב מחוץ לתוכנה הוא הדרך לוודא שהטעינה לא שינתה כלום.</p></div>
+
+<div class="box real"><p>בכל ארגון שיש בו דוחות כספיים, מי שמעביר נתונים בין מערכות עושה ״התאמה״: סוכם עמודה כספית ומשווה לסכום במקור. כשהסכומים לא תואמים אפילו באגורה, מחפשים את ההפרש לפני שממשיכים. אתם עושים בדיוק אותו דבר בקנה מידה קטן, ואותו הרגל יעבוד כשתעבדו עם נתונים אמיתיים.</p></div>
+
+<div class="box think" data-id="m2-th-mismatch"><p>ספירת השורות נכונה, אבל סכום Sales אצלכם שונה מ-236,820.9 באלפים. איפה תחפשו את הבעיה?</p>
+<div class="ans">אם הספירה נכונה, כל השורות נטענו, ולכן הבעיה בערכים: עמודה שנקראה כטקסט ולכן חלק מהערכים הפכו ל-Null, מפריד עשרוני שגוי (נקודה מול פסיק) שגורם לקריאה שגויה של מספרים, או אגרגציה שגויה (AVG במקום SUM). בודקים קודם את סמל הסוג של Sales (צריך להיות #), ואחר כך את האגרגציה, ואם צריך, את ה-Locale ב-Text File Properties.</div></div>
+
+<div class="quiz" data-id="m2-q-qty" data-a="3"><p class="qq">ב-Tableau מופיע 11,426 וחיפשתם את מספר ההזמנות. מה קרה?</p>
+<button class="opt">Tableau ספר נכון: יש 11,426 הזמנות</button>
+<button class="opt">הקובץ נטען פעמיים</button>
+<button class="opt">הצגתם את סכום Quantity (כמות הפריטים) ולא את ספירת השורות, שהיא 6,575</button>
+<div class="why">11,426 הוא סכום הכמויות. מספר השורות, וגם מספר ההזמנות כי כל שורה היא הזמנה אחת, הוא 6,575.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> סעיף הסיכום של המודול: כל סטודנט אמור לסיים עם מסך שמראה את כל המספרים. לבקש לכתוב בצ׳אט את סכום ה-Sales שלהם. הבודק (״בודק נקודות הביקורת״) מחשב את הערכים הנכונים מהנתונים בדפדפן ולכן אפשר לסמוך עליו, אבל הצפי של איך Tableau מציג את המספרים (עיגול, סדר השורות ב-Show Me) לא נבדק בתוכנה. לבדוק: אילו מדדים נכנסים לטבלת הטקסט כשבוחרים שדה ספירה יחד עם מדדים, והאם <code>Count (Distinct)</code> נמצא בתפריט ה-Measure של כדור של ממד שנגרר ל-Text.</div>
+</section>
+
+<section class="sec" id="m2-11" data-t="סיכום">
+<div class="sec-h"><div class="sec-n">11</div><h2>סיכום: מה עברנו במודול הזה</h2></div>
+<div class="box recap"><ul>
+<li><b>מה מתחברים:</b> קבצים (Excel, Text, JSON, PDF, Spatial, Statistical) ושני מחברים, Google Drive ו-OData. אין מסדי נתונים וחיבורים חיים, ועובדים סביב זה עם קובץ CSV.</li>
+<li><b>Extract:</b> Tableau עובד עם צילום של הנתונים. פרסום מעלה אותו לאתר, ושינוי בקובץ דורש פרסום מחדש. נכון לאוקטובר 2026 המגבלה היא 15 מיליון שורות, ובדקו בתיעוד.</li>
+<li><b>דף Data Source:</b> שורת הסטטוס (16 fields 6575 rows), סמלי הסוג, שמות, הגריד שהוא מדגם בלבד.</li>
+<li><b>סוגים ותפקידים:</b> Tableau מנחש לפי התוכן. תאריך שהוא טקסט, מזהה שהוא מספר ושעה שהיא מדד הם התקלות הנפוצות. מתקנים בסוג או בתפקיד (Convert to Dimension).</li>
+<li><b>עברית:</b> הנתונים בסדר, התפריטים באנגלית. ג׳יבריש הוא בעיית קידוד, PDF בעברית הוא מלכודת, ושנה בעברית מגיעה כמדד.</li>
+<li><b>היגיינה ובדיקה:</b> כותרת אחת, שורה היא רשומה, מספר הוא מספר. בודקים שורות וסכומים מול ערכים ידועים: 6,575 שורות, 236,820.90 מכירות.</li>
+</ul></div>
+
+<div class="quiz" data-id="m2-q-end1" data-a="2"><p class="qq">קיבלתם קובץ CSV חדש מיבגני. מה הדבר הראשון שעושים אחרי הטעינה?</p>
+<button class="opt">בונים גרף עמודות ומתחילים לחפש תובנות</button>
+<button class="opt">בודקים את שורת הסטטוס, סוגי השדות ושורות הגריד, ומשווים לספירה במקור</button>
+<button class="opt">מפרסמים ל-Tableau Public כדי לראות איך זה נראה</button>
+<div class="why">קודם בודקים, כי כל גרף נבנה על מה שנטען. פרסום הוא הצעד האחרון, ובמיוחד ב-Public, שבו הכול ציבורי.</div></div>
+
+<div class="quiz" data-id="m2-q-end2" data-a="1"><p class="qq">עמודת שנה בעברית (2018 עד 2024) הגיעה כמדד. מה התיקון?</p>
+<button class="opt">Convert to Dimension, ובהמשך אפשר גם להפוך לתאריך</button>
+<button class="opt">למחוק את העמודה ולכתוב אותה מחדש באנגלית</button>
+<button class="opt">להשאיר, כי הסכום של השנים מעניין</button>
+<div class="why">השנה צריכה לחלק את הנתונים לקבוצות, וזה תפקיד של ממד. אין צורך למחוק דבר. הסכום של שנים (1,010,544 בקובץ שלנו) חסר משמעות.</div></div>
+
+<div class="quiz" data-id="m2-q-end3" data-a="3"><p class="qq">איזה משפט נכון על Tableau Public?</p>
+<button class="opt">אפשר לחבר אותו למסד נתונים של החברה בחיבור חי</button>
+<button class="opt">דוח שפורסם מתעדכן לבד כשמשנים את קובץ ה-Excel</button>
+<button class="opt">הדוח מבוסס על צילום (Extract), ומה שפורסם גלוי וניתן להורדה</button>
+<div class="why">שני הנוספים שגויים: אין חיבורים חיים למסדי נתונים, ושינוי בקובץ לא משנה את מה שפורסם. הצילום, והגלוי לכולם, הם הכלל.</div></div>
+
+<p>בצעד הבא נבנה את הגרפים הראשונים על הנתונים שבדקתם: <a class="tool" href="module3.html">מודול 3: סביבת העבודה והגרפים הראשונים</a>. ואם בא לכם לחזור למקור החומר: <a class="tool" href="../final-lesson/part2.html">המפגש המסכם, חלק 2 (SQL)</a>.</p>
+<div class="teach"><b>🎓 למרצה:</b> פריטים שלא נבדקו בתוכנה וצריך לבדוק לפני הקורס: Data Interpreter, Pivot, Union ו-Split ב-Public; שם ומיקום של Text File Properties; הצגת כותרות עברית עם סוגריים; סיווג Order Hour ו-Order Date; מיקום Google Drive תחת More...; Save As מול Export Packaged Workbook; Count (Distinct) בתפריט של כדור ממד.</div>
+</section>
+<style>
+.m2-g{font-size:.74rem;white-space:nowrap}.m2-g th,.m2-g td{padding:3px 8px;unicode-bidi:normal;text-align:left}
+.m2-mx td:first-child{white-space:nowrap}
+.m2-dsp{position:relative;border:1px solid #c7cfd9;border-radius:10px;background:#f4f6f8;direction:ltr;text-align:left;font-size:.8rem;margin:10px 0;padding:0 0 2px}
+.m2-dsp-top{position:relative;display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#e5e9ee;padding:8px 12px 6px 34px;border-bottom:1px solid #c7cfd9;border-radius:10px 10px 0 0}
+.m2-dsp-top i{color:#64748b;font-style:normal;font-size:.72rem}
+.m2-sp{flex:1}
+.m2-dsp-body{display:flex;min-height:150px}
+.m2-left{position:relative;flex:0 0 150px;background:#fff;border-right:1px solid #d5dbe3;padding:8px 8px 8px 30px}
+.m2-left h6{margin:0 0 4px;font-size:.7rem;color:#64748b;text-transform:uppercase}
+.m2-it{padding:2px 6px;border-radius:4px;font-size:.74rem;word-break:break-all}.m2-it.on{background:#d7e7f5}
+.m2-cb{display:block;margin-top:8px;font-size:.74rem;color:#64748b}
+.m2-right{flex:1;min-width:0;display:flex;flex-direction:column}
+.m2-canvas{position:relative;background:#fff;padding:14px 14px 14px 34px;border-bottom:1px solid #d5dbe3;display:flex;gap:14px;align-items:center;flex-wrap:wrap;min-height:64px}
+.m2-card{background:#d7e7f5;border:1px solid #1f77b4;border-radius:4px;padding:3px 12px;font-weight:700}
+.m2-hint{color:#94a3b8;font-size:.74rem}
+.m2-bar{position:relative;display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:7px 12px 7px 34px;background:#f4f6f8;border-bottom:1px solid #d5dbe3}
+.m2-gwrap{position:relative;margin:8px 0 6px}.m2-gw{position:relative;margin:0;overflow-x:auto;background:#fff;border:1px solid #d5dbe3}
+.m2-gt{border-collapse:collapse;font-size:.74rem;white-space:nowrap}
+.m2-gt th,.m2-gt td{border:1px solid #e5e9ee;padding:3px 9px;text-align:left}
+.m2-gt th{background:#f8fafc}
+.ic{display:inline-block;font-style:normal;font-weight:800;font-size:.66rem;border-radius:3px;padding:0 4px;margin-right:5px}
+.ic.s,.ic.d{background:#d7e7f5;color:#14507a}.ic.n,.ic.b{background:#d9f0d6;color:#1c6b1c}
+.m2-tabs{position:relative;display:flex;gap:2px;background:#e5e9ee;padding:6px 8px 0 34px;border-top:1px solid #c7cfd9}
+.m2-tabs span{padding:2px 12px;border:1px solid #c7cfd9;border-bottom:0;border-radius:6px 6px 0 0;background:#f4f6f8;font-size:.72rem}
+.m2-tabs span.on{background:#fff;font-weight:700}
+.m2-z{position:absolute;top:-9px;left:-9px;width:26px;height:26px;border-radius:50%;background:#e8741f;color:#fff;font:inherit;font-weight:800;font-size:.8rem;border:2px solid #fff;cursor:pointer;z-index:3;padding:0;line-height:1;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.m2-dsp-top .m2-z,.m2-left .m2-z,.m2-canvas .m2-z,.m2-bar .m2-z,.m2-tabs .m2-z{top:50%;left:4px;transform:translateY(-50%)}
+.m2-left .m2-z{top:14px;transform:none}
+.m2-z.seen{background:#0f766e}.m2-z.cur{outline:3px solid #d8b862}
+.m2-spot td{cursor:pointer;min-width:70px}.m2-spot td.sel{background:#fde68a !important}
+.m2-spot tr.hd td{font-weight:800;background:#f1f5f9;cursor:default}
+.m2-mess td{padding:4px 10px}.m2-mess tr.hd td{font-weight:800;background:#e0e7ff}
+</style>
+
+<div class="pager"><a href="module1.html">→ 1. מכירים את Tableau Public</a><a href="module3.html">3. סביבת העבודה והגרפים הראשונים ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>

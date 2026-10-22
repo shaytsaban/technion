@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>15. בסיסי נתונים: איך הנתונים מגיעים · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=15;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public">1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים">2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים">3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות">6<small></small></a><a id="part7" href="module7.html" title="מפות">7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים">8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט">10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב">13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה">14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים" class=on>15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות">16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום">17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות">19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>בסיסי נתונים<br><span>איך הנתונים מגיעים</span></h1>
+  <p>הנתונים של מסעדת יבגני יושבים במסד נתונים, ול-Tableau Public אין חיבור למסד. במודול הזה בונים את הגשר: שאילתת SQL שמוציאה קובץ CSV, גיליון בגוגל שמתעדכן לבד, וסקריפט פייתון שמכין קובץ נקי. אתם בונים מהייצוא שני גרפים אמיתיים, בודקים מה בטוח לפרסם, ולומדים מה קיים רק בגרסאות המורשות.</p>
+  <div class="chips"><span>🗄️ ממסד נתונים לקובץ ול-Tableau Public</span><span>🧪 תרגילים עם תוצאה צפויה מחושבת</span><span>🎞️ הנפשות והדמיות על הנתונים של יבגני</span><span>🔒 רשימת פרטיות ומשחק מיון</span><span>🧭 אשף: הנתונים שלי נמצאים ב-X</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<style>
+.m15-tb{border-collapse:collapse;direction:ltr;font-size:.82rem;background:#fff;margin:0}
+.m15-tb th,.m15-tb td{border:1px solid #d5dbe3;padding:2px 9px;text-align:left;unicode-bidi:plaintext;white-space:nowrap}
+.m15-tb th{background:#f1f5f9;color:#334155;position:sticky;top:0}
+.m15-tb td.nm,.m15-tb th.nm{text-align:right}
+.m15-tb tr.hl td{background:#fff7ed}
+.m15-tb td i{color:#94a3b8}
+.m15-sc{overflow:auto;max-height:330px;margin:8px 0;border:1px solid var(--line);border-radius:10px;background:#fff}
+.m15-btns{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;align-items:center}
+.m15-btns .btn.on{background:var(--navy);color:#fff}
+.m15-kp{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.m15-kp div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:4px 12px;font-size:.88rem}
+.m15-kp b{color:var(--navy)}
+.m15-kp .bad b{color:#b91c1c}.m15-kp .good b{color:#047857}
+.m15-eq{direction:ltr;text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.84rem;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:8px 12px;margin:6px 0;overflow-x:auto;white-space:pre}
+.m15-pick{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.m15-pick button{unicode-bidi:plaintext;font:inherit;font-size:.86rem;font-weight:700;border:1px solid #c7cfd9;background:#fff;border-radius:8px;padding:3px 11px;cursor:pointer;color:#334155}
+.m15-pick button:hover{background:#eef2ff}
+.m15-pick button.ok{border-color:#6ee7b7;background:#ecfdf5;color:#065f46}
+.m15-pick button.no{border-color:#fca5a5;background:#fef2f2;color:#991b1b}
+.m15-pick button.part{border-color:#fcd34d;background:#fffbeb;color:#92400e}
+.m15-pick button.sel{outline:3px solid var(--primary)}
+.m15-verdict{border-radius:12px;padding:8px 14px;margin:8px 0;border:1px solid var(--line);background:#fff}
+.m15-verdict.ok{border-color:#6ee7b7;background:#f0fdf4}
+.m15-verdict.no{border-color:#fca5a5;background:#fef2f2}
+.m15-verdict.part{border-color:#fcd34d;background:#fffbeb}
+.m15-badge{display:inline-block;border-radius:999px;padding:0 10px;font-size:.78rem;font-weight:800;margin-inline-end:6px}
+.m15-badge.ok{background:#d1fae5;color:#065f46}.m15-badge.no{background:#fee2e2;color:#991b1b}.m15-badge.part{background:#fef3c7;color:#92400e}.m15-badge.q{background:#e2e8f0;color:#475569}
+.m15-lt{display:grid;gap:8px;margin:8px 0}
+.m15-lt>div{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+.m15-lt .k{width:30px;height:30px;border-radius:9px;background:var(--navy);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.85rem}
+.m15-lt p{margin:0}
+.m15-publine{border:2px dashed #e8741f;border-radius:12px;background:#fff7ed;padding:6px 12px;margin:10px 0;font-weight:700;color:#9a4a0b;text-align:center}
+.m15-home{width:100%;border-collapse:collapse;font-size:.92rem;background:#fff}
+.m15-home th,.m15-home td{border:1px solid var(--line);padding:6px 10px;text-align:start;vertical-align:top}
+.m15-home th{background:#f1f5f9;color:var(--navy)}
+.m15-home td:first-child{font-weight:800;white-space:nowrap}
+.m15-home .pubcell{font-weight:700}
+.m15-home .pubcell.ok{color:#047857}.m15-home .pubcell.no{color:#b91c1c}.m15-home .pubcell.part{color:#b45309}
+.m15-gs{direction:ltr;background:#fff;border:1px solid #c7cfd9;border-radius:8px;overflow:hidden;font-size:.82rem;margin:12px 0;box-shadow:0 8px 22px rgba(15,23,42,.1)}
+.m15-gs .fx{display:flex;gap:8px;align-items:center;background:#f1f3f5;border-bottom:1px solid #c7cfd9;padding:4px 8px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem;overflow-x:auto;white-space:nowrap}
+.m15-gs .fx b{color:#64748b;font-family:inherit}
+.m15-gs table{border-collapse:collapse;width:100%}
+.m15-gs td,.m15-gs th{border:1px solid #e2e8f0;padding:2px 8px;text-align:left;unicode-bidi:plaintext}
+.m15-gs th{background:#f8fafc;color:#64748b;font-weight:600;text-align:center;width:1%}
+.m15-gs td.rh{background:#f8fafc;color:#64748b;text-align:center;width:28px}
+.m15-gs .tab{background:#f1f3f5;padding:3px 10px;border-top:1px solid #c7cfd9;font-size:.76rem;color:#334155}
+.m15-url{direction:ltr;text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.84rem;background:#0f172a;color:#cbd5e1;border-radius:10px;padding:10px 14px;margin:10px 0;overflow-x:auto;white-space:nowrap}
+.m15-url b{padding:0 3px;border-radius:4px;font-weight:600}
+.m15-url .a{background:#1e3a8a;color:#bfdbfe}.m15-url .b{background:#14532d;color:#bbf7d0}.m15-url .c{background:#78350f;color:#fde68a}.m15-url .d{background:#581c87;color:#e9d5ff}
+.m15-shape{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:12px 0}
+.m15-shape>div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+.m15-shape h5{margin:0 0 4px;font-size:1rem;color:var(--navy)}
+.m15-shape .mini{direction:ltr;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.74rem;background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:4px 8px;margin:6px 0;overflow-x:auto;white-space:pre}
+.m15-sort{display:grid;gap:8px;margin:10px 0}
+.m15-sort .it{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.m15-sort .it.done{background:#f0fdf4;border-color:#6ee7b7}
+.m15-sort .it.wrong{background:#fef2f2;border-color:#fca5a5}
+.m15-sort .it b{display:block;direction:ltr;text-align:start;unicode-bidi:plaintext}
+.m15-sort .it .fb{grid-column:1/-1;font-size:.9rem;color:#334155;display:none}
+.m15-sort .it.done .fb,.m15-sort .it.wrong .fb{display:block}
+.m15-sort .bs{display:flex;gap:6px;flex-wrap:wrap}
+.m15-sort .bs button{font:inherit;font-size:.8rem;font-weight:700;border:1px solid #c7cfd9;background:#f8fafc;border-radius:8px;padding:2px 9px;cursor:pointer}
+.m15-sort .bs button:hover{background:#eef2ff}
+.m15-ed{width:100%;border-collapse:collapse;font-size:.88rem;background:#fff}
+.m15-ed th,.m15-ed td{border:1px solid var(--line);padding:5px 8px;text-align:center}
+.m15-ed th{background:#f1f5f9;color:var(--navy);cursor:pointer}
+.m15-ed th.on{background:var(--navy);color:#fff}
+.m15-ed td:first-child,.m15-ed th:first-child{text-align:start;cursor:default}
+.m15-ed td.dim{opacity:.35}
+.m15-ed .y{color:#047857;font-weight:900}.m15-ed .x{color:#b91c1c;font-weight:900}.m15-ed .q{color:#b45309;font-weight:900}
+.m15-wz{display:grid;gap:10px;margin:10px 0}
+.m15-wz .row2{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.m15-wz label{font-weight:700;font-size:.92rem;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.m15-steps{margin:6px 0;padding-inline-start:1.3em}
+.m15-note-sm{font-size:.86rem;color:var(--muted)}
+.m15-bars{display:grid;gap:4px;margin:8px 0;direction:ltr}
+.m15-bars .b{display:grid;grid-template-columns:120px 1fr 70px;gap:8px;align-items:center;font-size:.82rem}
+.m15-bars .b span:first-child{text-align:right;unicode-bidi:plaintext}
+.m15-bars .b i{display:block;height:14px;border-radius:3px;background:#4e79a7}
+.m15-bars .b .v{font-weight:700}
+.m15-tl{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:8px 0}
+@media(max-width:700px){.m15-tl{grid-template-columns:1fr}.m15-bars .b{grid-template-columns:90px 1fr 56px}}
+.m15-tl>div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+.m15-tl h5{margin:0 0 4px;font-size:.95rem;color:var(--navy)}
+.m15-tl .big{font-size:1.5rem;font-weight:900;color:var(--navy);direction:ltr;unicode-bidi:isolate}
+.m15-tl .stale{color:#b91c1c}
+.m15-dim{opacity:.5}
+</style>
+<script>
+(function () {
+  if (window.M15) return;
+var D={"ORD":[[1,"2026-03-02",19,"app","delivered",1,37,13,4],[2,"2026-03-04",13,"walk-in","delivered",null,null,null,1],[3,"2026-03-05",19,"app","delivered",1,38,2,3],[4,"2026-03-06",13,"app","delivered",3,33,11,5],[5,"2026-03-06",21,"app","delivered",2,31,13,null],[6,"2026-03-06",13,"phone","delivered",2,31,14,4],[7,"2026-03-07",21,"phone","delivered",2,45,1,null],[8,"2026-03-07",12,"app","delivered",2,30,12,3],[9,"2026-03-07",12,"app","delivered",3,49,6,2],[10,"2026-03-08",13,"app","delivered",1,26,2,5],[11,"2026-03-10",19,"app","delivered",3,43,1,3],[12,"2026-03-11",13,"app","delivered",2,27,9,3],[13,"2026-03-12",13,"app","delivered",1,23,1,4],[14,"2026-03-14",19,"walk-in","delivered",null,null,null,2],[15,"2026-03-14",19,"app","delivered",2,36,15,4],[16,"2026-03-18",13,"phone","delivered",2,34,16,4],[17,"2026-03-19",12,"walk-in","delivered",null,null,null,null],[18,"2026-03-20",19,"walk-in","delivered",null,null,null,5],[19,"2026-03-20",19,"app","delivered",2,27,3,2],[20,"2026-03-20",19,"app","delivered",1,39,17,3],[21,"2026-03-21",12,"app","delivered",1,38,14,null],[22,"2026-03-21",13,"phone","delivered",1,38,2,null],[23,"2026-03-21",13,"app","delivered",1,22,6,null],[24,"2026-03-24",20,"walk-in","delivered",null,null,null,4],[25,"2026-03-27",13,"app","delivered",2,42,11,null],[26,"2026-03-27",20,"app","delivered",1,21,8,3],[27,"2026-03-27",12,"phone","delivered",1,24,8,3],[28,"2026-03-28",13,"phone","delivered",2,37,16,3],[29,"2026-03-29",20,"walk-in","delivered",null,null,null,null],[30,"2026-04-01",13,"walk-in","delivered",null,null,null,null],[31,"2026-04-02",19,"walk-in","delivered",null,null,6,1],[32,"2026-04-03",12,"phone","delivered",3,47,3,null],[33,"2026-04-03",20,"app","delivered",3,49,7,null],[34,"2026-04-03",13,"app","delivered",2,41,2,4],[35,"2026-04-04",21,"phone","delivered",2,40,9,null],[36,"2026-04-04",13,"app","delivered",2,42,2,3],[37,"2026-04-04",13,"app","delivered",2,45,12,1],[38,"2026-04-05",12,"app","cancelled",3,null,7,null],[39,"2026-04-07",20,"walk-in","delivered",null,null,16,5],[40,"2026-04-10",20,"app","delivered",1,22,18,null],[41,"2026-04-10",13,"phone","delivered",1,27,9,5],[42,"2026-04-11",12,"app","delivered",1,34,6,4],[43,"2026-04-13",13,"app","delivered",1,22,10,5],[44,"2026-04-15",12,"walk-in","delivered",null,null,null,3],[45,"2026-04-16",19,"walk-in","delivered",null,null,null,null],[46,"2026-04-17",19,"app","delivered",1,33,3,5],[47,"2026-04-17",20,"walk-in","delivered",null,null,null,null],[48,"2026-04-18",21,"phone","delivered",3,38,10,null],[49,"2026-04-18",21,"walk-in","delivered",null,null,null,5],[50,"2026-04-18",21,"app","delivered",3,44,12,2],[51,"2026-04-19",13,"app","delivered",1,26,12,5],[52,"2026-04-21",21,"walk-in","delivered",null,null,null,null],[53,"2026-04-22",13,"app","delivered",3,42,16,2],[54,"2026-04-23",19,"walk-in","delivered",null,null,null,3],[55,"2026-04-25",20,"phone","delivered",3,50,4,3],[56,"2026-04-25",19,"app","delivered",2,44,6,3],[57,"2026-04-26",20,"phone","delivered",2,35,16,null],[58,"2026-04-27",13,"walk-in","delivered",null,null,null,1],[59,"2026-04-30",12,"app","cancelled",1,null,11,null],[60,"2026-05-02",20,"walk-in","delivered",null,null,17,4],[61,"2026-05-02",20,"walk-in","delivered",null,null,null,5],[62,"2026-05-03",20,"walk-in","delivered",null,null,5,null],[63,"2026-05-06",20,"app","delivered",1,29,12,4],[64,"2026-05-08",13,"phone","delivered",3,36,7,4],[65,"2026-05-08",20,"walk-in","delivered",null,null,11,3],[66,"2026-05-08",20,"app","delivered",3,50,7,null],[67,"2026-05-09",12,"app","cancelled",2,null,1,null],[68,"2026-05-09",12,"app","delivered",2,36,10,null],[69,"2026-05-10",12,"phone","delivered",1,24,14,4],[70,"2026-05-11",20,"phone","delivered",2,30,18,null],[71,"2026-05-12",13,"app","delivered",3,33,10,null],[72,"2026-05-13",12,"app","delivered",2,41,3,2],[73,"2026-05-16",20,"walk-in","cancelled",null,null,null,null],[74,"2026-05-16",13,"phone","delivered",3,47,5,1],[75,"2026-05-20",13,"walk-in","delivered",null,null,null,4],[76,"2026-05-22",12,"walk-in","delivered",null,null,null,null],[77,"2026-05-22",12,"app","delivered",3,34,11,5],[78,"2026-05-22",21,"walk-in","cancelled",null,null,5,null],[79,"2026-05-23",13,"phone","delivered",1,34,1,null],[80,"2026-05-25",13,"app","delivered",2,30,11,5],[81,"2026-05-26",19,"phone","delivered",2,42,9,3],[82,"2026-05-28",20,"app","delivered",3,36,1,null],[83,"2026-05-30",19,"walk-in","delivered",null,null,null,5],[84,"2026-05-31",12,"phone","delivered",1,29,11,4],[85,"2026-05-28",20,"app","delivered",1,31,99,null],[86,"2026-05-29",19,"phone","delivered",2,36,4,4],[87,"2026-05-30",21,"app","delivered",3,38,7,5]],"ITEMS":[[1,6,1],[1,10,2],[2,2,1],[2,5,2],[3,4,2],[3,5,1],[4,1,1],[4,9,1],[5,1,1],[5,2,1],[5,10,1],[6,3,1],[6,4,1],[6,8,2],[6,10,1],[7,6,1],[7,8,1],[7,9,1],[8,3,2],[8,8,2],[8,10,2],[9,3,1],[9,5,1],[9,7,1],[10,1,1],[10,4,2],[10,5,1],[10,6,1],[11,1,1],[12,3,2],[12,7,2],[12,9,1],[12,10,2],[13,1,2],[13,7,2],[14,1,1],[14,10,1],[15,4,1],[15,7,2],[16,1,1],[16,4,2],[17,5,1],[17,8,2],[18,2,1],[18,5,1],[18,9,2],[18,10,1],[19,10,1],[20,5,2],[20,7,1],[21,1,1],[21,2,1],[21,4,2],[21,9,1],[22,3,2],[22,4,1],[23,2,1],[23,4,1],[23,9,1],[24,2,1],[25,2,1],[25,4,1],[25,7,1],[25,8,1],[26,5,1],[26,8,1],[27,2,1],[27,5,1],[27,6,1],[28,2,1],[28,4,1],[28,9,1],[28,10,1],[29,1,1],[29,2,1],[30,2,1],[31,3,1],[31,5,1],[31,9,2],[32,2,1],[32,5,1],[32,9,1],[33,2,2],[33,5,1],[33,7,2],[34,2,1],[34,3,1],[34,9,2],[34,10,2],[35,1,2],[35,2,2],[35,6,2],[35,10,2],[36,3,1],[37,9,2],[38,9,1],[39,4,2],[39,6,2],[39,9,1],[40,1,1],[40,2,1],[40,5,1],[40,9,1],[41,2,1],[41,4,1],[41,5,1],[42,1,1],[42,4,1],[42,8,1],[43,2,1],[43,5,1],[43,10,2],[44,4,2],[45,5,1],[45,8,2],[46,1,2],[46,8,1],[46,9,1],[47,4,1],[47,7,1],[47,9,2],[48,1,1],[48,3,1],[48,7,1],[49,6,1],[49,7,1],[50,9,1],[51,1,1],[51,5,1],[51,10,1],[52,3,1],[52,4,1],[52,8,1],[52,9,2],[53,1,2],[53,4,2],[53,5,1],[54,1,1],[54,5,2],[54,6,1],[54,10,1],[55,4,2],[55,5,2],[56,2,1],[56,10,1],[57,5,1],[57,6,1],[57,7,1],[58,1,1],[58,7,1],[58,8,2],[58,9,1],[59,5,1],[60,6,1],[60,7,1],[61,3,1],[61,7,1],[62,1,1],[62,6,1],[62,10,1],[63,3,1],[63,5,1],[63,6,1],[63,10,1],[64,3,1],[64,4,1],[64,5,2],[65,5,2],[65,6,1],[66,3,1],[66,10,2],[67,1,2],[67,2,1],[67,4,1],[67,6,1],[68,1,1],[68,5,1],[68,7,1],[68,8,1],[69,1,2],[69,7,1],[69,9,2],[70,5,2],[71,8,1],[71,9,1],[71,10,1],[72,5,1],[72,6,1],[72,9,1],[72,10,1],[73,1,2],[73,4,2],[73,7,1],[73,8,1],[74,4,1],[74,10,1],[75,1,1],[75,2,2],[76,1,1],[77,1,1],[77,6,1],[78,1,1],[78,6,1],[79,2,1],[80,2,2],[80,3,2],[80,5,1],[80,9,1],[81,3,2],[81,6,1],[81,8,1],[82,2,1],[82,7,1],[83,6,1],[84,4,2],[85,3,1],[85,9,2],[86,5,1],[87,6,2]],"DISH":[[1,"סלט יווני","starter",38,12],[2,"מרק עגבניות","starter",32,9],[3,"המבורגר בקר","main",68,27],[4,"פסטה שמנת","main",59,18],[5,"סלמון בתנור","main",89,38],[6,"פיצה מרגריטה","main",52,15],[7,"קציצות עוף","main",62,22],[8,"טירמיסו","dessert",36,11],[9,"לימונדה","drink",18,3],[10,"בירה מקומית","drink",29,10]],"COUR":[[1,"אורי","motorbike"],[2,"נועה","e-bike"],[3,"דימה","scooter"]],"CUST":[[1,"דנה לוי","תל אביב","2025-11-03","dana.levi@example.com"],[2,"רועי כהן","רמת גן","2025-11-19","roy.cohen@example.com"],[3,"מאיה פרידמן","חיפה","2025-12-02","maya.f@example.com"],[4,"יוסי מזרחי","תל אביב","2025-12-15","yossi.m@example.com"],[5,"נועם ברק","גבעתיים","2026-01-08","noam.barak@example.com"],[6,"שירה אדלר","חיפה","2026-01-21","shira.adler@example.com"],[7,"איתי רוזן","תל אביב","2026-02-02","itay.rosen@example.com"],[8,"ליאור גולן","רמת גן","2026-02-14","lior.golan@example.com"],[9,"תמר שפירא","גבעתיים","2026-02-27","tamar.s@example.com"],[10,"אורן דיין","חיפה","2026-03-05","oren.dayan@example.com"],[11,"הילה אבני","תל אביב","2026-03-12","hila.avni@example.com"],[12,"עידו קורן","תל אביב","2026-03-30","ido.koren@example.com"],[13,"מיכל סבן","רמת גן","2026-04-04","michal.saban@example.com"],[14,"גיל נחום",null,"2026-04-11","gil.nahum@example.com"],[15,"ענת וקנין","חיפה","2026-04-20","anat.v@example.com"],[16,"אבי שרון","גבעתיים","2026-05-02","avi.sharon@example.com"],[17,"רונית מלכה","תל אביב","2026-05-09","ronit.malka@example.com"],[18,"רונית מלכה","תל אביב","2026-05-10","ronit.malka@example.com"]]};
+
+  var ORD = D.ORD, ITEMS = D.ITEMS, DISH = D.DISH, COUR = D.COUR, CUST = D.CUST;
+  var dishBy = {}, courBy = {}, ordBy = {};
+  DISH.forEach(function (d) { dishBy[d[0]] = d; });
+  COUR.forEach(function (c) { courBy[c[0]] = c; });
+  ORD.forEach(function (o) { ordBy[o[0]] = o; });
+  function r2(x) { return Math.round(x * 100 + 1e-9) / 100; }
+  function cmp(a, b) { return a < b ? -1 : a > b ? 1 : 0; }
+  function sortRows(rows, keys) {
+    return rows.sort(function (a, b) {
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i], d = k < 0 ? -1 : 1, j = Math.abs(k) - 1;
+        var c = cmp(a[j], b[j]); if (c) return c * d;
+      }
+      return 0;
+    });
+  }
+  function dishRev(onlyDelivered) {
+    var g = {};
+    ITEMS.forEach(function (it) {
+      var o = ordBy[it[0]], d = dishBy[it[1]];
+      if (onlyDelivered && o[4] !== 'delivered') return;
+      var r = g[d[0]] || (g[d[0]] = [d[1], d[2], 0, 0, 0]);
+      r[2] += it[2]; r[3] += it[2] * d[3]; r[4] += it[2] * (d[3] - d[4]);
+    });
+    return sortRows(Object.keys(g).map(function (k) { return g[k]; }), [-4]);
+  }
+  function deliveries() {
+    var rows = [];
+    ORD.forEach(function (o) {
+      if (o[4] !== 'delivered' || o[6] === null || o[5] === null) return;
+      var c = courBy[o[5]];
+      rows.push([o[0], o[1], o[2], c[1], c[2], o[3], o[6], o[8]]);
+    });
+    return rows;
+  }
+  function deliveryByHour() {
+    var g = {};
+    ORD.forEach(function (o) {
+      if (o[4] !== 'delivered' || o[6] === null || o[5] === null) return;
+      var c = courBy[o[5]], k = o[5] + '|' + o[3] + '|' + o[2];
+      var r = g[k] || (g[k] = [c[1], o[3], o[2], 0, 0]);
+      r[3] += 1; r[4] += o[6];
+    });
+    var rows = Object.keys(g).map(function (k) { var r = g[k]; return [r[0], r[1], r[2], r[3], r[4], r2(r[4] / r[3])]; });
+    return sortRows(rows, [1, 2, 3]);
+  }
+  function dailyRevenue() {
+    var g = {}, seen = {};
+    ITEMS.forEach(function (it) {
+      var o = ordBy[it[0]]; if (o[4] !== 'delivered') return;
+      var r = g[o[1]] || (g[o[1]] = [o[1], 0, 0]);
+      r[2] += it[2] * dishBy[it[1]][3];
+      if (!seen[o[0]]) { seen[o[0]] = 1; r[1] += 1; }
+    });
+    return sortRows(Object.keys(g).map(function (k) { return g[k]; }), [1]);
+  }
+  function custAll() { return CUST.map(function (c) { return c.slice(); }); }
+  function custCity() {
+    var g = {};
+    CUST.forEach(function (c) { var k = c[2] === null ? '\u0000null' : c[2]; var r = g[k] || (g[k] = [c[2], 0]); r[1] += 1; });
+    var rows = Object.keys(g).map(function (k) { return g[k]; });
+    rows.sort(function (a, b) { if (a[0] === null) return -1; if (b[0] === null) return 1; return cmp(a[0], b[0]); });
+    return rows;
+  }
+  var Q = {
+    dish_revenue: {
+      file: 'dish_revenue.csv', types: 'ssirr', cols: ['dish', 'category', 'units', 'revenue', 'gross_profit'], run: function () { return dishRev(true); },
+      sql: "SELECT d.name AS dish,\n       d.category AS category,\n       SUM(i.qty) AS units,\n       SUM(i.qty * d.price) AS revenue,\n       SUM(i.qty * (d.price - d.cost)) AS gross_profit\nFROM order_items i\nJOIN dishes d ON d.id = i.dish_id\nJOIN orders o ON o.id = i.order_id\nWHERE o.status = 'delivered'\nGROUP BY d.id, d.name, d.category\nORDER BY revenue DESC"
+    },
+    dish_revenue_all: {
+      file: 'dish_revenue_all.csv', types: 'ssirr', cols: ['dish', 'category', 'units', 'revenue', 'gross_profit'], run: function () { return dishRev(false); },
+      sql: "SELECT d.name AS dish,\n       d.category AS category,\n       SUM(i.qty) AS units,\n       SUM(i.qty * d.price) AS revenue,\n       SUM(i.qty * (d.price - d.cost)) AS gross_profit\nFROM order_items i\nJOIN dishes d ON d.id = i.dish_id\nGROUP BY d.id, d.name, d.category\nORDER BY revenue DESC"
+    },
+    deliveries: {
+      file: 'deliveries.csv', types: 'isisssii', cols: ['order_id', 'order_date', 'order_hour', 'courier', 'vehicle', 'channel', 'delivery_min', 'rating'], run: deliveries,
+      sql: "SELECT o.id AS order_id,\n       substr(o.order_ts, 1, 10) AS order_date,\n       CAST(substr(o.order_ts, 12, 2) AS INTEGER) AS order_hour,\n       c.name AS courier,\n       c.vehicle AS vehicle,\n       o.channel AS channel,\n       o.delivery_min AS delivery_min,\n       o.rating AS rating\nFROM orders o\nJOIN couriers c ON c.id = o.courier_id\nWHERE o.status = 'delivered' AND o.delivery_min IS NOT NULL\nORDER BY o.id"
+    },
+    delivery_by_hour: {
+      file: 'delivery_by_hour.csv', types: 'ssiiir', cols: ['courier', 'channel', 'order_hour', 'deliveries', 'total_min', 'avg_min'], run: deliveryByHour,
+      sql: "SELECT c.name AS courier,\n       o.channel AS channel,\n       CAST(substr(o.order_ts, 12, 2) AS INTEGER) AS order_hour,\n       COUNT(*) AS deliveries,\n       SUM(o.delivery_min) AS total_min,\n       ROUND(AVG(o.delivery_min), 2) AS avg_min\nFROM orders o\nJOIN couriers c ON c.id = o.courier_id\nWHERE o.status = 'delivered' AND o.delivery_min IS NOT NULL\nGROUP BY c.id, c.name, o.channel, order_hour\nORDER BY courier, channel, order_hour"
+    },
+    daily_revenue: {
+      file: 'daily_revenue.csv', types: 'sir', cols: ['order_date', 'orders', 'revenue'], run: dailyRevenue,
+      sql: "SELECT substr(o.order_ts, 1, 10) AS order_date,\n       COUNT(DISTINCT o.id) AS orders,\n       SUM(i.qty * d.price) AS revenue\nFROM orders o\nJOIN order_items i ON i.order_id = o.id\nJOIN dishes d ON d.id = i.dish_id\nWHERE o.status = 'delivered'\nGROUP BY order_date\nORDER BY order_date"
+    },
+    customers_all: {
+      file: 'customers_all.csv', types: 'issss', cols: ['id', 'name', 'city', 'joined', 'email'], run: custAll,
+      sql: "SELECT * FROM customers"
+    },
+    customers_by_city: {
+      file: 'customers_by_city.csv', types: 'si', cols: ['city', 'customers'], run: custCity,
+      sql: "SELECT city, COUNT(*) AS customers\nFROM customers\nGROUP BY city\nORDER BY city"
+    }
+  };
+  function fmtCell(v, t) {
+    if (v === null || v === undefined) return '';
+    if (t === 'r') return Number.isInteger(v) ? v.toFixed(1) : String(v);
+    return String(v);
+  }
+  function csvQuote(s) { return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+  function toCSV(q, rows) {
+    var out = [q.cols.join(',')];
+    rows.forEach(function (r) { out.push(r.map(function (v, i) { return csvQuote(fmtCell(v, q.types.charAt(i))); }).join(',')); });
+    return out.join('\r\n') + '\r\n';
+  }
+  function download(name, text) {
+    try {
+      var blob = new Blob(['﻿' + text], { type: 'text/csv;charset=utf-8' });
+      var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+      document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+      return true;
+    } catch (e) { return false; }
+  }
+  function fmtNum(x) { return x.toLocaleString('en-US'); }
+  window.M15 = { Q: Q, toCSV: toCSV, download: download, fmtCell: fmtCell, fmtNum: fmtNum, data: D, r2: r2 };
+  function kpisFor(key, q, rows) {
+    var k = [['שורות', rows.length], ['עמודות', q.cols.length]];
+    function sum(n) { var i = q.cols.indexOf(n); return rows.reduce(function (a, r) { return a + (r[i] || 0); }, 0); }
+    if (key === 'dish_revenue') k.push(['סך revenue', fmtNum(sum('revenue')), 'good']);
+    if (key === 'dish_revenue_all') k.push(['סך revenue', fmtNum(sum('revenue')), 'bad']);
+    if (key === 'daily_revenue') { k.push(['סך revenue', fmtNum(sum('revenue'))]); k.push(['סך orders', sum('orders')]); }
+    if (key === 'deliveries') k.push(['ממוצע delivery_min', (sum('delivery_min') / rows.length).toFixed(2)]);
+    if (key === 'delivery_by_hour') {
+      k.push(['ממוצע של avg_min', (sum('avg_min') / rows.length).toFixed(2), 'bad']);
+      k.push(['סך total_min חלקי סך deliveries', (sum('total_min') / sum('deliveries')).toFixed(2), 'good']);
+    }
+    if (key === 'customers_all') k.push(['כתובות אימייל בקובץ', rows.filter(function (r) { return r[4]; }).length, 'bad']);
+    if (key === 'customers_by_city') k.push(['תאים של פחות מ-5 אנשים', rows.filter(function (r) { return r[1] < 5; }).length + ' מתוך ' + rows.length, 'bad']);
+    return k;
+  }
+  window.M15.mountSql = function (box, keys, o) {
+    o = o || {};
+    var body = box.querySelector('[data-sim-body]'); if (!body) return;
+    body.innerHTML = '<div class="m15-btns" data-k="btns"></div><div class="m15-eq" data-k="sql"></div><div class="m15-kp" data-k="kp"></div><div class="m15-sc"><table class="m15-tb" data-k="tb"></table></div><div class="m15-btns"><button type="button" class="btn" data-k="dl">הורדת הקובץ</button><button type="button" class="btn sec2" data-k="cp">העתקת התוכן</button></div><div class="m15-note-sm" data-k="note"></div>';
+    var $ = function (k) { return body.querySelector('[data-k="' + k + '"]'); };
+    var seen = {}, cur = null, curCsv = '';
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function run(key) {
+      var q = Q[key], rows = q.run(); cur = key; curCsv = toCSV(q, rows); seen[key] = 1;
+      Array.prototype.forEach.call($('btns').children, function (b) { b.classList.toggle('on', b.dataset.k === key); });
+      $('sql').textContent = q.sql + ';';
+      $('kp').innerHTML = kpisFor(key, q, rows).map(function (x) { return '<div class="' + (x[2] || '') + '">' + esc(x[0]) + ': <b>' + esc(x[1]) + '</b></div>'; }).join('');
+      var h = '<tr>' + q.cols.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr>';
+      rows.forEach(function (r) { h += '<tr>' + r.map(function (v, i) { return v === null ? '<td><i>NULL</i></td>' : '<td class="' + ('ir'.indexOf(q.types.charAt(i)) >= 0 ? 'nm' : '') + '">' + esc(fmtCell(v, q.types.charAt(i))) + '</td>'; }).join('') + '</tr>'; });
+      $('tb').innerHTML = h;
+      $('dl').textContent = 'הורדת ' + q.file;
+      $('note').textContent = (o.notes && o.notes[key]) || '';
+      if (o.onRun) o.onRun(key, Object.keys(seen).length);
+    }
+    keys.forEach(function (k) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'btn sec2'; b.dataset.k = k; b.textContent = Q[k].file; $('btns').appendChild(b);
+      b.addEventListener('click', function () { run(k); });
+    });
+    $('dl').addEventListener('click', function () { if (!cur) return; download(Q[cur].file, curCsv); if (o.onAct) o.onAct('download', cur); });
+    $('cp').addEventListener('click', function () { if (!cur) return; if (window.FL) FL.copyText(curCsv, $('cp'), 'הועתק ✓'); if (o.onAct) o.onAct('copy', cur); });
+    run(keys[0]);
+  };
+
+})();
+</script>
+
+<div class="box note"><b>מה נבנה במודול הזה</b> <span class="lvl b">בונים: גרפים מייצוא אמיתי</span> <span class="lvl p">מתקדמים: סקריפטים ושרשראות</span>
+<p>עד עכשיו כל הגרפים נבנו מקובץ שמישהו נתן לכם. כאן שואלים מאיפה הקובץ הזה בא. בנתונים של מסעדת יבגני הכול יושב במסד נתונים, ול-Tableau Public אין חיבור למסד. אז בונים גשר: שאילתת SQL מוציאה קובץ CSV, והקובץ נטען ל-Tableau Public. בסוף המודול יש לכם שני גרפים שנבנו מייצוא אמיתי (הכנסות לפי מנה, וזמני משלוח לפי שליח), גיליון בגוגל שמתעדכן לבד פעם ביממה, סקריפט פייתון שמכין קובץ נקי, רשימת בדיקה לפני פרסום, ואשף שעונה על השאלה ״הנתונים שלי נמצאים ב-X, מה עושים?״. הסעיף האחרון הוא נספח: מה קיים רק ב-Desktop מורשה ולא ב-Public.</p>
+<p>מה צריך להיות מוכן: Tableau Public מותקן, ואתם יודעים לטעון קובץ ולבנות גרף עמודות (<a href="module2.html">מודול 2</a> ו-<a href="module3.html">מודול 3</a>). קבצי יבגני: <a class="tool" href="data/yevgeni_dishes.csv">yevgeni_dishes.csv</a> <a class="tool" href="data/yevgeni_orders.csv">yevgeni_orders.csv</a> <a class="tool" href="data/yevgeni_order_items.csv">yevgeni_order_items.csv</a> <a class="tool" href="data/yevgeni_app_events.csv">yevgeni_app_events.csv</a> <a class="tool" href="data/yevgeni_fact_sales.csv">yevgeni_fact_sales.csv</a>. לייצוא מהמסד צריך גם את <a class="tool" href="../final-lesson/data/yevgeni-sqlite.sql">yevgeni-sqlite.sql</a> מחבילת הנתונים של <a href="../final-lesson/index.html">המפגש המסכם</a>, ואחד משלושה כלים: פייתון 3 (חינמי, בלי להתקין חבילות), שורת הפקודה <code>sqlite3</code>, או הסימולטור שבדף עצמו (בלי להתקין כלום).</p>
+<p>כל תרגיל ב-Tableau כאן רץ ב-Tableau Public בלבד, מתוך קובץ או מגיליון בגוגל דרייב. כשמשהו קיים רק בגרסאות המורשות, הוא מסומן במפורש &quot;לא זמין ב-Tableau Public: ככה עובדים סביב זה&quot;.</p>
+</div>
+
+<div class="teach"><b>🎓 למרצה:</b> המודול הזה הוא הגשר בין שיעור ה-SQL לבין Tableau Public. הציר: הנתונים נולדים במסד, Public קורא רק קבצים וגיליון בגוגל, ולכן בונים גשר ומחליטים בו מה יוצא החוצה. כל המספרים בתוצאות הצפויות חושבו בפייתון (sqlite3 על עותק של <code>yevgeni-sqlite.sql</code>); Tableau עשוי לעגל אחרת בתוויות. מה שלא אומת בתוכנה מסומן בהערות &quot;לבדוק לפני השיעור&quot;: פתיחת קובץ <code>.hyper</code> ב-Public, תפריט Connect &gt; More..., מחבר JSON על קובץ שטוח, יצירת Join בין שני קובצי טקסט, וכל מה שדורש חשבון גוגל. הסעיף האחרון הוא ידע, לא תרגיל.</div>
+
+<section class="sec" id="m15-1" data-t="איפה הנתונים גרים">
+<div class="sec-h"><div class="sec-n">1</div><h2>איפה הנתונים גרים, ואיך הם מגיעים אליכם</h2></div>
+<p class="lead">יבגני מסתכל על דשבורד ורואה &quot;הכנסות: 12,884&quot;. הוא שואל: איפה המספר הזה נולד? לא ב-Tableau. מישהו הזמין מנה באפליקציה, שורה נכתבה במסד נתונים, ומשם המספר עשה דרך עד המסך. כשמספר לא נכון, התקלה יכולה להיות בכל תחנה בדרך. בואו נכיר את התחנות.</p>
+
+<div class="defline"><b>מסד נתונים (<code>database</code>):</b> תוכנה שמחזיקה טבלאות, ומאפשרת להרבה אנשים ותוכנות לקרוא ולכתוב בהן באותו זמן. דוגמה: המסד של יבגני מחזיק שש טבלאות, ובהן <code>orders</code> עם 87 שורות, שורה לכל הזמנה.</div>
+
+<p>נתונים גרים בחמישה סוגי מקומות. שימו לב לעמודה האחרונה, כי היא מה שקובע מה תעשו ב-Tableau Public.</p>
+
+<div class="tw"><table class="m15-home">
+<tr><th>המקום</th><th>דוגמה אצל יבגני</th><th>מי כותב לשם</th><th>איך זה מגיע ל-Tableau Public</th></tr>
+<tr><td>קובץ (CSV, Excel)</td><td>הטלפניות רושמות לקוחות חדשים בקובץ</td><td>בן אדם, ביד</td><td class="pubcell ok">ישר: מחברים את הקובץ</td></tr>
+<tr><td>גיליון בגוגל</td><td>סידור המשמרות של השליחים</td><td>אנשים, או סקריפט</td><td class="pubcell ok">דרך מחבר Google Drive, ויש גם ריענון אוטומטי</td></tr>
+<tr><td>מסד נתונים</td><td>הטבלאות <code>orders</code>, <code>order_items</code>, <code>dishes</code></td><td>האפליקציה והקופה, בכל הזמנה</td><td class="pubcell no">אין חיבור ישיר. מייצאים קובץ</td></tr>
+<tr><td><dfn data-d="מסד שנבנה לדיווח ולא לשירות לקוחות: טבלאות מסודרות, עם היסטוריה, שאפשר לשאול בלי להפריע לעסק. דוגמה: fact_sales עם 219 שורות.">מחסן נתונים</dfn> (BigQuery)</td><td><code>fact_sales</code>: טבלה מסודרת לדיווח</td><td>תהליך שמעתיק ומנקה (ETL)</td><td class="pubcell no">אין חיבור ישיר. מייצאים קובץ</td></tr>
+<tr><td><dfn data-d="כתובת אינטרנט שאפשר לבקש ממנה נתונים, ומקבלים תשובה מסודרת, בדרך כלל JSON. דוגמה: כתובת שמחזירה את הטמפרטורה עכשיו.">API</dfn></td><td>תחזית מזג אוויר לפי שעה</td><td>שירות חיצוני, בכל בקשה</td><td class="pubcell no">אין חיבור. סקריפט קורא ל-API וכותב קובץ</td></tr>
+</table></div>
+
+<p>והנה איך נראה קובץ, כדי שיהיה ברור שאין בו קסם. אלה השורה הראשונה (הכותרות) ושתי הזמנות מתוך <code>yevgeni_orders.csv</code>. כל שורה היא הזמנה, והערכים מופרדים בפסיקים. שני פסיקים רצופים פירושם ערך חסר.</p>
+<pre class="code" data-lang="csv">id,customer_id,courier_id,order_ts,channel,delivery_min,rating,tip,status
+1,13,1,2026-03-02 19:20,app,37,4,,delivered
+2,,,2026-03-04 13:05,walk-in,,1,,delivered</pre>
+
+<div class="box try" data-id="m15-try-api">
+<p><b>API בלי Tableau: שואלים כתובת ומקבלים נתונים.</b> זה בדפדפן, לא ב-Tableau. המטרה היא לראות ש-API הוא סתם כתובת.</p>
+<ol>
+<li>הדביקו את הכתובת הבאה בשורת הכתובת של הדפדפן: <code>https://api.open-meteo.com/v1/forecast?latitude=32.08&amp;longitude=34.78&amp;current=temperature_2m</code>. למה: זו בקשה לשירות תחזית, עם קו רוחב וקו אורך של אזור תל אביב ועם בקשה לטמפרטורה הנוכחית.</li>
+<li>קראו את התשובה. היא טקסט מסודר בפורמט JSON. חפשו בו את המפתח <code>current</code> ובתוכו <code>temperature_2m</code>. למה: זה הנתון עצמו, מוקף במידע על היחידות.</li>
+<li>שנו את <code>latitude=32.08</code> ל-<code>latitude=32.8</code> ושלחו שוב. למה: ככה סקריפט מבקש נתונים על מקום אחר, בלי שאף אחד פותח אתר.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בלוק טקסט שבו יש <code>current_units</code>, <code>current</code> ו-<code>temperature_2m</code>. הטמפרטורה עצמה משתנה מרגע לרגע ומאזור לאזור, ואין לה ערך &quot;נכון&quot; אחד. דבר שלא תמצאו: חיבור ל-Tableau Public. הוא לא יודע לשאול כתובת, ולכן בסעיף 6 סקריפט עושה את זה בשבילו.</p>
+<p class="tools"><a class="tool" href="https://api.open-meteo.com/v1/forecast?latitude=32.08&amp;longitude=34.78&amp;current=temperature_2m" target="_blank" rel="noopener">פתיחת הכתובת</a></p>
+</div>
+
+<h3>הדרך מהמסד ועד הצופה</h3>
+<p>עכשיו נעקוב אחרי המספר של יבגני. שימו לב לקו הכתום שמופיע בשלב 5: זה <b>קו Public</b>. מצד שמאל הכול קורה מחוץ ל-Tableau, ומימין Tableau Public מתחיל.</p>
+
+<div class="anim" data-id="m15-anim-pipeline" data-speed="3600">
+<div class="stage"><svg viewBox="0 0 840 372" role="img" aria-label="הנפשה: הדרך של נתון מהאפליקציה למסד, לשאילתה, לקובץ, ל-Tableau Public ולצופים, עם קו Public">
+<defs>
+<marker id="m15a1-ar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#64748b"/></marker>
+<marker id="m15a1-rd" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#dc2626"/></marker>
+</defs>
+<g font-weight="700">
+<rect x="5" y="70" width="110" height="80" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+<text x="60" y="105" text-anchor="middle" font-size="16" fill="#3730a3">אפליקציה</text><text x="60" y="128" text-anchor="middle" font-size="16" fill="#3730a3">וקופה</text>
+<rect x="149" y="70" width="110" height="80" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+<text x="204" y="105" text-anchor="middle" font-size="16" fill="#3730a3">מסד נתונים</text><text x="204" y="128" text-anchor="middle" font-size="13" fill="#4f46e5" font-family="ui-monospace,Menlo,monospace">orders...</text>
+<rect x="293" y="70" width="110" height="80" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+<text x="348" y="105" text-anchor="middle" font-size="16" fill="#3730a3">שאילתת SQL</text><text x="348" y="128" text-anchor="middle" font-size="13" fill="#4f46e5" font-family="ui-monospace,Menlo,monospace">GROUP BY</text>
+<rect x="437" y="70" width="110" height="80" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+<text x="492" y="105" text-anchor="middle" font-size="16" fill="#065f46">קובץ CSV</text><text x="492" y="128" text-anchor="middle" font-size="14" fill="#065f46">או גיליון</text>
+<rect x="581" y="70" width="110" height="80" rx="12" fill="#eff6ff" stroke="#1f77b4" stroke-width="2.5"/>
+<text x="636" y="105" text-anchor="middle" font-size="16" fill="#14507a">Tableau</text><text x="636" y="128" text-anchor="middle" font-size="16" fill="#14507a">Public</text>
+<rect x="725" y="70" width="110" height="80" rx="12" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+<text x="780" y="105" text-anchor="middle" font-size="16" fill="#334155">צופים</text><text x="780" y="128" text-anchor="middle" font-size="14" fill="#334155">ברשת</text>
+</g>
+<g stroke="#64748b" stroke-width="3" fill="none">
+<path d="M118,110 L145,110" marker-end="url(#m15a1-ar)"/><path d="M262,110 L289,110" marker-end="url(#m15a1-ar)"/><path d="M406,110 L433,110" marker-end="url(#m15a1-ar)"/><path d="M550,110 L577,110" marker-end="url(#m15a1-ar)"/><path d="M694,110 L721,110" marker-end="url(#m15a1-ar)"/>
+</g>
+<g data-only="1"><rect x="3" y="68" width="114" height="84" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="2"><rect x="147" y="68" width="114" height="84" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="3"><rect x="291" y="68" width="114" height="84" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="4"><rect x="435" y="68" width="114" height="84" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="5,6"><rect x="579" y="68" width="114" height="84" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="7"><rect x="723" y="68" width="114" height="84" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g font-size="14" fill="#334155" text-anchor="middle">
+<g data-only="1"><text x="60" y="200">כל הזמנה כותבת</text><text x="60" y="220">שורה למסד</text></g>
+<g data-s="2"><text x="204" y="200">87 הזמנות</text><text x="204" y="220">219 שורות פריט</text></g>
+<g data-only="3"><text x="348" y="200" font-family="ui-monospace,Menlo,monospace" font-size="12">SELECT dish, SUM(...)</text><text x="348" y="220">תוצאה: 10 שורות</text></g>
+<g data-s="4"><text x="492" y="200" font-family="ui-monospace,Menlo,monospace" font-size="12">dish_revenue.csv</text><text x="492" y="220">10 שורות, 5 עמודות</text></g>
+<g data-s="6"><text x="636" y="200">עותק של הנתונים</text><text x="636" y="220">בתוך החוברת (extract)</text></g>
+<g data-s="7"><text x="780" y="200">כל אחד יכול</text><text x="780" y="220">להוריד את העותק</text></g>
+</g>
+<g data-s="4"><path d="M297,248 L297,258 L543,258 L543,248" stroke="#10b981" stroke-width="3" fill="none"/><text x="420" y="282" text-anchor="middle" font-size="15" font-weight="700" fill="#065f46">הגשר: שאילתה שיוצרת קובץ</text></g>
+<g data-s="5">
+<line x1="564" y1="36" x2="564" y2="330" stroke="#e8741f" stroke-width="4" stroke-dasharray="9 6"/>
+<text x="556" y="352" text-anchor="end" font-size="15" font-weight="800" fill="#9a4a0b">מחוץ ל-Tableau</text>
+<text x="574" y="352" text-anchor="start" font-size="15" font-weight="800" fill="#9a4a0b">קו Public</text>
+</g>
+<g data-only="5"><path d="M204,66 C204,6 636,6 636,62" stroke="#dc2626" stroke-width="3" fill="none" stroke-dasharray="7 5" marker-end="url(#m15a1-rd)"/><text x="420" y="34" text-anchor="middle" font-size="15" font-weight="800" fill="#dc2626">אין חיבור ישיר למסד</text></g>
+<g data-s="6"><rect x="590" y="244" width="92" height="52" rx="6" fill="#fff" stroke="#1f77b4"/><g fill="#1f77b4"><rect x="598" y="254" width="76" height="6"/><rect x="598" y="266" width="76" height="6"/><rect x="598" y="278" width="76" height="6"/></g></g>
+<circle r="10" cx="60" cy="170" fill="#d8b862" stroke="#92400e" stroke-width="2" data-move="1:0,0|2:144,0|3:288,0|4:432,0|5:576,0|7:720,0"/>
+</svg></div>
+<ol class="caps">
+<li>הזמנה חדשה נכנסת באפליקציה או בקופה, והמערכת כותבת שורה למסד. זו תחילת הדרך של המספר.</li>
+<li>במסד יושבות הטבלאות. אצל יבגני: 87 הזמנות ו-219 שורות פריט. כאן הכול גולמי, כולל הזמנות מבוטלות ותשר שלילי אחד.</li>
+<li>שאילתת SQL שואלת שאלה אחת: הכנסות לפי מנה. המסד מחזיר טבלה קטנה, 10 שורות.</li>
+<li>התוצאה נשמרת כקובץ CSV (או נכתבת לגיליון בגוגל). זה הגשר, ובו מחליטים מה יוצא החוצה.</li>
+<li>עכשיו חוצים את קו Public. Tableau Public קורא רק קבצים וגיליון בגוגל דרייב, ואין בו מחבר למסד. מי שמנסה לחבר ישר נתקע.</li>
+<li>Tableau Public שומר עותק של הנתונים בתוך החוברת (<code>extract</code>) ואתם בונים עליו את הגרפים והדשבורד.</li>
+<li>הדשבורד מתפרסם לרשת, והעותק של הנתונים נוסע איתו. כל צופה יכול להוריד אותו, ולכן מה שנכנס לקובץ הוא מה שיוצא לעולם.</li>
+</ol></div>
+
+<div class="box meaning"><p>בכל תחנה מישהו מחליט משהו. השאילתה מחליטה מה נחשב &quot;הכנסה&quot;. הקובץ קובע עד איזה יום הנתונים. Tableau בוחר איך לסכם. אם שני אנשים מראים לכם שני מספרים שונים להכנסות, חפשו באיזו תחנה ההחלטות שלהם נפרדו. בסעיף 3 נראה דוגמה אמיתית: 12,884 מול 13,592 באותה מסעדה.</p></div>
+
+<div class="box real"><p>בארגונים אמיתיים כלי דשבורדים (BI) מתחברים בדרך כלל למחסן נתונים או לעותק קריאה של המסד, ולא למסד שמשרת את הלקוחות. הסיבה פשוטה: שאילתה כבדה על המסד החי יכולה להאט את ההזמנות. את הרעיון הזה פגשתם ב<a href="../final-lesson/part4.html#s4-1">חלק 4 של המפגש המסכם</a>. ב-Tableau Public הסיפור קצר יותר: אין מחבר למסד בכלל, אז גם אין מה להאט.</p></div>
+
+<div class="box trap"><p><b>&quot;הקובץ שקיבלתי הוא המקור&quot;.</b> קובץ שנשלח במייל הוא צילום של המסד ביום מסוים, עם סינון שמישהו עשה. אחרי יומיים יש שני מספרים ואף אחד לא יודע איזה נכון. <b>מה עושים:</b> מול כל קובץ שואלים שלוש שאלות: מי הוציא אותו, מתי, ועם איזה סינון. ובדשבורד שלכם כותבים את התשובות (בסעיף 8 נלמד איך).</p></div>
+
+<div class="quiz" data-id="m15-q-home" data-a="2"><p class="qq">טבלת ההזמנות של יבגני נכתבת בכל הזמנה, על ידי האפליקציה והקופה. איפה היא ככל הנראה יושבת?</p>
+<button class="opt">בקובץ CSV על המחשב של אחת הטלפניות</button>
+<button class="opt">במסד נתונים שהאפליקציה והקופה כותבות אליו</button>
+<button class="opt">בגיליון בגוגל שמעדכנים בסוף היום</button>
+<div class="why">מסד נתונים הוא המקום שבנוי לכתיבה של הרבה תוכנות בו-זמנית. קובץ או גיליון מתאימים למי שמקליד ביד, לא לכל הזמנה בכל רגע. לכן ב-Tableau Public צריך לייצא קובץ מהמסד.</div></div>
+
+<div class="quiz" data-id="m15-q-warehouse" data-a="3"><p class="qq">מה ההבדל העיקרי בין מסד נתונים של המערכת לבין מחסן נתונים?</p>
+<button class="opt">במסד יש רק טקסט, ובמחסן יש גם מספרים</button>
+<button class="opt">המחסן תמיד מהיר יותר מהמסד, בכל מצב</button>
+<button class="opt">המסד משרת את העסק בזמן אמת, והמחסן נבנה לדיווח, עם טבלאות מסודרות</button>
+<div class="why">מסד וגם מחסן מחזיקים מספרים וטקסט, ומהירות תלויה בשאילתה. ההבדל הוא התפקיד: המסד כותב בכל הזמנה, והמחסן מקבל נתונים אחרי ניקוי ומסודר כך שקל לשאול אותו.</div></div>
+
+<div class="box think" data-id="m15-th-where"><p>יבגני אומר: &quot;אני רוצה שהדשבורד יהיה מחובר ישר למסד, כדי שיהיה תמיד מעודכן.&quot; מה היתרון של זה, ומה הסיכון?</p>
+<div class="ans">היתרון: המספרים טריים, בלי ייצוא ובלי פרסום מחדש. הסיכונים: שאילתות כבדות של הדשבורד יכולות להאט את המסד שמשרת את הלקוחות. כל מי שמחובר רואה גם נתונים שלא צריך לראות. וכל שינוי בשם עמודה במסד שובר את הדשבורד. בגלל זה ארגונים בונים מחסן או עותק קריאה. ב-Tableau Public השאלה לא עולה: אין חיבור למסד, ולכן הדרך היא קובץ.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הריצו את ההנפשה עד שלב 5 ועצרו. שאלו: איפה עובר הקו ולמה דווקא שם? מי שעונה &quot;כי ל-Public אין מחבר למסד&quot; צודק. לפני השיעור פתחו את כתובת ה-API בדפדפן ובדקו שהיא עונה (הכתובת מופיעה גם ברשימת הקישורים שנבדקו במפגש המסכם). אין לתרגיל הזה ערך צפוי קבוע, הטמפרטורה משתנה.</div>
+</section>
+
+<section class="sec" id="m15-2" data-t="מה Public קורא">
+<div class="sec-h"><div class="sec-n">2</div><h2>מה Tableau Public קורא, ומה לא</h2></div>
+<p class="lead">פתחתם את Tableau Public ורוצים לחבר את המסד של יבגני. אתם פותחים את חלונית Connect ומחפשים את PostgreSQL. תראו מה באמת יש שם.</p>
+
+<figure class="shot"><img src="img/connect-pane.png" alt="חלונית Connect של Tableau Public: קבוצת To a File עם Microsoft Excel, Text file, JSON file, PDF file, Spatial file ו-Statistical file, וקבוצת To a Server עם OData ו-More"><figcaption>החלונית <code>Connect</code> בתוכנה עצמה. בקבוצה <code>To a File</code> יש רק קבצים, ובקבוצה <code>To a Server</code> יש <code>OData</code> ו-<code>More...</code>. אין שורה של PostgreSQL, MySQL או BigQuery. לפי התיעוד הרשמי, מחבר <code>Google Drive</code> נמצא תחת <code>More...</code>. בגרסה שלכם ייתכן שהסדר שונה מעט.</figcaption></figure>
+
+<p>זה לא בעיה של התקנה. זה תכנון של התוכנה. לפי השאלות והתשובות הרשמיות של Tableau Public, היא תומכת רק בנתונים שנשמרים כ-extract, ולא בחיבורים חיים. הרשימה הרשמית של מה שאפשר לחבר: קבצי Excel, קבצי טקסט (CSV ודומיו), JSON, PDF, קבצים גאוגרפיים, קבצים סטטיסטיים, ושני מחברים: Google Drive ו-OData. אין שם מסדי נתונים בכלל.</p>
+
+<div class="defline"><b>חיבור חי (<code>live connection</code>):</b> בכל לחיצה Tableau שולח שאילתה למקור הנתונים ומקבל תשובה עדכנית. דוגמה: המסד מקבל הזמנה, ובלחיצה הבאה הגרף כבר כולל אותה. ב-Public אין חיבור כזה.</div>
+<div class="defline"><b>Extract:</b> צילום של הנתונים, שנשמר בתוך חוברת העבודה. Tableau שואל את הצילום ולא את המקור. דוגמה: 87 ההזמנות כפי שהיו ברגע הפרסום, גם אם אחר כך נוספה הזמנה מספר 88.</div>
+
+<h3>מה אפשר לחבר ומה לא: נסו בעצמכם</h3>
+<p>לחצו על כל מקור ותראו אם Tableau Public מתחבר אליו ישר. זו הדמיה שמסכמת את התיעוד, לא את התוכנה עצמה.</p>
+
+<div class="sim" data-id="m15-sim-public"><div class="sh">קו Public: אפשר לחבר ישר או לא?</div>
+<div class="m15-pick" id="m15p-pick"></div>
+<div class="m15-verdict" id="m15p-out"><span class="m15-note-sm">בחרו מקור נתונים.</span></div>
+<div class="m15-note-sm" id="m15p-cnt"></div>
+</div>
+<script>
+(function () { FL.dom(function () {
+  var box = FL.$('[data-id="m15-sim-public"]'); if (!box) return;
+  var S = [
+    ['Excel (.xlsx)', 'ok', 'מחברים ישר. אקסל הוא הדרך הנפוצה ביותר. שימו לב: Tableau לא תומך בטבלאות PivotTable של אקסל, רק בטבלת נתונים רגילה.'],
+    ['CSV / TSV', 'ok', 'מחברים ישר, דרך Text file. זה הפורמט שהסעיפים הבאים מייצרים. אם העברית מוצגת ג׳יבריש, בדקו את הקידוד (UTF-8).'],
+    ['JSON', 'ok', 'מחברים ישר, דרך JSON file. Tableau סורק את 10,000 השורות הראשונות כדי להבין את המבנה.'],
+    ['PDF', 'part', 'אפשר, כשיש טבלאות באנגלית. לפי התיעוד, Tableau לא תומך בטקסט מימין לשמאל ב-PDF, ולכן עברית יכולה להתהפך.'],
+    ['Google Drive (גיליון)', 'ok', 'מחבר רשמי. זה המקור היחיד שמתרענן אוטומטית אחרי הפרסום, פעם ב-24 שעות (סעיף 5).'],
+    ['OData', 'part', 'מחבר רשמי, ויוצר extract. לפי התיעוד רק גיליונות גוגל מתרעננים אוטומטית, ולכן צפו לעדכון ידני.'],
+    ['PostgreSQL', 'no', 'אין מחבר. מריצים שאילתה, מייצאים CSV ומחברים אותו (סעיף 3).'],
+    ['MySQL / MariaDB', 'no', 'אין מחבר. אותה דרך: שאילתה, קובץ, חיבור לקובץ.'],
+    ['BigQuery', 'no', 'אין מחבר ב-Public. מייצאים תוצאה לקובץ או לגיליון.'],
+    ['Snowflake / Redshift', 'no', 'אין מחבר. מחסנים הם בדיוק המקום שבו עושים את הייצוא.'],
+    ['Supabase', 'no', 'זה PostgreSQL מתארח, ולכן גם אליו אין חיבור ישיר. מייצאים קובץ.'],
+    ['Airtable', 'no', 'אין מחבר מובנה. מייצאים CSV ידנית, או סקריפט כותב גיליון בגוגל.'],
+    ['כתובת של CSV (למשל ב-GitHub)', 'no', 'אין מחבר לכתובת. מורידים ומחברים, או שגיליון בגוגל קורא את הכתובת עם IMPORTDATA ואתם מחברים את הגיליון (סעיף 5).'],
+    ['מקור נתונים שפורסם ב-Tableau Cloud או Server', 'no', 'לא נתמך ב-Public. הוא קיים רק בגרסאות המורשות (נספח, סעיף 10).'],
+    ['חיבור חי לכל מקור שהוא', 'no', 'לא קיים ב-Public. כל מה שנשמר הוא extract.']
+  ];
+  var pick = FL.$('#m15p-pick', box), out = FL.$('#m15p-out', box), cnt = FL.$('#m15p-cnt', box), seen = {};
+  var LAB = { ok: 'ישר ב-Public', part: 'אפשר, עם הסתייגות', no: 'לא ב-Public: ככה עובדים סביב זה' };
+  S.forEach(function (s, i) {
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = s[0]; pick.appendChild(b);
+    b.addEventListener('click', function () {
+      Array.prototype.forEach.call(pick.children, function (c) { c.classList.remove('sel'); });
+      b.classList.add('sel', s[1]); seen[i] = 1;
+      out.className = 'm15-verdict ' + s[1];
+      out.innerHTML = '<span class="m15-badge ' + s[1] + '">' + LAB[s[1]] + '</span> <b>' + FL.esc(s[0]) + '</b><br>' + FL.esc(s[2]);
+      var n = Object.keys(seen).length; cnt.textContent = 'ראיתם ' + n + ' מתוך ' + S.length + ' מקורות.';
+      if (n >= 8) FL.done('m15-sim-public');
+    });
+  });
+}); })();
+</script>
+
+<div class="box trap"><p><b>רשימות ישנות מטעות.</b> בדף המפרט הרשמי של Tableau עדיין מופיעים Google Sheets כמחבר נפרד ו-Web Data Connector. שניהם מיושנים: המחבר הנפרד של גוגל שיטס הוצא משימוש ב-2023, וגיליונות בוחרים היום דרך Google Drive, ו-Web Data Connector 2.0 פרש. <b>מה עושים:</b> מסתמכים על החלונית שבתוכנה, ועל השאלות והתשובות של Tableau Public, ולא על רשימה שמצאתם בבלוג. בגרסה שלכם ייתכן שהשם שונה מעט.</p></div>
+
+<h3>מה קורה אחרי הפרסום: הנפשה</h3>
+<div class="anim" data-id="m15-anim-extract" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 840 330" role="img" aria-label="הנפשה: הקובץ משתנה אחרי הפרסום והדשבורד המפורסם נשאר כמו שהיה, עד שמפרסמים שוב">
+<defs><marker id="m15a2-ar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#64748b"/></marker></defs>
+<g font-weight="700">
+<rect x="10" y="50" width="220" height="170" rx="14" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+<text x="120" y="78" text-anchor="middle" font-size="16" fill="#065f46">קובץ במחשב שלכם</text>
+<text x="120" y="100" text-anchor="middle" font-size="12" fill="#065f46" font-family="ui-monospace,Menlo,monospace">yevgeni_orders.csv</text>
+<rect x="310" y="50" width="220" height="170" rx="14" fill="#eff6ff" stroke="#1f77b4" stroke-width="2"/>
+<text x="420" y="78" text-anchor="middle" font-size="16" fill="#14507a">חוברת העבודה</text>
+<text x="420" y="100" text-anchor="middle" font-size="14" fill="#14507a">(עותק: extract)</text>
+<rect x="610" y="50" width="220" height="170" rx="14" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+<text x="720" y="78" text-anchor="middle" font-size="16" fill="#334155">הדשבורד המפורסם</text>
+</g>
+<g font-size="46" font-weight="900" text-anchor="middle">
+<g data-only="1,2"><text x="120" y="162" fill="#065f46">87</text></g>
+<g data-only="3,4,5"><text x="120" y="162" fill="#dc2626">88</text></g>
+<g data-only="1,2,3,4"><text x="420" y="162" fill="#14507a">87</text></g>
+<g data-only="5"><text x="420" y="162" fill="#14507a">88</text></g>
+<g data-only="2,3,4"><text x="720" y="162" fill="#334155">87</text></g>
+<g data-only="5"><text x="720" y="162" fill="#334155">88</text></g>
+</g>
+<g font-size="14" fill="#334155" text-anchor="middle">
+<text x="120" y="190">הזמנות בקובץ</text><text x="420" y="190">הזמנות בעותק</text>
+<g data-only="2,3,4,5"><text x="720" y="190">הזמנות שהצופים רואים</text></g>
+<g data-only="1"><text x="720" y="150" font-size="16">עוד לא פורסם</text></g>
+</g>
+<g data-only="1,2,5"><path d="M233,135 L306,135" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#m15a2-ar)"/></g>
+<g data-only="3,4"><path d="M233,135 L306,135" stroke="#94a3b8" stroke-width="3" fill="none" stroke-dasharray="6 5"/><path d="M257,119 L283,151 M283,119 L257,151" stroke="#dc2626" stroke-width="4"/><text x="270" y="108" text-anchor="middle" font-size="14" font-weight="800" fill="#dc2626">אין קשר חי</text></g>
+<g data-s="2"><path d="M533,135 L606,135" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#m15a2-ar)"/></g>
+<g data-only="2,5"><text x="570" y="122" text-anchor="middle" font-size="14" font-weight="800" fill="#1f77b4">פרסום</text></g>
+<g data-only="3"><rect x="40" y="226" width="160" height="30" rx="8" fill="#fee2e2" stroke="#dc2626"/><text x="120" y="247" text-anchor="middle" font-size="15" font-weight="800" fill="#991b1b">+1 הזמנה חדשה</text></g>
+<g data-only="4"><text x="420" y="260" text-anchor="middle" font-size="16" font-weight="800" fill="#9a4a0b">הצופים עדיין רואים 87</text></g>
+<g data-only="5"><text x="420" y="260" text-anchor="middle" font-size="16" font-weight="800" fill="#065f46">פתחתם, רענתם ופרסמתם שוב: 88</text></g>
+</svg></div>
+<ol class="caps">
+<li>חיברתם את הקובץ. ב-Tableau Public נוצר עותק של 87 ההזמנות בתוך חוברת העבודה.</li>
+<li>פרסמתם. הדשבורד ברשת מראה 87 הזמנות. העותק יוצא איתו.</li>
+<li>הגיעה הזמנה חדשה והקובץ במחשב שלכם עודכן: 88. העותק והדשבורד המפורסם לא יודעים על זה.</li>
+<li>הצופים עדיין רואים 87. Public לא מסתכל יותר על הקובץ שלכם. זה אומר ש-87 הוא &quot;נכון לרגע הפרסום&quot;, לא &quot;נכון להיום&quot;.</li>
+<li>כדי שהמספר יתעדכן אתם פותחים את חוברת העבודה, מרעננים את מקור הנתונים ומפרסמים שוב. בלי זה הוא לא זז.</li>
+</ol></div>
+
+<div class="box try" data-id="m15-try-snapshot">
+<p><b>רואים את הצילום בעיניים.</b> התרגיל הזה מפרסם חוברת לרשת. הנתונים בדויים, אבל זה פומבי, ולכן הוא אופציונלי. פרטי הפרסום מופיעים ב<a href="module14.html">מודול 14</a>.</p>
+<ol>
+<li>העתיקו את <code>yevgeni_dishes.csv</code> לתיקייה חדשה ושנו את שם ההעתק ל-<code>dishes_demo.csv</code>. למה: משנים רק העתק, והקובץ המקורי של הקורס נשאר שלם.</li>
+<li>ב-Tableau Public: <code>Connect</code>, אחר כך <code>Text file</code>, ובחרו את ההעתק. בגיליון 1 גררו <code>name</code> ל-<code>Rows</code> ו-<code>price</code> ל-<code>Columns</code>. למה: גרף עמודות פשוט של מחירי המנות.</li>
+<li>פרסמו עם <code>Save to Tableau Public As...</code> בשם <code>dishes demo</code>. בגרסה שלכם ייתכן שהתפריט או השם שונים מעט.</li>
+<li>פתחו את <code>dishes_demo.csv</code> בעורך טקסט או באקסל, שנו את המחיר של סלמון בתנור מ-89 ל-95 ושמרו. למה: מדמים שינוי במקור אחרי הפרסום.</li>
+<li>רעננו את דף הדשבורד המפורסם בדפדפן.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בגרף, ליד סלמון בתנור, עדיין מופיע 89. השינוי נמצא רק בקובץ שלכם. כדי שיופיע 95, פתחו את חוברת העבודה, רעננו את מקור הנתונים (בתפריט <code>Data</code>, הפקודה <code>Refresh Data Source</code>, בגרסה שלכם ייתכן שהשם שונה) ופרסמו שוב. המחירים של המנות האחרות לא משתנים.</p></div>
+
+<div class="box meaning"><p>ב-Public אין &quot;מעודכן לעכשיו&quot;. יש רק &quot;מעודכן לרגע הפרסום&quot; (או לריענון האחרון של גיליון בגוגל). זה לא פגם בתוכנה, זו הדרך שבה היא עובדת, ולכן כל דשבורד שאתם מפרסמים צריך לומר מאיזה תאריך הנתונים שלו. בסעיף 8 תוסיפו שורה כזאת.</p></div>
+
+<div class="box trap"><p><b>&quot;אבל Public מתרענן מגוגל שיטס, אז הוא חי&quot;.</b> לא. ריענון כל 24 שעות הוא עותק חדש שנלקח פעם ביום, לא חיבור חי. בין ריענון לריענון הצופים רואים את הצילום הקודם. <b>מה עושים:</b> אומרים &quot;מתעדכן פעם ביממה&quot;, לא &quot;חי&quot;.</p></div>
+
+<div class="box real"><p>מי שצריך חיבור חי באמת משתמש בגרסאות המורשות (Desktop מורשה עם Cloud או Server) או בכלים אחרים. את זה נכסה בנספח בסעיף 10. אין בזה ביקורת על Public: היא נבנתה ללמוד, להציג ולפרסם נתונים ציבוריים, ולא לשרת מערכת חיה.</p></div>
+
+<div class="quiz" data-id="m15-q-live" data-a="1"><p class="qq">מה המשמעות של &quot;Tableau Public תומכת רק ב-extract&quot;?</p>
+<button class="opt">הנתונים נשמרים כצילום בתוך חוברת העבודה, ושינוי במקור לא משנה את מה שפורסם</button>
+<button class="opt">הדשבורד מתעדכן אוטומטית בכל פעם שהקובץ המקורי משתנה</button>
+<button class="opt">אפשר להתחבר רק לקבצים קטנים מאוד</button>
+<div class="why">Extract הוא צילום. אחרי הפרסום Public לא מסתכל על הקובץ שלכם. הגודל לא קשור לשאלה, ועדכון אוטומטי מהקובץ לא קיים.</div></div>
+
+<div class="quiz" data-id="m15-q-sheetlive" data-a="3"><p class="qq">הגיליון בגוגל שמחובר לדשבורד התעדכן הבוקר. מה הצופים בדשבורד מ-Public רואים?</p>
+<button class="opt">את הנתונים החדשים מיד, כי גוגל שיטס הוא חיבור חי</button>
+<button class="opt">את הנתונים הישנים עד שהמחבר יפרסם מחדש ידנית, תמיד</button>
+<button class="opt">את הנתונים הישנים עד הריענון הבא, שמתבצע אוטומטית פעם ב-24 שעות, או עד שהמחבר מבקש עדכון</button>
+<div class="why">הריענון הוא עותק חדש שנלקח אוטומטית פעם ביממה. אין חיבור חי. ויש גם כפתור לבקשת עדכון ידנית (<code>Request Update</code>). ההנחה שצריך תמיד לפרסם מחדש נכונה רק לקובצי Excel ו-CSV.</div></div>
+
+<div class="box think" data-id="m15-th-public"><p>ב-Public אין מחבר למסד נתונים ואין חיבור חי. תנסו להסביר, בהיגיון ולא בציטוט: מה היה יכול להשתבש אילו כל צופה בדשבורד ציבורי היה מפעיל שאילתה על מסד של מישהו?</p>
+<div class="ans">כל צופה בעולם היה שולח שאילתות למסד של המחבר: עומס, סיסמה שצריכה לעמוד איפשהו, ופתח לנתונים שלא נועדו לציבור. Extract פותר את שלושתם: אין שאילתה למסד, אין סיסמה, ומה שיוצא הוא מה שבחרתם. (זה היגיון, לא הסבר רשמי של Tableau.) המחיר הוא שהנתונים לא חיים.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לפני השיעור פתחו את Tableau Public ותראו את חלונית Connect. לחצו על <code>More...</code> כדי לוודא שמחבר Google Drive שם. לפי המחקר הוא אמור להיות שם, אבל התפריט הזה לא נבדק מול העין. לפי התיעוד הרשמי, ריענון אוטומטי תקף רק לגיליונות גוגל, ולכן &quot;OData מתרענן?&quot; הוא ניחוש: אל תתחייבו. את תרגיל הצילום אפשר להדגים בעצמכם על מסך אחד, בלי שהסטודנטים מפרסמים. הפקודה <code>Refresh Data Source</code> ושם התפריט לבדוק בגרסה שמותקנת.</div>
+</section>
+
+<section class="sec" id="m15-3" data-t="מ-SQL לקובץ">
+<div class="sec-h"><div class="sec-n">3</div><h2>הגשר הראשון: שאילתה שמוציאה קובץ CSV</h2></div>
+<p class="lead">יבגני שואל: איזו מנה מכניסה הכי הרבה? במסד יש 87 הזמנות, 219 שורות פריט ו-10 מנות. את החיבור בין הטבלאות ואת הסיכום עושים ב-SQL, כמו ב<a href="../final-lesson/part2.html">חלק 2 של המפגש המסכם</a>. את התוצאה, טבלה של 10 שורות, שורה לכל מנה, שומרים כקובץ ומחברים ל-Tableau Public. זה הגשר.</p>
+
+<div class="defline"><b>שאילתה (<code>query</code>):</b> שאלה שכתובה ב-SQL: מה להביא, מאיזה טבלאות ואיך לסכם. התשובה היא תמיד טבלה. דוגמה: &quot;סכום ההכנסות לכל מנה&quot; מחזירה 10 שורות.</div>
+
+<h3>קוראים את השאילתה לפני שמריצים</h3>
+<p>זו השאילתה של ההכנסות לפי מנה. קראו אותה שורה אחרי שורה, כי כל שורה היא החלטה שנעשית לפני ש-Tableau רואה משהו.</p>
+<pre class="code" data-lang="sql">SELECT d.name AS dish,
+       d.category AS category,
+       SUM(i.qty) AS units,
+       SUM(i.qty * d.price) AS revenue,
+       SUM(i.qty * (d.price - d.cost)) AS gross_profit
+FROM order_items i
+JOIN dishes d ON d.id = i.dish_id
+JOIN orders o ON o.id = i.order_id
+WHERE o.status = 'delivered'
+GROUP BY d.id, d.name, d.category
+ORDER BY revenue DESC</pre>
+<ol class="m15-steps">
+<li><code>FROM order_items i JOIN dishes d ... JOIN orders o ...</code>: מתחילים משורות הפריט, ומצרפים את שם המנה, המחיר והקטגוריה, ואת סטטוס ההזמנה.</li>
+<li><code>WHERE o.status = 'delivered'</code>: מביאים רק הזמנות שנמסרו. הזמנה מבוטלת היא לא הכנסה. זו הגדרה, ונחזור אליה עוד מעט.</li>
+<li><code>GROUP BY d.id, d.name, d.category</code>: שורה אחת לכל מנה.</li>
+<li><code>SUM(i.qty * d.price) AS revenue</code>: ההכנסה היא כמות כפול מחיר, מסוכמת. ל-<code>AS</code> יש תפקיד חשוב: זה שם העמודה שתראו ב-Tableau.</li>
+<li><code>ORDER BY revenue DESC</code>: מהגבוה לנמוך.</li>
+</ol>
+<p class="m15-note-sm">את התאריך אנחנו חותכים ב-<code>substr</code> כי ב-SQLite התאריך נשמר כטקסט. ב-PostgreSQL וב-BigQuery היו כותבים פונקציית תאריך (למשל <code>DATE_TRUNC</code> או <code>EXTRACT</code>).</p>
+
+<h3>שלוש דרכים להוציא את הקובץ: בחרו אחת</h3>
+<div class="cols3">
+<div class="card"><h4>א. פייתון (מומלץ)</h4><p>חינמי, ובלי להתקין חבילות: <code>sqlite3</code> ו-<code>csv</code> כבר בפנים. אותו סקריפט יעבוד גם על מסדים אחרים, עם שינוי של שורה אחת (מודול 16).</p></div>
+<div class="card"><h4>ב. שורת הפקודה <code>sqlite3</code></h4><p>אם התוכנה כבר מותקנת אצלכם. לא צריך לכתוב סקריפט, אבל כל שאילתה מריצים בנפרד.</p></div>
+<div class="card"><h4>ג. הסימולטור בדף</h4><p>בלי להתקין כלום. השאילתה מחושבת בדפדפן והקובץ יורד למחשב. מתאים כשאין פייתון.</p></div>
+</div>
+
+<h4>דרך א: הסקריפט</h4>
+<p>צרו תיקייה בשם <code>yevgeni-bridge</code> ושימו בה את <code>yevgeni-sqlite.sql</code> (הקישור בראש המודול). שמרו את הסקריפט כ-<code>export_csv.py</code>. הוא בונה את המסד בזיכרון, מריץ ארבע שאילתות ושומר ארבעה קבצים. בסעיף הזה משתמשים בראשונה, והשלוש האחרות מחכות לסעיפים 4 ו-5.</p>
+<pre class="code" data-lang="python">import csv
+import sqlite3
+
+# 1. Build the restaurant database in memory from the course SQL file.
+con = sqlite3.connect(":memory:")
+with open("yevgeni-sqlite.sql", encoding="utf-8") as f:
+    con.executescript(f.read())
+
+# 2. One query per file. Each query returns exactly the table a chart needs.
+QUERIES = {
+    "dish_revenue.csv": """
+SELECT d.name AS dish,
+       d.category AS category,
+       SUM(i.qty) AS units,
+       SUM(i.qty * d.price) AS revenue,
+       SUM(i.qty * (d.price - d.cost)) AS gross_profit
+FROM order_items i
+JOIN dishes d ON d.id = i.dish_id
+JOIN orders o ON o.id = i.order_id
+WHERE o.status = 'delivered'
+GROUP BY d.id, d.name, d.category
+ORDER BY revenue DESC
+""",
+    "deliveries.csv": """
+SELECT o.id AS order_id,
+       substr(o.order_ts, 1, 10) AS order_date,
+       CAST(substr(o.order_ts, 12, 2) AS INTEGER) AS order_hour,
+       c.name AS courier,
+       c.vehicle AS vehicle,
+       o.channel AS channel,
+       o.delivery_min AS delivery_min,
+       o.rating AS rating
+FROM orders o
+JOIN couriers c ON c.id = o.courier_id
+WHERE o.status = 'delivered' AND o.delivery_min IS NOT NULL
+ORDER BY o.id
+""",
+    "delivery_by_hour.csv": """
+SELECT c.name AS courier,
+       o.channel AS channel,
+       CAST(substr(o.order_ts, 12, 2) AS INTEGER) AS order_hour,
+       COUNT(*) AS deliveries,
+       SUM(o.delivery_min) AS total_min,
+       ROUND(AVG(o.delivery_min), 2) AS avg_min
+FROM orders o
+JOIN couriers c ON c.id = o.courier_id
+WHERE o.status = 'delivered' AND o.delivery_min IS NOT NULL
+GROUP BY c.id, c.name, o.channel, order_hour
+ORDER BY courier, channel, order_hour
+""",
+    "daily_revenue.csv": """
+SELECT substr(o.order_ts, 1, 10) AS order_date,
+       COUNT(DISTINCT o.id) AS orders,
+       SUM(i.qty * d.price) AS revenue
+FROM orders o
+JOIN order_items i ON i.order_id = o.id
+JOIN dishes d ON d.id = i.dish_id
+WHERE o.status = 'delivered'
+GROUP BY order_date
+ORDER BY order_date
+""",
+}
+
+# 3. Run every query and save the result as CSV.
+#    UTF-8 with BOM ("utf-8-sig") so Hebrew survives in Tableau and in Excel.
+for filename, sql in QUERIES.items():
+    cur = con.execute(sql)
+    header = [col[0] for col in cur.description]
+    rows = cur.fetchall()
+    with open(filename, "w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        writer.writerows(rows)
+    print(filename + ":", len(rows), "rows")</pre>
+<p>הריצו בטרמינל, בתוך התיקייה: <code>python3 export_csv.py</code>. בווינדוס לפעמים <code>py export_csv.py</code> או <code>python export_csv.py</code>. כך זה אמור להיראות:</p>
+<div class="mk mk-term" aria-label="פלט צפוי של הסקריפט"><div class="mk-bar"><i></i><i></i><i></i><span class="url">yevgeni-bridge: פלט צפוי</span></div><div class="mk-body"><span class="p">$</span> python3 export_csv.py
+dish_revenue.csv: 10 rows
+deliveries.csv: 59 rows
+delivery_by_hour.csv: 23 rows
+daily_revenue.csv: 56 rows</div></div>
+
+<h4>דרך ב: <code>sqlite3</code> בשורת הפקודה</h4>
+<p>מתוך אותה תיקייה: פותחים את <code>sqlite3</code> עם שם של מסד חדש, טוענים את קובץ ה-SQL, מכוונים את הפלט לקובץ, ומריצים את השאילתה (עם נקודה-פסיק בסוף):</p>
+<pre class="code" data-lang="bash">sqlite3 yevgeni.db
+.read yevgeni-sqlite.sql
+.headers on
+.mode csv
+.output dish_revenue.csv
+SELECT d.name AS dish,
+       d.category AS category,
+       SUM(i.qty) AS units,
+       SUM(i.qty * d.price) AS revenue,
+       SUM(i.qty * (d.price - d.cost)) AS gross_profit
+FROM order_items i
+JOIN dishes d ON d.id = i.dish_id
+JOIN orders o ON o.id = i.order_id
+WHERE o.status = 'delivered'
+GROUP BY d.id, d.name, d.category
+ORDER BY revenue DESC;
+.output stdout
+.quit</pre>
+<p class="m15-note-sm">הקובץ שיוצא כאן הוא UTF-8 בלי BOM. אם בטעינה ל-Tableau העברית נראית ג׳יבריש, בחרו קידוד UTF-8 באפשרויות של קובץ הטקסט בעמוד Data Source (שם האפשרות בגרסה שלכם עשוי להיות שונה).</p>
+
+<h4>דרך ג: הסימולטור</h4>
+<div class="sim" data-id="m15-sim-sql"><div class="sh">מריצים שאילתה ומקבלים קובץ CSV</div>
+<p>בחרו קובץ. תראו את השאילתה, את הטבלה שהיא מחזירה, ותוכלו להוריד את הקובץ או להעתיק אותו. זו הדמיה: השאילתה מחושבת ב-JavaScript מתוך עותק של נתוני יבגני. השוואנו את התוצאה לתוצאה של SQLite תו אחר תו, והיא זהה (הקובץ שיורד בנוי כך שגם עברית תיפתח נכון).</p>
+<div data-sim-body></div>
+</div>
+<script>
+(function () { FL.dom(function () {
+  var box = FL.$('[data-id="m15-sim-sql"]'); if (!box || !window.M15) return;
+  M15.mountSql(box, ['dish_revenue', 'dish_revenue_all', 'deliveries', 'delivery_by_hour', 'daily_revenue'], {
+    notes: {
+      dish_revenue: 'זו התוצאה של השאילתה שקראנו: 10 מנות, הכנסות 12,884. נשתמש בקובץ הזה עוד מעט ב-Tableau.',
+      dish_revenue_all: 'אותה שאילתה בלי WHERE, כלומר גם עם הזמנות מבוטלות. הסך: 13,592, בדיוק כמו בקובץ yevgeni_fact_sales.csv.',
+      deliveries: 'שורה לכל משלוח שנמסר. זה הקובץ של סעיף 4.',
+      delivery_by_hour: 'ממוצעים לכל שליח, ערוץ ושעה. גם הוא בסעיף 4. שימו לב לשני המספרים בכרטיסים שמעל הטבלה: הראשון, באדום, מטעה, והשני, בירוק, נכון. נסביר בסעיף 4.',
+      daily_revenue: 'שורה לכל יום שבו היו הזמנות שנמסרו. זה הקובץ של הגיליון בגוגל בסעיף 5.'
+    },
+    onRun: function (k, n) { if (n >= 3) FL.done('m15-sim-sql'); },
+    onAct: function () { FL.done('m15-sim-sql'); }
+  });
+}); })();
+</script>
+
+<div class="box try" data-id="m15-try-export">
+<p><b>מוציאים את הקובץ.</b> בחרו אחת משלוש הדרכים. התוצאה זהה.</p>
+<ol>
+<li>הורידו את <a href="../final-lesson/data/yevgeni-sqlite.sql">yevgeni-sqlite.sql</a>. למה: זה המסד של יבגני, כקובץ הוראות שבונה אותו.</li>
+<li>הריצו את הסקריפט (דרך א), או את ארבע השורות של <code>sqlite3</code> (דרך ב), או לחצו על <code>dish_revenue.csv</code> בסימולטור ואז על כפתור ההורדה (דרך ג). למה: מקבלים קובץ שאפשר לטעון.</li>
+<li>פתחו את <code>dish_revenue.csv</code> בעורך טקסט (לא באקסל, כדי לראות את הקובץ כמו שהוא). למה: זה מה ש-Tableau יקרא.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שורת כותרת ו-10 שורות נתונים, 5 עמודות. השורה הראשונה אחרי הכותרת: <code>סלמון בתנור,main,36,3204.0,1836.0</code>. בקובץ ששמרה פייתון יש בתחילת הקובץ תו נסתר (BOM) שהעורך לא מציג. הנה כל הקובץ:</p>
+<pre class="code" data-lang="csv">dish,category,units,revenue,gross_profit
+סלמון בתנור,main,36,3204.0,1836.0
+פסטה שמנת,main,30,1770.0,1230.0
+המבורגר בקר,main,22,1496.0,902.0
+קציצות עוף,main,21,1302.0,840.0
+סלט יווני,starter,29,1102.0,754.0
+פיצה מרגריטה,main,21,1092.0,777.0
+מרק עגבניות,starter,27,864.0,621.0
+בירה מקומית,drink,28,812.0,532.0
+טירמיסו,dessert,19,684.0,475.0
+לימונדה,drink,31,558.0,465.0</pre>
+</div>
+
+<h3>מחברים ל-Tableau Public ובונים גרף</h3>
+
+<figure class="shot" data-shot="m15-datasource-dish">
+<div class="fb"><div class="m15-sc" style="max-height:none;direction:ltr"><table class="m15-tb"><tr><th>Abc<br>dish_revenue.csv<br>dish</th><th>Abc<br>dish_revenue.csv<br>category</th><th>#<br>dish_revenue.csv<br>units</th><th>#<br>dish_revenue.csv<br>revenue</th><th>#<br>dish_revenue.csv<br>gross_profit</th></tr>
+<tr><td>סלמון בתנור</td><td>main</td><td class="nm">36</td><td class="nm">3,204</td><td class="nm">1,836</td></tr>
+<tr><td>פסטה שמנת</td><td>main</td><td class="nm">30</td><td class="nm">1,770</td><td class="nm">1,230</td></tr>
+<tr><td>המבורגר בקר</td><td>main</td><td class="nm">22</td><td class="nm">1,496</td><td class="nm">902</td></tr>
+<tr><td>קציצות עוף</td><td>main</td><td class="nm">21</td><td class="nm">1,302</td><td class="nm">840</td></tr></table></div>
+<p class="m15-note-sm" style="text-align:left;direction:ltr">5 fields 10 rows (הדמיה סכמטית של עמוד Data Source)</p>
+<div class="need">צילום מסך נדרש: Tableau Public, עמוד Data Source אחרי חיבור ל-dish_revenue.csv: חמישה שדות, 10 שורות, סוגי השדות (Abc ו-#) מעל כל עמודה</div></div>
+<figcaption>עמוד Data Source אחרי הטעינה. שני השדות הראשונים טקסט (<code>Abc</code>) ושלושת האחרונים מספרים (<code>#</code>). ב-Tableau יהיו שם 10 שורות, וכאן מוצגות ארבע.</figcaption>
+</figure>
+
+<div class="box try" data-id="m15-try-dish-chart">
+<p><b>בונים את הגרף: הכנסות לפי מנה.</b></p>
+<ol>
+<li>ב-Tableau Public: <code>Connect</code>, אחר כך <code>Text file</code>, ובחרו את <code>dish_revenue.csv</code>. למה: זה הקובץ שיצרה השאילתה. בעמוד Data Source ודאו שיש 5 שדות ו-10 שורות. אם העברית נראית ג׳יבריש, ראו את ההערה בדרך ב.</li>
+<li>עברו ל-<code>Sheet 1</code>. גררו <code>dish</code> ל-<code>Rows</code> ו-<code>revenue</code> ל-<code>Columns</code>. למה: ממד על שורות ומדד על עמודות נותנים עמודות אופקיות, כל מנה בשורה. ה-pill של המדד מקבל את הצורה <code>SUM(revenue)</code>.</li>
+<li>לחצו על כפתור המיון <code>Sort Descending</code> בסרגל הכלים. למה: בגרף עמודות ממיינים כדי שאפשר יהיה לקרוא דירוג.</li>
+<li>גררו <code>category</code> לכרטיס <code>Marks</code> אל <code>Color</code>. למה: רואים אילו קטגוריות מובילות.</li>
+<li>הפעילו את <code>Show Mark Labels</code> בסרגל הכלים. למה: המספרים כתובים ליד העמודות.</li>
+<li>הסתכלו בשורת המצב בתחתית החלון (<code>status bar</code>).</li>
+</ol>
+<p><b>תוצאה צפויה:</b> 10 עמודות, ארבעה צבעים. הראשונה סלמון בתנור, 3,204. השנייה פסטה שמנת, 1,770. האחרונה לימונדה, 558. בשורת המצב: 10 marks, וסך <code>SUM(revenue)</code> הוא 12,884. חמש מנות הן מסוג <code>main</code> (סלמון, פסטה, המבורגר, קציצות, פיצה). Tableau עשוי לעגל אחרת בתוויות, אבל המספרים כאן שלמים.</p></div>
+
+<div class="tws" aria-label="הדמיה סכמטית של התוצאה הצפויה ב-Tableau Public">
+<div class="tws-top"><b>Sheet 1 - Tableau Public</b><span class="tws-btn">Sort Descending</span><span class="tws-btn">Show Mark Labels</span></div>
+<div class="tws-body">
+<div class="tws-data"><h6>Dimensions</h6><div><span class="fld dim"><i>Abc</i>category</span></div><div><span class="fld dim"><i>Abc</i>dish</span></div><h6>Measures</h6><div><span class="fld mea"><i>#</i>gross_profit</span></div><div><span class="fld mea"><i>#</i>revenue</span></div><div><span class="fld mea"><i>#</i>units</span></div></div>
+<div class="tws-main">
+<div class="tws-shelf"><span>Columns</span><span class="pill c sum">revenue</span></div>
+<div class="tws-shelf"><span>Rows</span><span class="pill d">dish</span></div>
+<div class="tws-canvas" style="display:block;direction:ltr"><svg viewBox="0 0 560 292" width="100%" role="img" aria-label="תרשים עמודות אופקי: הכנסות לפי מנה, ממוינות מהגבוהה לנמוכה"><g font-family="Heebo,Arial,sans-serif" font-size="12"><line x1="128.0" y1="6" x2="128.0" y2="246" stroke="#e5e7eb"/><text x="128.0" y="262" text-anchor="middle" fill="#64748b">0</text><line x1="234.3" y1="6" x2="234.3" y2="246" stroke="#e5e7eb"/><text x="234.3" y="262" text-anchor="middle" fill="#64748b">1,000</text><line x1="340.6" y1="6" x2="340.6" y2="246" stroke="#e5e7eb"/><text x="340.6" y="262" text-anchor="middle" fill="#64748b">2,000</text><line x1="446.9" y1="6" x2="446.9" y2="246" stroke="#e5e7eb"/><text x="446.9" y="262" text-anchor="middle" fill="#64748b">3,000</text><text x="314" y="284" text-anchor="middle" fill="#334155" font-weight="700">SUM(revenue)</text><text x="120" y="24" text-anchor="end" fill="#334155">סלמון בתנור</text><rect x="128" y="10" width="340.5" height="19" fill="#e15759"/><text x="473.5" y="24" fill="#0f172a" font-weight="700">3,204</text><text x="120" y="48" text-anchor="end" fill="#334155">פסטה שמנת</text><rect x="128" y="34" width="188.1" height="19" fill="#e15759"/><text x="321.1" y="48" fill="#0f172a" font-weight="700">1,770</text><text x="120" y="72" text-anchor="end" fill="#334155">המבורגר בקר</text><rect x="128" y="58" width="159.0" height="19" fill="#e15759"/><text x="292.0" y="72" fill="#0f172a" font-weight="700">1,496</text><text x="120" y="96" text-anchor="end" fill="#334155">קציצות עוף</text><rect x="128" y="82" width="138.4" height="19" fill="#e15759"/><text x="271.4" y="96" fill="#0f172a" font-weight="700">1,302</text><text x="120" y="120" text-anchor="end" fill="#334155">סלט יווני</text><rect x="128" y="106" width="117.1" height="19" fill="#76b7b2"/><text x="250.1" y="120" fill="#0f172a" font-weight="700">1,102</text><text x="120" y="144" text-anchor="end" fill="#334155">פיצה מרגריטה</text><rect x="128" y="130" width="116.1" height="19" fill="#e15759"/><text x="249.1" y="144" fill="#0f172a" font-weight="700">1,092</text><text x="120" y="168" text-anchor="end" fill="#334155">מרק עגבניות</text><rect x="128" y="154" width="91.8" height="19" fill="#76b7b2"/><text x="224.8" y="168" fill="#0f172a" font-weight="700">864</text><text x="120" y="192" text-anchor="end" fill="#334155">בירה מקומית</text><rect x="128" y="178" width="86.3" height="19" fill="#f28e2b"/><text x="219.3" y="192" fill="#0f172a" font-weight="700">812</text><text x="120" y="216" text-anchor="end" fill="#334155">טירמיסו</text><rect x="128" y="202" width="72.7" height="19" fill="#4e79a7"/><text x="205.7" y="216" fill="#0f172a" font-weight="700">684</text><text x="120" y="240" text-anchor="end" fill="#334155">לימונדה</text><rect x="128" y="226" width="59.3" height="19" fill="#f28e2b"/><text x="192.3" y="240" fill="#0f172a" font-weight="700">558</text></g></svg></div>
+</div>
+<div class="tws-marks"><h6>Marks</h6><div class="pill d">Automatic</div><div class="tws-mk"><div>Color<br>category</div><div>Size</div><div>Label<br>revenue</div><div>Detail</div></div><div style="margin-top:8px"><div style="display:flex;gap:6px;align-items:center;font-size:.72rem;margin:2px 0"><i style="width:10px;height:10px;background:#4e79a7;display:inline-block"></i>dessert</div><div style="display:flex;gap:6px;align-items:center;font-size:.72rem;margin:2px 0"><i style="width:10px;height:10px;background:#f28e2b;display:inline-block"></i>drink</div><div style="display:flex;gap:6px;align-items:center;font-size:.72rem;margin:2px 0"><i style="width:10px;height:10px;background:#e15759;display:inline-block"></i>main</div><div style="display:flex;gap:6px;align-items:center;font-size:.72rem;margin:2px 0"><i style="width:10px;height:10px;background:#76b7b2;display:inline-block"></i>starter</div></div></div>
+</div>
+<div class="tws-tabs"><span class="on">Sheet 1</span><span>+</span></div>
+</div>
+<ol class="callouts"><li>הממד <code>dish</code> על <code>Rows</code> והמדד <code>revenue</code> על <code>Columns</code>: מנה בכל שורה.</li><li>הצבע לפי <code>category</code>. הצבעים בתוכנה עשויים להיות שונים מאלה שבהדמיה.</li><li>הערכים הם סכומים מהקובץ: למשל סלמון 3,204 ולימונדה 558.</li></ol>
+
+<div class="box meaning"><p>הקובץ הוא תוצר של שאלה. הוא לא &quot;הנתונים של יבגני&quot;, הוא התשובה לשאילתה אחת. מי שרוצה לדעת לפי שעה, או לפי עיר, לא ימצא את זה בקובץ הזה. מצד שני, לא היה כאן שום JOIN ב-Tableau: הכול כבר סוכם ונקי. זו הסיבה שהגרף נבנה בשש פעולות.</p></div>
+
+<div class="box trap"><p><b>שני מספרים להכנסות של אותה מסעדה.</b> בחבילת הקורס יש גם <code>yevgeni_fact_sales.csv</code>, וסך ההכנסות שם 13,592. בקובץ שהוצאתם עכשיו הסך 12,884. ההפרש, 708, הוא ההכנסה של 5 הזמנות שבוטלו. השאילתה שלנו כוללת <code>WHERE o.status = 'delivered'</code>, והקובץ השטוח כולל הכול (12 שורות פריט של הזמנות מבוטלות). לחצו בסימולטור שלמעלה על <code>dish_revenue_all.csv</code> ותראו 13,592. <b>מה עושים:</b> כותבים את ההגדרה על הקובץ ועל הדשבורד (&quot;הכנסות מהזמנות שנמסרו&quot;), ובוחרים שם קובץ שמסביר מה בו.</p></div>
+
+<div class="box real"><p>בארגונים אמיתיים השאילתה הזאת שייכת למי שאחראי על הנתונים, ולא למי שבונה את הגרף. אחרת כל אנליסט מגדיר &quot;הכנסה&quot; אחרת. הרעיון של הגדרה אחת לכל מדד נלמד ב<a href="../final-lesson/part4.html#s4-6">חלק 4 של המפגש המסכם</a>. כאן אתם בתפקיד של שניהם, ולכן כתבו את ההגדרה.</p></div>
+
+<div class="quiz" data-id="m15-q-where-status" data-a="2"><p class="qq">הקובץ שהוצאתם מראה הכנסות של 12,884, ו-<code>yevgeni_fact_sales.csv</code> מראה 13,592. מה הסיבה?</p>
+<button class="opt">Tableau מעגל את המספרים בצורה שונה בכל קובץ</button>
+<button class="opt">השאילתה מסננת רק הזמנות שנמסרו, והקובץ השטוח כולל גם הזמנות מבוטלות</button>
+<button class="opt">בקובץ ששמרה פייתון חסרות שורות</button>
+<div class="why">שניהם נכונים, לפי שתי הגדרות שונות. הסינון <code>status = 'delivered'</code> מוריד הכנסה של 708 מהזמנות מבוטלות. עיגול לא קשור: המספרים שלמים, והקובץ מכיל את כל 10 המנות.</div></div>
+
+<div class="quiz" data-id="m15-q-bom" data-a="3"><p class="qq">מה התפקיד של <code>encoding="utf-8-sig"</code> בסקריפט?</p>
+<button class="opt">הוא מצפין את הקובץ כדי שאף אחד לא יוכל לקרוא אותו</button>
+<button class="opt">הוא מקטין את הקובץ כדי שייכנס ל-Tableau Public</button>
+<button class="opt">הוא כותב את הקובץ ב-UTF-8 עם סימן קטן בתחילתו (BOM), כדי שהעברית תיקרא נכון בתוכנות כמו אקסל</button>
+<div class="why">BOM הוא סימן בתחילת הקובץ שאומר לתוכנה ״זה UTF-8״. זו הדרך הבטוחה לעברית באקסל, ולפי ההמלצה גם ב-Tableau. אין כאן הצפנה וגם לא דחיסה: אחרי הכתיבה הקובץ גלוי לכולם.</div></div>
+
+<div class="box think" data-id="m15-th-why-agg"><p>לייצא טבלה מסוכמת של 10 שורות, או לייצא את כל 219 שורות הפריט ולסכם ב-Tableau? מה הצדדים של כל אחת מהדרכים?</p>
+<div class="ans">מסוכם: הקובץ קטן, ההגדרה (&quot;נמסרו בלבד&quot;) נעולה במקום אחד, אין בו עמודות אישיות, והגרף מהיר. פירוט: אפשר לענות על שאלות נוספות בלי לחזור למסד, אבל צריך לסכם נכון ב-Tableau, והקובץ מכיל יותר ממה שרצית לפרסם. אין תשובה אחת. הכלל: מוציאים את הרמה (grain) שהשאלה צריכה, ולא פחות. על זה ממשיכים בסעיף 4.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> מספרים שאומתו בפייתון על עותק של yevgeni-sqlite.sql: 10 שורות, סך 12,884, סלמון 3,204 (36 יחידות), פסטה 1,770, לימונדה 558; בלי WHERE הסך הוא 13,592, וההפרש 708 הוא 5 הזמנות מבוטלות (12 שורות פריט). לפני השיעור לבדוק בתוכנה: שהעמודה dish נקראת כ-Abc, שהצבעים ב-Tableau 10, ושבשורת המצב מופיע הסכום. לבדוק שקידוד UTF-8 עם BOM נקרא נכון ב-Tableau Public (המחקר ממליץ על BOM, אבל לא אימת את Tableau עצמו). לא לתת לסטודנטים לפרסם את הגרף הזה אלא אם הם בחרו בכך.</div>
+</section>
+
+<section class="sec" id="m15-4" data-t="זמני משלוח וגרגר">
+<div class="sec-h"><div class="sec-n">4</div><h2>זמני משלוח: שאלה אחרת, וצריך לבחור מה שורה בקובץ</h2></div>
+<p class="lead">הלקוחות של יבגני מתלוננים על איחורים. הוא שואל: כמה זמן לוקח משלוח, ומי השליח האיטי? כדי לענות צריך להחליט מה שורה אחת בקובץ מייצגת. זו ההחלטה החשובה ביותר בייצוא, ויש לה שם.</p>
+
+<div class="defline"><b>גרגר (<code>grain</code>):</b> מה שורה אחת בטבלה מייצגת. דוגמה: ב-<code>orders</code> שורה היא הזמנה (87 שורות), וב-<code>order_items</code> שורה היא פריט בהזמנה (219 שורות). אותה מסעדה, שני גרגרים.</div>
+<p class="m15-note-sm">אל תבלבלו עם LOD ממודול 10. שם מדובר ברמה של חישוב בתוך Tableau. כאן מדובר ברמה של שורה בקובץ, עוד לפני ש-Tableau נכנס לתמונה.</p>
+
+<p>הנה הקבצים שיש לנו עד עכשיו, והשאלות שכל אחד מהם יכול לענות עליהן. אין גרגר &quot;טוב&quot;: יש גרגר שמתאים לשאלה.</p>
+<div class="tw"><table class="tbl">
+<tr><th>קובץ</th><th>שורה אחת היא</th><th>שורות</th><th>על מה אפשר לענות</th></tr>
+<tr><td><code>yevgeni_customers.csv</code></td><td>לקוח</td><td>18</td><td>כמה לקוחות לפי עיר</td></tr>
+<tr><td><code>yevgeni_orders.csv</code></td><td>הזמנה</td><td>87</td><td>הזמנות לפי ערוץ, תשר, דירוג</td></tr>
+<tr><td><code>yevgeni_order_items.csv</code></td><td>פריט בהזמנה</td><td>219</td><td>מה הוזמן, בלי מחירים</td></tr>
+<tr><td><code>dish_revenue.csv</code></td><td>מנה</td><td>10</td><td>הכנסות לפי מנה, ותו לא</td></tr>
+<tr><td><code>deliveries.csv</code></td><td>משלוח שנמסר</td><td>59</td><td>זמן משלוח לפי שליח, שעה, ערוץ או תאריך</td></tr>
+<tr><td><code>delivery_by_hour.csv</code></td><td>שליח, ערוץ ושעה</td><td>23</td><td>זמן לפי שליח, ערוץ ושעה, אבל לא לפי תאריך</td></tr>
+<tr><td><code>daily_revenue.csv</code></td><td>יום</td><td>56</td><td>הכנסות והזמנות לפי יום</td></tr>
+</table></div>
+
+<h3>שתי שאילתות, שני גרגרים</h3>
+<p>הראשונה מוציאה שורה לכל משלוח שנמסר: 59 שורות, בלי שם לקוח, בלי כתובת ובלי תשר. רק מה שהשאלה צריכה.</p>
+<pre class="code" data-lang="sql">SELECT o.id AS order_id,
+       substr(o.order_ts, 1, 10) AS order_date,
+       CAST(substr(o.order_ts, 12, 2) AS INTEGER) AS order_hour,
+       c.name AS courier,
+       c.vehicle AS vehicle,
+       o.channel AS channel,
+       o.delivery_min AS delivery_min,
+       o.rating AS rating
+FROM orders o
+JOIN couriers c ON c.id = o.courier_id
+WHERE o.status = 'delivered' AND o.delivery_min IS NOT NULL
+ORDER BY o.id</pre>
+<p>ככה נראות שש השורות הראשונות של התוצאה. הערכים החסרים (דירוג שלא ניתן) נשארים ריקים.</p>
+<div class="m15-sc" style="max-height:none"><table class="m15-tb"><tr><th>order_id</th><th>order_date</th><th>order_hour</th><th>courier</th><th>vehicle</th><th>channel</th><th>delivery_min</th><th>rating</th></tr><tr><td>1</td><td><bdi dir="ltr">2026-03-02</bdi></td><td>19</td><td>אורי</td><td>motorbike</td><td>app</td><td>37</td><td>4</td></tr><tr><td>3</td><td><bdi dir="ltr">2026-03-05</bdi></td><td>19</td><td>אורי</td><td>motorbike</td><td>app</td><td>38</td><td>3</td></tr><tr><td>4</td><td><bdi dir="ltr">2026-03-06</bdi></td><td>13</td><td>דימה</td><td>scooter</td><td>app</td><td>33</td><td>5</td></tr><tr><td>5</td><td><bdi dir="ltr">2026-03-06</bdi></td><td>21</td><td>נועה</td><td>e-bike</td><td>app</td><td>31</td><td></td></tr><tr><td>6</td><td><bdi dir="ltr">2026-03-06</bdi></td><td>13</td><td>נועה</td><td>e-bike</td><td>phone</td><td>31</td><td>4</td></tr><tr><td>7</td><td><bdi dir="ltr">2026-03-07</bdi></td><td>21</td><td>נועה</td><td>e-bike</td><td>phone</td><td>45</td><td></td></tr></table></div>
+<p>השנייה מסכמת: שורה לכל צירוף של שליח, ערוץ ושעה. היא קטנה יותר (23 שורות), ויש בה את מה שנהוג לשים ולהתחרט עליו: עמודת ממוצע.</p>
+<pre class="code" data-lang="sql">SELECT c.name AS courier,
+       o.channel AS channel,
+       CAST(substr(o.order_ts, 12, 2) AS INTEGER) AS order_hour,
+       COUNT(*) AS deliveries,
+       SUM(o.delivery_min) AS total_min,
+       ROUND(AVG(o.delivery_min), 2) AS avg_min
+FROM orders o
+JOIN couriers c ON c.id = o.courier_id
+WHERE o.status = 'delivered' AND o.delivery_min IS NOT NULL
+GROUP BY c.id, c.name, o.channel, order_hour
+ORDER BY courier, channel, order_hour</pre>
+<div class="m15-sc" style="max-height:none"><table class="m15-tb"><tr><th>courier</th><th>channel</th><th>order_hour</th><th>deliveries</th><th>total_min</th><th>avg_min</th></tr><tr><td>אורי</td><td>app</td><td>12</td><td>2</td><td>72</td><td>36.0</td></tr><tr><td>אורי</td><td>app</td><td>13</td><td>5</td><td>119</td><td>23.8</td></tr><tr><td>אורי</td><td>app</td><td>19</td><td>4</td><td>147</td><td>36.75</td></tr><tr><td>אורי</td><td>app</td><td>20</td><td>4</td><td>103</td><td>25.75</td></tr><tr><td>אורי</td><td>phone</td><td>12</td><td>3</td><td>77</td><td>25.67</td></tr><tr><td>אורי</td><td>phone</td><td>13</td><td>3</td><td>99</td><td>33.0</td></tr></table></div>
+<p>את שני הקבצים הוציא הסקריפט מסעיף 3 (<code>deliveries.csv</code> ו-<code>delivery_by_hour.csv</code>), ואפשר להוציא אותם גם בסימולטור של סעיף 3.</p>
+
+<div class="box try" data-id="m15-try-delivery-chart">
+<p><b>בונים את גרף זמני המשלוח מהקובץ ברמת משלוח.</b></p>
+<ol>
+<li>ב-Tableau Public: <code>Connect</code>, <code>Text file</code>, <code>deliveries.csv</code>. למה: זה הקובץ ששורה בו היא משלוח. בעמוד Data Source: 8 שדות ו-59 שורות. <code>order_date</code> מזוהה כתאריך.</li>
+<li>ב-<code>Sheet 1</code> גררו <code>courier</code> ל-<code>Rows</code> ו-<code>delivery_min</code> ל-<code>Columns</code>. הפעולה יצרה <code>SUM(delivery_min)</code>. למה: זו ברירת המחדל של Tableau, והיא לא מה שאנחנו רוצים.</li>
+<li>לחצו ימנית על ה-pill <code>SUM(delivery_min)</code>, בחרו <code>Measure</code> ואז <code>Average</code>. למה: סכום של דקות של משלוחים שונים לא אומר כלום. ממוצע אומר כמה לוקח משלוח אחד.</li>
+<li>הפעילו <code>Show Mark Labels</code> וצבעו את העמודות לפי <code>vehicle</code>.</li>
+<li>פתחו גיליון חדש. גררו <code>delivery_min</code> ל-<code>Text</code> בכרטיס <code>Marks</code>, והפכו אותו ל-<code>Average</code> כמו קודם. למה: בלי ממד בתצוגה, Tableau מסכם את כל 59 השורות לסימן אחד.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בגיליון 1 שלוש עמודות: דימה 41.81, נועה 36.45, אורי 29.38 (Tableau עשוי להציג 41.8, 36.5 ו-29.4, כי הוא מעגל בתוויות). בגיליון 2 סימן אחד: 35.39. מספר המשלוחים: אורי 21, נועה 22, דימה 16, סך הכול 59. כל שליח עם סוג רכב אחד: דימה סקוטר (<code>scooter</code>), נועה אופניים חשמליים (<code>e-bike</code>), אורי אופנוע (<code>motorbike</code>).</p></div>
+
+<figure class="shot" data-shot="m15-delivery-chart">
+<div class="fb"><div style="direction:ltr;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px"><svg viewBox="0 0 560 250" width="100%" role="img" aria-label="נקודות: כל משלוח הוא נקודה, לפי שליח, עם קו ממוצע כללי"><g font-family="Heebo,Arial,sans-serif" font-size="12"><line x1="114.4" y1="6" x2="114.4" y2="190" stroke="#e5e7eb"/><text x="114.4" y="206" text-anchor="middle" fill="#64748b">20</text><line x1="236.7" y1="6" x2="236.7" y2="190" stroke="#e5e7eb"/><text x="236.7" y="206" text-anchor="middle" fill="#64748b">30</text><line x1="358.9" y1="6" x2="358.9" y2="190" stroke="#e5e7eb"/><text x="358.9" y="206" text-anchor="middle" fill="#64748b">40</text><line x1="481.1" y1="6" x2="481.1" y2="190" stroke="#e5e7eb"/><text x="481.1" y="206" text-anchor="middle" fill="#64748b">50</text><text x="310" y="230" text-anchor="middle" fill="#334155" font-weight="700">delivery_min</text><text x="80" y="44" text-anchor="end" fill="#334155">דימה</text><circle cx="273.3" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="468.9" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="395.6" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="444.4" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="468.9" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="334.4" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="407.8" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="383.3" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="481.1" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="310.0" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="481.1" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="273.3" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="444.4" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="285.6" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="310.0" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="334.4" cy="40" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><line x1="381.0" y1="18" x2="381.0" y2="62" stroke="#e15759" stroke-width="3"/><text x="381.0" y="14" text-anchor="middle" fill="#b91c1c" font-weight="700">41.81</text><text x="80" y="102" text-anchor="end" fill="#334155">נועה</text><circle cx="248.9" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="248.9" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="420.0" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="236.7" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="200.0" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="310.0" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="285.6" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="200.0" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="383.3" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="322.2" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="371.1" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="358.9" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="383.3" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="420.0" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="407.8" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="297.8" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="310.0" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="236.7" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="371.1" cy="98" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="236.7" cy="107" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="383.3" cy="107" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="310.0" cy="107" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><line x1="315.6" y1="76" x2="315.6" y2="120" stroke="#e15759" stroke-width="3"/><text x="315.6" y="72" text-anchor="middle" fill="#b91c1c" font-weight="700">36.45</text><text x="80" y="160" text-anchor="end" fill="#334155">אורי</text><circle cx="322.2" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="334.4" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="187.8" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="151.1" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="346.7" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="334.4" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="334.4" cy="165" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="138.9" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="126.7" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="163.3" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="138.9" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="200.0" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="285.6" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="138.9" cy="165" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="273.3" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="187.8" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="224.4" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="163.3" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="285.6" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="224.4" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><circle cx="248.9" cy="156" r="3.6" fill="#4e79a7" fill-opacity=".55" stroke="#2b5d8a" stroke-width=".6"/><line x1="229.1" y1="134" x2="229.1" y2="178" stroke="#e15759" stroke-width="3"/><text x="229.1" y="130" text-anchor="middle" fill="#b91c1c" font-weight="700">29.38</text><line x1="302.5" y1="6" x2="302.5" y2="190" stroke="#334155" stroke-dasharray="5 4"/><text x="306.5" y="16" fill="#334155">35.39</text></g></svg></div>
+<div class="need">צילום מסך נדרש: Tableau Public, גיליון עם courier על Rows ו-AVG(delivery_min) על Columns מתוך deliveries.csv, שלוש עמודות עם תוויות 41.81, 36.45 ו-29.38</div></div>
+<figcaption>הדמיה סכמטית. כל נקודה היא משלוח אחד (59 נקודות), והקו האדום הוא הממוצע של השליח. הקו המקווקו הוא הממוצע של כל המשלוחים, 35.39.</figcaption>
+</figure>
+
+<div class="box try" data-id="m15-try-strip">
+<p><b>רואים כל משלוח (אופציונלי).</b> אותו קובץ, גרף אחר: במקום ממוצע, נקודה לכל משלוח.</p>
+<ol>
+<li>שכפלו את גיליון 1 (לחיצה ימנית על לשונית הגיליון, <code>Duplicate</code>). בגיליון החדש לחצו ימנית על <code>order_id</code> בחלונית הנתונים ובחרו <code>Convert to Dimension</code>. למה: <code>order_id</code> נטען כמספר, והוא מזהה, לא מדד.</li>
+<li>גררו <code>order_id</code> ל-<code>Detail</code> בכרטיס <code>Marks</code>, ושנו את סוג הסימן ל-<code>Circle</code>. למה: ה-Detail מפרק כל ממוצע למשלוחים שמרכיבים אותו.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> 59 סימנים (שורת המצב: <code>59 marks</code>), 16 בשורה של דימה, 22 של נועה ו-21 של אורי. הנקודה הימנית ביותר היא 50 דקות, ושתי נקודות כאלה אצל דימה. הנקודה השמאלית ביותר היא 21 דקות אצל אורי.</p></div>
+
+<h3>ממוצע של ממוצעים: ההנפשה</h3>
+<p>עכשיו הקובץ המסוכם, <code>delivery_by_hour.csv</code>. הנה תשע השורות של דימה, וההנפשה מראה איך שתי דרכים לחשב &quot;ממוצע&quot; נותנות שני מספרים.</p>
+
+<div class="anim" data-id="m15-anim-avg" data-speed="3800">
+<div class="stage"><svg viewBox="0 0 840 340" role="img" aria-label="הנפשה: תשע שורות של דימה עם ממוצע ומספר משלוחים, ממוצע של הממוצעים 42.56 מול הממוצע האמיתי 41.81">
+<g font-family="ui-monospace,Menlo,monospace" font-size="13" fill="#334155">
+<text x="120" y="20" text-anchor="end" font-family="Heebo,Arial,sans-serif" font-weight="700">ערוץ ושעה</text>
+<text x="126" y="20" font-family="Heebo,Arial,sans-serif" font-weight="700">avg_min</text>
+<text x="372" y="20" font-family="Heebo,Arial,sans-serif" font-weight="700">משלוחים</text>
+</g>
+<g data-only="3"><rect x="6" y="94" width="440" height="26" rx="6" fill="#fff7ed" stroke="#f59e0b"/><rect x="6" y="190" width="440" height="26" rx="6" fill="#fff7ed" stroke="#f59e0b"/><rect x="6" y="254" width="440" height="26" rx="6" fill="#fff7ed" stroke="#f59e0b"/><rect x="6" y="286" width="440" height="26" rx="6" fill="#fff7ed" stroke="#f59e0b"/></g>
+<g font-family="ui-monospace,Menlo,monospace" font-size="13" fill="#334155">
+<text x="120" y="48" text-anchor="end">app 12</text><rect x="126" y="34" width="190.9" height="20" fill="#4e79a7"/><text x="310" y="49" text-anchor="end" font-weight="700" fill="#fff">41.5</text><circle cx="378" cy="44" r="6" fill="#d8b862"/><circle cx="394" cy="44" r="6" fill="#d8b862"/>
+<text x="120" y="80" text-anchor="end">app 13</text><rect x="126" y="66" width="165.6" height="20" fill="#4e79a7"/><text x="285" y="81" text-anchor="end" font-weight="700" fill="#fff">36.0</text><circle cx="378" cy="76" r="6" fill="#d8b862"/><circle cx="394" cy="76" r="6" fill="#d8b862"/><circle cx="410" cy="76" r="6" fill="#d8b862"/>
+<text x="120" y="112" text-anchor="end">app 19</text><rect x="126" y="98" width="197.8" height="20" fill="#4e79a7"/><text x="317" y="113" text-anchor="end" font-weight="700" fill="#fff">43.0</text><circle cx="378" cy="108" r="6" fill="#d8b862"/>
+<text x="120" y="144" text-anchor="end">app 20</text><rect x="126" y="130" width="207" height="20" fill="#4e79a7"/><text x="327" y="145" text-anchor="end" font-weight="700" fill="#fff">45.0</text><circle cx="378" cy="140" r="6" fill="#d8b862"/><circle cx="394" cy="140" r="6" fill="#d8b862"/><circle cx="410" cy="140" r="6" fill="#d8b862"/>
+<text x="120" y="176" text-anchor="end">app 21</text><rect x="126" y="162" width="188.6" height="20" fill="#4e79a7"/><text x="308" y="177" text-anchor="end" font-weight="700" fill="#fff">41.0</text><circle cx="378" cy="172" r="6" fill="#d8b862"/><circle cx="394" cy="172" r="6" fill="#d8b862"/>
+<text x="120" y="208" text-anchor="end">phone 12</text><rect x="126" y="194" width="216.2" height="20" fill="#4e79a7"/><text x="336" y="209" text-anchor="end" font-weight="700" fill="#fff">47.0</text><circle cx="378" cy="204" r="6" fill="#d8b862"/>
+<text x="120" y="240" text-anchor="end">phone 13</text><rect x="126" y="226" width="190.9" height="20" fill="#4e79a7"/><text x="310" y="241" text-anchor="end" font-weight="700" fill="#fff">41.5</text><circle cx="378" cy="236" r="6" fill="#d8b862"/><circle cx="394" cy="236" r="6" fill="#d8b862"/>
+<text x="120" y="272" text-anchor="end">phone 20</text><rect x="126" y="258" width="230" height="20" fill="#4e79a7"/><text x="350" y="273" text-anchor="end" font-weight="700" fill="#fff">50.0</text><circle cx="378" cy="268" r="6" fill="#d8b862"/>
+<text x="120" y="304" text-anchor="end">phone 21</text><rect x="126" y="290" width="174.8" height="20" fill="#4e79a7"/><text x="294" y="305" text-anchor="end" font-weight="700" fill="#fff">38.0</text><circle cx="378" cy="300" r="6" fill="#d8b862"/>
+</g>
+<g data-s="2"><rect x="480" y="30" width="350" height="104" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+<text x="655" y="56" text-anchor="middle" font-size="15" font-weight="700" fill="#991b1b">ממוצע של עמודת avg_min</text>
+<text x="655" y="104" text-anchor="middle" font-size="46" font-weight="900" fill="#dc2626">42.56</text>
+<text x="655" y="124" text-anchor="middle" font-size="13" fill="#991b1b">383 חלקי 9 שורות. כל שורה שוקלת אותו דבר</text></g>
+<g data-s="3"><rect x="480" y="150" width="350" height="104" rx="14" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+<text x="655" y="176" text-anchor="middle" font-size="15" font-weight="700" fill="#166534">הממוצע האמיתי של כל המשלוחים</text>
+<text x="655" y="224" text-anchor="middle" font-size="46" font-weight="900" fill="#16a34a">41.81</text>
+<text x="655" y="244" text-anchor="middle" font-size="13" fill="#166534">669 דקות חלקי 16 משלוחים</text></g>
+<g data-s="4"><rect x="480" y="270" width="350" height="56" rx="12" fill="#eff6ff" stroke="#1f77b4" stroke-width="2"/>
+<text x="655" y="294" text-anchor="middle" font-size="14" font-weight="700" fill="#14507a">מייצאים סכום וספירה, ו-Tableau מחלק:</text>
+<text x="655" y="314" text-anchor="middle" font-size="13" fill="#14507a" font-family="ui-monospace,Menlo,monospace">SUM(total_min) / SUM(deliveries)</text></g>
+</svg></div>
+<ol class="caps">
+<li>תשע שורות של דימה מהקובץ המסוכם. בכל שורה ממוצע, והעיגולים הם כמה משלוחים עומדים מאחוריו: משלוח אחד עד שלושה.</li>
+<li>הדרך המפתה: ממוצע של עמודת הממוצעים. יוצא 42.56. שורה שיש בה משלוח אחד שוקלת בדיוק כמו שורה של שלושה.</li>
+<li>הדרך הנכונה: כל 16 המשלוחים ביחד, 669 דקות, ממוצע 41.81. ארבע השורות הכתומות הן משלוח בודד, והן כמעט לא משפיעות, וזה בדיוק מה שצריך.</li>
+<li>לכן מייצאים את הרכיבים, סכום וספירה, ו-Tableau מחלק. אף פעם לא מצרפים ממוצע מוכן.</li>
+</ol></div>
+
+<div class="box try" data-id="m15-try-avg-trap">
+<p><b>מראים את הטעות בעצמכם, ומתקנים.</b></p>
+<ol>
+<li>חברו את <code>delivery_by_hour.csv</code> כקובץ טקסט (או הוסיפו מקור נתונים חדש). בעמוד Data Source: 6 שדות ו-23 שורות.</li>
+<li>גיליון חדש: <code>courier</code> ל-<code>Rows</code>, <code>avg_min</code> ל-<code>Columns</code>, והפכו ל-<code>Average</code>. למה: זה מה שרוב האנשים עושים כשרואים עמודה בשם ממוצע.</li>
+<li>צרו שדה מחושב בשם <code>Avg Minutes</code> (<code>Create</code> ואז <code>Calculated Field...</code> מהתפריט הימני בחלונית הנתונים) עם הנוסחה הבאה, וגררו אותו במקום <code>avg_min</code>:
+<pre class="code" data-lang="tableau">SUM([total_min]) / SUM([deliveries])</pre>
+למה: אחרי הסכום, כל שורה שוקלת לפי מספר המשלוחים שלה.</li>
+<li>הסירו את <code>courier</code> משני הגיליונות, כדי לראות את הממוצע הכללי.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> עם <code>AVG(avg_min)</code>: אורי 30.16, דימה 42.56, נועה 36.02, וסך הכול 37.05. עם <code>Avg Minutes</code>: אורי 29.38, דימה 41.81, נועה 36.45, וסך הכול 35.39. המספרים החדשים זהים לגרף מ-<code>deliveries.csv</code>, ובדיוק זו הבדיקה שאומרת שנכון. הסדר בין השליחים נשאר, אבל המספרים השתנו: אצל דימה ואצל אורי ההפרש הוא כמעט 0.8 דקה.</p></div>
+
+<div class="box meaning"><p>הגרגר קובע על אילו שאלות הקובץ יכול לענות. אם הוא גס מדי (מנה אחת בשורה), אי אפשר לשאול על שעות. ואם הוא עדין מאוד (משלוח בשורה), הקובץ גדל ומכיל יותר מה שאולי לא רצית לפרסם. הכלל: לוקחים את הגרגר שהשאלה צריכה, ולא פחות. ואם מסכמים, שומרים רכיבים (סכום, ספירה), לא תוצאה (ממוצע, אחוז).</p></div>
+
+<div class="box trap"><p><b>ממוצע של ממוצעים.</b> אפשר לראות את אותה טעות בכל מקום שבו מצרפים מספרים מוכנים: ממוצע של ממוצעי סניפים, אחוז של אחוזים, ממוצע של ממוצעים לפי חודש. הטעות לא תמיד גדולה, אבל היא תמיד שם, וגודלה תלוי בגודל הקבוצות. <b>מה עושים:</b> מייצאים סכום וספירה, ובונים את הממוצע כשדה מחושב. ובודקים: הממוצע מהקובץ המסוכם צריך להיות שווה לזה של הקובץ המפורט.</p></div>
+
+<div class="box real"><p>אנליסטים מכנים את זה &quot;לשמור את המונה והמכנה&quot;. אחוז איחורים של סניף הוא איחורים חלקי משלוחים. כשמצרפים שני סניפים, מצרפים את שני המונים ואת שני המכנים, לא את שני האחוזים. בחלק 4 של המפגש המסכם יש דוגמאות על <a href="../final-lesson/part4.html#s4-2">שורות ועמודות</a> ועל <a href="../final-lesson/part4.html#s4-4">סכמת כוכב</a>.</p></div>
+
+<div class="quiz" data-id="m15-q-grain" data-a="2"><p class="qq">רוצים לבדוק איך זמן המשלוח השתנה <b>לפי תאריך</b>. איזה קובץ מתאים?</p>
+<button class="opt"><code>delivery_by_hour.csv</code>, כי יש בו שעות</button>
+<button class="opt"><code>deliveries.csv</code>, כי שורה בו היא משלוח עם תאריך</button>
+<button class="opt"><code>dish_revenue.csv</code>, כי הוא כבר מסוכם</button>
+<div class="why">רק בקובץ ברמת משלוח יש עמודת תאריך. בקובץ של שליח, ערוץ ושעה אין תאריך בכלל, ובקובץ של המנות אין זמני משלוח. אי אפשר לשחזר ממוצע לפי תאריך מקובץ שבו התאריך כבר נעלם.</div></div>
+
+<div class="quiz" data-id="m15-q-sum-count" data-a="3"><p class="qq">למה בקובץ המסוכם יש <code>total_min</code> ו-<code>deliveries</code>, ולא רק <code>avg_min</code>?</p>
+<button class="opt">כדי שהקובץ יהיה גדול יותר</button>
+<button class="opt">כי Tableau לא יודע לקרוא עמודה של ממוצעים</button>
+<button class="opt">כדי ש-Tableau יוכל לחשב ממוצע משוקלל נכון בכל חיתוך: סכום חלקי ספירה</button>
+<div class="why">Tableau קורא ממוצעים בלי בעיה, אבל הוא לא יכול לדעת כמה משלוחים עומדים מאחוריהם. הסכום והספירה נותנים את המשקלים.</div></div>
+
+<div class="box think" data-id="m15-th-hour"><p>בשעה 21 הממוצע הכי גבוה: 39.33 דקות. כותבים בדשבורד &quot;בשעה 21 המשלוחים איטיים&quot;? ומה עוד חסר כדי לדעת אם הסקוטר של דימה הוא הסיבה לכך שהוא איטי?</p>
+<div class="ans">בשעה 21 היו רק 6 משלוחים, כך שהממוצע רגיש לכל משלוח בודד. לפני שכותבים משפט כזה מוסיפים לגרף את מספר המשלוחים. לגבי הסקוטר: בקובץ יש רק סוג רכב, ולכל שליח רכב אחד, ולכן אי אפשר להפריד בין השליח לרכב. חסרים מרחק, אזור, או שליח אחד עם שני רכבים. הנתונים מראים הבדל, לא סיבה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> מספרים שאומתו: deliveries.csv 59 שורות, ממוצע 35.39 (2,088 דקות); אורי 21 משלוחים 29.38, נועה 22 משלוחים 36.45, דימה 16 משלוחים 41.81. delivery_by_hour.csv 23 שורות; AVG(avg_min) הוא 37.05 (37.0496) ולא 35.39 (35.3898), ובפירוט: אורי 30.16 מול 29.38, דימה 42.56 מול 41.81, נועה 36.02 מול 36.45. שימו לב ש-avg_min בקובץ מעוגל לשתי ספרות. לבדוק בתוכנה לפני השיעור: שהסדר של הערכים מוצג כמו בתוצאה הצפויה. לא להשתמש בקו ממוצע מחלונית Analytics כדי להציג את 35.39: לפי ההיגיון שלו הוא מחשב ממוצע של הסימנים שבתצוגה (ולא של השורות), והתנהגות זו לא נבדקה במחקר, כדאי לבדוק לפני השיעור. הערה אתית: שמות השליחים הם שמות עובדים. בסעיף 9 נדון אם לפרסם אותם.</div>
+</section>
+
+<section class="sec" id="m15-5" data-t="גוגל שיטס וריענון">
+<div class="sec-h"><div class="sec-n">5</div><h2>גוגל שיטס: הדרך היחידה לריענון אוטומטי</h2></div>
+<p class="lead">הקובץ של יבגני מתיישן. הוא רוצה שהדשבורד יתעדכן בלי שמישהו יפתח את Tableau ויפרסם מחדש כל בוקר. ב-Tableau Public יש דרך אחת לעשות את זה: גיליון בגוגל דרייב. נבנה אותה, ונראה בדיוק מה היא עושה ומה לא.</p>
+
+<div class="defline"><b>ריענון אוטומטי:</b> Tableau Public קורא שוב את הגיליון בגוגל פעם ב-24 שעות ומעדכן את העותק (ה-extract) שפורסם. דוגמה: מוסיפים שורה של יום חדש לגיליון, ובמהלך היממה הבאה היא מופיעה בדשבורד.</div>
+
+<p>הנה מה שכתוב על זה בשאלות והתשובות הרשמיות של Tableau Public, בניסוח שלנו:</p>
+<ul>
+<li>כל חוברת מתפרסמת עם extract, גם כשהמקור הוא גיליון בגוגל.</li>
+<li>פעם ב-24 שעות Tableau Public מרעננת את מקורות הנתונים שמגיעים מגוגל שיטס. היא מקצה לכל חוברת אחד משלושה חלונות זמן ביום, ואי אפשר לבחור שעה אחרת או תדירות אחרת.</li>
+<li>המחבר יכול לבקש ריענון מיידי עם <code>Request Update</code>.</li>
+<li>בתוכנה (Desktop Public Edition) יש אפשרות בשם <code>Keep this data in sync</code>.</li>
+<li>לכל מקור נתונים אחר, כמו Excel או CSV, ריענון אוטומטי לא נתמך.</li>
+</ul>
+
+<h3>ההנפשה: השרשרת מהמסד ועד הצופה</h3>
+<div class="anim" data-id="m15-anim-sheet" data-speed="3800">
+<div class="stage"><svg viewBox="0 0 840 320" role="img" aria-label="הנפשה: שורה חדשה נכתבת לגיליון בגוגל, הצופים עדיין רואים את הישן, ואחרי הריענון האוטומטי הם רואים את החדש">
+<defs>
+<marker id="m15a5-ar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#64748b"/></marker>
+<marker id="m15a5-gn" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#16a34a"/></marker>
+</defs>
+<g font-weight="700" text-anchor="middle">
+<rect x="6" y="40" width="130" height="80" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="71" y="76" font-size="16" fill="#3730a3">מסד נתונים</text><text x="71" y="98" font-size="13" fill="#4f46e5">SQL</text>
+<rect x="176" y="40" width="130" height="80" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="241" y="76" font-size="16" fill="#3730a3">סקריפט</text><text x="241" y="98" font-size="13" fill="#4f46e5">או הדבקה ידנית</text>
+<rect x="346" y="40" width="130" height="80" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="411" y="76" font-size="16" fill="#065f46">גיליון בגוגל</text><text x="411" y="98" font-size="13" fill="#065f46">Google Drive</text>
+<rect x="556" y="40" width="150" height="80" rx="12" fill="#eff6ff" stroke="#1f77b4" stroke-width="2.5"/><text x="631" y="76" font-size="16" fill="#14507a">Tableau Public</text><text x="631" y="98" font-size="13" fill="#14507a">עותק (extract)</text>
+<rect x="746" y="40" width="88" height="80" rx="12" fill="#f8fafc" stroke="#64748b" stroke-width="2"/><text x="790" y="86" font-size="16" fill="#334155">צופים</text>
+</g>
+<g stroke="#64748b" stroke-width="3" fill="none"><path d="M139,80 L172,80" marker-end="url(#m15a5-ar)"/><path d="M309,80 L342,80" marker-end="url(#m15a5-ar)"/><path d="M709,80 L742,80" marker-end="url(#m15a5-ar)"/></g>
+<g><path d="M479,80 L552,80" stroke="#94a3b8" stroke-width="3" fill="none" stroke-dasharray="7 5" marker-end="url(#m15a5-ar)"/><text x="515" y="68" text-anchor="middle" font-size="14" font-weight="800" fill="#475569">כל 24 שעות</text></g>
+<g data-only="2"><rect x="174" y="38" width="134" height="84" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/><text x="241" y="150" text-anchor="middle" font-size="14" font-weight="800" fill="#9a4a0b">נכתבת שורה 57</text></g>
+<g data-only="3"><path d="M479,80 L552,80" stroke="#dc2626" stroke-width="3" fill="none" stroke-dasharray="7 5"/><text x="515" y="100" text-anchor="middle" font-size="14" font-weight="800" fill="#dc2626">עוד לא התרענן</text></g>
+<g data-only="4"><path d="M479,80 L552,80" stroke="#16a34a" stroke-width="4" fill="none" marker-end="url(#m15a5-gn)"/><text x="515" y="104" text-anchor="middle" font-size="14" font-weight="800" fill="#166534">ריענון</text><rect x="554" y="38" width="154" height="84" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="5"><rect x="574" y="136" width="114" height="30" rx="8" fill="#1f77b4"/><text x="631" y="157" text-anchor="middle" font-size="14" font-weight="800" fill="#fff" font-family="ui-monospace,Menlo,monospace">Request Update</text></g>
+<g text-anchor="middle" font-weight="900" font-size="40">
+<g data-only="1"><text x="411" y="214" fill="#065f46">56</text></g>
+<g data-only="2,3,4,5"><text x="411" y="214" fill="#065f46">57</text></g>
+<g data-only="1,2,3"><text x="631" y="214" fill="#14507a">56</text></g>
+<g data-only="4,5"><text x="631" y="214" fill="#14507a">57</text></g>
+</g>
+<g text-anchor="middle" font-size="14" fill="#334155"><text x="411" y="236">שורות בגיליון</text><text x="631" y="236">שורות בדשבורד המפורסם</text></g>
+<g data-only="3"><text x="420" y="288" text-anchor="middle" font-size="16" font-weight="800" fill="#991b1b">הפער נמשך עד הריענון הבא, או עד שהמחבר מבקש עדכון</text></g>
+<g data-only="4"><text x="420" y="288" text-anchor="middle" font-size="16" font-weight="800" fill="#166534">אחרי הריענון הצופים רואים 57 שורות</text></g>
+</svg></div>
+<ol class="caps">
+<li>הגיליון בגוגל והדשבורד המפורסם מראים את אותם 56 ימים של הכנסות.</li>
+<li>יום חדש נכנס. סקריפט (או אתם, בהדבקה) כותב שורה 57 לגיליון. הגיליון מעודכן מיד.</li>
+<li>הדשבורד המפורסם עוד לא יודע. הצופים רואים 56 שורות. אין חיבור חי: הריענון הבא יקרה פעם בתוך 24 שעות, בחלון שאי אפשר לבחור.</li>
+<li>הריענון האוטומטי קורה, ו-Tableau Public לוקחת עותק חדש של הגיליון. הצופים רואים 57.</li>
+<li>המחבר לא חייב לחכות: <code>Request Update</code> מבקש ריענון עכשיו.</li>
+</ol></div>
+
+<p>עכשיו נשחק עם זה על נתונים אמיתיים של יבגני. הגיליון מתחיל עם הימים עד 23 במאי 2026, ויש עוד שש שורות של ימים שמחכות. נסו קודם עם <code>Keep this data in sync</code> מסומן, ואחר כך בלי.</p>
+
+<div class="sim" data-id="m15-sim-sheet"><div class="sh">הגיליון בגוגל מול הדשבורד המפורסם</div>
+<div class="m15-btns"><label style="font-weight:700;display:flex;gap:6px;align-items:center"><input type="checkbox" data-k="sync" checked> <span dir="ltr" style="unicode-bidi:isolate">Keep this data in sync</span></label>
+<button type="button" class="btn" data-k="add">יבגני מוסיף יום לגיליון</button>
+<button type="button" class="btn sec2" data-k="day">עברו 24 שעות</button>
+<button type="button" class="btn sec2" data-k="req" dir="ltr">Request Update</button>
+<button type="button" class="btn sec2" data-k="reset">איפוס</button></div>
+<div class="m15-tl">
+<div><h5>הגיליון בגוגל</h5><div class="big" data-k="sheetTot"></div><div data-k="sheetInfo"></div></div>
+<div><h5>הדשבורד שהצופים רואים</h5><div class="big" data-k="vizTot"></div><div data-k="vizInfo"></div></div>
+</div>
+<div class="out" data-k="msg"></div>
+<p class="m15-note-sm">הדמיה לפי התיעוד, לא לפי התוכנה. אין בה שעות, כי אי אפשר לבחור את שעת הריענון. ההתנהגות של האפשרות <code>Keep this data in sync</code> לפי התיעוד: היא מפעילה את הסנכרון. בדקו את השם והמיקום שלה בגרסה שלכם.</p>
+</div>
+<script>
+(function () { FL.dom(function () {
+  var box = FL.$('[data-id="m15-sim-sheet"]'); if (!box || !window.M15) return;
+  var R = M15.Q.daily_revenue.run(), START = 50;
+  var sheetN = START, vizN = START, nAdd = 0, nRef = 0;
+  var $ = function (k) { return FL.$('[data-k="' + k + '"]', box); };
+  function tot(n) { var s = 0, o = 0; for (var i = 0; i < n; i++) { s += R[i][2]; o += R[i][1]; } return [s, o]; }
+  function info(n) { var t = tot(n); return 'שורות: <b class="n">' + n + '</b> · נתונים עד <b class="n">' + R[n - 1][0] + '</b> · הזמנות: <b class="n">' + t[1] + '</b>'; }
+  function render(msg) {
+    $('sheetTot').textContent = M15.fmtNum(tot(sheetN)[0]); $('vizTot').textContent = M15.fmtNum(tot(vizN)[0]);
+    $('sheetInfo').innerHTML = info(sheetN); $('vizInfo').innerHTML = info(vizN);
+    $('vizTot').classList.toggle('stale', vizN !== sheetN);
+    $('add').disabled = sheetN >= R.length;
+    $('req').disabled = !$('sync').checked;
+    var gap = sheetN - vizN, h = '';
+    if (gap) h += '<b>הצופים מפגרים ב-' + gap + ' שורות.</b> ההכנסות שהם לא רואים: ' + M15.fmtNum(tot(sheetN)[0] - tot(vizN)[0]) + '. ';
+    else h += 'אין פער כרגע: הגיליון והדשבורד זהים. ';
+    $('msg').innerHTML = h + (msg ? '<br>' + FL.esc(msg) : '');
+  }
+  $('add').addEventListener('click', function () { if (sheetN >= R.length) return; var r = R[sheetN]; sheetN++; nAdd++; render('נוספה שורה לגיליון: ' + r[0] + ', הכנסות ' + r[2] + '. הגיליון התעדכן מיד. הדשבורד המפורסם לא.'); chk(); });
+  $('day').addEventListener('click', function () {
+    if ($('sync').checked) { var ch = vizN !== sheetN; vizN = sheetN; nRef++; render(ch ? 'עבר ריענון אוטומטי: Tableau Public קראה את הגיליון והדשבורד התעדכן.' : 'עבר ריענון אוטומטי, אבל לא היה מה לעדכן.'); }
+    else render('עברו 24 שעות ולא קרה כלום: בלי סנכרון, Tableau Public לא קוראת שוב את הגיליון, בדיוק כמו עם קובץ Excel או CSV.');
+    chk();
+  });
+  $('req').addEventListener('click', function () { if (!$('sync').checked) return; var ch = vizN !== sheetN; vizN = sheetN; nRef++; render(ch ? 'המחבר ביקש עדכון והדשבורד התעדכן בלי לחכות.' : 'ביקשתם עדכון, אבל לא היה מה לעדכן.'); chk(); });
+  $('reset').addEventListener('click', function () { sheetN = vizN = START; render('אפסנו: הגיליון והדשבורד מראים 50 ימים, עד 23 במאי.'); });
+  $('sync').addEventListener('change', function () { render($('sync').checked ? 'הסנכרון מסומן.' : 'הסנכרון כבוי: Tableau Public לא תרענן את הדשבורד מהגיליון.'); });
+  function chk() { if (nAdd >= 2 && nRef >= 1) FL.done('m15-sim-sheet'); }
+  render('לחצו על ״יבגני מוסיף יום לגיליון״ וצפו בפער.');
+}); })();
+</script>
+
+<h3>מקימים את השרשרת: תרגיל</h3>
+<div class="box note"><b>דורש חשבון גוגל.</b> אם אין לכם, עברו להדמיה למעלה: היא מראה את אותו הדבר. את התרגיל הזה אי אפשר לעשות בלי חשבון גוגל וחשבון Tableau Public. גיליון בגוגל שמתפרסם דרך Public הופך לעותק ציבורי: השתמשו רק בנתונים הבדויים של הקורס.</div>
+
+<div class="box try" data-id="m15-try-sheet">
+<ol>
+<li>הוציאו את <code>daily_revenue.csv</code> (בסקריפט, בדרך ב, או בסימולטור של סעיף 3). למה: זה הקובץ שיהפוך לגיליון.</li>
+<li>בגוגל שיטס צרו גיליון ריק, ובתפריט <code>File</code> בחרו <code>Import</code> והעלו את הקובץ. למה: ככה מתקבל גיליון גוגל אמיתי (ולא קובץ CSV שיושב בדרייב), וזה מה שה-Public מרענן. שמות הכפתורים בממשק של גוגל עשויים להיות שונים.</li>
+<li>בדקו בגיליון: שורת כותרת (<code>order_date</code>, <code>orders</code>, <code>revenue</code>) ו-56 שורות נתונים.</li>
+<li>ב-Tableau Public: <code>Connect</code>, אחר כך <code>More...</code> ובו <code>Google Drive</code>. התחברו לחשבון גוגל ובחרו את הגיליון. בגרסה שלכם ייתכן שהמיקום או השם שונים מעט.</li>
+<li>בעמוד Data Source: 3 שדות. גררו <code>order_date</code> ל-<code>Columns</code> ובחרו מהתפריט של ה-pill את <code>Exact Date</code>, וגררו <code>revenue</code> ל-<code>Rows</code>. למה: ציר זמן רציף, בלי איחוד לחודשים.</li>
+<li>בפרסום, בחרו את האפשרות <code>Keep this data in sync</code> אם היא מוצעת (פרטי הפרסום במודול 14). בגרסה שלכם ייתכן שהיא נמצאת במקום אחר.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> 56 סימנים על הקו. הראשון ב-2 במרץ 2026, 110. האחרון ב-31 במאי 2026, 118. היום החזק ביותר הוא 8 במאי, 661 (שלוש הזמנות). סך <code>SUM(revenue)</code> הוא 12,884, וסך ההזמנות 82, בדיוק כמו בקובץ של המנות. את הריענון עצמו אפשר לראות רק אחרי זמן: הוסיפו שורה לגיליון ובדקו את הדשבורד המפורסם למחרת.</p></div>
+
+<figure class="shot" data-shot="m15-connect-drive">
+<div class="fb"><div style="direction:ltr;display:grid;grid-template-columns:200px 1fr;border-radius:10px;overflow:hidden;border:1px solid #c7cfd9;max-width:560px;margin:auto"><div style="background:#365a7c;color:#fff;padding:10px 14px;font-size:.84rem;line-height:1.9"><b style="font-size:1.1rem">Connect</b><br><span style="opacity:.6">To a File</span><br>Microsoft Excel<br>Text file<br>JSON file<br>PDF file<br>Spatial file<br>Statistical file<br><span style="opacity:.6">To a Server</span><br>OData<br>More... ›</div><div style="background:#f9f9f9;padding:10px 14px;font-size:.84rem;line-height:1.9;color:#334155"><b>More...</b><br><span style="background:#d7e7f5;border-radius:4px;padding:0 6px">Google Drive</span><br><span style="opacity:.4">(שאר המחברים בגרסה שלכם)</span></div></div>
+<div class="need">צילום מסך נדרש: Tableau Public, חלונית Connect אחרי לחיצה על More..., עם Google Drive ברשימה</div></div>
+<figcaption>הדמיה סכמטית של מקום המחבר, לפי התיעוד הרשמי. המיקום המדויק לא אומת מול התוכנה, ובגרסה שלכם הוא עשוי להיות שונה.</figcaption>
+</figure>
+
+<h3>הגיליון שקורא את הקובץ בעצמו: IMPORTDATA</h3>
+<p>עכשיו הבעיה ההפוכה: הקובץ לא יושב בגיליון, הוא יושב ב-GitHub. ל-Tableau Public אין מחבר לכתובת, אבל לגיליון בגוגל יש פונקציה כזאת.</p>
+<div class="defline"><b><code>IMPORTDATA</code>:</b> פונקציה בגוגל שיטס שמביאה לתאים תוכן של קובץ CSV או TSV מכתובת אינטרנט. דוגמה: <code>=IMPORTDATA("https://...")</code> בתא A1 ממלאת את הגיליון בטבלה של הקובץ.</div>
+
+<div class="m15-gs" aria-label="הדמיה סכמטית של גיליון בגוגל עם IMPORTDATA">
+<div class="fx"><b>fx</b> =IMPORTDATA(&quot;https://raw.githubusercontent.com/USER/REPO/main/dish_revenue.csv&quot;)</div>
+<table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+<tr><td class="rh">1</td><td>dish</td><td>category</td><td>units</td><td>revenue</td><td>gross_profit</td></tr>
+<tr><td class="rh">2</td><td>סלמון בתנור</td><td>main</td><td>36</td><td>3204</td><td>1836</td></tr>
+<tr><td class="rh">3</td><td>פסטה שמנת</td><td>main</td><td>30</td><td>1770</td><td>1230</td></tr>
+<tr><td class="rh">4</td><td>המבורגר בקר</td><td>main</td><td>22</td><td>1496</td><td>902</td></tr>
+<tr><td class="rh">...</td><td>...</td><td></td><td></td><td></td><td></td></tr></table>
+<div class="tab">Sheet1 · הדמיה סכמטית</div></div>
+
+<p>הכתובת נראית כך. כל חלק מכתובת ה-<code>raw</code> הוא משהו אחר, ואם טועים באחד מהם מקבלים שגיאה:</p>
+<div class="m15-url">https://raw.githubusercontent.com/<b class="a">USER</b>/<b class="b">REPO</b>/<b class="c">main</b>/<b class="d">dish_revenue.csv</b></div>
+<ul class="m15-steps">
+<li><b>USER</b>: שם המשתמש שלכם ב-GitHub.</li>
+<li><b>REPO</b>: שם המאגר (repository) שבו שמרתם את הקובץ.</li>
+<li><b>main</b>: שם הענף. במאגרים ישנים הוא עשוי להיות <code>master</code>.</li>
+<li><b>dish_revenue.csv</b>: שם הקובץ. אותיות גדולות וקטנות חשובות.</li>
+</ul>
+
+<div class="box try" data-id="m15-try-importdata">
+<p><b>אופציונלי: דורש חשבון גוגל וחשבון GitHub.</b> שימו לב ש<b>מאגר ציבורי חושף את הקובץ לכל העולם</b>. השתמשו רק בנתונים הבדויים.</p>
+<ol>
+<li>ב-<a href="https://github.com" target="_blank" rel="noopener">GitHub</a> צרו מאגר ציבורי חדש, והעלו אליו את <code>dish_revenue.csv</code> (לחצן <code>Add file</code>, אחר כך <code>Upload files</code>; שמות הכפתורים עלולים להיות שונים). למה: זה המקום שמגיש את הקובץ בכתובת.</li>
+<li>פתחו את הקובץ במאגר ולחצו על <code>Raw</code>. העתיקו את הכתובת משורת הכתובת של הדפדפן. היא צריכה להתחיל ב-<code>raw.githubusercontent.com</code>. למה: זו הכתובת של התוכן עצמו, בלי העמוד של GitHub סביבו.</li>
+<li>בגיליון חדש בגוגל שיטס, בתא <code>A1</code>, כתבו <code>=IMPORTDATA("הכתובת שהעתקתם")</code>. למה: הגיליון יביא את הטבלה בעצמו.</li>
+<li>חברו את הגיליון ל-Tableau Public כמו בתרגיל הקודם.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> הגיליון מתמלא בטווח <code>A1:E11</code>: 11 שורות (כותרת ועוד 10) ו-5 עמודות. בתא <code>A1</code> כתוב <code>dish</code>, ובשורה השנייה סלמון בתנור, 36, 3204. אחרי החיבור ב-Tableau Public: 10 שורות, ו-<code>SUM(revenue)</code> הוא 12,884. אם התא מציג שגיאה, בדקו שהכתובת בתוך מירכאות ושהמאגר ציבורי.</p></div>
+
+<div class="box note"><b>לא זמין ב-Tableau Public: ככה עובדים סביב זה</b>
+<p><b>רוצים שהקובץ ב-GitHub יתעדכן לבד?</b> אפשר להריץ סקריפט לפי לוח זמנים בעזרת GitHub Actions, שכותב את הקובץ ועושה commit. לפי התיעוד של GitHub: התדירות הכי גבוהה היא פעם בחמש דקות, ההרצה קורית רק על הענף הראשי, היא יכולה להתעכב כשיש עומס, ובמאגר ציבורי הפעלה לפי לוח זמנים מושבתת אוטומטית אחרי 60 יום בלי פעילות במאגר. אין לזה קשר ל-Tableau: הצד של Public נשאר גיליון בגוגל, ופעם ב-24 שעות.</p>
+<p class="tools"><a class="tool" href="https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows" target="_blank" rel="noopener">התיעוד של GitHub על schedule</a></p></div>
+
+<div class="box note"><b>לא זמין ב-Tableau Public: ככה עובדים סביב זה</b>
+<p><b>וכשרוצים שסקריפט יכתוב ישר לגיליון?</b> ספריית <code>gspread</code> עושה את זה. זה לא תרגיל חובה: צריך חשבון שירות ב-Google Cloud, קובץ מפתח ששמים בצד (לא ב-GitHub!), ושיתוף של הגיליון עם כתובת האימייל של חשבון השירות. הנה הצורה, אחרי שכבר יש הכול:</p>
+<pre class="code" data-lang="python">import os
+import sqlite3
+import gspread
+
+con = sqlite3.connect(":memory:")
+with open("yevgeni-sqlite.sql", encoding="utf-8") as f:
+    con.executescript(f.read())
+cur = con.execute("""
+SELECT substr(o.order_ts, 1, 10) AS order_date,
+       COUNT(DISTINCT o.id) AS orders,
+       SUM(i.qty * d.price) AS revenue
+FROM orders o
+JOIN order_items i ON i.order_id = o.id
+JOIN dishes d ON d.id = i.dish_id
+WHERE o.status = 'delivered'
+GROUP BY order_date
+ORDER BY order_date
+""")
+header = [d[0] for d in cur.description]
+rows = [list(r) for r in cur]
+
+gc = gspread.service_account(filename="service_account.json")  # keep this file out of git
+ws = gc.open_by_key(os.environ["SHEET_KEY"]).sheet1
+ws.clear()
+ws.update([header] + rows, "A1")</pre>
+<p>הסקריפט הזה כותב את אותו <code>daily_revenue</code> לגיליון. כדי שירוץ בכל לילה צריך לתזמן אותו (cron, או GitHub Actions), וזה כבר מחוץ לתחום של Tableau.</p></div>
+
+<div class="box meaning"><p>השרשרת המלאה שאפשר לבנות רק עם Tableau Public היא: מסד נתונים, סקריפט, גיליון בגוגל, ריענון אוטומטי של Public, דשבורד. זה הכי קרוב ל&quot;חי&quot; שאפשר לקבל בלי גרסה מורשית. ועדיין: הנתונים מתעדכנים פעם בעשרים וארבע שעות, בשעה שלא בוחרים, ולא בהכרח אחרי הסקריפט שלכם.</p></div>
+
+<div class="box trap"><p><b>&quot;הגיליון פרטי, אז הנתונים פרטיים&quot;.</b> הגיליון עצמו אכן מוגן, אבל בכל ריענון תוכנו מועתק ל-extract שמתפרסם, וכל צופה יכול להוריד אותו. הרשאות השיתוף של הגיליון לא מגנות על הדשבורד. <b>מה עושים:</b> שמים בגיליון רק מה שמוכנים לפרסם, כאילו הוא הדשבורד.</p></div>
+
+<div class="box trap"><p><b>שלוש הפתעות קטנות.</b> (1) סקריפט שרץ ב-03:00 לא מבטיח שהגיליון יהיה מעודכן לפני הריענון של Tableau, כי אתם לא בוחרים את שעת הריענון. (2) אם יש לכם כמה טבלאות מקושרות (<code>relationships</code>), לפי התיעוד כל הטבלאות צריכות להיות גיליונות גוגל כדי שהמקור יתרענן. (3) בדקו כל כמה שבועות שהריענון עדיין קורה: בתיעוד לא מצאנו כמה זמן Tableau Public שומרת את ההרשאה לחשבון גוגל שלכם.</p></div>
+
+<div class="box real"><p>קובץ CSV או XLSX שיושב ב-Google Drive, בלי להיות גיליון גוגל, לא מתרענן אוטומטית (לפי התיעוד רק גיליונות גוגל). בדרייב יש גם מגבלה: לפי התיעוד, מספר התאים בגיליון מוגבל לכמה מיליונים, ובפרסום מהדפדפן אי אפשר להשתמש בכמה חשבונות גוגל. בפועל, גיליון של 56 שורות הוא רחוק מכל המגבלות האלה.</p></div>
+
+<div class="quiz" data-id="m15-q-24h" data-a="2"><p class="qq">הוספתם שורה לגיליון בגוגל, והדשבורד מחובר אליו דרך Google Drive, עם סנכרון. מתי הצופים יראו אותה?</p>
+<button class="opt">מיד, כי הדשבורד חי</button>
+<button class="opt">בריענון האוטומטי הבא (פעם ב-24 שעות), או כשהמחבר מבקש עדכון</button>
+<button class="opt">רק כשמישהו מפרסם את הדשבורד מחדש</button>
+<div class="why">ב-Public אין חיבור חי. הריענון האוטומטי הוא עותק חדש פעם ביממה, והמחבר יכול להקדים אותו עם <code>Request Update</code>. פרסום מחדש נדרש רק למקורות אחרים, כמו Excel או CSV.</div></div>
+
+<div class="quiz" data-id="m15-q-sheet-private" data-a="3"><p class="qq">הגיליון בגוגל משותף רק איתכם. אחרי שמפרסמים דרכו דשבורד ב-Public, מי יכול לראות את הנתונים שבו?</p>
+<button class="opt">רק אתם, כי הגיליון פרטי</button>
+<button class="opt">רק מי שיש לו קישור לגיליון</button>
+<button class="opt">כל מי שפותח את הדשבורד, ואפשר גם להוריד אותם, כי תוכן הגיליון הועתק ל-extract שפורסם</button>
+<div class="why">ההרשאות של הגיליון חלות על הגיליון. הדשבורד מכיל עותק, וברירת המחדל ב-Public היא שכל אחד יכול להוריד את הנתונים. בסעיף 9 נדבר על זה לעומק.</div></div>
+
+<div class="box think" data-id="m15-th-cadence"><p>עם ריענון של פעם ב-24 שעות: לאילו משאלות של יבגני זה מספיק, ולאילו לא? בדקו על שתי שאלות: &quot;איזו מנה מכניסה הכי הרבה השנה?&quot; ו&quot;כמה משלוחים בדרך עכשיו?&quot;</p>
+<div class="ans">לשאלה הראשונה מספיק, ואפילו ריענון שבועי היה עושה את העבודה: המספר זז לאט. לשנייה לא: &quot;עכשיו&quot; פירושו חי, ובקרוב אפילו שעה היא יותר מדי. זו שאלה למערכת תפעולית, לא לדשבורד ציבורי. הכלל: מתאימים את תדירות הנתונים לקצב שבו ההחלטה משתנה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> התרגילים בסעיף הזה דורשים חשבונות גוגל, GitHub ו-Tableau Public, ולכן הם אופציונליים. מה שלא נבדק בתוכנה, ויש לבדוק לפני השיעור: האם מחבר Google Drive נמצא תחת More...; איפה בדיוק מופיעה האפשרות Keep this data in sync (בחלון השמירה ל-Public או בהגדרות המקור) ומה קורה כשלא מסמנים; האם הכפתור Request Update קיים בממשק הפרסום; האם קובץ CSV או XLSX שבדרייב (לא גיליון) ניתן לחיבור ולריענון. תדירות הריענון של IMPORTDATA לא תועדה בדף של גוגל שנקרא (הנפוץ בקהילה: פעם בשעה, לא מאומת), ולכן לא נבנה עליו דבר. מה שכן נבדק בפועל במחקר: כתובת raw ב-GitHub עונה עם מטמון של עד 5 דקות. סקריפט ה-gspread והדוגמה של GitHub Actions לא הורצו מול שירותים חיים. תפריט File, Import בגוגל שיטס: שמות הכפתורים לא תועדו במחקר. המספרים בתוצאות הצפויות (56 שורות, 12,884, 82 הזמנות, שיא של 661 ב-8 במאי) חושבו מהשאילתה בפייתון.</div>
+</section>
+
+<section class="sec" id="m15-6" data-t="פייתון ו-JSON">
+<div class="sec-h"><div class="sec-n">6</div><h2>פייתון ו-JSON: סקריפט קטן שמכין קובץ נקי</h2></div>
+<p class="lead">לא כל נתון יושב יפה בטבלה. באפליקציה של יבגני כל אירוע נשמר עם עמודה אחת של JSON, ובתוכה הכול. ל-Tableau Public יש מחבר לקובצי JSON, אבל לרוב הכי פשוט לתת לסקריפט קטן להכין טבלה נקייה. זה בעצם ה-Prep החינמי שלכם.</p>
+
+<div class="defline"><b>JSON:</b> טקסט שמתאר מידע כזוגות של שם וערך, בתוך סוגריים מסולסלים. דוגמה: <code>{"type": "order_placed", "device": "web", "items": 2}</code> מתארת אירוע אחד של הזמנה מהאינטרנט עם שני פריטים.</div>
+
+<p>הנה כמה אירועים מתוך <code>yevgeni_app_events.csv</code>. עמודת <code>payload</code> מכילה את ה-JSON. שימו לב לשני האירועים האחרונים: בשם של השדה השני יש הבדל.</p>
+<div class="m15-sc" style="max-height:none"><table class="m15-tb">
+<tr><th>id</th><th>order_id</th><th>event_ts</th><th>payload</th></tr>
+<tr><td>1</td><td>1</td><td><bdi dir="ltr">2026-03-02</bdi> 19:20</td><td>{"type": "order_placed", "<b>device</b>": "android", "items": 2, "promo": null}</td></tr>
+<tr><td>2</td><td>3</td><td><bdi dir="ltr">2026-03-05</bdi> 19:55</td><td>{"type": "order_placed", "<b>device</b>": "web", "items": 2, "promo": "FRIDAY5"}</td></tr>
+<tr class="hl"><td>30</td><td>56</td><td><bdi dir="ltr">2026-04-25</bdi> 19:15</td><td>{"type": "order_placed", "<b>device_type</b>": "web", "items": 2, "promo": "FRIDAY5"}</td></tr>
+<tr class="hl"><td>31</td><td>59</td><td><bdi dir="ltr">2026-04-30</bdi> 12:15</td><td>{"type": "order_placed", "<b>device_type</b>": "ios", "items": 1, "promo": null}</td></tr>
+</table></div>
+<p>האפליקציה שינתה את שם השדה מ-<code>device</code> ל-<code>device_type</code> בסוף אפריל. 29 האירועים הראשונים משתמשים בשם הישן ו-13 האחרונים בשם החדש. מי שקורא רק את <code>device</code> מקבל 13 ערכים ריקים מתוך 42, כמעט שליש, ושום הודעת שגיאה. זו תקלה שקטה, ושווה לבדוק אותה בדיוק כמו שבודקים סכום.</p>
+
+<h3>הסקריפט</h3>
+<p>הוא קורא את הקובץ, פותח את ה-JSON של כל אירוע, מקבל את שני השמות של השדה, וכותב שני קבצים: CSV ל-Tableau, וקובץ JSON שטוח, כדי שתוכלו לנסות גם את מחבר ה-JSON. שמרו אותו כ-<code>events_to_csv.py</code> לצד <a class="tool" href="data/yevgeni_app_events.csv">yevgeni_app_events.csv</a>.</p>
+<pre class="code" data-lang="python">import csv
+import json
+from collections import Counter
+
+# The app writes one JSON text per event into the "payload" column.
+with open("yevgeni_app_events.csv", encoding="utf-8") as f:
+    events = list(csv.DictReader(f))
+
+flat = []
+for e in events:
+    p = json.loads(e["payload"])
+    flat.append({
+        "id": int(e["id"]),
+        "order_id": int(e["order_id"]),
+        "event_ts": e["event_ts"],
+        "type": p["type"],
+        # the app renamed "device" to "device_type" in April: accept both
+        "device": p.get("device") or p.get("device_type"),
+        "items": p["items"],
+        "promo": p["promo"],
+    })
+
+# CSV for Tableau (UTF-8 with BOM)
+with open("app_events_flat.csv", "w", newline="", encoding="utf-8-sig") as f:
+    w = csv.DictWriter(f, fieldnames=list(flat[0].keys()))
+    w.writeheader()
+    w.writerows(flat)
+
+# The same rows as a JSON file (Tableau Public also reads JSON files)
+with open("app_events_flat.json", "w", encoding="utf-8") as f:
+    json.dump(flat, f, ensure_ascii=False, indent=2)
+
+print("events:", len(flat))
+print("by device:", dict(sorted(Counter(r["device"] for r in flat).items())))
+print("with promo:", sum(1 for r in flat if r["promo"]))
+print('missing if you read only "device":',
+      sum(1 for e in events if "device" not in json.loads(e["payload"])))</pre>
+<div class="mk mk-term" aria-label="פלט צפוי של הסקריפט"><div class="mk-bar"><i></i><i></i><i></i><span class="url">פלט צפוי</span></div><div class="mk-body"><span class="p">$</span> python3 events_to_csv.py
+events: 42
+by device: {'android': 16, 'ios': 12, 'web': 14}
+with promo: 20
+missing if you read only "device": 13</div></div>
+
+<div class="box try" data-id="m15-try-events">
+<p><b>מריצים ובונים גרף.</b></p>
+<ol>
+<li>הריצו את הסקריפט. למה: הוא יוצר את <code>app_events_flat.csv</code> ואת <code>app_events_flat.json</code>.</li>
+<li>ב-Tableau Public חברו את <code>app_events_flat.csv</code> כקובץ טקסט. בעמוד Data Source: 7 שדות ו-42 שורות.</li>
+<li>בגיליון: גררו <code>device</code> ל-<code>Rows</code> ו-<code>id</code> ל-<code>Columns</code>, ושנו את <code>SUM(id)</code> ל-<code>Count</code> (לחיצה ימנית על ה-pill, <code>Measure</code>, <code>Count</code>). למה: סכום של מספרי זיהוי לא אומר כלום, אנחנו סופרים אירועים.</li>
+<li>גררו <code>promo</code> ל-<code>Color</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלוש עמודות: android 16, web 14, ios 12, סך הכול 42, בלי עמודת <code>Null</code> עבור המכשיר. הצבע לפי <code>promo</code> מראה 20 אירועים עם קוד מבצע (FRIDAY5 או SPRING10) ו-22 בלי (<code>Null</code>). בחלוקה לפי מכשיר: android 6 עם מבצע ו-10 בלי, ios 5 ו-7, web 9 ו-5.</p></div>
+
+<div class="box try" data-id="m15-try-json">
+<p><b>אותו מידע דרך מחבר ה-JSON (אופציונלי).</b></p>
+<ol>
+<li>ב-Tableau Public: <code>Connect</code>, אחר כך <code>JSON file</code>, ובחרו את <code>app_events_flat.json</code>. למה: זה מחבר רשמי של Public. ייתכן שייפתח חלון לבחירת הרמות של הסכמה (<code>schema</code>). סמנו את הכול. בגרסה שלכם ייתכן שהשם שונה.</li>
+<li>בדקו בעמוד Data Source כמה שדות וכמה שורות יש.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שדות בשמות המפתחות (<code>id</code>, <code>order_id</code>, <code>event_ts</code>, <code>type</code>, <code>device</code>, <code>items</code>, <code>promo</code>) ו-42 שורות, כלומר אותו מידע כמו ב-CSV. Tableau סורק רק את 10,000 השורות הראשונות כדי להבין את המבנה, ולכן בקובץ גדול שדה שמופיע רק בשורה 20,000 עלול לא להיות שם.</p></div>
+
+<h3>פייתון כ-Prep חינמי</h3>
+<p>Tableau Prep הוא מוצר נפרד לניקוי ועיצוב נתונים, והוא לא חלק מ-Tableau Public (נספח, סעיף 10). את אותן פעולות אפשר לעשות בסקריפט:</p>
+<div class="tw"><table class="tbl">
+<tr><th>מה עושים ב-Prep</th><th>איך עושים בסקריפט</th></tr>
+<tr><td>להוריד עמודות</td><td>פשוט לא מעתיקים אותן לקובץ החדש</td></tr>
+<tr><td>לסנן שורות</td><td><code>if row["status"] != "delivered": continue</code></td></tr>
+<tr><td>לסכם</td><td>מילון (<code>defaultdict</code>) שמסכם לפי מפתח, או <code>GROUP BY</code> ב-SQL</td></tr>
+<tr><td>לצרף טבלאות</td><td><code>JOIN</code> ב-SQL (סעיף 3), או מילון</td></tr>
+<tr><td>לתקן תאריכים וטקסט</td><td>פונקציות טקסט של פייתון, וכתיבת תאריך בצורה ISO (<code>2026-05-31</code>)</td></tr>
+</table></div>
+<p>הדוגמה הבאה לוקחת את הקובץ השטוח <code>yevgeni_fact_sales.csv</code> (219 שורות, עם שם הלקוח, העיר והשליח), ומוציאה ממנו קובץ לפרסום: בלי עמודות אישיות, רק הזמנות שנמסרו, ומסוכם לפי תאריך, ערוץ וקטגוריה.</p>
+<pre class="code" data-lang="python">import csv
+from collections import defaultdict
+
+# Python as a free "Prep": read the flat file, drop what must not travel,
+# keep what the chart needs, aggregate, write a new CSV.
+groups = defaultdict(lambda: [0, 0])      # key -&gt; [units, revenue]
+with open("yevgeni_fact_sales.csv", encoding="utf-8") as f:
+    for row in csv.DictReader(f):
+        if row["status"] != "delivered":  # the definition of revenue: delivered only
+            continue
+        key = (row["order_date"], row["channel"], row["category"])
+        groups[key][0] += int(row["qty"])
+        groups[key][1] += int(row["line_revenue"])
+
+# customer_id, customer_name, city, courier and order_ts are simply never copied.
+with open("public_sales.csv", "w", newline="", encoding="utf-8-sig") as f:
+    w = csv.writer(f)
+    w.writerow(["order_date", "channel", "category", "units", "revenue"])
+    for (d, ch, cat), (units, revenue) in sorted(groups.items()):
+        w.writerow([d, ch, cat, units, revenue])
+
+print("rows:", len(groups))
+print("units:", sum(v[0] for v in groups.values()))
+print("revenue:", sum(v[1] for v in groups.values()))</pre>
+<div class="mk mk-term" aria-label="פלט צפוי של הסקריפט"><div class="mk-bar"><i></i><i></i><i></i><span class="url">פלט צפוי</span></div><div class="mk-body"><span class="p">$</span> python3 clean_for_public.py
+rows: 147
+units: 264
+revenue: 12884</div></div>
+
+<div class="box try" data-id="m15-try-clean">
+<ol>
+<li>שמרו את הסקריפט כ-<code>clean_for_public.py</code> לצד <a class="tool" href="data/yevgeni_fact_sales.csv">yevgeni_fact_sales.csv</a> והריצו אותו. למה: הוא יוצר את <code>public_sales.csv</code>.</li>
+<li>פתחו את <code>public_sales.csv</code> בעורך טקסט וחפשו את השם של לקוח או עיר. למה: בודקים שמה שהסתרתם באמת לא שם.</li>
+<li>חברו את הקובץ ל-Tableau Public, ובגיליון גררו <code>channel</code> ל-<code>Rows</code> ו-<code>revenue</code> ל-<code>Columns</code>, וצבעו לפי <code>category</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בקובץ 147 שורות ו-5 עמודות (<code>order_date</code>, <code>channel</code>, <code>category</code>, <code>units</code>, <code>revenue</code>), ואף שם של לקוח לא מופיע. ב-Tableau: סך הכנסות 12,884. לפי ערוץ: app 6,180, phone 3,492, walk-in 3,212. לפי קטגוריה: main 8,864, starter 1,966, drink 1,370, dessert 684. סך היחידות 264.</p></div>
+
+<div class="box note"><b>לא זמין ב-Tableau Public: ככה עובדים סביב זה</b>
+<p><b>קובץ <code>.hyper</code> (מתקדמים, אופציונלי).</b> Hyper הוא המנוע שבתוך Tableau, ו-<code>.hyper</code> הוא קובץ extract שלו, עם עמודות מוגדרות לפי סוג. ספריית <code>Hyper API</code> של Tableau מאפשרת לסקריפט לכתוב קובץ כזה ישירות. לפי התיעוד היא דורשת פייתון 3.11 ומעלה, ומותקנת בעזרת <code>pip install tableauhyperapi</code>. נכון לאוקטובר 2026, בדקו בתיעוד: ב-Mac הגרסאות החדשות ביותר ב-PyPI לא כללו קובץ התקנה למק, ו-<code>pip</code> התקין בשקט גרסה ישנה יותר. מי שנתקע, יכול להצמיד גרסה: <code>pip install "tableauhyperapi==0.0.26479"</code>.</p>
+<p>הסקריפט הבא מעתיק את <code>dish_revenue.csv</code> לקובץ <code>dish_revenue.hyper</code>, בלי pandas. הצורה שלו נבדקה על קובץ אחר באותו מבנה, וצריך להתאים את העמודות לקובץ שלכם:</p>
+<pre class="code" data-lang="python">from tableauhyperapi import (HyperProcess, Telemetry, Connection, CreateMode,
+                             TableDefinition, TableName, SqlType, escape_string_literal)
+
+table = TableDefinition(TableName("Extract", "Extract"), [
+    TableDefinition.Column("dish", SqlType.text()),
+    TableDefinition.Column("category", SqlType.text()),
+    TableDefinition.Column("units", SqlType.big_int()),
+    TableDefinition.Column("revenue", SqlType.double()),
+    TableDefinition.Column("gross_profit", SqlType.double()),
+])
+
+with HyperProcess(Telemetry.DO_NOT_SEND_USAGE_DATA_TO_TABLEAU) as hyper:
+    with Connection(hyper.endpoint, "dish_revenue.hyper", CreateMode.CREATE_AND_REPLACE) as conn:
+        conn.catalog.create_schema("Extract")
+        conn.catalog.create_table(table)
+        n = conn.execute_command(
+            f"COPY {table.table_name} FROM {escape_string_literal('dish_revenue.csv')} "
+            "WITH (FORMAT CSV, HEADER)")
+        print("rows copied:", n)</pre>
+<p><b>האם Tableau Public פותח קובץ כזה?</b> הסימנים חיוביים (התוכנה רושמת את הסיומת כסוג קובץ שהיא פותחת, ומדריכים מקובלים מצביעים על <code>Connect</code>, <code>More...</code>, <code>Tableau Data Extract</code>), אבל המחקר לא ראה את זה בעיניים. אם זה עובד אצלכם, תראו טבלה בשם <code>Extract</code>. אם לא, השתמשו ב-CSV: הוא עושה אותו דבר. קובץ <code>.hyper</code> נותן עמודות מוגדרות לפי סוג ומהירות על מיליוני שורות, אבל אין בו ריענון אוטומטי, והוא לא מגן על הנתונים: מה שמתפרסם הוא ציבורי גם כך.</p></div>
+
+<div class="box meaning"><p>התפקיד של הסקריפט הוא להפוך נתונים של אנשים (ושל תוכנות) לטבלה שאפשר לסמוך עליה, ולהוציא ממנה מה שלא צריך לצאת. כל מה שהסקריפט עושה חוזר על עצמו בדיוק, בכל הרצה, ואפשר לקרוא אותו ולבדוק אותו. זה היתרון על לחיצות בכלי חזותי: הלחיצות לא נשארות כתובות.</p></div>
+
+<div class="box trap"><p><b>הקובץ יצא, ואף אחד לא בדק את המספרים.</b> סקריפט שרץ בלי שגיאה לא מבטיח תוצאה נכונה: בדוגמה של <code>device</code> אין שום שגיאה, רק 13 ערכים ריקים. <b>מה עושים:</b> כל סקריפט מדפיס בסוף כמה שורות ומה הסכום, ואתם משווים אותם למה שציפיתם (42 אירועים, 12,884).</p></div>
+
+<div class="box real"><p>בעבודה אמיתית עושים את זה לפני שהנתונים נכנסים לכלי הדשבורדים: צינור נתונים (<code>pipeline</code>) שמוציא, מנקה ושומר. הרעיון מוכר מהשיעור על <a href="../final-lesson/part4.html#s4-3">ETL ו-ELT במפגש המסכם</a>. מה שעשיתם כאן הוא צינור קטן: חילוץ מקובץ, טרנספורמציה (סינון וסיכום), וטעינה לקובץ חדש.</p></div>
+
+<div class="quiz" data-id="m15-q-rename" data-a="1"><p class="qq">סקריפט קורא רק את <code>device</code>, ובדשבורד מופיעה עמודת <code>Null</code> גדולה. מה קרה?</p>
+<button class="opt">באירועים החדשים השדה נקרא <code>device_type</code>, ולכן הסקריפט לא מצא אותו ונתן ערך ריק</button>
+<button class="opt">Tableau לא יודע לקרוא JSON</button>
+<button class="opt">הקובץ ניפגם בזמן ההעתקה</button>
+<div class="why">שינוי שם של שדה במקור הוא תקלה שקטה: שום שגיאה, רק ערכים ריקים. התיקון הוא לקבל את שני השמות, ולהוסיף בדיקה שמדפיסה כמה ערכים חסרים.</div></div>
+
+<div class="box think" data-id="m15-th-python"><p>אתם יכולים לעשות את הניקוי ב-SQL, בסקריפט פייתון, או באקסל. מתי הייתם בוחרים בכל אחד?</p>
+<div class="ans">SQL: כשהנתונים כבר במסד והשאלה היא חיבור וסיכום. פייתון: כשיש צורך במשהו שקשה ב-SQL, כמו פתיחת JSON, כתיבה לכמה קבצים, או שליחה לגיליון בגוגל. אקסל: כשהקובץ קטן, חד-פעמי, ומי שיחזור עליו הוא בן אדם. הקריטריון הוא כמה פעמים זה יחזור ומי צריך להבין מה נעשה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> מספרים שאומתו בהרצה אמיתית של הסקריפטים: 42 אירועים; android 16, ios 12, web 14; 20 עם מבצע (FRIDAY5 11, SPRING10 9); 13 אירועים בשם device_type; public_sales.csv 147 שורות, 264 יחידות, 12,884 (app 6,180, phone 3,492, walk-in 3,212). לבדוק בתוכנה לפני השיעור: חלון בחירת הרמות של מחבר ה-JSON ושמות השדות שמתקבלים מקובץ שטוח, ופתיחת קובץ .hyper ב-Public דרך More... (המחקר רק ראה שהתוכנה רושמת את הסיומת ושלא נוצרה שגיאה, לא את המסך). סקריפט ה-Hyper API הורץ במחקר על קובץ אחר באותו מבנה, לא על dish_revenue.csv, ולכן להריץ לפני השיעור, ועל מק עם גרסה ישנה יותר של החבילה. אם המכונה לא מסוגלת, מדלגים: זו הרחבה, לא חובה.</div>
+</section>
+
+<section class="sec" id="m15-7" data-t="מבנה הנתונים">
+<div class="sec-h"><div class="sec-n">7</div><h2>מבנה הנתונים לדשבורד: טבלה אחת, כוכב, או קשרים</h2></div>
+<p class="lead">עכשיו יש לנו כמה קבצים. השאלה הבאה של יבגני: לתת ל-Tableau טבלה אחת גדולה, או כמה טבלאות? יש שלוש צורות, ולכל אחת יתרון וחיסרון. זה החיבור בין <a href="../final-lesson/part4.html#s4-4">סכמת כוכב בחלק 4 של המפגש המסכם</a> לבין מה שעושים ב-Tableau (<a href="module11.html">מודול 11</a>).</p>
+
+<div class="m15-shape">
+<div><h5>1. טבלה שטוחה</h5><p>טבלה אחת, שורה לכל פריט בהזמנה, וכל המידע כבר מצורף אליה.</p>
+<div class="mini">yevgeni_fact_sales.csv
+219 שורות, 14 עמודות
+order_id, dish, qty, customer_name,
+city, courier, line_revenue ...</div>
+<p><b>יתרון:</b> בלי חיבורים, וכל כלי יודע לקרוא אותה.<br><b>חיסרון:</b> שם הלקוח חוזר בכל שורה שלו, ואי אפשר להכניס בה בבטחה מדד של ההזמנה כולה.</p></div>
+<div><h5>2. כוכב</h5><p>טבלת עובדות אחת באמצע (אירועים ומספרים), וטבלאות תיאור מסביב, מחוברות במפתחות.</p>
+<div class="mini">order_items  (עובדות)
+ ├ dishes     (מנה)
+ ├ orders     (הזמנה)
+ └ customers, couriers</div>
+<p><b>יתרון:</b> כל פרט נשמר פעם אחת, ואותו מבנה מתאים להרבה שאלות.<br><b>חיסרון:</b> צריך לחבר, ולחבר לא נכון משבש מספרים.</p></div>
+<div><h5>3. קשרים ב-Tableau</h5><p>הטבלאות נשארות נפרדות. מגדירים אילו שדות תואמים, ו-Tableau מחבר לפי מה שהגיליון צריך.</p>
+<div class="mini">5 קבצים:
+customers 18 · dishes 10
+couriers 3 · orders 87
+order_items 219</div>
+<p><b>יתרון:</b> לפי התיעוד, שורות לא מוכפלות וגם שורות בלי התאמה לא נעלמות.<br><b>חיסרון:</b> צריך להבין אילו טבלאות נמצאות בכל גיליון.</p></div>
+</div>
+
+<div class="defline"><b>קשר (<code>relationship</code>) ב-Tableau:</b> הגדרה של אילו שדות בשתי טבלאות תואמים, בלי למזג את הטבלאות. Tableau בוחר בעצמו איך לחבר בכל גיליון. דוגמה: <code>orders.id</code> תואם ל-<code>order_items.order_id</code>, וההזמנות נשארות 87.</div>
+<div class="defline"><b><code>Join</code> (חיבור):</b> הדבקה של שתי טבלאות לטבלה אחת קבועה, לפי מפתח, עוד לפני שמנתחים. דוגמה: כל שורת פריט מקבלת לידה את שורת ההזמנה שלה.</div>
+
+<h3>מה קורה כשמחברים לא נכון: ההנפשה</h3>
+<p>בטבלת ההזמנות יש <code>tip</code>, תשר לכל הזמנה. סכום כל התשרים הוא 209. בואו נחבר אותה לשורות הפריט ב-<code>Join</code> ונסכם שוב.</p>
+
+<div class="anim" data-id="m15-anim-fanout" data-speed="3800">
+<div class="stage"><svg viewBox="0 0 840 340" role="img" aria-label="הנפשה: הזמנה 12 עם תשר 10 וארבע שורות פריט. אחרי join התשר מופיע ארבע פעמים והסכום קופץ מ-209 ל-517">
+<defs><marker id="m15a7-ar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#64748b"/></marker></defs>
+<g font-weight="700">
+<text x="120" y="38" text-anchor="middle" font-size="16" fill="#3730a3">orders (שורה אחת)</text>
+<rect x="10" y="52" width="220" height="64" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+<text x="24" y="78" font-size="13" fill="#64748b" font-family="ui-monospace,Menlo,monospace">id</text><text x="110" y="78" font-size="13" fill="#64748b" font-family="ui-monospace,Menlo,monospace">tip</text>
+<text x="24" y="102" font-size="17" fill="#0f172a" font-family="ui-monospace,Menlo,monospace">12</text><text x="110" y="102" font-size="17" fill="#c2410c" font-family="ui-monospace,Menlo,monospace">10</text>
+</g>
+<g data-s="2"><path d="M236,84 L330,84" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#m15a7-ar)"/><text x="283" y="72" text-anchor="middle" font-size="14" font-weight="800" fill="#475569">JOIN</text>
+<text x="490" y="38" text-anchor="middle" font-size="16" font-weight="800" fill="#3730a3">אחרי החיבור: 4 שורות להזמנה 12</text>
+<g font-family="ui-monospace,Menlo,monospace" font-size="14">
+<rect x="336" y="52" width="300" height="152" rx="10" fill="#fff" stroke="#4f46e5" stroke-width="2"/>
+<g fill="#64748b"><text x="352" y="76">id</text><text x="392" y="76">dish</text><text x="528" y="76">qty</text><text x="592" y="76">tip</text></g>
+<line x1="344" y1="84" x2="628" y2="84" stroke="#e2e8f0"/>
+<g fill="#0f172a"><text x="352" y="108">12</text><text x="392" y="108">hamburger</text><text x="540" y="108">2</text>
+<text x="352" y="134">12</text><text x="392" y="134">chicken balls</text><text x="540" y="134">2</text>
+<text x="352" y="160">12</text><text x="392" y="160">lemonade</text><text x="540" y="160">1</text>
+<text x="352" y="186">12</text><text x="392" y="186">local beer</text><text x="540" y="186">2</text></g>
+<g fill="#c2410c" data-s="3"><text x="592" y="108">10</text><text x="592" y="134">10</text><text x="592" y="160">10</text><text x="592" y="186">10</text></g>
+</g></g>
+<g data-s="3"><rect x="582" y="92" width="40" height="104" rx="8" fill="none" stroke="#f97316" stroke-width="3"/>
+<text x="740" y="120" text-anchor="middle" font-size="15" font-weight="700" fill="#9a4a0b">10 + 10 + 10 + 10</text>
+<text x="740" y="164" text-anchor="middle" font-size="40" font-weight="900" fill="#dc2626">40</text>
+<text x="740" y="186" text-anchor="middle" font-size="13" fill="#991b1b">במקום 10</text></g>
+<g data-s="4"><rect x="10" y="226" width="820" height="46" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+<text x="420" y="256" text-anchor="middle" font-size="17" font-weight="800" fill="#991b1b">בכל ההזמנות: SUM(tip) היה 209 על 87 שורות, ואחרי החיבור הוא 517 על 219 שורות</text></g>
+<g data-s="5"><rect x="10" y="284" width="820" height="46" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+<text x="420" y="314" text-anchor="middle" font-size="17" font-weight="800" fill="#166534">עם relationship ב-Tableau: SUM(tip) נשאר 209, וההזמנות נשארות 87</text></g>
+</svg></div>
+<ol class="caps">
+<li>הזמנה 12 היא שורה אחת בטבלת ההזמנות, עם תשר של 10.</li>
+<li>אחרי חיבור לשורות הפריט (JOIN) יש לה ארבע שורות: ארבע מנות (בהנפשה השמות באנגלית).</li>
+<li>התשר הוא של ההזמנה כולה, אבל הוא מודבק לכל שורה. סכום התשרים של הזמנה 12 הוא עכשיו 40.</li>
+<li>בכל הנתונים הסכום קופץ מ-209 ל-517, והמספר נראה סביר וממש לא נכון. אין שום הודעה.</li>
+<li>עם קשר (relationship), Tableau מחשב כל טבלה ברמה שלה, והסכום נשאר 209. צריך רק לוודא שאתם לא מחברים לשורה.</li>
+</ol></div>
+
+<div class="box try" data-id="m15-try-fanout">
+<p><b>רואים את הקפיצה ב-Tableau Public.</b> הקבצים הם <a class="tool" href="data/yevgeni_orders.csv">yevgeni_orders.csv</a> ו-<a class="tool" href="data/yevgeni_order_items.csv">yevgeni_order_items.csv</a>. הפעולות המדויקות בעמוד Data Source (איך מגדירים קשר, איך פותחים Join) מפורטות ב<a href="module11.html">מודול 11</a>. בגרסה שלכם ייתכן שהשמות שונים מעט.</p>
+<ol>
+<li>חברו את <code>yevgeni_orders.csv</code>, וגררו אליו את <code>yevgeni_order_items.csv</code> כך שייווצר <b>קשר</b> (קו בין הטבלאות). הגדירו שהשדה <code>id</code> של ההזמנות תואם ל-<code>order_id</code> של הפריטים. למה: ככה שתי הטבלאות נשארות נפרדות.</li>
+<li>בגיליון גררו את <code>tip</code> ל-<code>Text</code> בכרטיס <code>Marks</code>. התוצאה היא <code>SUM(tip)</code>. רשמו אותה.</li>
+<li>חזרו לעמוד Data Source, מחקו את הקשר, ופתחו Join (לחיצה כפולה על טבלת ההזמנות, וגרירת טבלת הפריטים פנימה). הגדירו <code>id = order_id</code>, Inner. למה: עכשיו שתי הטבלאות הן טבלה אחת, שורה לכל פריט.</li>
+<li>חזרו לגיליון וקראו שוב את <code>SUM(tip)</code>. בדקו גם את מספר השורות בעמוד Data Source.</li>
+<li>אופציונלי: תקנו בלי לשנות את החיבור. כתבו שדה מחושב <code>Tip Once</code> עם הנוסחה למטה, ושימו אותו במקום <code>tip</code>.
+<pre class="code" data-lang="tableau">{ FIXED [id] : MIN([tip]) }</pre>
+למה: כל הזמנה מקבלת את התשר שלה פעם אחת, והסכום חוזר להיות נכון. את ה-FIXED פגשתם במודול 10.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> עם קשר: <code>SUM(tip)</code> הוא 209. עם Join: 517, ו-219 שורות בעמוד Data Source. אחרי התיקון: <code>SUM([Tip Once])</code> שוב 209. כך אפשר לבדוק את עצמכם: בקובץ ההזמנות יש 87 שורות, ו-29 מהן עם תשר.</p></div>
+
+<figure class="shot" data-shot="m15-relationships">
+<div class="fb"><div style="direction:ltr;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px"><svg viewBox="0 0 760 270" width="100%" role="img" aria-label="הדמיה סכמטית של קשרים בין חמש טבלאות של יבגני">
+<g font-family="Heebo,Arial,sans-serif" font-size="14" font-weight="700" text-anchor="middle">
+<rect x="10" y="30" width="140" height="44" rx="8" fill="#d7e7f5" stroke="#1f77b4" stroke-width="2"/><text x="80" y="58" fill="#14507a">customers · 18</text>
+<rect x="310" y="30" width="140" height="44" rx="8" fill="#d7e7f5" stroke="#1f77b4" stroke-width="2"/><text x="380" y="58" fill="#14507a">orders · 87</text>
+<rect x="610" y="30" width="140" height="44" rx="8" fill="#d7e7f5" stroke="#1f77b4" stroke-width="2"/><text x="680" y="58" fill="#14507a">couriers · 3</text>
+<rect x="310" y="200" width="140" height="44" rx="8" fill="#d7e7f5" stroke="#1f77b4" stroke-width="2"/><text x="380" y="228" fill="#14507a">order_items · 219</text>
+<rect x="610" y="200" width="140" height="44" rx="8" fill="#d7e7f5" stroke="#1f77b4" stroke-width="2"/><text x="680" y="228" fill="#14507a">dishes · 10</text>
+</g>
+<g stroke="#64748b" stroke-width="2.5" fill="none"><path d="M150,52 L310,52"/><path d="M450,52 L610,52"/><path d="M380,76 L380,198"/><path d="M450,222 L610,222"/></g>
+<g font-family="ui-monospace,Menlo,monospace" font-size="13" fill="#334155" text-anchor="middle"><text x="230" y="42">customer_id = id</text><text x="530" y="42">courier_id = id</text><text x="530" y="212">dish_id = id</text><text x="296" y="142" text-anchor="end">id = order_id</text></g>
+</svg></div>
+<div class="need">צילום מסך נדרש: Tableau Public, עמוד Data Source עם חמש טבלאות של יבגני מחוברות בקשרים (קווים) סביב orders, עם שמות הטבלאות על הקנבס</div></div>
+<figcaption>הדמיה סכמטית של חמש הטבלאות והקשרים ביניהן. ספרות ליד השם הן מספר השורות בקובץ. בתוכנה הקשרים מופיעים כקווים בקנבס של עמוד Data Source.</figcaption>
+</figure>
+
+<div class="box meaning"><p>אין צורה נכונה אחת. טבלה שטוחה נוחה למי שרק צריך לצייר, אבל היא קושרת אתכם לשאלה אחת ומחזיקה פרטים כפולים. כוכב וקשרים גמישים יותר, והמחיר שלהם הוא שצריך להבין מה מחובר למה. הכלל שעוזר בכל המצבים: לפני שמסכמים, לדעת מה שורה אחת מייצגת ומה קרה למספר הזה בדרך.</p></div>
+
+<div class="box trap"><p><b>מדד של ההזמנה בטבלה של הפריטים.</b> תשר, דירוג, זמן משלוח: אלה שייכים להזמנה כולה. אם הם מופיעים בכל שורת פריט, כל סכום שלהם מוכפל במספר הפריטים. <b>מה עושים:</b> מסכמים לפני החיבור (ב-SQL, בסקריפט), או משאירים בטבלה נפרדת עם קשר, או מתקנים עם <code>FIXED</code> (ובודקים את התוצאה). וכמו תמיד: משווים את הסכום לסכום ידוע.</p></div>
+
+<div class="box trap"><p><b>חיבור פנימי שמוחק שורות.</b> אם מחברים את ההזמנות ללקוחות עם Inner Join, נשארות רק 67 הזמנות מתוך 87: 19 הזמנות בלי לקוח (בעיקר אורחים שישבו במסעדה) ועוד אחת שמצביעה ללקוח 99 שלא קיים. ההכנסות יורדות מ-13,592 ל-10,880: כ-20% מהכנסות שנעלמות בלי שום הודעה. <b>מה עושים:</b> Left Join מהצד שאי אפשר לאבד, או קשר. את הפרטים על זה פגשתם ב<a href="../final-lesson/part2.html#s2-2">JOIN בחלק 2 של המפגש המסכם</a>.</p></div>
+
+<div class="box real"><p>בכלי BI אמיתיים נהוג לבנות כוכב: טבלת עובדות אחת וממדים סביבה, כמו ש-<code>fact_sales</code> היה מרכז הכוכב בחלק 4 של המפגש המסכם. הרעיון של Tableau לשמור שדות בטבלאות נפרדות עם קשרים נולד בדיוק מזה. בעבודה עם Public תבחרו לפי מה שקל להסביר: קובץ שטוח כשמדובר בדשבורד אחד קטן, וקשרים כשיש כמה טבלאות וצריך להיזהר מכפילויות.</p></div>
+
+<div class="quiz" data-id="m15-q-fanout" data-a="3"><p class="qq">אחרי Join בין <code>orders</code> ל-<code>order_items</code>, הסכום של <code>tip</code> קפץ מ-209 ל-517. למה?</p>
+<button class="opt">Tableau חיבר גם תשרים של לקוחות אחרים</button>
+<button class="opt">הקובץ של הפריטים מכיל שגיאה בתשרים</button>
+<button class="opt">התשר שייך להזמנה כולה, ואחרי החיבור הוא חוזר בכל אחת משורות הפריט של אותה הזמנה</button>
+<div class="why">219 שורות פריט על 87 הזמנות: כל תשר מופיע כמספר הפריטים של ההזמנה שלו. זו לא שגיאה בנתונים אלא תוצאה של גרגר שונה: אחרי החיבור שורה היא פריט, והתשר ממשיך לייצג הזמנה.</div></div>
+
+<div class="quiz" data-id="m15-q-shape" data-a="2"><p class="qq">יש לכם חמש טבלאות של יבגני ושאלות שונות מכל מיני כיוונים. אתם לא רוצים לשבש סכומים ברמת הזמנה. מה הכי מתאים ב-Tableau?</p>
+<button class="opt">לחבר את כולן ב-Inner Join לטבלה אחת</button>
+<button class="opt">להגדיר קשרים בין הטבלאות ולתת ל-Tableau לחבר לפי מה שהגיליון צריך</button>
+<button class="opt">לייצא כל טבלה בנפרד, ולבנות חמישה דשבורדים</button>
+<div class="why">קשרים לא ממזגים את הטבלאות ולכן לא מכפילים. Inner Join עלול גם להכפיל וגם למחוק שורות, וחמישה דשבורדים לא עונים על שאלות שמערבות כמה טבלאות.</div></div>
+
+<div class="box think" data-id="m15-th-flat"><p>הקובץ השטוח <code>yevgeni_fact_sales.csv</code> כולל את שם הלקוח ואת העיר בכל אחת מ-219 השורות. מה היתרון של זה, ומה החיסרון?</p>
+<div class="ans">יתרון: אפשר לחבר ולצייר מיד, בלי להבין חיבורים. חיסרון: פרטים כפולים בכל שורה (גודל, ושינוי שם דורש הרבה שורות), פרטים אישיים שיוצאים עם הקובץ אם מפרסמים אותו, ואי אפשר להכניס בבטחה מדדים של ההזמנה. לכן לפני פרסום מורידים עמודות (סעיף 6 ו-9), או עוברים לקשרים.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> מספרים שאומתו בפייתון: 87 הזמנות, 219 שורות פריט, 18 לקוחות, 10 מנות, 3 שליחים; SUM(tip) 209 לפני החיבור ו-517 אחריו (על 219 שורות); 29 הזמנות עם תשר; הזמנה 12 עם תשר 10 וארבע שורות פריט; Inner Join בין הזמנות ללקוחות משאיר 67 הזמנות (19 בלי לקוח, אחת עם לקוח 99), והכנסה של 10,880 מול 13,592. לבדוק בתוכנה לפני השיעור: איך מגדירים שדות תואמים בשמות שונים בעמוד Data Source (id מול order_id), איך פותחים Join בתוך הטבלה, ושמספר השורות בעמוד Data Source הוא 219. הפעולות האלה מתועדות רשמית ב-Desktop, אבל הדף לא מציין את Public. מסמך הרקע סימן אותן &quot;נראה אפשרי, לא נבדק בממשק&quot;. אם Join לא זמין אצלכם, מציגים רק את הקשר ואת ההנפשה. את תיקון ה-FIXED (מסמך הרקע מציע SUM של FIXED ברמת ההזמנה) להריץ בתוכנה לפני השיעור: אם התוצאה אינה 209, מוחקים את שלב 5 ונשארים עם הקשר.</div>
+</section>
+
+<section class="sec" id="m15-8" data-t="טרי או ישן וגבולות">
+<div class="sec-h"><div class="sec-n">8</div><h2>טרי או ישן: כל כמה לרענן, מה כתוב על הדשבורד, ומה הגבולות</h2></div>
+<p class="lead">יבגני פותח את הדשבורד ושואל: &quot;זה כולל את אתמול?&quot; אף אחד לא יודע. שורה אחת על הדשבורד יכולה לפתור את זה. קודם נראה איך הפער נוצר.</p>
+
+<div class="anim" data-id="m15-anim-stale" data-speed="3800">
+<div class="stage"><svg viewBox="0 0 840 340" role="img" aria-label="הנפשה: הנתונים בדשבורד נקבעים ביום הייצוא והצופה שנכנס ביום ו׳ רואה נתונים בני שלושה ימים">
+<g stroke="#e2e8f0"><line x1="70" y1="40" x2="70" y2="290"/><line x1="190" y1="40" x2="190" y2="290"/><line x1="310" y1="40" x2="310" y2="290"/><line x1="430" y1="40" x2="430" y2="290"/><line x1="550" y1="40" x2="550" y2="290"/><line x1="670" y1="40" x2="670" y2="290"/><line x1="790" y1="40" x2="790" y2="290"/></g>
+<g font-size="15" font-weight="700" fill="#64748b" text-anchor="middle"><text x="130" y="312">יום א׳</text><text x="250" y="312">יום ב׳</text><text x="370" y="312">יום ג׳</text><text x="490" y="312">יום ד׳</text><text x="610" y="312">יום ה׳</text><text x="730" y="312">יום ו׳</text></g>
+<text x="70" y="38" font-size="15" font-weight="800" fill="#065f46">המסד: מקבל הזמנות כל הזמן</text>
+<rect x="70" y="50" width="720" height="24" rx="6" fill="#d1fae5" stroke="#10b981"/>
+<g fill="#047857"><circle cx="100" cy="62" r="5"/><circle cx="150" cy="62" r="5"/><circle cx="200" cy="62" r="5"/><circle cx="250" cy="62" r="5"/><circle cx="290" cy="62" r="5"/></g>
+<g fill="#dc2626" data-s="4"><circle cx="400" cy="62" r="5"/><circle cx="450" cy="62" r="5"/><circle cx="520" cy="62" r="5"/><circle cx="580" cy="62" r="5"/><circle cx="640" cy="62" r="5"/><circle cx="700" cy="62" r="5"/><circle cx="760" cy="62" r="5"/></g>
+<g fill="#047857" data-s="1"><circle cx="330" cy="62" r="5"/></g>
+<g data-only="1"><text x="310" y="100" text-anchor="middle" font-size="14" font-weight="800" fill="#9a4a0b">ההזמנה האחרונה שנכנסת לקובץ</text><path d="M310,86 L310,76" stroke="#d8b862" stroke-width="3"/></g>
+<g data-s="2"><text x="70" y="136" font-size="15" font-weight="800" fill="#14507a">הקובץ והדשבורד המפורסם</text><rect x="70" y="148" width="240" height="24" rx="6" fill="#bfdbfe" stroke="#1f77b4"/><path d="M330,128 L330,176" stroke="#1f77b4" stroke-width="3" stroke-dasharray="5 4"/><text x="330" y="194" text-anchor="middle" font-size="14" font-weight="700" fill="#14507a">ייצוא</text></g>
+<g data-s="3"><path d="M370,128 L370,176" stroke="#1f77b4" stroke-width="4"/><text x="370" y="212" text-anchor="middle" font-size="14" font-weight="700" fill="#14507a">פרסום</text><text x="430" y="166" font-size="14" fill="#14507a" font-weight="700">הנתונים נעולים כאן</text></g>
+<g data-only="4"><text x="560" y="116" text-anchor="middle" font-size="15" font-weight="800" fill="#dc2626">הזמנות חדשות: הדשבורד לא יודע עליהן</text></g>
+<g data-s="5"><path d="M670,150 L670,240" stroke="#dc2626" stroke-width="3"/><text x="670" y="258" text-anchor="middle" font-size="15" font-weight="800" fill="#991b1b">צופה נכנס</text>
+<path d="M312,236 L668,236" stroke="#dc2626" stroke-width="3" marker-end="url(#m15a8-rd)"/><path d="M312,226 L312,246" stroke="#dc2626" stroke-width="3"/>
+<text x="490" y="228" text-anchor="middle" font-size="16" font-weight="900" fill="#dc2626">פער של 3 ימים</text></g>
+<defs><marker id="m15a8-rd" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#dc2626"/></marker></defs>
+</svg></div>
+<ol class="caps">
+<li>הזמנות נכנסות למסד כל הזמן. ההזמנה האחרונה שתיכנס לקובץ נרשמת ביום ב׳ בערב.</li>
+<li>ביום ג׳ בבוקר מייצאים את הקובץ. הוא כולל נתונים עד יום ב׳ בערב, ולא יותר.</li>
+<li>ביום ג׳ בצהריים מפרסמים. הנתונים בדשבורד נעולים בנקודה הזאת.</li>
+<li>המסעדה ממשיכה לעבוד, ומגיעות הזמנות חדשות. הדשבורד המפורסם לא יודע עליהן.</li>
+<li>צופה נכנס ביום ו׳. הנתונים שהוא רואה נגמרים ביום ב׳, פער של שלושה ימים. אם לא כתוב על הדשבורד, הוא יניח שזה ״היום״.</li>
+</ol></div>
+
+<div class="defline"><b>״נתונים נכון ל...״ (<code>data as of</code>):</b> שורה בדשבורד שאומרת מה התאריך האחרון שבנתונים. דוגמה: &quot;נתונים עד <bdi dir="ltr">2026-05-31</bdi>&quot;. התאריך הזה הוא לא תאריך הפרסום: הוא התאריך של ההזמנה האחרונה שבקובץ.</div>
+
+<div class="box try" data-id="m15-try-asof">
+<p><b>מוסיפים שורה כזאת לדשבורד.</b> הקובץ: <code>daily_revenue.csv</code> (מהסעיף הקודם) או הגיליון בגוגל שחוברתם אליו.</p>
+<ol>
+<li>גיליון חדש. צרו שדה מחושב בשם <code>Data As Of</code> (<code>Create</code>, אחר כך <code>Calculated Field...</code>) עם הנוסחה:
+<pre class="code" data-lang="tableau">"Data as of " + STR(MAX([order_date]))</pre>
+למה: <code>MAX</code> של התאריך נותן את היום האחרון בנתונים, ו-<code>STR</code> הופך אותו לטקסט שאפשר לחבר למשפט.</li>
+<li>גררו את <code>Data As Of</code> ל-<code>Text</code> בכרטיס <code>Marks</code>. אם התאריך נטען כטקסט ולא כתאריך, אין בעיה: <code>MAX</code> עובד גם על טקסט בפורמט ISO.</li>
+<li>שנו את גודל הטקסט ואת העיצוב, והוסיפו את הגיליון לדשבורד שלכם, מתחת לגרף.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> סימן אחד עם הטקסט <code>Data as of</code> ואחריו התאריך 31 במאי 2026. הפורמט של התאריך (<code>2026-05-31</code>, <code>5/31/2026</code> או אחר) תלוי בהגדרות המחשב, אבל היום חייב להיות 31 במאי 2026. כשהגיליון בגוגל יתרענן ויתווספו ימים, התאריך יזוז לבד.</p></div>
+
+<div class="box meaning"><p>&quot;נכון ל&quot; הוא חלק מהמספר. מספר הכנסות בלי תאריך הוא רק חצי תשובה. ומי שמפרסם דשבורד ציבורי אחראי על כך שצופה לא יטעה: זה לא פחות חשוב מהצבע של העמודות.</p></div>
+
+<h3>כל כמה לרענן? תלוי בשאלה</h3>
+<div class="tw"><table class="tbl">
+<tr><th>השאלה של יבגני</th><th>כמה טרי צריך להיות</th><th>מה אפשר ב-Tableau Public</th></tr>
+<tr><td>איזו מנה הכי חזקה השנה?</td><td>פעם בחודש, ואפילו פחות</td><td>ייצוא ידני ופרסום מחדש</td></tr>
+<tr><td>איך הייתה השבוע האחרון?</td><td>פעם ביום או בשבוע</td><td>גיליון בגוגל עם ריענון אוטומטי (24 שעות)</td></tr>
+<tr><td>דוח רבעוני שהסתיים</td><td>פעם אחת</td><td>קובץ, ומפרסמים פעם אחת</td></tr>
+<tr><td>כמה משלוחים בדרך עכשיו?</td><td>חי</td><td class="pubcell no">לא זמין ב-Tableau Public: ככה עובדים סביב זה. נספח, סעיף 10</td></tr>
+</table></div>
+
+<div class="box trap"><p><b>תאריך הפרסום הוא לא תאריך הנתונים.</b> אפשר לפרסם היום קובץ שיוצא לפני שבועיים. הצופה שרואה &quot;פורסם השבוע&quot; יניח שהמספרים טריים. <b>מה עושים:</b> כותבים על הדשבורד את התאריך האחרון בנתונים, ואם הוא נכתב ידנית, מעדכנים אותו בכל פרסום. עדיף שדה מחושב, שמראה את מה שבנתונים באמת.</p></div>
+
+<h3>הגבולות: כמה גדול אפשר</h3>
+<p>כל המספרים כאן לפי התיעוד הרשמי של Tableau Public, נכון לאוקטובר 2026. מספרים כאלה משתנים, ולכן בדקו בתיעוד לפני שאתם מתכננים משהו שקרוב לגבול.</p>
+<div class="tw"><table class="tbl">
+<tr><th>מה</th><th>הגבול</th><th>הערה</th></tr>
+<tr><td>שורות</td><td>15 מיליון שורות</td><td>הניסוח בתיעוד: לחוברת. בדף ההשוואה: שורות במקור הנתונים. בדקו את הניסוח</td></tr>
+<tr><td>אחסון</td><td>10 GB לחשבון</td><td>כולל את כל החוברות המפורסמות, עם הנתונים שבתוכן</td></tr>
+<tr><td>העלאה בדפדפן (web authoring)</td><td>קובץ של עד 1 GB</td><td>קובצי xlsx, csv ו-tsv</td></tr>
+<tr><td>קובץ JSON</td><td>סריקה של 10,000 השורות הראשונות</td><td>הסריקה היא של המבנה, לא של התוכן</td></tr>
+<tr><td>גיליון בגוגל</td><td>מספר תאים בכמה מיליונים</td><td>לפי התיעוד של מחבר Google Drive</td></tr>
+</table></div>
+
+<p>נתוני יבגני רחוקים מכל זה: 219 שורות. אבל מסעדה אמיתית היא לא יבגני. נגדיר כמה הזמנות ביום וכמה שנים, ונראה כמה שורות ייצא בכל גרגר.</p>
+
+<div class="sim" data-id="m15-sim-rows"><div class="sh">כמה שורות יהיו בקובץ?</div>
+<div class="m15-btns">
+<label style="font-weight:700">הזמנות ליום <input type="range" data-k="o" min="1" max="3" step="0.05" value="2.7"> <b class="n" data-k="ov"></b></label>
+<label style="font-weight:700">שנים של נתונים <input type="range" data-k="y" min="1" max="10" step="1" value="5"> <b class="n" data-k="yv"></b></label>
+</div>
+<div class="m15-bars" data-k="bars"></div>
+<div class="out" data-k="msg"></div>
+<p class="m15-note-sm">חישוב על ממוצע של 2.52 פריטים להזמנה (219 שורות פריט חלקי 87 הזמנות אצל יבגני) ועל 10 מנות ו-3 ערוצים. זה חשבון, לא נתונים אמיתיים.</p>
+</div>
+<script>
+(function () { FL.dom(function () {
+  var box = FL.$('[data-id="m15-sim-rows"]'); if (!box) return;
+  var $ = function (k) { return FL.$('[data-k="' + k + '"]', box); };
+  var LIMIT = 15000000, moved = 0;
+  function fmt(x) { return Math.round(x).toLocaleString('en-US'); }
+  function draw() {
+    var perDay = Math.round(Math.pow(10, +$('o').value)), yrs = +$('y').value, days = 365 * yrs;
+    $('ov').textContent = fmt(perDay); $('yv').textContent = yrs;
+    var items = perDay * days * 219 / 87;
+    var rows = [['שורה לכל פריט בהזמנה', items], ['יום × מנה', days * 10], ['יום × מנה × ערוץ', days * 10 * 3]];
+    var mx = Math.max(LIMIT * 1.2, items);
+    $('bars').innerHTML = rows.map(function (r) {
+      var w = Math.max(0.5, 100 * r[1] / mx), over = r[1] > LIMIT;
+      return '<div class="b"><span>' + FL.esc(r[0]) + '</span><span style="background:#f1f5f9;border-radius:3px;display:block;position:relative"><i style="width:' + w.toFixed(2) + '%;background:' + (over ? '#dc2626' : '#4e79a7') + '"></i><span style="position:absolute;top:-2px;bottom:-2px;left:' + (100 * LIMIT / mx).toFixed(2) + '%;border-left:2px dashed #e8741f"></span></span><span class="v">' + fmt(r[1]) + '</span></div>';
+    }).join('');
+    var msg = 'קו הגבול הכתום: 15,000,000 שורות. ';
+    msg += items > LIMIT ? 'גרגר של פריט בהזמנה חורג מהגבול. אין ברירה: לסכם לפני הפרסום.' : 'כל הגרגרים נכנסים בגבול. שימו לב כמה קטנה הטבלה המסוכמת.';
+    $('msg').textContent = msg;
+    moved++; if (moved >= 4) FL.done('m15-sim-rows');
+  }
+  $('o').addEventListener('input', draw); $('y').addEventListener('input', draw); draw(); moved = 0;
+}); })();
+</script>
+
+<div class="box real"><p>גם כשהנתונים נכנסים בגבול, קובץ גדול מדי הוא בעיה מעשית: דשבורד שנטען לאט, גיליון בגוגל שהגיע לתקרה, ושעת ייצוא ארוכה. בארגונים ההנחיה הרגילה היא לסכם לפני הדשבורד: לשים בדשבורד את הרמה שהוא צריך. זה גם מה שעשיתם בסעיף 3.</p></div>
+
+<div class="quiz" data-id="m15-q-limit" data-a="2"><p class="qq">לפי התיעוד של Tableau Public, נכון לאוקטובר 2026, מה הגבול של מספר השורות בנתונים?</p>
+<button class="opt">מיליון שורות</button>
+<button class="opt">15 מיליון שורות</button>
+<button class="opt">אין גבול, כל עוד הקובץ קטן מ-10 GB</button>
+<div class="why">15 מיליון שורות. הרבה מדריכים עדיין כותבים 10 מיליון, שהיה הגבול הישן. 10 GB הוא מגבלת האחסון של החשבון, ולא קשור לגבול השורות. גבולות משתנים: בדקו בתיעוד.</div></div>
+
+<div class="quiz" data-id="m15-q-asof" data-a="3"><p class="qq">פרסמתם דשבורד היום, אבל הקובץ יוצא לפני שבועיים. מה הכי נכון לכתוב עליו?</p>
+<button class="opt">&quot;פורסם היום&quot;</button>
+<button class="opt">&quot;עדכני&quot;</button>
+<button class="opt">&quot;נתונים עד&quot; ואחריו התאריך של ההזמנה האחרונה בקובץ</button>
+<div class="why">תאריך הפרסום לא אומר כלום על הנתונים. הצופה צריך לדעת עד מתי הנתונים, וזה התאריך האחרון שבקובץ. המילה &quot;עדכני&quot; היא הבטחה שאי אפשר לעמוד בה ב-Public.</div></div>
+
+<div class="box think" data-id="m15-th-asof"><p>הדשבורד של יבגני מתרענן פעם ב-24 שעות, בשעה שלא בוחרים. מה כדאי לכתוב עליו, ומה לא כדאי להבטיח?</p>
+<div class="ans">לכתוב: &quot;נתונים עד&quot; ואחריו התאריך האחרון בנתונים (שדה מחושב, כדי שיזוז לבד), ו&quot;מתעדכן פעם ביממה&quot;. לא להבטיח &quot;מתעדכן בשעה 06:00&quot;, כי אי אפשר לבחור שעה, ולא &quot;עדכני&quot;. מי שצריך משהו חי צריך כלי אחר.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הגבולות לפי המחקר (נכון ל-13.10.2026 בקובץ 12): 15 מיליון שורות, 10 GB אחסון, העלאה בדפדפן עד 1 GB, סריקת JSON של 10,000 שורות. הניסוח הרשמי של 15M הוא &quot;לחוברת&quot; בשאלות הנפוצות ו&quot;שורות במקור הנתונים&quot; בדף ההשוואה, ולכן אל תטענו משהו מעבר. המספר 2.52 פריטים להזמנה הוא 219 חלקי 87. תוצאה צפויה לשדה Data As Of: 31 במאי 2026. לבדוק בתוכנה אם תאריך שנטען כמחרוזת ISO נקרא כתאריך, ואיך STR מציג אותו בהגדרות האזור של המחשב.</div>
+</section>
+
+<section class="sec" id="m15-9" data-t="פרטיות לפני פרסום">
+<div class="sec-h"><div class="sec-n">9</div><h2>פרטיות: מה בטוח לפרסם, ורשימת בדיקה</h2></div>
+<p class="lead">Tableau Public הוא לוח מודעות. הקובץ שחיברתם הוא הנתונים שמתפרסמים, וכל אחד יכול להוריד אותם (זו ברירת המחדל). &quot;להסתיר&quot; ויז מהפרופיל לא עוזר: מי שיש לו את הכתובת רואה אותו. לפי מדיניות הנתונים של Tableau Public, נתונים שמתפרסמים עשויים להיות בשימוש גם לאימון מודלים של בינה מלאכותית. כל נתוני הקורס בדויים, אבל תתרגלו את השאלה: הייתי מוכן לתלות את זה על לוח מודעות?</p>
+
+<h3>שתים עשרה בדיקות לפני שמפרסמים</h3>
+<div class="m15-lt">
+<div><span class="k">1</span><p><b>מחליטים על הטבלה לפני הכלי.</b> הקובץ או הגיליון שחיברתם הוא הנתונים שיתפרסמו. מסכמים ב-SQL, ולא &quot;מסתירים אחר כך&quot;.</p></div>
+<div><span class="k">2</span><p><b>מורידים עמודות במקור:</b> שמות, אימייל, טלפון, תעודות זהות, הערות חופשיות. הסתרת שדה ב-Tableau מוציאה אותו מ-extract של Desktop לפי התיעוד, אבל ב-Public זה לא אומת. מוחקים מהקובץ.</p></div>
+<div><span class="k">3</span><p><b>תאים קטנים מזהים אנשים.</b> קבוצה של 1 עד 4 יכולה להצביע על אדם מסוים. מאחדים קבוצות קטנות או לא מציגים אותן.</p></div>
+<div><span class="k">4</span><p><b>בלי סיסמאות בשרשרת:</b> לא בקובץ, לא ב-GitHub, לא בשדה מחושב, לא בכתובת. משתמשים במשתני סביבה, ומקובץ מפתח עושים <code>.gitignore</code>.</p></div>
+<div><span class="k">5</span><p><b>גיליון בגוגל הוא פרטי רק בגיליון.</b> תוכנו מועתק ל-extract הציבורי בכל ריענון.</p></div>
+<div><span class="k">6</span><p><b>מאגר ציבורי ב-GitHub הוא ציבורי,</b> וההיסטוריה שלו נשמרת גם אחרי שמוחקים עמודה.</p></div>
+<div><span class="k">7</span><p><b>הטמעה לא מוסיפה הגנה.</b> סרגל הכלים המוטמע חושף Download ו-Share, וה-iframe טוען את אותו ויז ציבורי.</p></div>
+<div><span class="k">8</span><p><b>הרחבות (extensions) מבקשות גישה לנתונים</b> (<code>Allow Access</code>). מאשרים רק למי שסומכים עליו.</p></div>
+<div><span class="k">9</span><p><b>כיבוי ההורדה לא הופך את הוויז לפרטי.</b> הוא מסתיר את הכפתור, אבל הסימנים עדיין מציגים את הנתונים.</p></div>
+<div><span class="k">10</span><p><b>Public לא לשימוש מסחרי.</b> אף פעם לא משתמשים בנתונים של מקום העבודה.</p></div>
+<div><span class="k">11</span><p><b>בודקים בחלון פרטי אחרי הפרסום:</b> פותחים את הוויז בלי להתחבר, לוחצים Download ורואים בדיוק מה זר מקבל.</p></div>
+<div><span class="k">12</span><p><b>מי שמריץ TabPy בארגון</b> חייב אימות. זו לא בעיה של Public, אבל אזהרה טובה לכל מי שמחבר סקריפטים.</p></div>
+</div>
+
+<h3>משחק מיון: מה עושים עם כל פריט?</h3>
+<p>לכל פריט בחרו: <b>מפרסמים</b> כמו שהוא, <b>מצרפים לפני</b> (מסכמים או מאחדים), או <b>לא מפרסמים בכלל</b>.</p>
+<div class="sim" data-id="m15-sim-sort"><div class="sh">מיון לפי רמת הסיכון</div>
+<div class="m15-sort" data-k="list"></div>
+<div class="out" data-k="score">עדיין לא מיינתם.</div>
+</div>
+<script>
+(function () { FL.dom(function () {
+  var box = FL.$('[data-id="m15-sim-sort"]'); if (!box) return;
+  var I = [
+    ['dishes.name: שם המנה', 0, 'שם מנה ומחיר מופיעים בתפריט. אין כאן מידע על אדם.'],
+    ['revenue לפי מנה (10 שורות)', 0, 'טבלה מסוכמת, בלי אנשים. זה בדיוק הקובץ של סעיף 3.'],
+    ['customers.email', 2, 'כתובת אימייל מזהה אדם. לא צריך אותה בשום גרף, ולכן מוחקים אותה מהקובץ.'],
+    ['customers.name בכל שורה של fact_sales', 2, 'שם לקוח חוזר ב-219 שורות. מי שרוצה לדעת מה לקוח הזמין מקבל את זה בהורדה. מוחקים.'],
+    ['order_ts עם דקה, לצד customer_id', 1, 'שעה מדויקת ביחד עם מזהה לקוח מאפשרת לזהות מי הזמין מתי. מסכמים לשעה או ליום, ומורידים את המזהה.'],
+    ['הכנסות לפי עיר (בעיר יש 3 לקוחות)', 1, 'בקבוצה של 3 אנשים קל לנחש. מאחדים לערים גדולות או לא מציגים.'],
+    ['שם השליח, עם זמן המשלוח הממוצע שלו', 1, 'זה ביצועים של עובד בשמו, בפומבי. בעולם האמיתי מבקשים הסכמה או מציגים לפי סוג רכב.'],
+    ['הסיסמה של המסד בתוך הסקריפט', 2, 'סיסמה לא נכנסת לשום קובץ משותף או מאגר. משתמשים במשתנה סביבה.'],
+    ['קובץ המפתח service_account.json', 2, 'קובץ מפתח של חשבון שירות נשאר מחוץ ל-GitHub (.gitignore).'],
+    ['הערות חופשיות של הטלפניות ("אלרגי לאגוזים")', 2, 'טקסט חופשי כולל פרטים רגישים שאי אפשר לצפות. מוחקים.'],
+    ['מספר ההזמנות לפי חודש', 0, 'ספירה גדולה ומסוכמת, בלי פרטים של אדם.'],
+    ['דירוג ממוצע של כל הלקוחות לפי חודש', 1, 'בסדר כשיש מספיק דירוגים בכל חודש. בודקים שאין חודש עם דירוג אחד או שניים, ואז מאחדים.']
+  ];
+  var B = ['מפרסמים', 'מצרפים לפני', 'לא מפרסמים'], list = FL.$('[data-k="list"]', box), score = FL.$('[data-k="score"]', box), ok = 0, tried = 0;
+  I.forEach(function (it) {
+    var d = document.createElement('div'); d.className = 'it';
+    d.innerHTML = '<b>' + FL.esc(it[0]) + '</b><div class="bs"></div><div class="fb"></div>';
+    var bs = FL.$('.bs', d), fb = FL.$('.fb', d);
+    B.forEach(function (t, i) {
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = t; bs.appendChild(b);
+      b.addEventListener('click', function () {
+        if (d.classList.contains('done')) return;
+        tried++;
+        if (i === it[1]) { d.classList.remove('wrong'); d.classList.add('done'); ok++; fb.textContent = 'נכון. ' + it[2]; Array.prototype.forEach.call(bs.children, function (x) { x.disabled = true; }); }
+        else { d.classList.add('wrong'); fb.textContent = 'לא בדיוק. ' + it[2]; }
+        score.textContent = 'נכון ' + ok + ' מתוך ' + I.length + ' (ניסיונות: ' + tried + ')';
+        if (ok === I.length) FL.done('m15-sim-sort');
+      });
+    });
+    list.appendChild(d);
+  });
+}); })();
+</script>
+
+<div class="box try" data-id="m15-try-privacy-diff">
+<p><b>רואים את ההבדל בעיניים.</b> הנה אותו סימולטור, עם שתי שאילתות על הלקוחות. הפעילו אותן אחת אחרי השנייה:</p>
+<div class="sim" data-id="m15-sim-sql2"><div class="sh">שתי דרכים לייצא לקוחות</div><div data-sim-body></div></div>
+<script>
+(function () { FL.dom(function () {
+  var box = FL.$('[data-id="m15-sim-sql2"]'); if (!box || !window.M15) return;
+  M15.mountSql(box, ['customers_all', 'customers_by_city'], {
+    notes: { customers_all: 'SELECT * מוציא הכול: שם, עיר ואימייל של כל 18 הלקוחות.', customers_by_city: 'גם הטבלה המסוכמת מסוכנת: ארבעה מחמשת התאים קטנים מ-5.' },
+    onRun: function (k, n) { if (n >= 2) FL.done('m15-sim-sql2'); }
+  });
+}); })();
+</script>
+<ol>
+<li>הריצו <code>customers_all.csv</code> וקראו את הכרטיסים. למה: זה מה שיוצא כשכותבים <code>SELECT *</code> בלי לחשוב.</li>
+<li>הריצו <code>customers_by_city.csv</code>. למה: זה מה שנראה &quot;בטוח&quot;, כי אין שם שמות.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בראשון 18 שורות, 5 עמודות ו-18 כתובות אימייל. בשני 5 שורות ו-2 עמודות: תל אביב 7, חיפה 4, גבעתיים 3, רמת גן 3, ועיר חסרה (<code>NULL</code>) 1. רק תל אביב היא מעל 5, כלומר ארבעה מחמשת התאים קטנים מ-5. גם אחרי סיכום, אי אפשר לפרסם את זה בלי לאחד.</p></div>
+
+<div class="box try" data-id="m15-try-stranger">
+<p><b>בדיקת הזר (אופציונלי, דורש לפרסם).</b> אם פרסמתם את גרף המנות של סעיף 3 (<a href="module14.html">מודול 14</a>):</p>
+<ol>
+<li>פתחו חלון גלישה פרטי והדביקו את כתובת הוויז. למה: ככה רואה אותו מי שאין לו חשבון.</li>
+<li>לחצו על <code>Download</code> ובחרו להציג את הנתונים. בגרסה שלכם ייתכן שהשם שונה.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> אפשר לראות 10 שורות ו-5 עמודות (<code>dish</code>, <code>category</code>, <code>units</code>, <code>revenue</code>, <code>gross_profit</code>): בדיוק הקובץ שייצאתם, ואף עמודה אישית.</p></div>
+
+<div class="box trap"><p><b>&quot;הסתרתי את העמודה בגיליון&quot;.</b> הסתרה בגיליון או בחלונית הנתונים לא מוחקת שום דבר מהקובץ. וגם הסתרת ויז מהפרופיל היא רק הסתרה מהרשימה. <b>מה עושים:</b> מוחקים את העמודה מהקובץ לפני שמחברים אותו.</p></div>
+
+<div class="box real"><p>בארגונים אמיתיים בדיקה כזאת נעשית לפני כל פרסום, ובדרך כלל מתחת לה יש גם מדיניות. כאן אתם לבד, ולכן הרשימה הזאת היא המדיניות שלכם. נתוני עבודה, סטודנטים וחולים לא מפרסמים ב-Public בכלל.</p></div>
+
+<div class="box meaning"><p>הפרטיות נקבעת בייצוא, לא בדשבורד. הגשר שבנית בסעיף 3 הוא גם המסנן: מה שה-<code>SELECT</code> לא מביא, לא יוצא.</p></div>
+
+<div class="quiz" data-id="m15-q-hide" data-a="1"><p class="qq">הסתרתם את הוויז מהפרופיל שלכם. מי יכול לראות אותו?</p>
+<button class="opt">כל מי שיש לו את הכתובת</button>
+<button class="opt">אף אחד חוץ מכם</button>
+<button class="opt">רק עוקבים שלכם</button>
+<div class="why">ההסתרה מוציאה את הוויז מהרשימה בפרופיל, אבל הכתובת עדיין עובדת, והנתונים עדיין ניתנים להורדה אם לא כיבתם אותה. אין פרטיות בהסתרה.</div></div>
+
+<div class="quiz" data-id="m15-q-small" data-a="3"><p class="qq">סיכמתם הכנסות לפי עיר, בלי שמות. בעיר אחת יש לקוח אחד. מה הבעיה?</p>
+<button class="opt">אין בעיה: אין שם בקובץ</button>
+<button class="opt">הבעיה היא רק שהגרף ייראה ריק</button>
+<button class="opt">כל מי שיודע שלקוח אחד גר שם, רואה כמה הוא הזמין. תא קטן מזהה אדם</button>
+<div class="why">סיכום לא מבטל זיהוי כשהקבוצה קטנה. לכן מאחדים קבוצות או לא מציגים אותן.</div></div>
+
+<div class="box think" data-id="m15-th-courier"><p>הגרף של זמני המשלוח מציג את דימה, נועה ואורי בשמותיהם, ודימה הוא האיטי. מה הבעיה, ומה הייתם עושים?</p>
+<div class="ans">אלה עובדים. פרסום ציבורי של הביצועים שלהם בשם הוא פגיעה אפשרית, ועם 16 משלוחים בלבד גם התוצאה לא יציבה. הייתי מציג לפי סוג רכב (scooter, e-bike, motorbike), בלי שם, או מבקש הסכמה. כאן הנתונים בדויים, אבל אותו שיקול חל בעולם האמיתי.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הרשימה מבוססת על שתים עשרה הבדיקות של מסמך הרקע והעובדות מקובץ 12 (הורדה כברירת מחדל, הסתרה אינה הגנה, משפט מדיניות הנתונים על אימון מודלים). לא אומת: האם הסתרת שדה או מסנן מקור נתונים מוציאים נתונים מה-extract שמתפרסם ב-Public (לכן הכלל: מוחקים במקור). מספרים אומתו: 18 לקוחות עם 18 אימיילים; עיר: תל אביב 7, חיפה 4, גבעתיים 3, רמת גן 3, ללא עיר 1. שם הכפתור Download ושלבי ההצגה בחלון הפרטי לבדוק בתוכנה.</div>
+</section>
+
+<section class="sec" id="m15-10" data-t="נספח: לא ב-Public">
+<div class="sec-h"><div class="sec-n">10</div><h2>נספח: מה קיים רק ב-Desktop מורשה (לא ב-Public)</h2></div>
+<div class="m15-publine">לא ב-Public. זה ידע ולא תרגיל: אין כאן שום צעד שצריך לעשות ב-Tableau Public.</div>
+<p class="lead">עד עכשיו עבדנו סביב מה ש-Tableau Public לא עושה. הנה מה שהגרסאות האחרות עושות, ברמה שהמחקר הצליח לאמת. אם אתם נתקלים בזה בעבודה, תדעו על מה מדברים.</p>
+
+<div class="sim" data-id="m15-sim-editions"><div class="sh">מי יכול מה: בחרו מהדורה</div>
+<p class="m15-note-sm">סימונים: ✓ קיים, ✗ לא קיים, ? לא אומת או תלוי: בדקו בתיעוד. &quot;Desktop Free&quot; הוא ההורדה החינמית ללא רישיון, ואינו שומר ל-Public. אל תבלבלו אותו עם Tableau Desktop Public Edition.</p>
+<div class="tw"><table class="m15-ed" data-k="t"></table></div>
+</div>
+<script>
+(function () { FL.dom(function () {
+  var box = FL.$('[data-id="m15-sim-editions"]'); if (!box) return;
+  var E = ['Public', 'Desktop Free', 'Desktop מורשה', 'Cloud / Server'];
+  var F = [
+    ['קבצי Excel, CSV ו-JSON', 'yyyy'],
+    ['מחבר Google Drive', 'y?yy'],
+    ['מסדי נתונים (PostgreSQL, BigQuery...)', 'nyyy'],
+    ['חיבור חי', 'nyyy'],
+    ['ריענון מתוזמן', 'n?ny'],
+    ['Custom SQL', 'n?yy'],
+    ['Tableau Prep', 'n?yy'],
+    ['SCRIPT_ ו-TabPy', 'n?yy'],
+    ['שמירה ל-Tableau Public', 'ynyn'],
+    ['פרסום ל-Cloud / Server', 'nnyn'],
+    ['REST API, webhooks', 'nnnn'],
+    ['שימוש מסחרי', 'n?yy']
+  ];
+  var sym = { y: '<span class="y">✓</span>', n: '<span class="x">✗</span>', '?': '<span class="q">?</span>' }, sel = -1, clicks = 0, t = FL.$('[data-k="t"]', box);
+  function draw() {
+    var h = '<tr><th></th>' + E.map(function (e, i) { return '<th data-i="' + i + '" class="' + (i === sel ? 'on' : '') + '">' + e + '</th>'; }).join('') + '</tr>';
+    F.forEach(function (f) { h += '<tr><td>' + FL.esc(f[0]) + '</td>' + E.map(function (e, i) { return '<td class="' + (sel >= 0 && i !== sel ? 'dim' : '') + '">' + sym[f[1].charAt(i)] + '</td>'; }).join('') + '</tr>'; });
+    t.innerHTML = h;
+  }
+  t.addEventListener('click', function (e) { var th = e.target.closest('th[data-i]'); if (!th) return; sel = sel === +th.dataset.i ? -1 : +th.dataset.i; draw(); clicks++; if (clicks >= 3) FL.done('m15-sim-editions'); });
+  draw();
+}); })();
+</script>
+<p class="m15-note-sm">הטבלה מסכמת את מחקר האינטגרציה, לא את התוכנה. תא עם ? פירושו שלא מצאנו אישור רשמי: למשל מה בדיוק Desktop Free מחבר (הרשימה לא אומתה) ותנאי השימוש המסחרי שלו.</p>
+
+<h3>מה כל דבר עושה</h3>
+<div class="cols2">
+<div class="card"><h4>חיבור חי</h4><p>Tableau שולח שאילתה למקור בכל אינטראקציה. הצד השני חייב להיות נגיש. ב-Public כל מה שנשמר הוא extract.</p></div>
+<div class="card"><h4>Custom SQL</h4><p>כותבים <code>SELECT</code> בעצמכם במקום לבחור טבלה, ו-Tableau עוטף אותו. הכללים (לפי התיעוד): <code>SELECT</code> אחד, פרמטר יכול להחליף רק ערך ולא שם, ושמות עמודות כפולים גורמים לשגיאה. <b>הדרך סביב:</b> אותה שאילתה נכנסת לסקריפט הייצוא.</p></div>
+<div class="card"><h4>Initial SQL</h4><p>פקודה שרצה פעם אחת כשמתחברים (הגדרות, טבלאות זמניות). לא זמין ב-Public.</p></div>
+<div class="card"><h4>Join בין מסדים (cross-database)</h4><p>חיבור בין טבלאות משני חיבורים נפרדים. לפי התיעוד אינו נתמך למשל על מקורות extract בלבד כמו OData. ב-Public אין מסדים, ולכן הדרך היא לייצא לקבצים ולחבר בין קבצים (בדקו אם זמין אצלכם).</p></div>
+<div class="card"><h4>Tableau Prep</h4><p>מוצר נפרד שבונה זרימות לניקוי, חיבור ואיחוד, ושומר ל-<code>.hyper</code>, CSV או <code>.xlsx</code>. תזמון דורש Cloud או Server. <b>הדרך סביב:</b> סקריפט פייתון (סעיף 6).</p></div>
+<div class="card"><h4>פרסום ל-Cloud או Server</h4><p>תזמון ריענון (גם דרך Bridge לנתונים בארגון), הרשאות ופרטיות אמיתית. ב-Public הכול ציבורי. <b>הדרך סביב:</b> אין, חוץ מלעבור למוצר אחר.</p></div>
+</div>
+
+<h3>פייתון בתוך החישובים: TabPy</h3>
+<p>פונקציות <code>SCRIPT_REAL</code> ודומותיה שולחות את ערכי התצוגה לשרת פייתון (TabPy) או R ומקבלות תשובה. לפי התיעוד: לא ניתן לפרסם ל-Public חוברות עם סקריפטים חיצוניים. אין ל-Public חיבור לשרת כזה. אזהרה מהתיעוד של TabPy: כברירת מחדל הוא רץ בלי אימות, ואז מי שמגיע אליו יכול להריץ קוד על המחשב.</p>
+<p><b>הדרך סביב:</b> לחשב בפייתון לפני Tableau ולכתוב עמודה בקובץ. הנה ציון תקן (z-score) להכנסות לפי מנה:</p>
+<pre class="code" data-lang="python">import csv
+import statistics
+
+with open("dish_revenue.csv", encoding="utf-8-sig") as f:
+    rows = list(csv.DictReader(f))
+
+revenue = [float(r["revenue"]) for r in rows]
+mean = statistics.mean(revenue)
+std = statistics.pstdev(revenue)          # population standard deviation
+
+for r, x in zip(rows, revenue):
+    r["revenue_z"] = round((x - mean) / std, 3)
+
+with open("dish_revenue_z.csv", "w", newline="", encoding="utf-8-sig") as f:
+    w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+    w.writeheader()
+    w.writerows(rows)
+
+print("mean:", round(mean, 1), "std:", round(std, 2))
+print(rows[0]["dish"], rows[0]["revenue_z"])
+print(rows[-1]["dish"], rows[-1]["revenue_z"])</pre>
+
+<div class="box try" data-id="m15-try-z">
+<p><b>אופציונלי, בפייתון (לא ב-Tableau).</b> הריצו את הסקריפט בתיקייה שיש בה <code>dish_revenue.csv</code>.</p>
+<p><b>תוצאה צפויה:</b> ההדפסה: <code>mean: 1288.4 std: 729.65</code>, אחרי זה <code>סלמון בתנור 2.625</code>, ו-<code>לימונדה -1.001</code>. הקובץ <code>dish_revenue_z.csv</code> מכיל עמודה נוספת <code>revenue_z</code>, וב-Tableau היא עמודה רגילה שאפשר לצבוע לפיה. ל-Public גם יש ניתוח מובנה כמו אשכולות ותחזית, בלי קוד.</p></div>
+
+<div class="box note"><b>כלים אחרים (ידע כללי, לא נבדק במחקר)</b>
+<p>מי שצריך חיבור חי למסד, אפשרויות נפוצות הן Power BI, ו-<a class="tool" href="https://lookerstudio.google.com" target="_blank" rel="noopener">Looker Studio</a> שהופיע בחלק 4 של המפגש המסכם, וגם Metabase או Superset. בדקו ברישיונות ובמחברים העדכניים לפני שמחליטים.</p></div>
+
+<div class="box real"><p>REST API, <code>Tableau Server Client</code> ב-Python, Metadata API ו-webhooks הם כולם של Cloud ו-Server. אין להם שום קשר ל-Public: פרסום ל-Public הוא פעולה ידנית בלבד.</p></div>
+
+<div class="box trap"><p><b>RAWSQL.</b> הדף של פונקציות ה-<code>RAWSQL_</code> מציין את Public, אבל אין ב-Public מסד שאפשר לשלוח אליו SQL. לא ידוע אם הן רצות על extract. אל תבנו על זה.</p></div>
+
+<div class="quiz" data-id="m15-q-customsql" data-a="2"><p class="qq">רוצים להריץ <code>Custom SQL</code> על מסד של המסעדה, ולהישאר ב-Tableau Public. מה עושים?</p>
+<button class="opt">מחברים את המסד דרך More...</button>
+<button class="opt">מכניסים את השאילתה לסקריפט שמייצא קובץ, ומחברים את הקובץ</button>
+<button class="opt">כותבים את השאילתה בשדה מחושב</button>
+<div class="why">אין מחבר למסד, ולכן אין למי לשלוח SQL. את הכוח של השאילתה מקבלים בייצוא. שדה מחושב כותב נוסחאות של Tableau, לא SQL.</div></div>
+
+<div class="box think" data-id="m15-th-nodb"><p>מה היה הכי משתנה בדשבורד של יבגני אילו היה לכם Desktop מורשה עם חיבור חי?</p>
+<div class="ans">הנתונים היו טריים, בלי ייצוא ובלי פרסום ידני, ואפשר היה לשאול שאלות על המסד עצמו. מנגד: צריך להגדיר הרשאות, עומס על המסד החי, ופרסום לצופים דרך Cloud או Server עם חשבון לכל צופה. ב-Public אין את זה, ולכן הגשר קיים.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הנספח כולו ידע: אין לו תרגיל חובה. הטבלה מבוססת על מסמך הרקע (סעיפים 1.1, 3, 4.5 ו-7). עמודת Desktop Free מסומנת ב-? באותם תאים שהמחקר לא אימת (מה היא מחברת, ריענון, Prep, TabPy, שימוש מסחרי). סקריפט ה-z-score הורץ בפייתון על dish_revenue.csv, והתוצאות המופיעות כאן אומתו; אותה שורה ב-TabPy נבדקה במחקר דרך /evaluate על ערכים אחרים. פרטי Prep Conductor לא נבדקו.</div>
+</section>
+
+<section class="sec" id="m15-11" data-t="אשף וסיכום">
+<div class="sec-h"><div class="sec-n">11</div><h2>אשף ההחלטות: הנתונים שלי נמצאים ב-X, מה עושים?</h2></div>
+<p class="lead">בחרו איפה הנתונים שלכם יושבים, ועם איזה צורך. האשף נותן מסלול שעובד ב-Tableau Public בלבד, ואומר מה הוא לא יכול לתת.</p>
+
+<div class="sim" data-id="m15-sim-wizard"><div class="sh">אשף: מה עושים ב-Tableau Public?</div>
+<div class="m15-wz">
+<div class="row2"><label>הנתונים שלי נמצאים ב: <select data-k="src"></select></label></div>
+<div class="row2"><label><input type="checkbox" data-k="auto"> צריך שיתעדכן לבד</label><label><input type="checkbox" data-k="priv"> יש בנתונים פרטים אישיים או פנימיים</label></div>
+</div>
+<div class="m15-verdict" data-k="out"></div>
+</div>
+<script>
+(function () { FL.dom(function () {
+  var box = FL.$('[data-id="m15-sim-wizard"]'); if (!box) return;
+  var $ = function (k) { return FL.$('[data-k="' + k + '"]', box); };
+  var S = [
+    ['PostgreSQL או Supabase', 'no', ['מריצים שאילתה מסוכמת עם <code>\\copy</code> או סקריפט (סעיף 3) ושומרים CSV', 'מחברים את הקובץ ב-Tableau Public', 'לריענון: הסקריפט כותב לגיליון בגוגל (סעיף 5)'], 'רק דרך גיליון בגוגל, כל 24 שעות', 'לא מפרסמים טבלאות גולמיות. הרשאות ברמת שורה במסד לא מגינות על קובץ מיוצא. סיסמת המסד לא נכנסת לקובץ ולמאגר. תאריכים בפורמט ISO.'],
+    ['MySQL או MariaDB', 'no', ['מייצאים עם <code>mysql --batch</code> לקובץ TSV, או בסקריפט פייתון', 'מחברים את הקובץ ב-Tableau Public'], 'רק דרך גיליון בגוגל', 'פלט <code>--batch</code> מבריח טאבים ושורות חדשות בתוך טקסט.'],
+    ['BigQuery', 'no', ['מייצאים תוצאת שאילתה לקובץ (כלי השורה של BigQuery, או פייתון)', 'מחברים את הקובץ'], 'רק דרך גיליון בגוגל', 'סריקות גדולות עולות כסף, ולכל שימוש צריך פרויקט ב-Google Cloud.'],
+    ['גיליון בגוגל', 'ok', ['Connect, אחר כך More... ו-Google Drive', 'מפרסמים עם Keep this data in sync'], 'כן, כל 24 שעות, ויש Request Update', 'גיליון גוגל אמיתי (לא CSV בדרייב). קשרים דורשים שכל הטבלאות יהיו גיליונות. תוכן הגיליון ציבורי אחרי הפרסום.'],
+    ['קובץ Excel בכונן משותף', 'ok', ['מחברים את העותק המקומי של הקובץ', 'כדי לעדכן: פותחים, מרעננים ומפרסמים שוב'], 'לא', 'זה צילום ביום הפרסום. אין תמיכה בטבלאות PivotTable של אקסל.'],
+    ['API שמחזיר JSON', 'no', ['סקריפט עם <code>requests</code> וקריאת JSON מסדרת ושומרת CSV (או קובץ JSON למחבר JSON)', 'אם זה API בפורמט OData: מחבר OData'], 'רק דרך גיליון בגוגל', 'מפתחות API ומגבלות קצב. סריקת הסכמה ב-JSON היא של 10,000 שורות. OData יוצר extract.'],
+    ['פלט של סקריפט פייתון', 'ok', ['הסקריפט כותב CSV (UTF-8 עם BOM, תאריכים ISO)', 'מחברים את הקובץ'], 'דרך גיליון בגוגל, עם gspread', 'משאירים שמות עמודות יציבים, אחרת חוברות נשברות.'],
+    ['Airtable', 'no', ['מייצאים CSV ידנית, או סקריפט שכותב קובץ או גיליון', 'מחברים'], 'רק דרך גיליון בגוגל', 'ההרשאות של Airtable לא עוברות עם הייצוא. שדות קבצים מצורפים הם כתובות.'],
+    ['CSV שיושב ב-GitHub', 'part', ['מורידים ומחברים. או: גיליון בגוגל עם IMPORTDATA של כתובת ה-raw, ומחברים את הגיליון'], 'כן, דרך הגיליון, כל 24 שעות', 'מאגר ציבורי הוא נתונים ציבוריים. תדירות הריענון של IMPORTDATA לא תועדה.']
+  ];
+  var src = $('src'); S.forEach(function (s, i) { var o = document.createElement('option'); o.value = i; o.textContent = s[0]; src.appendChild(o); });
+  var used = {}, LAB = { ok: 'ישר ב-Public', part: 'Public עם כלי חינמי מבחוץ', no: 'לא זמין ב-Tableau Public: ככה עובדים סביב זה' };
+  function draw() {
+    var s = S[+src.value], h = '<span class="m15-badge ' + s[1] + '">' + LAB[s[1]] + '</span><b>' + FL.esc(s[0]) + '</b><ol class="m15-steps">' + s[2].map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ol>';
+    h += '<p><b>ריענון אוטומטי:</b> ' + s[3] + '. ';
+    if ($('auto').checked) h += s[3].indexOf('לא') === 0 ? '<b>אין דרך.</b> בלי Google Sheets צריך לפרסם ידנית, או להשתמש במוצר אחר (נספח, סעיף 10).' : 'זה מתאים לצורך שלכם, אבל זה פעם ב-24 שעות ולא חי.' ;
+    h += '</p><p><b>שימו לב:</b> ' + s[4] + '</p>';
+    if ($('priv').checked) h += '<p style="color:#991b1b"><b>פרטי או פנימי? לא ב-Public.</b> כל מה שמתפרסם ציבורי וניתן להורדה, והמהדורה אינה לשימוש מסחרי. שמרו מקומית, או השתמשו במוצר עם הרשאות (נספח, סעיף 10).</p>';
+    var v = FL.$('[data-k="out"]', box); v.className = 'm15-verdict ' + ($('priv').checked ? 'no' : s[1]); v.innerHTML = h;
+    used[src.value] = 1; if (Object.keys(used).length >= 4) FL.done('m15-sim-wizard');
+  }
+  src.addEventListener('change', draw); $('auto').addEventListener('change', draw); $('priv').addEventListener('change', draw); draw();
+}); })();
+</script>
+
+<div class="box recap"><ul>
+<li>הנתונים נולדים במסד, ב-Tableau Public אין מחבר למסד, ולכן הגשר הוא שאילתה שמייצאת קובץ CSV (או גיליון בגוגל).</li>
+<li>Public שומר extract, כלומר צילום: הוא לא חי. הריענון האוטומטי היחיד הוא גיליון בגוגל, פעם ב-24 שעות.</li>
+<li>בוחרים גרגר לפי השאלה, ומייצאים רכיבים (סכום, ספירה) ולא ממוצעים מוכנים. אחרי חיבור, בודקים סכומים.</li>
+<li>הפרטיות נקבעת בייצוא: מוחקים עמודות במקור, מאחדים תאים קטנים, ובודקים בחלון פרטי.</li>
+<li>על כל דשבורד כותבים &quot;נתונים עד&quot; והגדרה של המספר המרכזי.</li>
+<li>מה שקיים רק במוצרים המורשים (חיבור חי, Custom SQL, Prep, TabPy) מוכר כידע, ויש לו דרך סביב.</li>
+</ul></div>
+
+<div class="quiz" data-id="m15-q-final1" data-a="3"><p class="qq">הנתונים שלכם ב-PostgreSQL ואתם רוצים דשבורד ב-Tableau Public. מה המסלול?</p>
+<button class="opt">מחברים את PostgreSQL ישר מחלונית Connect</button>
+<button class="opt">מייצאים את כל הטבלאות כמו שהן ומפרסמים</button>
+<button class="opt">מריצים שאילתה מסוכמת, שומרים CSV, ומחברים אותו</button>
+<div class="why">אין מחבר למסד, וייצוא טבלאות גולמיות חושף יותר ממה שצריך. שאילתה מסוכמת היא גם הגשר וגם המסנן.</div></div>
+
+<div class="quiz" data-id="m15-q-final2" data-a="1"><p class="qq">מה נכון לגבי ריענון אוטומטי ב-Tableau Public?</p>
+<button class="opt">רק גיליונות בגוגל, פעם ב-24 שעות, בחלון שאי אפשר לבחור</button>
+<button class="opt">כל קובץ CSV מתרענן כשהוא משתנה</button>
+<button class="opt">אפשר להגדיר ריענון כל שעה</button>
+<div class="why">לפי התיעוד, אין ריענון אוטומטי לקובצי Excel ו-CSV, ואי אפשר לשנות את התדירות או את השעה.</div></div>
+
+<div class="quiz" data-id="m15-q-final3" data-a="2"><p class="qq">סכום ההכנסות בדשבורד שלכם 12,884 והמנהל רואה 13,592 בקובץ אחר. מה בודקים קודם?</p>
+<button class="opt">אם Tableau מעגל</button>
+<button class="opt">איך הוגדרה ההכנסה בכל מקום: למשל האם כוללת הזמנות מבוטלות</button>
+<button class="opt">אם המסד פגום</button>
+<div class="why">ההבדל של 708 בא מהגדרה, לא מעיגול. לכן כותבים את ההגדרה על הדשבורד.</div></div>
+
+<p>המודול הבא, <a href="module16.html">תכנות והרחבות</a>, ממשיך מכאן: חישובים מתקדמים, הטמעה בדף משלכם, ועוד מה שמריצים בלי שירותים מורשים.</p>
+<div class="teach"><b>🎓 למרצה:</b> האשף מבוסס על טבלת ההחלטות של מסמך הרקע (סעיף 5). בדקו שהסטודנטים מבינים ש&quot;ריענון אוטומטי&quot; אומר גיליון בגוגל ותו לא.</div>
+</section>
+
+<div class="pager"><a href="module14.html">→ 14. סיפורים, פרסום והטמעה</a><a href="module16.html">16. תכנות והרחבות ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>

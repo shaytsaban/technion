@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10. פרמטרים ורמת פירוט · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=10;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public">1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים">2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים">3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות">6<small></small></a><a id="part7" href="module7.html" title="מפות">7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים">8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט" class=on>10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב">13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה">14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים">15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות">16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום">17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות">19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>פרמטרים<br><span>ורמת פירוט</span></h1>
+  <p>בונים גיליון של סניפי Scoop &amp; Go שהצופה שולט בו: בוחר מדד, בוחר כמה סניפים להציג ומזיז יעד. אחר כך עוברים לרמת פירוט: מחשבים מספר ברמה אחרת מזו של הגרף, ולומדים באיזה סדר Tableau מסנן ומחשב, כדי שהמספרים לא יתהפכו לכם באמצע.</p>
+  <div class="chips"><span>🎛️ פרמטרים: ידית לצופה</span><span>🧮 FIXED, INCLUDE, EXCLUDE</span><span>🔀 סדר הפעולות בהנפשה</span><span>🧪 התנסויות עם תוצאה צפויה</span><span>🎞️ הדמיות על הנתונים האמיתיים</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<style>
+.m10-dlg{direction:ltr;text-align:left;background:#f1f3f5;border:1px solid #c7cfd9;border-radius:10px;padding:12px 14px;font-size:.82rem;max-width:560px;margin:10px auto;box-shadow:0 8px 22px rgba(15,23,42,.12)}
+.m10-dlg h5{margin:0 0 8px;font-size:.9rem;color:#334155}
+.m10-dlg .r{display:grid;grid-template-columns:130px 1fr;gap:8px;margin:6px 0;align-items:center}
+.m10-dlg .r>b{font-weight:600;color:#475569}
+.m10-dlg .f{background:#fff;border:1px solid #c7cfd9;border-radius:4px;padding:2px 8px;min-height:22px}
+.m10-dlg .f.off{background:#e9ecef;color:#94a3b8}
+.m10-dlg table{border-collapse:collapse;background:#fff;font-size:.78rem;margin:2px 0}
+.m10-dlg td,.m10-dlg th{border:1px solid #d5dbe3;padding:1px 10px;text-align:left}
+.m10-dlg .btns{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+.m10-dlg .btns span{border:1px solid #c7cfd9;background:#fff;border-radius:4px;padding:1px 14px}
+.m10-dlg .btns span.ok{background:#1f77b4;color:#fff;border-color:#1f77b4}
+.m10-card{border:1px solid #c7cfd9;border-radius:6px;background:#fff;padding:6px 8px;font-size:.74rem;margin-top:8px}
+.m10-card b{display:block;font-size:.74rem;color:#334155;margin-bottom:3px}
+.m10-card .sel{border:1px solid #94a3b8;border-radius:3px;padding:0 6px;display:flex;justify-content:space-between}
+.m10-sl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
+.m10-sl label{font-weight:700;font-size:.9rem;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.m10-sl span label{display:inline-flex;margin-inline-end:12px}
+.m10-kp{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.m10-kp div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:4px 12px;font-size:.88rem}
+.m10-kp b{color:var(--navy)}
+.m10-chart svg{width:100%;height:auto;display:block;direction:ltr}
+.m10-chart svg text{font-family:'Heebo',Arial,sans-serif;font-size:13px}
+.m10-pills{display:flex;gap:6px;flex-wrap:wrap;direction:ltr;margin:4px 0}
+.m10-pills span{border-radius:6px;padding:1px 9px;font-size:.82rem;font-weight:700;background:#d7e7f5;color:#14507a;border:1px solid #a9c9e3}
+.m10-pills span.x{background:#f1f5f9;color:#94a3b8;border-color:#e2e8f0;text-decoration:line-through}
+.m10-pills span.n{background:#fde8d6;color:#9a4a0b;border-color:#f3c39b}
+.m10-pg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+@media(max-width:760px){.m10-pg{grid-template-columns:1fr}}
+.m10-pg>div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 10px;min-width:0}
+.m10-pg h5{margin:0 0 4px;font-size:.92rem;color:var(--navy)}
+.m10-tb{width:100%;border-collapse:collapse;font-size:.82rem;direction:ltr}
+.m10-tb th,.m10-tb td{border:1px solid var(--line);padding:2px 7px;text-align:left}
+.m10-tb th{background:#f1f5f9}
+.m10-tb td.r,.m10-tb th.r{text-align:right}
+.m10-stg{display:grid;gap:6px;margin:8px 0}
+.m10-stg>div{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:4px 10px;font-size:.88rem}
+.m10-stg>div.hot{border-color:#e8741f;background:#fff7ed}
+.m10-stg>div.dim{opacity:.55}
+.m10-stg .k{width:28px;height:28px;border-radius:8px;background:var(--navy);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.m10-st{display:inline-block;border-radius:999px;padding:0 9px;font-size:.76rem;font-weight:700}
+.m10-st.ok{background:#d1fae5;color:#065f46}.m10-st.no{background:#fee2e2;color:#991b1b}.m10-st.tn{background:#fef3c7;color:#92400e}
+.m10-cohort{border-collapse:collapse;direction:ltr;font-size:.84rem;margin:8px auto}
+.m10-cohort th,.m10-cohort td{border:1px solid #d5dbe3;padding:3px 12px;text-align:center}
+.m10-cohort th{background:#f1f5f9}
+.m10-eq{direction:ltr;text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:6px 12px;margin:6px 0;overflow-x:auto;white-space:pre}
+</style>
+<script>
+(function(){
+  if (window.M10) return;
+  var cache = null;
+  function labels(c){ return c.dict ? c.v.map(function(i){ return c.dict[i]; }) : c.v; }
+  window.M10 = {
+    fmt: function(x, d){ d = (d == null) ? 1 : d; return x.toLocaleString('en-US', {minimumFractionDigits: d, maximumFractionDigits: d}); },
+    data: function(cb){
+      if (cache) return cb(cache);
+      TF.loadScoop(function(D){
+        if (cache) return cb(cache);
+        var C = D.cols;
+        var S = {n: D.n, Branch: labels(C.Branch), Region: labels(C.Region), Category: labels(C.Category), Channel: labels(C.Channel), Item: labels(C.Item), Sales: C.Sales.v, Profit: C.Profit.v, Cost: C.Cost.v, Quantity: C.Quantity.v, Date: C.Order_Date.v, OrderID: C.Order_ID.v, Discount: C.Discount.v};
+        S.Year = S.Date.map(function(d){ return d.slice(0, 4); });
+        cache = S; cb(S);
+      });
+    }
+  };
+})();
+</script>
+
+<div class="box note"><b>מה נבנה במודול הזה</b> <span class="lvl b">בונים: פרמטרים</span> <span class="lvl p">מתקדמים: רמת פירוט</span>
+<p>גיליון אחד של סניפי Scoop &amp; Go שהצופה שולט בו. הוא בוחר מדד (מכירות, רווח או כמות), בוחר כמה סניפים להציג, מזיז קו יעד ומריץ תרחיש &quot;מה יקרה אם&quot;. אחרי זה עוברים לרמת פירוט: מספרים שמחושבים ברמה אחרת מזו של הגרף, כמו תאריך המכירה הראשון של כל סניף, אחוז מכל הרשת או השוואה לסניף ממוצע. בסוף לומדים באיזה סדר Tableau מסנן ומחשב, ובונים קבוצת לקוחות לפי חודש ההזמנה הראשונה.</p>
+<p>מה צריך להיות מוכן: הקובץ <a class="tool" href="data/scoop_sales_2024_2025.csv">scoop_sales_2024_2025.csv</a> טעון ב-Tableau Public, ואתם מכירים שדה מחושב (<a href="module8.html">מודול 8</a>). חישובי טבלה (<a href="module9.html">מודול 9</a>) עוזרים בחלק הרביעי של המודול, אבל לא חובה. כל התרגילים כאן רצים ב-Tableau Public בלבד, מתוך קובץ.</p>
+</div>
+
+<div class="teach"><b>🎓 למרצה:</b> המודול הזה עמוס. אם חסר זמן, העבירו את המשימות לפי הסדר: פרמטר להחלפת מדד, Top N, FIXED לאחוז מהרשת, סדר הפעולות עם Top N והקשר. את הקוהורט של הלקוחות ואת חוקר ה-LOD אפשר להשאיר לתרגול עצמי. לפני השיעור הריצו בתוכנה את כל הנוסחאות פעם אחת: מספרי התוצאה הצפויה חושבו בפייתון מהקובץ, לא ב-Tableau. כל מה שסומן &quot;בדקו בתוכנה&quot; הוא פריט שהמחקר לא הצליח לאמת.</div>
+
+<section class="sec" id="m10-1" data-t="פרמטר">
+<div class="sec-h"><div class="sec-n">1</div><h2>פרמטר: ידית שהצופה מסובב</h2></div>
+<p class="lead">מנהל הרשת של Scoop &amp; Go מסתכל על גרף מכירות לפי סניף. הוא רוצה לראות רווח. אחרי רגע הוא רוצה כמות. אתם לא רוצים לבנות שלושה גיליונות ולהחליף ביניהם. בשביל זה יש פרמטר.</p>
+
+<div class="defline"><b>פרמטר (<code>Parameter</code>):</b> ערך אחד שנשמר בחוברת העבודה, והצופה יכול לשנות אותו. הוא לא עמודה בנתונים. דוגמה: מספר <code>3</code> שחישוב קורא, או המילה <code>Profit</code>.</div>
+
+<p>בואו נשים את זה ליד שדה רגיל, כדי שההבדל יהיה ברור.</p>
+<div class="tw"><table class="tbl">
+<tr><th></th><th>שדה (למשל <code>Sales</code>)</th><th>פרמטר (למשל <code>Top N</code>)</th></tr>
+<tr><td>כמה ערכים יש</td><td>6,575, אחד בכל שורת מכירה</td><td>ערך אחד</td></tr>
+<tr><td>מאיפה הוא בא</td><td>מהקובץ</td><td>אתם יוצרים אותו ב-Tableau</td></tr>
+<tr><td>מי משנה אותו</td><td>רק מי שמעדכן את הקובץ</td><td>הצופה, בלחיצה</td></tr>
+<tr><td>מה הוא עושה לבד</td><td>מופיע בגרף כשגוררים אותו</td><td>כלום, עד שחישוב, מסנן או קו עזר משתמשים בו</td></tr>
+</table></div>
+
+<div class="anim" data-id="m10-anim-param" data-speed="3200">
+<div class="stage"><svg viewBox="0 0 800 340" role="img" aria-label="הנפשה: הצופה בוחר ערך בפרמטר, השדה המחושב קורא אותו והגרף מתעדכן">
+<defs><marker id="m10a1-ar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#e8741f"/></marker></defs>
+<text x="95" y="26" text-anchor="middle" font-size="16" font-weight="800" fill="#9a4a0b">הפרמטר</text>
+<text x="360" y="26" text-anchor="middle" font-size="16" font-weight="800" fill="#1d4ed8">השדה המחושב</text>
+<text x="665" y="26" text-anchor="middle" font-size="16" font-weight="800" fill="#14507a">הגרף</text>
+<rect x="10" y="40" width="170" height="140" rx="14" fill="#fff7ed" stroke="#e8741f" stroke-width="2"/>
+<text x="95" y="68" text-anchor="middle" font-size="15" font-weight="700" fill="#9a4a0b">Pick Measure</text>
+<rect x="22" y="88" width="146" height="36" rx="6" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+<g data-only="1"><text x="34" y="112" font-size="16" font-weight="700" fill="#0f172a">Sales ▾</text></g>
+<g data-only="2,3,4"><text x="34" y="112" font-size="16" font-weight="700" fill="#0f172a">Profit ▾</text></g>
+<text x="95" y="156" text-anchor="middle" font-size="14" fill="#64748b">ערך אחד בזיכרון</text>
+<g data-only="2"><circle cx="146" cy="106" r="11" fill="none" stroke="#e8741f" stroke-width="3"/><text x="95" y="205" text-anchor="middle" font-size="14" font-weight="700" fill="#e8741f">הצופה לוחץ ובוחר</text></g>
+<rect x="240" y="40" width="240" height="140" rx="14" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="360" y="66" text-anchor="middle" font-size="15" font-weight="700" fill="#1d4ed8">Chosen Measure</text>
+<g data-only="3"><rect x="250" y="108" width="220" height="22" rx="4" fill="#fde68a"/></g>
+<g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="13" fill="#0f172a">
+<text x="254" y="90">CASE [Pick Measure]</text>
+<text x="254" y="124">WHEN "Sales" THEN SUM(Sales)</text>
+<text x="254" y="146">WHEN "Profit" THEN SUM(Profit)</text>
+<text x="254" y="168">WHEN "Quantity" ...  END</text>
+</g>
+<g data-only="3"><path d="M182,106 L234,106" stroke="#e8741f" stroke-width="3" fill="none" marker-end="url(#m10a1-ar)"/><text x="208" y="94" text-anchor="middle" font-size="14" font-weight="700" fill="#e8741f">קורא</text></g>
+<rect x="540" y="40" width="250" height="270" rx="14" fill="#fff" stroke="#a9c9e3" stroke-width="2"/>
+<line x1="554" y1="270" x2="776" y2="270" stroke="#94a3b8"/>
+<g data-only="1,2" fill="#4e79a7">
+<rect x="560" y="120" width="50" height="150"/><rect x="625" y="136" width="50" height="134"/><rect x="690" y="156" width="50" height="114"/>
+<g fill="#0f172a" font-size="13" text-anchor="middle"><text x="585" y="112">44,194</text><text x="650" y="128">39,446</text><text x="715" y="148">33,451</text></g>
+</g>
+<g data-only="3,4" fill="#4e79a7">
+<rect x="560" y="192" width="50" height="78"/><rect x="625" y="201" width="50" height="69"/><rect x="690" y="212" width="50" height="58"/>
+<g fill="#0f172a" font-size="13" text-anchor="middle"><text x="585" y="184">22,979</text><text x="650" y="193">20,311</text><text x="715" y="204">17,028</text></g>
+</g>
+<g fill="#334155" font-size="14" text-anchor="middle"><text x="585" y="292">Dizengoff</text><text x="650" y="292">Port</text><text x="715" y="292">Mamilla</text></g>
+<g data-only="1,2"><text x="665" y="62" text-anchor="middle" font-size="14" font-weight="700" fill="#14507a">SUM(Sales)</text></g>
+<g data-only="3,4"><text x="665" y="62" text-anchor="middle" font-size="14" font-weight="700" fill="#14507a">SUM(Profit)</text></g>
+<g data-only="4"><path d="M482,106 L534,106" stroke="#e8741f" stroke-width="3" fill="none" marker-end="url(#m10a1-ar)"/><text x="508" y="94" text-anchor="middle" font-size="14" font-weight="700" fill="#e8741f">מצייר</text></g>
+</svg></div>
+<ol class="caps">
+<li>הפרמטר <code>Pick Measure</code> מחזיק ערך אחד, <code>Sales</code>. הגרף מראה מכירות של שלושה סניפים.</li>
+<li>הצופה בוחר <code>Profit</code> מהרשימה. הערך בפרמטר השתנה, אבל הגרף עוד לא זז.</li>
+<li>השדה המחושב קורא את הפרמטר ובוחר את השורה המתאימה: <code>WHEN "Profit"</code>.</li>
+<li>הגרף מצויר מחדש עם רווח. אותו גיליון, מדד אחר. הסניפים הם אותם סניפים והסדר לא השתנה.</li>
+</ol></div>
+
+<h3>איפה יוצרים פרמטר</h3>
+<p>בחלונית הנתונים, לחיצה ימנית על שדה פותחת תפריט, ובו <code>Create</code> ואחריו <code>Parameter...</code>. אפשר גם מהחץ הקטן ליד מילת החיפוש בחלונית הנתונים. בגרסה שלכם ייתכן שהשם שונה מעט, ואין בכך בעיה.</p>
+<figure class="shot"><img src="img/create-menu-calc.png" alt="תפריט לחיצה ימנית על שדה, עם Create ואחריו Calculated Field, Group, Bins ו-Parameter"><figcaption>התפריט הימני של שדה: <code>Create</code> ואז <code>Parameter...</code>. הצילום מנתוני משחקי וידאו; אצלכם יופיעו שדות Scoop &amp; Go.</figcaption></figure>
+
+<figure class="shot" data-shot="m10-param-dialog">
+<div class="fb"><div class="m10-dlg" aria-label="הדמיה סכמטית של חלון יצירת פרמטר">
+<h5>Create Parameter</h5>
+<div class="r"><b>Name:</b><div class="f">Pick Measure</div></div>
+<div class="r"><b>Data type:</b><div class="f">String ▾</div></div>
+<div class="r"><b>Current value:</b><div class="f">Sales ▾</div></div>
+<div class="r"><b>Display format:</b><div class="f off">Automatic</div></div>
+<div class="r"><b>Allowable values:</b><div class="f">( ) All &nbsp; (●) List &nbsp; ( ) Range</div></div>
+<div class="r"><b></b><table><tr><th>Value</th><th>Display As</th></tr><tr><td>Sales</td><td>Sales</td></tr><tr><td>Profit</td><td>Profit</td></tr><tr><td>Quantity</td><td>Quantity</td></tr></table></div>
+<div class="btns"><span>Cancel</span><span class="ok">OK</span></div></div>
+<div class="need">צילום מסך נדרש: Tableau Public, חלון Create Parameter עם השם Pick Measure, Data type = String, Allowable values = List ושלוש השורות Sales, Profit, Quantity</div></div>
+<figcaption>הדמיה סכמטית של חלון יצירת פרמטר. שימו לב לשלוש ההחלטות החשובות: סוג הנתונים, הערך הנוכחי וסוג הערכים המותרים.</figcaption>
+</figure>
+
+<div class="defline"><b>ערכים מותרים (<code>Allowable values</code>):</b> מה הצופה רשאי לבחור. <code>All</code> זה תיבת הקלדה חופשית. <code>List</code> זו רשימה שאתם קובעים. <code>Range</code> זה מינימום, מקסימום וגודל צעד. דוגמה: <code>Range</code> מ-1 עד 9 בצעד 1 נותן סליידר של תשעה מצבים.</div>
+
+<p>סוגי הנתונים של פרמטר דומים לסוגי השדות שהכרתם: מספר שלם (<code>Integer</code>), מספר עשרוני (<code>Float</code>), טקסט (<code>String</code>), <dfn data-d="בוליאני: ערך שיכול להיות רק אמת או שקר, כמו מתג הדלקה וכיבוי">בוליאני</dfn> (<code>Boolean</code>), תאריך (<code>Date</code>) ותאריך עם שעה (<code>Date &amp; Time</code>). ויש כלל אחד לזכור: לטקסט לא קיים <code>Range</code>, כי אין צעד בין מילים. את שמות הסוגים המדויקים בחלון תראו בגרסה שלכם.</p>
+
+<div class="box try" data-id="m10-try-first-param">
+<p><b>פרמטר ראשון: בחר מדד</b></p>
+<ol>
+<li>פתחו גיליון חדש על Scoop &amp; Go. <i>למה: הפרמטר שייך לחוברת, אבל נבדוק אותו על גיליון נקי.</i></li>
+<li>לחיצה ימנית על <span class="fld mea"><i>#</i>Sales</span> בחלונית הנתונים, <code>Create</code>, <code>Parameter...</code>. <i>למה: כך נפתח החלון. הכינוי של השדה שלחצתם עליו לא משנה, הפרמטר לא קשור אליו.</i></li>
+<li>שם: <code>Pick Measure</code>. סוג: <code>String</code>. בחרו <code>List</code> והוסיפו שלוש שורות: <code>Sales</code>, <code>Profit</code>, <code>Quantity</code>. ערך נוכחי: <code>Sales</code>. אישור. <i>למה: טקסט עם רשימה סגורה לא מאפשר שגיאות הקלדה.</i></li>
+<li>בחלונית הנתונים, בתחתית, מופיע אזור <code>Parameters</code> ובו <code>Pick Measure</code>. לחיצה ימנית עליו, <code>Show Parameter</code>. <i>למה: בלי זה הצופה לא רואה את הידית.</i></li>
+<li>בצד ימין של הגיליון מופיע כרטיס קטן עם רשימה נפתחת. פתחו אותו ובחרו <code>Profit</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בחלונית הנתונים יש פרמטר אחד, ויש כרטיס בצד הגיליון עם שלושה ערכים. כשאתם בוחרים ערך אחר, <b>לא קורה שום דבר</b> בגיליון. הגיליון עדיין ריק. זה לא תקלה: אף חישוב עוד לא קורא את הפרמטר. את זה נתקן בסעיף הבא.</p>
+</div>
+
+<div class="box trap"><p><b>פרמטר הוא לא מסנן.</b> מי שבונה פרמטר ומצפה שהגרף ישתנה יתאכזב. פרמטר הוא רק ערך. כדי שיעשה משהו צריך ליצור שדה מחושב שמשתמש בו, או לשים אותו בלשונית <code>Top</code> של מסנן, או לבחור אותו בקו עזר. כשתראו כרטיס שלא עושה כלום, השאלה היא: מי קורא את הפרמטר הזה?</p></div>
+
+<div class="box meaning"><p>פרמטר הופך גיליון קבוע לגיליון שאפשר לשאול אותו שאלות. הצופה לא צריך לדעת Tableau, ואתם לא צריכים לבנות גרסה לכל שאלה. המחיר: כל פרמטר הוא עוד משהו שצריך להסביר, לכן מוסיפים רק את מה שבאמת משנה את התשובה.</p></div>
+
+<div class="box real"><p>בדשבורדים של הנהלה כמעט תמיד יש בורר מדד אחד למעלה: מכירות, רווח, כמות. זה פרמטר שמחליף מדד, והוא חוסך לארגון עשרות גיליונות כמעט זהים. תראו את זה בכל גלריית דשבורדים ציבורית.</p></div>
+
+<div class="box think" data-id="m10-th-param-why"><p>שאלה: למה Tableau לא משנה את הגרף אוטומטית כשבוחרים ערך בפרמטר? מה היה קורה אילו הייתם בונים ארבעה פרמטרים שונים ולא משתמשים באף אחד מהם?</p>
+<div class="ans">לפרמטר אין שום קשר לעמודות. הוא ערך שמחזיק מידע, בדיוק כמו משתנה בתוכנית. Tableau לא יודע אם <code>Profit</code> אומר &quot;תחליף מדד&quot;, &quot;תסנן&quot; או &quot;תצייר קו&quot;. את זה קובע החישוב שקורא אותו. ארבעה פרמטרים שאף אחד לא קורא הם ארבעה כרטיסים שמבלבלים את הצופה ולא עושים כלום.</div></div>
+
+<div class="quiz" data-id="m10-q-param-def" data-a="2"><p class="qq">מה ההבדל העיקרי בין שדה לפרמטר?</p>
+<button class="opt">שדה מופיע בגרף ופרמטר מופיע רק בדשבורד</button>
+<button class="opt">פרמטר הוא ערך בודד שהצופה משנה, ושדה הוא עמודה מהנתונים עם ערך בכל שורה</button>
+<button class="opt">פרמטר תמיד מסנן את הנתונים אוטומטית</button>
+<button class="opt">שדה אפשר לחשב ופרמטר אי אפשר להשתמש בו בחישוב</button>
+<div class="why">נכון: פרמטר הוא ערך אחד שאפשר לשנות. הוא לא מסנן לבד (תשובה ג שגויה), הוא כן מופיע בחישובים (תשובה ד הפוכה) ולא קשור לדשבורד דווקא (תשובה א).</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> עצרו אחרי שלב 5 של ההתנסות ושאלו את הכיתה: &quot;למה הגרף ריק?&quot;. התשובה &quot;אף אחד לא קורא את הפרמטר&quot; היא ההבנה המרכזית של הסעיף. שמות סוגי הנתונים בחלון: המחקר מצטט את ששת הסוגים מתיעוד ה-API של Tableau (רמת ביטחון C לגבי החלון עצמו), לכן בדקו מה כתוב בחלון בגרסה שלכם. פרמטר מסוג מרחבי (<code>spatial</code>) קיים רק בגרסאות חדשות ולא נלמד כאן. <b>פרמטר דינמי</b> (ערך שמתרענן מחישוב כשחוברת נפתחת) מתועד כרשמי, אבל ב-Tableau Public הנתונים הם מיצוי שלא משתנה אחרי פרסום, ולכן אין מה לרענן (זו מסקנה של המחקר, לא נבדקה: בדקו בתוכנה לפני שמזכירים). <b>עריכה בדפדפן (web authoring):</b> המחקר לא בדק אילו חלקים של המודול זמינים בה (יצירת פרמטר, ביטויי LOD, Add to Context). כל התרגילים נכתבו לאפליקציית Tableau Desktop Public Edition. בדקו בדפדפן לפני שאתם אומרים לתלמידים שזה עובד גם שם.</div>
+</section>
+
+<section class="sec" id="m10-2" data-t="החלפת מדד">
+<div class="sec-h"><div class="sec-n">2</div><h2>מחליפים מדד בלחיצה</h2></div>
+<p class="lead">יש לנו פרמטר עם שלוש מילים. עכשיו צריך חישוב אחד שמסתכל על המילה ומחזיר את המספר הנכון. זה שדה מחושב רגיל, כמו במודול 8, רק שבתוכו מופיע שם הפרמטר.</p>
+
+<pre class="code" data-lang="tableau">CASE [Pick Measure]
+WHEN "Sales"    THEN SUM([Sales])
+WHEN "Profit"   THEN SUM([Profit])
+WHEN "Quantity" THEN SUM([Quantity])
+END</pre>
+
+<p>קוראים לו <code>Chosen Measure</code>. שימו לב לשלושה דברים:</p>
+<ul>
+<li>בתוך הנוסחה כותבים את שם הפרמטר בסוגריים מרובעים, בדיוק כמו שדה: <code>[Pick Measure]</code>.</li>
+<li>כל ענף מחזיר <b>צבירה</b> (<code>SUM</code>). כל הענפים חייבים להיות באותו סוג: או כולם צבירות, או כולם ערכים בודדים מהשורה.</li>
+<li>המילים בתוך <code>WHEN</code> הן ה<b>ערך</b> של הפרמטר (<code>Value</code>), לא התווית שמוצגת לצופה (<code>Display As</code>).</li>
+</ul>
+
+<figure class="shot" data-shot="m10-swap-view">
+<div class="fb"><div class="tws" aria-label="הדמיה סכמטית של גיליון עם פרמטר להחלפת מדד">
+<div class="tws-top"><b>Sheet 1 - Tableau Public</b><span class="tws-btn">Undo</span><span class="tws-btn">Sort</span></div>
+<div class="tws-body">
+<div class="tws-data"><h6>Dimensions</h6><div><span class="fld dim"><i>Abc</i>Branch</span></div><div><span class="fld dim"><i>Abc</i>Region</span></div><h6>Measures</h6><div><span class="fld mea"><i>#</i>Sales</span></div><div><span class="fld mea"><i>=#</i>Chosen Measure</span></div><h6>Parameters</h6><div><span class="fld mea"><i>#</i>Pick Measure</span></div></div>
+<div class="tws-main">
+<div class="tws-shelf"><span>Columns</span><span class="pill c">Chosen Measure</span></div>
+<div class="tws-shelf"><span>Rows</span><span class="pill d">Branch</span></div>
+<div class="tws-canvas" style="align-items:center"><svg viewBox="0 0 420 200" width="100%" role="img" aria-label="תשעה עמודות אופקיות של מכירות לפי סניף, ממוינות מהגבוה לנמוך">
+<g font-size="11" fill="#334155"><text x="112" y="15" text-anchor="end">Tel Aviv Dizengoff</text><text x="112" y="37" text-anchor="end">Tel Aviv Port</text><text x="112" y="59" text-anchor="end">Jerusalem Mamilla</text><text x="112" y="81" text-anchor="end">Eilat Promenade</text><text x="112" y="103" text-anchor="end">Haifa German Colony</text><text x="112" y="125" text-anchor="end">Netanya Beach</text><text x="112" y="147" text-anchor="end">Beer Sheva Grand Mall</text><text x="112" y="169" text-anchor="end">Rehovot Mall</text><text x="112" y="191" text-anchor="end">Ashdod Beach Pop-up</text></g>
+<g fill="#4e79a7"><rect x="120" y="5" width="280" height="14"/><rect x="120" y="27" width="250" height="14"/><rect x="120" y="49" width="212" height="14"/><rect x="120" y="71" width="199" height="14"/><rect x="120" y="93" width="174" height="14"/><rect x="120" y="115" width="170" height="14"/><rect x="120" y="137" width="119" height="14"/><rect x="120" y="159" width="63" height="14"/><rect x="120" y="181" width="34" height="14"/></g></svg></div></div>
+<div class="tws-marks"><h6>Marks</h6><div class="pill d">Automatic</div><div class="m10-card"><b>Pick Measure</b><div class="sel"><span>Sales</span><span>▾</span></div></div></div>
+</div><div class="tws-tabs"><span class="on">Sheet 1</span><span>+</span></div></div>
+<div class="need">צילום מסך נדרש: Tableau Public, גיליון עם Branch ב-Rows, Chosen Measure ב-Columns, ממוין יורד, וכרטיס הפרמטר Pick Measure בצד ימין עם הערך Sales</div></div>
+<figcaption>הדמיה סכמטית של התוצאה: גרף עמודות אחד, וכרטיס פרמטר בצד שמחליף את המדד.</figcaption>
+</figure>
+<ol class="callouts"><li>בחלונית הנתונים, בתחתית, מופיע הפרמטר. השדה המחושב ב-Measures.</li><li>על הציר האופקי יושב <code>Chosen Measure</code>, לא <code>Sales</code>. הוא זה שמשתנה.</li><li>הכרטיס מימין הוא הידית של הצופה.</li></ol>
+
+<div class="box try" data-id="m10-try-swap-measure">
+<p><b>בונים: גיליון אחד, שלושה מדדים</b></p>
+<ol>
+<li>צרו שדה מחושב (<code>Create</code>, <code>Calculated Field...</code>), שם <code>Chosen Measure</code>, והדביקו את הנוסחה למעלה. אשרו כשכתוב &quot;The calculation is valid&quot;. <i>למה: זה החלק שקורא את הפרמטר ומחליט מה לצבור.</i></li>
+<li>גררו <span class="pill d">Branch</span> ל-<code>Rows</code> ואת <code>Chosen Measure</code> ל-<code>Columns</code>. <i>למה: זה גרף עמודות רגיל, רק שהמדד הוא שדה מחושב.</i></li>
+<li>מיינו יורד (כפתור <code>Sort</code> בסרגל הכלים, או החץ על ציר המדד). <i>למה: כך קל לראות מי ראשון. המיון ירוץ שוב בכל החלפה.</i></li>
+<li>בכרטיס הפרמטר בחרו <code>Sales</code>, אחר כך <code>Profit</code>, אחר כך <code>Quantity</code>. בכל בחירה הסתכלו על הסניף הראשון והאחרון בגרף ועל שורת המצב בתחתית (<code>marks</code> ו-<code>SUM</code>).</li>
+</ol>
+<p><b>תוצאה צפויה:</b> תמיד 9 עמודות (9 סימנים). הסניף הראשון הוא <code>Tel Aviv Dizengoff</code> בשלושת המדדים, והאחרון <code>Ashdod Beach Pop-up</code>. הערכים:</p>
+<div class="tw"><table class="tbl">
+<tr><th>סניף</th><th>Sales</th><th>Profit</th><th>Quantity</th></tr>
+<tr><td>Tel Aviv Dizengoff</td><td>44,194.1</td><td>22,979.1</td><td>2,128</td></tr>
+<tr><td>Tel Aviv Port</td><td>39,446.0</td><td>20,310.5</td><td>1,915</td></tr>
+<tr><td>Jerusalem Mamilla</td><td>33,450.8</td><td>17,027.8</td><td>1,624</td></tr>
+<tr><td>Eilat Promenade</td><td>31,473.7</td><td>15,741.2</td><td>1,501</td></tr>
+<tr><td>Haifa German Colony</td><td>27,389.2</td><td>14,187.7</td><td>1,327</td></tr>
+<tr><td>Netanya Beach</td><td>26,840.2</td><td>13,507.7</td><td>1,301</td></tr>
+<tr><td>Beer Sheva Grand Mall</td><td>18,797.2</td><td>9,589.2</td><td>903</td></tr>
+<tr><td>Rehovot Mall</td><td>9,925.2</td><td>4,794.7</td><td>479</td></tr>
+<tr><td>Ashdod Beach Pop-up</td><td>5,304.5</td><td>2,585.0</td><td>248</td></tr>
+<tr><td><b>סך הכל</b></td><td><b>236,820.9</b></td><td><b>120,722.9</b></td><td><b>11,426</b></td></tr>
+</table></div>
+<p>Tableau עשוי להציג את המספרים מעוגלים (44,194 במקום 44,194.1), וזה בסדר. בדיקת שפיות: סכום הסניפים בכל עמודה חייב להיות שווה לשורת הסך הכל.</p>
+</div>
+
+<h3>כותרת שמשתנה, וצורת כתיבה אחרת</h3>
+<p>כשמחליפים מדד, הכותרת של הגיליון עדיין אומרת &quot;מכירות&quot;. לפי מדריכים מקובלים אפשר ללחוץ פעמיים על הכותרת, ובחלון העריכה לבחור <code>Insert</code> ואז את הפרמטר, כך שהכותרת תציג את הערך שבחר הצופה. גם את כותרת הציר אפשר לקשור לפרמטר (בגרסה שלכם ייתכן שהשם שונה מעט). בדקו שזה עובד אצלכם לפני שאתם מבטיחים לצופה כותרת חכמה.</p>
+<p>הצורה השנייה של אותה נוסחה היא ברמת השורה, בלי <code>SUM</code>: <code>CASE [Pick Measure] WHEN "Sales" THEN [Sales] ... END</code>. אז ה-<code>SUM</code> מתווסף כשגוררים את השדה לגרף. שתי הצורות עובדות. הכלל הוא לא לערבב.</p>
+
+<div class="box trap"><p><b>ערבוב בין צבירה לשורה.</b> אם בענף אחד כתבתם <code>SUM([Sales])</code> ובענף אחר <code>[Profit]</code> בלי <code>SUM</code>, Tableau יסרב ויכתוב שאי אפשר לערבב ארגומנטים מצטברים ולא מצטברים. התיקון: להפוך את כל הענפים לאותו סוג, בדרך כלל צבירה.</p></div>
+
+<div class="box trap"><p><b>תווית שונה מהערך.</b> אם ברשימת הפרמטר כתבתם בעמודה <code>Display As</code> &quot;מכירות&quot; אבל ה-<code>Value</code> הוא <code>Sales</code>, ה-<code>CASE</code> חייב לבדוק <code>"Sales"</code>. אם תכתבו <code>WHEN "מכירות"</code> לא יהיה אף ענף שמתאים, והגרף יתרוקן. כך כתוב גם בתיעוד הרשמי: החישוב מתייחס לערך (<code>Value</code>) ולא לתווית.</p></div>
+
+<div class="box trap"><p><b>היחידות לא זהות.</b> מכירות ורווח הם כסף, כמות היא מספר פריטים. אם הפורמט של <code>Chosen Measure</code> הוא מטבע, כמות תיראה כמו כסף. פשוט הגדירו פורמט מספר רגיל (<code>#,##0</code>) ושימו את היחידה בכותרת.</p></div>
+
+<div class="box think" data-id="m10-th-case-else"><p>שאלה: מוסיפים לרשימת הפרמטר ערך רביעי, <code>Discount</code>, ושוכחים להוסיף לו <code>WHEN</code>. מה יראה הצופה שבוחר בו? מה מוסיפים לנוסחה כדי שיראה משהו הגיוני?</p>
+<div class="ans"><code>CASE</code> שלא מצא ענף מתאים ואין בו <code>ELSE</code> מחזיר <code>Null</code>, והגרף יהיה ריק או יציג &quot;Null&quot;. מוסיפים <code>ELSE</code> לפני ה-<code>END</code>, למשל <code>ELSE SUM([Sales])</code>, או עדיף להוסיף את הענף החסר. עוד אפשרות: לבדוק כל ערך חדש מיד אחרי שמוסיפים אותו.</div></div>
+
+<div class="box meaning"><p>הגיליון אחד, אבל הוא עונה על שלוש שאלות. שימו לב שהדירוג זהה בשלושת המדדים: דיזנגוף ראשון ואשדוד אחרון בכולם. זו תוצאה, לא חובה. אם סניף ייתן הרבה הנחות, הוא יהיה גבוה במכירות ונמוך ברווח, והחלפת המדד תחשוף את זה.</p></div>
+
+<div class="box real"><p>החלפת מדד היא אחד השימושים הנפוצים ביותר של פרמטרים. בתיעוד הרשמי של Tableau יש דוגמה בדיוק כזאת, והיא משתמשת באותו ביטוי <code>CASE</code>. הגרסה הרגילה מחליפה גם את הציר האופקי וגם את האנכי, עם שני פרמטרים.</p></div>
+
+<div class="quiz" data-id="m10-q-case-value" data-a="3"><p class="qq">ברשימת הפרמטר יש ערך <code>Profit</code> שמוצג לצופה כ-&quot;רווח&quot;. מה כותבים ב-<code>WHEN</code>?</p>
+<button class="opt"><code>WHEN "רווח"</code>, כי זה מה שהצופה רואה</button>
+<button class="opt">אפשר לכתוב כל אחד מהם, Tableau מבין</button>
+<button class="opt"><code>WHEN "Profit"</code>, כי החישוב קורא את הערך ולא את התווית</button>
+<button class="opt">לא כותבים שום דבר, הפרמטר ממלא את הנוסחה לבד</button>
+<div class="why">התיעוד הרשמי אומר שהחישוב חייב להתייחס ל-<code>Value</code> ולא ל-<code>Display As</code>. אם כתבתם את התווית, אף ענף לא מתאים והתוצאה <code>Null</code>. Tableau לא &quot;מבין&quot; ולא ממלא לבד.</div></div>
+
+<div class="quiz" data-id="m10-q-case-mix" data-a="1"><p class="qq">מה לא תקין בנוסחה? <code>CASE [Pick Measure] WHEN "Sales" THEN SUM([Sales]) WHEN "Profit" THEN [Profit] END</code></p>
+<button class="opt">הענף הראשון צבירה והשני ערך מהשורה, ואי אפשר לערבב</button>
+<button class="opt">אסור לכתוב שם פרמטר בתוך CASE</button>
+<button class="opt">חייבים להוסיף ענף ל-Quantity גם אם אין בו צורך</button>
+<button class="opt">CASE לא עובד עם טקסט</button>
+<div class="why">הבעיה היא ערבוב של <code>SUM([Sales])</code> עם <code>[Profit]</code> לא מצטבר. פרמטר בתוך <code>CASE</code> זה בדיוק השימוש הנכון, <code>CASE</code> עובד עם טקסט, ואין חובה לכסות כל ערך.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> הציגו קודם את הגרסה השגויה (עם הערבוב) ותנו לכיתה לקרוא את הודעת השגיאה לפני שמתקנים. הוראת הכותרת הדינמית (<code>Insert</code> בחלון הכותרת) וכותרת ציר דינמית: לפי תיעוד רשמי של כותרות ציר דינמיות, שמסומן שם Cloud, Desktop, Server ולא Public. בדקו בתוכנה לפני השיעור שהפריט קיים אצלכם. אם לא, דלגו עליו ואל תבטיחו אותו.</div>
+</section>
+
+<section class="sec" id="m10-3" data-t="Top N ו-What-if">
+<div class="sec-h"><div class="sec-n">3</div><h2>Top N, קו יעד ותרחיש &quot;מה יקרה אם&quot;</h2></div>
+<p class="lead">שלושה שימושים נוספים באותו רעיון: הצופה בוחר כמה סניפים לראות, איפה לשים יעד, ומה קורה אם עלות החומרים עולה. בכולם הפרמטר הוא ידית, והחישוב או המסנן הם מה שהידית מחוברת אליו.</p>
+
+<h3>א. Top N: הצופה בוחר כמה</h3>
+<p>במסנן רגיל על סניפים אפשר לבחור &quot;Top 3&quot; בלשונית <code>Top</code>. הבעיה: ה-3 קבוע. כדי שהצופה יחליט, מחליפים את המספר בפרמטר.</p>
+<figure class="shot"><img src="img/filter-top.png" alt="חלון מסנן עם לשונית Top פתוחה, By field, Bottom, המספר 5, JP Sales ו-Sum"><figcaption>לשונית <code>Top</code> בחלון המסנן. בתיבת המספר יש חץ שמאפשר לבחור פרמטר במקום מספר קבוע. הצילום מנתוני משחקי וידאו.</figcaption></figure>
+
+<div class="box try" data-id="m10-try-topn-param">
+<p><b>Top N בשליטת הצופה</b></p>
+<ol>
+<li>צרו פרמטר <code>Top N</code>: סוג <code>Integer</code>, ערכים מותרים <code>Range</code>, מינימום 1, מקסימום 9, צעד 1, ערך נוכחי 3. הציגו אותו (<code>Show Parameter</code>). <i>למה: יש 9 סניפים, אז N לא יכול להיות גדול מ-9, וסליידר של שלמים בלבד מונע שגיאות.</i></li>
+<li>בנו גרף: <span class="pill d">Branch</span> ב-<code>Rows</code>, <span class="pill c sum">Sales</span> ב-<code>Columns</code>, מיון יורד.</li>
+<li>גררו <span class="pill d">Branch</span> אל <code>Filters</code>. בחלון עברו ללשונית <code>Top</code>, סמנו <code>By field</code>, בחרו <code>Top</code>, ובתיבת המספר בחרו את הפרמטר <code>Top N</code> מהרשימה. בשדה בחרו <code>Sales</code> עם <code>Sum</code>. אישור. <i>למה: המסנן מדרג לפי מכירות ושומר רק את N הראשונים, וה-N בא מהפרמטר.</i></li>
+<li>הזיזו את הסליידר: 3, אחר כך 5, אחר כך 9.</li>
+</ol>
+<p><b>תוצאה צפויה:</b></p>
+<div class="tw"><table class="tbl">
+<tr><th>Top N</th><th>סימנים</th><th>הסניפים</th></tr>
+<tr><td>3</td><td>3</td><td>Tel Aviv Dizengoff 44,194.1, Tel Aviv Port 39,446.0, Jerusalem Mamilla 33,450.8</td></tr>
+<tr><td>5</td><td>5</td><td>שלושת הקודמים ועוד Eilat Promenade 31,473.7 ו-Haifa German Colony 27,389.2</td></tr>
+<tr><td>9</td><td>9</td><td>כל הסניפים</td></tr>
+</table></div>
+<p>בדיקת שפיות: שלושת הראשונים מרכיבים 117,090.9, בערך 49.4% מכל מכירות הרשת (236,820.9). כלומר שלושה סניפים מביאים כמעט חצי.</p>
+</div>
+
+<div class="box trap"><p><b>Top N לא מתחשב במסנן אחר.</b> אם תוסיפו עכשיו מסנן אזור &quot;Center&quot;, לא תקבלו את שלושת הסניפים הכי טובים במרכז. מה כן תקבלו, ולמה, זה הנושא של הסעיף על סדר הפעולות. בינתיים זכרו: התוצאה תפתיע.</p></div>
+
+<h3>ב. קו יעד שהצופה מזיז</h3>
+<div class="box try" data-id="m10-try-target-line">
+<p><b>קו יעד ומי עבר אותו</b></p>
+<ol>
+<li>צרו פרמטר <code>Target</code>: <code>Float</code>, <code>Range</code> מ-0 עד 50,000, צעד 5,000, ערך נוכחי 30,000. הציגו אותו. <i>למה: יעד הוא מספר שמנהלים משנים, אז הוא ידית ולא קבוע בנוסחה.</i></li>
+<li>הגדירו את <code>Top N</code> ל-9 כדי לראות את כל הסניפים.</li>
+<li>עברו ללשונית <code>Analytics</code> (ליד <code>Data</code> בצד שמאל), גררו <code>Reference Line</code> אל הגרף ובחרו <code>Table</code>. בחלון: <code>Value</code> = <code>Target</code> (הפרמטר), תווית <code>Value</code>. <i>למה: קו עזר יכול לקרוא פרמטר, ואז הקו זז עם הידית.</i></li>
+<li>צרו שדה מחושב <code>Above Target</code>: <code>SUM([Sales]) &gt;= [Target]</code> וגררו אותו ל-<code>Color</code>. <i>למה: צבע שונה לסניפים שעברו את הקו, כדי שלא צריך להשוות בעין.</i></li>
+<li>הזיזו את היעד ל-25,000, ל-30,000 ול-40,000.</li>
+</ol>
+<p><b>תוצאה צפויה:</b></p>
+<div class="tw"><table class="tbl">
+<tr><th>יעד</th><th>סניפים שעברו (True)</th><th>מי הם</th></tr>
+<tr><td>25,000</td><td>6</td><td>דיזנגוף, נמל תל אביב, ממילא, אילת, חיפה, נתניה</td></tr>
+<tr><td>30,000</td><td>4</td><td>דיזנגוף (44,194.1), נמל (39,446.0), ממילא (33,450.8), אילת (31,473.7)</td></tr>
+<tr><td>40,000</td><td>1</td><td>דיזנגוף</td></tr>
+</table></div>
+<p>שימו לב שנמל תל אביב עם 39,446.0 נשאר מתחת ל-40,000, אף שהוא קרוב מאוד.</p>
+</div>
+
+<h3>ג. תרחיש: מה אם עלות החומרים עולה</h3>
+<p>עד עכשיו הפרמטר בחר או סינן. עכשיו הוא נכנס לתוך חשבון. זה כבר &quot;מה יקרה אם&quot; (<code>what-if</code>): משנים הנחה אחת ורואים מה קורה למספרים.</p>
+<div class="box try" data-id="m10-try-whatif-cost">
+<p><b>רווח אם עלות החומרים עולה</b></p>
+<ol>
+<li>צרו פרמטר <code>Cost Change</code>: <code>Float</code>, <code>Range</code> עם מינימום <span class="n">-0.1</span>, מקסימום 0.3 וצעד 0.05, ערך נוכחי 0. אם יש בחלון <code>Display format</code>, בחרו אחוזים. <i>למה: 0.1 הוא עלייה של 10 אחוז בעלות.</i></li>
+<li>שדה מחושב <code>Profit What-If</code>:
+<pre class="code" data-lang="tableau">SUM([Sales]) - SUM([Cost]) * (1 + [Cost Change])</pre><i>למה: מכירות פחות עלות, כשהעלות מוכפלת בשינוי שהצופה בחר.</i></li>
+<li>גררו <span class="pill d">Branch</span> ל-<code>Rows</code> ו-<code>Profit What-If</code> ל-<code>Columns</code>, והוסיפו <span class="pill c sum">Profit</span> לצידו להשוואה (אפשר ב-<code>Marks</code> כ-<code>Label</code>).</li>
+<li>הציגו את הפרמטר והזיזו אותו מ-0 ל-10%.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> ב-0% כל סניף יוצא בדיוק כמו <code>SUM(Profit)</code> (זו בדיקת הנכונות: אם יש הבדל, יש טעות בנוסחה). ב-10%:</p>
+<div class="tw"><table class="tbl">
+<tr><th>סניף</th><th>רווח בפועל</th><th>רווח ב-10%+ עלות</th></tr>
+<tr><td>Tel Aviv Dizengoff</td><td>22,979.1</td><td>20,857.6</td></tr>
+<tr><td>Tel Aviv Port</td><td>20,310.5</td><td>18,396.95</td></tr>
+<tr><td>Jerusalem Mamilla</td><td>17,027.8</td><td>15,385.5</td></tr>
+<tr><td>Eilat Promenade</td><td>15,741.2</td><td>14,167.95</td></tr>
+<tr><td>Haifa German Colony</td><td>14,187.7</td><td>12,867.55</td></tr>
+<tr><td>Netanya Beach</td><td>13,507.7</td><td>12,174.45</td></tr>
+<tr><td>Beer Sheva Grand Mall</td><td>9,589.2</td><td>8,668.4</td></tr>
+<tr><td>Rehovot Mall</td><td>4,794.7</td><td>4,281.65</td></tr>
+<tr><td>Ashdod Beach Pop-up</td><td>2,585.0</td><td>2,313.05</td></tr>
+<tr><td><b>סך הכל</b></td><td><b>120,722.9</b></td><td><b>109,113.1</b></td></tr>
+</table></div>
+<p>עוד נקודות לבדיקה בסך הכל: עם ירידה של 10% בעלות 132,332.7; עם עלייה של 5% 114,918.0; של 20% 97,503.3; של 30% 85,893.5. כל חמישה אחוזים של עלות שווים בערך 5,805 ברווח הרשת.</p>
+</div>
+
+<div class="box try" data-id="m10-try-whatif-discount">
+<p><b>מה אם היינו מבטלים את מבצע ה-50 אחוז</b></p>
+<ol>
+<li>צרו פרמטר <code>Max Discount</code>: <code>Float</code>, <code>List</code> עם הערכים 0, 0.1, 0.2, 0.5. אפשר להגדיר תווית <code>Display As</code> כמו &quot;אין הנחה&quot;, &quot;עד 10%&quot;, &quot;עד 20%&quot;, &quot;עד 50%&quot;. ערך נוכחי 0.5. <i>למה: ארבע רמות ההנחה שיש בנתונים.</i></li>
+<li>שדה מחושב <code>Profit With Cap</code>:
+<pre class="code" data-lang="tableau">SUM( IF [Discount] &lt;= [Max Discount] THEN [Profit] END )</pre><i>למה: סוכמים רווח רק משורות שההנחה בהן לא עוברת את התקרה. שורות שנפסלו הן Null ולא נספרות.</i></li>
+<li>הציגו את הפרמטר. גררו את <code>Profit With Cap</code> לטבלת טקסט (<code>Text</code> ב-<code>Marks</code>) בלי שום ממד, כדי לקבל מספר אחד. עברו על ארבעת הערכים.</li>
+</ol>
+<p><b>תוצאה צפויה:</b></p>
+<div class="tw"><table class="tbl">
+<tr><th>Max Discount</th><th>רווח כולל</th><th>שורות שנכנסו לחישוב</th></tr>
+<tr><td>0 (בלי הנחות)</td><td>113,367.0</td><td>5,798</td></tr>
+<tr><td>0.1</td><td>120,269.6</td><td>6,229</td></tr>
+<tr><td>0.2</td><td>121,100.9</td><td>6,283</td></tr>
+<tr><td>0.5 (הכל)</td><td>120,722.9</td><td>6,575</td></tr>
+</table></div>
+<p>המספר הנמוך ביותר אינו המסקנה. תסתכלו על ההפרש בין 0.2 ל-0.5: <b>378.0</b>. מבצע ה-50 אחוז (292 שורות, כולן בשנת 2025) הפסיד 378.0 בסך הכל. ההנחות הקטנות, עד 20 אחוז, דווקא הוסיפו רווח.</p>
+</div>
+
+<div class="box meaning"><p>המבצע הזה נראה כמו הצלחה כשמסתכלים על מכירות: 292 שורות נוספות. הוא נראה אחרת ברווח. בפירוק לפי קטגוריה: סנדיי ב-63 שורות הפסיד 747.0, קונוסים הרוויחו 170.0 וכוסות 199.0. אילו ביטלנו רק את ההנחה על הסנדיי, היינו מרוויחים יותר. התרחיש פשוט בכוונה: הוא מניח שהשורות שהוסרו פשוט נעלמות, ולא מנסה לנחש כמה לקוחות היו מוותרים.</p></div>
+
+<div class="box trap"><p><b>פרמטר לא מחשב מחדש חישוב שלא מכיר אותו.</b> אם תבנו חישוב FIXED (סעיף 5) שלא מזכיר את <code>Cost Change</code>, הזזת הסליידר לא תשנה אותו. אותו דבר בכל חישוב: הפרמטר משפיע רק על מי שקורא לו בשמו.</p></div>
+
+<div class="box trap"><p><b>השוואת מספרים עשרוניים.</b> ההשוואה <code>[Discount] &lt;= [Max Discount]</code> בטוחה כאן כי בשני הצדדים אותו מספר שנכתב אותו דבר (0.1 מול 0.1). בהשוואה של תוצאות חישוב, כמו <code>SUM(...) = 0.3</code>, שגיאות עיגול קטנות יכולות להפוך את &quot;שווה&quot; ל&quot;לא שווה&quot;. בחישובים כאלה משתמשים ב-<code>ROUND</code> או בטווח.</p></div>
+
+<div class="box real"><p>בכל חברה שבה מתכננים תקציב, גיליון what-if הוא כלי יומיומי: &quot;מה יקרה אם המחירים יעלו 5 אחוז?&quot;. הערך לא בתשובה המדויקת, אלא בכך שהמנהל מזיז ידית ורואה את הכיוון מיד, בלי לבקש מכם גרף חדש.</p></div>
+
+<div class="box note"><p><b>פעולת פרמטר (<code>Parameter Action</code>):</b> בדשבורד אפשר להגדיר שלחיצה על סימן בגרף תשנה ערך של פרמטר, כך שהצופה לא צריך לגעת בכרטיס. את זה נבנה במודול הדשבורדים (<a href="module13.html">מודול 13</a>). הפעולה מתועדת רשמית, אבל המחקר מעריך שהיא קיימת ב-Tableau Public רק מהסקה, ולכן אין בה תרגיל חובה.</p></div>
+
+<div class="sim" data-id="m10-sim-params"><div class="sh">לוח הפרמטרים של Scoop &amp; Go</div>
+<p>זו הדמיה של מה שבניתם: אותם ארבעה פרמטרים, מחושבים בדפדפן מתוך 6,575 השורות האמיתיות. ה-Top N מדרג לפי מכירות, כמו בתרגיל. הזיזו כל ידית ושימו לב מה משתנה ומה לא.</p>
+<div class="m10-sl">
+<label>Pick Measure <select id="m10p-m"><option value="Sales">Sales</option><option value="Profit">Profit</option><option value="Quantity">Quantity</option><option value="WI">Profit What-If</option></select></label>
+<label>Top N <input type="range" id="m10p-n" min="1" max="9" step="1" value="9"><b id="m10p-nv" class="n">9</b></label>
+</div>
+<div class="m10-sl">
+<label>Cost Change <input type="range" id="m10p-c" min="-10" max="30" step="5" value="10"><b id="m10p-cv" class="n">10%</b></label>
+<label>Target <input type="range" id="m10p-t" min="0" max="50000" step="5000" value="30000"><b id="m10p-tv" class="n">30,000</b></label>
+</div>
+<div class="m10-kp" id="m10p-kp"></div>
+<div class="m10-chart" id="m10p-ch"></div>
+<p id="m10p-note" style="font-size:.88rem;color:var(--muted)"></p>
+</div>
+<script>
+(function(){ FL.dom(function(){
+  var box = FL.$('[data-id="m10-sim-params"]'); if (!box) return;
+  var $ = function(id){ return FL.$('#' + id, box); };
+  var used = false;
+  M10.data(function(S){
+    var agg = {};
+    for (var i = 0; i < S.n; i++){
+      var b = S.Branch[i], a = agg[b] || (agg[b] = {Sales: 0, Profit: 0, Quantity: 0, Cost: 0});
+      a.Sales += S.Sales[i]; a.Profit += S.Profit[i]; a.Quantity += S.Quantity[i]; a.Cost += S.Cost[i];
+    }
+    var names = Object.keys(agg);
+    function render(){
+      var m = $('m10p-m').value, n = +$('m10p-n').value, c = +$('m10p-c').value / 100, t = +$('m10p-t').value;
+      $('m10p-nv').textContent = n; $('m10p-cv').textContent = Math.round(c * 100) + '%'; $('m10p-tv').textContent = M10.fmt(t, 0);
+      var bySales = names.slice().sort(function(x, y){ return agg[y].Sales - agg[x].Sales; });
+      var keep = bySales.slice(0, n);
+      function val(b){ var a = agg[b]; return m === 'WI' ? a.Sales - a.Cost * (1 + c) : a[m]; }
+      var rows = keep.map(function(b){ return {b: b, v: val(b)}; }).sort(function(x, y){ return y.v - x.v; });
+      var mx = Math.max.apply(null, names.map(val)); if (m === 'Sales') mx = Math.max(mx, 50000);
+      var W = 640, L = 190, BW = 400, RH = 26, H = rows.length * RH + 20;
+      var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="גרף עמודות של הסניפים שנבחרו">';
+      var above = 0;
+      rows.forEach(function(r, i){
+        var y = 8 + i * RH, w = Math.max(1, r.v / mx * BW), hit = (m === 'Sales' && r.v >= t);
+        if (hit) above++;
+        s += '<text x="' + (L - 8) + '" y="' + (y + 15) + '" text-anchor="end" fill="#334155">' + FL.esc(r.b) + '</text>';
+        s += '<rect x="' + L + '" y="' + y + '" width="' + w.toFixed(1) + '" height="18" fill="' + (m === 'Sales' ? (hit ? '#1f77b4' : '#9ca3af') : '#4e79a7') + '"/>';
+        s += '<text x="' + (L + w + 6).toFixed(1) + '" y="' + (y + 14) + '" fill="#0f172a">' + M10.fmt(r.v, m === 'Quantity' ? 0 : 1) + '</text>';
+      });
+      if (m === 'Sales'){ var tx = L + t / mx * BW; s += '<line x1="' + tx.toFixed(1) + '" y1="2" x2="' + tx.toFixed(1) + '" y2="' + (H - 6) + '" stroke="#e8741f" stroke-width="2" stroke-dasharray="5 4"/>'; }
+      s += '</svg>';
+      $('m10p-ch').innerHTML = s;
+      var tot = rows.reduce(function(p, r){ return p + r.v; }, 0);
+      var k = '<div>סימנים: <b class="n">' + rows.length + '</b></div><div>סך המדד שמוצג: <b class="n">' + M10.fmt(tot, m === 'Quantity' ? 0 : 1) + '</b></div>';
+      if (m === 'Sales') k += '<div>עברו את היעד: <b class="n">' + above + '</b></div>';
+      $('m10p-kp').innerHTML = k;
+      $('m10p-note').textContent = m === 'Sales' ? 'קו היעד פועל על מכירות. גררו את Target וספרו את העמודות הכחולות.' : (m === 'WI' ? 'Cost Change משנה רק את Profit What-If. ב-0% מתקבל בדיוק הרווח האמיתי.' : 'קו היעד מוגדר למכירות בלבד. Cost Change לא משפיע על המדד הזה, כי החישוב לא קורא לו.');
+      if (!used){ used = true; } else { FL.done('m10-sim-params'); }
+    }
+    ['m10p-m', 'm10p-n', 'm10p-c', 'm10p-t'].forEach(function(id){ $(id).addEventListener('input', render); $(id).addEventListener('change', render); });
+    render();
+  });
+}); })();
+</script>
+
+<div class="box think" data-id="m10-th-param-count"><p>שאלה: במסך שלכם יש עכשיו ארבעה פרמטרים: מדד, Top N, יעד ושינוי עלות. מנהל הרשת רוצה רק &quot;לראות את הסניפים החזקים&quot;. איזה פרמטרים הייתם משאירים גלויים ואיזה הייתם מסתירים או מוחקים?</p>
+<div class="ans">מי שרוצה &quot;לראות את החזקים&quot; צריך Top N ואולי מדד. היעד ושינוי העלות לא קשורים לשאלה שלו, ואם הם גלויים הוא ינסה אותם ויתבלבל. הכלל: כרטיס אחד לכל שאלה שהצופה באמת שואל. פרמטר שהוא רק עבורכם אפשר להשאיר בגיליון עבודה נפרד.</div></div>
+
+<div class="quiz" data-id="m10-q-topn-param" data-a="4"><p class="qq">איפה מחברים פרמטר של Top N למסנן סניפים?</p>
+<button class="opt">בלשונית General של המסנן, ליד רשימת הסניפים</button>
+<button class="opt">בקו עזר בלשונית Analytics</button>
+<button class="opt">בנוסחה של שדה מחושב בלבד, אין דרך אחרת</button>
+<button class="opt">בלשונית Top של המסנן, בתיבת המספר, במקום מספר קבוע</button>
+<div class="why">בלשונית <code>Top</code>, <code>By field</code>, אפשר לבחור פרמטר במקום מספר. רשימת הסניפים ב-<code>General</code> היא בחירה ידנית, וקו עזר שייך לדבר אחר. אפשר גם לבנות דירוג בחישוב טבלה (סעיף 8), אבל זו לא הדרך היחידה.</div></div>
+
+<div class="quiz" data-id="m10-q-whatif-zero" data-a="2"><p class="qq">בתרחיש <code>Profit What-If</code> הזזתם את הסליידר ל-0 והסכום הכולל יצא 120,722.9. מה זה אומר?</p>
+<button class="opt">הנוסחה שגויה, כי הרווח האמיתי שונה</button>
+<button class="opt">הכול תקין: ב-0 אין שינוי, והמספר שווה לסכום הרווח האמיתי</button>
+<button class="opt">הפרמטר לא פעיל ולכן צריך ליצור אותו מחדש</button>
+<button class="opt">Tableau עיגל, ולכן המספר לא אמיתי</button>
+<div class="why">סכום המכירות פחות העלות שווה לרווח, ולכן ב-0 מתקבל <code>SUM(Profit)</code> בדיוק. זו בדיקת הנכונות הפשוטה ביותר לכל תרחיש: נקודת האפס חייבת להחזיר את המציאות.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> אחרי הסליידר ב-0 שאלו כמה אחוז רווח כל 5 אחוזי עלות עולים (5,805 בערך). הפרמטר של Top N עם <code>Range</code> דורש Integer; בגרסה שלכם בדקו שרשימת המסנן באמת מציעה פרמטר בתיבת המספר (הצילום האמיתי שבסעיף מראה חץ ליד המספר). הפורמט באחוזים בחלון הפרמטר מסומן במחקר כ&quot;Desktop בלבד&quot;. פעולות פרמטר: מוסק (B) שקיימות ב-Public, בדקו לפני שמראים. על פרמטר <code>Float</code> עם <code>List</code> כמו 0.1: בדקו שההשוואה <code>&lt;=</code> עובדת בלי בעיית עיגול (מסמך הרקע מזהיר משוויון, והכוונה ב-<code>&lt;=</code> כאן בטוחה אבל לא הורצה).</div>
+</section>
+
+<section class="sec" id="m10-4" data-t="רמת פירוט של הגרף">
+<div class="sec-h"><div class="sec-n">4</div><h2>רמת הפירוט של הגרף: כמה סימנים יש ולמה</h2></div>
+<p class="lead">לפני שמחשבים משהו ברמה אחרת, צריך להבין באיזו רמה אנחנו כבר נמצאים. בגרף של סניפים יש תשעה סימנים. בגרף של סניפים ופריטים יש 135. הנתונים אותם נתונים. מה השתנה?</p>
+
+<div class="defline"><b>רמת פירוט (<code>Level of Detail</code>, ובקיצור <code>LOD</code>):</b> אילו ממדים נמצאים בגרף, ולכן כמה סימנים יש בו. Tableau מקבץ את השורות לפי הממדים האלה וצובר את המדד בתוך כל קבוצה. דוגמה: גרף עם <code>Branch</code> בלבד הוא ברמת סניף, ולכן 9 סימנים.</div>
+
+<p>הממדים יכולים להיות על <code>Rows</code> או <code>Columns</code>, אבל גם על <code>Color</code>, <code>Label</code>, <code>Tooltip</code> ובעיקר על <code>Detail</code>. <code>Detail</code> הוא המקום שבו מוסיפים ממד לגרף בלי לשנות את הצורה שלו, רק כדי לפצל את הסימנים. בואו נראה את זה עם שמונה השורות הראשונות של הקובץ.</p>
+
+<div class="anim" data-id="m10-anim-grain" data-speed="3600">
+<div class="stage"><svg viewBox="0 0 800 340" role="img" aria-label="הנפשה: שמונה שורות מהנתונים מתקבצות לסימנים בהתאם לממדים שבגרף">
+<text x="170" y="26" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">8 שורות ראשונות בקובץ</text>
+<rect x="10" y="36" width="330" height="296" rx="10" fill="#fff" stroke="#cbd5e1"/>
+<g font-size="13" font-weight="700" fill="#64748b"><text x="40" y="58">Region</text><text x="120" y="58">Category</text><text x="236" y="58">Order ID</text><text x="326" y="58" text-anchor="end">Sales</text></g>
+<g font-size="13" fill="#0f172a">
+<rect x="14" y="68" width="6" height="22" fill="#e8741f"/><text x="40" y="84">North</text><text x="120" y="84">Cups</text><text x="236" y="84">SG-00001</text><text x="326" y="84" text-anchor="end">40</text>
+<rect x="14" y="96" width="6" height="22" fill="#1f77b4"/><text x="40" y="112">South</text><text x="120" y="112">Cups</text><text x="236" y="112">SG-00002</text><text x="326" y="112" text-anchor="end">24</text>
+<rect x="14" y="124" width="6" height="22" fill="#2ca02c"/><text x="40" y="140">Center</text><text x="120" y="140">Drinks</text><text x="236" y="140">SG-00003</text><text x="326" y="140" text-anchor="end">26</text>
+<rect x="14" y="152" width="6" height="22" fill="#2ca02c"/><text x="40" y="168">Center</text><text x="120" y="168">Cones</text><text x="236" y="168">SG-00004</text><text x="326" y="168" text-anchor="end">16</text>
+<rect x="14" y="180" width="6" height="22" fill="#2ca02c"/><text x="40" y="196">Center</text><text x="120" y="196">Cones</text><text x="236" y="196">SG-00005</text><text x="326" y="196" text-anchor="end">26</text>
+<rect x="14" y="208" width="6" height="22" fill="#1f77b4"/><text x="40" y="224">South</text><text x="120" y="224">Sticks</text><text x="236" y="224">SG-00006</text><text x="326" y="224" text-anchor="end">24</text>
+<rect x="14" y="236" width="6" height="22" fill="#1f77b4"/><text x="40" y="252">South</text><text x="120" y="252">Sundaes</text><text x="236" y="252">SG-00007</text><text x="326" y="252" text-anchor="end">40</text>
+<rect x="14" y="264" width="6" height="22" fill="#2ca02c"/><text x="40" y="280">Center</text><text x="120" y="280">Cups</text><text x="236" y="280">SG-00008</text><text x="326" y="280" text-anchor="end">24</text>
+</g>
+<text x="326" y="314" text-anchor="end" font-size="14" font-weight="800" fill="#0f172a">SUM(Sales) = 220</text>
+<text x="375" y="190" font-size="30" fill="#94a3b8" text-anchor="middle">→</text>
+<rect x="400" y="36" width="392" height="296" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+<g data-only="1"><text x="596" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#475569">Tableau לא מציג שורות.</text><text x="596" y="176" text-anchor="middle" font-size="15" font-weight="700" fill="#475569">הוא מקבץ אותן לפי הממדים שבגרף.</text></g>
+<g data-only="2"><text x="416" y="62" font-size="14" font-weight="800" fill="#14507a">Rows: Region    3 marks</text>
+<g font-size="14" fill="#0f172a"><text x="420" y="110">North</text><text x="420" y="150">South</text><text x="420" y="190">Center</text></g>
+<rect x="500" y="94" width="56" height="24" fill="#e8741f"/><rect x="500" y="134" width="123" height="24" fill="#1f77b4"/><rect x="500" y="174" width="129" height="24" fill="#2ca02c"/>
+<g font-size="14" font-weight="700" fill="#0f172a"><text x="566" y="112">40</text><text x="633" y="152">88</text><text x="639" y="192">92</text></g>
+<text x="596" y="246" text-anchor="middle" font-size="14" fill="#475569">3 שורות בצד שמאל כבר לא נפרדות</text></g>
+<g data-only="3"><text x="416" y="62" font-size="14" font-weight="800" fill="#14507a">Rows: Region    Detail: Category    7 marks</text>
+<g font-size="13" fill="#0f172a"><text x="420" y="92">North · Cups</text><text x="420" y="122">South · Cups</text><text x="420" y="152">South · Sticks</text><text x="420" y="182">South · Sundaes</text><text x="420" y="212">Center · Drinks</text><text x="420" y="242">Center · Cones</text><text x="420" y="272">Center · Cups</text></g>
+<rect x="540" y="76" width="56" height="20" fill="#e8741f"/><rect x="540" y="106" width="34" height="20" fill="#1f77b4"/><rect x="540" y="136" width="34" height="20" fill="#1f77b4"/><rect x="540" y="166" width="56" height="20" fill="#1f77b4"/><rect x="540" y="196" width="36" height="20" fill="#2ca02c"/><rect x="540" y="226" width="59" height="20" fill="#2ca02c"/><rect x="540" y="256" width="34" height="20" fill="#2ca02c"/>
+<g font-size="13" font-weight="700" fill="#0f172a"><text x="604" y="91">40</text><text x="582" y="121">24</text><text x="582" y="151">24</text><text x="604" y="181">40</text><text x="584" y="211">26</text><text x="607" y="241">42</text><text x="582" y="271">24</text></g>
+<text x="596" y="304" text-anchor="middle" font-size="14" fill="#475569">שתי שורות של Center · Cones התאחדו לסימן אחד</text><text x="596" y="324" text-anchor="middle" font-size="14" font-weight="700" fill="#475569">16 + 26 = 42</text></g>
+<g data-only="4"><text x="416" y="62" font-size="14" font-weight="800" fill="#14507a">Detail: Order ID    8 marks</text>
+<g font-size="13" fill="#0f172a"><text x="420" y="92">SG-00001</text><text x="420" y="122">SG-00002</text><text x="420" y="152">SG-00003</text><text x="420" y="182">SG-00004</text><text x="420" y="212">SG-00005</text><text x="420" y="242">SG-00006</text><text x="420" y="272">SG-00007</text><text x="420" y="302">SG-00008</text></g>
+<rect x="510" y="76" width="56" height="18" fill="#e8741f"/><rect x="510" y="106" width="34" height="18" fill="#1f77b4"/><rect x="510" y="136" width="36" height="18" fill="#2ca02c"/><rect x="510" y="166" width="22" height="18" fill="#2ca02c"/><rect x="510" y="196" width="36" height="18" fill="#2ca02c"/><rect x="510" y="226" width="34" height="18" fill="#1f77b4"/><rect x="510" y="256" width="56" height="18" fill="#1f77b4"/><rect x="510" y="286" width="34" height="18" fill="#2ca02c"/>
+<text x="700" y="190" text-anchor="middle" font-size="14" fill="#475569">סימן לכל שורה:</text><text x="700" y="212" text-anchor="middle" font-size="14" fill="#475569">כבר אין קיבוץ</text></g>
+</svg></div>
+<ol class="caps">
+<li>בקובץ יש שורות. סך המכירות בשמונה השורות האלה הוא 220.</li>
+<li>עם <code>Region</code> בלבד בגרף, השורות מתקבצות לשלוש קבוצות, ולכן שלושה סימנים: 40, 88 ו-92.</li>
+<li>מוסיפים <code>Category</code> ל-<code>Detail</code>. הקבוצות מתפצלות לשבע, כי כל צירוף של אזור וקטגוריה הוא סימן. הסכום הכולל עדיין 220.</li>
+<li>מוסיפים <code>Order ID</code>. כל שורה היא צירוף ייחודי, ולכן שמונה סימנים. הרמה של הגרף הפכה לרמה של הנתונים. הסכום לא השתנה: 220.</li>
+</ol></div>
+
+<p>שימו לב: <b>סך הכל לא משתנה אף פעם</b>. מה שמשתנה הוא כמה חתיכות אתם רואים. זה אפשר לקבוע בעין: אותו 220 תמיד.</p>
+
+<div class="sim" data-id="m10-sim-marks"><div class="sh">כמה סימנים יהיו בגרף?</div>
+<p>סמנו ממדים, כאילו הם נמצאים בגרף של Scoop &amp; Go. תראו כמה סימנים נוצרים מכל צירוף ומה Tableau היה שולח בשאלה לנתונים.</p>
+<div class="m10-sl" id="m10m-dims"></div>
+<div class="m10-kp" id="m10m-kp"></div>
+<div class="m10-eq" id="m10m-sql"></div>
+<div class="out" id="m10m-top"></div>
+</div>
+<script>
+(function(){ FL.dom(function(){
+  var box = FL.$('[data-id="m10-sim-marks"]'); if (!box) return;
+  var $ = function(id){ return FL.$('#' + id, box); };
+  var DIMS = [['Region', 'Region'], ['Branch', 'Branch'], ['Category', 'Category'], ['Item', 'Item'], ['Channel', 'Channel'], ['Year', 'YEAR([Order Date])'], ['Date', '[Order Date]'], ['OrderID', '[Order ID]']];
+  var sel = {Region: true, Category: true}, touched = 0;
+  M10.data(function(S){
+    var host = $('m10m-dims');
+    host.innerHTML = DIMS.map(function(d){ return '<label><input type="checkbox" data-k="' + d[0] + '"' + (sel[d[0]] ? ' checked' : '') + '> ' + d[0] + '</label>'; }).join('');
+    function render(){
+      var keys = DIMS.filter(function(d){ return sel[d[0]]; }).map(function(d){ return d[0]; });
+      var g = {}, tot = 0;
+      for (var i = 0; i < S.n; i++){
+        var k = keys.map(function(c){ return S[c][i]; }).join('|');
+        g[k] = (g[k] || 0) + S.Sales[i]; tot += S.Sales[i];
+      }
+      var ks = Object.keys(g), marks = ks.length;
+      $('m10m-kp').innerHTML = '<div>סימנים: <b class="n">' + M10.fmt(marks, 0) + '</b></div><div>שורות לכל סימן בממוצע: <b class="n">' + M10.fmt(S.n / marks, 1) + '</b></div><div>SUM(Sales) בכל הגרף: <b class="n">' + M10.fmt(tot, 1) + '</b></div>';
+      var cols = DIMS.filter(function(d){ return sel[d[0]]; }).map(function(d){ return d[1]; });
+      $('m10m-sql').textContent = 'SELECT ' + (cols.length ? cols.join(', ') + ', ' : '') + 'SUM(Sales)\nFROM sales' + (cols.length ? '\nGROUP BY ' + cols.join(', ') : '');
+      var top = ks.sort(function(a, b){ return g[b] - g[a]; }).slice(0, 5).map(function(k){ return FL.esc(k.replace(/\|/g, ' · ') || 'כל השורות') + ': <b class="n">' + M10.fmt(g[k], 1) + '</b>'; });
+      $('m10m-top').innerHTML = '<b>חמשת הסימנים הגדולים:</b><br>' + top.join('<br>');
+    }
+    host.addEventListener('change', function(e){ var k = e.target.getAttribute('data-k'); if (!k) return; sel[k] = e.target.checked; render(); touched++; if (touched >= 3) FL.done('m10-sim-marks'); });
+    render();
+  });
+}); })();
+</script>
+
+<div class="box try" data-id="m10-try-count-marks">
+<p><b>סופרים סימנים</b></p>
+<ol>
+<li>גיליון חדש. <span class="pill d">Branch</span> ל-<code>Rows</code>, <span class="pill c sum">Sales</span> ל-<code>Columns</code>. הסתכלו בשורת המצב בתחתית החלון: כמה סימנים, וכמה הסכום. <i>למה: שורת המצב היא המונה שלכם לכל התרגילים בהמשך.</i></li>
+<li>גררו <span class="pill d">Category</span> אל <code>Detail</code> בכרטיס <code>Marks</code>. הסתכלו שוב. <i>למה: כל עמודה התפצלה לקטעים, אחד לכל קטגוריה.</i></li>
+<li>הוציאו את <span class="pill d">Category</span> והכניסו במקומה <span class="pill d">Item</span> ל-<code>Detail</code>.</li>
+<li>הוציאו את <span class="pill d">Item</span> והכניסו <span class="pill d">Order ID</span> ל-<code>Detail</code>.</li>
+<li>הוציאו את <span class="pill d">Order ID</span>. גררו <span class="pill c">Order Date</span> כתאריך מדויק (<code>Exact Date</code>) ל-<code>Detail</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b></p>
+<div class="tw"><table class="tbl">
+<tr><th>הממדים</th><th>סימנים</th><th>SUM(Sales)</th></tr>
+<tr><td>Branch</td><td>9</td><td>236,821 (בעצם 236,820.9)</td></tr>
+<tr><td>Branch + Category</td><td>45</td><td>236,821</td></tr>
+<tr><td>Branch + Item</td><td>135</td><td>236,821</td></tr>
+<tr><td>Branch + Order ID</td><td>6,575</td><td>236,821</td></tr>
+<tr><td>Branch + Order Date (יום)</td><td>3,407</td><td>236,821</td></tr>
+</table></div>
+<p>הסכום קבוע, הסימנים משתנים. ב-6,575 סימנים יש כבר סימן לכל שורת מכירה: ל-<code>Order ID</code> יש ערך ייחודי בכל שורה. שורת המצב עשויה להציג גם את מספר השורות והעמודות; זה לא אותו דבר כמו הסימנים.</p>
+</div>
+
+<div class="box trap"><p><b>&quot;הוספתי ממד והמספרים השתנו&quot;.</b> לא נכון: הסכום הכולל לא השתנה. מה שהשתנה הוא החלוקה. אם הסכום הכולל השתנה אחרי שהוספתם משהו, כנראה הוספתם מסנן, או שמדד נחתך. תמיד בדקו את שורת המצב לפני ואחרי.</p></div>
+
+<div class="box trap"><p><b><code>Order ID</code> על <code>Detail</code> &quot;כדי לראות הכל&quot;.</b> זה אומר שרמת הפירוט שווה לרמת הנתונים. כל הממוצעים והדירוגים מתחילים לעבוד על שורות בודדות ולא על סניפים. בנתונים גדולים זה גם מאט. הוסיפו ממד רק כשיש סיבה.</p></div>
+
+<div class="box meaning"><p>כל מדד בגרף הוא תשובה לשאלה: &quot;סכום של מה, בקבוצה של מה?&quot;. את הקבוצה קובעים הממדים שבגרף. כל מה שנקרא בהמשך &quot;חישוב ברמה אחרת&quot; הוא שאלה על קבוצה אחרת מזו שבגרף, למשל: &quot;מה סך הרשת כשאני מסתכל על סניף אחד?&quot;.</p></div>
+
+<div class="box real"><p>מי שמכיר SQL יזהה את זה מיד: הממדים בגרף הם עמודות ה-<code>GROUP BY</code>, והמדדים הם הצבירות שאחרי <code>SELECT</code>. זה מה שהדמיית &quot;כמה סימנים&quot; מציגה למעלה. את הצד של SQL תוכלו לראות בחלק <a href="../final-lesson/part2.html">SQL: לשאול את הנתונים</a> של המפגש המסכם.</p></div>
+
+<div class="box think" data-id="m10-th-grain-ratio"><p>שאלה: בגרף יש סניף וקטגוריה, ואתם רוצים להציג ליד כל סימן את חלקו מהמכירות של <b>הסניף</b>. בלי לבנות כלום, איזה מספר צריך כדי לחשב את זה? ברמת איזה גרף הוא היה צריך להיות מחושב?</p>
+<div class="ans">צריך את הסכום של כל הסניף. אבל בגרף של סניף וקטגוריה יש 45 סימנים, וכל אחד מכיר רק את החלק שלו. את סכום הסניף חייבים לחשב ברמה אחרת, ברמת הסניף בלבד, ולהחזיר אותו לכל סימן. בדיוק לזה נועדו הביטויים של רמת פירוט בסעיפים הבאים.</div></div>
+
+<div class="quiz" data-id="m10-q-grain-marks" data-a="3"><p class="qq">בגרף יש <code>Region</code> ב-<code>Rows</code> ו-<code>Channel</code> ב-<code>Detail</code>. למה קרובה כמות הסימנים?</p>
+<button class="opt">4, כמספר האזורים</button>
+<button class="opt">3, כמספר הערוצים</button>
+<button class="opt">12, כי כל צירוף של אזור וערוץ הוא סימן (4 אזורים כפול 3 ערוצים, אם כולם קיימים)</button>
+<button class="opt">6,575, כי כל שורה היא סימן</button>
+<div class="why">הסימנים הם הצירופים של כל הממדים בגרף. אזור בלבד נותן 4, ערוץ בלבד נותן 3, ושניהם יחד עד 12. 6,575 מתקבל רק כשיש ממד ייחודי בכל שורה, כמו <code>Order ID</code>.</div></div>
+
+<div class="quiz" data-id="m10-q-grain-total" data-a="2"><p class="qq">הוספתם <code>Item</code> ל-<code>Detail</code> והסימנים עלו מ-9 ל-135. מה קרה לסך המכירות בשורת המצב?</p>
+<button class="opt">הוא גדל פי 15</button>
+<button class="opt">הוא נשאר זהה, רק התפצל לחתיכות</button>
+<button class="opt">הוא קטן כי Tableau מסנן שורות</button>
+<button class="opt">אי אפשר לדעת בלי לבדוק את הנתונים</button>
+<div class="why">ממד חדש מפצל את הסכום ולא משנה אותו: סכום החתיכות שווה לסכום הכולל. אם הסכום השתנה, יש מסנן או שדה שנעלם.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> שורת המצב מציגה סימנים (<code>marks</code>), שורות ועמודות, וסכום, אבל המילים המדויקות תלויות בגרסה. ודאו על המחשב שלכם איך היא נראית לפני שנותנים את תוצאות התרגיל כמספר שצריך לראות. את המספרים (9, 45, 135, 6,575, 3,407) חישבתי בפייתון על הקובץ, לא ב-Tableau. מומלץ ללחוץ קודם על Detail עם Category ולהראות את העמודות המפוצלות.</div>
+</section>
+
+<section class="sec" id="m10-5" data-t="FIXED">
+<div class="sec-h"><div class="sec-n">5</div><h2>FIXED: מספר ברמה שאתם קובעים</h2></div>
+<p class="lead">מנהל הרשת שואל: &quot;איזה חלק מכל המכירות מגיע מדיזנגוף?&quot;. בגרף של סניפים כל סימן מכיר רק את הסכום של עצמו. את סך הרשת צריך להביא מבחוץ. ככה זה נראה בטבלה, עם סניף אחד וחמש קטגוריות:</p>
+
+<div class="tw"><table class="tbl m10-tb" style="direction:ltr">
+<tr><th>Branch</th><th>Category</th><th class="r">SUM(Sales)</th><th class="r">{ FIXED [Branch] : SUM([Sales]) }</th><th class="r">חלק מהסניף</th></tr>
+<tr><td>Tel Aviv Dizengoff</td><td>Cones</td><td class="r">9,273.0</td><td class="r">44,194.1</td><td class="r">21.0%</td></tr>
+<tr><td>Tel Aviv Dizengoff</td><td>Cups</td><td class="r">13,311.6</td><td class="r">44,194.1</td><td class="r">30.1%</td></tr>
+<tr><td>Tel Aviv Dizengoff</td><td>Drinks</td><td class="r">10,943.6</td><td class="r">44,194.1</td><td class="r">24.8%</td></tr>
+<tr><td>Tel Aviv Dizengoff</td><td>Sticks</td><td class="r">2,813.7</td><td class="r">44,194.1</td><td class="r">6.4%</td></tr>
+<tr><td>Tel Aviv Dizengoff</td><td>Sundaes</td><td class="r">7,852.2</td><td class="r">44,194.1</td><td class="r">17.8%</td></tr>
+</table></div>
+<p>בעמודה לפני האחרונה אותו מספר חוזר בכל שורה: סך הסניף. זו המהות של FIXED. עמודה כזאת מאפשרת לחשב &quot;חלק מהסניף&quot; בלי לשבור את הגרף.</p>
+
+<div class="defline"><b>ביטוי רמת פירוט (<code>LOD expression</code>):</b> נוסחה בתוך סוגריים מסולסלים שמחשבת צבירה ברמה שאתם קובעים, ולא ברמה של הגרף. הצורה: <code>{ FIXED [dimensions] : aggregate }</code>. דוגמה: <code>{ FIXED [Branch] : SUM([Sales]) }</code> מחזיר את סך המכירות של כל סניף, בכל מקום, גם כשהגרף מפורט יותר.</div>
+
+<figure class="shot" data-shot="m10-lod-dialog">
+<div class="fb"><div class="m10-dlg" aria-label="הדמיה סכמטית של חלון שדה מחושב עם ביטוי FIXED">
+<h5>Calculated Field</h5>
+<div class="r"><b>Name:</b><div class="f">Branch Total</div></div>
+<div class="f" style="min-height:64px;font-family:ui-monospace,Menlo,monospace;color:#c2410c">{ FIXED [Branch] : SUM([Sales]) }</div>
+<div style="margin-top:8px;color:#15803d">The calculation is valid.</div>
+<div class="btns"><span>Apply</span><span class="ok">OK</span></div></div>
+<div class="need">צילום מסך נדרש: Tableau Public, חלון שדה מחושב עם השם Branch Total והנוסחה { FIXED [Branch] : SUM([Sales]) } ושורת &quot;The calculation is valid&quot;</div></div>
+<figcaption>הדמיה סכמטית של חלון השדה המחושב עם ביטוי FIXED. הסוגריים המסולסלים הם חלק מהנוסחה.</figcaption>
+</figure>
+
+<ol class="callouts">
+<li><b>הסוגריים המסולסלים</b> <code>{ }</code> אומרים ל-Tableau שזה ביטוי רמת פירוט, לא חישוב רגיל.</li>
+<li><b>המילה FIXED</b> אומרת: רק הממדים שאני כותב כאן, בלי קשר למה שיש בגרף.</li>
+<li><b>הממדים אחרי המילה</b> מופרדים בפסיקים. אפשר גם ביטוי, כמו <code>YEAR([Order Date])</code>.</li>
+<li><b>הנקודתיים</b> מפרידים בין הממדים לצבירה.</li>
+<li><b>הצבירה</b> חייבת להיות צבירה (<code>SUM</code>, <code>MIN</code>, <code>COUNTD</code> ועוד). לא שדה חשוף.</li>
+</ol>
+
+<p>זה יכול להיות גם בלי ממדים: <code>{ FIXED : SUM([Sales]) }</code> הוא סך כל הנתונים. בלי המילה FIXED, <code>{ SUM([Sales]) }</code> זה אותו דבר, ויש לזה שם: <i>ביטוי ברמת הטבלה</i> (נחזור אליו בסעיף הבא).</p>
+
+<h3>שימוש 1: תאריך המכירה הראשון של כל סניף</h3>
+<div class="box try" data-id="m10-try-fixed-firstsale">
+<p><b>מתי כל סניף מכר לראשונה</b></p>
+<ol>
+<li>צרו שדה מחושב <code>First Sale Date</code>:
+<pre class="code" data-lang="tableau">{ FIXED [Branch] : MIN([Order Date]) }</pre><i>למה: לכל סניף, התאריך המוקדם ביותר שמופיע בנתונים, בלי קשר לגרף.</i></li>
+<li>גררו <span class="pill d">Branch</span> ל-<code>Rows</code> ואת <code>First Sale Date</code> אל <code>Text</code> בכרטיס <code>Marks</code>. <i>למה: טקסט על הסימן מציג את התאריך ליד כל סניף.</i></li>
+<li>אם השדה נכנס כשדה מצטבר (ירוק, עם <code>ATTR</code> או <code>MIN</code>), זה בסדר. אם הוא מציג כוכבית או שמות כפולים, בדקו שרק <code>Branch</code> נמצא בגרף.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> 9 שורות, תאריך אחד לכל סניף:</p>
+<div class="tw"><table class="tbl">
+<tr><th>סניף</th><th>המכירה הראשונה בקובץ</th></tr>
+<tr><td>Haifa German Colony</td><td><span class="n">2024-01-01</span></td></tr>
+<tr><td>Eilat Promenade, Netanya Beach, Tel Aviv Port</td><td><span class="n">2024-01-02</span></td></tr>
+<tr><td>Tel Aviv Dizengoff</td><td><span class="n">2024-01-03</span></td></tr>
+<tr><td>Jerusalem Mamilla</td><td><span class="n">2024-01-05</span></td></tr>
+<tr><td>Beer Sheva Grand Mall</td><td><span class="n">2024-01-09</span></td></tr>
+<tr><td>Rehovot Mall</td><td><span class="n">2025-06-01</span></td></tr>
+<tr><td>Ashdod Beach Pop-up</td><td><span class="n">2025-06-16</span></td></tr>
+</table></div>
+<p>בתבנית התאריך של המחשב שלכם זה ייראה אחרת, אבל התאריכים אותם תאריכים. שימו לב לשני סניפים שנפתחו ב-2025.</p>
+</div>
+
+<div class="box trap"><p><b>&quot;המכירה הראשונה&quot; היא לא תמיד &quot;הפתיחה&quot;.</b> הקובץ מתחיל ב-1 בינואר 2024. סניף שנפתח לפני כן ייראה כאילו נפתח בינואר 2024. התאריך שמחושב הוא המכירה הראשונה <b>בנתונים שיש לכם</b>. 7 מתוך 9 הסניפים מתחילים בין 1 ל-9 בינואר 2024, ולכן אי אפשר לדעת אם נפתחו אז או קודם. אצל רחובות ואשדוד זה כבר נראה כפתיחה אמיתית, כי יש להם מכירות רק מיוני 2025.</p></div>
+
+<h3>שימוש 2: גיל הסניף, כמה חודשים מהמכירה הראשונה</h3>
+<div class="box try" data-id="m10-try-fixed-age">
+<p><b>עקומת התחלה של שלושה סניפים</b></p>
+<ol>
+<li>שדה מחושב <code>Months Since First Sale</code>:
+<pre class="code" data-lang="tableau">DATEDIFF('month', [First Sale Date], [Order Date])</pre><i>למה: החיסור בין חודש המכירה לחודש הראשון. החישוב הוא בשורה, והוא משתמש בתוצאת ה-FIXED.</i></li>
+<li>לחצו ימנית על השדה בחלונית הנתונים ובחרו <code>Convert to Discrete</code> (או גררו אותו ל-<code>Columns</code> וקבעו בדיד). <i>למה: אנחנו רוצים עמודה לכל מספר חודש, לא ציר רציף.</i></li>
+<li>סננו (<code>Filters</code>) את <span class="pill d">Branch</span> לשלושה סניפים: Rehovot Mall, Ashdod Beach Pop-up ו-Beer Sheva Grand Mall.</li>
+<li>הגדירו: <code>Months Since First Sale</code> ב-<code>Columns</code>, <span class="pill d">Branch</span> ב-<code>Rows</code>, <span class="pill c sum">Sales</span> ב-<code>Text</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> (חודש 0 הוא החודש של המכירה הראשונה, גם אם הוא חלקי)</p>
+<div class="tw"><table class="tbl">
+<tr><th>סניף</th><th>חודש 0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+<tr><td>Rehovot Mall</td><td>1,140.8</td><td>1,840.0</td><td>2,021.7</td><td>1,744.4</td><td>1,601.3</td><td>1,012.0</td><td>565.0</td></tr>
+<tr><td>Ashdod Beach Pop-up</td><td>1,010.0</td><td>2,017.8</td><td>2,276.7</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Beer Sheva Grand Mall (חודשים 0 עד 2)</td><td>353.0</td><td>301.0</td><td>501.0</td><td></td><td></td><td></td><td></td></tr>
+</table></div>
+<p>ל-Beer Sheva יש עוד 21 חודשים אחרי חודש 2, ולא הצגנו אותם. לאשדוד יש שלושה חודשים בלבד כי הדוכן הציע מכירות רק עד 31 באוגוסט 2025.</p>
+</div>
+
+<div class="box think" data-id="m10-th-fixed-age-fair"><p>שאלה: רחובות מתחילה ב-1,140.8 בחודש 0 ואילו באר שבע ב-353.0. האם אפשר להסיק שרחובות &quot;נפתח חזק יותר&quot;? מה עוד צריך לבדוק?</p>
+<div class="ans">לא. רחובות נפתחה ביוני, ובאר שבע בינואר, וגלידה נמכרת הרבה יותר בקיץ: סך המכירות של הרשת ביולי-אוגוסט 2024 גבוה בערך פי ארבעה מזה של ינואר-פברואר. השוואה הוגנת צריכה להתחשב בעונה, למשל להשוות מול סניף שנפתח בקיץ או מול הממוצע של הרשת באותם חודשים. יתרה מזו: לחודש 0 יש אורך שונה (רחובות פתחה בראשון לחודש, אשדוד באמצע).</div></div>
+
+<h3>שימוש 3: אחוז מהרשת, ואיך הוא מגיב למסנן</h3>
+<div class="box try" data-id="m10-try-fixed-pct">
+<p><b>חלק כל קטגוריה מכל הרשת</b></p>
+<ol>
+<li>שדה מחושב <code>Share of Chain</code>:
+<pre class="code" data-lang="tableau">SUM([Sales]) / ATTR({ FIXED : SUM([Sales]) })</pre><i>למה: המונה הוא הסכום של הסימן, המכנה הוא סך כל המכירות, והוא לא תלוי בגרף. <dfn data-d="ATTR: מחזיר את הערך כשיש בסימן ערך אחד בלבד, ואחרת כוכבית. כאן כל הערכים זהים, אז מקבלים את סך הרשת">ATTR</dfn> רק מעביר את סך הרשת כמו שהוא.</i></li>
+<li>גררו <span class="pill d">Category</span> ל-<code>Rows</code> ואת <code>Share of Chain</code> ל-<code>Columns</code>. לחצו ימנית על השדה, <code>Default Properties</code>, <code>Number Format</code>, אחוזים עם נקודה עשרונית אחת.</li>
+<li>עכשיו גררו <span class="pill d">Branch</span> אל <code>Filters</code> ובחרו רק <code>Tel Aviv Dizengoff</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> לפני הסינון חמישה סימנים שמסתכמים ל-100%. אחרי הסינון המספרים מתכווצים:</p>
+<div class="tw"><table class="tbl">
+<tr><th>קטגוריה</th><th>לפני הסינון</th><th>אחרי סינון על Dizengoff</th></tr>
+<tr><td>Cones</td><td>20.4%</td><td>3.9%</td></tr>
+<tr><td>Cups</td><td>29.3%</td><td>5.6%</td></tr>
+<tr><td>Drinks</td><td>23.0%</td><td>4.6%</td></tr>
+<tr><td>Sticks</td><td>7.4%</td><td>1.2%</td></tr>
+<tr><td>Sundaes</td><td>19.9%</td><td>3.3%</td></tr>
+<tr><td><b>סכום</b></td><td><b>100.0%</b></td><td><b>18.7%</b></td></tr>
+</table></div>
+<p>המכנה נשאר 236,820.9 גם אחרי הסינון, ולכן הסכום 18.7% הוא החלק של דיזנגוף מכל הרשת (44,194.1 חלקי 236,820.9). הנוסחה מחשבת אחוז מהרשת, לא אחוז מהמסנן.</p>
+</div>
+
+<div class="box trap"><p><b>FIXED לא מגיב למסנן רגיל.</b> זה בדיוק מה ש-FIXED נועד לעשות, וזו גם הסיבה לבלבול. בתיעוד הרשמי: חישובי FIXED מחושבים לפני מסנני ממדים, ולכן מסנן רגיל על הסניפים לא משנה אותם, אלא אם מקדמים את המסנן למסנן הקשר (<code>Context</code>). FIXED כן מכבד מסנני הקשר, מסנני מקור נתונים ומסנני מיצוי. נחזור לזה בסעיף 8 עם הנפשה.</p></div>
+
+<div class="box trap"><p><b>FIXED בלי צבירה.</b> <code>{ FIXED [Branch] : [Sales] }</code> לא תקין, כי אחרי הנקודתיים חייבת להיות צבירה. מה שתכתבו שם תמיד צריך להיות <code>SUM</code>, <code>MIN</code>, <code>COUNTD</code> או דומיהם. ההודעה של Tableau תפנה אתכם לזה.</p></div>
+
+<h3>שימוש 4: קבוצות לפי שנת הפתיחה, ומה שקורה ב&quot;אותם סניפים&quot;</h3>
+<div class="box try" data-id="m10-try-fixed-cohort">
+<p><b>סניפים ישנים מול סניפים חדשים</b></p>
+<ol>
+<li>שדה מחושב <code>Branch Cohort</code>:
+<pre class="code" data-lang="tableau">STR( YEAR( [First Sale Date] ) )</pre><i>למה: שנת המכירה הראשונה של הסניף, כטקסט כדי שיהיה ממד.</i></li>
+<li>גררו <span class="pill d">Branch Cohort</span> ל-<code>Rows</code>, <span class="pill d">Year of Order Date</span> (שנה, בדיד) ל-<code>Columns</code> ו-<span class="pill c sum">Sales</span> ל-<code>Text</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b></p>
+<div class="tw"><table class="tbl">
+<tr><th>קבוצה לפי שנת פתיחה</th><th>2024</th><th>2025</th></tr>
+<tr><td>2024 (7 סניפים)</td><td>107,047.6</td><td>114,543.6</td></tr>
+<tr><td>2025 (2 סניפים: רחובות ואשדוד)</td><td></td><td>15,229.7</td></tr>
+<tr><td><b>סך הכל</b></td><td><b>107,047.6</b></td><td><b>129,773.3</b></td></tr>
+</table></div>
+<p>סכום כל התאים: 236,820.9, כמו בסך הכל. הרשת צמחה ב-2025 ב-21.2% (129,773.3 מול 107,047.6). אבל צמיחה &quot;באותם סניפים&quot;, כלומר רק ב-7 הסניפים שעבדו כל התקופה, היא 7.0% בלבד (114,543.6 מול 107,047.6). השאר בא מסניפים חדשים.</p>
+</div>
+
+<div class="box meaning"><p>אותה צמיחה נראית כ-21% או כ-7%, תלוי אם משווים את כל הרשת או אותם סניפים. שתי התשובות נכונות, אבל לשאלות שונות. FIXED הוא מה שנותן לנו את הקבוצה (&quot;סניף שנפתח ב-2024&quot;) בלי שהיא תהיה עמודה בקובץ.</p></div>
+
+<div class="box real"><p>&quot;מכירות באותם סניפים&quot; (באנגלית <code>like-for-like</code> או <code>same-store sales</code>) הוא מדד סטנדרטי בקמעונאות: משווים רק חנויות שעבדו בשתי התקופות, כדי שפתיחת חנות חדשה לא תיראה כמו שיפור ניהולי. הקבוצה לפי שנת פתיחה היא הצעד הראשון בחישוב כזה.</p></div>
+
+<div class="box real"><p>בעסקים עם לקוחות, אותו FIXED נותן &quot;תאריך ההזמנה הראשונה של הלקוח&quot;, וממנו בונים קבוצות לפי חודש הצטרפות. את זה נעשה בסעיף 10 עם נתוני המסעדה.</p></div>
+
+<div class="quiz" data-id="m10-q-fixed-replicate" data-a="1"><p class="qq">בגרף יש <code>Branch</code> ו-<code>Category</code> (45 סימנים). מה מחזיר <code>{ FIXED [Branch] : SUM([Sales]) }</code> בסימן של &quot;Haifa German Colony, Cups&quot;?</p>
+<button class="opt">את סך המכירות של כל חיפה, אותו מספר שיש לכל הקטגוריות של חיפה</button>
+<button class="opt">את המכירות של Cups בחיפה בלבד</button>
+<button class="opt">את סך המכירות של הקטגוריה Cups בכל הרשת</button>
+<button class="opt">שגיאה, כי הרמה קטנה מהגרף</button>
+<div class="why">FIXED על <code>Branch</code> מחשב ברמת הסניף, ולכן הוא מחזיר את סך חיפה, 27,389.2, בכל אחד מחמשת הסימנים של חיפה. זו רמה גסה יותר מהגרף, והערך חוזר על עצמו. זה לא שגיאה.</div></div>
+
+<div class="quiz" data-id="m10-q-fixed-filter" data-a="3"><p class="qq">מסננים את <code>Branch</code> ל-Eilat Promenade בלבד (מסנן רגיל). מה קורה ל-<code>{ FIXED : SUM([Sales]) }</code>?</p>
+<button class="opt">הוא הופך ל-31,473.7, סך אילת</button>
+<button class="opt">הוא הופך ל-0</button>
+<button class="opt">הוא נשאר 236,820.9, כי FIXED מחושב לפני מסנני ממדים</button>
+<button class="opt">Tableau מציג שגיאה כי יש מסנן</button>
+<div class="why">מסנן ממדים רגיל נכנס אחרי FIXED, ולכן סך הרשת נשאר. כדי ש-FIXED יכבד את המסנן, צריך להפוך אותו למסנן הקשר.</div></div>
+
+<div class="quiz" data-id="m10-q-fixed-when" data-a="4"><p class="qq">מתי הכי מתאים להשתמש ב-FIXED?</p>
+<button class="opt">כשרוצים שהמספר יגיב לכל מסנן שהצופה בוחר</button>
+<button class="opt">כשרוצים לדרג את הסימנים שנשארו אחרי הסינון</button>
+<button class="opt">כשרוצים צבירה על שורה אחת בלבד</button>
+<button class="opt">כשרוצים מספר קבוע לקבוצה, כמו סך הרשת או תאריך ראשון, שלא ישתנה בגלל מסננים רגילים</button>
+<div class="why">FIXED נותן ערך יציב ברמה שקבעתם. מי שרוצה תגובה למסנן ישתמש ב-INCLUDE, ב-EXCLUDE או בחישוב טבלה. דירוג של מה שנשאר הוא חישוב טבלה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> צריך לבדוק בתוכנה לפני השיעור את שלושה דברים: (1) איך מופיע <code>First Sale Date</code> כשגוררים אותו ל-Text (ייתכן שיופיע עם <code>ATTR</code> או <code>MIN</code>; המחקר קובע רק שתוצאה גסה מהגרף משוכפלת, ושברירת המחדל של EXCLUDE היא <code>ATTR</code>). (2) הדפוס לאחוז מהסך. מסמך הרקע מציג את <code>SUM([Sales]) / SUM({ FIXED : SUM([Sales]) })</code> כדפוס רשמי, ומציג את <code>ATTR</code> בדוגמת המסנן הרשמית. בחרתי ב-ATTR במכנה כי הוא נכון בשני המקרים. מסמך הרקע לא הריץ Tableau: ודאו שהאחוזים יוצאים 20.4, 29.3, 23.0, 7.4 ו-19.9, ובדקו גם את גרסת ה-SUM. (3) הפורמט של התאריך. עונתיות: הסכומים החודשיים חושבו מהקובץ (ינואר 4,139, אוגוסט 2024 17,703).</div>
+</section>
+
+<section class="sec" id="m10-6" data-t="INCLUDE ו-EXCLUDE">
+<div class="sec-h"><div class="sec-n">6</div><h2>INCLUDE, EXCLUDE ורמת הטבלה</h2></div>
+<p class="lead">FIXED מתעלם מהגרף. לפעמים רוצים את ההפך: חישוב שמתחשב בגרף, ומוסיף לו ממד או מוריד ממנו ממד. בשביל זה יש שני אחים של FIXED, וצורה רביעית שמחשבת על כל הטבלה.</p>
+
+<div class="anim" data-id="m10-anim-lod-kinds" data-speed="3800">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="הנפשה: ארבעה סוגי ביטויי רמת פירוט ביחס לגרף של אזור וקטגוריה">
+<text x="780" y="64" text-anchor="end" font-size="16" font-weight="800" fill="#334155">רמת הגרף</text>
+<text x="780" y="144" text-anchor="end" font-size="16" font-weight="800" fill="#9a4a0b">רמת החישוב</text>
+<g font-size="15" font-weight="700">
+<rect x="20" y="40" width="110" height="36" rx="8" fill="#d7e7f5" stroke="#a9c9e3"/><text x="75" y="64" text-anchor="middle" fill="#14507a">Region</text>
+<rect x="140" y="40" width="130" height="36" rx="8" fill="#d7e7f5" stroke="#a9c9e3"/><text x="205" y="64" text-anchor="middle" fill="#14507a">Category</text>
+<text x="290" y="64" fill="#64748b">20 marks</text>
+</g>
+<g data-only="2" font-size="15" font-weight="700"><rect x="20" y="120" width="110" height="36" rx="8" fill="#fde8d6" stroke="#f3c39b"/><text x="75" y="144" text-anchor="middle" fill="#9a4a0b">Region</text><text x="290" y="144" fill="#64748b">4 groups</text></g>
+<g data-only="3" font-size="15" font-weight="700"><rect x="20" y="120" width="110" height="36" rx="8" fill="#d7e7f5" stroke="#a9c9e3"/><text x="75" y="144" text-anchor="middle" fill="#14507a">Region</text><rect x="140" y="120" width="130" height="36" rx="8" fill="#d7e7f5" stroke="#a9c9e3"/><text x="205" y="144" text-anchor="middle" fill="#14507a">Category</text><rect x="280" y="120" width="110" height="36" rx="8" fill="#fde8d6" stroke="#f3c39b"/><text x="335" y="144" text-anchor="middle" fill="#9a4a0b">Branch</text><text x="410" y="144" fill="#64748b">45 groups</text></g>
+<g data-only="4" font-size="15" font-weight="700"><rect x="20" y="120" width="110" height="36" rx="8" fill="#d7e7f5" stroke="#a9c9e3"/><text x="75" y="144" text-anchor="middle" fill="#14507a">Region</text><rect x="140" y="120" width="130" height="36" rx="8" fill="#f1f5f9" stroke="#e2e8f0"/><text x="205" y="144" text-anchor="middle" fill="#94a3b8">Category</text><line x1="146" y1="138" x2="264" y2="138" stroke="#ef4444" stroke-width="3"/><text x="290" y="144" fill="#64748b">4 groups</text></g>
+<g data-only="5" font-size="15" font-weight="700"><text x="20" y="144" fill="#9a4a0b">(בלי ממדים)</text><text x="200" y="144" fill="#64748b">1 group</text></g>
+<rect x="20" y="180" width="760" height="44" rx="10" fill="#0f172a"/>
+<g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="16" fill="#e2e8f0">
+<g data-only="1"><text x="36" y="209">SUM([Sales])</text></g>
+<g data-only="2"><text x="36" y="209">{ FIXED [Region] : SUM([Sales]) }</text></g>
+<g data-only="3"><text x="36" y="209">AVG( { INCLUDE [Branch] : SUM([Sales]) } )</text></g>
+<g data-only="4"><text x="36" y="209">{ EXCLUDE [Category] : SUM([Sales]) }</text></g>
+<g data-only="5"><text x="36" y="209">{ SUM([Sales]) }</text></g>
+</g>
+<g font-size="16" font-weight="700" fill="#0f172a" text-anchor="end">
+<g data-only="1"><text x="780" y="262">זה הגרף: 20 סימנים, אחד לכל צירוף.</text><text x="780" y="290" font-size="14" fill="#64748b">עכשיו נבחר רמת חישוב אחרת.</text></g>
+<g data-only="2"><text x="780" y="262">ב-FIXED מחשבים רק לפי מה שכתבתי, בלי קשר לגרף.</text><text x="780" y="290" font-size="14" fill="#64748b">ארבעה ערכים, וכל ערך חוזר בחמשת הסימנים של האזור.</text></g>
+<g data-only="3"><text x="780" y="262">ב-INCLUDE לוקחים את ממדי הגרף ועוד ממד אחד.</text><text x="780" y="290" font-size="14" fill="#64748b">45 קבוצות; בתוך כל סימן מחשבים ממוצע עליהן.</text></g>
+<g data-only="4"><text x="780" y="262">ב-EXCLUDE לוקחים את ממדי הגרף פחות ממד אחד.</text><text x="780" y="290" font-size="14" fill="#64748b">כאן יוצא כמו FIXED של אזור, אבל מגיב למסנני ממדים.</text></g>
+<g data-only="5"><text x="780" y="262">רמת הטבלה: ערך אחד לכל הגרף.</text><text x="780" y="290" font-size="14" fill="#64748b">סך כל המכירות: 236,820.9 בכל סימן.</text></g>
+</g>
+</svg></div>
+<ol class="caps">
+<li>הגרף מציג אזור וקטגוריה. 20 סימנים. הנוסחה הרגילה סוכמת בכל סימן.</li>
+<li><code>FIXED [Region]</code>: הרמה היא האזור בלבד, ללא קשר לקטגוריה שבגרף.</li>
+<li><code>INCLUDE [Branch]</code>: הרמה היא אזור, קטגוריה וגם סניף. כלומר מפרקים כל סימן לסניפים, ואז מחברים בחזרה עם <code>AVG</code>.</li>
+<li><code>EXCLUDE [Category]</code>: מורידים את הקטגוריה מרמת הגרף. נשאר אזור.</li>
+<li>בלי ממדים: ביטוי ברמת הטבלה, ערך יחיד שמופיע בכל סימן.</li>
+</ol></div>
+
+<div class="defline"><b><code>INCLUDE</code>:</b> מחשב ברמה של ממדי הגרף <i>ועוד</i> הממדים שכתבתם. דוגמה: בגרף של אזורים, <code>{ INCLUDE [Branch] : SUM([Sales]) }</code> מחשב סך לכל סניף בתוך כל אזור. התוצאה עדינה יותר מהגרף, ולכן עוטפים אותה בצבירה (<code>AVG</code>, <code>MAX</code> ועוד).</div>
+<div class="defline"><b><code>EXCLUDE</code>:</b> מחשב ברמה של ממדי הגרף <i>פחות</i> הממדים שכתבתם. דוגמה: בגרף של אזור וקטגוריה, <code>{ EXCLUDE [Category] : SUM([Sales]) }</code> נותן סך לכל אזור, לא משנה איזו קטגוריה מוצגת בסימן.</div>
+
+<div class="box try" data-id="m10-try-include-avg">
+<p><b>ממוצע סניף בכל אזור (INCLUDE)</b></p>
+<ol>
+<li>שדה מחושב <code>Avg Branch Sales</code>:
+<pre class="code" data-lang="tableau">AVG( { INCLUDE [Branch] : SUM([Sales]) } )</pre><i>למה: לכל סימן, מפרקים לסניפים, סוכמים כל סניף, ומחשבים ממוצע על הסניפים.</i></li>
+<li><span class="pill d">Region</span> ל-<code>Rows</code>. <span class="pill c sum">Sales</span> ו-<code>Avg Branch Sales</code> ל-<code>Columns</code> (שני גרפים זה לצד זה), או שניהם ל-<code>Text</code>.</li>
+<li>הוסיפו ל-<code>Text</code> גם <code>COUNTD(Branch)</code> כדי לספור סניפים (גררו <span class="pill d">Branch</span> ל-Text ושנו ל-<code>Count (Distinct)</code>).</li>
+</ol>
+<p><b>תוצאה צפויה:</b></p>
+<div class="tw"><table class="tbl">
+<tr><th>אזור</th><th>SUM(Sales)</th><th>סניפים</th><th>Avg Branch Sales</th></tr>
+<tr><td>Center</td><td>120,405.5</td><td>4</td><td>30,101.4</td></tr>
+<tr><td>Jerusalem</td><td>33,450.8</td><td>1</td><td>33,450.8</td></tr>
+<tr><td>North</td><td>27,389.2</td><td>1</td><td>27,389.2</td></tr>
+<tr><td>South</td><td>55,575.4</td><td>3</td><td>18,525.1</td></tr>
+</table></div>
+<p>ב-Jerusalem וב-North יש סניף אחד, ולכן הממוצע שווה לסך. בדקו שהממוצע כפול מספר הסניפים נותן את הסך (30,101.4 כפול 4 הוא בערך 120,405.5).</p>
+</div>
+
+<div class="box meaning"><p>הדרום נראה חזק לפי הסך (55,575.4, שני אחרי המרכז), אבל לפי ממוצע לסניף הוא האחרון: 18,525.1. בדרום יש דוכן קיץ של אשדוד, וגם באר שבע חלשה יותר מאילת. זו לא סתירה: הסך מודד כמה האזור מוכר, והממוצע לסניף מודד כמה מוכר סניף טיפוסי בו. כל אחד עונה על שאלה אחרת.</p></div>
+
+<div class="box try" data-id="m10-try-exclude-share">
+<p><b>חלק הקטגוריה בתוך האזור (EXCLUDE)</b></p>
+<ol>
+<li>שדה מחושב <code>Share in Region</code>:
+<pre class="code" data-lang="tableau">SUM([Sales]) / ATTR({ EXCLUDE [Category] : SUM([Sales]) })</pre><i>למה: המכנה הוא סך האזור. מורידים את הקטגוריה מרמת הגרף, וזה מה שנשאר.</i></li>
+<li><span class="pill d">Region</span> ל-<code>Rows</code>, <span class="pill d">Category</span> ל-<code>Columns</code>, <code>Share in Region</code> ל-<code>Text</code>, בפורמט אחוזים עם נקודה עשרונית אחת.</li>
+<li>עכשיו גררו <span class="pill d">Category</span> אל <code>Filters</code> והוציאו את <code>Sticks</code> (מסנן רגיל).</li>
+</ol>
+<p><b>תוצאה צפויה לפני הסינון:</b></p>
+<div class="tw"><table class="tbl">
+<tr><th>אזור</th><th>Cones</th><th>Cups</th><th>Drinks</th><th>Sticks</th><th>Sundaes</th></tr>
+<tr><td>Center</td><td>20.0%</td><td>29.0%</td><td>23.4%</td><td>7.7%</td><td>19.9%</td></tr>
+<tr><td>Jerusalem</td><td>21.6%</td><td>27.9%</td><td>23.8%</td><td>7.7%</td><td>18.9%</td></tr>
+<tr><td>North</td><td>20.9%</td><td>31.3%</td><td>25.1%</td><td>5.8%</td><td>16.9%</td></tr>
+<tr><td>South</td><td>20.3%</td><td>30.0%</td><td>20.7%</td><td>7.3%</td><td>21.8%</td></tr>
+</table></div>
+<p><b>אחרי הוצאת Sticks:</b> ב-Center, Cones עולה מ-20.0% ל-21.7% ו-Cups מ-29.0% ל-31.4%, והשורה שוב מסתכמת ל-100% (המכנה ירד מ-120,405.5 ל-111,180.2). הסיבה: EXCLUDE מחושב אחרי מסנני ממדים, ולכן הוא מכיר שהקטגוריה נעלמה. FIXED בדיוק הפוך: הוא היה נשאר 20.0%.</p>
+</div>
+
+<h3>ביטוי ברמת הטבלה</h3>
+<div class="defline"><b>ביטוי ברמת הטבלה (<code>table-scoped</code>):</b> ביטוי בלי מילת מפתח ובלי ממדים, כמו <code>{ MIN([Order Date]) }</code>. הוא שווה ל-<code>{ FIXED : MIN([Order Date]) }</code> ומחשב על כל הטבלה. דוגמה: <code>{ MAX([Order Date]) }</code> הוא התאריך האחרון בקובץ, <bdi dir="ltr">2025-12-31,</bdi> בכל סימן.</div>
+
+<div class="box try" data-id="m10-try-table-scoped">
+<p><b>כל סניף מול ממוצע הרשת</b></p>
+<ol>
+<li>שדה מחושב <code>Gap vs Chain Avg</code>:
+<pre class="code" data-lang="tableau">AVG([Sales]) - ATTR({ AVG([Sales]) })</pre><i>למה: מימין, ממוצע שורת מכירה של כל הרשת, תמיד. משמאל, הממוצע של הסימן. ההפרש הוא כמה הסניף שונה מהרשת.</i></li>
+<li><span class="pill d">Branch</span> ל-<code>Rows</code>. ל-<code>Text</code> גררו <span class="pill c">AVG(Sales)</span> ו-<code>Gap vs Chain Avg</code>. פורמט שתי ספרות אחרי הנקודה.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> ממוצע הרשת 36.02 לשורת מכירה.</p>
+<div class="tw"><table class="tbl">
+<tr><th>סניף</th><th>AVG(Sales)</th><th>הפרש מהרשת</th></tr>
+<tr><td>Ashdod Beach Pop-up</td><td>38.16</td><td><span class="n">+2.14</span></td></tr>
+<tr><td>Tel Aviv Port</td><td>36.87</td><td><span class="n">+0.85</span></td></tr>
+<tr><td>Netanya Beach</td><td>36.67</td><td><span class="n">+0.65</span></td></tr>
+<tr><td>Eilat Promenade</td><td>36.34</td><td><span class="n">+0.33</span></td></tr>
+<tr><td>Haifa German Colony</td><td>36.13</td><td><span class="n">+0.12</span></td></tr>
+<tr><td>Beer Sheva Grand Mall</td><td>35.80</td><td><span class="n">-0.21</span></td></tr>
+<tr><td>Tel Aviv Dizengoff</td><td>35.78</td><td><span class="n">-0.23</span></td></tr>
+<tr><td>Rehovot Mall</td><td>35.45</td><td><span class="n">-0.57</span></td></tr>
+<tr><td>Jerusalem Mamilla</td><td>34.49</td><td><span class="n">-1.53</span></td></tr>
+</table></div>
+</div>
+
+<div class="box meaning"><p>הפער בשורת מכירה בין הסניפים קטן: הממוצעים נעים בין 34.49 ל-38.16. דיזנגוף חזק לא כי כל קנייה גדולה, אלא כי יש שם הרבה קניות: 1,235 שורות מול 280 ברחובות. כשהממוצע לא מסביר, תבדקו את הכמות.</p></div>
+
+<div class="box try" data-id="m10-try-avg-branch-gap">
+<p><b>סניף מול &quot;סניף ממוצע&quot; בסכום</b></p>
+<ol>
+<li>שדה מחושב חדש בשם <code>Chain Avg Branch</code>:
+<pre class="code" data-lang="tableau">{ FIXED : SUM([Sales]) } / { FIXED : COUNTD([Branch]) }</pre><i>למה: סך הרשת חלקי מספר הסניפים: סניף ממוצע אחד, קבוע.</i></li>
+<li>שדה מחושב <code>Gap vs Avg Branch</code>: <code>SUM([Sales]) - ATTR([Chain Avg Branch])</code>.</li>
+<li><span class="pill d">Branch</span> ל-<code>Rows</code>, <code>Gap vs Avg Branch</code> ל-<code>Columns</code>. צבעו לפי חיובי ושלילי (גררו אותו גם ל-<code>Color</code>).</li>
+</ol>
+<p><b>תוצאה צפויה:</b> הסניף הממוצע הוא <bdi dir="ltr">236,820.9 / 9 = 26,313.43.</bdi> ההפרשים:</p>
+<div class="tw"><table class="tbl">
+<tr><th>סניף</th><th>הפרש</th></tr>
+<tr><td>Tel Aviv Dizengoff</td><td><span class="n">+17,880.67</span></td></tr>
+<tr><td>Tel Aviv Port</td><td><span class="n">+13,132.57</span></td></tr>
+<tr><td>Jerusalem Mamilla</td><td><span class="n">+7,137.37</span></td></tr>
+<tr><td>Eilat Promenade</td><td><span class="n">+5,160.27</span></td></tr>
+<tr><td>Haifa German Colony</td><td><span class="n">+1,075.77</span></td></tr>
+<tr><td>Netanya Beach</td><td><span class="n">+526.77</span></td></tr>
+<tr><td>Beer Sheva Grand Mall</td><td><span class="n">-7,516.23</span></td></tr>
+<tr><td>Rehovot Mall</td><td><span class="n">-16,388.23</span></td></tr>
+<tr><td>Ashdod Beach Pop-up</td><td><span class="n">-21,008.93</span></td></tr>
+</table></div>
+<p>בדיקת שפיות: ההפרשים מסתכמים ל-0 (עד עיגול), כי הממוצע הוא באמת הממוצע. אם לא, בדקו שה-9 הוא ספירת הסניפים.</p>
+</div>
+
+<div class="box think" data-id="m10-th-avg-fair"><p>שאלה: רחובות ואשדוד &quot;נופלות&quot; מול הסניף הממוצע ב-16,388 וב-21,009. האם זו השוואה הוגנת? איך הייתם משפרים אותה?</p>
+<div class="ans">לא בדיוק. לשני הסניפים יש רק חלק מהתקופה: רחובות 7 חודשים ואשדוד שלושה, והממוצע כולל סניפים שעבדו שנתיים. השוואה הוגנת יותר: להשוות רק סניפים שעבדו את כל התקופה, או להשוות מכירות לחודש פעילות (סך חלקי מספר החודשים שבהם הסניף מכר). אפשר לבנות אותה בעצמכם עם <code>First Sale Date</code> מהסעיף הקודם.</div></div>
+
+<div class="box trap"><p><b>ממוצע של ממוצעים.</b> ממוצע שורת מכירה ברשת הוא 36.02. ממוצע של תשעת ממוצעי הסניפים הוא 36.19. הם שונים, כי לסניפים יש גודל שונה (מ-139 שורות באשדוד ועד 1,235 בדיזנגוף). כל סניף בממוצע-של-ממוצעים שווה אותו דבר, בלי קשר לכמות. מי שמחשב ממוצע על ממוצעים עונה על שאלה אחרת: &quot;מה הממוצע של הסניף הטיפוסי&quot;, לא &quot;מה הממוצע של קנייה&quot;. אם אתם רוצים לראות את 36.19 ב-Tableau, נסו <code>AVG({ INCLUDE [Branch] : AVG([Sales]) })</code> בגיליון בלי ממדים. (בדקו בתוכנה: זה פריט שהמחקר לא אימת ב-Tableau עצמו.)</p></div>
+
+<div class="box trap"><p><b>EXCLUDE על ממד שאינו בגרף.</b> אם תנסו <code>{ EXCLUDE [Branch] : ... }</code> בגרף שאין בו <code>Branch</code>, אין מה להוריד, והתוצאה זהה לרמת הגרף. שימו לב שהממד מופיע בגרף. וגם: ממד שנכתב כביטוי (למשל <code>YEAR([Order Date])</code>) חייב להיכתב בדיוק כמו שהוא מופיע על המדף.</p></div>
+
+<div class="box real"><p>&quot;סניף מול הממוצע&quot; הוא אחד הדברים הראשונים שמנהלי רשתות מבקשים. הדרך הנקייה היא ביטוי ברמת הטבלה או FIXED בלי ממדים, ולא טבלה חיצונית בשם &quot;ממוצע&quot; שמישהו מעדכן ידנית.</p></div>
+
+<div class="quiz" data-id="m10-q-include-what" data-a="2"><p class="qq">בגרף יש רק <code>Region</code>. מה רמת החישוב של <code>{ INCLUDE [Branch] : SUM([Sales]) }</code>?</p>
+<button class="opt">סניף בלבד, בלי אזור</button>
+<button class="opt">אזור וסניף, כלומר ממדי הגרף ועוד סניף</button>
+<button class="opt">אזור בלבד, כמו הגרף</button>
+<button class="opt">כל הטבלה, בלי ממדים</button>
+<div class="why">INCLUDE מוסיף לממדי הגרף. הגרף הוא <code>Region</code>, אז הרמה היא <code>Region</code> + <code>Branch</code>. סניף בלבד זה FIXED. כל הטבלה זה ביטוי ברמת הטבלה.</div></div>
+
+<div class="quiz" data-id="m10-q-exclude-what" data-a="4"><p class="qq">בגרף יש <code>Region</code> ו-<code>Category</code>. מה מחשב <code>{ EXCLUDE [Category] : SUM([Sales]) }</code>?</p>
+<button class="opt">סך הקטגוריה בכל הרשת</button>
+<button class="opt">סך כל הרשת</button>
+<button class="opt">את הסימן הנוכחי בלי הקטגוריה, כלומר 0</button>
+<button class="opt">סך האזור, כי מורידים את הקטגוריה וממשיכים עם האזור</button>
+<div class="why">EXCLUDE מוריד ממד מרמת הגרף. נשאר <code>Region</code>, ולכן סך האזור. סך הקטגוריה בכל הרשת היה <code>EXCLUDE [Region]</code>.</div></div>
+
+<div class="quiz" data-id="m10-q-table-scoped" data-a="1"><p class="qq">מה ההבדל בין <code>{ MIN([Order Date]) }</code> לבין <code>{ FIXED : MIN([Order Date]) }</code>?</p>
+<button class="opt">אין הבדל, הראשון הוא קיצור של השני</button>
+<button class="opt">הראשון מחזיר תאריך והשני מחזיר מספר</button>
+<button class="opt">הראשון מגיב למסנן והשני לא</button>
+<button class="opt">השני לא תקין בלי ממד</button>
+<div class="why">לפי התיעוד הרשמי, ביטוי ברמת הטבלה הוא הצורה הקצרה של FIXED בלי ממדים. שניהם מחשבים על כל הטבלה ושניהם תקינים.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> אלה הפריטים שהמחקר לא הצליח לאמת בתוכנה ולכן יש לבדוק לפני השיעור: (1) <code>AVG({ INCLUDE [Branch] : SUM([Sales]) })</code> ו-<code>AVG({ INCLUDE [Branch] : AVG([Sales]) })</code> בגיליון ריק. לפי התיעוד הרשמי תוצאות INCLUDE &quot;לעולם לא משוכפלות&quot;, ולכן הממוצע הוא על הקבוצות. (2) <code>SUM([Sales]) - ATTR([Chain Avg Branch])</code> שבנוי משני ביטויי FIXED בחילוק: ייתכן ש-Tableau ידרוש עטיפה אחרת. (3) האם <code>ATTR({ AVG([Sales]) })</code> תקין (מסמך הרקע מציג רק את הצורה <code>[Sales] - { AVG([Sales]) }</code> ברמת שורה). אם הוא לא תקין, השתמשו בנוסחה ברמת שורה: <code>[Sales] - { AVG([Sales]) }</code> והציבו אותה כ-<code>AVG</code>. (4) הכללים הרשמיים: אין <code>ATTR</code> בתוך ביטוי LOD, אין חישובי טבלה בתוכו, <code>EXCLUDE</code> אינו תקף בחישובי שורה. אם יוצא ממוצע שונה מהמספרים כאן, אל תתקנו את הדף, תבדקו מה עשיתם: ייתכן ש-Tableau מחשב ממוצע על השורות ולא על הקבוצות (תיעוד: תוצאה עדינה מהגרף חייבת להיצבר, ולא נאמר כיצד).</div>
+</section>
+
+<section class="sec" id="m10-7" data-t="חוקר LOD">
+<div class="sec-h"><div class="sec-n">7</div><h2>חוקר רמת הפירוט: רואים את שתי הרמות זו ליד זו</h2></div>
+<p class="lead">הכי קשה ב-LOD הוא לדמיין אותו. אז לא מדמיינים: מחשבים אותו. בחרו מה יש בגרף, בחרו סוג ביטוי וממדים, ותראו מצד אחד את רמת הגרף, מצד שני את רמת החישוב, ומימין את המספרים. הכול מחושב מ-6,575 השורות האמיתיות של Scoop &amp; Go.</p>
+
+<div class="sim" data-id="m10-sim-lod"><div class="sh">חוקר LOD</div>
+<p style="margin-top:0">התחילו בכפתורי הדוגמה. אחר כך שנו דבר אחד בכל פעם.</p>
+<div class="m10-sl" data-k="presets"></div>
+<div class="m10-sl" data-k="viewrow"></div>
+<div class="m10-sl" data-k="kindrow"></div>
+<div class="m10-sl" data-k="calcrow"></div>
+<div class="m10-sl" data-k="aggrow"></div>
+<div class="m10-eq" data-k="formula"></div>
+<div class="m10-pg" data-k="pg"></div>
+<div class="out" data-k="msg"></div>
+</div>
+<script>
+(function(){ FL.dom(function(){
+  var box = FL.$('[data-id="m10-sim-lod"]'); if (!box) return;
+  var K = function(k){ return FL.$('[data-k="' + k + '"]', box); };
+  var DIMS = ['Region', 'Branch', 'Category', 'Channel', 'Year'];
+  var LBL = {Region: '[Region]', Branch: '[Branch]', Category: '[Category]', Channel: '[Channel]', Year: 'YEAR([Order Date])'};
+  var st = {view: ['Region', 'Category'], kind: 'FIXED', calc: ['Region'], inner: 'SUM', outer: 'AVG'};
+  var PRE = [
+    ['FIXED אזור בגרף של אזור וקטגוריה', {view: ['Region', 'Category'], kind: 'FIXED', calc: ['Region'], inner: 'SUM', outer: 'AVG'}],
+    ['INCLUDE סניף בגרף של אזור', {view: ['Region'], kind: 'INCLUDE', calc: ['Branch'], inner: 'SUM', outer: 'AVG'}],
+    ['EXCLUDE קטגוריה בגרף של אזור וקטגוריה', {view: ['Region', 'Category'], kind: 'EXCLUDE', calc: ['Category'], inner: 'SUM', outer: 'AVG'}],
+    ['FIXED בלי ממדים (רמת הטבלה)', {view: ['Branch'], kind: 'FIXED', calc: [], inner: 'SUM', outer: 'AVG'}],
+    ['FIXED סניף בגרף של קטגוריה', {view: ['Category'], kind: 'FIXED', calc: ['Branch'], inner: 'SUM', outer: 'AVG'}]
+  ];
+  var uses = 0;
+  function subset(a, b){ return a.every(function(x){ return b.indexOf(x) >= 0; }); }
+  function same(a, b){ return a.length === b.length && subset(a, b); }
+  function ordered(arr){ return DIMS.filter(function(d){ return arr.indexOf(d) >= 0; }); }
+  M10.data(function(S){
+    K('presets').innerHTML = '<b>דוגמאות:</b>' + PRE.map(function(p, i){ return '<button type="button" class="btn sec2" data-p="' + i + '">' + p[0] + '</button>'; }).join(' ');
+    K('viewrow').innerHTML = '<b>1. ממדי הגרף:</b>' + DIMS.map(function(d){ return '<label><input type="checkbox" data-v="' + d + '"> ' + d + '</label>'; }).join('');
+    K('kindrow').innerHTML = '<b>2. סוג הביטוי:</b>' + ['FIXED', 'INCLUDE', 'EXCLUDE'].map(function(k){ return '<label><input type="radio" name="m10l-kind" value="' + k + '"> ' + k + '</label>'; }).join('');
+    K('calcrow').innerHTML = '<b>3. ממדי הביטוי:</b>' + DIMS.map(function(d){ return '<label><input type="checkbox" data-c="' + d + '"> ' + d + '</label>'; }).join('');
+    K('aggrow').innerHTML = '<label>צבירה בתוך הביטוי <select data-s="inner"><option value="SUM">SUM(Sales)</option><option value="AVG">AVG(Sales)</option><option value="COUNT">מספר שורות</option></select></label> <label>צבירה עוטפת (כשהרמה עדינה מהגרף) <select data-s="outer"><option value="AVG">AVG</option><option value="SUM">SUM</option><option value="MAX">MAX</option></select></label>';
+    function fmt(v, inner){ return inner === 'COUNT' ? M10.fmt(v, 0) : M10.fmt(v, 1); }
+    function chips(list, cls){ return '<div class="m10-pills">' + (list.length ? list.join('') : '<span class="x">(אין ממדים)</span>') + '</div>'; }
+    function sync(){
+      FL.$$('[data-v]', box).forEach(function(c){ c.checked = st.view.indexOf(c.getAttribute('data-v')) >= 0; });
+      FL.$$('[data-c]', box).forEach(function(c){ c.checked = st.calc.indexOf(c.getAttribute('data-c')) >= 0; });
+      FL.$$('input[name="m10l-kind"]', box).forEach(function(r){ r.checked = r.value === st.kind; });
+      FL.$('[data-s="inner"]', box).value = st.inner; FL.$('[data-s="outer"]', box).value = st.outer;
+    }
+    function render(){
+      var V = ordered(st.view), D = ordered(st.calc), C;
+      if (st.kind === 'FIXED') C = D; else if (st.kind === 'INCLUDE') C = ordered(V.concat(D)); else C = V.filter(function(d){ return D.indexOf(d) < 0; });
+      var rel, relCls;
+      if (same(C, V)) { rel = 'אותה רמה כמו הגרף: כל סימן הוא קבוצה אחת.'; relCls = 'same'; }
+      else if (subset(C, V)) { rel = 'רמה גסה יותר מהגרף: הערך חוזר על עצמו בכל הסימנים ששייכים לאותה קבוצה.'; relCls = 'coarse'; }
+      else if (subset(V, C)) { rel = 'רמה עדינה יותר מהגרף: בכל סימן יש כמה קבוצות, ולכן צריך צבירה עוטפת (כאן ' + st.outer + ').'; relCls = 'fine'; }
+      else { rel = 'הרמות לא בקשר ישיר: אותה קבוצה נמצאת בכמה סימנים. כאן מוצגת צבירה על הקבוצות שבכל סימן. ב-Tableau בדקו את התוצאה, כי היא תלויה באופן שבו הערכים מצטברים.'; relCls = 'mixed'; }
+      var keyV = [], keyC = [], rows = S.n, i, j;
+      var markSales = {}, markGroups = {}, grp = {}, markOrder = [];
+      for (i = 0; i < rows; i++){
+        var kv = V.map(function(d){ return S[d][i]; }).join(' · ') || '(כל הטבלה)';
+        var kc = C.map(function(d){ return S[d][i]; }).join(' · ') || '(הכל)';
+        if (markSales[kv] === undefined){ markSales[kv] = 0; markGroups[kv] = {}; markOrder.push(kv); }
+        markSales[kv] += S.Sales[i]; markGroups[kv][kc] = true;
+        var g = grp[kc] || (grp[kc] = {s: 0, n: 0}); g.s += S.Sales[i]; g.n++;
+      }
+      function gval(g){ return st.inner === 'SUM' ? g.s : (st.inner === 'AVG' ? g.s / g.n : g.n); }
+      var nGroups = Object.keys(grp).length, nMarks = markOrder.length;
+      markOrder.sort();
+      var trs = '', shown = 0, hasShare = (st.inner === 'SUM' && relCls !== 'fine' && relCls !== 'mixed');
+      markOrder.forEach(function(m){
+        var gs = Object.keys(markGroups[m]), vals = gs.map(function(k){ return gval(grp[k]); }), v;
+        if (vals.length === 1) v = vals[0];
+        else if (st.outer === 'AVG') v = vals.reduce(function(a, b){ return a + b; }, 0) / vals.length;
+        else if (st.outer === 'SUM') v = vals.reduce(function(a, b){ return a + b; }, 0);
+        else v = Math.max.apply(null, vals);
+        if (shown < 12){
+          trs += '<tr><td>' + FL.esc(m) + '</td><td class="r">' + M10.fmt(markSales[m], 1) + '</td><td class="r">' + gs.length + '</td><td class="r"><b>' + fmt(v, st.inner) + '</b></td>' + (hasShare ? '<td class="r">' + M10.fmt(100 * markSales[m] / v, 1) + '%</td>' : '') + '</tr>';
+        }
+        shown++;
+      });
+      var kw = (st.kind === 'FIXED' && !D.length) ? '{ ' + (st.inner === 'SUM' ? 'SUM([Sales])' : (st.inner === 'AVG' ? 'AVG([Sales])' : 'COUNT([Sales])')) + ' }' : '';
+      var innerTxt = st.inner === 'SUM' ? 'SUM([Sales])' : (st.inner === 'AVG' ? 'AVG([Sales])' : 'COUNT([Sales])');
+      var f = kw || ('{ ' + st.kind + ' ' + D.map(function(d){ return LBL[d]; }).join(', ') + ' : ' + innerTxt + ' }');
+      if (relCls === 'fine' || relCls === 'mixed') f = st.outer + '( ' + f + ' )';
+      K('formula').textContent = f;
+      var vp = V.map(function(d){ return '<span>' + d + '</span>'; });
+      var cp = [];
+      if (st.kind === 'FIXED') cp = C.map(function(d){ return '<span class="n">' + d + '</span>'; });
+      else if (st.kind === 'INCLUDE') cp = V.map(function(d){ return '<span>' + d + '</span>'; }).concat(D.filter(function(d){ return V.indexOf(d) < 0; }).map(function(d){ return '<span class="n">' + d + '</span>'; }));
+      else cp = V.map(function(d){ return D.indexOf(d) >= 0 ? '<span class="x">' + d + '</span>' : '<span>' + d + '</span>'; });
+      K('pg').innerHTML =
+        '<div><h5>רמת הגרף</h5>' + chips(vp) + '<p style="margin:4px 0;font-size:.88rem"><b class="n">' + M10.fmt(nMarks, 0) + '</b> סימנים</p></div>' +
+        '<div><h5>רמת החישוב</h5>' + chips(cp) + '<p style="margin:4px 0;font-size:.88rem">' + (nGroups === 1 ? '<b>קבוצה אחת.</b> ' : '<b class="n">' + M10.fmt(nGroups, 0) + '</b> קבוצות. ') + rel + '</p></div>' +
+        '<div><h5>התוצאה בגרף</h5><table class="m10-tb"><tr><th>סימן</th><th class="r">SUM(Sales)</th><th class="r">קבוצות</th><th class="r">ערך הביטוי</th>' + (hasShare ? '<th class="r">חלק</th>' : '') + '</tr>' + trs + '</table>' + (nMarks > 12 ? '<p style="font-size:.8rem;margin:4px 0">מוצגים 12 מתוך ' + nMarks + ' סימנים.</p>' : '') + '</div>';
+      var note = [];
+      if (st.kind === 'INCLUDE' && D.every(function(d){ return V.indexOf(d) >= 0; })) note.push('כל ממדי ה-INCLUDE כבר נמצאים בגרף, ולכן אין מה להוסיף והרמה לא השתנתה.');
+      if (st.kind === 'EXCLUDE' && D.every(function(d){ return V.indexOf(d) < 0; }) && D.length) note.push('הממדים שבחרתם ל-EXCLUDE לא נמצאים בגרף. אין מה להוריד, והרמה לא השתנתה.');
+      if (st.kind === 'FIXED' && !D.length) note.push('FIXED בלי ממדים הוא ביטוי ברמת הטבלה: ערך יחיד שחוזר בכל סימן.');
+      if (relCls === 'coarse') note.push('שימו לב: כשהרמה גסה יותר, אפשר לחלק את הסימן בערך הביטוי ולקבל חלק מהקבוצה.');
+      if (relCls === 'fine') note.push('כשהרמה עדינה יותר, אותה צבירה עוטפת (' + st.outer + ') מחליטה מה מוצג: נסו להחליף אותה.');
+      K('msg').innerHTML = '<b>איך קוראים:</b> ' + (note.join(' ') || 'השוו את עמודת &quot;קבוצות&quot; לגודל שציפיתם לו.');
+      if (++uses >= 4) FL.done('m10-sim-lod');
+    }
+    function readUi(){
+      st.view = FL.$$('[data-v]', box).filter(function(c){ return c.checked; }).map(function(c){ return c.getAttribute('data-v'); });
+      st.calc = FL.$$('[data-c]', box).filter(function(c){ return c.checked; }).map(function(c){ return c.getAttribute('data-c'); });
+      var r = FL.$$('input[name="m10l-kind"]', box).filter(function(x){ return x.checked; })[0]; if (r) st.kind = r.value;
+      st.inner = FL.$('[data-s="inner"]', box).value; st.outer = FL.$('[data-s="outer"]', box).value;
+    }
+    box.addEventListener('change', function(){ readUi(); render(); });
+    box.addEventListener('click', function(e){
+      var b = e.target.closest && e.target.closest('button[data-p]'); if (!b) return;
+      var p = PRE[+b.getAttribute('data-p')][1];
+      st = {view: p.view.slice(), kind: p.kind, calc: p.calc.slice(), inner: p.inner, outer: p.outer}; sync(); render();
+    });
+    sync(); render(); uses = 0;
+  });
+}); })();
+</script>
+
+<h3>מה שווה לבדוק בחוקר</h3>
+<div class="box think" data-id="m10-th-explorer-coarse"><p>התחילו בדוגמה הראשונה (FIXED אזור, גרף של אזור וקטגוריה). בשורה של Center וקטגוריה Cones: כמה קבוצות יש בסימן? מה ערך הביטוי, ומה החלק? מה היה קורה לחלק אילו הייתם מחליפים ל-FIXED של קטגוריה?</p>
+<div class="ans">יש קבוצה אחת בסימן: סך כל Center, 120,405.5, והחלק של Cones הוא 20.0%. עם FIXED של קטגוריה הערך הוא סך Cones בכל הרשת, 48,317.0, והחלק הוא 24,091.1 חלקי 48,317.0, בערך 49.9%: כמה מתוך כל הקונוסים של הרשת נמכרו במרכז. אותו מונה, מכנה אחר, שאלה אחרת.</div></div>
+
+<div class="box think" data-id="m10-th-explorer-fine"><p>עברו ל-INCLUDE סניף בגרף של אזור. כמה קבוצות יש ב-Center וכמה ב-South? שנו את הצבירה העוטפת ל-MAX. איזה סניף &quot;מנצח&quot; ב-Center?</p>
+<div class="ans">ב-Center ארבע קבוצות (ארבעה סניפים) וב-South שלוש. עם MAX מקבלים את סך הסניף הגדול ביותר באזור: ב-Center Tel Aviv Dizengoff, 44,194.1. הצבירה העוטפת מחליטה איזו שאלה שואלים: ממוצע, גדול ביותר או סך.</div></div>
+
+<div class="box try" data-id="m10-try-lod-compare">
+<p><b>מכפילים בתוכנה: FIXED מול EXCLUDE כשמסננים</b></p>
+<ol>
+<li>גיליון חדש. <span class="pill d">Region</span> ל-<code>Rows</code>, <span class="pill d">Channel</span> ל-<code>Columns</code>.</li>
+<li>שני שדות מחושבים:
+<pre class="code" data-lang="tableau">// Share FIXED
+SUM([Sales]) / ATTR({ FIXED [Region] : SUM([Sales]) })
+
+// Share EXCLUDE
+SUM([Sales]) / ATTR({ EXCLUDE [Channel] : SUM([Sales]) })</pre><i>למה: בגרף הזה שני הביטויים עוברים לאותה רמה, סך האזור. נראה מתי הם נפרדים.</i></li>
+<li>שימו את שניהם על <code>Text</code>, בפורמט אחוזים עם נקודה עשרונית אחת.</li>
+<li>עכשיו גררו <span class="pill d">Channel</span> אל <code>Filters</code> והוציאו את <code>Delivery</code> (מסנן רגיל).</li>
+</ol>
+<p><b>תוצאה צפויה לפני הסינון:</b> שני השדות נותנים אותם מספרים. Center: App 15.9%, Delivery 14.4%, Walk-in 69.8%. North: App 14.4%, Delivery 18.1%, Walk-in 67.5%. Jerusalem: 16.0% / 15.1% / 68.9%. South: 15.4% / 14.0% / 70.6%.</p>
+<p><b>אחרי הוצאת Delivery:</b> <code>Share FIXED</code> לא משתנה (Center App עדיין 15.9%). <code>Share EXCLUDE</code> מתעדכן: Center App 18.5% ו-Walk-in 81.5%; North App 17.6% ו-Walk-in 82.4%. EXCLUDE חושב אחרי המסנן ולכן הסכום חוזר ל-100%.</p>
+</div>
+
+<div class="box meaning"><p>לפני שכותבים ביטוי, שאלו שתי שאלות. ראשית, באיזו רמה אני רוצה את המספר? שנית, האם הוא צריך לשנות את הערך כשהצופה מסנן? &quot;לא&quot; פירושו FIXED. &quot;כן&quot; פירושו INCLUDE או EXCLUDE. ולפעמים, במקום LOD, חישוב טבלה (סעיף 9).</p></div>
+
+<div class="quiz" data-id="m10-q-explorer-levels" data-a="2"><p class="qq">בחוקר הגדרתם גרף של <code>Region</code> ו-<code>Channel</code> ו-<code>INCLUDE [Channel]</code>. מה קורה?</p>
+<button class="opt">הרמה הופכת לגסה יותר מהגרף</button>
+<button class="opt">אין שינוי: <code>Channel</code> כבר בגרף, ולכן הרמה זהה לרמת הגרף</button>
+<button class="opt">הרמה הופכת לרמת השורה</button>
+<button class="opt">Tableau מציג שגיאה</button>
+<div class="why">INCLUDE מוסיף ממדים. אם הממד כבר בגרף אין מה להוסיף, וקבוצת הביטוי שווה לקבוצת הגרף. זה לא שגיאה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> החוקר מחשב ממוצע על הקבוצות כשהרמה עדינה מהגרף. זה תואם את ההצהרה הרשמית שבה תוצאות INCLUDE &quot;אינן משוכפלות&quot; ואת הדוגמה הרשמית של INCLUDE, אבל המחקר לא הריץ את הצבירה העוטפת ב-Tableau עבור FIXED עדין מהגרף (מסמך הרקע, חלק 6.3 סעיף 4: &quot;confirm in Tableau&quot;). לכן הכפתור האחרון (&quot;FIXED סניף בגרף של קטגוריה&quot;) מסומן בהודעה &quot;בדקו ב-Tableau&quot;, וההדמיה מציגה בו מספר שאינו תוצאה מוכחת של התוכנה. אל תציגו אותו כעובדה. כשרוצים להוכיח את ההבדל, חזרו לשלושת המקרים שנבדקו: גס מהגרף, עדין עם INCLUDE, ורמת הטבלה.</div>
+</section>
+
+<section class="sec" id="m10-8" data-t="סדר הפעולות">
+<div class="sec-h"><div class="sec-n">8</div><h2>סדר הפעולות: מי רץ לפני מי</h2></div>
+<p class="lead">המנהל מבקש: &quot;תראה לי את שלושת הסניפים הכי טובים באזור מרכז&quot;. אתם שמים מסנן Top 3 על הסניפים, ומסנן Region = Center. בגרף מופיעים <b>שני</b> סניפים. לא שלושה. מה קרה לשלישי?</p>
+
+<div class="defline"><b>סדר הפעולות (<code>Order of Operations</code>):</b> הסדר הקבוע שבו Tableau מפעיל מסננים וחישובים. כל שלב עובד על מה שנשאר מהשלב הקודם. דוגמה: מסנן שרץ מוקדם מוריד שורות לפני שהמסנן שאחריו בכלל רואה אותן.</div>
+
+<p>ככה זה נראה בתרגיל שלנו. בהנפשה, האות הכתומה היא &quot;הנתונים שנשארו&quot; והיא יורדת במורד הרשימה. לחצו הבא ועצרו בכל שלב.</p>
+
+<div class="anim" data-id="m10-anim-order" data-speed="4200">
+<div class="stage"><svg viewBox="0 0 800 530" role="img" aria-label="הנפשה: סדר הפעולות של Tableau, עשרה שלבים, על דוגמה של שלושת הסניפים הטובים באזור מרכז">
+<defs><marker id="m10a4-ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#94a3b8"/></marker></defs>
+<rect x="28" y="20" width="330" height="38" rx="9" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/><text x="42" y="44" font-size="14" font-weight="700" fill="#0f172a">1. Extract Filters</text>
+<rect x="28" y="70" width="330" height="38" rx="9" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/><text x="42" y="94" font-size="14" font-weight="700" fill="#0f172a">2. Data Source Filters</text>
+<rect x="28" y="120" width="330" height="38" rx="9" fill="#fff7ed" stroke="#e8741f" stroke-width="2"/><text x="42" y="144" font-size="14" font-weight="700" fill="#0f172a">3. Context Filters</text>
+<rect x="28" y="170" width="330" height="38" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/><text x="42" y="194" font-size="14" font-weight="700" fill="#0f172a">4. Sets · Conditional · Top N · FIXED</text>
+<rect x="28" y="220" width="330" height="38" rx="9" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/><text x="42" y="244" font-size="14" font-weight="700" fill="#0f172a">5. Dimension Filters</text>
+<rect x="28" y="270" width="330" height="38" rx="9" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="42" y="294" font-size="14" font-weight="700" fill="#0f172a">6. INCLUDE / EXCLUDE · Blending</text>
+<rect x="28" y="320" width="330" height="38" rx="9" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/><text x="42" y="344" font-size="14" font-weight="700" fill="#0f172a">7. Measure Filters</text>
+<rect x="28" y="370" width="330" height="38" rx="9" fill="#f0fdfa" stroke="#14b8a6" stroke-width="2"/><text x="42" y="394" font-size="14" font-weight="700" fill="#0f172a">8. Table Calcs · Totals · Forecast · Clusters</text>
+<rect x="28" y="420" width="330" height="38" rx="9" fill="#f0fdfa" stroke="#14b8a6" stroke-width="2"/><text x="42" y="444" font-size="14" font-weight="700" fill="#0f172a">9. Table Calc Filters</text>
+<rect x="28" y="470" width="330" height="38" rx="9" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/><text x="42" y="494" font-size="14" font-weight="700" fill="#0f172a">10. Trend Lines · Reference Lines</text>
+<path d="M193,58 L193,70" stroke="#94a3b8" stroke-width="2"/><path d="M193,108 L193,120" stroke="#94a3b8" stroke-width="2"/><path d="M193,158 L193,170" stroke="#94a3b8" stroke-width="2"/><path d="M193,208 L193,220" stroke="#94a3b8" stroke-width="2"/><path d="M193,258 L193,270" stroke="#94a3b8" stroke-width="2"/><path d="M193,308 L193,320" stroke="#94a3b8" stroke-width="2"/><path d="M193,358 L193,370" stroke="#94a3b8" stroke-width="2"/><path d="M193,408 L193,420" stroke="#94a3b8" stroke-width="2"/><path d="M193,458 L193,470" stroke="#94a3b8" stroke-width="2"/>
+<g data-only="1"><rect x="26" y="18" width="334" height="42" rx="10" fill="none" stroke="#e8741f" stroke-width="4"/></g>
+<g data-only="2,6"><rect x="26" y="118" width="334" height="42" rx="10" fill="none" stroke="#e8741f" stroke-width="4"/></g>
+<g data-only="3,7"><rect x="26" y="168" width="334" height="42" rx="10" fill="none" stroke="#e8741f" stroke-width="4"/></g>
+<g data-only="4"><rect x="26" y="218" width="334" height="42" rx="10" fill="none" stroke="#e8741f" stroke-width="4"/></g>
+<g data-only="5"><rect x="26" y="368" width="334" height="42" rx="10" fill="none" stroke="#e8741f" stroke-width="4"/></g>
+<circle r="9" cx="12" cy="39" fill="#e8741f" data-move="1:0,0|2:0,100|3:0,150|4:0,200|5:0,350|6:0,100|7:0,150"/>
+<rect x="400" y="20" width="390" height="400" rx="14" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+<text x="595" y="52" text-anchor="middle" font-size="16" font-weight="800" fill="#334155">מי נשאר בגרף?</text>
+<g font-size="15" fill="#0f172a">
+<g data-only="1,2"><text x="420" y="100" font-weight="700">9 branches</text><text x="420" y="130">6,575 rows</text><text x="420" y="160">SUM(Sales) = 236,820.9</text></g>
+<g data-only="3"><text x="420" y="100">Tel Aviv Dizengoff</text><text x="770" y="100" text-anchor="end">44,194.1</text><text x="420" y="130">Tel Aviv Port</text><text x="770" y="130" text-anchor="end">39,446.0</text><text x="420" y="160">Jerusalem Mamilla</text><text x="770" y="160" text-anchor="end">33,450.8</text><text x="420" y="200" font-weight="700">3 branches · 3,275 rows</text><text x="420" y="232" fill="#7c3aed" font-weight="700">FIXED total = 236,820.9</text></g>
+<g data-only="4"><text x="420" y="100">Tel Aviv Dizengoff</text><text x="770" y="100" text-anchor="end">44,194.1</text><text x="420" y="130">Tel Aviv Port</text><text x="770" y="130" text-anchor="end">39,446.0</text><text x="420" y="160" fill="#ef4444" text-decoration="line-through">Jerusalem Mamilla</text><text x="770" y="160" text-anchor="end" fill="#ef4444">Region = Jerusalem</text><text x="420" y="200" font-weight="700">2 marks · 2,305 rows</text></g>
+<g data-only="5"><text x="420" y="100">Tel Aviv Dizengoff</text><text x="770" y="100" text-anchor="end" font-weight="800">52.8%</text><text x="420" y="130">Tel Aviv Port</text><text x="770" y="130" text-anchor="end" font-weight="800">47.2%</text><text x="420" y="172" fill="#0f766e" font-weight="700">% of visible total (table calc)</text><text x="420" y="204" fill="#7c3aed" font-weight="700">FIXED would show 18.7% and 16.7%</text></g>
+<g data-only="6"><text x="420" y="100" fill="#e8741f" font-weight="800">Context: Region = Center</text><text x="420" y="136">Dizengoff, Port, Netanya, Rehovot</text><text x="420" y="168" font-weight="700">4 branches · 3,317 rows</text></g>
+<g data-only="7"><text x="420" y="100">Tel Aviv Dizengoff</text><text x="770" y="100" text-anchor="end">44,194.1</text><text x="420" y="130">Tel Aviv Port</text><text x="770" y="130" text-anchor="end">39,446.0</text><text x="420" y="160">Netanya Beach</text><text x="770" y="160" text-anchor="end">26,840.2</text><text x="420" y="200" font-weight="700">3 marks · 3,037 rows</text><text x="420" y="232" fill="#7c3aed" font-weight="700">FIXED total = 120,405.5</text></g>
+</g>
+<text x="595" y="470" text-anchor="middle" font-size="15" font-weight="700" fill="#475569">מה שנופל מוקדם, נעלם לכל מי שאחריו.</text>
+</svg></div>
+<ol class="caps">
+<li>6,575 שורות נכנסות. מסנני מיצוי ומסנני מקור הנתונים רצים ראשונים. בדוגמה שלנו אין בהם כלום.</li>
+<li>אין מסנן הקשר. <code>Region = Center</code> הוא מסנן ממדים רגיל, והוא עוד לא התחיל לעבוד.</li>
+<li>Top 3 מדרג את כל תשעת הסניפים לפי מכירות ושומר שלושה: Dizengoff, Port, Mamilla. באותו שלב FIXED מחשב את סך הרשת, 236,820.9.</li>
+<li>עכשיו מגיע מסנן הממדים: <code>Region = Center</code> מסיר את Mamilla, שהיא בירושלים. נשארו שניים.</li>
+<li>חישוב טבלה, כמו &quot;אחוז מהסך&quot;, רץ אחרון, רק על שני הסימנים שנשארו: 52.8% ו-47.2%. FIXED עדיין זוכר את כל הרשת.</li>
+<li>התיקון: מקדמים את <code>Region = Center</code> למסנן הקשר. הוא רץ שלישי, וכל מה שאחריו רואה רק את 4 סניפי Center.</li>
+<li>Top 3 מדרג עכשיו רק את Center: Dizengoff, Port, Netanya. שלושה סימנים. וגם FIXED חושב מסך Center: 120,405.5.</li>
+</ol></div>
+
+<h3>הרשימה המלאה</h3>
+<p>זה הסדר שמופיע בתרשים של התיעוד הרשמי, מלמעלה למטה. שימו לב שלושה פריטים יושבים באותה תיבה: <b>קבוצות (<code>Sets</code>), מסנני תנאי, Top N ו-FIXED</b>.</p>
+<div class="tw"><table class="tbl">
+<tr><th>#</th><th>השלב</th><th>מה קורה</th></tr>
+<tr><td>1</td><td><code>Extract Filters</code></td><td>מסנן שנקבע בעת יצירת המיצוי. השורות שנפלו לא קיימות בכלל</td></tr>
+<tr><td>2</td><td><code>Data Source Filters</code></td><td>מסנן על כל מקור הנתונים, לכל הגיליונות</td></tr>
+<tr><td>3</td><td><code>Context Filters</code></td><td>מסנן שאתם מקדמים בכוונה. כל מה שאחריו רואה רק את מה שעבר אותו</td></tr>
+<tr><td>4</td><td><code>Sets</code>, מסנני תנאי, <code>Top N</code>, <code>FIXED</code></td><td>דירוג וקבוצות וחישוב FIXED. כולם רואים אותו קלט: מה שנשאר אחרי מסנני ההקשר</td></tr>
+<tr><td>5</td><td><code>Dimension Filters</code></td><td>המסנן הרגיל על ממדים, כמו Region = Center</td></tr>
+<tr><td>6</td><td><code>INCLUDE</code> / <code>EXCLUDE</code>, <code>Data Blending</code></td><td>ביטויים שמגיבים למסנני ממדים</td></tr>
+<tr><td>7</td><td><code>Measure Filters</code></td><td>מסנן על מדד, כמו SUM(Sales) &gt; 1000</td></tr>
+<tr><td>8</td><td>חישובי טבלה, סכומים כוללים, תחזיות, אשכולות</td><td>רצים על הסימנים שנשארו בגרף</td></tr>
+<tr><td>9</td><td><code>Table Calc Filters</code></td><td>מסנן שמבוסס על חישוב טבלה, כמו <code>RANK(...) &lt;= 3</code></td></tr>
+<tr><td>10</td><td>קווי מגמה וקווי עזר</td><td>האחרונים, מצוירים על מה שנשאר</td></tr>
+</table></div>
+<p>אם אתם מכירים SQL, יש השוואה שמופיעה גם בתיעוד של Tableau: מסנן ממדים דומה ל-<code>WHERE</code> (מסנן שורות לפני הצבירה), ומסנן מדד דומה ל-<code>HAVING</code> (מסנן קבוצות אחרי הצבירה). והכלל הפשוט: מה שנפל בשלב מוקדם לא מגיע לאף שלב שאחריו.</p>
+
+<div class="box note"><p><b>הבהרה על התיעוד.</b> בעמוד התיעוד הרשמי של סדר הפעולות, הטקסט מתאר את המסנן הרגיל ואת Top N כמסננים של ממדים שרצים &quot;בו זמנית&quot;, והתרשים מציב את Top N בתיבה משלו לפני מסנני הממדים. ההתנהגות בדוגמה של אותו עמוד (&quot;עשרת המובילים בניו יורק&quot; שיוצא עשרת המובילים בכל המדינה) מתאימה לתרשים. לכן לימדנו לפי התרשים, ותוכלו לראות את זה בעצמכם בתרגיל הבא.</p></div>
+
+<div class="box try" data-id="m10-try-order-context">
+<p><b>Top 3 באזור מרכז: מסנן רגיל מול הקשר</b></p>
+<ol>
+<li>גיליון חדש. <span class="pill d">Branch</span> ל-<code>Rows</code>, <span class="pill c sum">Sales</span> ל-<code>Columns</code>, מיון יורד.</li>
+<li>גררו <span class="pill d">Branch</span> אל <code>Filters</code>. בלשונית <code>Top</code>: <code>By field</code>, <code>Top</code>, 3, <code>Sales</code>, <code>Sum</code>. אישור. <i>למה: מסנן Top N, שרץ בשלב 4.</i></li>
+<li>גררו <span class="pill d">Region</span> אל <code>Filters</code> ובחרו רק <code>Center</code>. <i>למה: מסנן ממדים רגיל, שלב 5.</i></li>
+<li>לחצו ימנית על הפיל של <span class="pill d">Region</span> שב-<code>Filters</code> ובחרו <code>Add to Context</code>. הפיל הופך לאפור. <i>למה: מקדמים אותו לשלב 3, לפני Top N.</i></li>
+</ol>
+<figure class="shot" data-shot="m10-add-context">
+<div class="fb"><div class="tws" style="max-width:420px;margin:8px auto" aria-label="הדמיה סכמטית של מדף Filters עם פיל Region והתפריט Add to Context"><div class="tws-body" style="display:block;min-height:0;padding:8px"><div class="tws-shelf"><span>Filters</span><span class="pill d">Branch</span><span class="pill d" style="background:#e5e7eb;color:#334155;border-color:#cbd5e1">Region</span></div>
+<div style="margin:6px 0 0 120px;background:#fff;border:1px solid #c7cfd9;border-radius:6px;padding:4px 0;width:200px;box-shadow:0 6px 16px rgba(15,23,42,.15)"><div style="padding:2px 12px">Show Filter</div><div style="padding:2px 12px">Edit Filter...</div><div style="padding:2px 12px;background:#dbeafe;font-weight:700">Add to Context</div><div style="padding:2px 12px">Remove</div></div></div></div>
+<div class="need">צילום מסך נדרש: Tableau Public, מדף Filters עם הפיל Region, תפריט לחיצה ימנית פתוח ושורת Add to Context מסומנת</div></div>
+<figcaption>הדמיה סכמטית של התפריט. אחרי הלחיצה הפיל הופך לאפור, וזה הסימן ל&quot;מסנן הקשר&quot;.</figcaption></figure>
+<p><b>תוצאה צפויה בכל שלב:</b></p>
+<div class="tw"><table class="tbl">
+<tr><th>מצב</th><th>סימנים</th><th>מה בגרף</th></tr>
+<tr><td>אחרי שלב 2, רק Top 3</td><td>3</td><td>Tel Aviv Dizengoff 44,194.1, Tel Aviv Port 39,446.0, Jerusalem Mamilla 33,450.8</td></tr>
+<tr><td>אחרי שלב 3, Region = Center רגיל</td><td><b>2</b></td><td>Dizengoff 44,194.1 ו-Port 39,446.0. Mamilla נפלה, ואין מי שיחליף אותה</td></tr>
+<tr><td>אחרי שלב 4, Region בהקשר</td><td><b>3</b></td><td>Dizengoff 44,194.1, Port 39,446.0 ו-Netanya Beach 26,840.2</td></tr>
+</table></div>
+</div>
+
+<div class="box try" data-id="m10-try-order-tablecalc">
+<p><b>אותו Top 3, אבל כחישוב טבלה</b></p>
+<ol>
+<li>החזירו את <span class="pill d">Region</span> למסנן רגיל (לחיצה ימנית על הפיל האפור, <code>Remove from Context</code>) והוציאו את מסנן ה-Top של <span class="pill d">Branch</span> מה-<code>Filters</code> (גררו אותו החוצה, או בחלון המסנן בחרו <code>None</code> בלשונית <code>Top</code>).</li>
+<li>שדה מחושב <code>Rank Top 3</code>:
+<pre class="code" data-lang="tableau">RANK( SUM([Sales]) ) &lt;= 3</pre><i>למה: דירוג הוא חישוב טבלה (שלב 8), והמסנן שמבוסס עליו רץ אחרון (שלב 9).</i></li>
+<li>גררו <code>Rank Top 3</code> אל <code>Filters</code> ובחרו <code>True</code>. אם Tableau שואל איך לחשב, הגדירו <code>Table (Down)</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שלושה סימנים: Dizengoff 44,194.1, Port 39,446.0 ו-Netanya Beach 26,840.2. בדיוק כמו עם מסנן ההקשר, אבל מסיבה אחרת: החישוב רץ אחרי מסנן האזור, ולכן הוא מדרג רק את ארבעת סניפי Center. אל תחשבו שזה &quot;אותו דבר&quot;: בהמשך נראה כשהוא שונה.</p>
+</div>
+
+<div class="box try" data-id="m10-try-order-fixed">
+<p><b>אחוז מהרשת כשמסננים סניף: רגיל מול הקשר</b></p>
+<ol>
+<li>גיליון חדש: <span class="pill d">Category</span> ל-<code>Rows</code> ו-<code>Share of Chain</code> (מסעיף 5) ל-<code>Columns</code>, בפורמט אחוזים. גררו <span class="pill d">Branch</span> אל <code>Filters</code> ובחרו רק <code>Tel Aviv Dizengoff</code>.</li>
+<li>הסתכלו: האחוזים נמוכים, וסכומם 18.7%.</li>
+<li>לחצו ימנית על הפיל של <span class="pill d">Branch</span> ב-<code>Filters</code> ו-<code>Add to Context</code>.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> לפני הקידום: Cones 3.9%, Cups 5.6%, Drinks 4.6%, Sticks 1.2%, Sundaes 3.3% (סה&quot;כ 18.7%). אחרי הקידום: Cones 21.0%, Cups 30.1%, Drinks 24.8%, Sticks 6.4%, Sundaes 17.8% (סה&quot;כ 100%). FIXED מכבד מסנן הקשר, ולכן המכנה ירד מ-236,820.9 ל-44,194.1.</p>
+</div>
+
+<h3>ארבע הגרסאות של אותו מספר</h3>
+<p>בגרף של סניפים, עם Top 3 ו-Region = Center, אפשר לשאול &quot;מה האחוז של Dizengoff?&quot; בארבע דרכים. כל דרך נותנת מספר אחר, וכל מספר נכון לשאלה שלו:</p>
+<div class="tw"><table class="tbl">
+<tr><th>החישוב</th><th>Region = Center</th><th>סימנים</th><th>האחוז של Dizengoff</th><th>המכנה</th></tr>
+<tr><td>חישוב טבלה, אחוז מהסך</td><td>מסנן רגיל</td><td>2</td><td>52.8%</td><td>83,640.1 (שני הסניפים שנשארו)</td></tr>
+<tr><td>חישוב טבלה, אחוז מהסך</td><td>מסנן הקשר</td><td>3</td><td>40.0%</td><td>110,480.3 (שלושה סניפי Center)</td></tr>
+<tr><td>FIXED</td><td>מסנן רגיל</td><td>2</td><td>18.7%</td><td>236,820.9 (כל הרשת)</td></tr>
+<tr><td>FIXED</td><td>מסנן הקשר</td><td>3</td><td>36.7%</td><td>120,405.5 (כל Center)</td></tr>
+</table></div>
+<p>המסקנה בקצרה: <b>Top N ו-FIXED יושבים באותו שלב, ולכן שניהם מתעלמים ממסנן רגיל ושניהם מכבדים מסנן הקשר.</b> מה שמתנהג אחרת הוא חישוב הטבלה: הוא רץ אחרון ומחשב מחדש אחרי כל מסנן. ההבדל בין Top N ל-FIXED הוא בתפקיד: Top N מסיר סימנים, ו-FIXED נותן ערך קבוע לסימנים שנשארו.</p>
+
+<div class="box trap"><p><b>&quot;המסננים רצים לפי הסדר שבו הם על המדף&quot;.</b> לא נכון. הסדר נקבע לפי סוג המסנן ולא לפי המיקום. אפשר לגרור את Top N מעל או מתחת למסנן האזור, וכלום לא ישתנה. רק קידום להקשר משנה את הסדר.</p></div>
+
+<div class="box trap"><p><b>הקשר לכל מסנן.</b> אחרי שגילו את מסנן ההקשר, יש מי שמקדם הכול. לפי עצת התיעוד הרשמי, עדיף מסנן הקשר אחד שמקטין הרבה את הנתונים, ולא כמה. מסנן הקשר מתנהג אחרת גם כלפי FIXED: הוא משנה את מה ש-FIXED רואה, ולכן אפשר לשנות בטעות מספרים שנראו תקינים.</p></div>
+
+<div class="box trap"><p><b>&quot;חסרים לי סימנים&quot;.</b> Top 3 לא מבטיח שלושה סימנים בגרף. אחרי מסנן ממדים רגיל ייתכן שיישארו פחות. כשרואים פחות סימנים מ-N, שאלו קודם: האם יש מסנן ממדים רגיל שרץ אחרי ה-Top N? וכשמקדמים אותו להקשר, זכרו שבכך שיניתם גם את הדירוג: עכשיו הוא מדרג רק את מה שעבר את מסנן ההקשר.</p></div>
+
+<div class="box meaning"><p>כל פעם שמספר בגרף לא מסתדר עם מה שציפיתם, השאלה הראשונה היא: &quot;באיזה שלב נעלמו השורות, ואיזה חישוב רץ לפני ואיזה אחרי?&quot;. רוב מה שנראה כמו באג הוא סדר פעולות. מי שיודע לשאול את זה חוסך הרבה ניסוי וטעייה.</p></div>
+
+<div class="box real"><p>בתיעוד הרשמי של Tableau יש דוגמה בדיוק כזאת: &quot;עשרת המוצרים המובילים בניו יורק&quot; שמחזיר את עשרת המובילים של כל המדינה ואז מסנן אותם לניו יורק. הפתרון הרשמי הוא להפוך את מסנן העיר למסנן הקשר, כמו שעשינו. בדשבורדים אמיתיים זו אחת השאלות שחוזרות הכי הרבה.</p></div>
+
+<div class="box think" data-id="m10-th-order-netanya"><p>שאלה: במסנן הרגיל נשארו Dizengoff ו-Port. כשהפכנו להקשר, Netanya Beach הופיע בגרף, בלי ששינינו את מסנן ה-Top. למה? ו-Rehovot, שהוא בעל המכירות הנמוכות ביותר ב-Center, למה הוא לא מופיע?</p>
+<div class="ans">מסנן ההקשר רץ ראשון, ולכן Top 3 מדרג רק את ארבעת סניפי Center: Dizengoff 44,194.1, Port 39,446.0, Netanya 26,840.2 ואז Rehovot 9,925.2. שלושה ראשונים נשארים והרביעי נופל, ולכן Rehovot לא מופיע. במסנן הרגיל Netanya לא נכנס כי בדירוג של כל התשעה הוא רק שישי (אחרי Dizengoff, Port, Mamilla, Eilat ו-Haifa), ולכן לא היה ב-Top 3 לפני שהמסנן של האזור בכלל התחיל.</div></div>
+
+<div class="quiz" data-id="m10-q-order-which" data-a="3"><p class="qq">מה מהבאים רץ <b>אחרי</b> מסנן ממדים רגיל?</p>
+<button class="opt">FIXED</button>
+<button class="opt">Top N</button>
+<button class="opt">חישוב טבלה</button>
+<button class="opt">מסנן הקשר</button>
+<div class="why">מסנן הקשר, Top N ו-FIXED רצים לפני מסנן ממדים רגיל. חישובי טבלה רצים אחריו, וגם מסנן שמבוסס עליהם רץ אחרי כמעט הכול.</div></div>
+
+<div class="quiz" data-id="m10-q-order-context" data-a="1"><p class="qq">ביקשתם Top 5 מוצרים בעיר אחת, אבל קיבלתם פחות מחמישה. מה הפתרון הרשמי?</p>
+<button class="opt">להפוך את מסנן העיר למסנן הקשר</button>
+<button class="opt">לגרור את מסנן העיר מעל מסנן ה-Top במדף</button>
+<button class="opt">להוסיף עוד מסנן ממדים</button>
+<button class="opt">להחליף את Top N ב-SUM</button>
+<div class="why">רק הקשר משנה את הסדר: מסנן ההקשר רץ לפני Top N, ולכן Top N מדרג רק את העיר. מיקום המסננים על המדף לא משנה כלום.</div></div>
+
+<div class="quiz" data-id="m10-q-order-fixed" data-a="2"><p class="qq">ב-Top 3 ו-Region = Center (מסנן רגיל), מה ה-FIXED של סך הרשת מציג?</p>
+<button class="opt">83,640.1, סך שני הסניפים שנשארו</button>
+<button class="opt">236,820.9, כל הרשת, כי FIXED מתעלם ממסנן רגיל</button>
+<button class="opt">120,405.5, סך Center</button>
+<button class="opt">0, כי המסנן מוריד הכול</button>
+<div class="why">מסנן רגיל נכנס אחרי FIXED, ולכן סך הרשת נשאר 236,820.9. 120,405.5 היה מתקבל רק עם מסנן הקשר.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> התיקון החשוב: Top N ו-FIXED נמצאים בצעד אחד בתרשים הרשמי (Sets, conditional filters, Top N, FIXED LOD), בין מסנני הקשר למסנני ממדים. מה ששונה הם חישובי טבלה (מסמך הרקע סעיף 7.2). כל המספרים בסעיף חושבו בפייתון מהקובץ ולא הורצו ב-Tableau (דוגמת מסמך הרקע עצמה היא על 10 שורות אחרות), לכן בדקו שהם יוצאים אצלכם. נקודות לבדוק בתוכנה: (1) האפשרות <code>Add to Context</code> בתפריט הפיל, וצבע הפיל האפור. (2) בגרסה שלכם, איך מופיעה בחירת <code>Compute Using</code> למסנן <code>Rank Top 3</code>. (3) שמות השלבים בתרשים הרשמי, לפי מסמך הרקע הם הרשימה בטבלה, אבל התרשים עצמו לא הוטמע כאן: זו הנפשה שצוירה מחדש.</div>
+</section>
+
+<section class="sec" id="m10-9" data-t="LOD, חישוב טבלה או מסנן">
+<div class="sec-h"><div class="sec-n">9</div><h2>מסנן, חישוב טבלה או LOD: מה בוחרים</h2></div>
+<p class="lead">עכשיו שמכירים את הסדר, אפשר לענות על השאלה שכל מי שלומד את זה שואל: &quot;אותו מספר אפשר לחשב בכמה דרכים. באיזו מהן?&quot;. התשובה תלויה בשאלה אחת: האם המספר צריך להשתנות כשהצופה מסנן.</p>
+
+<div class="tw"><table class="tbl">
+<tr><th>הכלי</th><th>באיזה שלב</th><th>מגיב למסנן ממדים רגיל?</th><th>שימוש טיפוסי</th></tr>
+<tr><td><code>FIXED</code></td><td>4, לפני מסנן ממדים</td><td>לא (מכבד מסנן הקשר)</td><td>סך הרשת, תאריך ראשון, קבוצות</td></tr>
+<tr><td><code>INCLUDE</code> / <code>EXCLUDE</code></td><td>6, אחרי מסנן ממדים</td><td>כן</td><td>ממוצע לסניף באזור, חלק בתוך קבוצה</td></tr>
+<tr><td>חישוב טבלה</td><td>8, אחרי הכול</td><td>כן, ומחשב מחדש על מה שמוצג</td><td>דירוג, סכום מצטבר, אחוז ממה שנראה</td></tr>
+<tr><td>צבירה רגילה</td><td>ברמת הגרף</td><td>כן</td><td>סכום, ממוצע, ספירה של הסימן</td></tr>
+</table></div>
+
+<div class="cols3">
+<div class="card"><h4>המספר צריך להישאר קבוע?</h4><p>בלי קשר למה שהצופה מסנן: <b>FIXED</b>. למשל &quot;סך הרשת&quot; או &quot;המכירה הראשונה של הסניף&quot;.</p></div>
+<div class="card"><h4>צריך ברמה אחרת, אבל להגיב למסנן?</h4><p>אם המספר צריך לשקף מה שהצופה בחר: <b>INCLUDE</b> או <b>EXCLUDE</b>.</p></div>
+<div class="card"><h4>צריך חישוב על מה שמוצג?</h4><p>דירוג, מצטבר, אחוז מהסימנים הנראים: <b>חישוב טבלה</b>. שימו לב ל-Compute Using.</p></div>
+</div>
+
+<p>ועכשיו ההדמיה המרכזית של הסעיף: צינור הסינון של Scoop &amp; Go. בחרו אזור, מסנן רגיל או הקשר, Top N, וצורת חישוב האחוז, ותראו איזה סניף נפל ובאיזה שלב.</p>
+
+<div class="sim" data-id="m10-sim-pipe"><div class="sh">צינור הסינון</div>
+<div class="m10-sl">
+<label>אזור <select data-k="reg"><option value="Center">Center</option><option value="Jerusalem">Jerusalem</option><option value="North">North</option><option value="South">South</option></select></label>
+<span><b>סוג מסנן האזור:</b>
+<label><input type="radio" name="m10pp-ft" value="none"> בלי</label>
+<label><input type="radio" name="m10pp-ft" value="ordinary" checked> רגיל</label>
+<label><input type="radio" name="m10pp-ft" value="context"> הקשר</label></span>
+</div>
+<div class="m10-sl">
+<label><input type="checkbox" data-k="top" checked> Top N</label>
+<label>N <input type="range" data-k="n" min="1" max="9" step="1" value="3"> <b class="n" data-k="nv">3</b></label>
+<span><b>אחוז מהסך נבנה כ:</b>
+<label><input type="radio" name="m10pp-pc" value="table" checked> חישוב טבלה</label>
+<label><input type="radio" name="m10pp-pc" value="fixed"> FIXED</label></span>
+</div>
+<div class="m10-stg" data-k="stages"></div>
+<table class="m10-tb" data-k="tbl"></table>
+<div class="out" data-k="msg"></div>
+</div>
+<script>
+(function(){ FL.dom(function(){
+  var box = FL.$('[data-id="m10-sim-pipe"]'); if (!box) return;
+  var K = function(k){ return FL.$('[data-k="' + k + '"]', box); };
+  var uses = 0;
+  M10.data(function(S){
+    var regOf = {}, i;
+    for (i = 0; i < S.n; i++) regOf[S.Branch[i]] = S.Region[i];
+    var all = Object.keys(regOf);
+    var allTot = {};
+    for (i = 0; i < S.n; i++) allTot[S.Branch[i]] = (allTot[S.Branch[i]] || 0) + S.Sales[i];
+    all.sort(function(a, b){ return allTot[b] - allTot[a]; });
+    function radio(name){ var r = FL.$$('input[name="' + name + '"]', box).filter(function(x){ return x.checked; })[0]; return r ? r.value : ''; }
+    function render(){
+      var reg = K('reg').value, ft = radio('m10pp-ft'), topOn = K('top').checked, n = +K('n').value, pc = radio('m10pp-pc');
+      K('nv').textContent = n;
+      var ctxOn = ft === 'context', ordOn = ft === 'ordinary';
+      var rowsAll = S.n, rowsCtx = 0, ctxTot = {}, ctxSum = 0, ctxCnt = {};
+      for (i = 0; i < S.n; i++){
+        if (ctxOn && S.Region[i] !== reg) continue;
+        rowsCtx++; var b = S.Branch[i]; ctxTot[b] = (ctxTot[b] || 0) + S.Sales[i]; ctxCnt[b] = (ctxCnt[b] || 0) + 1; ctxSum += S.Sales[i];
+      }
+      var inCtx = all.filter(function(b){ return ctxTot[b] !== undefined; }).sort(function(a, b){ return ctxTot[b] - ctxTot[a]; });
+      var topSet = {}; (topOn ? inCtx.slice(0, n) : inCtx).forEach(function(b){ topSet[b] = true; });
+      var rowsTop = 0; inCtx.forEach(function(b){ if (topSet[b]) rowsTop += ctxCnt[b]; });
+      var ordSet = {}, rowsOrd = 0, vis = [];
+      inCtx.forEach(function(b){ if (!topSet[b]) return; if (ordOn && regOf[b] !== reg) return; ordSet[b] = true; rowsOrd += ctxCnt[b]; vis.push(b); });
+      var visSum = vis.reduce(function(p, b){ return p + ctxTot[b]; }, 0);
+      var den = pc === 'fixed' ? ctxSum : visSum;
+      function stage(k, name, rows, br, hot){ return '<div class="' + (hot ? 'hot' : '') + '"><span class="k">' + k + '</span><span>' + name + '</span><span class="n">' + M10.fmt(rows, 0) + ' שורות · ' + br + ' סניפים</span></div>'; }
+      K('stages').innerHTML =
+        stage(1, 'הנתונים נכנסים', rowsAll, all.length, false) +
+        stage(3, 'מסנן הקשר ' + (ctxOn ? '<span class="n">Region = ' + reg + '</span>' : '(אין)'), rowsCtx, inCtx.length, ctxOn) +
+        stage(4, 'Top N ו-FIXED <span class="n">' + (topOn ? 'Top ' + n : 'no Top N') + ' · FIXED = ' + M10.fmt(ctxSum, 1) + '</span>', rowsTop, Object.keys(topSet).length, topOn) +
+        stage(5, 'מסנן ממדים רגיל ' + (ordOn ? '<span class="n">Region = ' + reg + '</span>' : '(אין)'), rowsOrd, vis.length, ordOn) +
+        '<div class="hot"><span class="k">8</span><span>חישוב טבלה (המכנה: ' + (pc === 'fixed' ? 'FIXED' : 'מה שנשאר') + ')</span><span class="n">' + vis.length + ' סימנים</span></div>';
+      var trs = '<tr><th>Branch</th><th>Region</th><th class="r">Sales</th><th>מצב</th><th class="r">אחוז (' + (pc === 'fixed' ? 'FIXED' : 'חישוב טבלה') + ')</th></tr>';
+      all.forEach(function(b){
+        var st, cls;
+        if (ctxOn && regOf[b] !== reg){ st = 'נפל במסנן ההקשר'; cls = 'no'; }
+        else if (!topSet[b]){ st = 'נפל ב-Top N'; cls = 'tn'; }
+        else if (!ordSet[b]){ st = 'נפל במסנן הרגיל'; cls = 'no'; }
+        else { st = 'נשאר בגרף'; cls = 'ok'; }
+        var sales = ctxTot[b] !== undefined ? ctxTot[b] : allTot[b];
+        var pct = ordSet[b] ? M10.fmt(100 * ctxTot[b] / den, 1) + '%' : '';
+        trs += '<tr><td>' + FL.esc(b) + '</td><td>' + regOf[b] + '</td><td class="r">' + M10.fmt(sales, 1) + '</td><td><span class="m10-st ' + cls + '">' + st + '</span></td><td class="r"><b>' + pct + '</b></td></tr>';
+      });
+      K('tbl').innerHTML = trs;
+      var msg = [];
+      if (ft === 'none' || !topOn) msg.push(topOn ? 'אין מסנן אזור: Top ' + n + ' פועל על כל הרשת.' : 'בלי Top N כל הסניפים שעברו את מסנן האזור נשארים.');
+      if (ordOn && topOn){ var lost = Object.keys(topSet).length - vis.length; if (lost > 0) msg.push('Top N רץ לפני המסנן הרגיל על כל תשעת הסניפים, ולכן ' + (lost === 1 ? 'סניף אחד מהסניפים שזכו להיות בטופ נפל' : lost + ' מהסניפים שזכו להיות בטופ נפלו') + ' אחר כך, ונשארו ' + vis.length + ' במקום ' + n + '.'); }
+      if (ctxOn && topOn) msg.push('מסנן ההקשר רץ ראשון, ולכן Top N מדרג רק את ' + inCtx.length + ' הסניפים של ' + reg + ' ונשארים ' + vis.length + ' סימנים.');
+      msg.push(pc === 'fixed' ? 'FIXED חישב את המכנה בשלב 4: ' + M10.fmt(ctxSum, 1) + (ctxOn ? ' (סך ' + reg + ')' : ' (סך כל הרשת)') + ', ומסנן רגיל או Top N לא משנים אותו.' : 'חישוב הטבלה רץ אחרון, והמכנה הוא סך הסימנים שנשארו: ' + M10.fmt(visSum, 1) + '. לכן האחוזים תמיד מסתכמים ל-100%.');
+      K('msg').innerHTML = msg.join(' ');
+      if (++uses >= 5) FL.done('m10-sim-pipe');
+    }
+    box.addEventListener('change', render); box.addEventListener('input', render);
+    render(); uses = 0;
+  });
+}); })();
+</script>
+
+<div class="box think" data-id="m10-th-pipe-explore"><p>בהדמיה: בחרו Center, מסנן רגיל, Top 3, חישוב טבלה. אחר כך החליפו ל-FIXED. מה משתנה? אחר כך העבירו את מסנן האזור להקשר. איזה מהארבעה משתנה יותר, ולמה?</p>
+<div class="ans">עם הקשר, שלושה דברים משתנים יחד: הסניפים שנשארים (Netanya במקום Mamilla), מספר הסימנים (3 במקום 2), והמכנה של FIXED (120,405.5 במקום 236,820.9). חישוב הטבלה תמיד מחשב מחדש על מה שנשאר, ולכן האחוזים שלו מסתכמים ל-100% בכל מצב. FIXED הוא זה ששונה בין מסנן רגיל להקשר: מסנן רגיל לא מגיע אליו, והקשר כן, ולכן המכנה שלו קופץ.</div></div>
+
+<div class="box try" data-id="m10-try-lod-vs-tablecalc">
+<p><b>אותו אחוז, שני חישובים, מסנן אחד</b></p>
+<ol>
+<li>גיליון חדש. <span class="pill d">Branch</span> ל-<code>Rows</code>. ל-<code>Columns</code> גררו את <code>Share of Chain</code> (FIXED, מסעיף 5).</li>
+<li>גררו גם <span class="pill c sum">Sales</span> ל-<code>Columns</code>, לחצו ימנית עליו, <code>Quick Table Calculation</code>, <code>Percent of Total</code>. <i>למה: זה חישוב טבלה שמחלק כל סניף בסך הסניפים שמוצגים.</i></li>
+<li>הסתכלו על שתי העמודות: הן זהות. עכשיו גררו <span class="pill d">Category</span> אל <code>Filters</code> והוציאו את <code>Sticks</code> (מסנן רגיל).</li>
+</ol>
+<p><b>תוצאה צפויה:</b> לפני הסינון שתי העמודות זהות. אחרי הסינון:</p>
+<div class="tw"><table class="tbl m10-tb" style="direction:rtl">
+<tr><th>סניף</th><th>לפני (שני החישובים)</th><th>אחרי: חישוב טבלה</th><th>אחרי: FIXED</th></tr>
+<tr><td>Tel Aviv Dizengoff</td><td>18.7%</td><td>18.9%</td><td>17.5%</td></tr>
+<tr><td>Tel Aviv Port</td><td>16.7%</td><td>16.5%</td><td>15.3%</td></tr>
+<tr><td>Jerusalem Mamilla</td><td>14.1%</td><td>14.1%</td><td>13.0%</td></tr>
+<tr><td>Eilat Promenade</td><td>13.3%</td><td>13.2%</td><td>12.3%</td></tr>
+<tr><td>Haifa German Colony</td><td>11.6%</td><td>11.8%</td><td>10.9%</td></tr>
+<tr><td>Netanya Beach</td><td>11.3%</td><td>11.2%</td><td>10.4%</td></tr>
+<tr><td>Beer Sheva Grand Mall</td><td>7.9%</td><td>8.0%</td><td>7.4%</td></tr>
+<tr><td>Rehovot Mall</td><td>4.2%</td><td>4.1%</td><td>3.8%</td></tr>
+<tr><td>Ashdod Beach Pop-up</td><td>2.2%</td><td>2.2%</td><td>2.0%</td></tr>
+<tr><td><b>סך הכל</b></td><td><b>100.0%</b></td><td><b>100.0%</b></td><td><b>92.6%</b></td></tr>
+</table></div>
+<p>המכנה של חישוב הטבלה ירד ל-219,377.5 (בלי Sticks), והמכנה של FIXED נשאר 236,820.9. כל הסניפים משתנים בצורה שונה, כי Sticks לא מתחלק אותו דבר בין הסניפים.</p>
+</div>
+
+<div class="box meaning"><p>אין תשובה &quot;נכונה&quot; בין שני המספרים. 18.9% עונה: &quot;מתוך מה שאני רואה עכשיו, כמה דיזנגוף?&quot;. 17.5% עונה: &quot;מתוך כל הרשת, כמה מגיע מדיזנגוף בלי Sticks?&quot;. אם הצופה לא יודע איזו שאלה הוא שואל, הוא יקרא את המספר הלא נכון. לכן כותבים בכותרת איזו שאלה המספר עונה.</p></div>
+
+<div class="box real"><p>התיעוד הרשמי של סדר הפעולות מציג דוגמה דומה על נתוני Superstore: אחוז מהסך כשמסירים את Chairs. כל האחוזים בחישוב טבלה קופצים, כי המכנה קטן, ואילו גרסת ה-FIXED נשארת יציבה. מי שרוצה אחוז יציב בדשבורד עם הרבה מסננים, בוחר ב-FIXED.</p></div>
+
+<div class="box trap"><p><b>חישוב טבלה שמשתנה כשמזיזים פילים.</b> חישובי טבלה תלויים בצורה של הגרף: איזה ממד עליו, ובאיזה כיוון מחשבים (<code>Compute Using</code>). מי שמסדר מחדש את הפילים או מוסיף ממד, יכול לשנות את התוצאה בלי לשים לב. אם צריך מספר שלא תלוי בצורת הגרף, FIXED בטוח יותר.</p></div>
+
+<div class="box trap"><p><b>LOD כשצבירה רגילה מספיקה.</b> אל תכתבו <code>{ FIXED [Branch] : SUM([Sales]) }</code> כשהגרף כבר ברמת סניף. זה אותו מספר, רק יותר איטי ויותר קשה לקריאה. גם <code>COUNTD</code> בתוך FIXED בנתונים גדולים יכול להאט. בדקו קודם אם צבירה פשוטה כבר עונה.</p></div>
+
+<div class="box trap"><p><b>&quot;שיניתי ל-FIXED והמסנן הפסיק לעבוד&quot;.</b> זה לא באג, זה מה ש-FIXED עושה. אם זה לא מה שרציתם, קדמו את המסנן להקשר, או עברו ל-INCLUDE/EXCLUDE.</p></div>
+
+<div class="quiz" data-id="m10-q-pick-tool-1" data-a="4"><p class="qq">מנהל אומר: &quot;אני רוצה לראות תמיד את החלק של כל סניף מכל הרשת, גם כשאני מסנן לאזור&quot;. מה מתאים?</p>
+<button class="opt">חישוב טבלה: אחוז מהסך</button>
+<button class="opt">EXCLUDE של הסניף</button>
+<button class="opt">מסנן הקשר על האזור</button>
+<button class="opt">FIXED בלי ממדים לסך הרשת, ומחלקים בו</button>
+<div class="why">&quot;תמיד, גם כשמסננים&quot; פירושו מספר קבוע: FIXED מתעלם ממסנן האזור הרגיל. חישוב טבלה היה מחשב מחדש על מה שנשאר, ומסנן הקשר היה משנה את המכנה.</div></div>
+
+<div class="quiz" data-id="m10-q-pick-tool-2" data-a="1"><p class="qq">רוצים לדרג את הסניפים שמוצגים כרגע, אחרי שהצופה סינן אזור. מה מתאים?</p>
+<button class="opt">חישוב טבלה, כמו <code>RANK(SUM([Sales]))</code></button>
+<button class="opt">FIXED, כי הוא יציב</button>
+<button class="opt">פרמטר בלבד, בלי חישוב</button>
+<button class="opt">ביטוי ברמת הטבלה</button>
+<div class="why">דירוג של מה שנראה הוא חישוב טבלה: הוא רץ אחרי המסננים ומחשב מחדש על הסימנים שנשארו. FIXED היה מדרג לפי הנתונים המלאים.</div></div>
+
+<div class="quiz" data-id="m10-q-pipe-sim" data-a="2"><p class="qq">בהדמיה בחרתם Jerusalem כמסנן רגיל, Top 3. כמה סימנים בגרף?</p>
+<button class="opt">3</button>
+<button class="opt">1</button>
+<button class="opt">0</button>
+<button class="opt">9</button>
+<div class="why">ב-Jerusalem יש סניף אחד בלבד, Mamilla, והוא בשלושת הראשונים של הרשת, ולכן הוא עובר את Top 3 ואת המסנן הרגיל. שאר הסימנים נפלו כי הם לא בירושלים. עם מסנן הקשר התוצאה זהה (סימן אחד), כי יש רק סניף אחד לדרג.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> בקשו מהכיתה לחזות את התוצאה לפני כל שינוי בהדמיה. המספרים בהדמיה מחושבים מהנתונים האמיתיים, אבל ההדמיה היא מודל של סדר הפעולות כפי שהוא מתואר בתרשים הרשמי, לא התוכנה עצמה. בדקו בתוכנה לפני השיעור שארבעת התרחישים בטבלה שבסעיף 8 יוצאים אצלכם. אם אצלכם Top N עם מסנן רגיל נותן תוצאה אחרת, חזרו לתיעוד הרשמי ותקנו את הדף.</div>
+</section>
+
+<section class="sec" id="m10-10" data-t="קבוצות לקוחות">
+<div class="sec-h"><div class="sec-n">10</div><h2>קבוצות לקוחות לפי חודש ההזמנה הראשונה</h2></div>
+<p class="lead">יבגני רוצה לדעת דבר אחד: מתוך ההכנסות של המסעדה, כמה מגיעות מלקוחות בחודש שבו הם הגיעו לראשונה, וכמה ממי שחזר. בנתוני הגלידריות אין לקוחות, אז עוברים לנתוני המסעדה מהמפגש המסכם. אותו FIXED, נתונים אחרים.</p>
+
+<div class="defline"><b>קבוצה לפי חודש הצטרפות (<code>cohort</code>):</b> כל הלקוחות שהזמינו לראשונה באותו חודש, שנבחנים יחד לאורך הזמן. דוגמה: &quot;לקוחות מרץ&quot; הם כל מי שההזמנה הראשונה שלו הייתה במרץ, וצופים כמה הוציאו במרץ, באפריל ובמאי.</div>
+
+<p>הקובץ: <a class="tool" href="data/yevgeni_fact_sales.csv">yevgeni_fact_sales.csv</a>. זו הגרסה השטוחה של הנתונים שמהם נשאלו שאלות ב-SQL ב<a href="../final-lesson/part2.html">חלק 2 של המפגש המסכם</a>. הוא קובץ אחד, בלי חיבור למסד נתונים, בדיוק מה ש-Tableau Public יודע לטעון.</p>
+<div class="box try" data-id="m10-try-yevgeni-load">
+<p><b>בדיקת טעינה לפני כל חישוב</b></p>
+<ol>
+<li>טענו את הקובץ ב-Tableau Public (<code>Text file</code>). בדקו שיש 219 שורות. <i>למה: זו בדיקת הנתונים הראשונה בכל פרויקט.</i></li>
+<li>שמות העמודות מגיעים עם קו תחתון (<code>customer_id</code>). Tableau מציג אותם לפי כללים משלו, ולכן שנו את השמות: לחיצה ימנית, <code>Rename</code>. השתמשו בשמות <code>Customer Id</code>, <code>Order Date</code>, <code>Line Revenue</code>, <code>Status</code> ו-<code>Customer Name</code>. <i>למה: כך הנוסחאות כאן יתאימו לשמות אצלכם בדיוק.</i></li>
+<li><code>Customer Id</code> נטען כמספר ולכן הוא מדד (ירוק). לחיצה ימנית, <code>Convert to Dimension</code>. <i>למה: מזהה הוא תווית, לא משהו שמחברים.</i></li>
+<li>גררו <span class="pill c sum">Line Revenue</span> ל-<code>Text</code> בגיליון חדש. </li>
+</ol>
+<p><b>תוצאה צפויה:</b> <span class="n">13,592</span> בדיוק. אם יצא מספר אחר, הקובץ לא נטען נכון. זה גם ה-checkpoint של המודול הזה לנתוני המסעדה.</p>
+</div>
+
+<h3>ארבע הפתעות שחבויות בקובץ</h3>
+<div class="tw"><table class="tbl">
+<tr><th>מה</th><th>כמה</th><th>למה זה משפיע על קבוצות</th></tr>
+<tr><td><code>Customer Id</code> ריק (הזמנות בלי לקוח רשום)</td><td>44 שורות, 2,608 בהכנסות</td><td>Tableau יאחד את כולן ל-<code>Null</code> אחד, כאילו זה לקוח</td></tr>
+<tr><td>הזמנות שבוטלו (<code>cancelled</code>)</td><td>12 שורות, 708 בהכנסות</td><td>הן בכל זאת מופיעות ב-<code>Line Revenue</code></td></tr>
+<tr><td>אותו שם, שני מזהים</td><td>&quot;רונית מלכה&quot; מופיעה כמזהה 17 וכמזהה 18</td><td>מי שמחשב לפי שם ימזג שני אנשים</td></tr>
+<tr><td>מזהה בלי שם</td><td>מזהה 99, הזמנה אחת, 104</td><td>לפי שם הוא ייעלם, לפי מזהה הוא לקוח</td></tr>
+</table></div>
+
+<div class="box try" data-id="m10-try-first-order">
+<p><b>תאריך ההזמנה הראשונה של כל לקוח</b></p>
+<ol>
+<li>שדה מחושב <code>First Order</code>:
+<pre class="code" data-lang="tableau">{ FIXED [Customer Id] : MIN([Order Date]) }</pre><i>למה: לכל לקוח, התאריך המוקדם ביותר, בלי קשר לגרף.</i></li>
+<li>גררו <span class="pill d">Customer Id</span> ל-<code>Rows</code> ואת <code>First Order</code> ל-<code>Text</code>.</li>
+<li>גררו <span class="pill d">Customer Id</span> ל-<code>Filters</code>, והוציאו את <code>Null</code>. <i>למה: ה-Null הוא כל ההזמנות בלי לקוח רשום, לא לקוח אחד.</i></li>
+</ol>
+<p><b>תוצאה צפויה:</b> 19 לקוחות. ההזמנה הראשונה של כל אחד:</p>
+<div class="tw"><table class="tbl m10-tb" style="direction:rtl">
+<tr><th>מזהה</th><th>הזמנה ראשונה</th><th>מזהה</th><th>הזמנה ראשונה</th><th>מזהה</th><th>הזמנה ראשונה</th></tr>
+<tr><td>13</td><td><span class="n">2026-03-02</span></td><td>11</td><td><span class="n">2026-03-06</span></td><td>9</td><td><span class="n">2026-03-11</span></td></tr>
+<tr><td>2</td><td><span class="n">2026-03-05</span></td><td>14</td><td><span class="n">2026-03-06</span></td><td>15</td><td><span class="n">2026-03-14</span></td></tr>
+<tr><td>1</td><td><span class="n">2026-03-07</span></td><td>6</td><td><span class="n">2026-03-07</span></td><td>16</td><td><span class="n">2026-03-18</span></td></tr>
+<tr><td>12</td><td><span class="n">2026-03-07</span></td><td>3</td><td><span class="n">2026-03-20</span></td><td>17</td><td><span class="n">2026-03-20</span></td></tr>
+<tr><td>8</td><td><span class="n">2026-03-27</span></td><td>7</td><td><span class="n">2026-04-03</span></td><td>18</td><td><span class="n">2026-04-10</span></td></tr>
+<tr><td>10</td><td><span class="n">2026-04-13</span></td><td>4</td><td><span class="n">2026-04-25</span></td><td>5</td><td><span class="n">2026-05-03</span></td></tr>
+<tr><td>99</td><td><span class="n">2026-05-28</span></td><td></td><td></td><td></td><td></td></tr>
+</table></div>
+<p>הלקוח הראשון בתאריך הוא מזהה 13 ב-2 במרץ 2026, והאחרון הוא מזהה 99 ב-28 במאי.</p>
+</div>
+
+<div class="box try" data-id="m10-try-cohort-table">
+<p><b>טבלת הקבוצות</b></p>
+<ol>
+<li>שני שדות מחושבים:
+<pre class="code" data-lang="tableau">// Cohort Month
+DATETRUNC('month', [First Order])
+
+// Months Since First
+DATEDIFF('month', [First Order], [Order Date])</pre><i>למה: הראשון הוא חודש ההצטרפות (הקבוצה), השני הוא כמה חודשים עברו מאז, בכל שורת הזמנה.</i></li>
+<li>הפכו את <code>Months Since First</code> לבדיד (<code>Convert to Discrete</code>) ואת <code>Cohort Month</code> לבדיד ברמת חודש (לחיצה ימנית על הפיל ובחירה ב-<code>Month</code> בצורה שמציגה חודש ושנה, כחולה).</li>
+<li>ערכו את המדפים: <code>Cohort Month</code> ב-<code>Rows</code>, <code>Months Since First</code> ב-<code>Columns</code>, <span class="pill c sum">Line Revenue</span> ל-<code>Text</code>.</li>
+<li>סננו (<code>Filters</code>): <span class="pill d">Status</span> = <code>delivered</code> בלבד, ו-<span class="pill d">Customer Id</span> בלי <code>Null</code>.</li>
+<li>גררו <code>CNTD(Customer Id)</code> (או <code>Count (Distinct)</code> של <code>Customer Id</code>) ל-<code>Text</code>, כדי לראות את גודל כל קבוצה.</li>
+</ol>
+<figure class="shot" data-shot="m10-cohort-table">
+<div class="fb"><table class="m10-cohort" aria-label="הדמיה סכמטית של טבלת הקבוצות"><tr><th>Cohort Month</th><th>Customers</th><th>0</th><th>1</th><th>2</th></tr>
+<tr><td>March 2026</td><td>13</td><td style="background:#1d4ed8;color:#fff">3,905</td><td style="background:#60a5fa">2,336</td><td style="background:#93c5fd">1,809</td></tr>
+<tr><td>April 2026</td><td>4</td><td style="background:#bfdbfe">1,097</td><td style="background:#bfdbfe">1,110</td><td></td></tr>
+<tr><td>May 2026</td><td>2</td><td style="background:#eff6ff">311</td><td></td><td></td></tr></table>
+<div class="need">צילום מסך נדרש: Tableau Public, טבלת Cohort Month ב-Rows, Months Since First ב-Columns, SUM(Line Revenue) כטקסט, ללא Null ורק delivered</div></div>
+<figcaption>הדמיה סכמטית של התוצאה: צבע כהה יותר פירושו הכנסה גבוהה יותר.</figcaption></figure>
+<p><b>תוצאה צפויה:</b></p>
+<div class="tw"><table class="tbl">
+<tr><th>קבוצה</th><th>לקוחות</th><th>חודש 0</th><th>חודש 1</th><th>חודש 2</th></tr>
+<tr><td>מרץ 2026</td><td>13</td><td>3,905</td><td>2,336</td><td>1,809</td></tr>
+<tr><td>אפריל 2026</td><td>4</td><td>1,097</td><td>1,110</td><td></td></tr>
+<tr><td>מאי 2026</td><td>2</td><td>311</td><td></td><td></td></tr>
+</table></div>
+<p>בדיקת שפיות: סכום כל התאים הוא <b>10,568</b> (167 שורות, 64 הזמנות מסופקות של 19 לקוחות מזוהים), וסכום הקבוצות <bdi dir="ltr">13 + 4 + 2</bdi> הוא 19. מרץ הוא החודש היחיד שיש בו שלושה חודשים, כי הנתונים מגיעים עד סוף מאי.</p>
+</div>
+
+<div class="box trap"><p><b>ה-Null נכנס לקבוצת מרץ.</b> אם לא תסננו אותו, ההזמנות בלי לקוח רשום יהפכו ל&quot;לקוח&quot; אחד, עם הזמנה ראשונה ב-4 במרץ. סך ההכנסות יקפוץ מ-10,568 ל-12,884 (כל המסופקות), וקבוצת מרץ תקבל 10,366 במקום 8,050. ה-Null הוא לא לקוח, ולכן כל קבוצה שכוללת אותו היא קבוצה מזויפת.</p></div>
+
+<div class="box trap"><p><b>שם במקום מזהה.</b> אם תכתבו <code>{ FIXED [Customer Name] : MIN([Order Date]) }</code>, שתי הרונית מלכה (17 ו-18) יהפכו לאדם אחד, והזמנה הראשונה שלו תהיה ב-20 במרץ. מזהה 18, שהזמין לראשונה באפריל, יעבור לקבוצת מרץ, ומזהה 99 (בלי שם) ייעלם. תקבלו קבוצות של 13, 3 ו-1 (17 לקוחות) במקום 13, 4 ו-2 (19). מפתח הוא מזהה, לא שם.</p></div>
+
+<div class="box trap"><p><b>FIXED לא מסונן, והמסנן כן.</b> סננו <code>Status = delivered</code> כמסנן רגיל, ו-FIXED עדיין מחשב את <code>First Order</code> לפי כל ההזמנות, כולל המבוטלות. בנתונים האלה זה לא משנה, כי ההזמנה הראשונה של כל לקוח הייתה מסופקת. אם הייתה מבוטלת, <code>First Order</code> היה מראה תאריך של הזמנה שלא קרתה. הפתרון: מסנן הקשר על <code>Status</code> (סעיף 8) או מסנן מקור נתונים.</p></div>
+
+<div class="box try" data-id="m10-try-first-day">
+<p><b>כמה מההכנסה מגיעה ביום ההזמנה הראשונה</b></p>
+<ol>
+<li>שדה מחושב <code>On First Order Date</code>:
+<pre class="code" data-lang="tableau">[Order Date] = [First Order]</pre><i>למה: אמת אם ההזמנה היא ביום ההזמנה הראשונה של הלקוח, אחרת שקר.</i></li>
+<li>הוציאו את <code>Months Since First</code> ואת <code>Cohort Month</code> מהגיליון (או שכפלו אותו). גררו <code>On First Order Date</code> ל-<code>Rows</code> ו-<span class="pill c sum">Line Revenue</span> ל-<code>Text</code>. השאירו את אותם מסננים.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> <code>True</code>: 3,586 (כ-33.9%). <code>False</code>: 6,982. הסכום 10,568, כמו קודם. כלומר שני שלישים מההכנסות מגיעים מהזמנות שאחרי היום הראשון של הלקוח.</p>
+</div>
+
+<div class="box meaning"><p>הנתונים קטנים (19 לקוחות), ולכן לא מסיקים מהם מסקנות עסקיות. אבל הצורה חשובה: קבוצת מרץ הוציאה 3,905 בחודש הראשון, 2,336 בשני ו-1,809 בשלישי. הסכום יורד, אבל לא קורס. כך נראית &quot;עקומת שימור&quot; בהכנסות. בנתונים מלאים עם אלפי לקוחות, אותה טבלה מראה מיד אם הלקוחות שחוזרים מחזיקים את העסק.</p></div>
+
+<div class="box real"><p>טבלת קבוצות היא כלי רגיל בכל עסק עם לקוחות חוזרים: אפליקציות, מנויים, חנויות. כמעט תמיד השלב הראשון הוא בדיוק מה שבנינו: &quot;תאריך הפעולה הראשונה של כל לקוח&quot;, ואחריו חיסור חודשים. ב-SQL זה <code>MIN(order_date)</code> עם <code>GROUP BY customer_id</code>. ב-Tableau, <code>FIXED</code> עושה בדיוק את זה, בלי לשנות את הטבלה.</p></div>
+
+<pre class="code" data-lang="sql">-- אותו דבר ב-SQL, לצורך השוואה בלבד (לא צריך להריץ)
+SELECT customer_id, MIN(order_date) AS first_order
+FROM fact_sales
+WHERE customer_id IS NOT NULL
+GROUP BY customer_id;</pre>
+
+<div class="box think" data-id="m10-th-cohort-key"><p>שאלה: יבגני רוצה להוסיף למסעדה &quot;מועדון&quot; ולמדוד כמה חברים חוזרים. הוא מציע להשתמש ב-<code>customer_name</code> כי &quot;הוא קל לקריאה&quot;. מה עונים לו, ומה תציעו לשים בגרף כדי שעדיין יהיה קל לקרוא?</p>
+<div class="ans">מפתח צריך להיות ייחודי ויציב. שם יכול להיות כפול (שתי רונית מלכה) או חסר, ומי שמשנה כתיב יפצל לקוח לשניים. משתמשים במזהה בחישוב, ושמים את השם על <code>Label</code> או <code>Tooltip</code> כדי שיהיה קל לקרוא. ככה החישוב נכון והגרף קריא.</div></div>
+
+<div class="quiz" data-id="m10-q-cohort-fixed" data-a="3"><p class="qq">למה משתמשים ב-FIXED כדי לחשב את ההזמנה הראשונה של לקוח?</p>
+<button class="opt">כי FIXED מסנן את הלקוחות שהזמינו פעם אחת</button>
+<button class="opt">כי בלי FIXED אי אפשר להשתמש ב-MIN</button>
+<button class="opt">כי רוצים ערך אחד לכל לקוח שיופיע בכל שורת הזמנה שלו, בלי קשר לרמה של הגרף</button>
+<button class="opt">כי FIXED מוסיף עמודה חדשה לקובץ</button>
+<div class="why"><code>MIN</code> רגיל היה מחושב לפי רמת הגרף, וכך בגרף של חודשים היה חוזר המינימום של החודש. FIXED לפי לקוח נותן לכל שורה את התאריך הראשון של הלקוח שלה, וממנו אפשר לחשב חודשים מאז. הקובץ עצמו לא משתנה.</div></div>
+
+<div class="quiz" data-id="m10-q-cohort-null" data-a="1"><p class="qq">למה חייבים להוציא את <code>Null</code> של <code>Customer Id</code> מקבוצות הלקוחות?</p>
+<button class="opt">כי כל ההזמנות בלי לקוח רשום מתאחדות ל&quot;לקוח&quot; אחד מדומה, והוא מעוות את הקבוצה</button>
+<button class="opt">כי Tableau לא מסוגל לחשב FIXED על ערכים ריקים</button>
+<button class="opt">כי ה-Null מכיל רק הזמנות שבוטלו</button>
+<button class="opt">אין צורך, ה-Null לא משפיע על הסכומים</button>
+<div class="why">ל-Tableau ערך ריק הוא קבוצה לכל דבר. כל ההזמנות בלי לקוח רשום (44 שורות) נכנסות ל&quot;לקוח&quot; אחד. הוא לא מבוטל בלבד (תשובה ג שגויה), ו-FIXED כן מחשב עליו (ב שגויה), והוא משפיע: 2,316 בהכנסות המסופקות.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> כל המספרים בסעיף חושבו בפייתון מ-<code>yevgeni_fact_sales.csv</code>, לא ב-Tableau: 219 שורות, 13,592 סך הכל, 44 שורות בלי מזהה לקוח (2,608), 12 שורות מבוטלות (708), 167 שורות מסופקות עם לקוח מזוהה (10,568, 64 הזמנות, 19 לקוחות). בדקו בתוכנה: (1) שמות העמודות אחרי הטעינה והאם <code>Rename</code> נדרש; (2) ש-<code>Customer Id</code> אכן נטען כמספר, ושהמרה לממד עובדת לפני שמשתמשים בו ב-FIXED; (3) שערך ריק מופיע כ-<code>Null</code> בחלון המסנן; (4) שמזהה 99 (בלי שם) נשאר בגרף לפי מזהה; (5) שמוסכמת התאריך ב-<code>DATEDIFF</code> עם <code>'month'</code> סופרת גבולות חודש, ולא ימים, כפי שנאמר בתיעוד.</div>
+</section>
+
+<section class="sec" id="m10-11" data-t="סיכום ומשימה">
+<div class="sec-h"><div class="sec-n">11</div><h2>משימה מסכמת וסיכום</h2></div>
+<p class="lead">בונים גיליון אחד שמשלב את שני חצאי המודול: פרמטר שבוחר מדד, ו-FIXED שמחשב &quot;סניף ממוצע&quot; לאותו מדד. הצופה בוחר מדד, והגרף מראה כמה כל סניף מעל או מתחת לממוצע.</p>
+
+<div class="box try" data-id="m10-try-final-sheet">
+<p><b>סניף מול ממוצע, לפי המדד שנבחר</b></p>
+<ol>
+<li>ודאו שיש לכם את הפרמטר <code>Pick Measure</code> ואת <code>Chosen Measure</code> (סעיף 2). <i>למה: הם מגדירים מה מודדים.</i></li>
+<li>שדה מחושב <code>Chain Avg Chosen</code>:
+<pre class="code" data-lang="tableau">CASE [Pick Measure]
+WHEN "Sales"    THEN { FIXED : SUM([Sales]) }    / { FIXED : COUNTD([Branch]) }
+WHEN "Profit"   THEN { FIXED : SUM([Profit]) }   / { FIXED : COUNTD([Branch]) }
+WHEN "Quantity" THEN { FIXED : SUM([Quantity]) } / { FIXED : COUNTD([Branch]) }
+END</pre><i>למה: לכל מדד, סך הרשת חלקי מספר הסניפים. כל הענפים מאותו סוג, ולכן אין ערבוב.</i></li>
+<li>שדה מחושב <code>Gap vs Avg Chosen</code>: <code>[Chosen Measure] - ATTR([Chain Avg Chosen])</code>. <i>למה: כמה כל סניף רחוק מהסניף הממוצע.</i></li>
+<li><span class="pill d">Branch</span> ל-<code>Rows</code>, <code>Gap vs Avg Chosen</code> ל-<code>Columns</code> ול-<code>Color</code> (צבע לפי חיובי ושלילי). מיון יורד.</li>
+<li>עברו בין שלושת המדדים בכרטיס הפרמטר.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> תמיד 9 עמודות, והסכום של כולן הוא 0 (עד עיגול). כמה מדד וכמה הפרש:</p>
+<div class="tw"><table class="tbl">
+<tr><th>סניף</th><th>Sales (ממוצע 26,313.43)</th><th>Profit (ממוצע 13,413.66)</th><th>Quantity (ממוצע 1,269.56)</th></tr>
+<tr><td>Tel Aviv Dizengoff</td><td><span class="n">+17,880.67</span></td><td><span class="n">+9,565.44</span></td><td><span class="n">+858.44</span></td></tr>
+<tr><td>Tel Aviv Port</td><td><span class="n">+13,132.57</span></td><td><span class="n">+6,896.84</span></td><td><span class="n">+645.44</span></td></tr>
+<tr><td>Jerusalem Mamilla</td><td><span class="n">+7,137.37</span></td><td><span class="n">+3,614.14</span></td><td><span class="n">+354.44</span></td></tr>
+<tr><td>Eilat Promenade</td><td><span class="n">+5,160.27</span></td><td><span class="n">+2,327.54</span></td><td><span class="n">+231.44</span></td></tr>
+<tr><td>Haifa German Colony</td><td><span class="n">+1,075.77</span></td><td><span class="n">+774.04</span></td><td><span class="n">+57.44</span></td></tr>
+<tr><td>Netanya Beach</td><td><span class="n">+526.77</span></td><td><span class="n">+94.04</span></td><td><span class="n">+31.44</span></td></tr>
+<tr><td>Beer Sheva Grand Mall</td><td><span class="n">-7,516.23</span></td><td><span class="n">-3,824.46</span></td><td><span class="n">-366.56</span></td></tr>
+<tr><td>Rehovot Mall</td><td><span class="n">-16,388.23</span></td><td><span class="n">-8,618.96</span></td><td><span class="n">-790.56</span></td></tr>
+<tr><td>Ashdod Beach Pop-up</td><td><span class="n">-21,008.93</span></td><td><span class="n">-10,828.66</span></td><td><span class="n">-1,021.56</span></td></tr>
+</table></div>
+<p>שימו לב: ל-Netanya Beach הפער במכירות הוא +526.77, וברווח רק +94.04. כמעט ממוצעת ברווח. זה בדיוק מה שמדד מתחלף מגלה.</p>
+</div>
+
+<div class="box meaning"><p>שני הכלים משלימים זה את זה. הפרמטר שואל &quot;איזה מדד?&quot;, ו-FIXED עונה &quot;מה הנורמה?&quot;. בלי FIXED היה צריך לעדכן ממוצע ידנית בכל החלפת מדד. עם FIXED הממוצע מתעדכן לבד, כי הוא חלק מאותה נוסחה.</p></div>
+
+<div class="box real"><p>לפני שמאמינים למספר בדשבורד, מקצוענים עושים בדיקת סכום: האם ההפרשים מסתכמים לאפס, האם האחוזים מסתכמים ל-100, האם סך הסימנים שווה לסך הכללי. ארבעה מספרים מהמודול הזה מספיקים כדי לדעת שהנתונים נטענו נכון: 236,820.9 מכירות, 120,722.9 רווח, 11,426 כמות ו-13,592 הכנסות מסעדה.</p></div>
+
+<div class="box think" data-id="m10-th-final-choose"><p>שאלה: שלחתם את הגיליון הזה למנהל, והוא אומר שהפערים &quot;לא הוגנים לרחובות ולאשדוד&quot;. מה תציעו, באמצעים של המודול הזה?</p>
+<div class="ans">שני סניפים עבדו חלק מהתקופה, והממוצע כולל סניפים שעבדו שנתיים. אפשר להשוות לפי מכירות לחודש פעילות: סך חלקי מספר החודשים מאז <code>First Sale Date</code>, או לסנן רק סניפים שפעלו כל התקופה (קבוצת 2024 מסעיף 5). אפשר גם להוסיף פרמטר שבוחר בין שתי ההשוואות.</div></div>
+
+<div class="box recap"><ul>
+<li><b>פרמטר</b> הוא ערך שהצופה משנה. הוא לא עושה כלום עד שחישוב, מסנן או קו עזר קוראים לו. מחליפים בו מדד, קובעים Top N, יעד ותרחיש.</li>
+<li><b>רמת הפירוט של הגרף</b> היא הממדים שבו: הסימנים הם צירופים שלהם, והסכום הכולל לא משתנה כשמוסיפים ממד.</li>
+<li><b>FIXED</b> מחשב ברמה שקבעתם ומתעלם מהגרף ומהמסנן הרגיל. <b>INCLUDE</b> מוסיף ממדים לגרף, <b>EXCLUDE</b> מוריד אותם, וביטוי ברמת הטבלה מחשב על הכול.</li>
+<li><b>סדר הפעולות:</b> הקשר, אחריו Top N ו-FIXED (באותו שלב), אחריהם מסנן ממדים רגיל, אחריו INCLUDE ו-EXCLUDE, ובסוף חישובי טבלה.</li>
+<li>בוחרים כלי לפי שאלה אחת: האם המספר צריך להישאר כשמסננים (FIXED), להגיב למסנן ברמה אחרת (INCLUDE או EXCLUDE) או להתחשב במה שמוצג (חישוב טבלה).</li>
+<li>תמיד בודקים סכום: אחוזים ל-100, הפרשים ל-0, סימנים לפי הממדים. ומפתח של קבוצה הוא מזהה, לא שם.</li>
+</ul></div>
+
+<div class="quiz" data-id="m10-q-end-1" data-a="2"><p class="qq">הוספתם ל-<code>Filters</code> את Region = South כמסנן רגיל, ובגרף יש <code>{ FIXED : SUM([Sales]) }</code> שמוצג כמכנה. מה המכנה?</p>
+<button class="opt">55,575.4, סך South</button>
+<button class="opt">236,820.9, כי FIXED רץ לפני מסנן ממדים רגיל</button>
+<button class="opt">0, כי כל השורות בדרום מסוננות החוצה</button>
+<button class="opt">120,405.5</button>
+<div class="why">מסנן ממדים רגיל לא מגיע ל-FIXED, ולכן סך הרשת נשאר 236,820.9. 55,575.4 היה מתקבל עם מסנן הקשר. 120,405.5 הוא סך Center.</div></div>
+
+<div class="quiz" data-id="m10-q-end-2" data-a="4"><p class="qq">שני פרמטרים נמצאים בגיליון, אבל הגרף לא משתנה כשמזיזים אותם. מה הסיבה הסבירה ביותר?</p>
+<button class="opt">צריך לרענן את הנתונים</button>
+<button class="opt">Tableau Public לא תומך בפרמטרים</button>
+<button class="opt">הפרמטרים תקולים ויש ליצור אותם מחדש</button>
+<button class="opt">אף חישוב, מסנן או קו עזר לא קורא להם</button>
+<div class="why">פרמטר הוא ערך בלבד. כשהוא לא משנה כלום, בדרך כלל מישהו שכח לחבר אותו. Tableau Public תומך בפרמטרים, ואין צורך ברענון או ביצירה מחדש.</div></div>
+
+<div class="quiz" data-id="m10-q-end-3" data-a="1"><p class="qq">מה מדגים ההבדל בין 21% צמיחה ברשת ל-7% &quot;באותם סניפים&quot;?</p>
+<button class="opt">שהקבוצה שמשווים (כל הסניפים או רק הוותיקים) משנה את התשובה, ו-FIXED נותן את הקבוצה</button>
+<button class="opt">שאחד החישובים שגוי</button>
+<button class="opt">ש-Tableau מעגל אחרת בכל גיליון</button>
+<button class="opt">שצמיחה תמיד נמדדת בחישוב טבלה</button>
+<div class="why">שני המספרים נכונים לשאלות שונות: הרשת כולה לעומת סניפים שעבדו בשתי השנים. את הקבוצה &quot;נפתח ב-2024&quot; בונים עם FIXED על תאריך המכירה הראשון של הסניף.</div></div>
+
+<p>במודול הבא עוברים ממקור נתונים אחד למספר מקורות: <a href="module11.html">מודול 11, שילוב נתונים ושינוי צורה</a>. שם נשתמש שוב בנתוני המסעדה, והפעם בשש הטבלאות הקשורות.</p>
+
+<div class="teach"><b>🎓 למרצה:</b> רשימת בדיקה לפני השיעור, פריטים שהמחקר סימן כלא-מאומתים או שצריך להריץ: (1) ביטוי <code>ATTR({ ... })</code> עם צבירה פנימית, ושימוש ב-<code>ATTR</code> במכנה של אחוזים; (2) <code>AVG({ INCLUDE [Branch] : ... })</code> ממוצע על קבוצות; (3) חילוק של שני ביטויי FIXED ללא ממדים; (4) כותרת דינמית עם <code>Insert</code> של פרמטר וכותרת ציר דינמית (מסומנת Cloud, Desktop, Server בתיעוד); (5) פורמט אחוזים בחלון הפרמטר (Desktop בלבד לפי התיעוד); (6) פעולות פרמטר ב-Public; (7) תפריט <code>Add to Context</code> וצבע הפיל; (8) שמות עמודות אחרי טעינת קובץ המסעדה; (9) שורת המצב ושמות הכפתורים בגרסה שלכם. כל המספרים בעמוד חושבו בפייתון מהקבצים, לא ב-Tableau. אם משהו לא יוצא, תקנו את הדף ולא את הנתונים.</div>
+</section>
+
+<div class="pager"><a href="module9.html">→ 9. חישובי טבלה וניתוח רץ</a><a href="module11.html">11. שילוב נתונים ושינוי צורה ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>

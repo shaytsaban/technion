@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14. סיפורים, פרסום והטמעה · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=14;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public">1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים">2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים">3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות">6<small></small></a><a id="part7" href="module7.html" title="מפות">7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים">8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט">10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב">13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה" class=on>14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים">15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות">16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום">17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות">19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>סיפורים, פרסום<br><span>והטמעה</span></h1>
+  <p>במודול הזה בונים סיפור בן חמש נקודות מהנתונים של Scoop & Go: מה קרה ב-2025 ומה עושים. אחר כך מכינים את החוברת לפרסום, בודקים מה יוצא החוצה עם הנתונים, מפרסמים ל-Tableau Public, מסדרים פרופיל, ומטמיעים את הוויז בדף אינטרנט משלכם. בדרך מתרגלים גם מה כל אחד יכול לראות, להוריד ולהעתיק, ואיך שומרים על יושרה כשמראים מספרים.</p>
+  <div class="chips"><span>📖 סיפור בן חמש נקודות מנתונים אמיתיים</span><span>🧪 תרגילים עם מספרי בדיקה מחושבים</span><span>🎞️ הנפשות: סיפור, פרסום, הורדה והטמעה</span><span>🔒 משחק מיון: אפשר לפרסם את זה?</span><span>🧩 בונה סיפורים ובונה קוד הטמעה</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<style>
+.m14-sw{border:1px solid #c7cfd9;border-radius:10px;overflow:hidden;background:#f4f6f8;direction:ltr;text-align:left;font-size:.8rem;box-shadow:0 10px 28px rgba(15,23,42,.12);margin:12px 0}
+.m14-sw-top{display:flex;gap:6px;align-items:center;background:#e5e9ee;padding:5px 8px;border-bottom:1px solid #c7cfd9;flex-wrap:wrap}
+.m14-sw-top b{margin-inline-end:8px;color:#334155}
+.m14-sw-body{display:grid;grid-template-columns:150px 1fr;min-height:300px}
+@media(max-width:700px){.m14-sw-body{grid-template-columns:1fr}}
+.m14-sw-side{background:#fff;border-right:1px solid #d5dbe3;padding:6px 8px}
+.m14-sw-side h6{margin:6px 0 3px;font-size:.7rem;color:#64748b;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #e5e9ee}
+.m14-sw-side .it{font-size:.78rem;padding:1px 4px;border-radius:4px;color:#334155}
+.m14-sw-side .it.dash{color:#14507a}
+.m14-sw-side .cap{margin-top:8px;border:1px dashed #94a3b8;border-radius:6px;padding:3px 6px;font-size:.74rem;color:#475569;text-align:center}
+.m14-sw-main{padding:8px 12px;display:flex;flex-direction:column;gap:6px}
+.m14-sw-title{font-weight:800;font-size:1rem;color:#0b1f3a;text-align:center}
+.m14-sw-nav{display:flex;gap:6px;flex-wrap:wrap}
+.m14-sw-nav div{flex:1;min-width:92px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;padding:3px 6px;font-size:.72rem;color:#475569}
+.m14-sw-nav div b{display:inline-flex;width:18px;height:18px;border-radius:50%;align-items:center;justify-content:center;background:#e2e8f0;color:#334155;font-size:.68rem;margin-inline-end:4px}
+.m14-sw-nav div.on{background:#fef3c7;border-color:#d8b862;color:#78350f}
+.m14-sw-nav div.on b{background:#d8b862;color:#fff}
+.m14-sw-canvas{flex:1;background:#fff;border:1px solid #d5dbe3;border-radius:6px;padding:8px;min-height:150px}
+.m14-sw-canvas svg{width:100%;height:auto;display:block}
+.m14-sw-capt{background:#fff;border:1px solid #d5dbe3;border-radius:6px;padding:4px 10px;font-size:.84rem;color:#1e293b;direction:rtl;text-align:right}
+.m14-pf{border:1px solid #cbd5e1;border-radius:12px;overflow:hidden;background:#fff;direction:ltr;text-align:left;box-shadow:0 10px 28px rgba(15,23,42,.1);margin:12px 0}
+.m14-pf .ban{height:64px;background:linear-gradient(90deg,#1b4a8a,#3b82f6 60%,#93c5fd)}
+.m14-pf .hd{display:flex;gap:12px;align-items:flex-end;padding:0 16px;margin-top:-28px;flex-wrap:wrap}
+.m14-pf .av{width:64px;height:64px;border-radius:50%;background:#e2e8f0;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-weight:800;color:#475569}
+.m14-pf .nm{font-weight:800;font-size:1.05rem;color:#0b1f3a}
+.m14-pf .sub{font-size:.8rem;color:#64748b}
+.m14-pf .bio{padding:8px 16px;font-size:.84rem;color:#334155;direction:rtl;text-align:right}
+.m14-pf .tabs{display:flex;gap:2px;border-bottom:1px solid #e2e8f0;padding:0 12px;font-size:.8rem;flex-wrap:wrap}
+.m14-pf .tabs span{padding:5px 12px;color:#64748b}
+.m14-pf .tabs span.on{border-bottom:3px solid #1f77b4;color:#0b1f3a;font-weight:700}
+.m14-pf .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;padding:12px 16px}
+.m14-pf .cardv{border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;font-size:.76rem;background:#fff}
+.m14-pf .cardv .th{height:70px;background:#eef2f7;display:flex;align-items:flex-end;gap:4px;padding:6px 10px}
+.m14-pf .cardv .th i{display:block;width:14px;background:#4e79a7;border-radius:2px 2px 0 0}
+.m14-pf .cardv .ct{padding:4px 8px;color:#334155}
+.m14-pf .cardv .ct b{display:block;color:#0b1f3a}
+.m14-vb{direction:ltr;text-align:left}
+.m14-vb .tb{display:flex;gap:6px;flex-wrap:wrap;align-items:center;border-bottom:1px solid #e2e8f0;padding:6px 8px;background:#f8fafc;font-size:.76rem}
+.m14-vb .tb span{border:1px solid #cbd5e1;background:#fff;border-radius:6px;padding:1px 9px;color:#334155}
+.m14-vb .tb span.hot{border-color:#e8741f;background:#fff7ed;color:#9a4a0b;font-weight:700}
+.m14-vb .vz{padding:10px 12px;display:flex;gap:10px;align-items:flex-end;min-height:110px;background:#fff}
+.m14-vb .vz i{display:block;width:26px;background:#4e79a7;border-radius:3px 3px 0 0}
+.m14-tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:#fff;margin:6px 0}
+.m14-tbl th,.m14-tbl td{border:1px solid var(--line);padding:5px 10px;text-align:start;vertical-align:top}
+.m14-tbl th{background:#f1f5f9;color:var(--navy)}
+.m14-tbl td:first-child{font-weight:700}
+.m14-tbl .y{color:#047857;font-weight:800}.m14-tbl .x{color:#b91c1c;font-weight:800}.m14-tbl .q{color:#b45309;font-weight:800}
+.m14-code{direction:ltr;text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:8px 12px;margin:6px 0;overflow-x:auto;white-space:pre}
+.m14-kp{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.m14-kp div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:4px 12px;font-size:.88rem}
+.m14-kp b{color:var(--navy)}
+.m14-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:10px 0}
+.m14-two>div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 14px}
+.m14-two h5{margin:0 0 4px;color:var(--navy);font-size:1rem}
+.m14-ck{display:grid;gap:6px;margin:8px 0}
+.m14-ck label{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 12px;cursor:pointer}
+.m14-ck label.on{background:#f0fdf4;border-color:#6ee7b7}
+.m14-ck input{margin-top:5px}
+.m14-pick{display:flex;gap:6px;flex-wrap:wrap}
+.m14-pick button,.m14-bt{font:inherit;font-size:.82rem;font-weight:700;border:1px solid #c7cfd9;background:#fff;border-radius:8px;padding:2px 10px;cursor:pointer;color:#334155}
+.m14-pick button:hover,.m14-bt:hover{background:#eef2ff}
+.m14-pick button.ok,.m14-bt.ok{border-color:#6ee7b7;background:#ecfdf5;color:#065f46}
+.m14-pick button.no,.m14-bt.no{border-color:#fca5a5;background:#fef2f2;color:#991b1b}
+.m14-pick button.sel{outline:3px solid var(--primary)}
+.m14-aud-t{width:100%;border-collapse:collapse;font-size:.9rem;background:#fff}
+.m14-aud-t th,.m14-aud-t td{border:1px solid var(--line);padding:5px 8px;vertical-align:top;text-align:start}
+.m14-aud-t th{background:#f1f5f9;color:var(--navy)}
+.m14-aud-t td.col{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;direction:ltr;text-align:left;white-space:nowrap;font-weight:700}
+.m14-aud-t .fb{font-size:.84rem;color:#334155;margin-top:3px}
+.m14-aud-t tr.done.good td{background:#f0fdf4}
+.m14-aud-t tr.done.bad td{background:#fef2f2}
+.m14-sbk{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0}
+@media(max-width:760px){.m14-sbk{grid-template-columns:1fr}}
+.m14-sbk h5{margin:0 0 6px;color:var(--navy)}
+.m14-sbk .card{padding:8px 10px;margin-bottom:6px;font-size:.88rem;border-radius:10px}
+.m14-sbk .card .r{font-size:.74rem;font-weight:800;color:#64748b}
+.m14-sbk .card.x{opacity:.8}
+.m14-sbk .ctl{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.m14-sbk .ctl button{font:inherit;font-size:.78rem;font-weight:700;border:1px solid #c7cfd9;background:#f8fafc;border-radius:7px;padding:0 8px;cursor:pointer}
+.m14-sbk .ctl button:hover{background:#eef2ff}
+.m14-fbl{display:grid;gap:4px;margin:8px 0;font-size:.9rem}
+.m14-fbl div{border-radius:8px;padding:3px 10px;border:1px solid var(--line);background:#fff}
+.m14-fbl div.ok{background:#f0fdf4;border-color:#a7f3d0}
+.m14-fbl div.no{background:#fef2f2;border-color:#fecaca}
+.m14-story-read{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 14px;margin-top:8px;font-size:.92rem}
+.m14-eb{display:grid;gap:8px;margin:8px 0}
+.m14-eb label{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-weight:700;font-size:.9rem}
+.m14-eb input[type=text]{direction:ltr;text-align:left;width:100%;max-width:100%;flex:1 1 320px;font-size:.82rem}
+.m14-eb .warn{border-radius:8px;padding:3px 10px;font-size:.86rem;border:1px solid #fde68a;background:#fffbeb;color:#92400e}
+.m14-eb .good{border-radius:8px;padding:3px 10px;font-size:.86rem;border:1px solid #a7f3d0;background:#f0fdf4;color:#065f46}
+.m14-eb .bad{border-radius:8px;padding:3px 10px;font-size:.86rem;border:1px solid #fecaca;background:#fef2f2;color:#991b1b}
+.m14-hon .it{border-top:1px solid var(--line);padding:8px 0}
+.m14-hon .q{font-weight:700;margin-bottom:4px}
+.m14-hon .w{font-size:.9rem;color:#334155;margin-top:3px}
+.m14-url{direction:ltr;text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem;background:#0f172a;color:#cbd5e1;border-radius:10px;padding:10px 14px;margin:10px 0;overflow-x:auto;white-space:nowrap}
+.m14-url b{padding:0 3px;border-radius:4px;font-weight:600}
+.m14-url .a{background:#1e3a8a;color:#bfdbfe}.m14-url .b{background:#14532d;color:#bbf7d0}.m14-url .c{background:#78350f;color:#fde68a}.m14-url .d{background:#581c87;color:#e9d5ff}
+.m14-dlg{direction:ltr;text-align:left;max-width:420px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.14);margin:10px auto;font-size:.84rem;overflow:hidden}
+.m14-dlg .h{background:#f1f5f9;padding:6px 12px;font-weight:700;color:#334155;border-bottom:1px solid #e2e8f0}
+.m14-dlg .b{padding:10px 12px;display:grid;gap:8px}
+.m14-dlg .f{border:1px solid #cbd5e1;border-radius:6px;padding:3px 8px;background:#fff;color:#334155}
+.m14-dlg .sw{display:flex;gap:8px;align-items:center;font-size:.8rem}
+.m14-dlg .tg{width:34px;height:18px;border-radius:9px;background:#1f77b4;position:relative;flex:none}
+.m14-dlg .tg::after{content:"";position:absolute;top:2px;right:2px;width:14px;height:14px;border-radius:50%;background:#fff}
+.m14-dlg .tg.off{background:#cbd5e1}.m14-dlg .tg.off::after{right:auto;left:2px}
+.m14-dlg .bt{align-self:end;background:#1f77b4;color:#fff;border-radius:6px;padding:3px 16px;font-weight:700}
+</style>
+<div class="box note"><b>מה נבנה במודול הזה</b> <span class="lvl b">בונים: סיפור ופרסום</span> <span class="lvl p">מתקדמים: הטמעה בדף משלכם</span>
+<p>יש לכם גרפים ודשבורד של Scoop &amp; Go. במודול הזה הם הופכים לתוצר שאפשר לשלוח בקישור. בונים סיפור (<code>Story</code>) בן חמש נקודות: מה קרה ב-2025 ומה עושים. מכינים את החוברת לפרסום ובודקים שאין בה מה להסתיר. מפרסמים ל-Tableau Public, מסדרים פרופיל, ומטמיעים את הוויז בדף HTML פשוט. בסוף יש לכם קישור לסיפור שפורסם, דף שבו הוויז מוטמע, ורשימת בדיקה לכל פרסום עתידי.</p>
+<p>מה צריך להיות מוכן: Tableau Public מותקן וחשבון Tableau Public פעיל (<a href="module1.html">מודול 1</a>), הקובץ <a class="tool" href="data/scoop_sales_2024_2025.csv">scoop_sales_2024_2025.csv</a>, ודשבורד אחד לפחות ממודול 13 (<a href="module13.html">דשבורדים, פעולות ועיצוב</a>). אין לכם דשבורד? בסעיף 3 יש מתכון קצר שבונה אחד. לחלק ההטמעה צריך עורך טקסט, ולהצגת הדף עדיף שרת קטן של פייתון או חשבון GitHub חינמי.</p>
+<p>כל תרגיל כאן רץ ב-Tableau Public בלבד. הפרסום הוא ציבורי, ולכן בתרגילים מפרסמים רק את הנתונים הבדויים של Scoop &amp; Go ואף קובץ אחר. כשמשהו עובד אחרת בעורך שבדפדפן (<code>web authoring</code>), נאמר את זה במקום.</p>
+</div>
+
+<div class="teach"><b>🎓 למרצה:</b> המודול הזה מחבר את כל מה שנבנה עד עכשיו לתוצר שיוצא החוצה. מספרי הבדיקה בתרגילים חושבו בפייתון מקובץ ה-CSV (סכומים מדויקים: Tableau עשוי להציג אותם מעוגלים בתווית). מה שלא נבדק בתוכנה מסומן בהערות כאלה: <b>לבדוק בתוכנה לפני השיעור</b>. הרשימה המרוכזת: מיקום ושם הכפתור Hide וההגדרה Allow Access, תפריט Download בוויז, שדות תיאור ותגיות בפרסום, יצירת סיפור בעורך שבדפדפן, וההתנהגות של Update בסיפור. הפרסום הוא תרגיל חי: כדאי שכל התלמידים יהיו עם חשבון פעיל לפני שמתחילים את סעיף 5.</div>
+
+<section class="sec" id="m14-1" data-t="סיפור או דשבורד">
+<div class="sec-h"><div class="sec-n">1</div><h2>סיפור או דשבורד: מה כל אחד עושה</h2></div>
+<p class="lead">מנהל הרשת של Scoop &amp; Go שואל: ״מה קרה ב-2025, ומה עושים?״ אפשר לשלוח לו דשבורד עם גרפים ומסננים, והוא יחפש את התשובה לבד. אפשר גם לשלוח סיפור: חמישה מסכים, בכל אחד גרף ומשפט שאומר מה לראות. נתחיל בהבדל בין השניים.</p>
+
+<div class="defline"><b>סיפור (<code>Story</code>):</b> סוג גיליון ב-Tableau שמסדר גיליונות ודשבורדים בסדר קבוע, ולכל שלב יש כיתוב. הצופה לוחץ ועובר משלב לשלב. דוגמה: חמישה מסכים על Scoop &amp; Go, בכל אחד גרף ומשפט אחד.</div>
+<div class="defline"><b>נקודת סיפור (<code>Story Point</code>):</b> שלב אחד בסיפור: גיליון או דשבורד אחד, עם כיתוב משלו. דוגמה: הנקודה השלישית מציגה רק את סניף באר שבע, עם הכיתוב ״ב-2025 המכירות בסניף ירדו ב-<span class="n">3,420.40</span>״.</div>
+
+<p>בחוברת של Tableau יש שלושה סוגי גיליון. לפי התיעוד של Tableau Public, חוברת בנויה מגיליונות עבודה (<code>worksheet</code>), דשבורדים וסיפורים. כל סוג בנוי מהקודם:</p>
+<div class="cols3">
+<div class="card"><h4>גיליון עבודה</h4><p>גרף אחד או טבלה אחת. כאן בונים את כל מה שלמדתם במודולים 3 עד 12.</p></div>
+<div class="card"><h4>דשבורד</h4><p>כמה גיליונות על מסך אחד, עם מסננים ופעולות. הצופה מסתכל, לוחץ ובודק בעצמו.</p></div>
+<div class="card"><h4>סיפור</h4><p>רצף של גיליונות ודשבורדים, מסך אחד בכל פעם, וכיתוב לכל מסך. הצופה מקבל את הסדר שאתם בחרתם.</p></div>
+</div>
+
+<p>עכשיו נראה סיפור בפעולה. זה הסיפור שתבנו בסעיף 3. שימו לב לשלושה חלקים: שורת הכותרות למעלה (הניווט, <code>Navigator</code>), הגרף באמצע, והכיתוב למטה. הצופה לא בוחר איזה גרף לפתוח, אלא לוחץ על הבא.</p>
+
+<div class="anim" data-id="m14-anim-story" data-speed="3600">
+<div class="stage"><svg viewBox="0 0 800 340" role="img" aria-label="הנפשה: סיפור בן חמש נקודות של Scoop and Go. הניווט למעלה, גרף באמצע, כיתוב למטה, וכל נקודה מציגה גרף אחר">
+<rect x="6" y="6" width="788" height="328" rx="12" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+<g font-weight="700" font-size="15" text-anchor="middle">
+<rect x="26" y="18" width="140" height="42" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/><text x="96" y="44" fill="#334155">1  פתיחה</text>
+<rect x="174" y="18" width="140" height="42" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/><text x="244" y="44" fill="#334155">2  הסניפים</text>
+<rect x="322" y="18" width="140" height="42" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/><text x="392" y="44" fill="#334155">3  באר שבע</text>
+<rect x="470" y="18" width="140" height="42" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/><text x="540" y="44" fill="#334155">4  ההנחה</text>
+<rect x="618" y="18" width="140" height="42" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/><text x="688" y="44" fill="#334155">5  המלצה</text>
+</g>
+<g data-only="1"><rect x="24" y="16" width="144" height="46" rx="9" fill="#fef3c7" stroke="#d8b862" stroke-width="3"/><text x="96" y="44" text-anchor="middle" font-size="15" font-weight="800" fill="#78350f">1  פתיחה</text></g>
+<g data-only="2"><rect x="172" y="16" width="144" height="46" rx="9" fill="#fef3c7" stroke="#d8b862" stroke-width="3"/><text x="244" y="44" text-anchor="middle" font-size="15" font-weight="800" fill="#78350f">2  הסניפים</text></g>
+<g data-only="3"><rect x="320" y="16" width="144" height="46" rx="9" fill="#fef3c7" stroke="#d8b862" stroke-width="3"/><text x="392" y="44" text-anchor="middle" font-size="15" font-weight="800" fill="#78350f">3  באר שבע</text></g>
+<g data-only="4"><rect x="468" y="16" width="144" height="46" rx="9" fill="#fef3c7" stroke="#d8b862" stroke-width="3"/><text x="540" y="44" text-anchor="middle" font-size="15" font-weight="800" fill="#78350f">4  ההנחה</text></g>
+<g data-only="5"><rect x="616" y="16" width="144" height="46" rx="9" fill="#fef3c7" stroke="#d8b862" stroke-width="3"/><text x="688" y="44" text-anchor="middle" font-size="15" font-weight="800" fill="#78350f">5  המלצה</text></g>
+<rect x="26" y="76" width="748" height="190" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<line x1="60" y1="240" x2="740" y2="240" stroke="#94a3b8" stroke-width="2"/>
+<g data-only="1">
+<rect x="130" y="160" width="70" height="80" fill="#9db7d5"/><rect x="230" y="140" width="70" height="100" fill="#4e79a7"/>
+<text x="165" y="154" text-anchor="middle" font-size="13" fill="#334155">107,047.60</text><text x="265" y="134" text-anchor="middle" font-size="13" fill="#334155">129,773.30</text>
+<text x="165" y="258" text-anchor="middle" font-size="14" fill="#334155">2024</text><text x="265" y="258" text-anchor="middle" font-size="14" fill="#334155">2025</text>
+<polyline points="430,226 470,222 510,205 550,180 590,130 630,112 670,168 710,214" fill="none" stroke="#4e79a7" stroke-width="3"/>
+<text x="570" y="258" text-anchor="middle" font-size="14" fill="#334155">מכירות לפי חודש</text>
+</g>
+<g data-only="2" font-size="12" fill="#334155">
+<text x="270" y="97" text-anchor="end">Tel Aviv Dizengoff</text><rect x="278" y="86" width="380" height="14" fill="#4e79a7"/>
+<text x="270" y="113" text-anchor="end">Tel Aviv Port</text><rect x="278" y="102" width="340" height="14" fill="#4e79a7"/>
+<text x="270" y="129" text-anchor="end">Jerusalem Mamilla</text><rect x="278" y="118" width="284" height="14" fill="#4e79a7"/>
+<text x="270" y="145" text-anchor="end">Eilat Promenade</text><rect x="278" y="134" width="278" height="14" fill="#4e79a7"/>
+<text x="270" y="161" text-anchor="end">Haifa German Colony</text><rect x="278" y="150" width="236" height="14" fill="#4e79a7"/>
+<text x="270" y="177" text-anchor="end">Netanya Beach</text><rect x="278" y="166" width="234" height="14" fill="#4e79a7"/>
+<text x="270" y="193" text-anchor="end">Rehovot Mall</text><rect x="278" y="182" width="163" height="14" fill="#4e79a7"/>
+<text x="270" y="209" text-anchor="end" font-weight="800" fill="#b91c1c">Beer Sheva Grand Mall</text><rect x="278" y="198" width="126" height="14" fill="#dc2626"/>
+<text x="270" y="225" text-anchor="end">Ashdod Beach Pop-up</text><rect x="278" y="214" width="87" height="14" fill="#4e79a7"/>
+<text x="680" y="250" text-anchor="end" font-size="13" fill="#64748b">מכירות 2025, הדמיה סכמטית</text>
+</g>
+<g data-only="3">
+<rect x="270" y="112" width="90" height="128" fill="#fca5a5"/><rect x="420" y="146" width="90" height="94" fill="#dc2626"/>
+<text x="315" y="104" text-anchor="middle" font-size="14" fill="#334155">11,108.80</text><text x="465" y="138" text-anchor="middle" font-size="14" fill="#334155">7,688.40</text>
+<text x="315" y="258" text-anchor="middle" font-size="14" fill="#334155">2024</text><text x="465" y="258" text-anchor="middle" font-size="14" fill="#334155">2025</text>
+<text x="620" y="190" text-anchor="middle" font-size="22" font-weight="800" fill="#b91c1c">-30.8%</text>
+</g>
+<g data-only="4">
+<line x1="60" y1="200" x2="740" y2="200" stroke="#94a3b8" stroke-width="2"/>
+<rect x="150" y="100" width="70" height="100" fill="#4e79a7"/><rect x="270" y="180" width="70" height="20" fill="#4e79a7"/><rect x="390" y="192" width="70" height="8" fill="#4e79a7"/><rect x="510" y="200" width="70" height="14" fill="#dc2626"/>
+<g font-size="14" fill="#334155" text-anchor="middle"><text x="185" y="236">0</text><text x="305" y="236">0.1</text><text x="425" y="236">0.2</text><text x="545" y="236">0.5</text></g>
+<text x="545" y="94" text-anchor="middle" font-size="20" font-weight="800" fill="#b91c1c">-378.00</text>
+<text x="650" y="150" text-anchor="middle" font-size="13" fill="#64748b">רווח לפי הנחה</text><text x="650" y="168" text-anchor="middle" font-size="13" fill="#64748b">הדמיה סכמטית</text>
+</g>
+<g data-only="5">
+<line x1="60" y1="170" x2="740" y2="170" stroke="#94a3b8" stroke-width="2"/>
+<rect x="170" y="150" width="80" height="20" fill="#4e79a7"/><rect x="320" y="146" width="80" height="24" fill="#4e79a7"/><rect x="470" y="170" width="80" height="80" fill="#dc2626"/>
+<g font-size="14" fill="#334155" text-anchor="middle"><text x="210" y="190">Cones 170.00</text><text x="360" y="190">Cups 199.00</text><text x="510" y="268" font-weight="800" fill="#b91c1c">Sundaes -747.00</text></g>
+</g>
+<rect x="26" y="276" width="748" height="48" rx="8" fill="#fff" stroke="#cbd5e1"/>
+<g font-size="16" font-weight="700" fill="#1e293b" text-anchor="middle">
+<text data-only="1" x="400" y="306">2025: המכירות עלו ב-21.2%, והקיץ נושא את השנה</text>
+<text data-only="2" x="400" y="306">לא כולם עלו: באר שבע יורד, ושאר הסניפים עולים</text>
+<text data-only="3" x="400" y="306">באר שבע ירד ב-3,420.40. הנתונים מראים איפה, לא למה</text>
+<text data-only="4" x="400" y="306">ההנחה של 50% מפסידה כסף</text>
+<text data-only="5" x="400" y="306">ההפסד הוא רק במנות הקינוח: מורידים אותן מההנחה</text>
+</g>
+</svg></div>
+<ol class="caps">
+<li>נקודה 1: הפתיחה. הכותרת באה קודם: המכירות עלו ב-21.2%, מ-107,047.60 ל-129,773.30. הצופה יודע מיד מה הסיפור.</li>
+<li>נקודה 2: הסניפים. אותה שנה, אבל עכשיו רואים שלא כולם עלו. סניף אחד, באר שבע, ירד.</li>
+<li>נקודה 3: התמקדות. אותו גיליון, אבל מסננים רק את באר שבע. הכיתוב אומר מה רואים ומה לא ידוע.</li>
+<li>נקודה 4: בעיה שנייה. הנחה של 50% מפסידה כסף: 292 שורות מכירה, רווח של -378.00.</li>
+<li>נקודה 5: ההמלצה. ההפסד כולו במנות קינוח (Sundaes): -747.00, ואילו Cones ו-Cups עדיין מרוויחים. לכן ממליצים להוציא אותן מההנחה.</li>
+</ol></div>
+
+<div class="box meaning"><p>דשבורד עונה על שאלות שהצופה מביא איתו. סיפור עונה על שאלה אחת שאתם בחרתם, בסדר שבחרתם. לכן בדשבורד השאלה היא ״מה אפשר לבדוק כאן?״, ובסיפור היא ״מה אני רוצה שהצופה יבין, ובאיזה סדר?״.</p></div>
+
+<h3>מתי סיפור, ומתי דשבורד</h3>
+<div class="tw"><table class="m14-tbl">
+<tr><th></th><th>דשבורד</th><th>סיפור</th></tr>
+<tr><td>מי מנהל את הקריאה</td><td>הצופה: מסנן, לוחץ, בודק</td><td>אתם: הצופה מתקדם צעד אחר צעד</td></tr>
+<tr><td>איזו שאלה</td><td>הרבה שאלות, שלא ידועות מראש</td><td>שאלה אחת, שהתשובה לה ידועה לכם</td></tr>
+<tr><td>הכיתוב</td><td>כותרת וכמה הסברים קצרים</td><td>משפט לכל נקודה, שאומר מה לראות</td></tr>
+<tr><td>מתאים ל</td><td>מעקב שוטף, ניתוח חופשי</td><td>הצגה למנהלים, תיק עבודות, הסבר של ממצא</td></tr>
+<tr><td>מה קשה</td><td>להעמיס יותר מדי</td><td>לבחור מה לא להכניס</td></tr>
+</table></div>
+
+<div class="box think" data-id="m14-th-when"><p>שלוש בקשות: (א) מנהל הסניף בדרום רוצה לבדוק כל בוקר את המכירות של אתמול. (ב) המנהל הכללי רוצה לספר לדירקטוריון מה קרה ב-2025. (ג) אתם מכינים פריט בתיק העבודות שלכם. מה מתאים לכל אחת: דשבורד או סיפור?</p>
+<div class="ans">(א) דשבורד: הוא חוזר אליו כל יום, בודק דברים שונים, ולכן צריך מסננים והתעדכנות. (ב) סיפור: המסר ידוע, והדירקטורים צריכים לקבל אותו בסדר. (ג) לרוב שניהם: סיפור קצר שפותח את הפריט, ודשבורד שאפשר לשחק איתו. בתיק עבודות מעניין לראות גם שאתם יודעים לבנות כלי וגם שאתם יודעים להסביר ממצא.</div></div>
+
+<div class="box note"><p><b>מה סיפור לא יודע לעשות.</b> לפי התיעוד של Tableau, יש דברים שלא נתמכים בסיפור: אזורים בדשבורד שמופיעים ונעלמים לפי ערך (<code>Dynamic Zone Visibility</code>), כותרות וטווחי צירים שמשתנים דינמית, ופעולות מסוג <code>Set Action</code>. אם הדשבורד שלכם מתבסס על אחד מהם, הוא לא יעבוד כמו שצריך בתוך סיפור. סיפורים כן מתפרסמים ל-Tableau Public, והצופה יכול לעבור בהם בין הנקודות.</p></div>
+
+<div class="box trap"><p><b>״סיפור הוא דשבורד גדול יותר.״</b> ממלאים כל נקודה בשלושה גרפים וחמש הערות, וכל נקודה הופכת לדשבורד בפני עצמו. הצופה לא יודע איפה להסתכל. הכלל: נקודה אחת, מסר אחד. אם יש לכם שני מסרים, אלה שתי נקודות. Tableau עצמה ממליצה להימנע ממספר גדול של נקודות ולהסיר כיתובים ומקראות שאינם נחוצים.</p></div>
+<div class="box trap"><p><b>כל גיליון הופך לנקודה.</b> בניתם עשרה גיליונות, ולכן הסיפור בן עשר נקודות. אבל סיפור הוא לא ארכיון. בוחרים רק מה שמקדם את המסר, והשאר נשאר בדשבורד או בחוברת.</p></div>
+
+<div class="box real"><p>Tableau כותבת בהנחיות שלה לסיפורים: לקבוע קודם מטרה ואת הדרך שהקורא יעבור, לשרטט על נייר לפני שבונים, ולפתוח במסקנה כשהקהל עסוק. אלה אותם כללים שעובדים בכתבה בעיתון: הכותרת קודם, הפרטים אחר כך.</p></div>
+
+<div class="quiz" data-id="m14-q-story" data-a="2"><p class="qq">מהי נקודת סיפור (<code>Story Point</code>)?</p>
+<button class="opt">גיליון עבודה שהפך לדשבורד</button>
+<button class="opt">שלב אחד בסיפור: גיליון או דשבורד, עם כיתוב משלו</button>
+<button class="opt">נקודה על המפה שהצופה לוחץ עליה</button>
+<div class="why">התשובה השנייה. כל נקודה היא מסך אחד בסיפור: גיליון או דשבורד יחד עם כיתוב. הצופה עובר ביניהן בניווט. המפה והדשבורד הם סוגי גיליון אחרים.</div></div>
+
+<div class="quiz" data-id="m14-q-dashstory" data-a="3"><p class="qq">מי מכתיב את סדר הקריאה בסיפור, ומי בדשבורד?</p>
+<button class="opt">בשניהם הצופה מכתיב את הסדר</button>
+<button class="opt">בסיפור הצופה, ובדשבורד המחבר</button>
+<button class="opt">בסיפור המחבר, ובדשבורד הצופה</button>
+<div class="why">התשובה השלישית. בסיפור אתם קובעים את הסדר והצופה מתקדם. בדשבורד הצופה מסנן ולוחץ איפה שהוא רוצה.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> אפשר לפתוח בשאלה לכיתה: ״מי היה מעדיף לקבל דשבורד, ומי סיפור?״ ולבקש נימוק. להזכיר שהסיפור שבהנפשה הוא זה שנבנה בסעיף 3. לבדוק בתוכנה לפני השיעור: האם ב-Tableau Public Desktop אצלכם נקרא הפריט <code>Story &gt; New Story</code> או שיש רק לשונית New Story בתחתית המסך, וגם אם הניווט נקרא Navigator בשורת הנקודות.</div>
+</section>
+<section class="sec" id="m14-2" data-t="מבנה הסיפור">
+<div class="sec-h"><div class="sec-n">2</div><h2>איך מסדרים סיפור: סדר, כיתובים ויושר</h2></div>
+<p class="lead">יש לכם גרפים טובים ועדיין אין סיפור. סיפור נבנה מהסדר: מה הצופה רואה קודם, מה אחר כך, ומה כתוב מתחת לכל גרף. נעבור על שלוש החלטות: מה הסדר, איך כותבים כיתוב, ומה לא מכניסים.</p>
+
+<div class="defline"><b>קשת הסיפור:</b> סדר שבו לכל נקודה יש תפקיד אחד: פותחים במסקנה, מראים איפה הבעיה, מתמקדים בה, ומסיימים בהמלצה. דוגמה: בסיפור של Scoop &amp; Go מתחילים ב״המכירות עלו״, ומסיימים ב״מוציאים את הקינוחים מההנחה״.</div>
+
+<p>הנה התפקידים, לפי הסיפור שתבנו בסעיף הבא:</p>
+<div class="tw"><table class="m14-tbl">
+<tr><th>נקודה</th><th>התפקיד שלה</th><th>ב-Scoop &amp; Go</th></tr>
+<tr><td>1. פתיחה</td><td>המסקנה בשורה אחת, והקשר מינימלי</td><td>2025 עלתה ב-21.2%, והקיץ נושא אותה</td></tr>
+<tr><td>2. בעיה</td><td>איפה זה לא עובד</td><td>באר שבע ירד, ושאר הסניפים עלו</td></tr>
+<tr><td>3. התמקדות</td><td>מקרבים את הבעיה, בלי להמציא סיבה</td><td>באר שבע לבדו: מ-11,108.80 ל-7,688.40</td></tr>
+<tr><td>4. ממצא שני</td><td>עוד דבר שדורש תשומת לב</td><td>ההנחה של 50% מפסידה</td></tr>
+<tr><td>5. המלצה</td><td>מה עושים עכשיו</td><td>להוציא את הקינוחים מההנחה</td></tr>
+</table></div>
+
+<div class="anim" data-id="m14-anim-arc" data-speed="3800">
+<div class="stage"><svg viewBox="0 0 800 320" role="img" aria-label="הנפשה: קשת הסיפור. הקו עולה מהפתיחה אל הבעיה והממצא השני, ויורד אל ההמלצה">
+<defs><marker id="m14a2-ar" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#64748b"/></marker></defs>
+<line x1="60" y1="250" x2="760" y2="250" stroke="#94a3b8" stroke-width="2" marker-end="url(#m14a2-ar)"/>
+<line x1="60" y1="250" x2="60" y2="30" stroke="#94a3b8" stroke-width="2" marker-end="url(#m14a2-ar)"/>
+<text x="68" y="40" font-size="14" fill="#64748b" text-anchor="start">דחיפות</text>
+<text x="752" y="272" font-size="14" fill="#64748b" text-anchor="end">הסדר בסיפור</text>
+<polyline data-s="1" points="130,200 130,200" fill="none" stroke="#4e79a7" stroke-width="4"/>
+<polyline data-s="2" points="130,200 280,150" fill="none" stroke="#4e79a7" stroke-width="4"/>
+<polyline data-s="3" points="280,150 430,100" fill="none" stroke="#4e79a7" stroke-width="4"/>
+<polyline data-s="4" points="430,100 580,70" fill="none" stroke="#4e79a7" stroke-width="4"/>
+<polyline data-s="5" points="580,70 730,200" fill="none" stroke="#16a34a" stroke-width="4"/>
+<g stroke="#fff" stroke-width="3">
+<circle data-s="1" cx="130" cy="200" r="13" fill="#4e79a7"/><circle data-s="2" cx="280" cy="150" r="13" fill="#4e79a7"/><circle data-s="3" cx="430" cy="100" r="13" fill="#4e79a7"/><circle data-s="4" cx="580" cy="70" r="13" fill="#dc2626"/><circle data-s="5" cx="730" cy="200" r="13" fill="#16a34a"/>
+</g>
+<g font-size="15" font-weight="700" fill="#334155" text-anchor="middle">
+<text data-s="1" x="130" y="228">1 פתיחה</text><text data-s="2" x="280" y="178">2 בעיה</text><text data-s="3" x="430" y="128">3 התמקדות</text><text data-s="4" x="580" y="98">4 ממצא שני</text><text data-s="5" x="730" y="228">5 המלצה</text>
+</g>
+<g data-only="1"><circle cx="130" cy="200" r="20" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="2"><circle cx="280" cy="150" r="20" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="3"><circle cx="430" cy="100" r="20" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="4"><circle cx="580" cy="70" r="20" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="5"><circle cx="730" cy="200" r="20" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g font-size="17" font-weight="700" fill="#1e293b" text-anchor="middle">
+<text data-only="1" x="420" y="302">המסקנה באה ראשונה: מי שעוצר כאן כבר יודע</text>
+<text data-only="2" x="420" y="302">הצופה מגלה שיש משהו שדורש טיפול</text>
+<text data-only="3" x="420" y="302">מקרבים: הצופה רואה בדיוק איפה ומתי</text>
+<text data-only="4" x="420" y="302">הלחץ מגיע לשיא: עוד ממצא, ועוד כסף שנעלם</text>
+<text data-only="5" x="420" y="302">המתח יורד: יש מה לעשות, ואפשר להחליט</text>
+</g>
+</svg></div>
+<ol class="caps">
+<li>פתיחה. הצופה מקבל את המסקנה בשורה אחת. אם הוא עוצר כאן, הוא כבר יודע את העיקר.</li>
+<li>בעיה. הצופה רואה שלא הכול טוב, ושיש משהו לבדוק.</li>
+<li>התמקדות. אותו גיליון, מקרוב: איזה סניף ומתי. זו הנקודה שהכיתוב בה זהיר במיוחד.</li>
+<li>ממצא שני. עוד דבר מהנתונים, כדי שההמלצה תהיה מבוססת על יותר מדבר אחד.</li>
+<li>המלצה. הסיפור נגמר במה עושים. בלי זה, הצופה יודע מה קרה ולא מה לעשות.</li>
+</ol></div>
+
+<h3>הכיתוב: משפט, לא שם של גרף</h3>
+<p>הכיתוב (<code>caption</code>) הוא המשפט שמופיע מעל הגרף בנקודה. הוא הדבר הראשון שהצופה קורא. כיתוב טוב אומר מה לראות, כולל מספר. כיתוב חלש אומר רק איזה גרף זה.</p>
+<div class="tw"><table class="m14-tbl">
+<tr><th>כיתוב חלש (שם הגרף)</th><th>כיתוב חזק (המסקנה)</th></tr>
+<tr><td>מכירות לפי חודש</td><td>יולי ואוגוסט הם <span class="n">34.7%</span> ממכירות 2025</td></tr>
+<tr><td>מכירות לפי סניף ושנה</td><td>באר שבע ירד ב-<span class="n">30.8%</span>, ושאר הסניפים שפעלו בשתי השנים עלו</td></tr>
+<tr><td>רווח לפי רמת הנחה</td><td>הנחה של 50% מפסידה <span class="n">378.00</span> על <span class="n">292</span> שורות מכירה</td></tr>
+</table></div>
+<div class="box meaning"><p><b>בדיקת הקריאה:</b> קראו רק את חמשת הכיתובים, בלי הגרפים. אם הסיפור מובן, הסדר נכון. אם חסר חלק, חסרה נקודה. אם שני כיתובים אומרים אותו דבר, אחת הנקודות מיותרת.</p></div>
+
+<div class="box trap"><p><b>כותרת שנכונה ומטעה.</b> ״המכירות עלו ב-21.2%״ נכון: <span class="n">107,047.60</span> ב-2024 ו-<span class="n">129,773.30</span> ב-2025. אבל <span class="n">15,229.70</span> מתוך 2025 הגיעו משני סניפים שנפתחו באותה שנה (Rehovot Mall ו-Ashdod Beach Pop-up). שבעת הסניפים שפעלו בשתי השנים עלו מ-<span class="n">107,047.60</span> ל-<span class="n">114,543.60</span>, כלומר ב-7.0%. צופה שרואה רק את 21.2% חושב שהסניפים הקיימים צמחו בערך פי שלושה ממה שקרה להם בפועל. <b>מה עושים:</b> כותבים את שני המספרים, או מוסיפים משפט שמסביר את ההבדל.</p></div>
+
+<div class="box trap"><p><b>״הנתונים מסבירים למה.״</b> באר שבע ירד, ורואים בגרף שהירידה התרכזה מיוני 2025 עד סוף השנה. אבל הקובץ לא יודע אם הסיבה היא סניף חדש בסביבה, שיפוץ, או עובד שעזב. הוא מראה איפה ומתי, לא למה. <b>מה עושים:</b> בכיתוב כותבים מה רואים. סיבה כותבים רק אם יש לה ראיה, ואחרת מציינים שהיא לא ידועה.</p></div>
+
+<h3>הסדרה בעצמכם: בונה סיפורים</h3>
+<p>לפניכם תשעה קלפים. שישה מהם שייכים לסיפור של Scoop &amp; Go, ושלושה לא. המספרים בקלפים מחושבים עכשיו מהקובץ עצמו. בחרו קלפים, סדרו אותם, ולחצו ״בדיקה״. הבדיקה בודקת את הכללים של הסעיף: מסקנה פותחת, בעיה לפני התמקדות בה, ממצא לפני המלצה, והמלצה בסוף.</p>
+
+<div class="sim" data-id="m14-sim-story"><div class="sh">בונה סיפורים: סדרו את הנקודות</div>
+<div class="m14-sbk"><div><h5>קלפים זמינים</h5><div class="m14-pool"></div></div><div><h5>הסיפור שלכם (לפי הסדר)</h5><div class="m14-mine"></div></div></div>
+<div class="row"><button type="button" class="btn m14-chk">בדיקה</button><button type="button" class="btn sec2 m14-rst">איפוס</button><span class="m14-sc"></span></div>
+<div class="m14-fbl"></div><div class="m14-story-read" hidden></div></div>
+<script>(function(){ FL.dom(function(){
+var box = FL.$('[data-id="m14-sim-story"]'); if (!box) return;
+var pool = FL.$('.m14-pool', box), mine = FL.$('.m14-mine', box), fbl = FL.$('.m14-fbl', box), rd = FL.$('.m14-story-read', box), sc = FL.$('.m14-sc', box);
+pool.innerHTML = '<i>טוען נתונים...</i>';
+TF.loadScoop(function(D){
+  var C = D.cols, dt = C.Order_Date.v, brv = C.Branch.v, brd = C.Branch.dict, sv = C.Sales.v, pv = C.Profit.v, dv = C.Discount.v, cv = C.Category.v, cd = C.Category.dict;
+  var by = {}, y24 = 0, y25 = 0, ja = 0, n50 = 0, p50 = 0, sund = 0, bs = {a: 0, b: 0};
+  for (var i = 0; i < D.n; i++) {
+    var y = dt[i].substr(0, 4), b = brd[brv[i]], m = dt[i].substr(5, 2);
+    by[b] = by[b] || {a: 0, b: 0};
+    if (y === '2024') { y24 += sv[i]; by[b].a += sv[i]; } else { y25 += sv[i]; by[b].b += sv[i]; if (m === '07' || m === '08') ja += sv[i]; }
+    if (dv[i] === 0.5) { n50++; p50 += pv[i]; if (cd[cv[i]] === 'Sundaes') sund += pv[i]; }
+  }
+  var newSum = 0, l24 = 0, l25 = 0;
+  Object.keys(by).forEach(function(k){ if (by[k].a === 0) newSum += by[k].b; else { l24 += by[k].a; l25 += by[k].b; } });
+  bs = by['Beer Sheva Grand Mall'];
+  function L(t){ return '\u2066' + t + '\u2069'; }
+  function f(x){ return L(x.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})); }
+  function pc(a, b){ return ((b / a - 1) * 100).toFixed(1); }
+  function pp(a, b){ return L(Math.abs(pc(a, b)).toFixed(1) + '%'); }
+  var N = D.n.toLocaleString('en-US');
+  var K = [
+   {id:'A', role:'open', kind:'דשבורד: עמודות לפי שנה וקו לפי חודש', cap:'המכירות עלו ב-' + pp(y24, y25) + ', מ-' + f(y24) + ' ל-' + f(y25) + '. שני סניפים חדשים הוסיפו ' + f(newSum) + ' מהסכום.'},
+   {id:'B', role:'season', kind:'קו: מכירות לפי חודש', cap:'הקיץ נושא את השנה: יולי ואוגוסט הם ' + L((ja / y25 * 100).toFixed(1) + '%') + ' ממכירות 2025.'},
+   {id:'C', role:'problem', kind:'עמודות: מכירות לפי סניף ושנה', cap:'שבעת הסניפים שפעלו בשתי השנים עלו ב-' + pp(l24, l25) + ', אבל באר שבע ירד ב-' + pp(bs.a, bs.b) + '.'},
+   {id:'D', role:'focus', kind:'עמודות: סניף באר שבע בלבד, לפי שנה', cap:'באר שבע: ' + f(bs.a) + ' ב-2024 ו-' + f(bs.b) + ' ב-2025. הנתונים מראים איפה ירד, לא למה.'},
+   {id:'E', role:'problem2', kind:'עמודות: רווח לפי רמת הנחה', cap:'הנחה של 50% מפסידה: ' + L(String(n50)) + ' שורות מכירה, רווח של ' + f(p50) + '.'},
+   {id:'F', role:'reco', kind:'עמודות: רווח לפי קטגוריה, רק הנחה של 50%', cap:'ההפסד כולו במנות קינוח (' + f(sund) + '). ממליצים להוציא אותן מההנחה של 50%.'},
+   {id:'X', role:'junk', kind:'טבלה', cap:'טבלה עם כל ' + L(N) + ' שורות ההזמנה.'},
+   {id:'Y', role:'junk', kind:'עוגה', cap:'עוגה של 15 המנות לפי חלקן במכירות.'},
+   {id:'Z', role:'junk', kind:'עמודות: מכירות לפי ערוץ', cap:'פילוח לפי ערוץ (Walk-in, App, Delivery): נכון, אבל לא קשור למסר של הסיפור.'}
+  ];
+  var order = ['X','C','Z','F','A','Y','E','D','B'];
+  var byId = {}; K.forEach(function(k){ byId[k.id] = k; });
+  var story = [], checked = false;
+  function render(){
+    pool.innerHTML = order.filter(function(id){ return story.indexOf(id) < 0; }).map(function(id){
+      var k = byId[id]; return '<div class="card"><div class="r">' + FL.esc(k.kind) + '</div>' + FL.esc(k.cap) + '<div class="ctl"><button type="button" data-add="' + id + '">הוסף לסיפור</button></div></div>';
+    }).join('') || '<i>כל הקלפים בסיפור</i>';
+    mine.innerHTML = story.map(function(id, i){
+      var k = byId[id]; return '<div class="card"><div class="r">נקודה ' + (i + 1) + ' · ' + FL.esc(k.kind) + '</div>' + FL.esc(k.cap) + '<div class="ctl"><button type="button" data-up="' + i + '">למעלה</button><button type="button" data-dn="' + i + '">למטה</button><button type="button" data-rm="' + id + '">הסר</button></div></div>';
+    }).join('') || '<i>עוד לא בחרתם קלפים</i>';
+    sc.textContent = 'בסיפור: ' + story.length + ' נקודות';
+  }
+  box.addEventListener('click', function(e){
+    var t = e.target.closest('button'); if (!t) return;
+    if (t.dataset.add) { story.push(t.dataset.add); render(); }
+    else if (t.dataset.rm) { story.splice(story.indexOf(t.dataset.rm), 1); render(); }
+    else if (t.dataset.up) { var i = +t.dataset.up; if (i > 0) { var x = story[i]; story[i] = story[i - 1]; story[i - 1] = x; render(); } }
+    else if (t.dataset.dn) { var j = +t.dataset.dn; if (j < story.length - 1) { var y = story[j]; story[j] = story[j + 1]; story[j + 1] = y; render(); } }
+    else if (t.classList.contains('m14-rst')) { story = []; fbl.innerHTML = ''; rd.hidden = true; render(); }
+    else if (t.classList.contains('m14-chk')) check();
+  });
+  function idx(id){ return story.indexOf(id); }
+  function check(){
+    var res = [], n = story.length;
+    function add(ok, okTxt, noTxt){ res.push([ok, ok ? okTxt : noTxt]); }
+    add(n >= 4 && n <= 6, 'מספר הנקודות מתאים (' + n + ').', 'מספר הנקודות: ' + n + '. סיפור טוב הוא ארבע עד שש נקודות.');
+    var junk = story.filter(function(id){ return byId[id].role === 'junk'; });
+    add(junk.length === 0, 'אין קלפים מיותרים: כל נקודה משרתת את המסר.', 'יש קלף שלא שייך: ' + junk.map(function(id){ return byId[id].kind; }).join(', ') + '. טבלה ענקית, עוגה של 15 פרוסות ופילוח לא קשור רק מעמיסים על הצופה.');
+    add(story[0] === 'A', 'הסיפור נפתח במסקנה (קלף הדשבורד).', 'הסיפור צריך להיפתח במסקנה: הקלף עם הכותרת על השנה.');
+    add(story[n - 1] === 'F', 'הסיפור נגמר בהמלצה.', 'הסיפור צריך להיגמר בהמלצה: הקלף שאומר מה עושים.');
+    add(idx('C') >= 0 && idx('E') >= 0, 'שתי הבעיות נמצאות בסיפור.', 'חסרה אחת משתי הבעיות: הסניפים או ההנחה.');
+    add(idx('D') < 0 || (idx('C') >= 0 && idx('C') < idx('D')), 'ההתמקדות באה אחרי הבעיה שהיא מקרבת.', 'קלף ההתמקדות בבאר שבע חייב לבוא אחרי גרף הסניפים שמראה את הבעיה.');
+    add(idx('F') < 0 || (idx('E') >= 0 && idx('E') < idx('F')), 'ההמלצה באה אחרי הממצא שהיא מבוססת עליו.', 'ההמלצה על הקינוחים צריכה לבוא אחרי הגרף של הנחה של 50% שמראה את ההפסד.');
+    add(idx('B') < 0 || (idx('B') > idx('A') && (idx('C') < 0 || idx('B') < idx('C')) && (idx('E') < 0 || idx('B') < idx('E'))), 'ההקשר העונתי נמצא בפתיחה, לפני הבעיות.', 'קלף העונה הוא הקשר: מקומו אחרי הפתיחה ולפני הבעיות.');
+    var ok = res.filter(function(r){ return r[0]; }).length;
+    fbl.innerHTML = res.map(function(r){ return '<div class="' + (r[0] ? 'ok' : 'no') + '">' + (r[0] ? '✔ ' : '✘ ') + FL.esc(r[1]) + '</div>'; }).join('') + '<div><b>' + ok + ' מתוך ' + res.length + ' כללים התקיימו.</b></div>';
+    rd.hidden = !n;
+    rd.innerHTML = '<b>ככה הסיפור נשמע כשקוראים רק את הכיתובים:</b><br>' + story.map(function(id, i){ return (i + 1) + '. ' + FL.esc(byId[id].cap); }).join('<br>');
+    if (ok === res.length) FL.done('m14-sim-story');
+  }
+  render();
+});
+}); })();</script>
+
+<div class="box think" data-id="m14-th-headline"><p>המנהל אומר: ״תכתבו בכותרת רק 21.2%, זה נשמע טוב יותר.״ מה עונים, בלי להתווכח?</p>
+<div class="ans">מסכימים להוביל עם 21.2%, כי הוא נכון ומעניין. מבקשים להוסיף חצי משפט: ״מזה 15,229.70 משני סניפים חדשים, ובשאר הסניפים העלייה היא 7.0%״. מסבירים שאם מישהו יחשב לבד ויגלה, האמון בכל שאר הסיפור נפגע. הכותרת נשארת חזקה, והיא גם ישרה.</div></div>
+
+<div class="box think" data-id="m14-th-why"><p>בנקודה 3 כתוב רק מה קרה בבאר שבע. המנהל שואל: ״למה זה קרה?״ מה הייתם בודקים כדי להסביר, ומה מהם יש בקובץ?</p>
+<div class="ans">אפשר לבדוק: האם ירד מספר ההזמנות או הסכום לכל הזמנה (יש בקובץ), האם הירידה מתרכזת בקטגוריה אחת (יש בקובץ), האם נפתח סניף קרוב באותה תקופה (בקובץ רואים שמכירות ראשונות בשני סניפים חדשים מופיעות ביוני 2025, אבל אין בו מיקום מדויק ולכן אי אפשר לדעת אם הם קרובים), ומה קרה בשטח: שיפוץ, כוח אדם, מתחרה (זה לא בקובץ, שואלים את מנהל הסניף). הכיתוב נשאר זהיר עד שיש תשובה.</div></div>
+
+<div class="box real"><p>עיתונאים קוראים לזה ״הפירמידה ההפוכה״: הכי חשוב בפתיחה, והפרטים בהמשך, כדי שמי שעוצר באמצע כבר קיבל את העיקר. בסיפורי נתונים זה אותו עיקרון, ובגלל זה הנקודה הראשונה היא המסקנה ולא הגרף הכי יפה.</p></div>
+
+<div class="quiz" data-id="m14-q-caption" data-a="1"><p class="qq">איזה כיתוב מתאים יותר לנקודת סיפור?</p>
+<button class="opt">באר שבע ירד ב-30.8%, ושאר הסניפים שפעלו בשתי השנים עלו</button>
+<button class="opt">גרף עמודות של מכירות לפי סניף</button>
+<button class="opt">סניפים</button>
+<div class="why">התשובה הראשונה. כיתוב טוב אומר מה לראות, עם מספר. שתי האחרות רק מתארות את הגרף, והצופה יצטרך להסיק את המסקנה לבד.</div></div>
+
+<div class="quiz" data-id="m14-q-order" data-a="3"><p class="qq">איזה סדר נכון לסיפור על ההנחה של 50%?</p>
+<button class="opt">המלצה, ואז הגרף של ההנחה, ואז הפתיחה</button>
+<button class="opt">גרף ההנחה, ואז הפתיחה, ואז המלצה</button>
+<button class="opt">פתיחה, ואז גרף ההנחה שמראה את ההפסד, ואז המלצה</button>
+<div class="why">התשובה השלישית. מתחילים במסקנה, מראים את הראיה, ומסיימים בהמלצה. המלצה לפני הראיה לא מנומקת, וגרף בלי פתיחה לא אומר לצופה איפה הוא נמצא.</div></div>
+
+<div class="quiz" data-id="m14-q-headline" data-a="2"><p class="qq">״המכירות עלו ב-21.2%״ נכון. מה חסר כדי שהכותרת תהיה גם הוגנת?</p>
+<button class="opt">כלום, כי כל מספר נכון הוא הוגן</button>
+<button class="opt">ההסבר ששני סניפים חדשים תרמו חלק מהעלייה, ובשאר הסניפים העלייה קטנה יותר</button>
+<button class="opt">אחוז שני של הרווח, בלי קשר לסניפים</button>
+<div class="why">התשובה השנייה. נכון הוא לא תמיד הוגן: מספר שמסתיר את מקור הצמיחה עלול להטעות. כאן 15,229.70 הגיעו מסניפים חדשים, והצמיחה בשאר הסניפים היא 7.0%.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לתת לכיתה לסדר את הקלפים לפני שמראים את ההנחיות, ולבקש מכמה תלמידים להקריא את הכיתובים בקול. הנקודה החשובה: אפשר לסדר את שתי הבעיות בכל סדר, ובלבד שההתמקדות באה אחרי הבעיה והמלצה בסוף. כל המספרים בקלפים (21.2%, 7.0%, 30.8%, 34.7%, <bdi dir="ltr">292, -378.00, -747.00</bdi>) חושבו בפייתון ואומתו מול הקובץ. אין בנתונים ראיה לקשר בין פתיחת סניפים ביוני 2025 לבין הירידה באר שבע, ולכן לא מציגים קשר.</div>
+</section>
+<section class="sec" id="m14-3" data-t="בונים סיפור">
+<div class="sec-h"><div class="sec-n">3</div><h2>בונים סיפור בן חמש נקודות מ-Scoop &amp; Go</h2></div>
+<p class="lead">עכשיו בונים. חמישה גיליונות, דשבורד אחד, ומהם סיפור. בכל גיליון יש מספרי בדיקה, כדי שתדעו בדיוק שהגרף שלכם נכון לפני שמניחים אותו בסיפור.</p>
+
+<h3>מה בונים, בקצרה</h3>
+<p>כל נקודה בסיפור נשענת על גיליון. הנה התוכנית, והמספרים שאמורים להופיע בכל גיליון. המספרים חושבו מהקובץ <span class="n">scoop_sales_2024_2025.csv</span> בפייתון. Tableau עשוי להציג אותם מעוגלים (למשל <span class="n">107,048</span> במקום <span class="n">107,047.60</span>), תלוי בפורמט המספרים. הסכום המדויק מופיע בטולטיפ.</p>
+<div class="tw"><table class="m14-tbl">
+<tr><th>שם הגיליון</th><th>מה על המדפים</th><th>סימנים</th><th>מספרי בדיקה</th></tr>
+<tr><td><span class="n">1 Year</span></td><td><span class="pill d">YEAR(Order Date)</span> ב-<code>Columns</code>, <span class="pill c sum">Sales</span> ב-<code>Rows</code></td><td>2</td><td><span class="n">107,047.60</span> ו-<span class="n">129,773.30</span></td></tr>
+<tr><td><span class="n">2 Monthly</span></td><td><span class="pill c">MONTH(Order Date)</span> (רציף) ב-<code>Columns</code>, <span class="pill c sum">Sales</span> ב-<code>Rows</code></td><td>24</td><td>שיא באוגוסט 2025: <span class="n">23,259.90</span>. שפל בפברואר 2025: <span class="n">4,097.00</span></td></tr>
+<tr><td><span class="n">3 Branches</span></td><td><span class="pill d">Branch</span> ב-<code>Rows</code>, <span class="pill d">YEAR(Order Date)</span> ואז <span class="pill c sum">Sales</span> ב-<code>Columns</code></td><td>16</td><td>באר שבע: <span class="n">11,108.80</span> ב-2024, <span class="n">7,688.40</span> ב-2025</td></tr>
+<tr><td><span class="n">4 Discount</span></td><td><span class="pill d">Discount</span> (כממד) ב-<code>Columns</code>, <span class="pill c sum">Profit</span> ב-<code>Rows</code></td><td>4</td><td><span class="n">113,367.00</span>, <span class="n">6,902.60</span>, <span class="n">831.30</span>, <span class="n">-378.00</span></td></tr>
+<tr><td><span class="n">5 Sundaes</span></td><td><span class="pill d">Category</span> ב-<code>Columns</code>, <span class="pill c sum">Profit</span> ב-<code>Rows</code>, מסנן על <span class="pill d">Discount</span> = 0.5</td><td>3</td><td>Cones <span class="n">170.00</span>, Cups <span class="n">199.00</span>, Sundaes <span class="n">-747.00</span></td></tr>
+</table></div>
+
+<p>לפני שבונים בתוכנה, שני גיליונות להרגשה ב״מיני Tableau״ שבדף. זו הדמיה, לא התוכנה עצמה, אבל הצורה והמספרים אמיתיים. בנו את גרף הקווים של המכירות לפי חודש.</p>
+<div class="tfp" data-id="m14-pg-monthly" data-task="בנו גרף קווים: סכום המכירות לפי חודש, כשהחודש הוא ערך רציף (ירוק). אמורים להיות 24 סימנים." data-goal='{"columns":["MONTH(Order_Date):c"],"rows":["SUM(Sales)"],"mark":"line"}' data-hide-shelves="color,size,label,detail" data-fields="Order_Date,Branch,Category,Discount,Sales,Profit"></div>
+<p>ועכשיו רמת ההנחה. ב-Tableau הנחה היא מספר, ולכן היא מתחילה כמדד. הפכו אותה לממד (בתפריט של ה-pill בחרו <code>Dimension</code>), ושימו אותה ב-<code>Columns</code>, והרווח ב-<code>Rows</code>.</p>
+<div class="tfp" data-id="m14-pg-discount" data-task="הפכו את Discount לממד, שימו אותו ב-Columns ושימו SUM(Profit) ב-Rows. אמורות להיות 4 עמודות, והאחרונה (0.5) שלילית." data-goal='{"columns":["DIM(Discount)"],"rows":["SUM(Profit)"],"mark":"bar","marks":4}' data-hide-shelves="color,size,label,detail" data-fields="Order_Date,Branch,Category,Discount,Sales,Profit"></div>
+
+<div class="box try" data-id="m14-try-sheets">
+<p><b>תרגיל: בונים את חמשת הגיליונות</b></p>
+<p>טענו את <span class="n">scoop_sales_2024_2025.csv</span> ב-Tableau Public (אם אין לכם טעינה פתוחה, ראו <a href="module2.html">מודול 2</a>). בכל גיליון בדקו את מספרי הבדיקה מהטבלה למעלה, ושנו את שם הגיליון בלחיצה כפולה על הלשונית.</p>
+<ol>
+<li><b>גיליון <span class="n">1 Year</span>:</b> גררו את <code>Order Date</code> אל <code>Columns</code> ואת <code>Sales</code> אל <code>Rows</code>. <i>למה:</i> Tableau מציג תאריך כשנה כשגוררים אותו למדף, והמכירות מסתכמות לכל שנה.</li>
+<li><b>גיליון <span class="n">2 Monthly</span>:</b> גליון חדש. גררו <code>Order Date</code> אל <code>Columns</code>, לחצו על ה-pill שלו ובחרו את ה-<code>Month</code> השני ברשימה (זה שמציג תאריך מלא, כמו <span class="n">August 2025</span>), שנהפך לירוק. גררו <code>Sales</code> אל <code>Rows</code>. <i>למה:</i> חודש רציף נותן ציר זמן אמיתי, בלי לאחד את אותו חודש משתי השנים.</li>
+<li><b>גיליון <span class="n">3 Branches</span>:</b> גררו <code>Branch</code> אל <code>Rows</code>. גררו <code>Order Date</code> אל <code>Columns</code> (יוצג כשנה), ואז <code>Sales</code> אל <code>Columns</code>, מימין לשנה. <i>למה:</i> כל סניף מקבל שורה, ולכל שנה יש עמודה נפרדת, כך שאפשר להשוות 2024 ל-2025.</li>
+<li><b>גיליון <span class="n">4 Discount</span>:</b> בחלונית הנתונים לחצו ימנית על <code>Discount</code> ובחרו <code>Convert to Dimension</code>. גררו אותו אל <code>Columns</code> ואת <code>Profit</code> אל <code>Rows</code>. <i>למה:</i> אנחנו רוצים עמודה לכל רמת הנחה, לא סכום של אחוזי הנחה.</li>
+<li><b>גיליון <span class="n">5 Sundaes</span>:</b> גליון חדש. גררו <code>Category</code> אל <code>Columns</code> ואת <code>Profit</code> אל <code>Rows</code>. גררו את <code>Discount</code> אל <code>Filters</code> ובחרו רק <span class="n">0.5</span>. <i>למה:</i> אנחנו מסתכלים רק על המכירות עם הנחה של 50%.</li>
+<li>בגיליון 4, גררו את שדה הספירה <code>scoop_sales_2024_2025.csv (Count)</code> (בסוף רשימת המדדים; בגרסאות אחרות הוא נקרא <code>Number of Records</code>) אל <code>Label</code>. <i>למה:</i> כך רואים כמה שורות מכירה יש בכל רמת הנחה, ובודקים את המספר שבכיתוב של נקודה 4.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בגיליון 1 שני סימנים, 2024 ו-2025. בגיליון 2 עשרים וארבעה סימנים, והשיא באוגוסט 2025. בגיליון 3 שישה עשר סימנים: שבעה סניפים בשתי שנים ועוד שני סניפים שיש להם רק 2025 (Ashdod Beach Pop-up ו-Rehovot Mall). בגיליון 4 ארבעה סימנים, והאחרון (<span class="n">0.5</span>) מתחת לאפס, עם <span class="n">292</span> שורות מכירה. בגיליון 5 שלושה סימנים, ו-Sundaes הוא הסימן השלילי: <span class="n">-747.00</span>. אם המספרים אצלכם שונים, בדקו קודם איזה מסנן פעיל ואיזו שנה מוצגת.</p>
+</div>
+
+<div class="box trap"><p><b>מצפים ל-14 סימנים ורואים 16.</b> שבעה סניפים כפול שתי שנים נותנים 14, אבל יש תשעה סניפים: שניים נפתחו ב-2025, ולכל אחד מהם סימן אחד. אין כאן תקלה, וזה הפרט שכדאי לציין בכיתוב (ראו הכותרת המטעה בסעיף 2).</p></div>
+
+<h3>הדשבורד של הנקודה הראשונה</h3>
+<p>הנקודה הראשונה בסיפור היא דשבורד. אם בניתם דשבורד של Scoop &amp; Go במודול 13, אפשר להשתמש בו. אם לא, הנה דשבורד קטן שמספיק לסיפור.</p>
+<div class="box try" data-id="m14-try-dash">
+<p><b>תרגיל: דשבורד <span class="n">Overview</span> משני גיליונות</b></p>
+<ol>
+<li>בתפריט <code>Dashboard</code> בחרו <code>New Dashboard</code>. <i>למה:</i> זה המסך שבו מסדרים כמה גיליונות יחד.</li>
+<li>גררו את <span class="n">1 Year</span> אל הקנבס, ואחר כך את <span class="n">2 Monthly</span> מתחתיו. <i>למה:</i> למעלה המסקנה (שנה מול שנה), ולמטה הקיץ שנושא אותה.</li>
+<li>שנו את שם הלשונית ל-<span class="n">Overview</span>. בתפריט <code>Dashboard</code> הפעילו <code>Show Title</code>, ולחצו כפול על הכותרת כדי לכתוב <span class="n">Scoop and Go 2025</span>. <i>למה:</i> שם קצר באנגלית נכנס לכתובת הקישור ולא מתקלקל.</li>
+<li>בתחתית הלוח השמאלי, בתפריט <code>Size</code> של הדשבורד, בחרו גודל שמתאים לסיפור (אותו גודל שתבחרו לסיפור, בשלב הבא). <i>למה:</i> דשבורד בגודל שונה מהסיפור יוצג בחיתוך או עם מקום ריק.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> דשבורד אחד בשם <span class="n">Overview</span> עם שני גיליונות: עמודות של שתי שנים ומתחתיהן קו של 24 חודשים. אם יש לכם דשבורד אחר ממודול 13, הוא יכול לשמש את הנקודה הראשונה, אבל מספרי הבדיקה של הכיתוב שלה (21.2%) הם של הגיליונות האלה.</p>
+</div>
+
+<h3>הסיפור עצמו</h3>
+<p>עכשיו פותחים סיפור. הצילום והאיורים של המסך נראים כך (הדמיה סכמטית):</p>
+
+<figure class="shot" data-shot="m14-story-workspace">
+<div class="fb">
+<div class="m14-sw" aria-label="הדמיה סכמטית של סיפור ב-Tableau Public">
+ <div class="m14-sw-top"><b>Story 1 - Tableau Public</b><span class="tws-btn">New Story Point: Blank</span><span class="tws-btn">Duplicate</span><span class="tws-btn">Update</span></div>
+ <div class="m14-sw-body">
+  <div class="m14-sw-side">
+   <h6>Story</h6><div class="it">Size: 1000 x 800</div>
+   <h6>Dashboards</h6><div class="it dash">Overview</div>
+   <h6>Sheets</h6><div class="it">1 Year</div><div class="it">2 Monthly</div><div class="it">3 Branches</div><div class="it">4 Discount</div><div class="it">5 Sundaes</div>
+   <div class="cap">Add a caption</div>
+  </div>
+  <div class="m14-sw-main">
+   <div class="m14-sw-title">Scoop and Go: what happened in 2025</div>
+   <div class="m14-sw-nav"><div class="on"><b>1</b>Overview</div><div><b>2</b>Branches</div><div><b>3</b>Beer Sheva</div><div><b>4</b>Discount</div><div><b>5</b>Sundaes</div></div>
+   <div class="m14-sw-canvas"><svg viewBox="0 0 500 130" role="img" aria-label="תרשים סכמטי של דשבורד"><g fill="#4e79a7"><rect x="40" y="50" width="40" height="70"/><rect x="100" y="35" width="40" height="85"/></g><polyline points="220,110 250,105 280,90 310,60 340,30 370,25 400,70 430,100" fill="none" stroke="#4e79a7" stroke-width="3"/></svg></div>
+   <div class="m14-sw-capt">המכירות עלו ב-21.2%, והקיץ נושא את השנה</div>
+  </div>
+ </div>
+</div>
+<div class="need">צילום מסך נדרש: Tableau Public Desktop, חלון Story עם הדשבורד Overview בנקודה 1, הלוח השמאלי (Size, Dashboards, Sheets, Add a caption), חמש תיבות ניווט למעלה, והכיתוב מתחת</div>
+</div>
+<figcaption>סיפור ב-Tableau Public. למעלה הניווט עם חמש הנקודות, באמצע הגיליון או הדשבורד, מתחתיו הכיתוב. בצד שמאל רשימת הגיליונות שאפשר לגרור פנימה.</figcaption>
+</figure>
+<ol class="callouts">
+<li>הלוח השמאלי: רשימת הדשבורדים והגיליונות. גוררים משם לתוך הנקודה, וגם בוחרים את <code>Size</code> של הסיפור.</li>
+<li>הניווט: תיבה לכל נקודה, עם הכיתוב שלה. לוחצים על תיבה כדי לעבור אליה.</li>
+<li>הקנבס: הגיליון או הדשבורד של הנקודה הנוכחית.</li>
+<li>הכפתורים של נקודות חדשות: <code>Blank</code> (נקודה ריקה), <code>Duplicate</code> (העתק של הנקודה) ו-<code>Update</code> (שמירת שינוי בנקודה הנוכחית).</li>
+</ol>
+
+<div class="box try" data-id="m14-try-story">
+<p><b>תרגיל: נקודות 1 ו-2 של הסיפור</b></p>
+<ol>
+<li>בתפריט <code>Story</code> בחרו <code>New Story</code> (או לחצו על סמל הסיפור החדש בשורת הלשוניות בתחתית). <i>למה:</i> נפתח גיליון מסוג סיפור, וכל החוברת נשארת כמו שהיא.</li>
+<li>בלוח השמאלי, ליד <code>Size</code>, בחרו גודל קבוע, למשל <span class="n">1000 x 800</span> (או הקרוב לו ברשימה). <i>למה:</i> הגודל שבוחרים כאן הוא הגודל שהצופה יראה, לא הגודל של המסך שלכם.</li>
+<li>הפעילו את הכותרת של הסיפור (<code>Story &gt; Show Title</code>) וכתבו: <span class="n">Scoop and Go: what happened in 2025</span>. <i>למה:</i> כותרת קצרה שאומרת על מה הסיפור.</li>
+<li>גררו את <span class="n">Overview</span> מהלוח השמאלי אל הקנבס. <i>למה:</i> זו נקודה 1.</li>
+<li>לחצו על <code>Add a caption</code> בתיבת הניווט וכתבו: <b>המכירות עלו ב-21.2%, מ-107,047.60 ל-129,773.30. שני סניפים חדשים הוסיפו 15,229.70. הקיץ נושא את השנה.</b> <i>למה:</i> זה משפט שאומר את המסקנה, כולל ההקשר.</li>
+<li>לחצו <code>Blank</code> כדי להוסיף נקודה חדשה, וגררו אליה את <span class="n">3 Branches</span>. כיתוב: <b>שבעת הסניפים שפעלו בשתי השנים עלו ב-7.0%. באר שבע ירד ב-30.8%.</b> <i>למה:</i> בנקודה 2 רואים את הבעיה.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בניווט שתי תיבות. נקודה 1 מראה שתי עמודות של שנים וקו חודשי, נקודה 2 מראה תשעה סניפים בשתי עמודות שנה. הכיתובים: <span class="n">21.2%</span> לפתיחה, <span class="n">7.0%</span> ו-<span class="n">30.8%</span> לנקודה 2. כל מספר בכיתוב נבדק מול הגיליון.</p>
+</div>
+
+<p>נקודה 3 היא אותו גיליון הסניפים, אבל מסוננת רק לבאר שבע. את זה לא בונים בגיליון חדש. משתמשים בשני כפתורים של הסיפור: <code>Duplicate</code> ו-<code>Update</code>. הנה איך זה עובד.</p>
+
+<div class="anim" data-id="m14-anim-update" data-speed="3600">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="הנפשה: שכפול נקודה ועדכון שלה. בנקודה 2 כל הסניפים, אחרי Duplicate ושינוי המסנן נשארת בנקודה 3 רק באר שבע">
+<rect x="6" y="6" width="788" height="318" rx="12" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+<g font-size="15" font-weight="700" text-anchor="middle">
+<rect x="30" y="18" width="120" height="38" rx="8" fill="#fef3c7" stroke="#d8b862" stroke-width="2.5"/><text x="90" y="43" fill="#78350f">2 הסניפים</text>
+<g data-s="2"><rect x="170" y="18" width="120" height="38" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/><text x="230" y="43" fill="#334155">3 עותק</text></g>
+<g data-only="3,4"><rect x="168" y="16" width="124" height="42" rx="9" fill="#fef3c7" stroke="#d8b862" stroke-width="3"/><text x="230" y="43" fill="#78350f">3 באר שבע</text></g>
+</g>
+<g data-only="2"><rect x="30" y="18" width="120" height="38" rx="8" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="5 4"/><path d="M154,37 L166,37" stroke="#64748b" stroke-width="3"/></g>
+<rect x="30" y="78" width="520" height="228" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<g data-only="1,2" font-size="12" fill="#334155">
+<text x="196" y="97" text-anchor="end">Tel Aviv Dizengoff</text><rect x="204" y="86" width="320" height="12" fill="#4e79a7"/>
+<text x="196" y="115" text-anchor="end">Tel Aviv Port</text><rect x="204" y="104" width="286" height="12" fill="#4e79a7"/>
+<text x="196" y="133" text-anchor="end">Jerusalem Mamilla</text><rect x="204" y="122" width="240" height="12" fill="#4e79a7"/>
+<text x="196" y="151" text-anchor="end">Eilat Promenade</text><rect x="204" y="140" width="234" height="12" fill="#4e79a7"/>
+<text x="196" y="169" text-anchor="end">Haifa German Colony</text><rect x="204" y="158" width="200" height="12" fill="#4e79a7"/>
+<text x="196" y="187" text-anchor="end">Netanya Beach</text><rect x="204" y="176" width="196" height="12" fill="#4e79a7"/>
+<text x="196" y="205" text-anchor="end">Rehovot Mall</text><rect x="204" y="194" width="137" height="12" fill="#4e79a7"/>
+<text x="196" y="223" text-anchor="end" font-weight="800" fill="#b91c1c">Beer Sheva Grand Mall</text><rect x="204" y="212" width="106" height="12" fill="#dc2626"/>
+<text x="196" y="241" text-anchor="end">Ashdod Beach Pop-up</text><rect x="204" y="230" width="73" height="12" fill="#4e79a7"/>
+</g>
+<g data-only="3,4">
+<rect x="250" y="110" width="80" height="170" fill="#fca5a5"/><rect x="380" y="150" width="80" height="130" fill="#dc2626"/>
+<g font-size="15" fill="#334155" text-anchor="middle"><text x="290" y="102">11,108.80</text><text x="420" y="142">7,688.40</text><text x="290" y="300">2024</text><text x="420" y="300">2025</text></g>
+</g>
+<rect x="580" y="78" width="190" height="228" rx="8" fill="#fff" stroke="#cbd5e1"/>
+<text x="675" y="100" text-anchor="middle" font-size="14" font-weight="800" fill="#334155">Branch</text>
+<g font-size="12" fill="#334155">
+<g data-only="1,2"><text x="620" y="124">☑ Ashdod Beach Pop-up</text><text x="620" y="148" fill="#b91c1c" font-weight="800">☑ Beer Sheva Grand Mall</text><text x="620" y="172">☑ Eilat Promenade</text><text x="620" y="196">☑ Haifa German Colony</text><text x="620" y="220">☑ Jerusalem Mamilla</text><text x="620" y="244">☑ ...</text></g>
+<g data-only="3,4"><text x="620" y="124" fill="#94a3b8">☐ Ashdod Beach Pop-up</text><text x="620" y="148" fill="#b91c1c" font-weight="800">☑ Beer Sheva Grand Mall</text><text x="620" y="172" fill="#94a3b8">☐ Eilat Promenade</text><text x="620" y="196" fill="#94a3b8">☐ Haifa German Colony</text><text x="620" y="220" fill="#94a3b8">☐ Jerusalem Mamilla</text><text x="620" y="244" fill="#94a3b8">☐ ...</text></g>
+</g>
+<g data-s="2"><rect x="590" y="262" width="82" height="30" rx="8" fill="#e2e8f0" stroke="#94a3b8"/><text x="631" y="282" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">Duplicate</text></g>
+<g data-only="3"><rect x="684" y="262" width="76" height="30" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="3"/><text x="722" y="282" text-anchor="middle" font-size="14" font-weight="800" fill="#92400e">Update</text></g>
+<g data-only="4"><rect x="684" y="262" width="76" height="30" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/><text x="722" y="282" text-anchor="middle" font-size="14" font-weight="800" fill="#166534">נשמר ✓</text></g>
+</svg></div>
+<ol class="caps">
+<li>נקודה 2 מציגה את כל הסניפים. בצד יש כרטיס מסנן (<code>Branch</code>) שבו כל הסניפים מסומנים.</li>
+<li>לוחצים <code>Duplicate</code>. נוצרת נקודה 3, זהה לנקודה 2. עדיין אין הבדל בין השתיים.</li>
+<li>בנקודה 3 מבטלים את הסימון של כל הסניפים חוץ מבאר שבע. הגרף מתכווץ לשתי עמודות, וכפתור <code>Update</code> נדלק. השינוי עוד לא נשמר.</li>
+<li>לוחצים <code>Update</code>. המצב החדש נשמר בנקודה 3, ונקודה 2 נשארת עם כל הסניפים.</li>
+</ol></div>
+
+<div class="box try" data-id="m14-try-update">
+<p><b>תרגיל: נקודות 3, 4 ו-5 של הסיפור</b></p>
+<ol>
+<li>בגיליון <span class="n">3 Branches</span> גררו את <code>Branch</code> אל <code>Filters</code> (השאירו את כולם מסומנים), ולחצו ימנית על ה-pill של המסנן ובחרו <code>Show Filter</code>. <i>למה:</i> כך יש כרטיס מסנן שאפשר לשנות בתוך הסיפור.</li>
+<li>חזרו לסיפור, לנקודה 2, ולחצו <code>Duplicate</code>. <i>למה:</i> עותק של הנקודה הוא נקודת התחלה לנקודה 3.</li>
+<li>בנקודה החדשה בכרטיס המסנן בחרו <code>None</code> ואז סמנו רק <span class="n">Beer Sheva Grand Mall</span>. לחצו <code>Update</code>. <i>למה:</i> בלי Update השינוי לא נשמר בנקודה.</li>
+<li>כיתוב לנקודה 3: <b>באר שבע: 11,108.80 ב-2024 ו-7,688.40 ב-2025, ירידה של 3,420.40. הנתונים מראים איפה ירד, לא למה.</b></li>
+<li><code>Blank</code>, וגררו את <span class="n">4 Discount</span>. כיתוב: <b>הנחה של 50% מפסידה 378.00 על 292 שורות מכירה.</b></li>
+<li><code>Blank</code>, וגררו את <span class="n">5 Sundaes</span>. כיתוב: <b>ההפסד כולו במנות קינוח: -747.00. ממליצים להוציא אותן מההנחה של 50%.</b></li>
+<li>לחצו על כל חמש התיבות בניווט, אחת אחת, וקראו את הכיתובים. <i>למה:</i> זו בדיקת הקריאה מהסעיף הקודם.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> חמש תיבות בניווט. נקודה 3 מציגה שני סימנים בלבד: <span class="n">11,108.80</span> ו-<span class="n">7,688.40</span>, והפרש של <span class="n">3,420.40</span>. נקודה 2 עדיין מציגה את כל הסניפים. נקודה 4 מציגה ארבע עמודות, ומעל <span class="n">0.5</span> אפשר לראות <span class="n">292</span> אם הוספתם תווית. נקודה 5: Cones <span class="n">170.00</span>, Cups <span class="n">199.00</span>, Sundaes <span class="n">-747.00</span>.</p>
+</div>
+
+<div class="box note"><p><b>אם כרטיס המסנן מפריע לכם.</b> הכרטיס יופיע גם בנקודה 2, כי הוא חלק מהגיליון. חלופה: בנו גיליון נפרד בשם <span class="n">3b Beer Sheva</span> עם מסנן על הסניף (בלי להציג כרטיס), והניחו אותו בנקודה 3 במקום להשתמש ב-<code>Update</code>. התוצאה דומה, והיתרון הוא שאין כרטיס על המסך. החיסרון: צריך עוד גיליון לתחזוקה.</p></div>
+
+<div class="box meaning"><p><b>למה Duplicate ולא גיליון חדש?</b> כשמשכפלים נקודה, הגיליון נשאר אחד, ורק המצב שלו (המסנן, המיון, הבחירה) שונה בין הנקודות. אם תתקנו אחר כך את הגיליון עצמו, למשל צבע או כותרת, התיקון יופיע בכל נקודה שמשתמשת בו. לפי התיעוד, נקודות נשארות מקושרות לגיליון המקורי.</p></div>
+
+<h3>גימור: ניווט, כותרת והצגה</h3>
+<ul>
+<li><b>סגנון הניווט.</b> אפשר להציג את הניווט כתיבות עם כיתוב, כמספרים או כנקודות, ולהוסיף חיצים. מחפשים את זה בלשונית <code>Layout</code> בלוח השמאלי, או ב-<code>Format &gt; Story</code>. בגרסה שלכם השמות עשויים להיות מעט שונים.</li>
+<li><b>עיצוב הכיתובים.</b> כיתוב קצר מתחת לגרף עדיף על פסקה. אם הכיתוב נחתך, הגדילו את תיבת הכיתוב או קצרו אותו.</li>
+<li><b>מצב הצגה.</b> ב-Desktop יש <code>Presentation Mode</code> שמסתיר את הכלים ומראה רק את הסיפור, לשימוש כשמציגים בכיתה או בפגישה.</li>
+<li><b>דשבורד בתוך סיפור.</b> אם הדשבורד נחתך בנקודה 1, חזרו אליו וודאו שהגודל שלו מתאים לגודל הסיפור.</li>
+</ul>
+
+<div class="box trap"><p><b>שינוי בלי Update.</b> שיניתם מסנן בנקודה 3, עברתם לנקודה אחרת וחזרתם, והמסנן חזר לקדמותו. הסיבה: שינוי במצב של נקודה לא נשמר עד שלוחצים <code>Update</code>. <b>מה עושים:</b> אחרי כל שינוי, מחפשים את הכפתור <code>Update</code> ולוחצים עליו, ואחר כך עוברים נקודה.</p></div>
+<div class="box trap"><p><b>גודל הסיפור לא תואם את הצופה.</b> בניתם את הסיפור על מסך גדול, והוא נפתח אצל הצופה קטן או חתוך. הגודל שבוחרים ב-<code>Size</code> הוא הגודל שהצופה יראה, ולכן בוחרים גודל קבוע סביר ובודקים אותו בקישור המפורסם, לא רק במחשב שלכם.</p></div>
+<div class="box trap"><p><b>כיתוב שהוא פסקה.</b> בנקודה יש מקום לשורה או שתיים. כיתוב ארוך נחתך, ובעיקר: אף אחד לא קורא אותו. אם צריך להסביר הרבה, מוסיפים נקודה או מעבירים את ההסבר לפתק מקור בסוף (סעיף 10).</p></div>
+
+<div class="box real"><p>אנליסטים מציגים סיפורים לפני הנהלה בצורה הזאת: מצב הצגה על מסך אחד, ונקודה אחרי נקודה. אבל הרבה פעמים מי שמחליט מקבל גם את הקישור לגרסה המקוונת, כדי לבדוק בעצמו אחר כך. בגלל זה הכיתובים חייבים להבין גם בלי מישהו שמסביר.</p></div>
+
+<div class="box note"><p><b>סיפור בעורך שבדפדפן (web authoring).</b> לא ידוע לנו בוודאות שהעורך שבאתר Tableau Public (<code>Create</code>) תומך ביצירת סיפור, ובדף של התיעוד על ההבדלים בין העורך לבין Desktop אין התייחסות ל-Public. בדקו אצלכם אם יש לשונית סיפור חדש. אם אין, אפשר לבנות את הסיפור ב-Desktop ולפרסם משם. אפשרות נוספת, שבה לא צריך סיפור כלל: לפרסם חמישה דשבורדים או גיליונות, ולהטמיע אותם בדף אחד לפי הסדר, כל אחד עם כותרת משלו (בסעיף 8 נלמד להטמיע).</p></div>
+
+<div class="box think" data-id="m14-th-update"><p>שיניתם את הצבע בגיליון <span class="n">3 Branches</span>. בנקודה 2 השינוי נראה, אבל בנקודה 3 לא. מה הכי סביר שקרה, ומה בודקים?</p>
+<div class="ans">הכי סביר שהנקודה 3 לא הייתה מקושרת כמו שחשבתם: אולי יצרתם אותה כנקודה ריקה עם גיליון אחר (למשל <span class="n">3b Beer Sheva</span>), ולכן שינוי בגיליון <span class="n">3 Branches</span> לא נוגע בה. בודקים איזה גיליון מוצג בנקודה 3, ומתקנים אותו. כלל: כשהשינוי הוא בעיצוב הגיליון, מתקנים בגיליון עצמו. כשהשינוי הוא במצב של נקודה, מתקנים בנקודה ולוחצים <code>Update</code>.</div></div>
+
+<div class="quiz" data-id="m14-q-update" data-a="2"><p class="qq">שיניתם מסנן בתוך נקודה של סיפור. מה צריך לעשות כדי שהשינוי יישמר בנקודה?</p>
+<button class="opt">לשמור את החוברת עם Ctrl+S</button>
+<button class="opt">ללחוץ על <code>Update</code> בסיפור</button>
+<button class="opt">ליצור גיליון חדש</button>
+<div class="why">התשובה השנייה. <code>Update</code> שומר את המצב הנוכחי (מסנן, מיון, בחירה) בנקודה. שמירת החוברת שומרת את הקובץ, אבל לא את השינוי בנקודה שלא עודכנה. גיליון חדש הוא חלופה, לא חובה.</div></div>
+
+<div class="quiz" data-id="m14-q-points" data-a="1"><p class="qq">בגיליון 3 יש שישה עשר סימנים. מדוע לא ארבעה עשר (שבעה סניפים כפול שנתיים)?</p>
+<button class="opt">כי שני סניפים נפתחו ב-2025 ויש להם סימן אחד בלבד</button>
+<button class="opt">כי Tableau מחסיר סימנים כשהם קטנים</button>
+<button class="opt">כי הנתונים של שני סניפים נמחקו מהקובץ</button>
+<div class="why">התשובה הראשונה. יש תשעה סניפים: שבעה פעלו בשתי השנים (14 סימנים) ושניים רק ב-2025 (2 סימנים), ביחד 16. כך גם רואים שהצמיחה של 21.2% כוללת סניפים חדשים.</div></div>
+
+<div class="quiz" data-id="m14-q-dup" data-a="3"><p class="qq">מה ההבדל בין <code>Blank</code> לבין <code>Duplicate</code> בהוספת נקודה לסיפור?</p>
+<button class="opt">אין הבדל, שניהם יוצרים נקודה ריקה</button>
+<button class="opt">Blank יוצר עותק, ו-Duplicate יוצר נקודה ריקה</button>
+<button class="opt">Blank פותח נקודה ריקה לגרור אליה גיליון, ו-Duplicate מעתיק את הנקודה הנוכחית</button>
+<div class="why">התשובה השלישית. Blank מתחיל מאפס, ו-Duplicate מתחיל מהנקודה שכבר בנויה, שימושי כשרוצים אותו גיליון במצב אחר.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> זה הסעיף המעשי הארוך. כדאי לעצור אחרי הגיליונות ולבקש מכל תלמיד לכתוב בצ׳אט את מספר הסימנים של גיליון 3 (16) ואת הערך של Sundaes (-747.00). לבדוק בתוכנה לפני השיעור: (1) הפריט <code>Story &gt; New Story</code> והתיבה <code>Add a caption</code>, (2) הכפתורים Blank, Duplicate ו-Update ב-Public (לפי התיעוד הרשמי הם קיימים בכל Desktop), (3) שהכרטיס של <code>Branch</code> נשאר מוצג בנקודה 2 וש-Update שומר רק את נקודה 3, (4) איך נקרא תפריט הגודל של דשבורד שנכנס לסיפור. אם הכרטיס מפריע, להשתמש בגיליון 3b. אין ראיה בנתונים לסיבת הירידה בבאר שבע, ולכן הכיתוב אומר רק איפה.</div>
+</section>
+<section class="sec" id="m14-4" data-t="הכנה לפרסום">
+<div class="sec-h"><div class="sec-n">4</div><h2>מכינים את החוברת לפרסום</h2></div>
+<p class="lead">הסיפור עובד על המחשב שלכם. לפני שלוחצים על פרסום, עוברים על החוברת כמו זר שפותח אותה בפעם הראשונה: מה הוא יראה, ומה הוא יוכל להוריד. בסעיף הזה שלושה דברים: ניקוי, ביקורת נתונים ורשימת בדיקה.</p>
+
+<div class="defline"><b>חוברת (<code>Workbook</code>):</b> הקובץ ש-Tableau שומר, עם כל הגיליונות, הדשבורדים והסיפורים. כשמפרסמים ל-Tableau Public, מצורף אליו גם עותק של הנתונים (<code>extract</code>). דוגמה: החוברת של Scoop &amp; Go כוללת חמישה גיליונות, דשבורד וסיפור, ובתוכה עותק של כל 6,575 השורות.</div>
+
+<p>הנקודה החשובה: הנתונים עולים לאתר כולם, לא רק מה שמצויר. הנה מה קורה לקובץ של Scoop &amp; Go. שימו לב לשלב 3: כל העמודות עולות, גם אלה שלא בשימוש.</p>
+
+<div class="anim" data-id="m14-anim-extract" data-speed="3800">
+<div class="stage"><svg viewBox="0 0 800 340" role="img" aria-label="הנפשה: הקובץ של Scoop and Go עם 16 עמודות. הסיפור משתמש בשש מהן, אבל כל ה-16 עולות לאתר, גם עמודה מוסתרת, ורק מחיקה מהמקור מוציאה עמודה">
+<defs><marker id="m14a4-ar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#64748b"/></marker></defs>
+<text x="20" y="26" font-size="15" font-weight="700" fill="#334155" text-anchor="start">scoop_sales_2024_2025.csv: 6,575 שורות</text>
+<g font-size="11" font-weight="700" text-anchor="middle" fill="#334155">
+<g fill="#e2e8f0" stroke="#94a3b8">
+<rect x="20" y="40" width="64" height="34" rx="4"/><rect x="88" y="40" width="64" height="34" rx="4"/><rect x="156" y="40" width="64" height="34" rx="4"/><rect x="224" y="40" width="64" height="34" rx="4"/><rect x="292" y="40" width="64" height="34" rx="4"/><rect x="360" y="40" width="64" height="34" rx="4"/><rect x="428" y="40" width="64" height="34" rx="4"/><rect x="496" y="40" width="64" height="34" rx="4"/>
+<rect x="20" y="80" width="64" height="34" rx="4"/><rect x="88" y="80" width="64" height="34" rx="4"/><rect x="156" y="80" width="64" height="34" rx="4"/><rect x="224" y="80" width="64" height="34" rx="4"/><rect x="292" y="80" width="64" height="34" rx="4"/><rect x="360" y="80" width="64" height="34" rx="4"/><rect x="428" y="80" width="64" height="34" rx="4"/><rect x="496" y="80" width="64" height="34" rx="4"/>
+</g>
+<text x="52" y="61">Order_ID</text><text x="120" y="61">Order_Date</text><text x="188" y="61">Order_Hour</text><text x="256" y="61">Branch_Code</text><text x="324" y="61">Branch</text><text x="392" y="61">City</text><text x="460" y="61">Region</text><text x="528" y="61">Channel</text>
+<text x="52" y="101">Category</text><text x="120" y="101">Item</text><text x="188" y="101">Quantity</text><text x="256" y="101">Unit_Price</text><text x="324" y="101">Discount</text><text x="392" y="101">Sales</text><text x="460" y="101">Cost</text><text x="528" y="101">Profit</text>
+</g>
+<g data-only="2,3,4,5" fill="#bfdbfe" stroke="#1f77b4" stroke-width="2">
+<rect x="88" y="40" width="64" height="34" rx="4"/><rect x="292" y="40" width="64" height="34" rx="4"/><rect x="20" y="80" width="64" height="34" rx="4"/><rect x="292" y="80" width="64" height="34" rx="4"/><rect x="360" y="80" width="64" height="34" rx="4"/><rect x="496" y="80" width="64" height="34" rx="4"/>
+</g>
+<g data-only="2,3,4,5" font-size="11" font-weight="800" text-anchor="middle" fill="#14507a">
+<text x="120" y="61">Order_Date</text><text x="324" y="61">Branch</text><text x="52" y="101">Category</text><text x="324" y="101">Discount</text><text x="392" y="101">Sales</text><text x="528" y="101">Profit</text>
+</g>
+<g data-only="2" font-size="15" font-weight="700" fill="#14507a" text-anchor="middle"><text x="290" y="150">הסיפור משתמש בשש עמודות בלבד</text></g>
+<g data-only="4"><rect x="428" y="80" width="64" height="34" rx="4" fill="#fde68a" stroke="#d97706" stroke-width="3"/><text x="460" y="101" font-size="11" font-weight="800" text-anchor="middle" fill="#92400e">Cost</text><text x="460" y="138" font-size="14" font-weight="800" text-anchor="middle" fill="#92400e">Hide בגיליון</text></g>
+<g data-only="5"><rect x="428" y="80" width="64" height="34" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="3" stroke-dasharray="5 4"/><line x1="428" y1="114" x2="492" y2="80" stroke="#dc2626" stroke-width="3"/><text x="460" y="138" font-size="14" font-weight="800" text-anchor="middle" fill="#b91c1c">נמחקה מהקובץ</text></g>
+<g data-s="3"><path d="M566,78 L610,78" stroke="#64748b" stroke-width="3" marker-end="url(#m14a4-ar)"/></g>
+<g data-s="3"><path d="M630,150 C610,120 660,100 690,108 C720,70 770,90 772,128 C790,150 770,172 748,172 L650,172 C634,172 628,162 630,150 z" fill="#eff6ff" stroke="#1f77b4" stroke-width="2.5"/><text x="700" y="136" font-size="14" font-weight="800" text-anchor="middle" fill="#14507a">Tableau Public</text><text x="700" y="156" font-size="12" text-anchor="middle" fill="#14507a">עותק (extract)</text></g>
+<g data-only="3,4"><text x="700" y="198" font-size="22" font-weight="800" text-anchor="middle" fill="#b91c1c">16 עמודות</text><text x="700" y="220" font-size="13" text-anchor="middle" fill="#475569">כולן עולות, גם הלא בשימוש</text></g>
+<g data-only="5"><text x="700" y="198" font-size="22" font-weight="800" text-anchor="middle" fill="#047857">15 עמודות</text><text x="700" y="220" font-size="13" text-anchor="middle" fill="#475569">Cost לא עלתה</text></g>
+<g data-only="4"><text x="700" y="244" font-size="13" font-weight="700" text-anchor="middle" fill="#b91c1c">Cost עדיין שם</text></g>
+<g data-s="3" font-size="15" font-weight="700" fill="#334155"><text x="20" y="214" text-anchor="start">מה שעולה: החוברת וגם הנתונים</text></g>
+<g data-only="4" font-size="15" font-weight="700" fill="#92400e"><text x="20" y="250" text-anchor="start">הסתרה בגיליון לא מוחקת. מי שמוריד את הקובץ רואה את Cost.</text></g>
+<g data-only="5" font-size="15" font-weight="700" fill="#047857"><text x="20" y="250" text-anchor="start">מוחקים בקובץ המקור, ואז טוענים מחדש.</text></g>
+<g data-only="1" font-size="15" font-weight="700" fill="#334155"><text x="20" y="214" text-anchor="start">שש עשרה עמודות, כל אחת מ-6,575 שורות</text></g>
+</svg></div>
+<ol class="caps">
+<li>הקובץ של Scoop &amp; Go: שש עשרה עמודות ו-6,575 שורות.</li>
+<li>הסיפור משתמש רק בשש עמודות: תאריך, סניף, קטגוריה, הנחה, מכירות ורווח.</li>
+<li>אבל בפרסום עולה עותק של הקובץ כולו. כל שש עשרה העמודות נמצאות באתר, גם אלה שאף גרף לא משתמש בהן.</li>
+<li>הסתרה בגיליון לא עוזרת. העמודה Cost מוסתרת בגרף, אבל עדיין בנתונים שמורידים.</li>
+<li>מה כן עוזר: למחוק את העמודה מקובץ המקור לפני הטעינה. אז היא לא עולה לאתר בכלל.</li>
+</ol></div>
+
+<div class="box meaning"><p>הקובץ ש-Tableau Public מקבל הוא מה שכולם יכולים לקבל. הגרף הוא רק החלון. כשמחליטים מה לפרסם, מחליטים על הנתונים ולא על הגרף.</p></div>
+
+<h3>ניקוי: מה מסדרים בחוברת עצמה</h3>
+<ul>
+<li><b>שמות.</b> לגיליונות, לדשבורד ולסיפור יש שמות קצרים וברורים. שם החוברת ושם הגיליון הנפתח הם חלק מכתובת הקישור, ולכן באנגלית ובלי שמות כמו <span class="n">Sheet 7</span>.</li>
+<li><b>גיליונות מיותרים.</b> גיליונות ניסוי נמחקים (קליק ימני על הלשונית, <code>Delete</code>). גיליונות שבשימוש בדשבורד או בסיפור אפשר להסתיר (<code>Hide Sheet</code>) כדי שהלשוניות יהיו נקיות. הסתרה היא סדר, לא הגנה.</li>
+<li><b>שדות מחושבים.</b> שדות מחושבים של ניסוי, שאין להם שימוש, מוחקים (קליק ימני על השדה, <code>Delete</code>).</li>
+<li><b>מקור ותאריך.</b> בדשבורד מוסיפים שורת מקור: מאיפה הנתונים, עד איזה תאריך, ושהם בדויים אם כך הם.</li>
+<li><b>גודל.</b> לדשבורד ולסיפור גודל קבוע סביר, ובדיקה כמו צופה, אחרי הפרסום.</li>
+<li><b>עותק מקומי.</b> לפני פרסום שומרים גם עותק מקומי (<code>File &gt; Save As...</code>), שהוא הגיבוי שלכם.</li>
+</ul>
+
+<div class="box try" data-id="m14-try-clean">
+<p><b>תרגיל: ניקוי החוברת של Scoop &amp; Go</b></p>
+<ol>
+<li>עברו על הלשוניות בתחתית. מחקו גיליונות ניסוי שאינם חמשת הגיליונות, <span class="n">Overview</span> והסיפור (קליק ימני על הלשונית, <code>Delete</code>). <i>למה:</i> גיליון בשם <span class="n">Sheet 9</span> עם גרף חצי גמור לא אמור להגיע לאתר.</li>
+<li>הסתירו את חמשת הגיליונות (<span class="n">1 Year</span> עד <span class="n">5 Sundaes</span>): קליק ימני על כל לשונית, <code>Hide Sheet</code>. בדקו שהדשבורד והסיפור עדיין מציגים הכול. <i>למה:</i> הגיליונות נשארים בשימוש, אבל הלשוניות נקיות.</li>
+<li>בחלונית הנתונים חפשו שדות מחושבים שלא משמשים אף גיליון ומחקו אותם. <i>למה:</i> שדה ניסוי הוא רעש, ולפעמים גם מכיל נוסחה שלא רציתם להראות.</li>
+<li>בדשבורד <span class="n">Overview</span> גררו אובייקט <code>Text</code> לתחתית וכתבו: <b>מקור: Scoop &amp; Go, רשת גלידריות בדויה. נתוני מכירות מ-1.1.2024 עד 31.12.2025.</b> <i>למה:</i> הצופה צריך לדעת מה הוא רואה ועד מתי.</li>
+<li>בתפריט <code>File</code> בחרו <code>Save As...</code> ושמרו עותק מקומי בשם <span class="n">scoop-story.twbx</span>. <i>למה:</i> זה הגיבוי אם הפרסום נכשל.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בשורת הלשוניות נשארות שתיים: <span class="n">Overview</span> והסיפור. חמשת הגיליונות מוסתרים אבל הסיפור מציג את כל הנקודות כמו קודם. בתחתית הדשבורד שורת מקור. על הדיסק קובץ <span class="n">scoop-story.twbx</span>. אם לשונית נעלמה והסיפור נשבר, בטלו (<code>Ctrl+Z</code>) והסתירו רק גיליונות שבשימוש.</p>
+</div>
+
+<div class="box trap"><p><b>״הסתרתי את הגיליון, אז אף אחד לא יראה אותו.״</b> לפי התיעוד של Tableau, הסתרת גיליונות איננה אמצעי אבטחה: מי שיכול להוריד את החוברת, פותח אותה ורואה גם גיליונות מוסתרים. ב-Tableau Public ההורדה פתוחה כברירת מחדל. הכלל: מה שאסור שיראו, לא מכניסים לחוברת.</p></div>
+<div class="box trap"><p><b>גיליונות ניסוי בדרך החוצה.</b> חוברות שפורסמו בלי ניקוי מכילות גיליונות כמו <span class="n">Sheet 1 (2)</span> וגרפים שבורים. מי שפותח את החוברת רואה אותם, ומי שבוחן תיק עבודות שם לב.</p></div>
+
+<h3>ביקורת נתונים: עמודה אחרי עמודה</h3>
+<div class="defline"><b>ביקורת נתונים:</b> מעבר על כל עמודה בקובץ שמעלים, ולכל עמודה החלטה אחת: להשאיר, למחוק מהמקור, או לצמצם (לקבץ). דוגמה: בקובץ שיש בו תאריך לידה מלא, מצמצמים אותו לטווח גילאים. בקובץ שיש בו שם, מוחקים אותו.</div>
+<p>שלוש הפעולות:</p>
+<div class="tw"><table class="m14-tbl">
+<tr><th>החלטה</th><th>מתי</th><th>דוגמה</th></tr>
+<tr><td>להשאיר</td><td>העמודה לא מזהה אדם ולא חושפת סוד</td><td><span class="n">Branch</span>, <span class="n">Sales</span> של Scoop &amp; Go</td></tr>
+<tr><td>למחוק מהמקור</td><td>העמודה מזהה אדם או שהיא טקסט חופשי</td><td>שם, טלפון, אימייל, ת״ז, הערות</td></tr>
+<tr><td>לצמצם</td><td>העמודה שימושית, אבל בפירוט שלה היא מזהה</td><td>תאריך לידה לטווח גילאים, כתובת לעיר, שעה מדויקת ליום</td></tr>
+</table></div>
+<p>ושתי נקודות שקל לפספס:</p>
+<ul>
+<li><b>קבוצות קטנות מזהות.</b> טבלה שיש בה קבוצה של שני אנשים (למשל גיל, מחלקה ומין) עלולה לחשוף אותם. מקובל למזג קבוצות קטנות עם אחרות, ובדרך כלל מחפשים לא פחות מחמישה אנשים בקבוצה. זו הנחיה מקובלת, לא כלל של Tableau.</li>
+<li><b>מוחקים בקובץ, לא ב-Tableau.</b> ההסתרה של שדה בחלונית הנתונים נוחה לסדר, אבל לא מובטח שהיא מוציאה את השדה מהעותק שעולה ל-Tableau Public. בדקו אם זה עובד אצלכם, ובינתיים מוחקים את העמודה בקובץ המקור לפני הטעינה.</li>
+</ul>
+
+<div class="sim" data-id="m14-sim-audit"><div class="sh">ביקורת נתונים: שלושה קבצים</div>
+<p>לכל עמודה בחרו: להשאיר, למחוק מהמקור, או לצמצם. ההסבר מופיע מיד. הקובץ הראשון הוא הקובץ של הקורס. שני האחרים הם דוגמאות להמחשה, לא קבצים אמיתיים.</p>
+<div class="row m14-pick m14-tabs"></div>
+<div class="m14-intro" style="margin:6px 0;font-weight:700"></div>
+<div class="tw"><table class="m14-aud-t"><thead><tr><th>עמודה</th><th>מה בה</th><th>ההחלטה שלכם</th></tr></thead><tbody class="m14-body"></tbody></table></div>
+<div class="out m14-sum"></div></div>
+<script>(function(){ FL.dom(function(){
+var box = FL.$('[data-id="m14-sim-audit"]'); if (!box) return;
+var OPT = {keep: 'להשאיר', drop: 'למחוק מהמקור', gen: 'לצמצם או לקבץ'};
+var F = [
+ {n: 'scoop_sales_2024_2025.csv', intro: 'קובץ המכירות של Scoop & Go: רשת בדויה, בלי אנשים אמיתיים.', cols: [
+  ['Order_ID', 'מספר הזמנה, כמו SG-00001', 'keep', 'מספר סידורי של הזמנה בדויה. אין בו אדם. בעסק אמיתי, מספר שמתחבר לשם לקוח במערכת אחרת היה דורש בדיקה.'],
+  ['Order_Date', 'תאריך ההזמנה', 'keep', 'תאריך של הזמנה בדויה, בלי קשר לאדם.'],
+  ['Branch', 'שם הסניף', 'keep', 'סניף בדוי. שמות סניפים הם מידע עסקי רגיל, ובקורס הם בדויים.'],
+  ['Channel', 'Walk-in, App או Delivery', 'keep', 'קטגוריה כללית, בלי זיהוי.'],
+  ['Cost', 'עלות הפריט', 'keep', 'בקורס הנתון בדוי, ולכן אפשר. בעסק אמיתי עלות ורווח הם נתונים סודיים של החברה, ו-Public Edition אסורה לשימוש מסחרי.'],
+  ['Profit', 'רווח השורה', 'keep', 'גם הוא בדוי. בעסק אמיתי הוא היה חלק מנתוני החברה, ולא מפרסמים אותו.']
+ ]},
+ {n: 'loyalty_club_export.csv', intro: 'דוגמה להמחשה: ייצוא ממועדון הלקוחות של רשת גלידריות אמיתית.', cols: [
+  ['member_name', 'שם מלא של החבר', 'drop', 'שם מזהה אדם. מוחקים בקובץ המקור, לפני הטעינה.'],
+  ['phone', 'מספר טלפון', 'drop', 'פרט אישי שמזהה. אף פעם לא מפרסמים.'],
+  ['email', 'כתובת מייל', 'drop', 'מזהה, וגם מאפשר לפנות לאדם. מוחקים.'],
+  ['birth_date', 'תאריך לידה מלא', 'gen', 'תאריך לידה מלא מזהה. אם צריך גיל לניתוח, מצמצמים לטווח גילאים.'],
+  ['home_address', 'כתובת מגורים', 'gen', 'כתובת מדויקת מזהה. אם צריך אזור, משאירים רק עיר או אזור.'],
+  ['member_id', 'מספר חבר שמחבר למערכת הקופה', 'drop', 'מספר פנימי שמתחבר לעוד טבלאות עם פרטים. מוחקים, כי אפשר לשחזר ממנו זהות.'],
+  ['visits_2025', 'מספר ביקורים בשנה', 'keep', 'מספר כללי, אחרי שהעמודות שמזהות הוסרו. כדאי לאחד לקבוצות אם יש מעט חברים.'],
+  ['member_note', 'הערות חופשיות של הצוות', 'drop', 'טקסט חופשי עלול להכיל שמות ופרטים. מוחקים.']
+ ]},
+ {n: 'student_survey.csv', intro: 'דוגמה להמחשה: שאלון שנמסר לסטודנטים בקורס.', cols: [
+  ['student_id', 'מספר זהות של הסטודנט', 'drop', 'מזהה אישי. מוחקים.'],
+  ['email', 'מייל', 'drop', 'מזהה. בגללו גם שאלון ״אנונימי״ הוא לא אנונימי. מוחקים.'],
+  ['grade', 'הציון בקורס', 'drop', 'ציונים הם מידע אישי רגיש. לא מפרסמים ברמת שורה.'],
+  ['department', 'מחלקה', 'gen', 'מחלקה קטנה עם שני סטודנטים חושפת אותם. ממזגים מחלקות קטנות לקבוצה אחת.'],
+  ['gender', 'מגדר', 'gen', 'בקבוצות קטנות, בשילוב עם מחלקה, עלול לזהות. מפרסמים רק תוצאות מקובצות.'],
+  ['year_of_study', 'שנה בתואר', 'keep', 'קטגוריה כללית עם הרבה אנשים בכל קבוצה.'],
+  ['submit_time', 'שעת המילוי בדיוק', 'gen', 'שעה מדויקת עלולה לזהות מי מילא מתי. מצמצמים ליום או לשבוע.'],
+  ['free_comment', 'תשובה חופשית', 'drop', 'טקסט חופשי עלול להכיל שמות ופרטים מזהים. מוחקים.']
+ ]}
+];
+var state = F.map(function(f){ return f.cols.map(function(){ return null; }); });
+var cur = 0;
+var tabs = FL.$('.m14-tabs', box), body = FL.$('.m14-body', box), intro = FL.$('.m14-intro', box), sum = FL.$('.m14-sum', box);
+function renderTabs(){
+  tabs.innerHTML = F.map(function(f, i){
+    var d = state[i].filter(function(x){ return x !== null; }).length;
+    return '<button type="button" data-t="' + i + '" class="' + (i === cur ? 'sel' : '') + '">' + FL.esc(f.n) + ' (' + d + '/' + f.cols.length + ')</button>';
+  }).join('');
+}
+function render(){
+  renderTabs(); var f = F[cur]; intro.textContent = f.intro;
+  body.innerHTML = f.cols.map(function(c, j){
+    var a = state[cur][j]; var cls = a === null ? '' : (a === c[2] ? 'done good' : 'done bad');
+    var btns = ['keep', 'drop', 'gen'].map(function(k){ return '<button type="button" class="m14-bt' + (a === k ? (k === c[2] ? ' ok' : ' no') : '') + '" data-j="' + j + '" data-k="' + k + '">' + OPT[k] + '</button>'; }).join(' ');
+    var fb = a === null ? '' : '<div class="fb">' + (a === c[2] ? 'נכון. ' : 'לא בדיוק: הנכון הוא ״' + OPT[c[2]] + '״. ') + FL.esc(c[3]) + '</div>';
+    return '<tr class="' + cls + '"><td class="col">' + FL.esc(c[0]) + '</td><td>' + FL.esc(c[1]) + '</td><td>' + btns + fb + '</td></tr>';
+  }).join('');
+  var tot = 0, ok = 0, all = 0;
+  F.forEach(function(ff, i){ ff.cols.forEach(function(c, j){ all++; if (state[i][j] !== null) { tot++; if (state[i][j] === c[2]) ok++; } }); });
+  sum.innerHTML = 'ענו על ' + tot + ' מתוך ' + all + ' עמודות, נכון: ' + ok + '.' + (tot === all ? ' <b>סיימתם. המסקנה: קובץ הקורס אפשר לפרסם כמו שהוא. את שני האחרים צריך לנקות לפני שמחברים ל-Tableau, ואחרי הניקוי עדיף להעלות רק טבלה מקובצת.</b>' : '');
+  if (tot === all) FL.done('m14-sim-audit');
+}
+box.addEventListener('click', function(e){
+  var t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.t !== undefined) { cur = +t.dataset.t; render(); return; }
+  if (t.dataset.j !== undefined) { var j = +t.dataset.j; if (state[cur][j] === null) { state[cur][j] = t.dataset.k; render(); } }
+});
+render();
+}); })();</script>
+
+<div class="box try" data-id="m14-try-audit">
+<p><b>תרגיל: ביקורת נתונים על הקובץ של Scoop &amp; Go</b></p>
+<ol>
+<li>פתחו את <span class="n">scoop_sales_2024_2025.csv</span> בעורך טקסט או באקסל, ורשמו את שמות העמודות. <i>למה:</i> זה מה שיעלה לאתר, כל העמודות, לא רק אלה שבגרפים.</li>
+<li>לכל עמודה כתבו: להשאיר, למחוק או לצמצם, ובשורה אחת למה. <i>למה:</i> כך מתרגלים את ההחלטה שתצטרכו לקבל בכל פרסום.</li>
+<li>ב-Tableau, בדף <code>Data Source</code>, לחצו על <code>View Data</code> (או בדקו בקובץ) וודאו שכל שורה היא הזמנה בדויה, בלי שם, טלפון או אימייל. <i>למה:</i> בודקים את הנתונים עצמם, לא רק את הכותרות.</li>
+<li>בדקו את טווח התאריכים של <code>Order Date</code> (העמודה הראשונה והאחרונה אחרי מיון). <i>למה:</i> התאריך האחרון הוא ה״נתונים עד״ שמופיע בשורת המקור.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שש עשרה עמודות ו-<span class="n">6,575</span> שורות, מהזמנה <span class="n">2024-01-01</span> עד <span class="n">2025-12-31</span>. אין בקובץ שם, טלפון, אימייל או ת״ז, ולכן כל העמודות ״להשאיר״. הסיבה היחידה שמותר להשאיר גם את <span class="n">Cost</span> ו-<span class="n">Profit</span> היא שהנתונים בדויים. אם הרשת הייתה אמיתית, הנתונים האלה היו סודיים.</p>
+</div>
+
+<div class="box real"><p>כשארגונים מפרסמים נתונים לציבור, הם כמעט תמיד מפרסמים טבלה מקובצת ולא רשימת אנשים: למשל מספר הלקוחות לפי עיר וחודש, ולא שורה לכל לקוח. רשויות סטטיסטיות מטשטשות או ממזגות תאים קטנים מאותה סיבה. הקבוצות הקטנות הן מקור הסיכון.</p></div>
+
+<div class="box trap"><p><b>״הנתונים אנונימיים כי אין שם.״</b> שילוב של שנת לידה, עיר, מחלקה ויום מילוי יכול לזהות אדם יחיד, גם בלי שם ובלי תעודת זהות. מי שמכיר את האדם מזהה אותו מהצירוף. <b>מה עושים:</b> מצמצמים כל פרט מזהה, ובודקים שאין קבוצה קטנה מדי.</p></div>
+
+<div class="sim" data-id="m14-sim-preflight"><div class="sh">רשימת בדיקה לפני הלחיצה על Save to Tableau Public</div>
+<p>סמנו כל פריט שבדקתם בחוברת שלכם. כשהכול מסומן, אפשר לפרסם.</p>
+<div class="m14-ck"></div><div class="out m14-pfb"></div></div>
+<script>(function(){ FL.dom(function(){
+var box = FL.$('[data-id="m14-sim-preflight"]'); if (!box) return;
+var L = [
+ ['הנתונים: עברתי על כל עמודה בקובץ המקור, ואין בו שם, טלפון, אימייל, ת״ז, ציונים או נתוני מעסיק.', 'זה הפריט החשוב ביותר, כי כל הנתונים עולים לאתר.'],
+ ['הנתונים שלי בדויים, פתוחים לציבור או שיש לי רשות להציג אותם. ידוע לי שהם יהיו ניתנים להורדה.', 'ברירת המחדל ב-Tableau Public היא שכל אחד מוריד את החוברת עם הנתונים.'],
+ ['שמות: לחוברת, לגיליונות, לדשבורד ולסיפור יש שמות קצרים וברורים, בלי Sheet 7.', 'השמות הם חלק מהקישור וגם מה שהצופה רואה.'],
+ ['גיליונות ניסוי נמחקו, ושדות מחושבים מיותרים נמחקו.', 'מה שנשאר בחוברת יישאר שם לעיני כל מי שמוריד אותה.'],
+ ['הכיתובים והכותרות אומרים מה לראות, ואין מספר בכותרת שמטעה.', 'הצופה קורא כיתוב לפני שהוא קורא גרף.'],
+ ['יש שורת מקור: מאיפה הנתונים, עד איזה תאריך, ושהם בדויים אם כך הם.', 'בלי תאריך ובלי מקור, המספר לא אומר כלום.'],
+ ['הגודל של הדשבורד ושל הסיפור קבוע וסביר.', 'הצופה לא רואה את המסך שלכם.'],
+ ['שמרתי עותק מקומי (File, Save As) לפני הפרסום.', 'אם הפרסום נכשל או שהאתר בתחזוקה, העבודה שלכם שמורה.']
+];
+var ck = FL.$('.m14-ck', box), out = FL.$('.m14-pfb', box);
+ck.innerHTML = L.map(function(x, i){ return '<label><input type="checkbox" data-i="' + i + '"><span><b>' + FL.esc(x[0]) + '</b><br><small>' + FL.esc(x[1]) + '</small></span></label>'; }).join('');
+function upd(){
+  var n = 0; FL.$$('input', ck).forEach(function(c){ c.parentNode.classList.toggle('on', c.checked); if (c.checked) n++; });
+  out.innerHTML = n === L.length ? '<b>הכול מסומן.</b> עכשיו אפשר לפרסם, ובסוף לפתוח את הקישור בחלון פרטי ולבדוק כמו זר.' : 'סימנתם ' + n + ' מתוך ' + L.length + '. עוד לא מפרסמים.';
+  if (n === L.length) FL.done('m14-sim-preflight');
+}
+ck.addEventListener('change', upd); upd();
+}); })();</script>
+
+<div class="box think" data-id="m14-th-small"><p>טבלה מקובצת של מועדון לקוחות מציגה כמה חברים יש בכל סניף, לפי קבוצת גיל ומין. בסניף אחד, בקבוצה אחת, יש שני חברים. מה הבעיה, ומה עושים?</p>
+<div class="ans">הבעיה: בקבוצה כל כך קטנה, מי שמכיר את החברים (או שיכול לנחש) מזהה אותם, ואז הוא גם יודע דברים נוספים שמופיעים בטבלה. מה עושים: ממזגים את הקבוצה הקטנה עם קבוצה סמוכה (למשל שני טווחי גיל), או מציגים רק קבוצות מעל סף שקבעתם, ושמים הערה שקבוצות קטנות מוזגו. אל תסתפקו בהסתרה בגרף: הנתונים עצמם עולים לאתר.</div></div>
+
+<div class="quiz" data-id="m14-q-hidecol" data-a="3"><p class="qq">בקובץ יש עמודת Cost שאתם לא רוצים שיראו. הסתרתם אותה בחלונית הנתונים ולא שמתם אותה באף גרף. מה נכון?</p>
+<button class="opt">העמודה לא עולה לאתר, כי היא מוסתרת</button>
+<button class="opt">העמודה עולה, אבל רק מי שנכנס לפרופיל שלכם רואה אותה</button>
+<button class="opt">אי אפשר לסמוך על ההסתרה: הדרך הבטוחה היא למחוק את העמודה מקובץ המקור לפני הטעינה</button>
+<div class="why">התשובה השלישית. ההסתרה היא כלי סדר, ולא מובטח שהיא מוציאה את העמודה מהעותק שמועלה. כל מה שבחוברת ובנתונים ניתן להורדה, ולכן מוחקים בקובץ המקור.</div></div>
+
+<div class="quiz" data-id="m14-q-names" data-a="1"><p class="qq">למה כדאי לתת לחוברת ולגיליון הראשון שמות קצרים באנגלית?</p>
+<button class="opt">כי הם חלק מכתובת הקישור, והם מה שהצופה רואה</button>
+<button class="opt">כי Tableau Public לא מקבלת שמות בעברית בשום מקום</button>
+<button class="opt">כי שמות באנגלית משפרים את הנתונים</button>
+<div class="why">התשובה הראשונה. השמות נכנסים לכתובת. עברית בתוך הוויז עצמו עובדת היטב, אבל לגבי שמות גיליונות בעברית בכתובת לא בדקנו, ולכן בטוח יותר באנגלית.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> לבקש מכל תלמיד לספר מה היה הפריט שהכי קל לפספס ברשימה (בדרך כלל: עמודות שלא בגרף). המשחק מבוסס על שני קבצים דמיוניים. אין להשתמש בנתונים אמיתיים של תלמידים. לבדוק בתוכנה לפני השיעור: האם <code>Hide Sheet</code> זמין לגיליון שנמצא בסיפור (לפי הדף הרשמי Manage Sheets in Dashboards and Stories כן), והאם הסתרת שדה בחלונית הנתונים מוציאה אותו מה-extract שמתפרסם ב-Public (לא מתועד, ולכן מלמדים למחוק במקור). את הספירה ל-5 בקבוצה קטנה להציג כהנחיה מקובלת בלבד.</div>
+</section>
+<section class="sec" id="m14-5" data-t="שמירה ופרסום">
+<div class="sec-h"><div class="sec-n">5</div><h2>שומרים ומפרסמים ל-Tableau Public</h2></div>
+<p class="lead">פרסום הוא כמה לחיצות והחלטה אחת: מעכשיו זה ציבורי. את ההחלטה כבר קיבלתם בסעיף הקודם. עכשיו נראה איפה לוחצים, מה קורה ברקע, ואיך מעדכנים אחר כך.</p>
+
+<p>נתחיל בתפריט. בתיעוד הרשמי של Tableau כתוב שפרסום ל-Tableau Public נעשה דרך <code>Server &gt; Tableau Public &gt; Save to Tableau Public</code>. זה התפריט של גרסת Professional. בצילום של Public Edition ב-Mac רואים משהו אחר: הפריטים נמצאים ישר בתפריט <code>File</code>.</p>
+<figure class="shot" style="max-width:340px;margin-inline:auto"><img src="img/file-menu.png" alt="תפריט File ב-Tableau Public עם הפריטים Save, Save to Tableau Public, Save As, Save to Tableau Public As, Export Packaged Workbook, Open from Tableau Public ו-Manage My Profile"><figcaption>תפריט <code>File</code> ב-Tableau Public Edition (Mac). שימו לב לשני פריטים עם Tableau Public בשם, ולפריטים <code>Open from Tableau Public...</code> ו-<code>Manage My Profile...</code>. ב-Windows התפריט דומה.</figcaption></figure>
+<div class="box note"><p><b>איזה תפריט נכון?</b> זה שאתם רואים. התיעוד והצילום לא מתאימים זה לזה, כנראה כי התיעוד מתאר גרסה אחרת. לכן מחפשים לפי שם הפריט: <code>Save to Tableau Public</code>. הוא יופיע ב-<code>File</code>, ואם לא, בדקו אם יש לכם תפריט <code>Server</code>. בגרסה שלכם ייתכן שהשם שונה מעט.</p></div>
+
+<div class="tw"><table class="m14-tbl">
+<tr><th>הפריט</th><th>מה הוא עושה</th></tr>
+<tr><td><code>Save</code>, <code>Save As...</code></td><td>שומר במחשב שלכם. פרטי, בלי חשבון.</td></tr>
+<tr><td><code>Save to Tableau Public...</code></td><td>שולח לאתר. לפי מדריכים מקובלים הוא מעדכן חוברת שכבר פורסמה (בדקו מה כתוב בחלון).</td></tr>
+<tr><td><code>Save to Tableau Public As...</code></td><td>שולח לאתר בשם שתבחרו. הפרסום הראשון נעשה בדרך כלל כאן.</td></tr>
+<tr><td><code>Export Packaged Workbook...</code></td><td>קובץ <span class="n">twbx</span> שכולל גם את הנתונים. לשליחה לחבר, לא לפרסום.</td></tr>
+<tr><td><code>Open from Tableau Public...</code></td><td>פותח חוברת שפרסמתם. שימושי אם הקובץ המקומי אבד (בדקו שזה עובד אצלכם).</td></tr>
+</table></div>
+
+<div class="anim" data-id="m14-anim-publish" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 330" role="img" aria-label="הנפשה: שש תחנות של פרסום. תפריט File, התחברות, שם לחוברת, העלאה, דף הוויז באתר, וקישור לשיתוף">
+<defs><marker id="m14a5-ar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#64748b"/></marker></defs>
+<g stroke="#64748b" stroke-width="3" fill="none">
+<path d="M130,115 L142,115" marker-end="url(#m14a5-ar)"/><path d="M264,115 L276,115" marker-end="url(#m14a5-ar)"/><path d="M398,115 L410,115" marker-end="url(#m14a5-ar)"/><path d="M532,115 L544,115" marker-end="url(#m14a5-ar)"/><path d="M666,115 L678,115" marker-end="url(#m14a5-ar)"/>
+</g>
+<g font-weight="700" text-anchor="middle">
+<rect x="10" y="62" width="118" height="106" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="69" y="92" font-size="16" fill="#3730a3">1 תפריט</text><text x="69" y="116" font-size="13" fill="#4f46e5" font-family="ui-monospace,Menlo,monospace">File</text><text x="69" y="136" font-size="11" fill="#4f46e5" font-family="ui-monospace,Menlo,monospace">Save to Tableau</text><text x="69" y="152" font-size="11" fill="#4f46e5" font-family="ui-monospace,Menlo,monospace">Public As...</text>
+<rect x="144" y="62" width="118" height="106" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="203" y="92" font-size="16" fill="#3730a3">2 התחברות</text><text x="203" y="122" font-size="13" fill="#4f46e5">חשבון</text><text x="203" y="142" font-size="13" fill="#4f46e5">Tableau Public</text>
+<rect x="278" y="62" width="118" height="106" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="337" y="92" font-size="16" fill="#3730a3">3 שם</text><text x="337" y="122" font-size="12" fill="#4f46e5">Scoop and Go</text><text x="337" y="140" font-size="12" fill="#4f46e5">2025 story</text><text x="337" y="158" font-size="12" fill="#4f46e5">Save</text>
+<rect x="412" y="62" width="118" height="106" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="471" y="92" font-size="16" fill="#065f46">4 העלאה</text><text x="471" y="122" font-size="13" fill="#065f46">חוברת</text><text x="471" y="142" font-size="13" fill="#065f46">+ עותק נתונים</text>
+<rect x="546" y="62" width="118" height="106" rx="12" fill="#eff6ff" stroke="#1f77b4" stroke-width="2.5"/><text x="605" y="92" font-size="16" fill="#14507a">5 דף הוויז</text><text x="605" y="122" font-size="12" fill="#14507a">נפתח בדפדפן</text><text x="605" y="142" font-size="11" fill="#14507a" font-family="ui-monospace,Menlo,monospace">public.tableau.com</text>
+<rect x="680" y="62" width="112" height="106" rx="12" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/><text x="736" y="92" font-size="16" fill="#854d0e">6 קישור</text><text x="736" y="122" font-size="13" fill="#854d0e">Share</text><text x="736" y="142" font-size="13" fill="#854d0e">שדה Link</text>
+</g>
+<g data-only="1"><rect x="8" y="60" width="122" height="110" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="2"><rect x="142" y="60" width="122" height="110" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="3"><rect x="276" y="60" width="122" height="110" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="4"><rect x="410" y="60" width="122" height="110" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="5"><rect x="544" y="60" width="122" height="110" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="6"><rect x="678" y="60" width="116" height="110" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<circle r="10" cx="69" cy="196" fill="#d8b862" stroke="#92400e" stroke-width="2" data-move="1:0,0|2:134,0|3:268,0|4:402,0|5:536,0|6:667,0"/>
+<g font-size="17" font-weight="700" fill="#1e293b" text-anchor="middle">
+<text data-only="1" x="400" y="262">בוחרים את הפריט ששולח לאתר, לא את Save הרגיל</text>
+<text data-only="2" x="400" y="262">אם צריך, מתחברים. הפרסום הולך אל הפרופיל שלכם</text>
+<text data-only="3" x="400" y="262">שם ברור וייחודי. הוא חלק מהקישור ומהחיפוש</text>
+<text data-only="4" x="400" y="262">עולים החוברת ועותק של הנתונים (extract)</text>
+<text data-only="5" x="400" y="262">הדפדפן נפתח על הוויז, כמו שכל אחד יראה אותו</text>
+<text data-only="6" x="400" y="262">מעתיקים את שדה Link מחלון Share ושולחים</text>
+</g>
+<text x="400" y="298" font-size="14" fill="#64748b" text-anchor="middle">הדמיה סכמטית</text>
+</svg></div>
+<ol class="caps">
+<li>מתחילים בתפריט File. הפריט שבשמו Tableau Public שולח את החוברת לאתר. Save רגיל שומר רק במחשב.</li>
+<li>אם עוד לא התחברתם, התוכנה מבקשת להתחבר. בלי חשבון אי אפשר לפרסם. אם מופיע חלון לבן או שגיאה, ראו את רשימת הבדיקות בסוף הסעיף.</li>
+<li>כותבים שם ייחודי ותיאורי לחוברת ולוחצים Save. לפי התיעוד, השם הופך לחלק מהמטא-דאטה של הוויז ומשפיע על החיפוש.</li>
+<li>הפרסום יוצר עותק של הנתונים (extract) ומעלה אותו יחד עם החוברת. אם הקובץ גדול, זה לוקח זמן.</li>
+<li>הדפדפן נפתח על דף הוויז באתר. זה מה שכולם רואים.</li>
+<li>בלחיצה על Share מקבלים שדה Link. זה הקישור לשיתוף, והוא גם מה שמטמיעים (סעיף 8).</li>
+</ol></div>
+
+<figure class="shot" data-shot="m14-save-dialog">
+<div class="fb">
+<div class="m14-dlg" aria-label="הדמיה סכמטית של חלון השם בפרסום">
+ <div class="h">Save Workbook to Tableau Public</div>
+ <div class="b">
+  <div>Workbook name</div>
+  <div class="f">Scoop and Go 2025 story</div>
+  <div style="font-size:.76rem;color:#64748b">Anyone on the internet will be able to see this workbook and its data.</div>
+  <div class="bt">Save</div>
+ </div>
+</div>
+<div class="need">צילום מסך נדרש: חלון השם שמופיע אחרי File &gt; Save to Tableau Public As... ב-Tableau Public Desktop (שדה שם החוברת, כפתור Save, ואם יש: תיבות סימון נוספות)</div>
+</div>
+<figcaption>חלון השם בפרסום (הדמיה סכמטית: הנוסח המדויק עשוי להיות שונה). את השם כותבים באנגלית, קצר וברור. אם יש בחלון תיבת סימון בשם <code>Show sheets as tabs</code> והדשבורד שלכם בנוי עם פריסות למכשירים, השאירו אותה כבויה.</figcaption>
+</figure>
+
+<div class="box try" data-id="m14-try-publish">
+<p><b>תרגיל: מפרסמים את הסיפור</b></p>
+<p><b>לפני שמתחילים:</b> עברו על רשימת הבדיקה של הסעיף הקודם. מפרסמים רק את החוברת שנבנתה מהקובץ של Scoop &amp; Go, שהוא בדוי.</p>
+<ol>
+<li>פתחו את הסיפור (לשונית הסיפור פעילה). <i>למה:</i> בדרך כלל הלשונית הפעילה היא מה שנפתח ראשון באתר. בדקו אצלכם איזה גיליון נפתח כברירת מחדל.</li>
+<li>בתפריט <code>File</code> בחרו <code>Save to Tableau Public As...</code>. <i>למה:</i> הפרסום הראשון נעשה עם בחירת שם.</li>
+<li>התחברו אם התבקשתם, וכתבו שם: <span class="n">Scoop and Go 2025 story</span>. לחצו <code>Save</code>. <i>למה:</i> שם ברור, ייחודי ובאנגלית.</li>
+<li>המתינו שהדפדפן ייפתח על הוויז שלכם. לחצו על חמש הנקודות בניווט. <i>למה:</i> כך רואים איך הסיפור נראה באתר.</li>
+<li>לחצו <code>Share</code> והעתיקו את שדה <code>Link</code>. <i>למה:</i> זה הקישור לשיתוף. רשמו אותו, כי תשתמשו בו בסעיף 8.</li>
+<li>פתחו חלון גלישה פרטית והדביקו את הקישור. <i>למה:</i> בחלון פרטי אתם לא מחוברים, ולכן אתם רואים בדיוק מה רואה אדם זר.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בחלון הפרטי הסיפור נפתח בלי התחברות, בנקודה 1, עם חמש תיבות בניווט. הערכים תואמים לכיתובים: בנקודה 3 העמודות <span class="n">11,108.80</span> ו-<span class="n">7,688.40</span>, ובנקודה 5 הערך של Sundaes <span class="n">-747.00</span>. הכתובת מתחילה ב-<span class="n">https://public.tableau.com/</span> ואחריו נתיב שכולל את שם החוברת. אם הפרסום נכשל, ראו הרשימה בסוף הסעיף.</p>
+</div>
+
+<div class="box trap"><p><b>פרסום באותו שם פעם נוספת.</b> לפי התיעוד, אם שומרים באותו שם ומאשרים החלפה, האתר מתייחס לזה כחוברת חדשה, ומונה הצפיות מתחיל מאפס. גם שינוי שם של גיליון שיש לו צפיות מוריד את המונה. לכן כדאי להחליט על השמות לפני הפרסום הראשון.</p></div>
+
+<h3>איך מעדכנים</h3>
+<p>פרסמתם, ואחר כך גיליתם שגיאה בכיתוב, או שהגיעו נתונים חדשים. מה עושים?</p>
+<div class="tw"><table class="m14-tbl">
+<tr><th>מה השתנה</th><th>מה עושים</th></tr>
+<tr><td>תיקון כיתוב או עיצוב</td><td>פותחים את החוברת המקומית, מתקנים, ומפרסמים שוב באותו שם. קוראים את החלון: האם הוא שואל על החלפה.</td></tr>
+<tr><td>נתונים חדשים בקובץ CSV או Excel</td><td>טוענים מחדש את הקובץ ב-Tableau ומפרסמים שוב. באתר יושב עותק של הנתונים מרגע הפרסום, והוא לא יתעדכן לבד.</td></tr>
+<tr><td>הנתונים בגיליון של גוגל</td><td>זה המקרה היחיד שבו יש ריענון אוטומטי: אחת ל-24 שעות. מי שהפעיל עדכון יכול גם לבקש עדכון ידני (<code>Request Update</code>).</td></tr>
+<tr><td>רוצים שם אחר</td><td>מפרסמים בשם חדש. הוויז הישן נשאר באתר, עם הקישור הישן, עד שמוחקים אותו.</td></tr>
+<tr><td>גילית שפרסמתם משהו שאסור</td><td>מוחקים מיד (סעיף 7). זכרו: מי שכבר הוריד, שמר.</td></tr>
+</table></div>
+<p>הכתובת בנויה משם החוברת ומשם הגיליון. לכן פרסום חוזר באותם שמות משאיר לרוב את אותה כתובת, ושינוי שם משנה אותה. את זה כדאי לבדוק על ויז ניסוי לפני שמעדכנים ויז שכבר שיתפתם.</p>
+
+<div class="box meaning"><p>הפרסום הוא צילום מצב. מה שעולה הוא העותק של הנתונים והעיצוב ברגע הפרסום. מה שקורה בקובץ שלכם אחר כך לא מגיע לאתר בלי פרסום חוזר. מצד שני, מה שפורסם נשאר ציבורי עד שמוחקים.</p></div>
+
+<h3>הדרך בדפדפן (web authoring)</h3>
+<p>אם ההתקנה לא עובדת, אפשר לבנות ולפרסם גם בדפדפן, באתר Tableau Public. זה עובד רק במחשב נייד או שולחני, לא בטלפון.</p>
+<ol>
+<li>באתר <span class="n">public.tableau.com</span> (אחרי התחברות) לחצו על <code>Create</code>.</li>
+<li>העלו קובץ: <span class="n">.xlsx</span>, <span class="n">.csv</span> או <span class="n">.tsv</span>, עד 1GB.</li>
+<li>בנו את הגיליון כמו ב-Desktop, ושמרו עם <code>File &gt; Save</code>. כדי לערוך אחר כך, לחצו <code>Edit</code> בוויז.</li>
+</ol>
+<p>מה לא תמצאו: לפי דף ההשוואה הכללי של Tableau (שאינו מיוחד ל-Public), בעורך שבדפדפן אי אפשר להוסיף חיזוי (<code>Forecast</code>) או אשכולות (<code>Cluster</code>), ופעולות בדשבורד מוגדרות ב-Desktop. האם אותם כללים חלים על Tableau Public לא נבדק. אם אתם בונים דשבורד וסיפור, עדיף Desktop.</p>
+
+<div class="box try" data-id="m14-try-web">
+<p><b>תרגיל רשות: גיליון אחד בדפדפן</b> (לבדיקה אם ההתקנה שלכם לא עובדת, או לסקרנים)</p>
+<ol>
+<li>היכנסו ל-<span class="n">public.tableau.com</span> והתחברו. לחצו <code>Create</code>. <i>למה:</i> כך מתחילים ויז בדפדפן.</li>
+<li>העלו את <span class="n">scoop_sales_2024_2025.csv</span>. <i>למה:</i> זה קובץ בדוי ומותר לפרסם אותו.</li>
+<li>בנו את הגיליון <span class="n">1 Year</span> (שנה ב-<code>Columns</code>, מכירות ב-<code>Rows</code>) ושמרו עם <code>File &gt; Save</code> בשם <span class="n">Scoop Year web test</span>. <i>למה:</i> כך רואים את אותו מסלול בלי להתקין כלום.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> שני סימנים, <span class="n">107,047.60</span> ו-<span class="n">129,773.30</span>, והוויז מופיע בפרופיל שלכם. בדקו אם הלשונית Story זמינה בעורך. אם לא, זה מאשר ש-Desktop נחוץ לסיפורים.</p>
+</div>
+
+<h3>אם משהו משתבש</h3>
+<ul>
+<li>היכנסו לאתר בדפדפן והתחברו שם, ורק אחר כך נסו שוב מהתוכנה. אצל תלמידים רבים זה פותר חלון לבן.</li>
+<li>אשרו עוגיות פונקציונליות בדפדפן. לפי התיעוד, בלעדיהן האתר מבקש התחברות חוזרת.</li>
+<li>בדקו בפרופיל באתר אם הפרסום הצליח, למרות הודעת שגיאה.</li>
+<li>האתר עשוי להיות בתחזוקה (יש עמוד סטטוס רשמי שמקושר מהתיעוד). אם כן, שמרו מקומית וחזרו מאוחר יותר.</li>
+<li>הפעילו שמירה אוטומטית מקומית (<code>Help &gt; Settings and Performance &gt; Enable Autosave</code>), כדי שלא תאבדו עבודה בזמן שהפרסום נכשל. לפי התיעוד היא שומרת כל כמה דקות.</li>
+</ul>
+
+<div class="box real"><p>גם אנשי מקצוע שומרים עותק מקומי של כל חוברת שפורסמה. הסיבה פשוטה: הוויז באתר הוא עותק שאפשר למחוק, והקובץ המקומי הוא המקור. מי שמפרסם רק לאתר, ופתאום צריך לתקן, מגלה שהוא חייב להוריד את העותק שלו בחזרה.</p></div>
+
+<div class="box think" data-id="m14-th-fix"><p>פרסמתם את הסיפור ושלחתם את הקישור לשלושה חברים. אחרי יום אתם מגלים שבנקודה 2 כתוב 7.9% במקום 7.0%. מה עושים, ומה צריך לדעת לפני שלוחצים?</p>
+<div class="ans">פותחים את החוברת המקומית (או <code>Open from Tableau Public...</code> אם אין), מתקנים את הכיתוב, ומפרסמים מחדש. לפני כן בודקים אם החלון שואל על החלפה, וזוכרים שלפי התיעוד החלפה נחשבת כחוברת חדשה ומונה הצפיות מתחיל מאפס. כדי שהקישור שנשלח ימשיך לעבוד, שומרים על אותם שמות חוברת וגיליון. אחר כך פותחים את הקישור בחלון פרטי ובודקים שהתיקון נראה.</div></div>
+
+<div class="quiz" data-id="m14-q-save" data-a="1"><p class="qq">איזה פריט בתפריט File שולח את החוברת לאתר ציבורי?</p>
+<button class="opt"><code>Save to Tableau Public As...</code></button>
+<button class="opt"><code>Save As...</code></button>
+<button class="opt"><code>Export Packaged Workbook...</code></button>
+<div class="why">התשובה הראשונה. המילים Tableau Public בשם הפריט הן הסימן. Save As שומר במחשב, ו-Export Packaged Workbook יוצר קובץ twbx מקומי עם הנתונים.</div></div>
+
+<div class="quiz" data-id="m14-q-refresh" data-a="2"><p class="qq">שיניתם את קובץ ה-CSV במחשב אחרי הפרסום, ולא פרסמתם מחדש. מה רואים באתר?</p>
+<button class="opt">את הנתונים החדשים, כי האתר קורא את הקובץ</button>
+<button class="opt">את הנתונים הישנים, כי באתר יושב עותק מרגע הפרסום</button>
+<button class="opt">שגיאה, כי הקובץ השתנה</button>
+<div class="why">התשובה השנייה. Tableau Public תומכת רק ב-extract. היוצא מן הכלל הוא גיליון בגוגל, שמתרענן אחת ל-24 שעות.</div></div>
+
+<div class="quiz" data-id="m14-q-overwrite" data-a="3"><p class="qq">מה לפי התיעוד קורה כשמפרסמים באותו שם ומאשרים החלפה?</p>
+<button class="opt">הוויז מתעדכן ומונה הצפיות נשמר</button>
+<button class="opt">הוויז הישן נמחק לגמרי והקישור מפסיק לעבוד</button>
+<button class="opt">האתר מתייחס לזה כחוברת חדשה, ומונה הצפיות מתחיל מאפס</button>
+<div class="why">התשובה השלישית. זה כתוב בשאלות הנפוצות של Tableau Public. לא נורא בוויז ניסוי, וכדאי לדעת לפני שמחליפים ויז שכבר שיתפתם.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> זה הרגע שבו כדאי שכולם יפרסמו יחד, ולכתוב בצ׳אט ״פורסם״ או ״תקוע״. התלמידים התקועים ממשיכים עם גרסה שמורה ומנסים בהפסקה. לבדוק בתוכנה לפני השיעור: (1) איזה פריט File משמש לעדכון חוברת שפורסמה, ומה כתוב בחלון ההחלפה (Save to Tableau Public לעומת Save to Tableau Public As), (2) האם בחלון הפרסום יש תיבת Show sheets as tabs ומה שמה, (3) איזו לשונית נפתחת כברירת מחדל באתר, (4) האם Hebrew בשם גיליון נכנס לכתובת, (5) האם Open from Tableau Public פותח חוברת שפורסמה. הצילום של תפריט File הוא אמיתי (Mac). אם האתר בתחזוקה, אפשר לדלג על הפרסום ולהמשיך לסעיף 8 עם הדוגמה של Tableau.</div>
+</section>
+<section class="sec" id="m14-6" data-t="פרופיל ומי רואה מה">
+<div class="sec-h"><div class="sec-n">6</div><h2>הפרופיל, ומה זר יכול לראות ולהוריד</h2></div>
+<p class="lead">הוויז באתר יושב בפרופיל שלכם, והפרופיל הוא התיק שלכם. אבל קודם שאלה אחת: מה אדם זר יכול לעשות עם מה שפרסמתם?</p>
+
+<div class="m14-pf" aria-label="הדמיה סכמטית של דף פרופיל ב-Tableau Public">
+<div class="ban"></div>
+<div class="hd"><div class="av">You</div><div><div class="nm">Your Name</div><div class="sub">Title · Location · links</div></div></div>
+<div class="bio">שתי שורות על מי אתם ומה אתם בונים. בלי טלפון ובלי כתובת.</div>
+<div class="tabs"><span class="on">Vizzes</span><span>Favorites</span><span>Stats</span><span>Hidden</span></div>
+<div class="grid"><div class="cardv"><div class="th"><i style="height:30px"></i><i style="height:44px"></i><i style="height:22px"></i></div><div class="ct"><b>Scoop and Go 2025 story</b>5 points</div></div><div class="cardv"><div class="th"><i style="height:20px"></i><i style="height:40px"></i></div><div class="ct"><b>Another viz</b>question, data, how to use</div></div></div>
+</div>
+<p><i>הדמיה סכמטית.</i> לפי השאלות הנפוצות של Tableau Public אפשר לערוך בפרופיל: שם, תפקיד, מיקום, קישורים, תמונה וכותרת עליונה. למי שיש עשרה ויזים גלויים ויותר אפשר לחלק אותם לקטגוריות. לשונית <code>Stats</code> מציגה צפיות של 30 ימים, מועדפים ועוד. ויזים מוסתרים נמצאים בלשונית <code>Hidden</code>. מהתפריט <code>File &gt; Manage My Profile...</code> אפשר להגיע לניהול הפרופיל (בדקו מה קורה אצלכם).</p>
+
+<div class="box try" data-id="m14-try-profile">
+<p><b>תרגיל: מסדרים פרופיל</b></p>
+<ol>
+<li>היכנסו לפרופיל שלכם באתר (או דרך <code>File &gt; Manage My Profile...</code>). <i>למה:</i> זה הדף שמגייס או חבר יראה.</li>
+<li>כתבו תפקיד ושורת תיאור על מה אתם בונים. אל תכתבו טלפון, כתובת או פרט אישי. <i>למה:</i> הפרופיל ציבורי.</li>
+<li>מחקו או הסתירו ויזי ניסוי שאינם שווים להראות. <i>למה:</i> כך נשארים בפרופיל רק דברים שאתם גאים בהם.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בפרופיל מופיע הסיפור של Scoop &amp; Go עם שם ברור, ואין ויזי ניסוי כמו <span class="n">Book1</span>. שדות לתיאור ולתגיות של ויז לא אומתו בתיעוד: בדקו אם הם זמינים אצלכם.</p>
+</div>
+
+<h3>מה זר יכול לעשות</h3>
+<div class="m14-vb mk"><div class="mk-bar"><i></i><i></i><i></i><span class="url">https://public.tableau.com/views/...</span></div>
+<div class="tb"><span class="hot">Make a copy</span><span>Add Favorite</span><span>Share</span><span class="hot">Download</span><span>Report Viz</span></div><div class="vz"><i style="height:50px"></i><i style="height:70px"></i><i style="height:40px"></i></div></div>
+<p><i>הדמיה סכמטית</i> של סרגל הכלים שרואה מי שלא מחובר (כך נצפה באתר באוקטובר 2026). הכפתורים <code>Make a copy</code> ו-<code>Download</code> מסומנים, כי הם חושפים הכי הרבה.</p>
+<div class="tw"><table class="m14-tbl">
+<tr><th>פעולה</th><th>מה קורה</th><th>מה היא לא עושה</th></tr>
+<tr><td><code>Hide</code></td><td>הוויז נעלם מדף הפרופיל ועובר ללשונית Hidden</td><td>לא חוסם: מי שיש לו קישור פותח</td></tr>
+<tr><td>כיבוי הורדה (<code>Settings &gt; Allow Access</code>)</td><td>מסיר את כפתור ההורדה וההעתקה</td><td>לא הופך את הוויז לפרטי: הנתונים שבגרף עדיין נראים</td></tr>
+<tr><td><code>Make a copy</code></td><td>פותח עותק בעורך הדפדפן, והעותק מצטט אתכם כמקור</td><td>לא משנה את המקור</td></tr>
+<tr><td>מחיקה</td><td>הוויז נעלם, והקישורים וההטמעות שלו מציגים שגיאה</td><td>לא מחזירה: אי אפשר לשחזר, ומי שהוריד כבר שמר</td></tr>
+</table></div>
+<p>שמות הכפתורים והמקום של ההגדרות מבוססים על השאלות הנפוצות הרשמיות. בגרסה שלכם ייתכן שהשם שונה מעט.</p>
+
+<div class="box try" data-id="m14-try-stranger">
+<p><b>תרגיל: בדיקת זר</b></p>
+<ol>
+<li>פתחו חלון פרטי והדביקו את הקישור לסיפור שפרסמתם. <i>למה:</i> אתם לא מחוברים, כמו זר.</li>
+<li>עברו על הכפתורים בסרגל הכלים וחפשו את <code>Download</code>. הורידו את החוברת ופתחו אותה ב-Tableau Public. <i>למה:</i> לפי התיעוד, כל מי שיש לו Tableau Desktop (גם Public) פותח אותה.</li>
+<li>בדקו מה אפשר לראות: את כל העמודות, את הגיליונות המוסתרים, ואת השדות המחושבים. <i>למה:</i> כך רואים מה שזר מקבל.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> החוברת נפתחת ואפשר לראות <span class="n">6,575</span> שורות ושש עשרה עמודות, כולל חמשת הגיליונות המוסתרים. אם זה מדאיג, זו הנקודה: לא מפרסמים מה שאסור שיראו. תפריט ההורדה ופתיחת twbx ב-Public לא נבדקו אצלנו, ולכן בדקו.</p>
+</div>
+
+<div class="box trap"><p><b>״כיביתי הורדה, אז זה פרטי.״</b> כיבוי הורדה מסתיר את הכפתור, אבל הוויז נשאר ציבורי, ומה שהגרפים מציגים נראה לכולם. פרטיות מגיעה מזה שלא מעלים.</p></div>
+<div class="box trap"><p><b>הסתרה אינה פרטיות.</b> Hide מסיר מהפרופיל, לא מהאינטרנט.</p></div>
+<div class="box meaning"><p>כל ויז שפורסם הוא גם תבנית וגם מקור נתונים לאחרים. זה יתרון כשאתם לומדים מאחרים (<code>Make a copy</code>), וסיכון כשהנתונים לא נקיים.</p></div>
+<div class="box real"><p>חלק מהאנשים מכבים הורדה בוויזים בתיק העבודות שלהם, כדי שאחרים לא יעתיקו. זה בסדר, כל עוד זוכרים שהנתונים עצמם ציבוריים בכל מקרה.</p></div>
+<div class="box think" data-id="m14-th-portfolio"><p>יש לכם עשרה ויזים: חמישה ניסויים, שלושה טובים ושניים של נתונים אמיתיים מהעבודה. מה נשאר בפרופיל?</p>
+<div class="ans">שלושת הטובים. הניסויים נמחקים או מוסתרים. את שניים מהעבודה מוחקים מיד ולא מפרסמים: נתוני מעסיק אסור לפרסם, ו-Public Edition אסורה לשימוש מסחרי.</div></div>
+<div class="quiz" data-id="m14-q-hide" data-a="2"><p class="qq">הסתרתם ויז. מי יכול לפתוח אותו?</p>
+<button class="opt">רק אתם</button>
+<button class="opt">כל מי שיש לו את הקישור</button>
+<button class="opt">אף אחד, גם לא אתם</button>
+<div class="why">התשובה השנייה. Hide מסיר את הוויז מדף הפרופיל בלבד.</div></div>
+<div class="quiz" data-id="m14-q-download" data-a="3"><p class="qq">מה נכון לגבי הורדה ב-Tableau Public?</p>
+<button class="opt">אי אפשר להוריד ויז של אחרים</button>
+<button class="opt">מורידים רק תמונה</button>
+<button class="opt">כברירת מחדל מורידים את החוברת ואת הנתונים, והמחבר יכול לכבות</button>
+<div class="why">התשובה השלישית, לפי השאלות הנפוצות של Tableau Public.</div></div>
+<div class="teach"><b>🎓 למרצה:</b> לבדוק בתוכנה לפני השיעור: מיקום וניסוח של Hide ושל Settings, Allow Access, תפריט Download, ושדות תיאור ותגיות. פתיחת twbx שהורד ב-Public מתועדת בשאלות הנפוצות, אבל לא נבדקה.</div>
+</section>
+
+<section class="sec" id="m14-7" data-t="הטמעה">
+<div class="sec-h"><div class="sec-n">7</div><h2>מטמיעים את הוויז בדף משלכם</h2></div>
+<p class="lead">יש לכם קישור. אפשר גם להציג את הוויז בתוך דף אינטרנט שלכם, למשל תיק עבודות. זה נקרא הטמעה.</p>
+<div class="defline"><b>הטמעה (<code>embed</code>):</b> הצגת הוויז בתוך דף אינטרנט אחר, כך שהצופה לא עוזב את הדף. דוגמה: דף HTML משלכם שמציג את הסיפור של Scoop &amp; Go.</div>
+<figure class="shot" style="max-width:340px;margin-inline:auto"><img src="img/share-dialog.png" alt="חלון Share עם Embed Code ו-Link"><figcaption>חלון <code>Share</code>: למעלה <code>Embed Code</code>, למטה <code>Link</code>, ובתחתית סמלי מייל, X ופייסבוק.</figcaption></figure>
+<div class="box trap"><p><b>לא מדביקים את Embed Code.</b> השדה הזה נותן קוד ישן (JavaScript API v1), שעדיין עובד אבל מוכרז כמיושן. מעתיקים את השדה <code>Link</code> ובונים סביבו את התג החדש.</p></div>
+<pre class="code" data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;My story&lt;/title&gt;
+  &lt;script type="module"
+    src="https://embedding.tableauusercontent.com/tableau.embedding.3.16.0.min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;tableau-viz src="https://public.tableau.com/views/WORKBOOK/SHEET"
+               toolbar="bottom" hide-tabs width="100%" height="800px"&gt;&lt;/tableau-viz&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+<p>החליפו <span class="n">WORKBOOK/SHEET</span> בחלק שאחרי <span class="n">/views/</span> בשדה Link. אין קישור משלכם עדיין? בדקו עם הדוגמה של Tableau: <span class="n">https://public.tableau.com/views/Superstore_24/Overview</span>. נכון לאוקטובר 2026 הספרייה המקובעת (3.16.0) נבדקה. אפשר גם את הגרסה <span class="n">tableau.embedding.3.latest.min.js</span> מ-<span class="n">public.tableau.com/javascripts/api/</span>, אבל היא יכולה להשתנות.</p>
+<div class="anim" data-id="m14-anim-embed" data-speed="3400">
+<div class="stage"><svg viewBox="0 0 800 260" role="img" aria-label="הנפשה: דף HTML טוען ספרייה, התג tableau-viz בונה iframe וטוען את הוויז מ-Tableau Public">
+<defs><marker id="m14a7-ar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#64748b"/></marker></defs>
+<g font-weight="700" text-anchor="middle" font-size="15">
+<rect x="20" y="50" width="200" height="110" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="120" y="84" fill="#3730a3">הדף שלכם</text><text x="120" y="112" font-size="12" fill="#4f46e5" font-family="ui-monospace,Menlo,monospace">&lt;tableau-viz src=...&gt;</text>
+<rect x="300" y="50" width="200" height="110" rx="12" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/><text x="400" y="84" fill="#854d0e">ספריית ההטמעה</text><text x="400" y="112" font-size="12" fill="#854d0e">type="module"</text>
+<rect x="580" y="50" width="200" height="110" rx="12" fill="#eff6ff" stroke="#1f77b4" stroke-width="2.5"/><text x="680" y="84" fill="#14507a">Tableau Public</text><text x="680" y="112" font-size="12" fill="#14507a">/views/WORKBOOK/SHEET</text>
+</g>
+<g stroke="#64748b" stroke-width="3" fill="none"><path d="M224,105 L296,105" marker-end="url(#m14a7-ar)"/><path d="M504,105 L576,105" marker-end="url(#m14a7-ar)"/></g>
+<g data-only="1"><rect x="18" y="48" width="204" height="114" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="2"><rect x="298" y="48" width="204" height="114" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-only="3"><rect x="578" y="48" width="204" height="114" rx="14" fill="none" stroke="#d8b862" stroke-width="4"/></g>
+<g data-s="4"><rect x="40" y="176" width="720" height="60" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="400" y="212" text-anchor="middle" font-size="16" font-weight="700" fill="#065f46">הוויז מוצג בתוך הדף שלכם</text></g>
+</svg></div>
+<ol class="caps"><li>הדף מכיל את התג עם הקישור לוויז.</li><li>הספרייה נטענת, ומחליפה את התג ב-iframe.</li><li>ה-iframe טוען את הוויז מ-Tableau Public.</li><li>הוויז מוצג. בטעינה ראשונה תיבה ריקה יכולה להישאר זמן מה: מחכים.</li></ol></div>
+<div class="box try" data-id="m14-try-embed">
+<p><b>תרגיל: דף עם הוויז שלכם</b></p>
+<ol>
+<li>שמרו את הקוד למעלה בקובץ <span class="n">embed.html</span>, והחליפו את <span class="n">src</span> בקישור מהשדה Link (בלי מה שאחרי סימן השאלה). <i>למה:</i> התג צריך כתובת של /views/.</li>
+<li>בתיקייה של הקובץ הריצו <code>python3 -m http.server 8000</code> ופתחו <span class="n">http://localhost:8000/embed.html</span>. <i>למה:</i> בדקנו הטמעה משרת מקומי ומ-GitHub Pages. פתיחת הקובץ ישירות מהדיסק לא נבדקה.</li>
+<li>צמצמו את רוחב החלון. <i>למה:</i> בחלון צר הוויז עשוי לעבור לפריסה מוערמת.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> הסיפור מוצג בתוך הדף, עם סרגל הכלים בתחתית. אם התיבה ריקה, חכו, ובדקו שהקישור מתחיל ב-https ושיש <code>type="module"</code>. תכנות של מסננים ופרמטרים דרך ה-Embedding API נמצא ב<a href="module16.html">מודול 16</a>.</p>
+</div>
+<div class="box trap"><p><b>iframe עם קישור מהפרופיל.</b> קישור מדף הפרופיל (<span class="n">/app/profile/.../viz/...</span>) לא נטען בתוך iframe. בבדיקה שלנו אתר Tableau חסם זאת. משתמשים בכתובת <span class="n">/views/WORKBOOK/SHEET?:embed=y&amp;:showVizHome=no</span>. שימו לב: <span class="n">:toolbar=n</span> לא הסתיר את סרגל הכלים ב-Public בבדיקה שלנו, ו-<span class="n">?Region=West</span> בכתובת עובד ב-iframe אבל לא ב-tableau-viz.</p></div>
+<div class="box meaning"><p>הטמעה לא מוסיפה הגנה: סרגל הכלים המוטמע עדיין מציג Download ו-Share.</p></div>
+<div class="box real"><p>אתר אישי ב-GitHub Pages חינמי הוא מקום מקובל לתיק עבודות עם ויזים מוטמעים.</p></div>
+<div class="box think" data-id="m14-th-embed"><p>מחקתם ויז שמוטמע באתר שלכם. מה יקרה לדף?</p>
+<div class="ans">ההטמעה תציג שגיאה, כי לפי התיעוד מחיקה שוברת גם הטמעות. לפני מחיקה בודקים איפה הוויז מוטמע.</div></div>
+<div class="quiz" data-id="m14-q-embed" data-a="1"><p class="qq">איזה שדה בחלון Share מעתיקים כדי להטמיע עם התג החדש?</p>
+<button class="opt"><code>Link</code></button>
+<button class="opt"><code>Embed Code</code></button>
+<button class="opt">כתובת הפרופיל מהדפדפן</button>
+<div class="why">התשובה הראשונה. Embed Code נותן קוד ישן, וכתובת הפרופיל לא נטענת ב-iframe.</div></div>
+<div class="quiz" data-id="m14-q-module" data-a="2"><p class="qq">הדף נשאר ריק ואין שגיאה. מה בודקים קודם?</p>
+<button class="opt">אם הצבע של הדף נכון</button>
+<button class="opt">אם יש <code>type="module"</code> בתג הסקריפט, וש-src מתחיל ב-https ומכוון ל-/views/</button>
+<button class="opt">אם כבוי הסיפור בפרופיל</button>
+<div class="why">התשובה השנייה. הספרייה היא מודול ES, ו-https נדרש.</div></div>
+<div class="teach"><b>🎓 למרצה:</b> הנתונים של ההטמעה נבדקו בדפדפן ממקור מקומי ומ-GitHub Pages. לבדוק לפני השיעור שהקישור לדוגמה של Tableau עדיין נטען.</div>
+</section>
+
+<section class="sec" id="m14-8" data-t="שיתוף ויושרה">
+<div class="sec-h"><div class="sec-n">8</div><h2>שיתוף, Viz of the Day ויושרה</h2></div>
+<p class="lead">שיתפו את הקישור, ובדקו אותו כמו צופה. ולפני הכול: שורה אחת של יושר.</p>
+<ul>
+<li><b>שיתוף.</b> בחלון Share יש סמלי מייל, X ופייסבוק. שלחו קישור עם משפט על השאלה ועל מקור הנתונים. פתחו אותו בטלפון ובמחשב, בלי להתחבר. אם התמונה הממוזערת לא מופיעה, ייתכן שחוסם פרסומות חוסם: אפשר להתיר את <span class="n">public.tableau.com</span>.</li>
+<li><b>Viz of the Day.</b> אפשר להציע ויז דרך כפתור Nominate for Viz of the Day. לפי Tableau, בוחרים בעיקר צוות Tableau Public ושגרירים. אין נוסחה שמבטיחה בחירה, ולכן לא מתכננים סביבה. הדף <a class="tool" href="https://public.tableau.com/app/discover" target="_blank" rel="noopener">Discover</a> מציג ויזים לשאוב מהם השראה (בדקו מה יש בו כיום).</li>
+<li><b>יושרה.</b> כותבים מקור ותאריך נתונים. מציינים כשהנתונים בדויים. לא מפרסמים מידע אישי או של מעסיק. נתונים עם רישיון CC BY דורשים ציון מקור. וזוכרים שלפי מדיניות הנתונים של האתר נתונים שפורסמו עשויים לשמש גם לאימון מודלי בינה מלאכותית.</li>
+</ul>
+<div class="box trap"><p><b>כותרת שנכונה ומטעה.</b> כמו ה-21.2%: מוסיפים את ההקשר.</p></div>
+<div class="box trap"><p><b>״הנתונים ברשת, אז מותר.״</b> לכל מערך נתונים יש רישיון. בודקים לפני פרסום.</p></div>
+<div class="box think" data-id="m14-th-honest"><p>כתבתם בנקודה 3 ״ההנחות גרמו לירידה בבאר שבע״. מה לא בסדר?</p>
+<div class="ans">ל-20 משורות בבאר שבע ב-2025 היו הנחת 50%, והקובץ לא מראה קשר סיבתי. כותבים מה רואים, ומציינים שהסיבה לא ידועה.</div></div>
+<div class="quiz" data-id="m14-q-votd" data-a="3"><p class="qq">מה נכון לגבי Viz of the Day?</p>
+<button class="opt">כל ויז נקי נבחר אוטומטית</button>
+<button class="opt">צריך לשלם כדי להיבחר</button>
+<button class="opt">אפשר להציע ויז, אבל אין נוסחה שמבטיחה בחירה</button>
+<div class="why">התשובה השלישית.</div></div>
+<div class="teach"><b>🎓 למרצה:</b> התיאור של בחירת Viz of the Day מבוסס על בלוג של Tableau שלא נקרא ישירות: ללמד בזהירות. לבדוק את תוכן דף Discover.</div>
+</section>
+
+<section class="sec" id="m14-9" data-t="סיכום">
+<div class="sec-h"><div class="sec-n">9</div><h2>סיכום: מה עברנו במודול הזה</h2></div>
+<div class="box recap"><ul>
+<li>סיפור הוא רצף נקודות עם כיתוב. בונים אותו בסדר: פתיחה, בעיה, התמקדות, ממצא, המלצה.</li>
+<li>הכיתוב אומר מה לראות, עם מספר, ולא שם של גרף. נכון הוא לא תמיד הוגן.</li>
+<li>לפני פרסום מנקים את החוברת ועוברים עמודה אחרי עמודה על הנתונים: כל הנתונים עולים לאתר.</li>
+<li>מפרסמים דרך הפריט ב-File ששמו כולל Tableau Public, ובודקים בחלון פרטי.</li>
+<li>Hide אינו פרטיות, הורדה פתוחה כברירת מחדל, ומחיקה שוברת קישורים והטמעות.</li>
+<li>מטמיעים עם <code>&lt;tableau-viz&gt;</code> ועם השדה Link, לא עם Embed Code.</li>
+</ul></div>
+<div class="quiz" data-id="m14-q-end1" data-a="2"><p class="qq">מה צריך להיות הדבר הראשון בסיפור?</p>
+<button class="opt">הגרף הכי מורכב</button>
+<button class="opt">המסקנה בשורה אחת</button>
+<button class="opt">המלצה בלי ראיה</button>
+<div class="why">התשובה השנייה: הכותרת קודם.</div></div>
+<div class="quiz" data-id="m14-q-end2" data-a="1"><p class="qq">עמודה שהסתרתם בגיליון, האם היא עולה לאתר?</p>
+<button class="opt">כן, כי הנתונים עולים כולם</button>
+<button class="opt">לא, כי היא מוסתרת</button>
+<button class="opt">רק אם מורידים</button>
+<div class="why">התשובה הראשונה: מוחקים במקור.</div></div>
+<div class="quiz" data-id="m14-q-end3" data-a="3"><p class="qq">איך בודקים מה רואה זר?</p>
+<button class="opt">מסתכלים על הפרופיל שלכם</button>
+<button class="opt">שואלים חבר</button>
+<button class="opt">פותחים את הקישור בחלון פרטי</button>
+<div class="why">התשובה השלישית: אתם לא מחוברים, כמוהו.</div></div>
+<p>הלאה: ב<a href="module15.html">מודול 15</a> רואים איך נתונים מגיעים ממסדי נתונים, וב<a href="module16.html">מודול 16</a> מתכנתים סביב ההטמעה.</p>
+</section>
+
+<div class="pager"><a href="module13.html">→ 13. דשבורדים, פעולות ועיצוב</a><a href="module15.html">15. בסיסי נתונים: איך הנתונים מגיעים ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>

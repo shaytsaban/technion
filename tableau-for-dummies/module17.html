@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>17. פרויקטים ובדיקת סיום · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=17;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public">1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים">2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים">3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות">6<small></small></a><a id="part7" href="module7.html" title="מפות">7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים">8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט">10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב">13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה">14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים">15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות">16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום" class=on>17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות">19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>פרויקטים <br><span>ובדיקת סיום</span></h1>
+  <p>חמישה פרויקטים בדרגת קושי עולה, כל אחד עם מטרה עסקית, נקודות ביקורת במספרים ומחוון ציון. בסוף יש בוחן סיום, מפת מיומנויות ודף סיכום לבדיקה עצמית. הכול נעשה ב-Tableau Public בלבד.</p>
+  <div class="chips"><span>🧪 חמישה פרויקטים</span><span>📋 מחוון עם מספרים מדויקים</span><span>❓ בוחן סיום</span><span>✅ מפת מיומנויות</span><span>🆓 רק Tableau Public</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<style>
+.m17-ph{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.m17-ph span{background:#f1f5f9;border:1px solid var(--line);border-radius:999px;padding:1px 12px;font-size:.84rem;font-weight:700}
+.m17-rub{width:100%;border-collapse:collapse;font-size:.9rem;margin:8px 0}
+.m17-rub th,.m17-rub td{border:1px solid var(--line);padding:5px 9px;text-align:start;vertical-align:top}
+.m17-rub th{background:#f1f5f9}
+.m17-rub select{font:inherit;padding:2px 4px}
+.m17-tot{font-weight:800;font-size:1.05rem;margin-top:6px}
+.m17-dash{direction:ltr;border:1px solid #c7cfd9;border-radius:10px;background:#f4f6f8;padding:10px;margin:14px 0;font-size:.8rem}
+.m17-dash h5{margin:0 0 6px;text-align:center;font-size:.95rem;color:#0b1f3a}
+.m17-g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.m17-g>div{background:#fff;border:1px solid #d5dbe3;border-radius:6px;padding:6px}
+.m17-g .wide{grid-column:1 / 3}
+.m17-dash svg{width:100%;height:auto;display:block}
+.m17-cert{border:4px double #b8962e;border-radius:14px;background:#fffdf5;padding:20px;text-align:center;margin:14px 0}
+.m17-cert h3{margin:4px 0;color:#0b1f3a}
+.m17-sk{display:block;margin:4px 0;cursor:pointer}
+.m17-bar{height:12px;background:#e2e8f0;border-radius:999px;overflow:hidden}
+.m17-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#34d399,#d8b862)}
+</style>
+
+<section class="sec" id="m17-1" data-t="איך עובדים">
+  <div class="sec-h"><div class="sec-n">1</div><h2>איך עובדים עם הפרויקטים</h2></div>
+  <div class="box note">
+    <p><b>מה נבנה במודול הזה:</b> חמישה פרויקטים, מדשבורד ראשון ועד סיפור שמוטמע בדף אינטרנט. אחריהם בוחן סיום, מפת מיומנויות ודף סיכום. <span class="lvl s">מתחילים</span><span class="lvl b">בונים</span><span class="lvl p">מקצוענים</span></p>
+    <p><b>מה צריך מוכן:</b> Tableau Public מותקן, והקבצים <a class="tool" href="data/scoop_sales_2024_2025.csv">scoop_sales_2024_2025.csv</a> <a class="tool" href="data/vgsales.csv">vgsales.csv</a> <a class="tool" href="data/yevgeni_orders.csv">yevgeni_orders.csv</a> ושאר קבצי יבגני. כל פרויקט רץ ב-Tableau Public בלבד. פרויקטים 1 עד 4 נשמרים במחשב, ורק פרויקט 5 מפרסם, והוא מפרסם נתונים ציבוריים בלבד.</p>
+  </div>
+  <p class="lead">עד עכשיו עשיתם תרגילים קצרים. כאן בונים עבודה שלמה, מהשאלה העסקית ועד תוצר שאפשר להגיש. בכל פרויקט יש נקודות ביקורת, כלומר מספרים שחייבים לצאת לכם. אם המספר לא יוצא, מתקנים לפני שממשיכים.</p>
+  <div class="defline"><b>מחוון:</b> טבלת ציון שמפרטת מה נבדק, כמה נקודות שווה כל דבר ומה המספר הנכון. דוגמה: "סך Sales הוא 236,820.9" שווה 10 נקודות: מלא אם המספר מדויק, חצי אם הרעיון נכון והמספר קרוב.</div>
+  <div class="tw"><table class="tbl"><thead><tr><th>#</th><th>פרויקט</th><th>רמה</th><th>נתונים</th><th>מה בונים</th><th>מודולים</th></tr></thead><tbody>
+    <tr><td>1</td><td>הדשבורד הראשון</td><td><span class="lvl s">מתחילים</span></td><td>Scoop &amp; Go</td><td>3 גיליונות, מסנן אחד, דשבורד, שמירה במחשב</td><td><a href="module3.html">3</a>, <a href="module4.html">4</a>, <a href="module6.html">6</a></td></tr>
+    <tr><td>2</td><td>דוח מנהל</td><td><span class="lvl b">בונים</span></td><td>Scoop &amp; Go</td><td>כרטיסי KPI, מפה, פרמטר, פעולות</td><td><a href="module7.html">7</a>, <a href="module8.html">8</a>, <a href="module10.html">10</a></td></tr>
+    <tr><td>3</td><td>מה קרה בבאר שבע?</td><td><span class="lvl p">מקצוענים</span></td><td>Scoop &amp; Go</td><td>חקירה עם LOD וחישובי טבלה</td><td><a href="module9.html">9</a>, <a href="module10.html">10</a></td></tr>
+    <tr><td>4</td><td>ממסד נתונים ל-Tableau</td><td><span class="lvl p">מקצוענים</span></td><td>מסעדת יבגני</td><td>SQL, CSV, Relationships, דשבורד משלוחים</td><td><a href="module11.html">11</a>, <a href="module15.html">15</a></td></tr>
+    <tr><td>5</td><td>סיפור והטמעה</td><td><span class="lvl d">מפתחים</span></td><td>vgsales</td><td>סיפור של 5 נקודות, פרסום, הטמעה</td><td><a href="module14.html">14</a>, <a href="module16.html">16</a></td></tr>
+  </tbody></table></div>
+  <div class="anim" data-id="m17-anim-ladder" data-speed="2600">
+    <div class="stage"><svg viewBox="0 0 800 220" role="img" aria-label="חמישה פרויקטים בדרגת קושי עולה">
+      <g data-s="1"><rect x="20" y="150" width="130" height="50" rx="8" fill="#dcfce7" stroke="#166534"/><text x="85" y="180" text-anchor="middle" font-size="15" font-weight="700">1 Dashboard</text></g>
+      <g data-s="2"><rect x="170" y="120" width="130" height="80" rx="8" fill="#dbeafe" stroke="#1e40af"/><text x="235" y="165" text-anchor="middle" font-size="15" font-weight="700">2 KPI + Param</text></g>
+      <g data-s="3"><rect x="320" y="90" width="130" height="110" rx="8" fill="#fef3c7" stroke="#92400e"/><text x="385" y="150" text-anchor="middle" font-size="15" font-weight="700">3 LOD + Calc</text></g>
+      <g data-s="4"><rect x="470" y="60" width="130" height="140" rx="8" fill="#fde68a" stroke="#92400e"/><text x="535" y="135" text-anchor="middle" font-size="15" font-weight="700">4 SQL + Model</text></g>
+      <g data-s="5"><rect x="620" y="30" width="130" height="170" rx="8" fill="#ede9fe" stroke="#5b21b6"/><text x="685" y="120" text-anchor="middle" font-size="15" font-weight="700">5 Story + Embed</text></g>
+    </svg></div>
+    <ol class="caps"><li>פרויקט 1: מסך אחד שעונה על מה, מתי ואיפה.</li><li>פרויקט 2: מוסיפים חישובים, פרמטר ופעולות.</li><li>פרויקט 3: חוקרים ושואלים "בהשוואה למה?".</li><li>פרויקט 4: מביאים את הנתונים ממסד, בלי חיבור ישיר.</li><li>פרויקט 5: מספרים סיפור ומטמיעים אותו בדף משלכם.</li></ol>
+  </div>
+  <div class="box trap"><p>בונים את כל הדשבורד ורק בסוף בודקים מספרים. מה עושים: אחרי כל שלב משווים לנקודת הביקורת. טעות שמתגלה בשלב 2 זולה בהרבה מטעות שמתגלה בשלב 6.</p></div>
+  <div class="teach"><b>🎓 למרצה:</b> המחוונים בסעיפים הבאים הם גם גיליון הבדיקה שלכם. כל המספרים חושבו בפייתון מקבצי הקורס. Tableau עשויה לעגל אחרת בתוויות.</div>
+</section>
+
+<section class="sec" id="m17-2" data-t="פרויקט 1">
+  <div class="sec-h"><div class="sec-n">2</div><h2>פרויקט 1: הדשבורד הראשון</h2></div>
+  <div class="m17-ph"><span>רמה: מתחילים</span><span>נתונים: Scoop &amp; Go</span><span>תוצר: twbx ושלוש שורות סיכום</span></div>
+  <p>רינה, מנהלת הרשת, רוצה מסך אחד לישיבה: מה נמכר, מתי ובאיזה סניף. ואם אפשר, שתוכל להסתכל על אזור אחד.</p>
+  <div class="m17-dash"><h5>הדמיה סכמטית של הדשבורד המבוקש</h5><div class="m17-g">
+    <div class="wide"><svg viewBox="0 0 400 60"><polyline fill="none" stroke="#4e79a7" stroke-width="2" points="5,50 40,48 80,40 120,22 160,8 200,12 240,30 280,40 320,38 360,45 395,48"/><text x="5" y="12" font-size="10">Monthly sales (24 months)</text></svg></div>
+    <div><svg viewBox="0 0 200 80"><g fill="#4e79a7"><rect x="5" y="6" width="150" height="12"/><rect x="5" y="22" width="118" height="12"/><rect x="5" y="38" width="104" height="12"/><rect x="5" y="54" width="102" height="12"/></g><text x="5" y="78" font-size="9">Sales by Category</text></svg></div>
+    <div><svg viewBox="0 0 200 80"><g fill="#59a14f"><rect x="5" y="4" width="150" height="7"/><rect x="5" y="14" width="134" height="7"/><rect x="5" y="24" width="114" height="7"/><rect x="5" y="34" width="107" height="7"/><rect x="5" y="44" width="30" height="7"/></g><text x="5" y="78" font-size="9">Sales by Branch + Region filter</text></svg></div>
+  </div></div>
+  <div class="box try" data-id="m17-p1-m1">
+    <p><b>שלב 1: חיבור ובדיקת בסיס.</b></p>
+    <ol>
+      <li>פתחו חוברת חדשה, <code>Connect</code>, <code>Text file</code>, וטענו את <code>scoop_sales_2024_2025.csv</code>. <i>למה:</i> כל הפרויקט על קובץ אחד.</li>
+      <li>בגיליון נקי: <code>Sales</code> ל-<code>Text</code> והספירה של הטבלה ל-<code>Text</code>. <i>למה:</i> בדיקת בסיס.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> Sales <span class="n">236,820.9</span> ו-<span class="n">6,575</span> שורות.</p>
+  </div>
+  <div class="box try" data-id="m17-p1-m2">
+    <p><b>שלב 2: שלושה גיליונות.</b></p>
+    <ol>
+      <li>גיליון <code>1 Category</code>: <code>Category</code> ל-<code>Rows</code>, <code>Sales</code> ל-<code>Columns</code>, מיון יורד. <i>למה:</i> דירוג קטגוריות.</li>
+      <li>גיליון <code>2 Trend</code>: <code>Order Date</code> ל-<code>Columns</code> כ-Month רציף (ירוק), <code>Sales</code> ל-<code>Rows</code>. <i>למה:</i> ציר זמן אמיתי.</li>
+      <li>גיליון <code>3 Branch</code>: <code>Branch</code> ל-<code>Rows</code>, <code>Sales</code> ל-<code>Columns</code>, מיון יורד. <i>למה:</i> השוואה בין סניפים.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> Category: Cups <span class="n">69,470.0</span>, Drinks <span class="n">54,553.3</span>, Cones <span class="n">48,317.0</span>, Sundaes <span class="n">47,037.2</span>, Sticks <span class="n">17,443.4</span>. Trend: 24 סימנים, שיא באוגוסט 2025 (<span class="n">23,259.9</span>), שפל בפברואר 2025 (<span class="n">4,097.0</span>). Branch: 9 עמודות, ראשון Tel Aviv Dizengoff <span class="n">44,194.1</span>, אחרון Ashdod Beach Pop-up <span class="n">5,304.5</span>.</p>
+  </div>
+  <div class="box try" data-id="m17-p1-m3">
+    <p><b>שלב 3: מסנן אחד לכל הגיליונות.</b></p>
+    <ol>
+      <li>גררו <code>Region</code> ל-<code>Filters</code>, ובחרו הכול. קליק ימני על הפיל, <code>Show Filter</code>. <i>למה:</i> הצופה צריך ידית.</li>
+      <li>קליק ימני על הפיל, <code>Apply to Worksheets</code>, ואז <code>All Using This Data Source</code>. <i>למה:</i> אחרת הוא חל על גיליון אחד.</li>
+      <li>סמנו רק South.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> סך הכול <span class="n">55,575.4</span>. בגיליון Branch 3 עמודות: Eilat <span class="n">31,473.7</span>, Beer Sheva <span class="n">18,797.2</span>, Ashdod <span class="n">5,304.5</span>. בגיליון Category: Cups <span class="n">16,648.4</span>, Sundaes <span class="n">12,091.0</span>.</p>
+  </div>
+  <div class="box try" data-id="m17-p1-m4">
+    <p><b>שלב 4: דשבורד ושמירה.</b></p>
+    <ol>
+      <li><code>New Dashboard</code>. בחלונית Size בחרו <code>Fixed size</code> ורוחב 1000, גובה 800. <i>למה:</i> כולם בודקים אותו גודל.</li>
+      <li>גררו את Trend למעלה לכל הרוחב, ואת Category ו-Branch מתחת, זה לצד זה. הוסיפו את כרטיס Region. <i>למה:</i> קודם הזמן, אחר כך הפירוט.</li>
+      <li>הציגו כותרת לדשבורד (<code>Show Title</code>) וכתבו כותרת ברורה. הסירו כותרות כפולות ומקרא מיותר.</li>
+      <li>שמרו במחשב כ-twbx (<code>File</code>, <code>Save As...</code>). בגרסה שלכם ייתכן שהשם שונה מעט. <i>למה:</i> twbx כולל את הנתונים.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> הדשבורד נפתח כולו ב-1000 על 800, בחירת South משנה את שלושת הגיליונות, והקובץ נפתח מחדש עם הנתונים.</p>
+  </div>
+  <p><b>רשימת עיצוב:</b> כותרת לכל גיליון, מספרים עם פסיק אלפים, אותו צבע לאותו דבר, שמות גיליונות ברורים, בלי חפיפה בין אובייקטים, שלוש שורות סיכום עם מספר בכל אחת.</p>
+  <div class="sim" data-id="m17-sim-rub1"><div class="sh">מחוון פרויקט 1 (ציון עצמי)</div>
+    <table class="m17-rub" data-key="p1"><thead><tr><th>קריטריון</th><th>נקודות</th><th>ציון</th></tr></thead><tbody>
+      <tr data-pts="10"><td>בדיקת בסיס: 236,820.9 ו-6,575</td><td>10</td><td></td></tr>
+      <tr data-pts="15"><td>Category ממוין, חמישה ערכים מדויקים</td><td>15</td><td></td></tr>
+      <tr data-pts="15"><td>Trend רציף: 24 סימנים, שיא 23,259.9, שפל 4,097.0</td><td>15</td><td></td></tr>
+      <tr data-pts="10"><td>Branch: 9 עמודות, ראשון ואחרון נכונים</td><td>10</td><td></td></tr>
+      <tr data-pts="20"><td>מסנן חל על שלושת הגיליונות: South נותן 55,575.4</td><td>20</td><td></td></tr>
+      <tr data-pts="15"><td>פריסת דשבורד ורשימת עיצוב</td><td>15</td><td></td></tr>
+      <tr data-pts="5"><td>נשמר כ-twbx ונפתח</td><td>5</td><td></td></tr>
+      <tr data-pts="10"><td>שלוש שורות סיכום עם מספרים</td><td>10</td><td></td></tr>
+    </tbody></table><div class="m17-tot"></div></div>
+  <div class="box trap"><p>Month ירוק נותן 24 סימנים, Month כחול נותן 12 ומאחד שנים. אם יש לכם 12 סימנים, החלפתם בדיד בטעות. המסנן חל על גיליון אחד בלבד: בדקו את <code>Apply to Worksheets</code>. קובץ twb בלי x נפתח אצל חבר בלי נתונים.</p></div>
+  <div class="box meaning"><p>דשבורד ראשון טוב עונה על שלוש שאלות בלי הסברים: מה, מתי, איפה. כל מה שלא עונה על אחת מהן מוציאים.</p></div>
+  <div class="box think" data-id="m17-th-p1"><p>איזה עוד מסנן הייתם מוסיפים לרינה, ולמה דווקא אותו?</p><div class="ans">Year או Channel. שניהם שדות עם מעט ערכים, והם משנים את הסיפור: ב-2025 יש שני סניפים חדשים, ו-Walk-in הוא רוב המכירות.</div></div>
+  <div class="box note"><p><b>הרחבות:</b> צבע לפי Region בגיליון Branch, פריסת טלפון, טולטיפ מותאם.</p></div>
+  <div class="teach"><b>🎓 למרצה:</b> שימו לב ל-Month רציף מול בדיד, ולמסנן שחל על גיליון אחד. לבדוק בתוכנה לפני השיעור: שם הפריט Save As בתפריט File ב-Public.</div>
+</section>
+
+<section class="sec" id="m17-3" data-t="פרויקט 2">
+  <div class="sec-h"><div class="sec-n">3</div><h2>פרויקט 2: דוח מנהל</h2></div>
+  <div class="m17-ph"><span>רמה: בונים</span><span>נתונים: Scoop &amp; Go</span><span>תוצר: twbx</span></div>
+  <p>רינה רוצה דוח שפותחים בכל יום שני: ארבעה מספרים בולטים, מפה, גרף שאפשר להחליף בו מדד, ולחיצה על סניף שמעדכנת את השאר.</p>
+  <div class="box try" data-id="m17-p2-m1">
+    <p><b>שלב 1: שדות מחושבים וכרטיסי KPI.</b></p>
+    <ol>
+      <li>צרו <code>Sales 2025</code>: <code>SUM( IF YEAR([Order Date]) = 2025 THEN [Sales] END )</code> ו-<code>Sales 2024</code> באותו אופן. <i>למה:</i> צבירה על שנה אחת.</li>
+      <li>צרו <code>Sales Change %</code>: <code>IF ZN([Sales 2024]) = 0 THEN NULL ELSE ([Sales 2025] - [Sales 2024]) / [Sales 2024] END</code>. <i>למה:</i> סניף חדש לא יוצר חלוקה באפס.</li>
+      <li>צרו <code>Margin 2025</code>: סכום Profit של 2025 חלקי סכום Sales של 2025, וגם <code>Status</code>: <code>IF ISNULL([Sales Change %]) THEN "New branch" ELSEIF [Sales Change %] &lt; -0.1 THEN "Alert" ELSE "OK" END</code>.</li>
+      <li>בנו גיליון לכל אחד, עם המספר על <code>Text</code> בגופן גדול, בלי כותרות עמודות.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> Sales 2025 <span class="n">129,773.3</span>, שינוי <span class="n">+21.2%</span>, Margin <span class="n">49.92%</span>, Status <span class="n">OK</span>.</p>
+  </div>
+  <div class="box try" data-id="m17-p2-m2">
+    <p><b>שלב 2: פרמטר שמחליף מדד.</b></p>
+    <ol>
+      <li>צרו פרמטר <code>Pick Measure</code>, String, רשימה: Sales, Profit, Quantity. הציגו אותו (<code>Show Parameter</code>).</li>
+      <li>צרו <code>Chosen Measure</code>: <code>CASE [Pick Measure] WHEN "Sales" THEN SUM([Sales]) WHEN "Profit" THEN SUM([Profit]) WHEN "Quantity" THEN SUM([Quantity]) END</code>. <i>למה:</i> כל הענפים צבירה, אחרת Tableau מסרבת.</li>
+      <li>גיליון Bars: <code>Branch</code> ל-<code>Rows</code>, <code>Chosen Measure</code> ל-<code>Columns</code>, מיון יורד. <code>City</code> ל-<code>Detail</code>.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> 9 עמודות. Tel Aviv Dizengoff: Sales <span class="n">44,194.1</span>, Profit <span class="n">22,979.1</span>, Quantity <span class="n">2,128</span>. אחרון: Ashdod: <span class="n">5,304.5</span>, <span class="n">2,585.0</span>, <span class="n">248</span>.</p>
+  </div>
+  <div class="box try" data-id="m17-p2-m3">
+    <p><b>שלב 3: מפה וציר זמן.</b></p>
+    <ol>
+      <li>גיליון Map: לחיצה כפולה על <code>City</code>, <code>Chosen Measure</code> ל-<code>Size</code>. <i>למה:</i> גודל הסימן עוקב אחרי הפרמטר.</li>
+      <li>גיליון Trend: Month רציף ו-<code>Chosen Measure</code> על <code>Rows</code>.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> 8 marks במפה (Tel Aviv-Yafo הוא סימן אחד לשני סניפים, Sales <span class="n">83,640.1</span>). בציר הזמן 24 סימנים, וב-Sales השיא <span class="n">23,259.9</span>.</p>
+  </div>
+  <div class="box try" data-id="m17-p2-m4">
+    <p><b>שלב 4: דשבורד ופעולות.</b></p>
+    <ol>
+      <li>דשבורד קבוע 1200 על 900: שורת KPI למעלה, הפרמטר, מפה ו-Bars זה לצד זה, Trend למטה.</li>
+      <li>בחרו את Bars, <code>Use as Filter</code>. ב-<code>Dashboard</code>, <code>Actions</code>, ערכו את הפעולה והוציאו את המפה מהיעדים. <i>למה:</i> המפה צריכה להישאר שלמה.</li>
+      <li>הוסיפו <code>Add Action</code>, <code>Highlight</code>: מקור Map, יעד Bars, שדה נבחר City, הפעלה ב-<code>Hover</code>.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> לחיצה על Beer Sheva: Sales 2025 <span class="n">7,688.4</span>, שינוי <span class="n">-30.8%</span>, Margin <span class="n">49.24%</span>, Status <span class="n">Alert</span>. Ashdod: Status <span class="n">New branch</span>. מעבר על Tel Aviv-Yafo מדגיש 2 עמודות.</p>
+  </div>
+  <div class="sim" data-id="m17-sim-rub2"><div class="sh">מחוון פרויקט 2 (ציון עצמי)</div>
+    <table class="m17-rub" data-key="p2"><thead><tr><th>קריטריון</th><th>נקודות</th><th>ציון</th></tr></thead><tbody>
+      <tr data-pts="20"><td>ארבעה KPI: <bdi dir="ltr">129,773.3, +21.2%</bdi>, 49.92%, OK</td><td>20</td><td></td></tr>
+      <tr data-pts="15"><td>פרמטר: 3 מדדים, 9 עמודות, ערכים נכונים</td><td>15</td><td></td></tr>
+      <tr data-pts="10"><td>מפה: 8 marks, בלי unknown</td><td>10</td><td></td></tr>
+      <tr data-pts="20"><td>פעולת סינון: Beer Sheva נותן <bdi dir="ltr">7,688.4, -30.8%</bdi>, Alert</td><td>20</td><td></td></tr>
+      <tr data-pts="10"><td>הדגשה: Tel Aviv-Yafo מדגיש 2 עמודות</td><td>10</td><td></td></tr>
+      <tr data-pts="5"><td>סניף חדש מציג New branch ולא שגיאה</td><td>5</td><td></td></tr>
+      <tr data-pts="15"><td>פריסה ועיצוב</td><td>15</td><td></td></tr>
+      <tr data-pts="5"><td>שלוש שורות סיכום</td><td>5</td><td></td></tr>
+    </tbody></table><div class="m17-tot"></div></div>
+  <div class="box trap"><p>הפרמטר לא משנה כלום: אף חישוב לא קורא לו. WHEN חייב להתאים לערך (Value) ולא לתווית. ערבוב SUM עם שדה בלי SUM בתוך CASE נותן שגיאה. אם הפעולה מסננת גם את המפה, ערכו את יעדי הפעולה.</p></div>
+  <div class="box real"><p>דוח כזה הוא מה שמנהלי רשת פותחים כל שבוע: מספר ראשי, חריגים מסומנים, ופירוט בלחיצה.</p></div>
+  <div class="teach"><b>🎓 למרצה:</b> לבדוק בתוכנה לפני השיעור: Highlight על שדה City כשבגיליון היעד City ב-Detail, ומיקום ההגדרות בתפריט Dashboard, Actions.</div>
+</section>
+
+<section class="sec" id="m17-4" data-t="פרויקט 3">
+  <div class="sec-h"><div class="sec-n">4</div><h2>פרויקט 3: מה קרה בבאר שבע?</h2></div>
+  <div class="m17-ph"><span>רמה: מקצוענים</span><span>נתונים: Scoop &amp; Go</span><span>תוצר: חוברת ומזכר של עמוד אחד</span></div>
+  <p>בישיבת הנהלה שאלה המנכ״לית: "2025 הייתה שנה טובה, אז למה נשמעת אי-שקט? מה קרה בבאר שבע?" מנהלת הכספים הוסיפה: "המכירות עלו, אבל אחוז הרווח לא". ומנהל התפעול שאל מתי לגייס עובדי קיץ. אתם צריכים שלוש תשובות, כל אחת עם מספר, גרף וצעד הבא.</p>
+  <div class="box try" data-id="m17-p3-s0">
+    <p><b>שלב 0: בסיס.</b> גיליון עם Year על Rows ו-Sales על Text. <b>תוצאה צפויה:</b> <span class="n">107,047.6</span> ו-<span class="n">129,773.3</span>.</p>
+  </div>
+  <div class="box try" data-id="m17-p3-s1">
+    <p><b>שאלה 1: איפה לא צמחנו?</b></p>
+    <ol>
+      <li>Branch על Rows, Year על Columns, Sales על Text. על הפיל: <code>Quick Table Calculation</code>, <code>Percent Difference</code>, וודאו <code>Compute Using</code> לפי Year. <i>למה:</i> אחוז שינוי משנה לשנה לכל סניף.</li>
+      <li>שאלו: מול מה משווים? בנו <code>{ FIXED [Branch] : MIN([Order Date]) }</code> ובדקו אילו סניפים פעלו בשתי השנים. <i>למה:</i> סניף שנפתח ב-2025 מנפח את הסך.</li>
+      <li>השוו שלוש צמיחות: כל הרשת, הסניפים שפעלו בשתי השנים, והסניפים האלה בלי הסניף החריג.</li>
+      <li>צרו ציר זמן לסניף החריג, לפי רבעון, ושאלו מאיזה רבעון זה מתחיל.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> טבלה של 9 סניפים ושתי שנים, שבה לשני סניפים אין ערך ב-2024. את הערכים בודקים בבודק של סעיף 7 או בתשובה לדוגמה.</p>
+  </div>
+  <div class="box try" data-id="m17-p3-s2">
+    <p><b>שאלה 2: למה אחוז הרווח לא עלה?</b></p>
+    <ol>
+      <li>צרו <code>Profit Margin</code> (<code>SUM([Profit]) / SUM([Sales])</code>) והציגו לפי שנה.</li>
+      <li>פרקו את האחוז לפי כל ממד שאתם מכירים: Channel, Category, Branch, Discount (כממד), ויום בשבוע. חפשו עמודה אחת שבולטת.</li>
+      <li>חצו את הממד שבלט עם Category ועם יום בשבוע.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> לפחות ארבעה גיליונות פירוק, ובאחד מהם עמודה שונה בבירור מהשאר.</p>
+  </div>
+  <div class="box try" data-id="m17-p3-s3">
+    <p><b>שאלה 3: עונתיות.</b></p>
+    <ol>
+      <li>Month בדיד על Columns, Year על Color, Sales על Rows. הוסיפו <code>Percent of Total</code> ו-<code>Compute Using</code> לפי Month, כך שכל שנה היא 100%.</li>
+      <li>שאלו שוב: האם הצורה זהה כשמסירים סניפים שנפתחו באמצע השנה? השתמשו ב-FIXED מהשלב הקודם.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> שני קווים עם שיא באותו חודש ו-12 סימנים בכל קו.</p>
+  </div>
+  <div class="box try" data-id="m17-p3-s4">
+    <p><b>המזכר:</b> שלושה ממצאים. לכל אחד: המספר, הגרף, מה בדקתי כדי לא לטעות, ומה הייתי עושה. הוסיפו שורה על מה עדיין לא בטוח (למשל חודשים עם מעט שורות).</p>
+  </div>
+  <div class="box think" data-id="m17-th-p3"><p>כתבו את שלושת הממצאים שלכם ואז פתחו את התשובה לדוגמה.</p>
+    <div class="ans">
+      <p><b>1. באר שבע:</b> מכירות ירדו מ-<span class="n">11,108.8</span> ל-<span class="n">7,688.4</span> (<span class="n">-30.8%</span>, <span class="n">3,420.4</span>). ששת הסניפים האחרים שפעלו בשתי השנים עלו מ-<span class="n">95,938.8</span> ל-<span class="n">106,855.2</span> (<span class="n">+11.4%</span>). הרשת עלתה <span class="n">21.2%</span> רק כי נפתחו רחובות (<span class="n">9,925.2</span>) ואשדוד (<span class="n">5,304.5</span>). כל הסניפים שפעלו בשתי השנים יחד עלו <span class="n">7.0%</span>. הירידה מתחילה באביב 2025: רבעון 2 <span class="n">-29.8%</span>, רבעון 3 <span class="n">-47.1%</span>, ושני הרבעונים הם <span class="n">97.7%</span> מהירידה. מספר השורות ירד מ-293 ל-232, ושווי שורה ממוצע מ-<span class="n">37.91</span> ל-<span class="n">33.14</span>.</p>
+      <p><b>2. אחוז רווח:</b> ירד מ-<span class="n">52.26%</span> ל-<span class="n">49.92%</span>. ההנחה של 50% היא היחידה שמפסידה: <span class="n">292</span> שורות, מכירות <span class="n">6,177.0</span>, רווח <span class="n">-378.0</span>, אחוז <span class="n">-6.12%</span>. כולן ביום שלישי ב-2025, על Cups, Cones ו-Sundaes. ה-Sundaes מפסידות <span class="n">747.0</span> ב-<span class="n">63</span> שורות. בלי שורות ההנחה אחוז הרווח של 2025 הוא <span class="n">52.72%</span>.</p>
+      <p><b>3. עונתיות:</b> יולי ואוגוסט הם <span class="n">32.2%</span> ממכירות השנה, בשתי השנים, כשמשווים סניפים שפעלו בשתי השנים. ברשת כולה 2025 מראה <span class="n">34.7%</span> רק כי שני סניפים נפתחו ביוני. שיא באוגוסט בשתי השנים (<span class="n">17,703.1</span> ו-<span class="n">23,259.9</span>). המלצה: לגייס עובדי קיץ ליוני עד אוגוסט.</p>
+    </div></div>
+  <div class="sim" data-id="m17-sim-rub3"><div class="sh">מחוון פרויקט 3 (ציון עצמי)</div>
+    <table class="m17-rub" data-key="p3"><thead><tr><th>קריטריון</th><th>נקודות</th><th>ציון</th></tr></thead><tbody>
+      <tr data-pts="15"><td>סניף חריג: 11,108.8 ל-<bdi dir="ltr">7,688.4, -30.8%</bdi>, עם חישוב טבלה</td><td>15</td><td></td></tr>
+      <tr data-pts="15"><td>בסיס השוואה עם LOD: +21.2%, +7.0%, +11.4% והסבר</td><td>15</td><td></td></tr>
+      <tr data-pts="10"><td>תזמון: רבעון 2 ו-3, ו-97.7% מהירידה</td><td>10</td><td></td></tr>
+      <tr data-pts="15"><td>אחוז רווח: 52.26% ל-49.92%, ופירוק לפי הנחה: -6.12%</td><td>15</td><td></td></tr>
+      <tr data-pts="10"><td>הגורם: יום שלישי, Sundaes, -747.0, ו-52.72% בלעדיו</td><td>10</td><td></td></tr>
+      <tr data-pts="15"><td>עונתיות: 32.2% ביולי ואוגוסט, וזיהוי 34.7% המנופח</td><td>15</td><td></td></tr>
+      <tr data-pts="10"><td>שיטה: LOD אחד ושני חישובי טבלה לפחות, עם Compute Using נכון</td><td>10</td><td></td></tr>
+      <tr data-pts="10"><td>מזכר: מספר, גרף, צעד הבא, וזהירות מנתונים קטנים</td><td>10</td><td></td></tr>
+    </tbody></table><div class="m17-tot"></div></div>
+  <div class="box trap"><p>משווים 2025 ל-2024 ברשת כולה ומסיקים שהכול טוב. מה עושים: שואלים "בהשוואה למה?" ומשווים רק מה שקיים בשתי התקופות. עוד מלכודת: חודשים בבאר שבע מכילים בין 3 ל-53 שורות, ולכן אחוזים חודשיים קופצים. רבעון יציב יותר.</p></div>
+  <div class="box real"><p>אנליסטים מכנים את זה "אותם סניפים" (like for like). בלי זה כל רשת שפותחת סניפים נראית בצמיחה.</p></div>
+  <div class="teach"><b>🎓 למרצה:</b> מפתח מלא בתשובה לדוגמה. עוד: ההנחה כולה ביום שלישי ב-2025 (51 תאריכים), ו-54.4% משורות יום שלישי ב-2025 הן בהנחה של 50%. ב-Cups הרווח <span class="n">199.0</span> וב-Cones <span class="n">170.0</span>. חודשי באר שבע שליליים: 9 מתוך 12. כל המספרים חושבו בפייתון.</div>
+</section>
+
+<section class="sec" id="m17-5" data-t="פרויקט 4">
+  <div class="sec-h"><div class="sec-n">5</div><h2>פרויקט 4: ממסד נתונים ל-Tableau</h2></div>
+  <div class="m17-ph"><span>רמה: מקצוענים</span><span>נתונים: מסעדת יבגני</span><span>תוצר: twbx, לא מפרסמים</span></div>
+  <p>יבגני רוצה לדעת כמה זמן לוקח משלוח, מי השליח האיטי, ואם משלוח איטי עולה בדירוג. הנתונים במסד, ול-Tableau Public אין חיבור למסד. אז: SQL, קובץ CSV, ואז Tableau.</p>
+  <div class="box try" data-id="m17-p4-m1">
+    <p><b>שלב 1: SQL לקובץ.</b> בדרך שבחרתם במודול 15 (פייתון, sqlite3 או הסימולטור), על <code>yevgeni-sqlite.sql</code>, הריצו שתי שאילתות ושמרו כ-<code>deliveries.csv</code> וכ-<code>order_revenue.csv</code>.</p>
+    <pre class="code" data-lang="sql">SELECT o.id AS order_id, substr(o.order_ts, 1, 10) AS order_date,
+       CAST(substr(o.order_ts, 12, 2) AS INTEGER) AS order_hour,
+       c.name AS courier, c.vehicle AS vehicle, o.channel AS channel,
+       o.delivery_min AS delivery_min, o.rating AS rating
+FROM orders o JOIN couriers c ON c.id = o.courier_id
+WHERE o.status = 'delivered' AND o.delivery_min IS NOT NULL
+ORDER BY o.id;
+
+SELECT o.id AS order_id, substr(o.order_ts, 1, 10) AS order_date,
+       o.channel AS channel, SUM(i.qty) AS units,
+       SUM(i.qty * d.price) AS revenue
+FROM orders o
+JOIN order_items i ON i.order_id = o.id
+JOIN dishes d ON d.id = i.dish_id
+WHERE o.status = 'delivered'
+GROUP BY o.id, o.order_ts, o.channel
+ORDER BY o.id;</pre>
+    <p><b>תוצאה צפויה:</b> <span class="n">59</span> שורות בראשון ו-<span class="n">82</span> בשני. סכום delivery_min הוא <span class="n">2,088</span> וסכום revenue הוא <span class="n">12,884</span>.</p>
+  </div>
+  <div class="box try" data-id="m17-p4-m2">
+    <p><b>שלב 2: מודל עם Relationship.</b></p>
+    <ol>
+      <li>חברו את <code>deliveries.csv</code>, ואז הוסיפו את <code>order_revenue.csv</code> לאותו מקור (<code>Add</code>).</li>
+      <li>גררו את הטבלה השנייה לקנבס, וודאו קו קשר על <code>order_id</code> לשני הצדדים. <i>למה:</i> ב-Relationship כל טבלה שומרת על הגרגר שלה.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> שתי טבלאות וקו אחד. ספירת deliveries <span class="n">59</span>, וספירת order_revenue <span class="n">82</span>.</p>
+  </div>
+  <div class="box try" data-id="m17-p4-m3">
+    <p><b>שלב 3: גיליונות.</b></p>
+    <ol>
+      <li>Avg by courier: <code>courier</code> ל-Rows, ממוצע של <code>delivery_min</code> ל-Columns.</li>
+      <li>Revenue by courier: <code>courier</code> ל-Rows, סכום <code>revenue</code> ל-Columns.</li>
+      <li>צרו <code>Late Share</code>: <code>SUM(IF [delivery_min] &gt; 40 THEN 1 ELSE 0 END) / COUNT([order_id])</code> ושימו אותה לפי שליח.</li>
+      <li>Avg by rating: הפכו את <code>rating</code> לממד (<code>Convert to Dimension</code>) ושימו ממוצע delivery_min לפי דירוג.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> ממוצעים: דימה <span class="n">41.81</span>, נועה <span class="n">36.45</span>, אורי <span class="n">29.38</span>, ובסך הכול <span class="n">35.39</span>. הכנסות: אורי <span class="n">3,483</span>, נועה <span class="n">3,805</span>, דימה <span class="n">2,384</span>, ועמודת Null של <span class="n">3,212</span> (23 הזמנות Walk-in בלי שליח). אחוז איחור (מעל 40 דקות): אורי <span class="n">0.0%</span>, נועה <span class="n">36.4%</span>, דימה <span class="n">56.2%</span>, סך <span class="n">28.8%</span> (17 מתוך 59). לפי דירוג: 1: <span class="n">46.00</span>, 2: <span class="n">40.60</span>, 3: <span class="n">36.42</span>, 4: <span class="n">32.50</span>, 5: <span class="n">29.89</span> (2, 5, 12, 12, 9 משלוחים, ו-19 בלי דירוג).</p>
+  </div>
+  <div class="box try" data-id="m17-p4-m4">
+    <p><b>שלב 4: דשבורד.</b> שני גיליונות עיקריים ו-Late Share, פעולת <code>Use as Filter</code> משליח, וכותרת משנה: "נתונים: ייצוא מהמסד, <bdi dir="ltr">2026-03-02</bdi> עד <bdi dir="ltr">2026-05-31,</bdi> מתעדכן ידנית". שמרו במחשב ואל תפרסמו: שמות שליחים הם שמות עובדים.</p>
+    <p><b>תוצאה צפויה:</b> לחיצה על דימה משאירה 16 משלוחים וממוצע <span class="n">41.81</span>.</p>
+  </div>
+  <div class="box trap"><p>חיבור עם Join לטבלת פריטי ההזמנה מכפיל שורות: 59 משלוחים הופכים ל-154 שורות, סכום הדקות עולה ל-<span class="n">5,377</span> במקום <span class="n">2,088</span>, והממוצע יוצא <span class="n">34.92</span>. ממוצע של עמודת ממוצעים נותן <span class="n">37.05</span> ולא <span class="n">35.39</span>. עוד: הנתונים מראים הבדל בין שליחים, לא סיבה, כי לכל שליח רכב אחד. ובין גודל ההזמנה לזמן משלוח הקשר חלש (מקדם <span class="n">-0.11</span>).</p></div>
+  <div class="sim" data-id="m17-sim-rub4"><div class="sh">מחוון פרויקט 4 (ציון עצמי)</div>
+    <table class="m17-rub" data-key="p4"><thead><tr><th>קריטריון</th><th>נקודות</th><th>ציון</th></tr></thead><tbody>
+      <tr data-pts="15"><td>ייצוא: 59 ו-82 שורות, 2,088 ו-12,884</td><td>15</td><td></td></tr>
+      <tr data-pts="15"><td>Relationship על order_id, ספירות 59 ו-82, והסבר</td><td>15</td><td></td></tr>
+      <tr data-pts="10"><td>ממוצעים: 41.81, 36.45, 29.38, 35.39</td><td>10</td><td></td></tr>
+      <tr data-pts="15"><td>הכנסות לפי שליח כולל Null של 3,212 והסבר</td><td>15</td><td></td></tr>
+      <tr data-pts="10"><td>דירוג מול זמן, עם הערה על מדגם קטן</td><td>10</td><td></td></tr>
+      <tr data-pts="10"><td>Late Share: 28.8%, 0%, 36.4%, 56.2%</td><td>10</td><td></td></tr>
+      <tr data-pts="15"><td>דשבורד, פעולה, תאריך נתונים והחלטה על פרסום שמות</td><td>15</td><td></td></tr>
+      <tr data-pts="10"><td>סיכום: מה אפשר ומה אי אפשר להסיק</td><td>10</td><td></td></tr>
+    </tbody></table><div class="m17-tot"></div></div>
+  <div class="teach"><b>🎓 למרצה:</b> לבדוק בתוכנה לפני השיעור: Relationship בין שני קובצי CSV ב-Public, והאם עמודת Null מופיעה להכנסות. כל המספרים חושבו מ-sqlite על yevgeni-sqlite.sql. אם אין לסטודנט כלי SQL, אפשר לבנות את שני הקבצים מהסימולטור במודול 15.</div>
+</section>
+
+<section class="sec" id="m17-6" data-t="פרויקט 5">
+  <div class="sec-h"><div class="sec-n">6</div><h2>פרויקט 5: סיפור והטמעה</h2></div>
+  <div class="m17-ph"><span>רמה: מפתחים</span><span>נתונים: vgsales</span><span>תוצר: קישור לסיפור וקישור לדף</span></div>
+  <p>עורכת של בלוג רוצה סיפור בחמש נקודות על שוק משחקי הווידאו, בתוך הדף שלה. מפרסמים רק נתונים ציבוריים: <code>vgsales.csv</code> הוא קובץ פתוח של מכירות לפי משחק.</p>
+  <div class="box try" data-id="m17-p5-m1">
+    <p><b>שלב 1: נתונים ובדיקה.</b> חברו את <code>vgsales.csv</code>. הפכו את <code>Year</code> לממד (<code>Convert to Dimension</code>).</p>
+    <p><b>תוצאה צפויה:</b> סך Global_Sales <span class="n">8,920.44</span> על <span class="n">16,598</span> שורות. בקבוצת Null של Year יש <span class="n">271</span> משחקים (מכירות <span class="n">100.08</span>).</p>
+  </div>
+  <div class="box try" data-id="m17-p5-m2">
+    <p><b>שלב 2: חמישה גיליונות.</b></p>
+    <ol>
+      <li>Global_Sales לפי Year (קו או עמודות). <b>צפוי:</b> שיא 2008, <span class="n">678.90</span>, אחריו 2009 <span class="n">667.30</span> ו-2007 <span class="n">611.13</span>. ב-2016 רק <span class="n">70.93</span>, כי השנה חלקית.</li>
+      <li>Genre ממוין. <b>צפוי:</b> Action <span class="n">1,751.18</span>, Sports <span class="n">1,330.93</span>, Shooter <span class="n">1,037.37</span>. שלושתם ביחד <span class="n">4,119.48</span>, כלומר <span class="n">46.2%</span>.</li>
+      <li>אזורים: <code>Measure Values</code> עם NA, EU, JP, Other בלבד. <b>צפוי:</b> NA <span class="n">4,392.95</span>, EU <span class="n">2,434.13</span>, JP <span class="n">1,291.02</span>, Other <span class="n">797.75</span>. סכום האזורים <span class="n">8,915.85</span>, כלומר <span class="n">4.59</span> פחות מ-Global בגלל עיגול במקור.</li>
+      <li>JP_Sales לפי Genre. <b>צפוי:</b> Role-Playing ראשון, <span class="n">352.31</span> (<span class="n">27.3%</span> מיפן). בצפון אמריקה Action ראשון, <span class="n">877.83</span>.</li>
+      <li>Global_Sales לפי Platform. <b>צפוי:</b> PS2 ראשון, <span class="n">1,255.64</span>.</li>
+    </ol>
+  </div>
+  <div class="box try" data-id="m17-p5-m3">
+    <p><b>שלב 3: סיפור וכיתובים.</b> <code>New Story</code>, חמש נקודות לפי הסדר: שיא ב-2008, שלושה ז׳אנרים מחזיקים כמעט חצי, צפון אמריקה היא החצי, ביפן הכול הפוך, ומה עושים. בכל כיתוב משפט עם מספר, ובנקודה האחרונה הסתייגויות: 271 משחקים בלי שנה, 2016 חלקית, ושסכום האזורים שונה מ-Global.</p>
+  </div>
+  <div class="box try" data-id="m17-p5-m4">
+    <p><b>שלב 4: פרסום.</b> <code>File</code>, <code>Save to Tableau Public As...</code>, שם ברור. פתחו את הקישור בחלון פרטי: הוא חייב להיפתח בלי התחברות. העתיקו את שדה <code>Link</code> (לא את Embed Code).</p>
+  </div>
+  <div class="box try" data-id="m17-p5-m5">
+    <p><b>שלב 5: דף משלכם.</b> שמרו כ-<code>index.html</code> והחליפו את הכתובת בכתובת של הסיפור (בלי הסימן ? והמשך):</p>
+    <pre class="code" data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="he" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;שוק משחקי הווידאו&lt;/title&gt;
+  &lt;script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.16.0.min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;שוק משחקי הווידאו: חמש נקודות&lt;/h1&gt;
+  &lt;p&gt;שלושה משפטים עם מספר.&lt;/p&gt;
+  &lt;tableau-viz id="tableauViz" src="https://public.tableau.com/views/WORKBOOK/STORY" toolbar="bottom" hide-tabs width="100%" height="800"&gt;&lt;/tableau-viz&gt;
+  &lt;p&gt;מקור הנתונים: vgsales.csv, נתונים ציבוריים.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+    <p>העלו ל-GitHub Pages, או הריצו שרת מקומי עם <code>python3 -m http.server 8000</code> ופתחו <code>http://127.0.0.1:8000</code>. <b>תוצאה צפויה:</b> הסיפור מופיע בתוך הדף, ואפשר לעבור בין חמש הנקודות. בטלפון הדף לא נחתך. אם התיבה ריקה כמה שניות, זה תקין בטעינה ראשונה.</p>
+  </div>
+  <div class="sim" data-id="m17-sim-rub5"><div class="sh">מחוון פרויקט 5 (ציון עצמי)</div>
+    <table class="m17-rub" data-key="p5"><thead><tr><th>קריטריון</th><th>נקודות</th><th>ציון</th></tr></thead><tbody>
+      <tr data-pts="10"><td>נתונים: 8,920.44 ו-271 משחקים בלי שנה מוסברים</td><td>10</td><td></td></tr>
+      <tr data-pts="25"><td>חמישה גיליונות עם המספרים: 678.90, 1,751.18, 4,392.95, 352.31, 1,255.64</td><td>25</td><td></td></tr>
+      <tr data-pts="20"><td>סיפור: חמש נקודות בסדר נכון, כיתוב עם מספר</td><td>20</td><td></td></tr>
+      <tr data-pts="10"><td>הסתייגויות כנות: 2016, 271, 4.59</td><td>10</td><td></td></tr>
+      <tr data-pts="10"><td>קישור נפתח בחלון פרטי</td><td>10</td><td></td></tr>
+      <tr data-pts="15"><td>הטמעה עובדת מהאירוח שלכם</td><td>15</td><td></td></tr>
+      <tr data-pts="10"><td>טקסט הדף ושורת מקור</td><td>10</td><td></td></tr>
+    </tbody></table><div class="m17-tot"></div></div>
+  <div class="box trap"><p>מעתיקים את שדה Embed Code, שהוא קוד ישן. מעתיקים את שדה Link ועוטפים ב-<code>tableau-viz</code>. עוד: קישור מדף הפרופיל לא נטמע. ופרסום מפרסם גם את הנתונים: כל אחד יכול להוריד אותם.</p></div>
+  <div class="teach"><b>🎓 למרצה:</b> לבדוק לפני השיעור: רישיון הקובץ vgsales.csv לא אומת במחקר, ולכן ודאו שמותר לפרסם אותו, או החליפו ל-Scoop &amp; Go. פתיחת הדף ישירות כקובץ (file://) לא נבדקה: השתמשו בשרת מקומי או ב-GitHub Pages.</div>
+</section>
+
+<section class="sec" id="m17-7" data-t="ציון והגשה">
+  <div class="sec-h"><div class="sec-n">7</div><h2>ציון והגשה</h2></div>
+  <p>בכל מחוון בחרו לכל שורה: לא, חצי או מלא. הציונים נשמרים בדפדפן שלכם בלבד, וכאן מתכנסים.</p>
+  <div class="sim" data-id="m17-sim-total"><div class="sh">סיכום חמשת הפרויקטים</div><div class="out" id="m17-total">טרם נבדק</div></div>
+  <div class="box note"><p><b>מה מגישים:</b> קובץ twbx לכל פרויקט (<code>P1-שם.twbx</code> ועוד), צילום מסך, ושלוש שורות סיכום. בפרויקט 5: קישור לסיפור וקישור לדף.</p></div>
+  <div class="teach"><b>🎓 למרצה:</b> ?teacher=1 מראה את הערות המרצה. אפשר לבקש מהסטודנט להקריא נקודת ביקורת אחת מכל פרויקט.</div>
+</section>
+
+<section class="sec" id="m17-8" data-t="בוחן סיום">
+  <div class="sec-h"><div class="sec-n">8</div><h2>בוחן סיום</h2></div>
+  <p>שאלות הבנה על מה שנלמד במודולים 1 עד 16: מה יצייר הפיל, באיזה סדר מסננים, איזה גרף, איך מתקנים.</p>
+  <div class="quiz" data-id="m17-q1" data-a="2"><p class="qq">איזו הורדה נכונה לקורס?</p><button class="opt">Tableau Desktop Free Edition</button><button class="opt">Tableau Desktop Public Edition, מאתר Tableau Public</button><button class="opt">Tableau Prep</button><div class="why">Public Edition היא האפליקציה החינמית שפועלת עם קבצים ושומרת לרשת. Free Edition היא מהדורה אחרת, ו-Prep אינה זמינה לנו.</div></div>
+  <div class="quiz" data-id="m17-q2" data-a="3"><p class="qq">פרסמתם ויז ואחר כך שיניתם את ה-CSV במחשב. מה רואים באתר?</p><button class="opt">את הערך החדש</button><button class="opt">שגיאה</button><button class="opt">את הנתונים כפי שהיו ברגע הפרסום, כי יש extract</button><div class="why">Public שומרת עותק. כדי לעדכן, מפרסמים שוב.</div></div>
+  <div class="quiz" data-id="m17-q3" data-a="1"><p class="qq">Category על Columns ו-SUM(Sales) על Rows. מה יצויר?</p><button class="opt">חמש עמודות אנכיות</button><button class="opt">קו אחד</button><button class="opt">סימן אחד גדול</button><button class="opt">שישה סימנים</button><div class="why">ממד בדיד על Columns ומדד על Rows נותנים עמודות, אחת לכל קטגוריה (5).</div></div>
+  <div class="quiz" data-id="m17-q4" data-a="2"><p class="qq">Order Date כ-Month רציף (ירוק) על Columns. כמה סימנים ב-Scoop &amp; Go?</p><button class="opt">12</button><button class="opt">24</button><button class="opt">6,575</button><div class="why">חודש רציף הוא ציר זמן: 24 חודשים. חודש בדיד (חלק) היה נותן 12.</div></div>
+  <div class="quiz" data-id="m17-q5" data-a="3"><p class="qq">רוצים להשוות 5 קטגוריות לפי סכום. איזה גרף?</p><button class="opt">עוגה עם חמש פרוסות קטנות</button><button class="opt">מפת חום</button><button class="opt">גרף עמודות ממוין</button><div class="why">להשוואה בין ערכים עמודות ממוינות קריאות הכי טוב.</div></div>
+  <div class="quiz" data-id="m17-q6" data-a="1"><p class="qq">מסנן Top 3 על סניפים ומסנן רגיל על Region באותו גיליון. מי רץ קודם?</p><button class="opt">המסנן הרגיל של Region, אחריו Top N, אלא אם הפכתם את הראשון להקשר</button><button class="opt">Top N תמיד קודם</button><button class="opt">שניהם יחד, בלי סדר</button><div class="why">לפי סדר הפעולות, מסנן ממדים רגיל רץ לפני Top N, אלא אם מוסיפים למסנן הקשר (Context).</div></div>
+  <div class="quiz" data-id="m17-q7" data-a="2"><p class="qq">מפה עם City על Detail מראה 8 סימנים, אבל יש 9 סניפים. למה?</p><button class="opt">סניף אחד לא נטען</button><button class="opt">בתל אביב-יפו שני סניפים ולכן סימן אחד</button><button class="opt">Tableau מעגלת</button><div class="why">הסימנים הם צירופים של הממדים בגיליון. City אחת, שני סניפים.</div></div>
+  <div class="quiz" data-id="m17-q8" data-a="3"><p class="qq">מה הבעיה ב-<code>IF [Category] = "Sundaes" THEN SUM([Sales]) END</code>?</p><button class="opt">אין בעיה</button><button class="opt">חסר ELSE</button><button class="opt">מערבבת שדה ברמת שורה עם צבירה, ולכן Tableau דורשת לתקן</button><div class="why">הפתרון: SUM מעל ה-IF, או ATTR על Category.</div></div>
+  <div class="quiz" data-id="m17-q9" data-a="1"><p class="qq">הוספתם מסנן, והדירוג (Rank) של סניף השתנה. למה?</p><button class="opt">חישוב טבלה רץ אחרי המסנן, על הסימנים שנשארו</button><button class="opt">באג בתוכנה</button><button class="opt">Rank מחושב לפני כל המסננים</button><div class="why">חישובי טבלה הם האחרונים בסדר הפעולות ועובדים רק על מה שמוצג.</div></div>
+  <div class="quiz" data-id="m17-q10" data-a="2"><p class="qq">יש מסנן Region = South על Filters ובגרף <code>{ FIXED : SUM([Sales]) }</code>. מה הערך?</p><button class="opt">55,575.4</button><button class="opt">236,820.9, כי FIXED רץ לפני מסנן ממדים רגיל</button><button class="opt">0</button><div class="why">מסנן ממדים רגיל לא משפיע על FIXED. רק מסנן הקשר היה משפיע.</div></div>
+  <div class="quiz" data-id="m17-q11" data-a="3"><p class="qq">מחברים טבלת הזמנות לטבלת פריטים עם Join ומסכמים את זמן המשלוח. מה קורה?</p><button class="opt">כלום, הכול אותו דבר</button><button class="opt">Tableau מוחקת כפולות</button><button class="opt">כל הזמנה מוכפלת במספר הפריטים שלה, והסכום מתנפח</button><div class="why">זה fan-out. ב-Relationship כל טבלה שומרת על הגרגר שלה.</div></div>
+  <div class="quiz" data-id="m17-q12" data-a="1"><p class="qq">יש לכם מסד PostgreSQL. מה עושים ב-Tableau Public?</p><button class="opt">מריצים שאילתה, מייצאים CSV וטוענים אותו</button><button class="opt">בוחרים Connect, PostgreSQL</button><button class="opt">משתמשים ב-Prep</button><div class="why">ל-Public אין מחבר למסדי נתונים. הגשר הוא קובץ.</div></div>
+  <div class="quiz" data-id="m17-q13" data-a="2"><p class="qq">איזה שדה מעתיקים מחלון Share כדי להטמיע בדף?</p><button class="opt">Embed Code</button><button class="opt">Link, ועוטפים ב-tableau-viz</button><button class="opt">כתובת דף הפרופיל</button><div class="why">Embed Code הוא קוד ישן, וקישור הפרופיל לא נטמע.</div></div>
+  <div class="quiz" data-id="m17-q14" data-a="3"><p class="qq">למה הצמיחה ברשת (21.2%) שונה מהצמיחה באותם סניפים (7.0%)?</p><button class="opt">אחד מהם שגוי</button><button class="opt">Tableau מעגלת אחרת</button><button class="opt">שני סניפים נפתחו ב-2025, ולכן הקבוצות שונות</button><div class="why">שני המספרים נכונים לשאלות שונות.</div></div>
+  <div class="m17-sc"></div>
+</section>
+
+<section class="sec" id="m17-9" data-t="מפת מיומנויות">
+  <div class="sec-h"><div class="sec-n">9</div><h2>מפת מיומנויות</h2></div>
+  <p>סמנו מה אתם יודעים לעשות לבד. אפשר ללחוץ על המודול כדי לחזור.</p>
+  <div class="sim" data-id="m17-sim-skills"><div class="sh">מפת מיומנויות (נשמרת בדפדפן)</div><div id="m17-skills"></div><div class="m17-bar"><i id="m17-skbar"></i></div><p id="m17-sktxt"></p></div>
+</section>
+
+<section class="sec" id="m17-10" data-t="סיכום בדיקה עצמית">
+  <div class="sec-h"><div class="sec-n">10</div><h2>סיכום בדיקה עצמית</h2></div>
+  <div class="sim" data-id="m17-sim-cert"><div class="sh">דף סיכום לצילום מסך</div>
+    <div class="row"><label>שם: <input type="text" id="m17-name" placeholder="השם שלכם"></label></div>
+    <div class="m17-cert"><h3>Tableau Public מאפס: סיכום בדיקה עצמית</h3><p id="m17-cname">שם הלומד</p><p id="m17-cscores"></p><p><small>זהו סיכום של בדיקה עצמית שנעשתה בדפדפן. זו אינה הסמכה של Tableau ואינה מסמך רשמי.</small></p></div>
+  </div>
+</section>
+
+<section class="sec" id="m17-11" data-t="סיכום">
+  <div class="sec-h"><div class="sec-n">11</div><h2>סיכום והמשך</h2></div>
+  <div class="box recap"><ul>
+    <li>פרויקט טוב מתחיל בשאלה עסקית ומסתיים במספר שאפשר לבדוק.</li>
+    <li>בודקים נקודת ביקורת אחרי כל שלב, לא בסוף.</li>
+    <li>"בהשוואה למה?" היא השאלה הראשונה בכל חקירה.</li>
+    <li>מסד נתונים מגיע ל-Public דרך קובץ, וגרגר הקובץ קובע על מה אפשר לענות.</li>
+    <li>מפרסמים רק נתונים ציבוריים, ומטמיעים בעזרת Link.</li>
+  </ul></div>
+  <div class="quiz" data-id="m17-q-end1" data-a="2"><p class="qq">מה עושים כשנקודת ביקורת לא יוצאת?</p><button class="opt">ממשיכים ובודקים בסוף</button><button class="opt">עוצרים ומחפשים איפה ההגדרה שונה</button><button class="opt">מוחקים את הגיליון</button><div class="why">טעות שמתגלה מוקדם זולה יותר.</div></div>
+  <div class="quiz" data-id="m17-q-end2" data-a="1"><p class="qq">איזה פרויקט מפרסם לרשת?</p><button class="opt">רק פרויקט 5, ורק נתונים ציבוריים</button><button class="opt">כולם</button><button class="opt">אף אחד</button><div class="why">פרויקטים 1 עד 4 נשמרים במחשב.</div></div>
+  <div class="quiz" data-id="m17-q-end3" data-a="3"><p class="qq">מה המחוון הזה?</p><button class="opt">הסמכה של Tableau</button><button class="opt">מבחן רשמי של הטכניון</button><button class="opt">כלי לבדיקה עצמית ולבדיקת מרצה</button><div class="why">זו בדיקה עצמית, לא הסמכה.</div></div>
+  <p>המודול הבא: <a href="module18.html">דף עזר</a>.</p>
+</section>
+
+<script>(function(){
+'use strict';
+function ls(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v));}catch(e){return null;}}
+var store=ls('tf17-rub')||{};
+function total(){
+  var out=[],all=0,n=0;
+  FL.$$('.m17-rub').forEach(function(t){
+    var s=0,mx=0;
+    FL.$$('tbody tr',t).forEach(function(tr){var p=+tr.getAttribute('data-pts');mx+=p;var sl=FL.$('select',tr);s+=p*(+sl.value);});
+    var box=t.parentNode.querySelector('.m17-tot');var sc=Math.round(s);
+    if(box)box.textContent='ציון: '+sc+' מתוך '+mx;
+    store[t.getAttribute('data-key')]=sc;out.push(t.getAttribute('data-key').toUpperCase()+': '+sc);all+=sc;n++;
+  });
+  ls('tf17-rub',store);
+  var el=FL.$('#m17-total');if(el)el.textContent=out.join(' | ')+' | ממוצע: '+Math.round(all/Math.max(n,1));
+  var cs=FL.$('#m17-cscores');if(cs)cs.textContent=out.join(' | ');
+}
+FL.dom(function(){
+  FL.$$('.m17-rub').forEach(function(t){
+    var key=t.getAttribute('data-key');var sim=t.closest('.sim');var touched=0;
+    FL.$$('tbody tr',t).forEach(function(tr,i){
+      var td=tr.lastElementChild;td.innerHTML='<select><option value="0">לא</option><option value="0.5">חצי</option><option value="1">מלא</option></select>';
+      var sl=FL.$('select',td);var sv=ls('tf17-r-'+key+i);if(sv)sl.value=sv;
+      sl.addEventListener('change',function(){ls('tf17-r-'+key+i,sl.value);touched++;total();if(sim&&sim.getAttribute('data-id'))FL.done(sim.getAttribute('data-id'));});
+    });
+  });
+  total();
+  var tot=FL.$('[data-id="m17-sim-total"]');
+  if(tot)tot.addEventListener('click',function(){FL.done('m17-sim-total');});
+  /* quiz score */
+  var qs=FL.$$('#m17-8 .quiz');var sc=FL.$('.m17-sc');
+  function upd(){var ok=0,d=0;qs.forEach(function(q){if(q.classList.contains('shown')){d++;if(!FL.$('.opt.wrong',q))ok++;}});if(sc)sc.innerHTML='<p><b>נענו '+d+' מתוך '+qs.length+', נכון בניסיון ראשון: '+ok+'</b></p>';}
+  qs.forEach(function(q){q.addEventListener('click',function(){setTimeout(upd,0);});});upd();
+  /* skills */
+  var SK=[['3','לבנות גרף עמודות ולמיין'],['4','להבדיל בין חודש רציף לבדיד'],['6','להוסיף מסנן שחל על כמה גיליונות'],['7','לבנות מפה ולבדוק marks'],['8','לכתוב שדה מחושב ולתקן שגיאת ערבוב'],['9','להשתמש בחישוב טבלה ולבחור Compute Using'],['10','ליצור פרמטר ולחבר אותו לחישוב'],['10','לכתוב FIXED ולהסביר מתי הוא מתעלם ממסנן'],['11','לחבר טבלאות עם Relationship ולבדוק ספירות'],['13','לבנות דשבורד עם פעולות'],['14','לבנות סיפור ולפרסם'],['15','להוציא CSV ממסד נתונים'],['16','להטמיע ויז בדף משלי']];
+  var box=FL.$('#m17-skills');var saved=ls('tf17-sk')||{};
+  box.innerHTML=SK.map(function(s,i){return '<label class="m17-sk"><input type="checkbox" data-i="'+i+'"'+(saved[i]?' checked':'')+'> '+FL.esc(s[1])+' (<a href="module'+s[0]+'.html">מודול '+s[0]+'</a>)</label>';}).join('');
+  function sk(){var c=FL.$$('input',box).filter(function(x){return x.checked;}).length;FL.$('#m17-skbar').style.width=Math.round(100*c/SK.length)+'%';FL.$('#m17-sktxt').textContent='סימנתם '+c+' מתוך '+SK.length;if(c>0)FL.done('m17-sim-skills');}
+  box.addEventListener('change',function(e){var i=e.target.getAttribute('data-i');saved[i]=e.target.checked;ls('tf17-sk',saved);sk();});sk();
+  var nm=FL.$('#m17-name');if(nm){nm.value=ls('tf17-name')||'';var up=function(){FL.$('#m17-cname').textContent=nm.value||'שם הלומד';ls('tf17-name',nm.value);if(nm.value.length>1)FL.done('m17-sim-cert');};nm.addEventListener('input',up);up();}
+});
+})();
+</script>
+
+<div class="pager"><a href="module16.html">→ 16. תכנות והרחבות</a><a href="module18.html">18. דף עזר ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>

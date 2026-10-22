@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7. מפות · Tableau Public מאפס · ד״ר שי צבאן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fl.css?v=1">
+<link rel="stylesheet" href="tf.css?v=1">
+</head>
+<body>
+<script>window.FL_PAGE=7;</script>
+<script src="fl-manifest.js?v=1"></script>
+<script src="fl.js?v=1"></script>
+<script src="tf.js?v=1"></script>
+<script src="tf-playground.js?v=1"></script>
+<nav class="top">
+  <div class="r1"><a class="brand" href="index.html">📊 Tableau מאפס</a>
+    <div class="parts"><a id="part1" href="module1.html" title="מכירים את Tableau Public">1<small></small></a><a id="part2" href="module2.html" title="מתחברים לנתונים">2<small></small></a><a id="part3" href="module3.html" title="סביבת העבודה והגרפים הראשונים">3<small></small></a><a id="part4" href="module4.html" title="כחול וירוק: בדיד, רציף ותאריכים">4<small></small></a><a id="part5" href="module5.html" title="צבע, גודל וקטלוג הגרפים הבסיסי">5<small></small></a><a id="part6" href="module6.html" title="סינון, מיון, קיבוץ וסדר הפעולות">6<small></small></a><a id="part7" href="module7.html" title="מפות" class=on>7<small></small></a><a id="part8" href="module8.html" title="שדות מחושבים">8<small></small></a><a id="part9" href="module9.html" title="חישובי טבלה וניתוח רץ">9<small></small></a><a id="part10" href="module10.html" title="פרמטרים ורמת פירוט">10<small></small></a><a id="part11" href="module11.html" title="שילוב נתונים ושינוי צורה">11<small></small></a><a id="part12" href="module12.html" title="גרפים מתקדמים ואנליטיקה">12<small></small></a><a id="part13" href="module13.html" title="דשבורדים, פעולות ועיצוב">13<small></small></a><a id="part14" href="module14.html" title="סיפורים, פרסום והטמעה">14<small></small></a><a id="part15" href="module15.html" title="בסיסי נתונים: איך הנתונים מגיעים">15<small></small></a><a id="part16" href="module16.html" title="תכנות והרחבות">16<small></small></a><a id="part17" href="module17.html" title="פרויקטים ובדיקת סיום">17<small></small></a><a id="part18" href="module18.html" title="דף עזר">18<small></small></a><a id="part19" href="module19.html" title="פתרון תקלות">19<small></small></a></div>
+    <span class="ppct" id="ppct"></span><a class="chipst ok" href="../final-lesson/index.html" title="חזרה למפגש המסכם">⟵ המפגש המסכם</a></div>
+  <div class="pbar"><i id="pbar"></i></div>
+</nav>
+<div class="pillbar"><div class="pills" id="pills"></div></div>
+<header class="hero">
+  <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
+  <h1>מפות<br><span>איפה הגלידה נמכרת</span></h1>
+  <p>בונים מפה של Scoop & Go: Tableau מזהה את הערים, מציירים סימנים לפי מכירות ורווח, מתקנים מיקומים שלא זוהו ושמים שכבת תוויות. בסוף בודקים מתי מפה עוזרת ומתי עמודות עונות טוב יותר, ועונים על שאלה עסקית במספר שחישבתם בעצמכם.</p>
+  <div class="chips"><span>🧪 16 התנסויות בתוכנה</span><span>🎞️ 4 הנפשות</span><span>🎛️ 4 הדמיות</span><span>🗺️ מפה סכמטית של שמונה הערים</span></div>
+</header>
+<main class="wrap">
+<div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
+<div class="box note">
+<p><span class="lvl b">בונים</span> <b>מה נבנה במודול הזה.</b> מפה של Scoop &amp; Go: שמונה ערים, וכל עיר היא סימן עגול על המפה. גודל הסימן הוא המכירות וצבע הסימן הוא הרווח. מעל זה שכבה של שמות הערים, מסנן לפי שנה, ובסוף מפה ועמודות באותו דשבורד, כשלחיצה על עיר מסננת את העמודות. בסוף תענו על שאלה עסקית במספר שחישבתם בעצמכם.</p>
+<p><b>מה צריך להיות מוכן.</b> Tableau Public על המחשב, והקובץ <a class="tool" href="data/scoop_sales_2024_2025.csv">scoop_sales_2024_2025.csv</a> (אותו קובץ של המודולים הקודמים). כדאי להכיר ממודולים <a href="module3.html">3</a> עד <a href="module6.html">6</a> את המדפים, כרטיס Marks ומסנן. המפות של Tableau צריכות חיבור לאינטרנט, אז בדקו שיש לכם.</p>
+<p>כל התרגילים כאן עובדים ב-Tableau Public בלבד. כשיש דרך לעקוף משהו שחסר לכם, היא כתובה בלי טריקים.</p>
+</div>
+
+<section class="sec" id="m7-1" data-t="איפה זה קורה">
+  <div class="sec-h"><div class="sec-n">1</div><h2>מתי שואלים ״איפה״</h2></div>
+  <p class="lead">תל אביב מוכרת הכי הרבה. זה לא חדשות. השאלה הטובה יותר היא איפה משהו משתנה: איזו עיר מתקדמת, איזו נופלת, ואיפה בכלל אין לנו סניף.</p>
+  <p>ב-Scoop &amp; Go יש תשעה סניפים בשמונה ערים. שמות הערים כתובים באנגלית בעמודה <code>City</code>, ויש עוד עמודה <code>Region</code> עם ארבעה אזורים שהרשת קבעה לעצמה (North, Center, South, Jerusalem). בקובץ אין שום קו רוחב וקו אורך. רק שמות. הנה מה שיש לנו לכל עיר, מחושב מ-6,575 שורות הקובץ:</p>
+  <div class="tw"><table class="tbl">
+    <thead><tr><th>City</th><th>סניפים</th><th>שורות</th><th>Sales</th><th>Profit</th></tr></thead>
+    <tbody>
+      <tr><td>Tel Aviv-Yafo</td><td>2</td><td>2,305</td><td>83,640.10</td><td>43,289.60</td></tr>
+      <tr><td>Jerusalem</td><td>1</td><td>970</td><td>33,450.80</td><td>17,027.80</td></tr>
+      <tr><td>Eilat</td><td>1</td><td>866</td><td>31,473.70</td><td>15,741.20</td></tr>
+      <tr><td>Haifa</td><td>1</td><td>758</td><td>27,389.20</td><td>14,187.70</td></tr>
+      <tr><td>Netanya</td><td>1</td><td>732</td><td>26,840.20</td><td>13,507.70</td></tr>
+      <tr><td>Beer Sheva</td><td>1</td><td>525</td><td>18,797.20</td><td>9,589.20</td></tr>
+      <tr><td>Rehovot</td><td>1</td><td>280</td><td>9,925.20</td><td>4,794.70</td></tr>
+      <tr><td>Ashdod</td><td>1</td><td>139</td><td>5,304.50</td><td>2,585.00</td></tr>
+      <tr><th>סך הכול</th><th>9</th><th>6,575</th><th>236,820.90</th><th>120,722.90</th></tr>
+    </tbody></table></div>
+  <div class="kpis">
+    <div class="kpi"><b>8</b><span>ערים</span></div>
+    <div class="kpi"><b>9</b><span>סניפים</span></div>
+    <div class="kpi"><b>35.3%</b><span>מהמכירות בתל אביב-יפו</span></div>
+    <div class="kpi"><b>236,820.90</b><span>סך המכירות</span></div>
+  </div>
+
+  <div class="defline"><b>מפה ב-Tableau:</b> גיליון רגיל, אבל כל סימן יושב על נקודה אמיתית על פני כדור הארץ, על רקע של מפה. הסימנים נבנים באותו כרטיס <code>Marks</code> שכבר מכירים. דוגמה: סימן שגודלו 83,640 יושב על תל אביב.</div>
+
+  <p>זו המפה שנבנה בהמשך. כאן היא בצורה סכמטית: מיקומי הערים מקורבים, וצורת החוף מצוירת בקירוב, בלי גבולות. זו לא המפה של Tableau, רק תמונה של מה שאנחנו הולכים להשיג.</p>
+  <figure class="shot">
+    <svg viewBox="0 0 460 560" width="100%" style="direction:ltr;max-width:520px;display:block;margin:0 auto" role="img" aria-label="מפה סכמטית של שמונה הערים, גודל העיגול לפי מכירות">
+      <defs><linearGradient id="m7-g1" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#e5ebf2"/><stop offset=".6" stop-color="#eef2f7"/><stop offset="1" stop-color="#eef2f7" stop-opacity="0"/></linearGradient></defs>
+      <rect x="0" y="0" width="460" height="560" fill="#f8fafc"/>
+      <path d="M275.3 60.8 L272.0 81.6 L258.7 94.6 L256.5 111.5 L250.9 142.7 L247.6 159.6 L237.6 192.1 L223.2 228.5 L214.3 246.7 L186.6 287.0 L183.3 303.9 L197.7 349.4 L239.8 462.5 L253.1 528.8 L263.1 521.0 L280.8 462.5 L280.8 384.5 L308.6 332.5 L319.6 267.5 L325.2 137.5 L352.9 33.5 Z" fill="url(#m7-g1)"/>
+      <path d="M275.3 60.8 L272.0 81.6 L258.7 94.6 L256.5 111.5 L250.9 142.7 L247.6 159.6 L237.6 192.1 L223.2 228.5 L214.3 246.7 L186.6 287.0 L183.3 303.9" fill="none" stroke="#94a3b8" stroke-width="1.6"/>
+      <circle cx="240.0" cy="191.4" r="24.0" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="287.9" cy="232.6" r="15.2" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="258.9" cy="520.0" r="14.7" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="263.1" cy="99.3" r="13.7" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="247.9" cy="160.7" r="13.6" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="241.1" cy="299.6" r="11.4" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="243.3" cy="216.4" r="8.3" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="226.0" cy="227.9" r="6.0" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><text x="211.0" y="197.6" text-anchor="end" font-size="13.0" fill="#1e293b">Tel Aviv-Yafo</text><text x="308.1" y="238.8" text-anchor="start" font-size="13.0" fill="#1e293b">Jerusalem</text><text x="278.6" y="524.0" text-anchor="start" font-size="13.0" fill="#1e293b">Eilat</text><text x="244.3" y="103.3" text-anchor="end" font-size="13.0" fill="#1e293b">Haifa</text><text x="229.3" y="159.3" text-anchor="end" font-size="13.0" fill="#1e293b">Netanya</text><text x="257.5" y="303.6" text-anchor="start" font-size="13.0" fill="#1e293b">Beer Sheva</text><text x="256.6" y="209.6" text-anchor="start" font-size="13.0" fill="#1e293b">Rehovot</text><text x="215.0" y="244.9" text-anchor="end" font-size="13.0" fill="#1e293b">Ashdod</text>
+      <text x="14" y="548" font-size="12" fill="#64748b" text-anchor="start">הצורה סכמטית והמיקומים מקורבים. גודל העיגול לפי מכירות</text>
+    </svg>
+    <figcaption>הדמיה סכמטית של המפה שנבנה. שימו לב שהעיגול של תל אביב-יפו מכסה חלק מרחובות ומנתניה: זה מה שקורה כשסימנים גדולים וערים קרובות, ונחזור לזה.</figcaption>
+  </figure>
+
+  <div class="box meaning">
+    <p>לכל סוג שאלה יש גרף שמתאים לו. <b>איפה?</b> ו<b>מי שכן של מי?</b> זה מפה. <b>כמה?</b> ו<b>מי ראשון?</b> זה עמודות. <b>מתי?</b> זה קו. מודול זה בונה מפות, ובסעיף 7 נבדוק גם מתי עמודות ינצחו אותן.</p>
+  </div>
+
+  <div class="quiz" data-id="m7-q-which" data-a="3"><p class="qq">איזו שאלה על Scoop &amp; Go מתאימה למפה יותר מאשר לעמודות או לקו?</p>
+    <button class="opt">מה הסדר של הערים לפי סך המכירות?</button>
+    <button class="opt">כמה מכירות היו בכל חודש ב-2025?</button>
+    <button class="opt">איפה בארץ יש סניפים קרובים זה לזה, ואיפה יש חור גדול בלי סניף?</button>
+    <div class="why">שאלת הסדר היא שאלת דירוג, ועמודות ממוינות עונות עליה טוב יותר. שאלת החודשים היא שאלה על זמן, ושם קו או עמודות לפי חודש. רק שאלת הקרבה והחורים תלויה במיקום עצמו, ושם המפה מראה מה שאף גרף אחר לא יראה.</div></div>
+
+  <div class="box think" data-id="m7-th-whymap"><p>בטבלה למעלה רואים שתל אביב-יפו ראשונה ואשדוד אחרונה. מה מפה יכולה להראות לכם ששורות הטבלה לא יראו?</p>
+    <div class="ans">מיקום יחסי: ששלוש מהערים הגדולות בהמשך החוף קרובות זו לזו, שאילת רחוקה מכולן, ושבאר שבע היא הנקודה היחידה בדרום הפנימי. זה מידע על קרבה וכיסוי. את הסדר לפי גודל דווקא קל יותר לקרוא בטבלה.</div></div>
+
+  <div class="teach"><b>🎓 למרצה:</b> אפשר לפתוח בשאלה לכיתה: ״איפה לדעתכם הרשת חזקה?״ ולהשאיר את התשובות על הלוח עד שהמפה נבנית בסעיף 3. בדקו מראש שלכל הסטודנטים יש אינטרנט ושהמפות נטענות בתוכנה שלהם (רשת מכללה או חומת אש עלולה להשאיר מפה ריקה).</div>
+</section>
+
+<section class="sec" id="m7-2" data-t="תפקיד גיאוגרפי">
+  <div class="sec-h"><div class="sec-n">2</div><h2>איך Tableau מבינה שהשם Haifa הוא עיר</h2></div>
+  <p class="lead">בקובץ יש רק טקסט. ״Haifa״ זו מחרוזת, לא מקום. כדי לצייר סימן Tableau צריכה שני מספרים, ולכן קודם היא צריכה להבין שזה שם של עיר.</p>
+
+  <div class="defline"><b>תפקיד גיאוגרפי (<code>Geographic Role</code>):</b> תגית על שדה שאומרת ל-Tableau איזה סוג מקום יש בו: מדינה, מחוז, עיר, מיקוד ועוד. דוגמה: על <code>City</code> יש תפקיד City, ולכן Tableau מחפשת את הערכים שבו ברשימת הערים שלה.</div>
+  <div class="defline"><b>קידוד גיאוגרפי (<code>geocoding</code>):</b> התרגום של שם מקום לשני מספרים, קו רוחב וקו אורך, כדי שאפשר יהיה לשים סימן על מפה. דוגמה: ״Haifa״ הופך לנקודה על קו החוף בצפון.</div>
+
+  <div class="anim" data-id="m7-anim-geocode" data-auto="1" data-speed="3200">
+    <div class="stage"><svg viewBox="0 0 800 340" role="img" aria-label="הדמיה סכמטית: שורה בקובץ, חיפוש ברשימת המקומות, קו רוחב וקו אורך, סימן על המפה">
+      <defs><linearGradient id="m7-a1-g" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#dfe6ee"/><stop offset=".6" stop-color="#eef2f7"/><stop offset="1" stop-color="#eef2f7" stop-opacity="0"/></linearGradient></defs>
+      <rect x="20" y="50" width="240" height="210" rx="12" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+      <text x="140" y="76" text-anchor="middle" font-size="16" font-weight="700" fill="#334155">הקובץ</text>
+      <line x1="30" y1="88" x2="250" y2="88" stroke="#e2e8f0"/>
+      <text x="40" y="108" font-size="14" font-weight="700" fill="#64748b" text-anchor="start">City</text>
+      <text x="245" y="108" font-size="14" font-weight="700" fill="#64748b" text-anchor="end">Sales</text>
+      <text x="40" y="132" font-size="15" fill="#1e293b" text-anchor="start">Eilat</text><text x="245" y="132" font-size="15" fill="#1e293b" text-anchor="end">31,473.7</text>
+      <g data-s="1" data-pulse><rect x="28" y="140" width="224" height="26" rx="6" fill="#fef3c7" stroke="#d8b862"/><text x="40" y="159" font-size="15" font-weight="700" fill="#1e293b" text-anchor="start">Haifa</text><text x="245" y="159" font-size="15" font-weight="700" fill="#1e293b" text-anchor="end">27,389.2</text></g>
+      <text x="40" y="190" font-size="15" fill="#1e293b" text-anchor="start">Netanya</text><text x="245" y="190" font-size="15" fill="#1e293b" text-anchor="end">26,840.2</text>
+      <text x="40" y="220" font-size="15" fill="#1e293b" text-anchor="start">Ashdod</text><text x="245" y="220" font-size="15" fill="#1e293b" text-anchor="end">5,304.5</text>
+      <text x="140" y="246" text-anchor="middle" font-size="13" fill="#94a3b8">שמות בלבד, בלי מיקום</text>
+
+      <g data-s="2"><rect x="330" y="70" width="180" height="170" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+        <text x="420" y="98" text-anchor="middle" font-size="16" font-weight="700" fill="#3730a3">רשימת המקומות</text>
+        <text x="420" y="118" text-anchor="middle" font-size="14" fill="#475569">המובנית של Tableau</text></g>
+      <g data-only="2"><text x="420" y="196" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">מחפשים: Haifa</text></g>
+      <g data-s="3"><text x="420" y="168" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">נמצא ✓</text><text x="420" y="194" text-anchor="middle" font-size="14" fill="#475569">שני מספרים:</text><text x="420" y="216" text-anchor="middle" font-size="14" fill="#475569">רוחב ואורך</text></g>
+      <g data-s="3"><rect x="320" y="250" width="200" height="28" rx="8" fill="#d9f0d6" stroke="#a8d4a3"/><text x="420" y="269" text-anchor="middle" font-size="14" font-weight="600" fill="#1c6b1c">Latitude (generated)</text>
+        <rect x="320" y="286" width="200" height="28" rx="8" fill="#d9f0d6" stroke="#a8d4a3"/><text x="420" y="305" text-anchor="middle" font-size="14" font-weight="600" fill="#1c6b1c">Longitude (generated)</text></g>
+
+      <rect x="570" y="40" width="210" height="256" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+      <path d="M652.5 80.0 L651.2 88.0 L646.1 93.0 L645.3 99.5 L643.1 111.5 L641.8 118.0 L638.0 130.5 L632.5 144.5 L629.1 151.5 L618.4 167.0 L617.1 173.5 L622.7 191.0 L638.9 234.5 L644.0 260.0 L647.8 257.0 L654.6 234.5 L654.6 204.5 L665.3 184.5 L669.6 159.5 L671.7 109.5 L682.3 69.5 Z" fill="url(#m7-a1-g)"/>
+      <path d="M652.5 80.0 L651.2 88.0 L646.1 93.0 L645.3 99.5 L643.1 111.5 L641.8 118.0 L638.0 130.5 L632.5 144.5 L629.1 151.5 L618.4 167.0 L617.1 173.5" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="582" y="288" text-anchor="start" font-size="12" fill="#94a3b8">מפה סכמטית</text>
+      <g data-only="4"><circle cx="647.8" cy="94.8" r="9" fill="#4e79a7" fill-opacity=".8" stroke="#14507a" stroke-width="1.5"/><text x="647.8" y="94.8" dx="-14" dy="5" font-size="14" font-weight="700" text-anchor="end" fill="#1e293b">Haifa</text></g>
+      <g data-s="5">
+        <circle cx="647.8" cy="94.8" r="9" fill="#4e79a7" fill-opacity=".8" stroke="#14507a" stroke-width="1.5"/>
+        <circle cx="642.0" cy="118.4" r="6" fill="#4e79a7" fill-opacity=".8" stroke="#14507a"/>
+        <circle cx="638.9" cy="130.2" r="12" fill="#4e79a7" fill-opacity=".6" stroke="#14507a"/>
+        <circle cx="640.2" cy="139.9" r="5" fill="#4e79a7" fill-opacity=".8" stroke="#14507a"/>
+        <circle cx="633.5" cy="144.3" r="4" fill="#4e79a7" fill-opacity=".8" stroke="#14507a"/>
+        <circle cx="657.3" cy="146.1" r="8" fill="#4e79a7" fill-opacity=".8" stroke="#14507a"/>
+        <circle cx="639.3" cy="171.9" r="7" fill="#4e79a7" fill-opacity=".8" stroke="#14507a"/>
+        <circle cx="646.2" cy="256.6" r="8" fill="#4e79a7" fill-opacity=".8" stroke="#14507a"/></g>
+      <g data-s="6"><rect x="28" y="274" width="226" height="48" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="141" y="294" text-anchor="middle" font-size="14" font-weight="700" fill="#991b1b">שם עם שגיאת כתיבה: Haifaa</text><text x="141" y="313" text-anchor="middle" font-size="13" fill="#991b1b">אין ברשימה, אין מיקום</text></g>
+      <g data-s="6"><rect x="662" y="266" width="112" height="26" rx="8" fill="#6b7280"/><text x="718" y="284" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">1 unknown</text></g>
+      <g data-only="1,2,4"><circle r="9" cx="250" cy="153" fill="#d8b862" stroke="#92400e" stroke-width="1.5" data-move="1:0,0|2:170,0|4:397.8,-58.2"/></g>
+    </svg></div>
+    <ol class="caps">
+      <li>שורה אחת בקובץ: City = Haifa. אין שם קו רוחב או קו אורך, רק שם.</li>
+      <li>Tableau לוקחת את השם ומחפשת אותו ברשימת המקומות שמובנית בתוכנה.</li>
+      <li>אם השם נמצא, חוזרים שני מספרים: קו רוחב וקו אורך. אלה השדות <code>Latitude (generated)</code> ו-<code>Longitude (generated)</code> שמופיעים לכם ב-Data pane אחרי שמניחים City.</li>
+      <li>עכשיו יש לסימן מקום: הוא מצויר על המפה. הנתונים עצמם לא השתנו, רק נוסף להם מיקום.</li>
+      <li>אותו דבר קורה לכל שמונה הערים, וכל עיר מקבלת סימן.</li>
+      <li>שם שלא ברשימה, למשל שגיאת כתיבה, לא מקבל מיקום. Tableau לא ממציאה: היא מסמנת בפינת המפה כמה שמות <code>unknown</code> יש.</li>
+    </ol>
+  </div>
+
+  <p>אחרי שהחיפוש מצליח, Tableau מוסיפה לרשימת השדות שני שדות מחושבים: קו הרוחב והאורך שהיא מצאה. הם מסומנים ב-<code>(generated)</code>, כלומר Tableau יצרה אותם, ולא היו בקובץ. נראה אותם עוד מעט על המדפים.</p>
+
+  <p>ככה נראה חלון הנתונים של Scoop &amp; Go. שימו לב לסמל כדור הארץ ליד <code>City</code>, ולכך שאין סמל כזה ליד <code>Region</code> ו-<code>Branch</code>:</p>
+  <div class="tws" style="max-width:360px" aria-label="הדמיה סכמטית של חלון הנתונים">
+    <div class="tws-data" style="padding:8px 12px">
+      <h6>Dimensions</h6>
+      <div><span class="fld dim"><i>🌐</i>City</span> <span style="color:#e8741f;font-size:.74rem">(תפקיד גיאוגרפי)</span></div>
+      <div><span class="fld dim"><i>Abc</i>Branch</span></div>
+      <div><span class="fld dim"><i>Abc</i>Branch Code</span></div>
+      <div><span class="fld dim"><i>Abc</i>Region</span></div>
+      <div><span class="fld dim"><i>Abc</i>Channel</span></div>
+      <div><span class="fld dim"><i>Abc</i>Category</span></div>
+      <h6>Measures</h6>
+      <div><span class="fld mea"><i>#</i>Profit</span></div>
+      <div><span class="fld mea"><i>#</i>Sales</span></div>
+      <div><span class="fld mea"><i>🌐</i>Latitude (generated)</span> <span style="color:#e8741f;font-size:.74rem">(אחרי שמניחים City)</span></div>
+      <div><span class="fld mea"><i>🌐</i>Longitude (generated)</span></div>
+    </div>
+  </div>
+  <p style="font-size:.85rem;color:#64748b">הדמיה סכמטית. הרשימה מקוצרת, וייתכן שבגרסה שלכם הסמלים נראים קצת אחרת.</p>
+
+  <div class="box meaning">
+    <p><code>Region</code> אצלנו הוא חלוקה של הרשת, לא מקום ש-Tableau מכירה. ״North״ ו-״Center״ הם לא ממש שמות של שטחים במאגר שלה, לכן אי אפשר לצבוע אותם במפה. כשתרצו לצבוע אזורים, צריך שדה שהוא באמת שטח: מדינה, מחוז או מיקוד. נחזור לזה בסעיף 6.</p>
+  </div>
+
+  <div class="box try" data-id="m7-try-roles">
+    <ol>
+      <li>פתחו Tableau Public והתחברו לקובץ <code>scoop_sales_2024_2025.csv</code> (בחלונית <code>Connect</code>, <code>Text file</code>). <b>למה:</b> אנחנו עובדים על אותם נתונים של המודולים הקודמים.</li>
+      <li>עברו ל-<code>Sheet 1</code> ושימו לב לחלונית Data בצד שמאל. <b>למה:</b> שם רואים את סוג כל שדה לפי הסמל שלידו.</li>
+      <li>חפשו ליד <code>City</code> סמל של כדור הארץ. ליד <code>Branch</code> ו-<code>Region</code> אמור להיות <code>Abc</code>. <b>למה:</b> רק City קיבל תפקיד גיאוגרפי. בדרך כלל Tableau מזהה את זה לבד, לפי שם העמודה והערכים שבה.</li>
+      <li>לחצו בכפתור הימני על <code>City</code> ופתחו <code>Geographic Role</code>. <b>למה:</b> זה המקום לשנות או להוסיף תפקיד כשהזיהוי האוטומטי טועה. אל תשנו כלום עכשיו.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> סמל כדור הארץ ליד City, ורשימת תפקידים שבה City מסומן. ליד Branch, Region ו-Channel: <code>Abc</code>. אם בגרסה שלכם Tableau זיהתה גם שדה נוסף כמקום, רשמו אותו ואל תדאגו, זה לא ישפיע על התרגילים הבאים. אם ליד City אין סמל, בחרו ידנית <code>Geographic Role &gt; City</code>.</p>
+  </div>
+
+  <div class="sim" data-id="m7-sim-geocoder"><div class="sh">מנסים לתרגם שם למקום</div>
+    <p>זו מכונה זעירה שמדגימה את שלוש התוצאות האפשריות: שם שנמצא, שם עם כמה מועמדים, ושם שלא נמצא. המילון שלה קטן וחלקו בדוי, והיא <b>לא</b> אומרת מה Tableau מכירה. לחצו על אחת הדוגמאות, ואז הוסיפו מדינה ובדקו מה קורה.</p>
+    <div class="row">
+      <label>שם: <input type="text" id="m7-gc-name" value="Paris" dir="ltr" style="width:150px"></label>
+      <label>מדינה: <select id="m7-gc-c"><option value="">(לא צוינה)</option><option>France</option><option>United States</option><option>United Kingdom</option><option>Canada</option><option>Israel</option></select></label>
+      <label>מחוז: <select id="m7-gc-s"><option value="">(לא צוין)</option><option>Illinois</option><option>Missouri</option><option>Massachusetts</option><option>Texas</option></select></label>
+      <button type="button" class="btn" id="m7-gc-go">חיפוש</button>
+    </div>
+    <div class="row" id="m7-gc-q"><span>דוגמאות:</span><button type="button" class="chip b">Paris</button><button type="button" class="chip b">Springfield</button><button type="button" class="chip b">London</button><button type="button" class="chip b">Haifa</button><button type="button" class="chip b">Haifaa</button><button type="button" class="chip b">חיפה</button></div>
+    <div class="out" id="m7-gc-out" aria-live="polite">לחצו על ״חיפוש״.</div>
+  </div>
+  <script>(function(){ FL.dom(function(){
+    var box = document.querySelector('[data-id="m7-sim-geocoder"]'); if (!box) return;
+    var DB = [
+      {n:'Paris',c:'France',s:''},{n:'Paris',c:'United States',s:'Texas'},
+      {n:'Springfield',c:'United States',s:'Illinois'},{n:'Springfield',c:'United States',s:'Missouri'},{n:'Springfield',c:'United States',s:'Massachusetts'},
+      {n:'London',c:'United Kingdom',s:''},{n:'London',c:'Canada',s:'Ontario'},
+      {n:'Haifa',c:'Israel',s:''},{n:'Eilat',c:'Israel',s:''},{n:'Netanya',c:'Israel',s:''},{n:'Ashdod',c:'Israel',s:''}
+    ];
+    var nm = box.querySelector('#m7-gc-name'), co = box.querySelector('#m7-gc-c'), st = box.querySelector('#m7-gc-s'), out = box.querySelector('#m7-gc-out');
+    var seen = {};
+    function lab(e){ return e.n + (e.s ? ', ' + e.s : '') + ', ' + e.c; }
+    function run(){
+      var q = nm.value.trim(), hit = [], kind;
+      if (/[֐-׿]/.test(q)) { kind = 'he'; }
+      else {
+        hit = DB.filter(function(e){ return e.n.toLowerCase() === q.toLowerCase() && (!co.value || e.c === co.value) && (!st.value || e.s === st.value); });
+        kind = hit.length === 0 ? 'none' : hit.length === 1 ? 'one' : 'many';
+      }
+      var h = '';
+      if (kind === 'one') h = '<span class="chip g">נמצא</span> <b dir="ltr">' + FL.esc(lab(hit[0])) + '</b><br>מקום אחד, אז יש לסימן מיקום ברור.';
+      else if (kind === 'many') h = '<span class="chip a">כמה מועמדים</span><ul dir="ltr" style="text-align:left;margin:6px 0">' + hit.map(function(e){ return '<li>' + FL.esc(lab(e)) + '</li>'; }).join('') + '</ul>Tableau לא יכולה לנחש. הוסיפו שדה ברמה גבוהה יותר, מדינה או מחוז, ורק אז השם הופך חד משמעי.';
+      else if (kind === 'he') h = '<span class="chip a">מחוץ להדמיה</span> המילון של ההדמיה באנגלית בלבד. האם Tableau Public מזהה שמות בעברית? לא בדקנו, ואין לנו מקור רשמי. יש ניסוי קטן בסעיף 4: עשו אותו וראו בעצמכם.';
+      else h = '<span class="chip r">Unknown</span> השם <b dir="ltr">' + FL.esc(q) + '</b> לא ברשימה של ההדמיה. בתוכנה האמיתית זה נראה כסימון ״unknown״ בפינת המפה, ואחרי זה צריך לתקן שם או לתת מיקום ידני.';
+      out.innerHTML = h; seen[kind] = 1;
+      if (Object.keys(seen).length >= 3 && window.FL) FL.done('m7-sim-geocoder');
+    }
+    box.querySelector('#m7-gc-go').addEventListener('click', run);
+    box.querySelector('#m7-gc-q').addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; nm.value = b.textContent; co.value = ''; st.value = ''; run(); });
+    co.addEventListener('change', run); st.addEventListener('change', run);
+  }); })();</script>
+
+  <div class="box trap">
+    <p><b>טעות נפוצה: ״Tableau תבין״.</b> שם בלי הקשר הוא לא תמיד מקום אחד. ״Paris״ ו-״Springfield״ הם שמות של כמה מקומות. הפתרון הוא לא לשנות את השם אלא לתת הקשר: להוסיף עמודת מדינה (ולפעמים מחוז) ולתת גם לה תפקיד גיאוגרפי. ב-Scoop &amp; Go כל השמות ייחודיים, אבל תבדקו תמיד, כי המפה לא צועקת כשהיא טועה בשקט.</p>
+  </div>
+
+  <div class="box real">
+    <p>גם אפליקציית ניווט עושה בדיוק את זה: כותבים כתובת, והיא מתרגמת אותה לנקודה על המפה לפני שמציירת משהו. בכל כלי שמציג מפה יש שלב כזה, והשגיאות הנפוצות בו הן שם עם שגיאת כתיבה, שם עם כמה התאמות, ושם בשפה שהמאגר לא מכיר.</p>
+  </div>
+
+  <div class="quiz" data-id="m7-q-role" data-a="2"><p class="qq">מה סמל כדור הארץ ליד שדה ב-Data pane אומר?</p>
+    <button class="opt">שהשדה מכיל קו רוחב וקו אורך, מספרים בלבד</button>
+    <button class="opt">שיש לשדה תפקיד גיאוגרפי, אז Tableau יודעת לחפש את הערכים שלו כמקומות</button>
+    <button class="opt">שכל הערכים בשדה כבר נמצאו על המפה בהצלחה</button>
+    <div class="why">התפקיד הוא רק תגית: ״לפי ההחלטה הזו, תחפשי את הערכים האלה כמקומות״. הוא לא מבטיח שכולם נמצאו (זה מופיע בנפרד כ-unknown), והוא לא אומר שהשדה מכיל מספרים. שדה קו רוחב הוא סיפור אחר, עם תפקיד Latitude.</div></div>
+
+  <div class="teach"><b>🎓 למרצה:</b> לפני השיעור בדקו בתוכנה: (1) שליד City מופיע סמל כדור הארץ בקובץ ה-CSV, (2) מה Tableau עושה עם Region (לא נבדק בתיעוד), (3) אם שמות כמו ״Tel Aviv-Yafo״ ו-״Beer Sheva״ מזוהים. בדקו את זה עוד לפני שמגיעים לסעיף 3. אם אחד מהם לא מזוהה, תכינו מראש את הדרך של סעיף 4. לפי מחקר ההכנה, הקידוד הגיאוגרפי של ערים ישראליות לא אומת, ולכן נעשה כאן checkpoint ולא הנחה.</div>
+</section>
+
+<section class="sec" id="m7-3" data-t="המפה הראשונה">
+  <div class="sec-h"><div class="sec-n">3</div><h2>לחיצה כפולה אחת וכבר יש מפה</h2></div>
+  <p class="lead">מפה נבנית בשתי פעולות: לחיצה כפולה על שדה גיאוגרפי, ואז מושכים מדד לכרטיס Marks. זה הכול. הקושי מגיע אחר כך, כשצריך לבדוק שהמפה אומרת אמת.</p>
+
+  <div class="defline"><b>מפת סמלים (<code>symbol map</code>):</b> מפה שבה כל מקום הוא סימן אחד, ואפשר לשנות לו גודל וצבע לפי מדד. דוגמה: עיגול גדול לתל אביב-יפו ועיגול קטן לאשדוד, כי המכירות שלהן שונות מאוד.</div>
+
+  <p>כשמניחים שדה גיאוגרפי על הגיליון, Tableau עושה לבד שלושה דברים. היא מוסיפה את <code>Longitude (generated)</code> ל-<code>Columns</code>, את <code>Latitude (generated)</code> ל-<code>Rows</code>, ומניחה את <code>City</code> ב-<code>Detail</code>. תזכורת ממודול 3: <code>Detail</code> קובע כמה סימנים יהיו. סימן אחד לכל ערך שונה של City, אז <b>8 ערים, 8 סימנים</b>.</p>
+
+  <div class="tw"><div class="tws" style="min-width:620px" aria-label="הדמיה סכמטית של מפת הערים ב-Tableau">
+    <div class="tws-top"><b>Sheet 1 · Tableau Public</b><span class="tws-btn">Undo</span><span class="tws-btn">Show Me</span><span class="tws-btn">Map</span></div>
+    <div class="tws-body" style="min-height:330px">
+      <div class="tws-data">
+        <h6>Dimensions</h6>
+        <div><span class="fld dim"><i>🌐</i>City</span></div>
+        <div><span class="fld dim"><i>Abc</i>Branch</span></div>
+        <h6>Measures</h6>
+        <div><span class="fld mea"><i>#</i>Profit</span></div>
+        <div><span class="fld mea"><i>#</i>Sales</span></div>
+        <div><span class="fld mea"><i>🌐</i>Latitude (generated)</span></div>
+        <div><span class="fld mea"><i>🌐</i>Longitude (generated)</span></div>
+      </div>
+      <div class="tws-main">
+        <div class="tws-shelf"><span>Columns</span><span class="pill c">Longitude (generated)</span></div>
+        <div class="tws-shelf"><span>Rows</span><span class="pill c">Latitude (generated)</span></div>
+        <div class="tws-canvas" style="align-items:center;justify-content:center;padding:6px">
+          <svg viewBox="0 0 300 312" width="100%" style="direction:ltr;" height="300" role="img" aria-label="מפה סכמטית: עיגולים לפי מכירות">
+            <defs><linearGradient id="m7-g3" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#dfe6ee"/><stop offset=".6" stop-color="#eef2f7"/><stop offset="1" stop-color="#eef2f7" stop-opacity="0"/></linearGradient></defs>
+            <path d="M156.7 33.2 L154.9 44.4 L147.7 51.4 L146.6 60.5 L143.6 77.3 L141.8 86.4 L136.4 103.9 L128.6 123.5 L123.9 133.3 L109.0 155.0 L107.2 164.1 L114.9 188.6 L137.6 249.5 L144.8 285.2 L150.1 281.0 L159.7 249.5 L159.7 207.5 L174.6 179.5 L180.6 144.5 L183.6 74.5 L198.5 18.5 Z" fill="url(#m7-g3)"/><path d="M156.7 33.2 L154.9 44.4 L147.7 51.4 L146.6 60.5 L143.6 77.3 L141.8 86.4 L136.4 103.9 L128.6 123.5 L123.9 133.3 L109.0 155.0 L107.2 164.1" fill="none" stroke="#94a3b8" stroke-width="1.4"/>
+            <circle cx="137.7" cy="103.5" r="17.0" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="163.5" cy="125.7" r="10.8" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="147.9" cy="280.5" r="10.4" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="150.1" cy="53.9" r="9.7" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="142.0" cy="87.0" r="9.6" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="138.3" cy="161.8" r="8.1" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="139.5" cy="117.0" r="5.9" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="130.2" cy="123.2" r="4.3" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><text x="115.7" y="109.2" text-anchor="end" font-size="10.0" fill="#1e293b">Tel Aviv-Yafo</text><text x="179.2" y="131.4" text-anchor="start" font-size="10.0" fill="#1e293b">Jerusalem</text><text x="163.3" y="284.5" text-anchor="start" font-size="10.0" fill="#1e293b">Eilat</text><text x="135.4" y="57.9" text-anchor="end" font-size="10.0" fill="#1e293b">Haifa</text><text x="127.3" y="86.8" text-anchor="end" font-size="10.0" fill="#1e293b">Netanya</text><text x="151.3" y="165.8" text-anchor="start" font-size="10.0" fill="#1e293b">Beer Sheva</text><text x="150.3" y="112.7" text-anchor="start" font-size="10.0" fill="#1e293b">Rehovot</text><text x="120.9" y="137.2" text-anchor="end" font-size="10.0" fill="#1e293b">Ashdod</text>
+          </svg>
+        </div>
+      </div>
+      <div class="tws-marks"><h6>Marks</h6><div class="pill d" style="direction:ltr">Automatic</div>
+        <div style="margin-top:8px;font-size:.72rem;color:#64748b">Detail</div><div><span class="pill d">City</span></div>
+        <div style="margin-top:6px;font-size:.72rem;color:#64748b">Size</div><div><span class="pill c sum">Sales</span></div>
+        <div style="margin-top:6px;font-size:.72rem;color:#64748b">Color</div><div><span class="pill c sum">Profit</span></div>
+      </div>
+    </div>
+    <div class="tws-tabs"><span class="on">Sheet 1</span><span>8 marks</span></div>
+  </div></div>
+  <ol class="callouts"><li>שני שדות ה-<code>(generated)</code> הם המיקום שנמצא לכל עיר. אפשר גם לראות אותם בחלונית Data.</li><li>על המדפים: אורך ב-Columns ורוחב ב-Rows. כמו ציר x וציר y, אבל של כדור הארץ.</li><li>הכרטיס Marks: City ב-Detail קובע שיהיו 8 סימנים, Sales קובע גודל, Profit קובע צבע.</li><li>שורת המצב בתחתית: ״8 marks״. זו הבדיקה הראשונה שלכם שהכול זוהה.</li></ol>
+
+  <div class="box try" data-id="m7-try-first-map">
+    <ol>
+      <li>צרו גיליון חדש: לחצו על סמל הגיליון החדש בתחתית החלון, או <code>Worksheet &gt; New Worksheet</code>. <b>למה:</b> מתחילים מגיליון ריק, כדי לראות מה Tableau מניחה בעצמה.</li>
+      <li>לחצו פעמיים על <code>City</code> בחלונית Data. <b>למה:</b> לחיצה כפולה על שדה גיאוגרפי מציירת מפה מיד.</li>
+      <li>הסתכלו בשורת המצב בתחתית החלון, ובפינה הימנית התחתונה של המפה. <b>למה:</b> שם Tableau מדווחת כמה סימנים צוירו, ואם יש שמות שלא זוהו (<code>unknown</code>).</li>
+      <li>גררו <code>Sales</code> אל <code>Size</code> בכרטיס Marks. <b>למה:</b> גודל העיגול יציג את גודל המכירות, כך שמבט אחד מספיק כדי להבין מי גדולה.</li>
+      <li>גררו <code>Profit</code> אל <code>Color</code>. <b>למה:</b> עכשיו גם הצבע מספר משהו. נראה בהמשך מה הוא אומר באמת.</li>
+      <li>עברו עם העכבר על העיגול של תל אביב-יפו ועל זה של אשדוד, וקראו את התיבה (tooltip). <b>למה:</b> זה הצ׳קפוינט שלכם: המספרים בתיבה הם המספרים שחישבנו בטבלה בסעיף 1.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> שורת המצב מציגה <b>8 marks</b>, בלי סימון unknown. העיגול של תל אביב-יפו הכי גדול והכי כהה, ושל אשדוד הכי קטן. תל אביב-יפו: Sales כ-83,640.1 ו-Profit כ-43,289.6. אשדוד: Sales כ-5,304.5 ו-Profit כ-2,585. Tableau עשויה להציג את המספרים עם פחות ספרות אחרי הנקודה (למשל 83,640 או 83,640.10), לפי פורמט ברירת המחדל שבגרסה שלכם.</p>
+    <p>אם שורת המצב מציגה פחות מ-8, או שמופיע ״unknown״: זה לא כישלון שלכם. זה מה שסעיף 4 בא לפתור. עברו אליו, ואחר כך חזרו לכאן.</p>
+  </div>
+
+  <figure class="shot" data-shot="m7-first-map">
+    <div class="fb"><svg viewBox="0 0 300 312" width="100%" style="direction:ltr;max-width:300px;display:block;margin:0 auto" role="img" aria-label="הדמיה סכמטית של מפה עם שמונה סימנים"><rect width="300" height="312" fill="#f8fafc"/><path d="M156.7 33.2 L154.9 44.4 L147.7 51.4 L146.6 60.5 L143.6 77.3 L141.8 86.4 L136.4 103.9 L128.6 123.5 L123.9 133.3 L109.0 155.0 L107.2 164.1 L114.9 188.6 L137.6 249.5 L144.8 285.2 L150.1 281.0 L159.7 249.5 L159.7 207.5 L174.6 179.5 L180.6 144.5 L183.6 74.5 L198.5 18.5 Z" fill="#e9eef4" stroke="#cbd5e1"/><circle cx="137.7" cy="103.5" r="17.0" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="163.5" cy="125.7" r="10.8" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="147.9" cy="280.5" r="10.4" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="150.1" cy="53.9" r="9.7" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="142.0" cy="87.0" r="9.6" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="138.3" cy="161.8" r="8.1" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="139.5" cy="117.0" r="5.9" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="130.2" cy="123.2" r="4.3" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><text x="115.7" y="109.2" text-anchor="end" font-size="10.0" fill="#1e293b">Tel Aviv-Yafo</text><text x="179.2" y="131.4" text-anchor="start" font-size="10.0" fill="#1e293b">Jerusalem</text><text x="163.3" y="284.5" text-anchor="start" font-size="10.0" fill="#1e293b">Eilat</text><text x="135.4" y="57.9" text-anchor="end" font-size="10.0" fill="#1e293b">Haifa</text><text x="127.3" y="86.8" text-anchor="end" font-size="10.0" fill="#1e293b">Netanya</text><text x="151.3" y="165.8" text-anchor="start" font-size="10.0" fill="#1e293b">Beer Sheva</text><text x="150.3" y="112.7" text-anchor="start" font-size="10.0" fill="#1e293b">Rehovot</text><text x="120.9" y="137.2" text-anchor="end" font-size="10.0" fill="#1e293b">Ashdod</text><text x="290" y="302" text-anchor="end" font-size="11" fill="#64748b">8 marks</text></svg>
+    <div class="need">צילום מסך נדרש: Tableau Public עם Scoop &amp; Go, מפה אחרי תרגיל ״לחיצה כפולה על City״: Sales על Size, Profit על Color, שורת המצב ״8 marks״ נראית בתחתית, בלי unknown</div></div>
+    <figcaption>המפה אחרי שלב 5 בתרגיל. הצילום מתעדכן אוטומטית כשקובץ התמונה קיים.</figcaption>
+  </figure>
+
+  <div class="box meaning">
+    <p>שימו לב שהצבע (Profit) מספר בדיוק את אותו סיפור של הגודל (Sales). בתל אביב יש הכי הרבה מכירות, ולכן גם הכי הרבה רווח במספרים מוחלטים. הצבע נראה כאילו הוא מוסיף מידע, אבל הוא רק מחזיר לנו את הגודל. כדי שהצבע יוסיף משהו צריך מדד אחר, למשל אחוז הרווח. כך נעשה בסעיף 8.</p>
+  </div>
+
+  <p>דרך אחרת להגיע לאותה מפה היא <code>Show Me</code>. בוחרים את השדה הגיאוגרפי (ואפשר גם מדד, עם Ctrl או Cmd) ובוחרים את אחד האריחים של המפות:</p>
+  <figure class="shot">
+    <img src="img/showme.png" alt="חלון Show Me של Tableau Public, בשורה השנייה שני אריחי המפות" style="max-width:260px;margin:0 auto">
+    <figcaption>חלון <code>Show Me</code> בלי שדה נבחר, ולכן האריחים חלשים. בשורה השנייה שני האריחים השמאליים הם מפת סמלים ומפה צבועה. כשבוחרים שדה גיאוגרפי הם נדלקים.</figcaption>
+  </figure>
+
+  <p>ועכשיו שאלה שהמפה לא עונה עליה. יש 8 סימנים, אבל 9 סניפים. איפה הסניף התשיעי? הנה מקום לבדוק את זה בלי מפה. זה Tableau זעירה: הניחו <code>City</code> על <code>Detail</code> וראו כמה Marks יש, ואז הוסיפו גם <code>Branch</code>.</p>
+  <div class="tfp" data-id="m7-tfp-marks" data-task="הניחו City על Detail וקראו כמה Marks יש (8). עכשיו הוסיפו גם Branch על Detail. כמה Marks עכשיו?" data-goal='{"detail":["City","Branch"],"marks":9}' data-preset='{"detail":["City"],"mark":"circle"}' data-hide-shelves="filters,color,label" data-fields="City,Branch,Region,Sales,Profit"></div>
+
+  <div class="quiz" data-id="m7-q-marks" data-a="2"><p class="qq">במפה יש City על Detail ו-8 סימנים. מה יקרה אם נוסיף גם <code>Branch</code> ל-Detail?</p>
+    <button class="opt">עדיין 8, כי City כבר קבעה את מספר הסימנים</button>
+    <button class="opt">9, כי בתל אביב-יפו יש שני סניפים, והצירוף City ו-Branch נותן 9 ערכים שונים</button>
+    <button class="opt">6,575, סימן אחד לכל שורה בקובץ</button>
+    <div class="why">מספר הסימנים הוא מספר הצירופים השונים של כל הממדים שבגיליון. ברוב הערים סניף אחד, ולכן אותו סימן. בתל אביב-יפו שני סניפים (Dizengoff ו-Port), אז שני סימנים באותה נקודה. 6,575 הוא מספר השורות, והוא יופיע רק אם נוסיף ל-Detail שדה שונה בכל שורה כמו Order ID.</div></div>
+
+  <div class="box trap">
+    <p><b>המפה ריקה או אפורה.</b> אם רואים רק רקע אפור, או שהסימנים מרחפים בלי מפה מאחוריהם, בדרך כלל חסר חיבור לאינטרנט, או שרשת המכללה חוסמת. Tableau Public צריכה גישה לרשת בשביל מפות. בדקו חיבור, נסו רשת אחרת, ואם זה לא עוזר בקשו עזרה לפני שמתחילים לחפש טעות בגיליון.</p>
+  </div>
+
+  <div class="teach"><b>🎓 למרצה:</b> בקשו מכולם לקרוא בקול את שורת המצב (כמה marks). זה מגלה מיד מי מקבל 6 או 7 ומי 8. לפני השיעור בדקו מה מופיע בפינה הימנית התחתונה אצלכם, ואיך נקראת האפשרות שם (לפי מדריכים, יש בה Edit Locations). הדוגמה עם Show Me: בגרסה שלכם ייתכן שהאריחים בסדר אחר.</div>
+</section>
+
+<section class="sec" id="m7-4" data-t="מיקום שלא זוהה">
+  <div class="sec-h"><div class="sec-n">4</div><h2>כשהמפה לא מזהה: unknown, עברית וקואורדינטות</h2></div>
+  <p class="lead">בנתונים אמיתיים יש שמות עם שגיאות כתיבה, שמות בעברית, וסניפים שאין להם בכלל שם של עיר. צריך לדעת מה עושים כשסימן לא מגיע למפה, והרבה פעמים הפתרון הבטוח הוא לתת ל-Tableau את המיקום עצמו, כשני מספרים.</p>
+
+  <div class="box trap">
+    <p><b>עברית: זה עדיין פתוח.</b> Tableau Public מציגה טקסט בעברית בלי בעיה, אבל <b>לא בדקנו</b> אם היא מצליחה לזהות שמות מקומות בעברית, ואין לנו מקור רשמי שמאשר את זה. בשם הזהירות: אל תבנו מפה על שמות עבריים בלי ניסוי. לכן ב-Scoop &amp; Go שמות הערים באנגלית. הדרכים הבטוחות מופיעות למטה, ובהמשך יש ניסוי קטן שבו אתם בודקים את זה בעצמכם.</p>
+  </div>
+
+  <h3>איך נראה שם שלא זוהה</h3>
+  <p>כשחלק מהשמות לא נמצאים, Tableau לא מצייר אותם, ובפינה הימנית התחתונה של המפה מופיע סימון בסגנון <code>2 unknown</code>. לפי מדריכים מקובלים, לחיצה עליו פותחת תפריט עם אפשרויות כמו <code>Edit Locations</code> (תיקון המיקומים), סינון הנתונים שלא זוהו, והצגתם בנקודת ברירת מחדל. בגרסה שלכם ייתכן שהשמות שונים מעט.</p>
+  <div class="mk" aria-label="הדמיה סכמטית של חלון Edit Locations">
+    <div class="mk-bar"><i></i><i></i><i></i><span class="url">Edit Locations · הדמיה סכמטית</span></div>
+    <div class="mk-body">
+      <table class="tbl" style="direction:ltr">
+        <thead><tr><th>City (שם בקובץ)</th><th>Match to Known Location</th></tr></thead>
+        <tbody>
+          <tr><td>Haifaa</td><td><span class="pill d">Haifa, Israel ▾</span></td></tr>
+          <tr><td>Netanyah</td><td><span class="pill d">Enter latitude and longitude</span></td></tr>
+        </tbody></table>
+      <p style="margin:8px 0 0;font-size:.8rem;color:#64748b;direction:rtl;text-align:right">דוגמה בדויה: שני שמות עם שגיאות כתיבה. הרעיון: לכל שם שלא זוהה בוחרים התאמה לשם מוכר, או מקלידים קו רוחב וקו אורך. זה לא בהכרח מה שיופיע אצלכם.</p>
+    </div>
+  </div>
+  <figure class="shot" data-shot="m7-unknown-indicator">
+    <div class="fb"><div style="max-width:380px;margin:0 auto;direction:ltr;text-align:left;font-size:.85rem"><div style="background:#e9eef4;border:1px solid #cbd5e1;border-radius:8px;height:120px;position:relative"><span style="position:absolute;right:8px;bottom:8px;background:#6b7280;color:#fff;border-radius:6px;padding:1px 10px;font-weight:700">2 unknown</span></div><div style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;margin:4px 0 0 auto;width:230px;box-shadow:0 6px 16px rgba(15,23,42,.15)"><div style="padding:4px 10px">Edit Locations...</div><div style="padding:4px 10px">Filter Data</div><div style="padding:4px 10px">Show Data at Default Position</div></div></div>
+    <div class="need">צילום מסך נדרש: Tableau Public, מפה שבה חלק מהשמות לא זוהו (למשל שם עם שגיאת כתיבה בעמודת City), לחיצה על הסימון unknown בפינה הימנית התחתונה, והתפריט שנפתח</div></div>
+    <figcaption>הסימון unknown והתפריט שלו (הדמיה סכמטית, עד שיתווסף צילום אמיתי).</figcaption>
+  </figure>
+  <p>התיקון הזה נשמר בתוך חוברת העבודה ולא בקובץ הנתונים. מי שיקבל מחר את אותו קובץ יצטרך לתקן שוב. ולכן, בדרך כלל, עדיף לתקן את הנתונים עצמם.</p>
+
+  <h3>קו רוחב וקו אורך</h3>
+  <div class="defline"><b>קו רוחב (<code>Latitude</code>) וקו אורך (<code>Longitude</code>):</b> שני מספרים שקובעים נקודה על כדור הארץ. קו רוחב אומר כמה צפונה מקו המשווה, וקו אורך אומר כמה מזרחה מקו גריניץ׳. דוגמה: חיפה היא בערך 32.8 ו-35.0, כלומר צפונה מהמשווה ומזרחה מגריניץ׳. כל זוג כזה נקרא <dfn data-d="הזוג של קו רוחב וקו אורך שמציין נקודה אחת על המפה">קואורדינטות</dfn>.</div>
+  <p>הסדר חשוב. ב-Tableau קו האורך הולך על <code>Columns</code> (ציר אופקי, מערב למזרח) וקו הרוחב על <code>Rows</code> (ציר אנכי, דרום לצפון). כמו (x, y): קודם אורך ואז רוחב. בטקסטים רבים כותבים דווקא קודם רוחב, וזה מקור לבלבול.</p>
+
+  <div class="anim" data-id="m7-anim-latlon" data-speed="3400">
+    <div class="stage"><svg viewBox="0 0 800 340" role="img" aria-label="הדמיה: קו אורך על ציר אופקי, קו רוחב על ציר אנכי, נקודת חיפה, והטעות של החלפת הסדר">
+      <rect x="60" y="30" width="310" height="260" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+      <g data-s="1"><line x1="90" y1="280" x2="350" y2="280" stroke="#475569" stroke-width="2"/>
+        <line x1="111.7" y1="276" x2="111.7" y2="284" stroke="#475569"/><line x1="220" y1="276" x2="220" y2="284" stroke="#475569"/><line x1="328.3" y1="276" x2="328.3" y2="284" stroke="#475569"/>
+        <text x="111.7" y="300" text-anchor="middle" font-size="13" fill="#475569">34.5</text><text x="220" y="300" text-anchor="middle" font-size="13" fill="#475569">35.0</text><text x="328.3" y="300" text-anchor="middle" font-size="13" fill="#475569">35.5</text>
+        <text x="220" y="322" text-anchor="middle" font-size="15" font-weight="700" fill="#1c6b1c">Longitude · Columns · ממערב למזרח</text></g>
+      <g data-s="2"><line x1="90" y1="280" x2="90" y2="40" stroke="#475569" stroke-width="2"/>
+        <line x1="86" y1="180" x2="94" y2="180" stroke="#475569"/><line x1="86" y1="80" x2="94" y2="80" stroke="#475569"/><line x1="86" y1="280" x2="94" y2="280" stroke="#475569"/>
+        <text x="80" y="184" text-anchor="end" font-size="13" fill="#475569">32</text><text x="80" y="84" text-anchor="end" font-size="13" fill="#475569">33</text><text x="80" y="284" text-anchor="end" font-size="13" fill="#475569">31</text>
+        <text x="100" y="52" text-anchor="start" font-size="15" font-weight="700" fill="#1c6b1c">Latitude · Rows · מדרום לצפון</text></g>
+      <g data-s="3" data-pulse><line x1="217.8" y1="100.6" x2="217.8" y2="280" stroke="#e8741f" stroke-dasharray="4 4"/><line x1="90" y1="100.6" x2="217.8" y2="100.6" stroke="#e8741f" stroke-dasharray="4 4"/>
+        <circle cx="217.8" cy="100.6" r="9" fill="#4e79a7" stroke="#14507a" stroke-width="2"/>
+        <text x="232" y="96" text-anchor="start" font-size="15" font-weight="700" fill="#1e293b">Haifa</text>
+        <text x="232" y="116" text-anchor="start" font-size="13" fill="#475569">(34.99, 32.79)</text></g>
+
+      <g data-s="4"><rect x="420" y="30" width="360" height="260" rx="8" fill="#fff" stroke="#fca5a5" stroke-width="2"/>
+        <path d="M690.3 129.1 L687.9 135.0 L678.6 138.7 L677.1 143.5 L673.2 152.3 L670.9 157.1 L663.9 166.3 L653.8 176.7 L647.6 181.8 L628.2 193.3 L625.9 198.1" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="600" y="320" text-anchor="middle" font-size="14" fill="#991b1b">אותו מקום, אחרי החלפה בין השדות</text>
+        <circle cx="681.7" cy="140" r="8" fill="#4e79a7" stroke="#14507a" stroke-width="2"/><text x="672" y="132" text-anchor="end" font-size="14" font-weight="700" fill="#1e293b">Haifa (נכון)</text>
+        <circle cx="511.2" cy="59" r="8" fill="#ef4444" stroke="#991b1b" stroke-width="2"/><text x="524" y="62" text-anchor="start" font-size="14" font-weight="700" fill="#991b1b">הסימן הטועה</text>
+        <text x="524" y="80" text-anchor="start" font-size="13" fill="#991b1b">באזור קפריסין</text>
+        <text x="610" y="222" text-anchor="end" font-size="12" fill="#94a3b8">קו חוף מקורב</text></g>
+      <g data-s="5"><rect x="430" y="232" width="342" height="48" rx="10" fill="#fffbeb" stroke="#f59e0b"/><text x="601" y="252" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">בדיקת שפיות לישראל</text><text x="601" y="271" text-anchor="middle" font-size="13" fill="#92400e">קו רוחב בין 29.5 ל-33.3, קו אורך בין 34.3 ל-35.9</text></g>
+    </svg></div>
+    <ol class="caps">
+      <li>קו האורך (Longitude) הוא הציר האופקי: <code>Columns</code>. ככל שהמספר גדול יותר, הנקודה מזרחית יותר.</li>
+      <li>קו הרוחב (Latitude) הוא הציר האנכי: <code>Rows</code>. ככל שהמספר גדול יותר, הנקודה צפונית יותר.</li>
+      <li>חיפה היא בערך 34.99 באורך ו-32.79 ברוחב, ולכן יושבת במקום הזה על הרשת.</li>
+      <li>אם בטעות מחליפים בין העמודות, חיפה מקבלת רוחב 34.99 ואורך 32.79, והסימן נוחת באזור קפריסין, מערבה בים.</li>
+      <li>בדיקת שפיות: ערים בישראל נמצאות בטווח צר. מספר מחוץ לטווח הזה הוא רמז לטעות.</li>
+    </ol>
+  </div>
+
+  <div class="quiz" data-id="m7-q-latlon" data-a="3"><p class="qq">איזה שדה הולך על Columns בכל מפה ב-Tableau?</p>
+    <button class="opt">Latitude, כי רוחב הוא מה שמשתנה מצפון לדרום</button>
+    <button class="opt">זה תלוי בסדר שבו הקלדתם את העמודות בקובץ</button>
+    <button class="opt">Longitude, כי Columns הוא הציר האופקי ואורך הולך ממערב למזרח</button>
+    <div class="why">Columns הוא הציר האופקי, ואורך הוא הכיוון האופקי: ממערב למזרח. רוחב הולך על Rows. סדר העמודות בקובץ לא משנה לכלום, כי אתם מניחים כל שדה על המדף שאתם בוחרים. ב-GeoJSON, כפי שנראה בסעיף 6, הסדר בקובץ כן חשוב, ושם קודם אורך ואחר כך רוחב.</div></div>
+
+  <h3>ארבע דרכים בטוחות להביא מיקום</h3>
+  <div class="tw"><table class="tbl">
+    <thead><tr><th>הדרך</th><th>מתי</th><th>מה צריך</th></tr></thead>
+    <tbody>
+      <tr><td><b>עמודת שם באנגלית</b> לצד העברית</td><td>יש שמות מוכרים, אבל כתובים בעברית</td><td>עמודה נוספת בקובץ. כך Scoop &amp; Go בנויה</td></tr>
+      <tr><td><b>עמודת מדינה</b> (ולפעמים מחוז)</td><td>השם עמום, כמו ״Springfield״</td><td>עמודה נוספת, ותפקיד גיאוגרפי גם לה</td></tr>
+      <tr><td><b>קובץ קואורדינטות</b></td><td>השם לא מזוהה, או שאין שם בכלל (סניף, כתובת)</td><td>קובץ שני עם City, Latitude, Longitude, וקישור ביניהם</td></tr>
+      <tr><td><b>Edit Locations</b> בתוך Tableau</td><td>תיקון מהיר של כמה שמות בודדים</td><td>הקלדה ידנית, נשמרת בחוברת בלבד</td></tr>
+    </tbody></table></div>
+  <p>ננסה עכשיו את הדרך השלישית, כי היא עובדת תמיד, וגם מלמדת מה Tableau עושה מאחורי הקלעים. שימו לב שהיא לא תלויה במאגר המקומות של Tableau, ולכן אין בה שום דבר שצריך לבדוק מראש.</p>
+
+  <p>העתיקו את הטקסט הבא לקובץ טקסט ושמרו אותו בשם <code>scoop_city_coords.csv</code>. הקואורדינטות מקורבות ומציינות את מרכז העיר, מספיק טוב לתרגיל, לא למדידה:</p>
+  <pre class="code" data-lang="csv">City,Latitude,Longitude
+Tel Aviv-Yafo,32.0853,34.7818
+Jerusalem,31.7683,35.2137
+Haifa,32.7940,34.9896
+Beer Sheva,31.2530,34.7915
+Eilat,29.5577,34.9519
+Netanya,32.3215,34.8532
+Rehovot,31.8928,34.8113
+Ashdod,31.8044,34.6553</pre>
+
+  <div class="box try" data-id="m7-try-coords">
+    <ol>
+      <li>הדביקו את הטקסט בעורך טקסט ושמרו כ-<code>scoop_city_coords.csv</code>. ב-Windows (Notepad): <code>Save As</code> עם <code>Encoding: UTF-8</code>. ב-Mac (TextEdit): קודם <code>Format &gt; Make Plain Text</code>. אפשר גם להדביק ב-Excel ולשמור כ-<code>CSV UTF-8</code>. <b>למה:</b> בקובץ הזה אין עברית, אבל כדאי להתרגל לשמור תמיד ב-UTF-8. <b>תוצאה:</b> קובץ של 9 שורות (כותרת ועוד 8 ערים).</li>
+      <li>ב-Tableau Public עברו ללשונית <code>Data Source</code> (בתחתית החלון). בחלונית <code>Connections</code> לחצו <code>Add</code> ובחרו <code>Text file</code>, ואז את הקובץ החדש. <b>למה:</b> עכשיו שני קבצים מחוברים לאותה חוברת. בגרסה שלכם הכפתור עשוי להיקרא קצת אחרת.</li>
+      <li>גררו את הטבלה החדשה אל הקנבס, ליד טבלת Scoop. תראו קו שמחבר ביניהן (קשר, <code>relationship</code>). ודאו שהשדה המחבר הוא <code>City</code> בשני הצדדים. אם Tableau לא בחרה לבד, לחצו על הקו ובחרו City. <b>למה:</b> כך Tableau יודעת לאיזו עיר שייך כל זוג קואורדינטות. קישורים בין קבצים מוסברים ביסודיות במודול <a href="module11.html">11</a>.</li>
+      <li>עברו לגיליון חדש. בחלונית Data מופיעות עכשיו שתי טבלאות. בטבלת הקואורדינטות, ליד <code>Latitude</code> ו-<code>Longitude</code> אמורים להופיע סמלי כדור הארץ (Tableau מזהה לבד לפי השם). <b>למה:</b> ככה Tableau יודעת שאלה מספרים של מיקום.</li>
+      <li>לחצו פעמיים על <code>Latitude</code> ואז על <code>Longitude</code>. הפילים יעלו ל-<code>Rows</code> ול-<code>Columns</code> (בדרך כלל כ-AVG או SUM). <b>למה:</b> אורך ורוחב הם ה-x וה-y של המפה.</li>
+      <li>עכשיו המפה מציגה סימן אחד בלבד (עם AVG הוא ייפול איפשהו באמצע הארץ, ועם SUM הוא ייפול מחוץ למפה). גררו את <code>City</code> אל <code>Detail</code>. <b>למה:</b> בלי City ב-Detail Tableau מסכמת את כל השורות לנקודה אחת. עם City יש סימן לכל עיר.</li>
+      <li>גררו <code>Sales</code> אל <code>Size</code> ו-<code>Profit</code> אל <code>Color</code>, ועברו עם העכבר על תל אביב-יפו. <b>למה:</b> זה אותו צ׳קפוינט של סעיף 3.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> <b>8 marks</b> בדיוק באותם מקומות כמו במפה של סעיף 3. מעל תל אביב-יפו: Sales כ-83,640.1 ו-Profit כ-43,289.6. אם הקואורדינטות לא נקראו נכון תראו סימן בודד באמצע האוקיינוס, או כל הסימנים בקו אחד: בדקו שלא החלפתם בין Latitude ל-Longitude.</p>
+    <p>אם אתם מעדיפים לא לחבר שני קבצים: פתחו את <code>scoop_sales_2024_2025.xlsx</code> ב-Excel, הוסיפו בעמודות חדשות Latitude ו-Longitude לפי City (<code>VLOOKUP</code> או <code>XLOOKUP</code> מגיליון נפרד שבו שמרתם את 8 השורות), ושמרו כקובץ חדש. התוצאה זהה.</p>
+  </div>
+
+  <div class="box trap">
+    <p><b>סימן אחד באמצע האוקיינוס.</b> אם חיברתם את הקבצים ב-<code>Join</code> ולא ב-relationship, קואורדינטות העיר מועתקות לכל שורה בקובץ. לתל אביב-יפו יש 2,305 שורות, ולכן <code>SUM(Latitude)</code> יוצא <bdi dir="ltr">32.0853 × 2,305 = 73,956.6,</bdi> מספר שלא קיים על מפה. הפתרון: לשנות את האגרגציה של הפיל ל-<code>Average</code>, וכך כל עיר מקבלת את הקואורדינטה שלה בחזרה. בדיוק בגלל זה לקשר (relationship) יש יתרון כאן.</p>
+  </div>
+
+  <div class="box think" data-id="m7-th-branches"><p>בתל אביב-יפו שני סניפים, Dizengoff ו-Port, אבל במפה לפי City הם סימן אחד. איך הייתם ממפים את התשעה סניפים, כל אחד במקומו?</p>
+    <div class="ans">מכינים קובץ קואורדינטות לפי סניף ולא לפי עיר: Branch, Latitude, Longitude, תשע שורות, עם מיקום מקורב לכל סניף. מקשרים אותו ב-Branch. אז תשימו Branch על Detail במקום City. שני סימנים בתל אביב יהיו קרובים זה לזה, ואז צריך להתקרב עם הזום כדי להפריד ביניהם. שימו לב שזה מחייב מיקומים לכל סניף. בקובץ אין כתובות, ולכן הקואורדינטות האלה הן החלטה שלכם.</div></div>
+
+  <h3>ניסוי: האם עברית עובדת?</h3>
+  <p>הנה השאלה שלא ענינו, ועכשיו אפשר לבדוק אותה בעצמכם. התוצאה לא נקבעה מראש, ולכן כל תשובה היא תשובה טובה.</p>
+  <pre class="code" data-lang="csv">City_He,Sales
+תל אביב-יפו,83640.1
+ירושלים,33450.8
+אילת,31473.7
+חיפה,27389.2
+נתניה,26840.2
+באר שבע,18797.2
+רחובות,9925.2
+אשדוד,5304.5</pre>
+  <div class="box try" data-id="m7-try-hebrew">
+    <ol>
+      <li>שמרו את הטקסט כ-<code>hebrew_cities.csv</code> בקידוד UTF-8 (ב-Excel: <code>CSV UTF-8</code>). <b>למה:</b> בקידוד אחר העברית תהפוך לג׳יבריש, ואז בודקים קידוד ולא מפות.</li>
+      <li>התחברו אל הקובץ בחוברת חדשה, וגררו את <code>City He</code> אל <code>Rows</code>. <b>תוצאה:</b> 8 שורות בעברית קריאה. אם יש ג׳יבריש, חזרו לשלב 1.</li>
+      <li>אם ליד <code>City He</code> אין סמל כדור הארץ: לחצו ימני, <code>Geographic Role &gt; City</code>. <b>למה:</b> לתת ל-Tableau את התפקיד ידנית.</li>
+      <li>נקו את הגיליון, וצרו מפה בלחיצה כפולה על <code>City He</code>. קראו את שורת המצב ואת הפינה הימנית התחתונה.</li>
+    </ol>
+    <p><b>תוצאה:</b> אחת משלוש: 8 marks בלי unknown, כמה שמות unknown, או כולם unknown. אנחנו לא יודעים איזו מהן תקבלו. רשמו מה קיבלתם ואיזו גרסה של Tableau Public אצלכם. אם הסימנים הופיעו, ודאו שכל אחד במקום הנכון על המפה (למשל חיפה בצפון על החוף), כי התאמה שגויה נראית כמו התאמה טובה. אם יצא unknown, אתם יודעים למה Scoop &amp; Go מחזיקה עמודת אנגלית.</p>
+  </div>
+  <p>אם רוצים תוויות בעברית על המפה, אפשר לשמור את הגיאוקידוד על העמודה האנגלית, ולהציג בעברית את עמודת השם (למשל על <code>Label</code>). לפי מדריכים מקובלים אפשר גם להשתמש ב-<code>Aliases</code> (שם תצוגה בעברית על ערך באנגלית), אבל בדקו אצלכם איך זה מתנהג.</p>
+
+  <div class="quiz" data-id="m7-q-unknown" data-a="1"><p class="qq">שני שמות עיר לא זוהו במפה, ובחוברת הזאת יש רק קובץ אחד. מה הדרך הבטוחה ביותר להמשיך?</p>
+    <button class="opt">להוסיף עמודות Latitude ו-Longitude לפי עיר, ולתת למפה את המיקום עצמו</button>
+    <button class="opt">להמשיך כרגיל: המפה מתעלמת מהשמות האלה ולא משנה שהם חסרים</button>
+    <button class="opt">למחוק את השורות האלה מהקובץ, כך שייעלמו גם מהמספרים</button>
+    <div class="why">קואורדינטות לא תלויות במאגר המקומות, ולכן הן תמיד עובדות. התעלמות היא הטעות: המכירות של הערים האלה נעלמות מהמפה, והמספרים על המפה כבר לא מסכמים לכל הרשת, בלי שאף אחד אמר לכם. מחיקת שורות משנה את הסכומים עצמם, וזה גרוע יותר.</div></div>
+
+  <div class="box real">
+    <p>בצוותי נתונים מקובל להוסיף קואורדינטות לקובץ עוד לפני שהוא מגיע לכלי הוויזואליזציה. כתובות של לקוחות או סניפים נשמרות עם קו רוחב וקו אורך, ואז כל כלי יכול לצייר אותן, בלי תלות במאגר שמות של כלי מסוים. כך גם נמנעים משינויים כשהכלי מתעדכן.</p>
+  </div>
+
+  <div class="teach"><b>🎓 למרצה:</b> (1) סעיף זה כולל שלושה פריטים שלא אומתו ב-Tableau Public: התפריט שנפתח מהסימון unknown והשמות שלו, חלון Edit Locations, והאם עברית מזוהה. <b>לבדוק בתוכנה לפני השיעור.</b> (2) לפי מחקר ההכנה, דף התיעוד של Edit Locations לא נמצא, ולכן הכל כאן נכתב בזהירות. (3) הניסוי העברי נועד בכוונה לתת לסטודנטים להצליח או להיכשל, ולרשום. אם תראו שיש תוצאה אחידה, אפשר לכתוב אותה לעצמכם לשנה הבאה. (4) קישור שני קבצים נלמד בהרחבה במודול 11, כאן רק הצעדים הדרושים. אם כמה סטודנטים נתקעים על הקשר, מכינים להם מראש את גרסת ה-Excel.</div>
+</section>
+
+<section class="sec" id="m7-5" data-t="סגנון, שכבות וציר כפול">
+  <div class="sec-h"><div class="sec-n">5</div><h2>איך המפה נראית: רקע, סימנים ושכבות</h2></div>
+  <p class="lead">מפה לא צריכה להיראות כמו מפה של נהג. התפקיד שלה להבליט את הנתונים שלכם, ולכן קודם מחלישים את הרקע, ואחר כך מטפלים בסימנים.</p>
+
+  <div class="defline"><b>שכבת רקע (<code>background layer</code>):</b> מה שמצויר מאחורי הסימנים שלכם, כמו חופים, גבולות, כבישים ושמות. דוגמה: לכבות את שמות המדינות, כדי שלא יתחרו בשמות הערים שלכם.</div>
+
+  <p>את הרקע משנים מהתפריט <code>Map &gt; Map Layers</code> (ובתיעוד הרשמי מופיע גם <code>Background Layers</code>, אז אם השם אצלכם שונה מעט, זה בסדר). החלונית שנפתחת מחליפה זמנית את חלונית Data. שלושה סגנונות רקע לדוגמה, בהדמיה סכמטית:</p>
+  <div class="cols3">
+    <div class="card" style="text-align:center"><h4>Normal</h4><svg viewBox="0 0 170 196" width="100%" role="img" aria-label="רקע רגיל, הדמיה סכמטית"><rect width="170" height="196" fill="#cfe3f2"/><path d="M96.5 24.2 L95.3 31.4 L90.7 35.9 L89.9 41.8 L88.0 52.6 L86.9 58.4 L83.4 69.7 L78.4 82.3 L75.3 88.6 L65.8 102.5 L64.6 108.4 L69.6 124.1 L84.2 163.3 L88.8 186.2 L92.2 183.5 L98.4 163.3 L98.4 136.3 L108.0 118.3 L111.8 95.8 L113.7 50.8 L123.3 14.8 Z" fill="#ebe7da" stroke="#bdb7a3"/><circle cx="84.2" cy="69.4" r="11.0" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="100.8" cy="83.7" r="7.0" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="90.8" cy="183.2" r="6.7" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="92.2" cy="37.5" r="6.3" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="87.0" cy="58.8" r="6.2" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="84.6" cy="106.9" r="5.2" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="85.4" cy="78.1" r="3.8" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="79.4" cy="82.1" r="2.8" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/></svg><p style="margin:2px 0;font-size:.82rem;color:#64748b">צבעוני. הרקע מתחרה בסימנים.</p></div>
+    <div class="card" style="text-align:center"><h4>Light</h4><svg viewBox="0 0 170 196" width="100%" role="img" aria-label="רקע בהיר, הדמיה סכמטית"><rect width="170" height="196" fill="#f4f6f8"/><path d="M96.5 24.2 L95.3 31.4 L90.7 35.9 L89.9 41.8 L88.0 52.6 L86.9 58.4 L83.4 69.7 L78.4 82.3 L75.3 88.6 L65.8 102.5 L64.6 108.4 L69.6 124.1 L84.2 163.3 L88.8 186.2 L92.2 183.5 L98.4 163.3 L98.4 136.3 L108.0 118.3 L111.8 95.8 L113.7 50.8 L123.3 14.8 Z" fill="#ffffff" stroke="#d5dbe3"/><circle cx="84.2" cy="69.4" r="11.0" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="100.8" cy="83.7" r="7.0" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="90.8" cy="183.2" r="6.7" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="92.2" cy="37.5" r="6.3" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="87.0" cy="58.8" r="6.2" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="84.6" cy="106.9" r="5.2" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="85.4" cy="78.1" r="3.8" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="79.4" cy="82.1" r="2.8" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/></svg><p style="margin:2px 0;font-size:.82rem;color:#64748b">מחליש את הרקע. בדרך כלל הבחירה הטובה למפת נתונים.</p></div>
+    <div class="card" style="text-align:center"><h4>Dark</h4><svg viewBox="0 0 170 196" width="100%" role="img" aria-label="רקע כהה, הדמיה סכמטית"><rect width="170" height="196" fill="#2b313b"/><path d="M96.5 24.2 L95.3 31.4 L90.7 35.9 L89.9 41.8 L88.0 52.6 L86.9 58.4 L83.4 69.7 L78.4 82.3 L75.3 88.6 L65.8 102.5 L64.6 108.4 L69.6 124.1 L84.2 163.3 L88.8 186.2 L92.2 183.5 L98.4 163.3 L98.4 136.3 L108.0 118.3 L111.8 95.8 L113.7 50.8 L123.3 14.8 Z" fill="#3a424e" stroke="#59616d"/><circle cx="84.2" cy="69.4" r="11.0" fill="#f2c14e" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="100.8" cy="83.7" r="7.0" fill="#f2c14e" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="90.8" cy="183.2" r="6.7" fill="#f2c14e" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="92.2" cy="37.5" r="6.3" fill="#f2c14e" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="87.0" cy="58.8" r="6.2" fill="#f2c14e" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="84.6" cy="106.9" r="5.2" fill="#f2c14e" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="85.4" cy="78.1" r="3.8" fill="#f2c14e" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="79.4" cy="82.1" r="2.8" fill="#f2c14e" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/></svg><p style="margin:2px 0;font-size:.82rem;color:#64748b">צבעים בהירים בולטים. מתאים לדשבורד כהה.</p></div>
+  </div>
+  <p style="font-size:.85rem;color:#64748b">איורים סכמטיים בלבד. השמות והמראה המדויקים של הסגנונות אצלכם עשויים להיות שונים.</p>
+
+  <div class="box try" data-id="m7-try-style">
+    <ol>
+      <li>במפה של סעיף 3 (או 4) פתחו <code>Map &gt; Map Layers</code>. <b>למה:</b> שם כל הגדרות הרקע.</li>
+      <li>בחרו <code>Style</code> בהיר (<code>Light</code>), ואם אין, <code>Normal</code>. <b>למה:</b> רקע חיוור מבליט סימנים צבעוניים.</li>
+      <li>בטלו שכבות רקע שאתם לא צריכים: שמות מדינות, ושמות מקומות אם מופיעים. <b>למה:</b> לא רוצים טקסט של הרקע שיתחרה בשמות הערים שלכם.</li>
+      <li>אם יש מחוון <code>Washout</code>, הזיזו אותו קצת למעלה. <b>למה:</b> זה מחליש את הרקע עוד, בלי לגעת בסימנים.</li>
+      <li>בכרטיס Marks: <code>Color &gt; Opacity</code> בערך 70%, והוסיפו <code>Border</code>. <b>למה:</b> עיגולים שחופפים (תל אביב-יפו, רחובות, אשדוד קרובות) נשארים נראים זה דרך זה.</li>
+      <li>בכרטיס Marks: <code>Size</code>, והזיזו את המחוון עד שאשדוד נראית, ותל אביב-יפו לא מכסה את שכנותיה לגמרי. <b>למה:</b> גודל מוחלט תלוי בכם, והיחסים בין העיגולים נשמרים.</li>
+      <li>גררו <code>City</code> אל <code>Label</code>. <b>למה:</b> שמות ליד הנקודות.</li>
+      <li>גללו עם העכבר כדי להתקרב, וגררו כדי להזיז. חפשו את סרגל הכלים של המפה כשהעכבר עליה. <b>למה:</b> להכיר את הזום, ולדעת איך חוזרים לתצוגה הכללית.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> אף מספר לא משתנה. עדיין <b>8 marks</b>, ובתיבת הכלים עדיין Sales 83,640.1 לתל אביב-יפו. המפה בהירה, בלי שמות מדינות, והעיגולים שקופים בחלקם.</p>
+  </div>
+
+  <p>בכרטיס Marks יש גם סוגי סימן שיש רק במפות. התפריט הזה נראה ככה:</p>
+  <figure class="shot">
+    <img src="img/marks-dropdown.png" alt="תפריט סוגי הסימן בכרטיס Marks, עם Map ו-Density" style="max-width:240px;margin:0 auto">
+    <figcaption>סוגי הסימן ב-Tableau Public. שניים קשורים למפות: <code>Map</code> (ממלא שטחים) ו-<code>Density</code> (מפת צפיפות). את שניהם נראה בסעיף 6. בינתיים נשארים עם <code>Automatic</code>, שהוא עיגולים לנקודות.</figcaption>
+  </figure>
+
+  <h3>ציר כפול: שתי שכבות על אותה מפה</h3>
+  <div class="defline"><b>ציר כפול (<code>Dual Axis</code>):</b> שני סימנים על אותו גיליון, כל אחד עם כרטיס Marks משלו. במפה זה אומר שתי שכבות זו על זו. דוגמה: שכבה אחת של עיגולים לפי מכירות, ומעליה שכבה של שמות הערים.</div>
+  <p>בשביל שמונה נקודות שכבה אחת מספיקה: אפשר לשים גם גודל וגם צבע וגם תווית בכרטיס אחד. ציר כפול שווה את המאמץ כשצריך <b>שני סוגי סימן שונים</b>, למשל שטחים צבועים ועליהם נקודות, או כשרוצים שהתוויות יהיו בלתי תלויות בעיגולים. אנחנו נבנה אותו עכשיו כי זו הטכניקה, ונשתמש בה כדי לשים שכבת תוויות נפרדת.</p>
+
+  <div class="anim" data-id="m7-anim-dual" data-speed="3600">
+    <div class="stage"><svg viewBox="0 0 800 360" role="img" aria-label="הדמיה סכמטית: בניית מפה עם ציר כפול בחמישה שלבים">
+      <defs><linearGradient id="m7-a3-g" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#dfe6ee"/><stop offset=".6" stop-color="#eef2f7"/><stop offset="1" stop-color="#eef2f7" stop-opacity="0"/></linearGradient></defs>
+      <text x="16" y="38" font-size="14" font-weight="700" fill="#64748b" text-anchor="start">Columns</text>
+      <rect x="90" y="20" width="120" height="26" rx="6" fill="#d9f0d6" stroke="#a8d4a3"/><text x="150" y="38" text-anchor="middle" font-size="14" font-weight="600" fill="#1c6b1c">Longitude</text>
+      <g data-s="3" data-pulse><rect x="216" y="20" width="88" height="26" rx="6" fill="#d9f0d6" stroke="#e8741f" stroke-width="2"/><text x="260" y="38" text-anchor="middle" font-size="14" font-weight="600" fill="#1c6b1c">Longitude</text></g>
+      <text x="16" y="78" font-size="14" font-weight="700" fill="#64748b" text-anchor="start">Rows</text>
+      <rect x="90" y="60" width="120" height="26" rx="6" fill="#d9f0d6" stroke="#a8d4a3"/><text x="150" y="78" text-anchor="middle" font-size="14" font-weight="600" fill="#1c6b1c">Latitude</text>
+      <g data-s="4"><text x="260" y="78" text-anchor="middle" font-size="14" font-weight="700" fill="#047857">Dual Axis ✓</text></g>
+
+      <rect x="10" y="104" width="300" height="240" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+      <text x="22" y="126" font-size="14" font-weight="700" fill="#64748b" text-anchor="start">Marks</text>
+      <rect x="20" y="136" width="56" height="26" rx="5" fill="#e2e8f0" stroke="#94a3b8"/><text x="48" y="154" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">All</text>
+      <g data-s="3"><rect x="82" y="136" width="96" height="26" rx="5" fill="#f1f5f9" stroke="#cbd5e1"/><text x="130" y="154" text-anchor="middle" font-size="13" fill="#334155">Longitude</text>
+        <rect x="184" y="136" width="116" height="26" rx="5" fill="#f1f5f9" stroke="#cbd5e1"/><text x="242" y="154" text-anchor="middle" font-size="13" fill="#334155">Longitude (2)</text></g>
+      <text x="26" y="196" font-size="14" fill="#64748b" text-anchor="start">Detail</text><rect x="90" y="178" width="70" height="26" rx="6" fill="#d7e7f5" stroke="#a9c9e3"/><text x="125" y="196" text-anchor="middle" font-size="14" font-weight="600" fill="#14507a">City</text>
+      <g data-s="2"><text x="26" y="232" font-size="14" fill="#64748b" text-anchor="start">Size</text><rect x="90" y="214" width="130" height="26" rx="6" fill="#d9f0d6" stroke="#a8d4a3"/><text x="155" y="232" text-anchor="middle" font-size="14" font-weight="600" fill="#1c6b1c">SUM(Sales)</text></g>
+      <g data-s="5"><line x1="22" y1="252" x2="298" y2="252" stroke="#e2e8f0"/>
+        <text x="26" y="276" font-size="13" font-weight="700" fill="#334155" text-anchor="start">Longitude (2): Text</text><text x="26" y="296" font-size="13" fill="#475569" text-anchor="start">Label = City, בלי Size</text>
+        <text x="26" y="322" font-size="13" font-weight="700" fill="#334155" text-anchor="start">Longitude: Circle</text><text x="170" y="322" font-size="13" fill="#475569" text-anchor="start">Size = Sales</text></g>
+
+      <rect x="330" y="10" width="460" height="338" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+      <path d="M556.7 55.2 L554.9 66.4 L547.7 73.4 L546.6 82.5 L543.6 99.3 L541.8 108.4 L536.4 125.9 L528.6 145.5 L523.9 155.3 L509.0 177.0 L507.2 186.1 L514.9 210.6 L537.6 271.5 L544.8 307.2 L550.1 303.0 L559.7 271.5 L559.7 229.5 L574.6 201.5 L580.6 166.5 L583.6 96.5 L598.5 40.5 Z" fill="url(#m7-a3-g)"/><path d="M556.7 55.2 L554.9 66.4 L547.7 73.4 L546.6 82.5 L543.6 99.3 L541.8 108.4 L536.4 125.9 L528.6 145.5 L523.9 155.3 L509.0 177.0 L507.2 186.1" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+      <g data-only="1"><circle cx="550.1" cy="75.9" r="4" fill="#64748b"/><circle cx="542.0" cy="109.0" r="4" fill="#64748b"/><circle cx="537.7" cy="125.5" r="4" fill="#64748b"/><circle cx="539.5" cy="139.0" r="4" fill="#64748b"/><circle cx="530.2" cy="145.2" r="4" fill="#64748b"/><circle cx="563.5" cy="147.7" r="4" fill="#64748b"/><circle cx="538.3" cy="183.8" r="4" fill="#64748b"/><circle cx="547.9" cy="302.5" r="4" fill="#64748b"/></g>
+      <g data-s="2"><circle cx="537.7" cy="125.5" r="20.0" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="563.5" cy="147.7" r="12.6" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="547.9" cy="302.5" r="12.3" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="550.1" cy="75.9" r="11.4" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="542.0" cy="109.0" r="11.3" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="538.3" cy="183.8" r="9.5" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="539.5" cy="139.0" r="6.9" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="530.2" cy="145.2" r="5.0" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/></g>
+      <g data-only="4"><circle cx="550.1" cy="75.9" r="3" fill="#0b1f3a"/><circle cx="542.0" cy="109.0" r="3" fill="#0b1f3a"/><circle cx="537.7" cy="125.5" r="3" fill="#0b1f3a"/><circle cx="539.5" cy="139.0" r="3" fill="#0b1f3a"/><circle cx="530.2" cy="145.2" r="3" fill="#0b1f3a"/><circle cx="563.5" cy="147.7" r="3" fill="#0b1f3a"/><circle cx="538.3" cy="183.8" r="3" fill="#0b1f3a"/><circle cx="547.9" cy="302.5" r="3" fill="#0b1f3a"/></g>
+      <g data-s="5"><text x="512.7" y="131.5" text-anchor="end" font-size="12.0" fill="#1e293b">Tel Aviv-Yafo</text><text x="581.1" y="153.7" text-anchor="start" font-size="12.0" fill="#1e293b">Jerusalem</text><text x="565.1" y="306.5" text-anchor="start" font-size="12.0" fill="#1e293b">Eilat</text><text x="533.7" y="79.9" text-anchor="end" font-size="12.0" fill="#1e293b">Haifa</text><text x="525.6" y="108.0" text-anchor="end" font-size="12.0" fill="#1e293b">Netanya</text><text x="552.8" y="187.8" text-anchor="start" font-size="12.0" fill="#1e293b">Beer Sheva</text><text x="551.4" y="133.0" text-anchor="start" font-size="12.0" fill="#1e293b">Rehovot</text><text x="520.1" y="161.2" text-anchor="end" font-size="12.0" fill="#1e293b">Ashdod</text></g>
+      <text x="780" y="338" text-anchor="end" font-size="12" fill="#94a3b8">מפה סכמטית</text>
+    </svg></div>
+    <ol class="caps">
+      <li>מתחילים ממפה פשוטה: <code>City</code> על Detail, ועל המדפים Longitude ו-Latitude. שמונה נקודות.</li>
+      <li><code>Sales</code> על Size: העיגולים גדלים לפי המכירות. עד כאן שכבה אחת, וכל ההגדרות יושבות בכרטיס אחד.</li>
+      <li>מעתיקים את הפיל Longitude ב-Columns (Ctrl או Cmd וגרירה). עכשיו הכרטיס Marks מתפצל ללשוניות: <code>All</code>, ולכל עותק לשונית משלו.</li>
+      <li>לחיצה ימנית על העותק השני ו-<code>Dual Axis</code>. שתי השכבות יושבות על אותה מפה, זו על זו. השכבה השנייה עדיין מציירת עיגולים, כאן נקודות קטנות.</li>
+      <li>בלשונית של השכבה השנייה בוחרים סוג סימן <code>Text</code> ושמים City על Label. עכשיו התחתונה היא עיגולים והעליונה היא שמות, ולכל שכבה כרטיס Marks משלה.</li>
+    </ol>
+  </div>
+
+  <div class="box try" data-id="m7-try-dual">
+    <ol>
+      <li>במפה שלכם גררו את הפיל Longitude מ-<code>Columns</code> ימינה, עם Ctrl (ב-Mac: Cmd) לחוץ, כדי להעתיק אותו. <b>למה:</b> עותק שני של הפיל יהיה השכבה השנייה. <b>תוצאה:</b> ב-Columns שני פילים, ובכרטיס Marks לשוניות <code>All</code> ושתי לשוניות נוספות.</li>
+      <li>לחצו ימני על הפיל השני ובחרו <code>Dual Axis</code>. <b>למה:</b> זה מה שהופך את שני העותקים לשתי שכבות על אותה מפה. אם הסימנים לא נראים מיושרים: לחצו ימני על הציר השני <code>Synchronize Axis</code>.</li>
+      <li>לחצו על הלשונית של השכבה הראשונה, וודאו ש-<code>Size</code> הוא Sales ו-<code>Color</code> הוא Profit. אם הם נמצאים בלשונית <code>All</code>, גררו אותם אל הלשונית הראשונה. <b>למה:</b> כך הגודל והצבע ישפיעו רק על העיגולים, לא על הטקסט.</li>
+      <li>לחצו על הלשונית של השכבה השנייה. שנו את סוג הסימן ל-<code>Text</code>, והניחו <code>City</code> על <code>Label</code>. אם הטקסט ענק או צבוע בצבעים של Profit, הסירו את <code>Size</code> ו-<code>Color</code> מהלשונית הזו. <b>למה:</b> כל שכבה מציירת משהו אחר, ולכן מגדירים כל אחת בנפרד.</li>
+      <li>חזרו ללשונית הראשונה והוסיפו שקיפות (<code>Opacity</code>) 60% בערך. <b>למה:</b> כך שמות הערים שמתחת לעיגול גדול עדיין קריאים.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> עיגולים בגודל המכירות ועליהם שמות הערים, כל אחד במקומו. התיבה כשעוברים על עיגול מציגה שוב Sales 83,640.1 לתל אביב-יפו. שורת המצב עשויה להציג 16 marks (שמונה בכל שכבה). זה תקין, כי עכשיו יש שתי שכבות. שמות שנוגעים זה בזה (תל אביב-יפו, רחובות, אשדוד) הם בעיה אמיתית, ועל זה בסעיף 8.</p>
+  </div>
+
+  <div class="box note">
+    <p><b>בדקו אם זמין אצלכם: Marks layers.</b> בתיעוד של Tableau מתוארת דרך חדשה יותר להוסיף שכבות: גוררים שדה גיאוגרפי אל <code>Add a Marks Layer</code> בפינה של המפה, ולכל שכבה Marks card משלה. בתיעוד הדף מצוין עבור Desktop, Cloud ו-Server, ולא ברור שהוא זמין ב-Tableau Public. הציר הכפול שבנינו הוא דרך מוכרת וותיקה, ולכן אין צורך להסתמך על Marks layers.</p>
+  </div>
+
+  <div class="box meaning">
+    <p>״ציר כפול״ במפות הוא בעצם שכבות. אין כאן שני צירים של מספרים. הסיבה להשתמש בו היא סוגי סימן שונים, למשל שטחים צבועים בשכבה אחת ונקודות בשכבה אחרת, או תוויות שנפרדות מהעיגולים. כשמספיקה שכבה אחת, אל תוסיפו שכבה שנייה.</p>
+  </div>
+
+  <div class="box trap">
+    <p><b>ציר כפול כשלא צריך.</b> במודולים הבאים תראו ציר כפול גם בגרפים רגילים, ושם הוא גורם לטעויות כשהצירים לא מסונכרנים ומשווים שני סולמות שונים. במפה אין בעיה כזו, אבל הכלל זהה: שני סימנים על גיליון אחד הם עוד דבר שהצופה צריך להבין. אם הוא לא מוסיף מידע, מוותרים עליו.</p>
+  </div>
+
+  <div class="quiz" data-id="m7-q-dual" data-a="2"><p class="qq">הפעלתם ציר כפול על מפה. מה הסיבה הטובה ביותר לעשות את זה?</p>
+    <button class="opt">כדי שהמפה תציג שני מדדים על שני סולמות מספריים שונים</button>
+    <button class="opt">כדי לשים על אותה מפה שני סוגי סימן, כל אחד עם הגדרות משלו, למשל עיגולים ושמות</button>
+    <button class="opt">כי בלי ציר כפול Tableau לא מציגה את הכרטיס Marks</button>
+    <div class="why">בגרפים רגילים ציר כפול מציג שני סולמות. במפה האפקט הוא שכבות: לכל שכבה כרטיס Marks ולכן סוג סימן וצבע משלה. מי שרוצה פשוט גודל וצבע יסתדר בלי זה, והכרטיס Marks קיים תמיד.</div></div>
+
+  <div class="teach"><b>🎓 למרצה:</b> לבדוק בתוכנה לפני השיעור: (1) שם התפריט <code>Map &gt; Map Layers</code> ואילו סגנונות רקע זמינים ב-Public, (2) שהמחוון Washout קיים, (3) אם שורת המצב מציגה 16 marks עם ציר כפול, (4) שהצעד ״Synchronize Axis״ נדרש רק אצל קואורדינטות בהתאמה אישית, ובמקרה של שדות generated לא. (5) האם Marks layers זמין ב-Public. אל תלמדו אותו כתרגיל חובה. אחרי שלב 3 כדאי לעצור ולוודא שכולם רואים את הלשוניות בכרטיס Marks. זה הצעד שבו מתבלבלים הכי הרבה.</div>
+</section>
+
+<section class="sec" id="m7-6" data-t="סוגי מפות">
+  <div class="sec-h"><div class="sec-n">6</div><h2>צבועה, צפיפות וקבצים מרחביים</h2></div>
+  <p class="lead">עד עכשיו כל סימן היה נקודה. יש עוד שלוש משפחות: שטחים צבועים, כתמי צפיפות, וצורות שמגיעות מקובץ. לכל אחת שאלה שהיא עונה עליה, ושגיאה אופיינית.</p>
+
+  <div class="tw"><table class="tbl">
+    <thead><tr><th>סוג</th><th>מה מצויר</th><th>מה צריך בנתונים</th><th>מתאים ל...</th><th>זהירות</th></tr></thead>
+    <tbody>
+      <tr><td><b>סמלים</b></td><td>נקודה לכל מקום</td><td>שם מקום או קואורדינטות</td><td>סכומים לפי מקום</td><td>סימנים שחופפים</td></tr>
+      <tr><td><b>צבועה</b></td><td>שטח שלם צבוע</td><td>שדה ברמת שטח: מדינה, מחוז, מיקוד</td><td>שיעורים ואחוזים</td><td>שטח גדול נראה חשוב גם כשהוא לא</td></tr>
+      <tr><td><b>צפיפות</b></td><td>כתם צבע לפי ריכוז</td><td>הרבה נקודות מדויקות</td><td>איפה יש הרבה אירועים</td><td>זה ריכוז, לא ערך</td></tr>
+      <tr><td><b>קובץ מרחבי</b></td><td>צורות מהקובץ: נקודות, קווים, שטחים</td><td>קובץ shapefile, KML או GeoJSON</td><td>גבולות שאין ב-Tableau, מסלולים</td><td>קבצים חסרים, מערכות קואורדינטות שונות</td></tr>
+    </tbody></table></div>
+
+  <h3>מפה צבועה</h3>
+  <div class="defline"><b>מפה צבועה (<code>filled map</code>):</b> מפה שבה שטחים שלמים, כמו מדינות, מחוזות או מיקודים, נצבעים לפי מדד. דוגמה: כל מחוז בצבע לפי אחוז הלקוחות שקנו באפליקציה, והמחוז הכהה הוא הגבוה.</div>
+  <p>כדי למלא שטח, Tableau צריכה שדה שהוא באמת שטח: מדינה (<code>Country/Region</code>), מחוז (<code>State/Province</code>), מיקוד ועוד. ב-Scoop &amp; Go אין שדה כזה. <code>City</code> הוא נקודה, ולכן אין מה למלא, ו-<code>Region</code> הוא חלוקה של הרשת שלא קיימת במאגר של Tableau. זו הסיבה שאין בכרטיס שלנו מפה צבועה אמיתית, ולא כי המפה הצבועה פחות טובה.</p>
+  <p>הנה איך נראית מפה צבועה, בדוגמה בדויה לגמרי: שלושה אזורים בלי שמות אמיתיים, וצבע לפי שיעור בדוי.</p>
+  <figure class="shot">
+    <svg viewBox="0 0 330 215" width="100%" style="direction:ltr;max-width:400px;display:block;margin:0 auto" role="img" aria-label="דוגמה בדויה: שלושה אזורים צבועים לפי שיעור">
+      <defs><clipPath id="m7-cl"><path d="M100.5 26.0 L99.2 34.0 L94.1 39.0 L93.3 45.5 L91.1 57.5 L89.8 64.0 L86.0 76.5 L80.5 90.5 L77.1 97.5 L66.4 113.0 L65.1 119.5 L70.7 137.0 L86.9 180.5 L92.0 206.0 L95.8 203.0 L102.6 180.5 L102.6 150.5 L113.3 130.5 L117.6 105.5 L119.7 55.5 L130.3 15.5 Z"/></clipPath><linearGradient id="m7-lg" x1="0" x2="1"><stop offset="0" stop-color="#d7e7f5"/><stop offset="1" stop-color="#14507a"/></linearGradient></defs>
+      <g clip-path="url(#m7-cl)"><rect x="0" y="0" width="170" height="56" fill="#6fa3cf"/><rect x="0" y="56" width="170" height="60" fill="#d7e7f5"/><rect x="0" y="116" width="170" height="100" fill="#14507a"/></g>
+      <path d="M100.5 26.0 L99.2 34.0 L94.1 39.0 L93.3 45.5 L91.1 57.5 L89.8 64.0 L86.0 76.5 L80.5 90.5 L77.1 97.5 L66.4 113.0 L65.1 119.5 L70.7 137.0 L86.9 180.5 L92.0 206.0 L95.8 203.0 L102.6 180.5 L102.6 150.5 L113.3 130.5 L117.6 105.5 L119.7 55.5 L130.3 15.5 Z" fill="none" stroke="#fff" stroke-width="2"/>
+      <text x="150" y="40" font-size="12" fill="#1e293b" text-anchor="end">אזור א׳</text><text x="150" y="92" font-size="12" fill="#1e293b" text-anchor="end">אזור ב׳</text><text x="150" y="170" font-size="12" fill="#fff" text-anchor="end">אזור ג׳</text>
+      <text x="188" y="60" font-size="13" font-weight="700" fill="#334155" text-anchor="start">שיעור (בדוי)</text>
+      <rect x="188" y="70" width="120" height="14" fill="url(#m7-lg)"/><text x="188" y="102" font-size="12" fill="#475569" text-anchor="start">5%</text><text x="308" y="102" font-size="12" fill="#475569" text-anchor="end">20%</text>
+      <text x="188" y="150" font-size="12" fill="#94a3b8" text-anchor="start">שלושה אזורים בדויים,</text><text x="188" y="168" font-size="12" fill="#94a3b8" text-anchor="start">צורה סכמטית בלבד.</text>
+    </svg>
+    <figcaption>הדמיה סכמטית. אזור ג׳ הכהה ביותר, לפי הצבע שיעורו הגבוה ביותר. שימו לב שהשטח לא קשור לגודל של הערך, רק הצבע.</figcaption>
+  </figure>
+  <p>הדרך ב-Tableau, לפי התיעוד הרשמי: לחיצה כפולה על שדה כמו <code>State</code>, סוג סימן <code>Map</code>, ומדד אל <code>Color</code>. כשהמדד הוא אחוז, שמים אותו על Color ומשנים את האגרגציה שלו ל-<code>Attribute</code>, כדי שלא יסוכם. כדי להתאמן, כל קובץ עם עמודת State, Country או מחוז מתאים. אל תבנו על זה את התרגיל שלנו, כי ב-Scoop &amp; Go אין שדה כזה.</p>
+
+  <div class="box real">
+    <p>הכלל המקובל בהנחיות העיצוב של Tableau: מפת סמלים לסכומים, מפה צבועה לשיעורים. סכום מעורר חשד כשמצמידים אותו לשטח, כי שטח גדול ייראה חשוב. שיעור לא תלוי בגודל השטח, ולכן ראוי לצבע. מי שמציג ״מספר חולים לפי מחוז״ במפה צבועה, מראה בעצם איפה גרים אנשים. שיעור לכל 100 אלף תושבים כבר עונה על שאלה אחרת.</p>
+  </div>
+
+  <div class="quiz" data-id="m7-q-filled" data-a="1"><p class="qq">למה אי אפשר לבנות ב-Scoop &amp; Go מפה צבועה לפי City?</p>
+    <button class="opt">כי City הוא נקודה ולא שטח, ואין שטח לצבוע. צריך שדה כמו מדינה, מחוז או מיקוד</button>
+    <button class="opt">כי מפות צבועות עובדות רק עם קבצי shapefile</button>
+    <button class="opt">כי יש רק שמונה ערים, ולכן צריך לפחות תשע</button>
+    <div class="why">מפה צבועה מצריכה שטחים. ערים הן נקודות, ואין להן שטח לצבוע. אפשר לקבל שטחים או מהשדות הגיאוגרפיים המובנים (מדינה, מחוז, מיקוד) או מקובץ מרחבי. מספר הערים לא משנה.</div></div>
+
+  <h3>מפת צפיפות</h3>
+  <div class="defline"><b>מפת צפיפות (<code>density map</code>):</b> במקום לצייר כל סימן, Tableau מציירת כתם צבע שמראה איפה הסימנים מצטופפים. דוגמה: מאה אלף כתובות של משלוחים, וכתם חם במקום שבו יש הכי הרבה.</div>
+  <p>היא עובדת טוב על הרבה נקודות מדויקות, למשל כתובות או מיקומי אירועים. היא לא מראה ערך של מדד, רק ריכוז. אצלנו כל ההזמנות של עיר יושבות על מרכז העיר (אין לנו כתובות), ולכן צפיפות כאן היא סתם גודל העיר מצויר מחדש. הדמיה קצרה מראה בדיוק את זה, עם כתובות מדומות:</p>
+
+  <div class="sim" data-id="m7-sim-density"><div class="sh">נקודות או צפיפות</div>
+    <p>כל נקודה היא הזמנה אחת, והמספר לכל עיר הוא מספר ההזמנות האמיתי מהקובץ (סך הכול 6,575). <b>המיקומים מדומים</b>: הם מפוזרים באקראי סביב מרכז העיר, כדי להראות איך המפה תיראה אילו היו לנו כתובות. כשהפיזור 0, כל ההזמנות של עיר יושבות על נקודה אחת, וזה המצב האמיתי שלנו.</p>
+    <div class="row"><label><input type="radio" name="m7-dm" value="pts" checked> נקודות (Circle)</label><label><input type="radio" name="m7-dm" value="den"> צפיפות (Density)</label>
+      <label>פיזור: <input type="range" id="m7-dsp" min="0" max="25" value="0" step="1"> <b id="m7-dsv">0</b> ק״מ</label></div>
+    <canvas id="m7-dcv" width="300" height="440" style="display:block;margin:6px auto;max-width:100%;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc" role="img" aria-label="הדמיה של נקודות וצפיפות על מפה סכמטית"></canvas>
+    <div class="out" id="m7-dout" aria-live="polite"></div>
+  </div>
+  <script>(function(){ FL.dom(function(){
+    var box = document.querySelector('[data-id="m7-sim-density"]'); if (!box) return;
+    var cv = box.querySelector('#m7-dcv'), ctx = cv.getContext('2d'), sp = box.querySelector('#m7-dsp'), sv = box.querySelector('#m7-dsv'), out = box.querySelector('#m7-dout');
+    var C = {'Tel Aviv-Yafo':[32.0853,34.7818],'Jerusalem':[31.7683,35.2137],'Haifa':[32.7940,34.9896],'Beer Sheva':[31.2530,34.7915],'Eilat':[29.5577,34.9519],'Netanya':[32.3215,34.8532],'Rehovot':[31.8928,34.8113],'Ashdod':[31.8044,34.6553]};
+    var LAND = [[33.09,35.10],[32.93,35.07],[32.83,34.95],[32.70,34.93],[32.46,34.88],[32.33,34.85],[32.08,34.76],[31.80,34.63],[31.66,34.55],[31.35,34.30],[31.22,34.27],[30.87,34.40],[30.0,34.78],[29.49,34.90],[29.55,34.99],[30.0,35.15],[30.6,35.15],[31.0,35.40],[31.5,35.50],[32.5,35.55],[33.3,35.8]];
+    var K = 100, OX = 60, OY = 8, CK = Math.cos(31.5 * Math.PI / 180);
+    function px(lat, lon){ return [OX + (lon - 34.15) * CK * K, OY + (33.45 - lat) * K]; }
+    var counts = null, mode = 'pts', pts = [], mx = 0, mxn = 0;
+    function rnd(seed){ var s = seed >>> 0; return function(){ s = (Math.imul(1664525, s) + 1013904223) >>> 0; return s / 4294967296; }; }
+    function build(){
+      var km = +sp.value, R = rnd(12345); pts = [];
+      Object.keys(counts).forEach(function(city){
+        var c = C[city], n = counts[city];
+        for (var i = 0; i < n; i++){
+          var u1 = R() || 1e-9, u2 = R(), g1 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2), g2 = Math.sqrt(-2 * Math.log(u1)) * Math.sin(2 * Math.PI * u2);
+          var dlat = km / 111 * g1 * 0.5, dlon = km / (111 * Math.cos(c[0] * Math.PI / 180)) * g2 * 0.5;
+          pts.push(px(c[0] + dlat, c[1] + dlon).concat(city));
+        }
+      });
+    }
+    function base(){
+      ctx.clearRect(0, 0, 300, 440); ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, 0, 300, 440);
+      ctx.beginPath(); LAND.forEach(function(p, i){ var q = px(p[0], p[1]); if (i) ctx.lineTo(q[0], q[1]); else ctx.moveTo(q[0], q[1]); }); ctx.closePath();
+      ctx.fillStyle = '#e9eef4'; ctx.fill(); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.2; ctx.stroke();
+    }
+    function draw(){
+      base();
+      if (mode === 'pts'){
+        ctx.fillStyle = 'rgba(31,119,180,.10)';
+        pts.forEach(function(p){ ctx.beginPath(); ctx.arc(p[0], p[1], 2.4, 0, 6.2832); ctx.fill(); });
+        ctx.fillStyle = '#14507a'; ctx.font = '12px sans-serif';
+      } else {
+        var cs = 3, W = Math.ceil(300 / cs), H = Math.ceil(440 / cs), g = new Float32Array(W * H), r = 4;
+        pts.forEach(function(p){
+          var cx = Math.floor(p[0] / cs), cy = Math.floor(p[1] / cs);
+          for (var dy = -r; dy <= r; dy++) for (var dx = -r; dx <= r; dx++){
+            var x = cx + dx, y = cy + dy; if (x < 0 || y < 0 || x >= W || y >= H) continue;
+            var d2 = dx * dx + dy * dy; if (d2 > r * r) continue; g[y * W + x] += 1 - d2 / (r * r + 1);
+          }
+        });
+        var m = 0; for (var i = 0; i < g.length; i++) if (g[i] > m) m = g[i];
+        mx = m;
+        var img = ctx.getImageData(0, 0, 300, 440), d = img.data;
+        for (var y = 0; y < 440; y++) for (var x = 0; x < 300; x++){
+          var v = g[Math.floor(y / cs) * W + Math.floor(x / cs)] / (m || 1); if (v <= 0.02) continue;
+          v = Math.pow(v, 0.6); var o = (y * 300 + x) * 4;
+          var rr = 255, gg = Math.round(235 - 190 * v), bb = Math.round(80 - 70 * v), a = Math.min(1, 0.25 + v);
+          d[o] = Math.round(d[o] * (1 - a) + rr * a); d[o+1] = Math.round(d[o+1] * (1 - a) + gg * a); d[o+2] = Math.round(d[o+2] * (1 - a) + bb * a);
+        }
+        ctx.putImageData(img, 0, 0);
+      }
+      var names = Object.keys(counts); ctx.fillStyle = '#1e293b'; ctx.font = '12px sans-serif';
+      names.forEach(function(c){ var q = px(C[c][0], C[c][1]); var left = ['Haifa','Netanya','Tel Aviv-Yafo','Ashdod'].indexOf(c) >= 0; ctx.textAlign = left ? 'right' : 'left'; var ly = {'Netanya':-5,'Tel Aviv-Yafo':2,'Ashdod':12,'Rehovot':-10,'Jerusalem':2}[c] || 0; ctx.fillText(c, q[0] + (left ? -12 : 12), q[1] + 4 + ly); });
+      var tot = pts.length;
+      out.innerHTML = 'מספר הסימנים: <b>' + tot.toLocaleString('en-US') + '</b> (כמו מספר השורות בקובץ). פיזור: <b>' + sp.value + ' ק״מ</b>. ' +
+        (+sp.value === 0 ? 'כל ההזמנות של עיר יושבות על נקודה אחת, ולכן בשתי התצוגות רואים שמונה נקודות בלבד. בצפיפות, הכתם החזק ביותר הוא של תל אביב-יפו (2,305 הזמנות) פשוט כי יש בה הכי הרבה הזמנות.' : 'עם פיזור נוצרים כתמים של ממש. אבל זה מדומה: בקובץ האמיתי אין כתובות, ולכן אי אפשר לדעת איך הצפיפות נראית באמת.');
+    }
+    function go(){ if (!counts) return; sv.textContent = sp.value; build(); draw(); if (window.FL && (mode === 'den') && (+sp.value > 0)) FL.done('m7-sim-density'); }
+    box.addEventListener('change', function(e){ if (e.target.name === 'm7-dm'){ mode = e.target.value; } go(); });
+    sp.addEventListener('input', go);
+    TF.loadScoop(function(D){
+      var cc = D.cols.City, ct = {};
+      for (var i = 0; i < D.n; i++){ var nm = cc.dict[cc.v[i]]; ct[nm] = (ct[nm] || 0) + 1; }
+      counts = ct; go();
+    });
+  }); })();</script>
+
+  <div class="box try" data-id="m7-try-density">
+    <ol>
+      <li>במפה שלכם: לחצו ימני על לשונית הגיליון ובחרו <code>Duplicate</code>. <b>למה:</b> שומרים את מפת הסמלים כמות שהיא ומנסים צפיפות בעותק.</li>
+      <li>בעותק: הוציאו את <code>Sales</code> מ-<code>Size</code> ואת <code>Profit</code> מ-<code>Color</code> (גררו אותם החוצה). <b>למה:</b> עכשיו כל סימן הוא הזמנה אחת, לא עיר.</li>
+      <li>גררו <code>Order ID</code> אל <code>Detail</code>. אם מופיעה אזהרה על הרבה ערכים, בחרו <code>Add all members</code>. <b>למה:</b> כל Order ID שונה, ולכן סימן אחד לכל שורה. <b>תוצאה:</b> שורת המצב מציגה <b>6,575 marks</b>.</li>
+      <li>בכרטיס Marks שנו את סוג הסימן ל-<code>Density</code>. פתחו את <code>Color</code> ושחקו עם צבע ועם המחוון <code>Intensity</code>. <b>למה:</b> זה שיוצר את הכתמים.</li>
+      <li>חזרו לסוג סימן רגיל (<code>Circle</code>) והשוו. <b>למה:</b> כדי לראות מה צפיפות מוסיפה.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> בצפיפות, שמונה כתמים: הכי חזק בתל אביב-יפו (2,305 הזמנות), אחריו ירושלים (970) ואילת (866). בנקודות, 6,575 עיגולים שיושבים בדיוק אחד על השני, ולכן רואים רק שמונה עיגולים. אין פה תגלית: הנתונים שלנו ברמת עיר, והצפיפות רק משקפת כמה הזמנות יש בכל עיר.</p>
+  </div>
+
+  <div class="box trap">
+    <p><b>צפיפות היא ריכוז, לא ערך.</b> כתם חם אומר ״הרבה סימנים כאן״ ולא ״הרבה כסף כאן״. סימן אחד של הזמנה גדולה והמון סימנים של הזמנות קטנות נראים אחרת במפת צפיפות ממה שהם נראים בסכום. ואם הנקודות לא מדויקות (מרכז עיר במקום כתובת), הכתם מטעה לגבי המקום.</p>
+  </div>
+
+  <h3>קבצים מרחביים</h3>
+  <div class="defline"><b>קובץ מרחבי (<code>spatial file</code>):</b> קובץ שמחזיק צורות, כלומר נקודות, קווים ושטחים, ולא רק טבלה. דוגמה: קובץ שבו כל שכונה בעיר היא מצולע, עם שם השכונה לצידה.</div>
+  <p>Tableau Public מתחברת לארבעה סוגי קבצים כאלה: Esri Shapefile, KML, GeoJSON ו-MapInfo. ב-shapefile חייבים כמה קבצים ביחד (<code>.shp</code>, <code>.shx</code>, <code>.dbf</code>, <code>.prj</code>), או קובץ <code>.zip</code> שמכיל אותם. ההתחברות היא דרך <code>Connect &gt; Spatial file</code> בתוכנת Desktop. שימו לב: לפי התיעוד, ההעלאה של קבצים מרחביים דרך עריכת הרשת (בדפדפן) לא נתמכת, ולכן עובדים בתוכנה. אחרי ההתחברות מופיע שדה בשם <code>Geometry</code>, ולחיצה כפולה עליו מציירת את הצורות.</p>
+  <p>מי שרוצה לחבר טבלת קואורדינטות לקובץ מרחבי ולהצליב ביניהם יכול להשתמש בפונקציה <code>MAKEPOINT</code>, שבונה נקודה משני מספרים. בדקו אם זמין אצלכם. אנחנו לא נשתמש בה בתרגילים.</p>
+
+  <p>ניסוי קטן, אופציונלי: קובץ GeoJSON של שמונה הערים. שימו לב לסדר: ב-GeoJSON כותבים <b>קודם אורך ואחר כך רוחב</b>, הפוך מהסדר שרגילים אליו.</p>
+  <pre class="code" data-lang="json">{"type":"FeatureCollection","features":[
+{"type":"Feature","properties":{"name":"Tel Aviv-Yafo","sales":83640.1},"geometry":{"type":"Point","coordinates":[34.7818,32.0853]}},
+{"type":"Feature","properties":{"name":"Jerusalem","sales":33450.8},"geometry":{"type":"Point","coordinates":[35.2137,31.7683]}},
+{"type":"Feature","properties":{"name":"Eilat","sales":31473.7},"geometry":{"type":"Point","coordinates":[34.9519,29.5577]}},
+{"type":"Feature","properties":{"name":"Haifa","sales":27389.2},"geometry":{"type":"Point","coordinates":[34.9896,32.7940]}},
+{"type":"Feature","properties":{"name":"Netanya","sales":26840.2},"geometry":{"type":"Point","coordinates":[34.8532,32.3215]}},
+{"type":"Feature","properties":{"name":"Beer Sheva","sales":18797.2},"geometry":{"type":"Point","coordinates":[34.7915,31.2530]}},
+{"type":"Feature","properties":{"name":"Rehovot","sales":9925.2},"geometry":{"type":"Point","coordinates":[34.8113,31.8928]}},
+{"type":"Feature","properties":{"name":"Ashdod","sales":5304.5},"geometry":{"type":"Point","coordinates":[34.6553,31.8044]}}
+]}</pre>
+  <div class="box try" data-id="m7-try-geojson">
+    <p><b>אופציונלי: בדקו אם זמין אצלכם.</b> אם לא מצליח, אפשר לדלג, שום תרגיל אחר לא תלוי בזה.</p>
+    <ol>
+      <li>שמרו את הטקסט כקובץ טקסט רגיל בשם <code>scoop_cities.geojson</code>. <b>למה:</b> זה פורמט טקסט, והסיומת היא מה שמזהה אותו.</li>
+      <li>ב-Tableau Public: <code>Connect &gt; Spatial file</code>, ובחרו את הקובץ. <b>למה:</b> זה המחבר לקבצים מרחביים.</li>
+      <li>בדף Data Source בדקו אילו עמודות הופיעו. <b>תוצאה:</b> <code>name</code>, <code>sales</code> ושדה <code>Geometry</code>.</li>
+      <li>בגיליון: לחצו פעמיים על <code>Geometry</code>. <b>למה:</b> זה מה שמצייר את הצורות.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> 8 marks על המפה. אם הסימנים נוחתים באזור קפריסין, או בתוך הים, אתם עושים את טעות סדר הקואורדינטות הקלאסית: אורך, ואחר כך רוחב.</p>
+  </div>
+
+  <div class="box trap">
+    <p><b>שני כשלים אופייניים בקבצים מרחביים.</b> (1) shapefile שחסר בו אחד הקבצים הנלווים: Tableau לא תצליח לקרוא אותו, ולכן מעבירים את כולם יחד, או כ-<code>.zip</code>. (2) חיבור בין שני מקורות עם מערכות קואורדינטות שונות: הצורות לא נופלות זו על זו. כשמשהו לא מתיישר, התחילו בבדיקה של שני אלה.</p>
+  </div>
+
+  <div class="box meaning">
+    <p>סוג המפה נקבע לפי השאלה והנתונים, לא לפי מה שנראה יפה. סכומים בנקודות: סמלים. שיעורים לפי שטח: מפה צבועה. איפה יש הכי הרבה אירועים: צפיפות, אבל רק עם נקודות מדויקות. גבול או מסלול שלא קיים ב-Tableau: קובץ מרחבי.</p>
+  </div>
+
+  <div class="quiz" data-id="m7-q-density" data-a="3"><p class="qq">מפת צפיפות של Scoop &amp; Go, כשכל הזמנה מקבלת את מרכז העיר שלה, תראה:</p>
+    <button class="opt">פיזור הלקוחות בתוך כל עיר, שכונה אחרי שכונה</button>
+    <button class="opt">את הרווחיות של כל עיר, בצבע</button>
+    <button class="opt">שמונה כתמים, שהחזק בהם הוא תל אביב-יפו, כי יש בה הכי הרבה הזמנות על אותה נקודה</button>
+    <div class="why">אין לנו כתובות, רק עיר. לכן כל ההזמנות של עיר יושבות על נקודה אחת וצפיפות מראה בעצם כמה הזמנות יש בכל עיר. צפיפות לא מראה פיזור בתוך עיר בלי כתובות, ולא מראה רווחיות, כי היא סופרת סימנים ולא מסכמת מדד.</div></div>
+
+  <div class="teach"><b>🎓 למרצה:</b> לבדוק לפני השיעור: (1) תרגיל הצפיפות: האם ההוספה של Order ID ל-Detail מעלה אזהרה, ומה שם הכפתור, (2) שהסוג Density מופיע ברשימת Marks (הוא מופיע בצילום מ-Public), (3) תרגיל ה-GeoJSON: הוא <b>לא נבדק</b>, והאם Public קוראת קובץ GeoJSON קטן כזה עם נקודות. הרשימה של סוגי הקבצים נכונה לפי עמוד המפרט של Tableau (Esri Shapefiles, KML, GeoJSON ו-MapInfo). (4) הפונקציה MAKEPOINT ועמוד התיעוד שלה לא מסומנים כזמינים ב-Public: אל תלמדו אותה כתרגיל. (5) מפה צבועה אמיתית דורשת קובץ עם State או Country. מי שמעוניין, יכול להוריד קובץ דוגמה מדף הדוגמאות של Tableau Public.</div>
+</section>
+
+<section class="sec" id="m7-7" data-t="מתי לא מפה">
+  <div class="sec-h"><div class="sec-n">7</div><h2>מתי עמודות עונות טוב יותר</h2></div>
+  <p class="lead">מפה נראית מרשימה, ולכן קל להשתמש בה כשלא צריך. שאלו את עצמכם: האם המיקום הוא חלק מהשאלה? אם רק רוצים לדעת מי ראשון ומי אחרון, עמודות ממוינות עונות על זה בשנייה.</p>
+
+  <p>הנה אותם שמונה מספרים בשתי צורות. בשמאל, השטח של כל עיגול לפי Sales. בימין, האורך של כל עמודה. נסו לענות על שתי שאלות בכל צד: מי שלישית, אילת או חיפה? וכמה קטנה אשדוד מרחובות?</p>
+  <figure class="shot">
+    <svg viewBox="0 0 760 330" width="100%" style="direction:ltr;" role="img" aria-label="אותם שמונה מספרים בעיגולים ובעמודות">
+      <text x="190" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">עיגולים: השטח לפי Sales</text><text x="580" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">עמודות: האורך לפי Sales</text><circle cx="50" cy="60" r="22.0" fill="#4e79a7" fill-opacity=".7" stroke="#14507a"/><text x="86" y="65" font-size="14" fill="#1e293b" text-anchor="start">Tel Aviv-Yafo</text><text x="250" y="65" font-size="13" fill="#475569" text-anchor="start">83,640.1</text><text x="410" y="65" font-size="14" fill="#1e293b" text-anchor="start">Tel Aviv-Yafo</text><rect x="520" y="49" width="160.0" height="22" fill="#4e79a7"/><text x="686.0" y="65" font-size="13" fill="#475569" text-anchor="start">83,640.1</text><circle cx="50" cy="94" r="13.9" fill="#4e79a7" fill-opacity=".7" stroke="#14507a"/><text x="86" y="99" font-size="14" fill="#1e293b" text-anchor="start">Jerusalem</text><text x="250" y="99" font-size="13" fill="#475569" text-anchor="start">33,450.8</text><text x="410" y="99" font-size="14" fill="#1e293b" text-anchor="start">Jerusalem</text><rect x="520" y="83" width="64.0" height="22" fill="#4e79a7"/><text x="590.0" y="99" font-size="13" fill="#475569" text-anchor="start">33,450.8</text><circle cx="50" cy="128" r="13.5" fill="#4e79a7" fill-opacity=".7" stroke="#14507a"/><text x="86" y="133" font-size="14" fill="#1e293b" text-anchor="start">Eilat</text><text x="250" y="133" font-size="13" fill="#475569" text-anchor="start">31,473.7</text><text x="410" y="133" font-size="14" fill="#1e293b" text-anchor="start">Eilat</text><rect x="520" y="117" width="60.2" height="22" fill="#4e79a7"/><text x="586.2" y="133" font-size="13" fill="#475569" text-anchor="start">31,473.7</text><circle cx="50" cy="162" r="12.6" fill="#4e79a7" fill-opacity=".7" stroke="#14507a"/><text x="86" y="167" font-size="14" fill="#1e293b" text-anchor="start">Haifa</text><text x="250" y="167" font-size="13" fill="#475569" text-anchor="start">27,389.2</text><text x="410" y="167" font-size="14" fill="#1e293b" text-anchor="start">Haifa</text><rect x="520" y="151" width="52.4" height="22" fill="#4e79a7"/><text x="578.4" y="167" font-size="13" fill="#475569" text-anchor="start">27,389.2</text><circle cx="50" cy="196" r="12.5" fill="#4e79a7" fill-opacity=".7" stroke="#14507a"/><text x="86" y="201" font-size="14" fill="#1e293b" text-anchor="start">Netanya</text><text x="250" y="201" font-size="13" fill="#475569" text-anchor="start">26,840.2</text><text x="410" y="201" font-size="14" fill="#1e293b" text-anchor="start">Netanya</text><rect x="520" y="185" width="51.3" height="22" fill="#4e79a7"/><text x="577.3" y="201" font-size="13" fill="#475569" text-anchor="start">26,840.2</text><circle cx="50" cy="230" r="10.4" fill="#4e79a7" fill-opacity=".7" stroke="#14507a"/><text x="86" y="235" font-size="14" fill="#1e293b" text-anchor="start">Beer Sheva</text><text x="250" y="235" font-size="13" fill="#475569" text-anchor="start">18,797.2</text><text x="410" y="235" font-size="14" fill="#1e293b" text-anchor="start">Beer Sheva</text><rect x="520" y="219" width="36.0" height="22" fill="#4e79a7"/><text x="562.0" y="235" font-size="13" fill="#475569" text-anchor="start">18,797.2</text><circle cx="50" cy="264" r="7.6" fill="#4e79a7" fill-opacity=".7" stroke="#14507a"/><text x="86" y="269" font-size="14" fill="#1e293b" text-anchor="start">Rehovot</text><text x="250" y="269" font-size="13" fill="#475569" text-anchor="start">9,925.2</text><text x="410" y="269" font-size="14" fill="#1e293b" text-anchor="start">Rehovot</text><rect x="520" y="253" width="19.0" height="22" fill="#4e79a7"/><text x="545.0" y="269" font-size="13" fill="#475569" text-anchor="start">9,925.2</text><circle cx="50" cy="298" r="5.5" fill="#4e79a7" fill-opacity=".7" stroke="#14507a"/><text x="86" y="303" font-size="14" fill="#1e293b" text-anchor="start">Ashdod</text><text x="250" y="303" font-size="13" fill="#475569" text-anchor="start">5,304.5</text><text x="410" y="303" font-size="14" fill="#1e293b" text-anchor="start">Ashdod</text><rect x="520" y="287" width="10.1" height="22" fill="#4e79a7"/><text x="536.1" y="303" font-size="13" fill="#475569" text-anchor="start">5,304.5</text>
+    </svg>
+    <figcaption>אותם נתונים בשתי תצוגות. בעמודות ההפרש בין אילת (31,473.7) לחיפה (27,389.2) נראה בלי להתאמץ. בעיגולים צריך להשוות שטחים, וזה קשה. לפי מחקרי תפיסה מקובלים, אנשים משווים אורכים בדיוק רב יותר מאשר שטחים.</figcaption>
+  </figure>
+
+  <p>עכשיו תבנו את זה בעצמכם. במיני Tableau תבנו עמודות אופקיות של Sales לפי City, ממוינות:</p>
+  <div class="tfp" data-id="m7-tfp-bars" data-task="בנו עמודות אופקיות: City על Rows, סכום Sales על Columns, וממינו מהגדול לקטן. ואז קראו: מי שלישית?" data-goal='{"rows":["City"],"columns":["SUM(Sales)"],"mark":"bar","sort":"desc","marks":8}' data-hide-shelves="size,label,detail" data-fields="City,Branch,Region,Sales,Profit,Order_Date"></div>
+
+  <div class="box try" data-id="m7-try-bars">
+    <ol>
+      <li>בחוברת של Tableau Public פתחו גיליון חדש. גררו <code>City</code> אל <code>Rows</code> ו-<code>Sales</code> אל <code>Columns</code>. <b>למה:</b> עמודות אופקיות, כמו במודול 3.</li>
+      <li>לחצו על סמל המיון בסרגל הכלים (מהגדול לקטן). <b>למה:</b> הסדר הוא שירות לקורא, לא קישוט.</li>
+      <li>גררו <code>Order Date</code> אל <code>Columns</code>, שמאלה מ-<code>SUM(Sales)</code>, ובחרו שנה (<code>Year</code>) רגילה, לא רציפה. <b>למה:</b> שנה בכותרת מפצלת את הגרף לשני חלונות, אחד לכל שנה. השוואה בין שנים בלי להסתיר מי קיים.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> בשלב 2 הסדר הוא: Tel Aviv-Yafo 83,640.1, Jerusalem 33,450.8, Eilat 31,473.7, Haifa 27,389.2, Netanya 26,840.2, Beer Sheva 18,797.2, Rehovot 9,925.2, Ashdod 5,304.5. בשלב 3 שני חלונות: ב-2024 שש עמודות (אין רחובות ואשדוד), וב-2025 שמונה. Beer Sheva: כ-11,108.8 ב-2024 וכ-7,688.4 ב-2025, והיא העמודה היחידה שקצרה יותר ב-2025. שימו לב שהסיפור הזה לא נראה במפה שבנינו עד עכשיו.</p>
+  </div>
+
+  <h3>איזה גרף לאיזו שאלה</h3>
+  <div class="tw"><table class="tbl">
+    <thead><tr><th>השאלה</th><th>הגרף</th><th>למה</th></tr></thead>
+    <tbody>
+      <tr><td>מי ראשונה ומי אחרונה?</td><td>עמודות ממוינות</td><td>אורך קל להשוואה, והסדר ברור</td></tr>
+      <tr><td>איך זה השתנה בין שנים?</td><td>קו, או עמודות לפי שנה</td><td>הזמן הוא הציר</td></tr>
+      <tr><td>איפה יש סניפים קרובים, איפה חור?</td><td>מפה</td><td>המיקום הוא השאלה</td></tr>
+      <tr><td>איפה הרשת חזקה, ומי השכנים של עיר חלשה?</td><td>מפה, ועמודות לצידה</td><td>המפה מראה איפה, העמודות כמה</td></tr>
+      <tr><td>כמה מכירות בכל אחד מ-100 סניפים?</td><td>עמודות, או טבלה</td><td>על מפה יהיו סימנים שחופפים</td></tr>
+    </tbody></table></div>
+
+  <div class="box meaning">
+    <p>מפה גוזלת הרבה מקום ונותנת מעט דיוק. בשביל שמונה ערים, עמודות ממוינות לוקחות הרבה פחות מקום ומראות יותר טוב מי ראשונה. המפה שווה את המקום כשיש שאלה של מיקום, קרבה או כיסוי, או כשהיא משמשת כמסנן בדשבורד (בסעיף 9).</p>
+  </div>
+
+  <div class="box trap">
+    <p><b>מפה בשביל היופי.</b> מי שמבקש ״מפה יפה לדשבורד״ לפעמים רוצה סתם משהו שנראה מקצועי. לפני שבונים, שאלו: איזו החלטה תיעשה בזכות המיקום? אם אין תשובה, בנו עמודות. ואם כן יש, בנו מפה, ועמודות לידה.</p>
+  </div>
+
+  <div class="box real">
+    <p>אנליסטים משלבים: מפה קטנה כמסנן או כמבט על הכיסוי, ולצידה טבלה או עמודות עם המספרים המדויקים. זה דפוס מקובל בדשבורדים של רשתות סניפים. המפה היא ההקשר, והמספרים נקראים בעמודות.</p>
+  </div>
+
+  <div class="box think" data-id="m7-th-barvsmap"><p>הנהלה של Scoop &amp; Go מבקשת לשים מפה בדשבורד שכבר יש בו עמודות של מכירות לפי עיר. מה תשאלו אותם לפני שתסכימו?</p>
+    <div class="ans">שואלים איזה החלטה המפה צריכה לתמוך בה: סגירת סניף, פתיחת סניף חדש, בחירת מקום לפופ-אפ? אם התשובה תלויה בקרבה לסניפים אחרים או באזור שחסר בו סניף, המפה מוסיפה. אם רק רוצים דירוג, העמודות כבר עושות את זה. אפשרות שלישית: מפה קטנה שמשמשת גם כמסנן ללחיצה, כי אז היא מוסיפה אינטראקציה ולא רק תמונה.</div></div>
+
+  <div class="quiz" data-id="m7-q-bars" data-a="2"><p class="qq">הנהלה שואלת: ״איזו עיר שלישית במכירות, אילת או חיפה?״ איזה גרף יענה הכי טוב?</p>
+    <button class="opt">מפת סמלים, כי זו שאלה על ערים</button>
+    <button class="opt">עמודות ממוינות, כי זו שאלת דירוג ואורך קל להשוואה מאשר שטח</button>
+    <button class="opt">מפת צפיפות, כי היא מראה איפה הכי הרבה</button>
+    <div class="why">אילת (31,473.7) וחיפה (27,389.2) קרובות, וההפרש הקטן נראה על עמודות אבל לא על עיגולים. העובדה שהשאלה מזכירה ערים לא הופכת אותה לשאלה על מיקום. צפיפות סופרת סימנים ולא מראה דירוג של מדד.</div></div>
+
+  <div class="teach"><b>🎓 למרצה:</b> אפשר לעצור בנקודה הזו ולהצביע: מי ענה על ״מי שלישית״ מהר יותר, מי שהסתכל על העיגולים או על העמודות? אחר כך להסביר שמפה שווה את המקום בגלל שאלה גיאוגרפית. לבדוק מראש שהמיני Tableau מקבל את המיון (ההוראה בדף מצביעה על כפתור המיון בסרגל).</div>
+</section>
+
+<section class="sec" id="m7-8" data-t="דיוק ואחריות">
+  <div class="sec-h"><div class="sec-n">8</div><h2>מפה שאומרת אמת: סכום או שיעור, שטח, היטל</h2></div>
+  <p class="lead">מפה משכנעת בקלות, והיא גם מטעה בקלות. הסכנות הגדולות הן שלוש: להשוות סכומים כשצריך שיעורים, לתת לשטח או לגודל להרשים, ולשכוח שלא הכול על המפה.</p>
+
+  <h3>סכום או שיעור</h3>
+  <p>המפה של מכירות כוללות אומרת שתל אביב-יפו ענקית ואשדוד זעירה. זה נכון, אבל לא הוגן. תל אביב-יפו פעלה 24 חודשים עם שני סניפים. אשדוד פעלה שלושה חודשים בלבד (יוני עד אוגוסט 2025), ורחובות שבעה (מיוני עד דצמבר 2025). מי שרוצה להשוות עיר לעיר צריך מדד שמתחשב בזה, למשל <b>מכירות לסניף לחודש פעיל</b>. זה חישוב שלנו, לא משהו ש-Tableau עושה בעצמה, ומודול <a href="module8.html">8</a> מלמד איך בונים אותו כשדה מחושב. בינתיים, הדמיה על הנתונים האמיתיים:</p>
+
+  <div class="sim" data-id="m7-sim-rate"><div class="sh">אותה מפה, שלושה מדדים</div>
+    <p>המפה סכמטית: מיקומי הערים מקורבים וצורת החוף מקורבת. הגדלים והמספרים מחושבים עכשיו מקובץ Scoop &amp; Go. שנו את התקופה ואת המדד, וראו מי גדולה בכל תצוגה.</p>
+    <div class="row">
+      <label>תקופה: <select id="m7-rt-y"><option value="">2024 ו-2025 יחד</option><option value="2024">2024</option><option value="2025">2025</option></select></label>
+      <label><input type="radio" name="m7-rm" value="tot" checked> מכירות כוללות</label>
+      <label><input type="radio" name="m7-rm" value="bm"> מכירות לסניף לחודש פעיל</label>
+      <label><input type="radio" name="m7-rm" value="mg"> אחוז רווח</label>
+    </div>
+    <div id="m7-rt-box" style="max-width:440px;margin:0 auto"></div>
+    <div class="out" id="m7-rt-out" aria-live="polite">טוען נתונים...</div>
+  </div>
+  <script>(function(){ FL.dom(function(){
+    var box = document.querySelector('[data-id="m7-sim-rate"]'); if (!box) return;
+    var sel = box.querySelector('#m7-rt-y'), host = box.querySelector('#m7-rt-box'), out = box.querySelector('#m7-rt-out');
+    var C = {'Tel Aviv-Yafo':[32.0853,34.7818],'Jerusalem':[31.7683,35.2137],'Haifa':[32.7940,34.9896],'Beer Sheva':[31.2530,34.7915],'Eilat':[29.5577,34.9519],'Netanya':[32.3215,34.8532],'Rehovot':[31.8928,34.8113],'Ashdod':[31.8044,34.6553]};
+    var LAND = [[33.09,35.10],[32.93,35.07],[32.83,34.95],[32.70,34.93],[32.46,34.88],[32.33,34.85],[32.08,34.76],[31.80,34.63],[31.66,34.55],[31.35,34.30],[31.22,34.27],[30.87,34.40],[30.0,34.78],[29.49,34.90],[29.55,34.99],[30.0,35.15],[30.6,35.15],[31.0,35.40],[31.5,35.50],[32.5,35.55],[33.3,35.8]];
+    var K = 110, OX = 140, OY = 12, CK = Math.cos(31.5 * Math.PI / 180), LEFT = {'Haifa':1,'Netanya':1,'Tel Aviv-Yafo':1,'Ashdod':1}, LY = {'Netanya':-5,'Tel Aviv-Yafo':2,'Ashdod':12,'Rehovot':-10,'Jerusalem':2};
+    function px(lat, lon){ return [OX + (lon - 34.15) * CK * K, OY + (33.45 - lat) * K]; }
+    var D = null, used = {}, mode = 'tot';
+    function f1(v){ return v.toLocaleString('en-US', {minimumFractionDigits:1, maximumFractionDigits:1}); }
+    function agg(year){
+      var r = {}, cc = D.cols.City, bc = D.cols.Branch, dc = D.cols.Order_Date.v, sc = D.cols.Sales.v, pc = D.cols.Profit.v;
+      for (var i = 0; i < D.n; i++){
+        if (year && dc[i].slice(0, 4) !== year) continue;
+        var c = cc.dict[cc.v[i]]; if (!r[c]) r[c] = {s:0, p:0, b:{}, m:{}};
+        r[c].s += sc[i]; r[c].p += pc[i]; r[c].b[bc.v[i]] = 1; r[c].m[dc[i].slice(0, 7)] = 1;
+      }
+      Object.keys(r).forEach(function(c){ var o = r[c]; o.nb = Object.keys(o.b).length; o.nm = Object.keys(o.m).length; });
+      return r;
+    }
+    function val(o){ return mode === 'tot' ? o.s : mode === 'bm' ? o.s / (o.nb * o.nm) : o.p / o.s * 100; }
+    function fmt(v){ return mode === 'mg' ? v.toFixed(1) + '%' : f1(v); }
+    function draw(){
+      var A = agg(sel.value), names = Object.keys(A), vals = names.map(function(c){ return val(A[c]); }), mx = Math.max.apply(null, vals), mn = Math.min.apply(null, vals);
+      var s = '<svg viewBox="0 0 400 470" width="100%" style="direction:ltr;" role="img" aria-label="מפה סכמטית של הערים, גודל העיגול לפי המדד שנבחר"><rect width="400" height="470" fill="#f8fafc"/>';
+      s += '<path d="M' + LAND.map(function(p){ var q = px(p[0], p[1]); return q[0].toFixed(1) + ' ' + q[1].toFixed(1); }).join(' L') + ' Z" fill="#e9eef4" stroke="#cbd5e1"/>';
+      var ord = names.slice().sort(function(a, b){ return val(A[b]) - val(A[a]); });
+      ord.forEach(function(c){ var q = px(C[c][0], C[c][1]), r = 24 * Math.sqrt(val(A[c]) / mx); s += '<circle cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) + '" r="' + r.toFixed(1) + '" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/>'; });
+      names.forEach(function(c){ var q = px(C[c][0], C[c][1]), r = 24 * Math.sqrt(val(A[c]) / mx), L = LEFT[c]; s += '<text x="' + (L ? q[0] - r - 5 : q[0] + r + 5).toFixed(1) + '" y="' + (q[1] + 4 + (LY[c] || 0)).toFixed(1) + '" text-anchor="' + (L ? 'end' : 'start') + '" font-size="12" fill="#1e293b">' + FL.esc(c) + ' ' + fmt(val(A[c])) + '</text>'; });
+      s += '</svg>';
+      host.innerHTML = s;
+      var top = ord[0], bot = ord[ord.length - 1];
+      var h = '<b>' + names.length + ' marks</b>' + (names.length < 8 ? ' (ערים בלי נתונים בתקופה הזו לא מופיעות בכלל)' : '') + '. הכי גבוהה: <b dir="ltr">' + FL.esc(top) + ' ' + fmt(val(A[top])) + '</b>. הכי נמוכה: <b dir="ltr">' + FL.esc(bot) + ' ' + fmt(val(A[bot])) + '</b>.<br>';
+      if (mode === 'tot') h += 'בסכום כולל תל אביב-יפו ענקית, בין היתר כי יש בה שני סניפים וחודשי פעילות מלאים.';
+      else if (mode === 'bm') h += 'אותם נתונים, חלוקה במספר הסניפים ובמספר החודשים שבהם העיר מכרה בתקופה. הדירוג משתנה, אבל גם זה לא הוגן לגמרי: אשדוד ורחובות פעלו בקיץ בלבד, ובקיץ מוכרים יותר גלידה.';
+      else h += 'אחוז הרווח נע בין ' + mn.toFixed(1) + '% ל-' + mx.toFixed(1) + '%, ולכן כל העיגולים כמעט שווים. זה מה שהמדד אומר: הרווחיות כמעט זהה בכל הערים.';
+      out.innerHTML = h;
+      var k = mode + sel.value; used[k] = 1; if (Object.keys(used).length >= 4 && window.FL) FL.done('m7-sim-rate');
+    }
+    box.addEventListener('change', function(e){ if (e.target.name === 'm7-rm') mode = e.target.value; if (D) draw(); });
+    TF.loadScoop(function(d){ D = d; draw(); });
+  }); })();</script>
+
+  <div class="box try" data-id="m7-try-margin">
+    <ol>
+      <li>במפה שלכם לחצו ימני על לשונית הגיליון ובחרו <code>Duplicate</code>, ובעותק הוציאו את <code>Profit</code> מ-<code>Color</code>. <b>למה:</b> שומרים את המפה המקורית.</li>
+      <li>פתחו <code>Analysis &gt; Create Calculated Field</code>. שם: <code>Profit Margin</code>. נוסחה: <code>SUM([Profit]) / SUM([Sales])</code>. אשרו. <b>למה:</b> אחוז רווח הוא סכום רווח חלקי סכום מכירות, לא ממוצע של אחוזים. שדות מחושבים לעומק במודול <a href="module8.html">8</a>.</li>
+      <li>לחצו ימני על השדה החדש בחלונית Data, <code>Default Properties &gt; Number Format</code>, ובחרו אחוזים עם שתי ספרות אחרי הנקודה. <b>למה:</b> שיוצג 51.80% ולא 0.518.</li>
+      <li>גררו את <code>Profit Margin</code> אל <code>Color</code>. עברו עם העכבר על הערים, והסתכלו על המקרא. <b>למה:</b> זו מפה שבה הגודל הוא מכירות והצבע הוא אחוז רווח, בסוף משהו שלא מכפיל את הגודל.</li>
+      <li>לחצו ימני על המקרא, <code>Edit Colors</code>, ופתחו <code>Advanced</code>. סמנו והגדירו התחלה 0 וסוף 1 (כלומר 0% עד 100%). <b>למה:</b> ברירת המחדל של Tableau מותחת את הצבע בין הערך הקטן לגדול ביותר, ולכן הפרש קטן נראה גדול.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> אחוזי הרווח: Haifa 51.80%, Tel Aviv-Yafo 51.76%, Beer Sheva 51.01%, Jerusalem 50.90%, Netanya 50.33%, Eilat 50.01%, Ashdod 48.73%, Rehovot 48.31%. בשלב 4 המקרא נע בערך מ-48.3% עד 51.8%, וצבעי הערים נראים שונים מאוד. בשלב 5, עם 0 עד 100%, כל העיגולים כמעט באותו גוון. ההפרש האמיתי הוא 3.5 נקודות אחוז בין הגבוהה לנמוכה.</p>
+  </div>
+
+  <div class="box trap">
+    <p><b>צבע שמגזים.</b> סקאלת הצבע של Tableau נמתחת בין הערך הנמוך לגבוה בנתונים. שמונה מספרים בין 48.3% ל-51.8% נראים כמו מפה עם פערים דרמטיים. תמיד קראו את המקרא: אם הטווח צר, או שאין פער, אמרו את זה בכותרת, או קבעו טווח הוגן.</p>
+  </div>
+
+  <div class="box think" data-id="m7-th-fair"><p>בהדמיה, ב-2024 ו-2025 יחד, אשדוד (3 חודשים) יוצאת הכי גבוהה במכירות לסניף לחודש פעיל: 1,768.2, מעל תל אביב-יפו עם 1,742.5. האם אשדוד באמת הסניף הכי חזק?</p>
+    <div class="ans">לא בהכרח. אשדוד פעלה רק בקיץ, ובקיץ מוכרים הרבה יותר גלידה. בשלושת החודשים האלה (יוני עד אוגוסט 2025) התקופה זהה לכל הערים, ומכירות לסניף לחודש שם: תל אביב-יפו 3,259.8, נתניה 2,468.7, ירושלים 2,437.2, חיפה 2,131.9, אילת 1,810.4, אשדוד 1,768.2, רחובות 1,667.5, באר שבע 1,071.9. אשדוד בינונית, ולא ראשונה. הלקח: גם שיעור יכול להטעות, כשהתקופות לא זהות.</div></div>
+
+  <div class="quiz" data-id="m7-q-rate" data-a="3"><p class="qq">מפת מכירות כוללות מראה את אשדוד כקטנה ביותר, ורחובות כשנייה מהסוף. מה עוזר להשוות הוגן יותר בין הערים?</p>
+    <button class="opt">להגדיל את הסימנים הקטנים עד שייראו כמו האחרים</button>
+    <button class="opt">לצבוע את הערים הקטנות בצבע בולט</button>
+    <button class="opt">לחשב מדד שמתחשב בכמה סניפים ובכמה חודשים כל עיר פעלה, ולהשוות בעיקר תקופות זהות</button>
+    <div class="why">אשדוד ורחובות נפתחו מאוחר, ולכן ההשוואה הכוללת לא הוגנת. מדד כמו מכירות לסניף לחודש פעיל מתקן את זה, ובתקופות זהות (למשל יוני עד אוגוסט) מתקנים גם את העונה. הגדלה וצבע לא משנים את הנתונים, רק את מה שהעין שמה לב אליו.</div></div>
+
+  <h3>שטח, גודל ומה שלא על המפה</h3>
+  <p>כמה מלכודות קטנות, שכל אחת כבר נתקלתם בה בסעיפים הקודמים או תיתקלו בה כשתפרסמו:</p>
+  <div class="box trap">
+    <p><b>העיגול הגדול מכסה את הקטנים.</b> תל אביב-יפו, רחובות ואשדוד קרובות זו לזו ובמפה המלאה הסימנים שלהן חופפים. שקיפות, מסגרת וזום פותרים את זה חלקית. תוויות שנוגעות זו בזו הן סימן שצריך להקטין סימנים, או להוסיף עמודות לצד המפה.</p>
+  </div>
+  <div class="box trap">
+    <p><b>שני סניפים, סימן אחד.</b> במפה לפי City, Dizengoff (44,194.1) ו-Port (39,446.0) מצטרפים לסימן אחד של 83,640.1. הצופה לא יודע שיש שניים. אם זה חשוב להחלטה, הוסיפו Branch ל-Detail, או כתבו בכותרת ״לפי עיר״.</p>
+  </div>
+  <div class="box trap">
+    <p><b>מה שלא זוהה נעלם בשקט.</b> שם עיר שלא זוהה לא מצויר, והסכום שלו לא נספר במפה. שורת המצב ופינת ה-unknown הן הדרך היחידה לדעת. לפני שמפרסמים, תמיד בדקו שמספר הסימנים הוא המספר שציפיתם לו.</p>
+  </div>
+
+  <div class="defline"><b>היטל (<code>projection</code>):</b> הדרך להפוך את כדור הארץ לדף שטוח. כל דרך מעוותת משהו, שטח, צורה או מרחק. דוגמה: בהיטל Mercator, שמשמש מפות רבות באינטרנט, גרינלנד נראית ענקית בהרבה ממה שהיא.</div>
+  <div class="anim" data-id="m7-anim-proj" data-speed="3600">
+    <div class="stage"><svg viewBox="0 0 800 340" role="img" aria-label="הדמיה: פסים שווים של עשר מעלות רוחב, וכך הם נמתחים בהיטל Mercator">
+      <text x="60" y="26" font-size="15" font-weight="700" fill="#334155" text-anchor="start">פסים של 10 מעלות רוחב</text>
+      <g data-only="1"><rect x="60" y="282" width="110" height="28" fill="#d7e7f5" stroke="#fff"/><text x="180" y="301.0" font-size="13" fill="#475569" text-anchor="start">0 עד 10</text><rect x="60" y="254" width="110" height="28" fill="#bcd6ee" stroke="#fff"/><text x="180" y="273.0" font-size="13" fill="#475569" text-anchor="start">10 עד 20</text><rect x="60" y="226" width="110" height="28" fill="#a1c5e6" stroke="#fff"/><text x="180" y="245.0" font-size="13" fill="#475569" text-anchor="start">20 עד 30</text><rect x="60" y="198" width="110" height="28" fill="#86b3dc" stroke="#fff"/><text x="180" y="217.0" font-size="13" fill="#475569" text-anchor="start">30 עד 40</text><rect x="60" y="170" width="110" height="28" fill="#6b9fd0" stroke="#fff"/><text x="180" y="189.0" font-size="13" fill="#475569" text-anchor="start">40 עד 50</text><rect x="60" y="142" width="110" height="28" fill="#528bc3" stroke="#fff"/><text x="180" y="161.0" font-size="13" fill="#475569" text-anchor="start">50 עד 60</text><rect x="60" y="114" width="110" height="28" fill="#3a77b5" stroke="#fff"/><text x="180" y="133.0" font-size="13" fill="#475569" text-anchor="start">60 עד 70</text></g>
+      <g data-only="2,3,4"><rect x="60" y="282.0" width="110" height="28.0" fill="#d7e7f5" stroke="#fff"/><text x="180" y="301.0" font-size="13" fill="#475569" text-anchor="start">0 עד 10</text><rect x="60" y="253.1" width="110" height="28.9" fill="#bcd6ee" stroke="#fff"/><text x="180" y="272.6" font-size="13" fill="#475569" text-anchor="start">10 עד 20</text><rect x="60" y="222.3" width="110" height="30.8" fill="#a1c5e6" stroke="#fff"/><text x="180" y="242.7" font-size="13" fill="#475569" text-anchor="start">20 עד 30</text><rect x="60" y="188.2" width="110" height="34.1" fill="#86b3dc" stroke="#fff"/><text x="180" y="210.3" font-size="13" fill="#475569" text-anchor="start">30 עד 40</text><rect x="60" y="148.7" width="110" height="39.5" fill="#6b9fd0" stroke="#fff"/><text x="180" y="173.5" font-size="13" fill="#475569" text-anchor="start">40 עד 50</text><rect x="60" y="99.8" width="110" height="48.9" fill="#528bc3" stroke="#fff"/><text x="180" y="129.2" font-size="13" fill="#475569" text-anchor="start">50 עד 60</text><rect x="60" y="33.0" width="110" height="66.8" fill="#3a77b5" stroke="#fff"/><text x="180" y="71.4" font-size="13" fill="#475569" text-anchor="start">60 עד 70</text></g>
+      <g data-s="2"><text x="360" y="64" font-size="16" font-weight="700" fill="#b91c1c" text-anchor="start">הפס העליון (60 עד 70 מעלות) נמתח</text><text x="360" y="86" font-size="15" fill="#b91c1c" text-anchor="start">ל-2.4 פעמים הגובה של הפס ליד המשווה</text></g>
+      <g data-s="3" data-pulse><path d="M52 211.5 L46 211.5 L46 223.9 L52 223.9" fill="none" stroke="#e8741f" stroke-width="4"/><line x1="46" y1="217.7" x2="350" y2="158" stroke="#e8741f" stroke-width="1.5" stroke-dasharray="5 4"/><text x="360" y="150" font-size="16" font-weight="700" fill="#9a4a0b" text-anchor="start">ישראל: 29.5 עד 33.3 מעלות</text><text x="360" y="172" font-size="15" fill="#9a4a0b" text-anchor="start">הפער בין הקצה הדרומי לצפוני רק כ-4%</text></g>
+      <g data-s="4"><rect x="352" y="214" width="426" height="84" rx="10" fill="#fffbeb" stroke="#f59e0b"/><text x="565" y="240" font-size="15" font-weight="700" fill="#92400e" text-anchor="middle">במפת עולם זה כן משנה</text><text x="565" y="262" font-size="14" fill="#92400e" text-anchor="middle">בקו רוחב 65 האורך נמתח פי 2.4 והשטח פי 5.6,</text><text x="565" y="282" font-size="14" fill="#92400e" text-anchor="middle">ולכן מדינות צפוניות נראות גדולות מדי.</text></g>
+    </svg></div>
+    <ol class="caps">
+      <li>עשר מעלות רוחב הן אותו מרחק על האדמה בכל מקום. על כדור הארץ כל הפסים האלה שווים. כך הם נראים, כאן בהדמיה.</li>
+      <li>בהיטל Mercator כל פס נמתח יותר ככל שהוא רחוק יותר מהמשווה. הפס העליון כאן גבוה פי 2.4 מהתחתון, אף שהוא מייצג אותו מרחק. הנתונים נחשבו מהנוסחה של ההיטל.</li>
+      <li>ישראל נמצאת בין קו רוחב 29.5 ל-33.3, פס צר. המתיחה בקצה הצפוני גבוהה בכ-4% מזו שבקצה הדרומי. אצלנו זה אפסי.</li>
+      <li>רק במפת עולם הבעיה הזו חשובה: לא תשוו שטחים של מדינות בצפון הרחוק לשטחים בקרבת המשווה לפי מה שנראה לעין.</li>
+    </ol>
+  </div>
+  <p>אצלנו זה לא משנה, כי כל הערים בפס צר. אבל אם תבנו מפה של מכירות לפי מדינה בעולם ותצבעו לפי גודל העיגול או השטח, תזכרו שהמראה של השטח יכול להטעות. שיעור, ולא סכום, מתאים לצביעת שטח.</p>
+
+  <div class="box real">
+    <p>בהנחיות העיצוב של Tableau מופיע הכלל: מפת סמלים לסכומים, מפה צבועה לשיעורים. מי שמצייר סכומים על שטחים מראה בעיקר איפה השטחים גדולים או איפה גרים הרבה אנשים. עיתונאי נתונים ואנליסטים נוהגים לנרמל, כלומר לחלק בגודל האוכלוסייה, השטח או הזמן, לפני שמציירים צבע לפי שטח.</p>
+  </div>
+
+  <div class="box meaning">
+    <p>לפני שמפרסמים מפה שאלו ארבע שאלות. האם הסימן סכום או שיעור? האם ההשוואה הוגנת (זמן, גודל, מספר סניפים)? האם כל הסימנים שציפיתם להם מופיעים? והאם הצבע או הגודל מגזימים את ההפרש? ארבע תשובות כן, והמפה אפשר לסמוך עליה.</p>
+  </div>
+
+  <div class="quiz" data-id="m7-q-proj" data-a="1"><p class="qq">האם ההיטל משנה את המפה של Scoop &amp; Go?</p>
+    <button class="opt">כמעט לא, כי כל הערים בפס צר של קווי רוחב, והמתיחה בין הדרום לצפון קטנה (כ-4%)</button>
+    <button class="opt">מאוד, כי המתיחה הופכת את אילת לגדולה פי 2 מחיפה</button>
+    <button class="opt">לא יכול להיות ששום היטל משנה משהו באף מפה</button>
+    <div class="why">המתיחה תלויה בקו הרוחב. בין 29.5° ל-33.3° היא משתנה בכ-4%, ולכן לא משפיעה על מה שאנחנו רואים. בקווי רוחב גבוהים היא גדולה, ובמפת עולם היא חשובה. כל היטל מעוות משהו: שטח, צורה או מרחק.</div></div>
+
+  <div class="teach"><b>🎓 למרצה:</b> (1) ההדמיה של ההיטל מחשבת את יחס הגבהים מנוסחת Mercator (הנוסחה הרגילה של ההיטל): פס 60° עד 70° גבוה פי 2.385 מהפס 0° עד 10°, וסקאלת האורך הנקודתית היא 1/cos של קו הרוחב, כלומר בערך 1.149 ב-29.5° ו-1.196 ב-33.3°. (2) לא טענו ש-Tableau משתמשת ב-Mercator, וכדאי לא להגיד זאת בכיתה בלי לבדוק. (3) התרגיל של Profit Margin משתמש בנוסחה ממודול 8 לפני שנלמד. אם זה מוקדם מדי לכיתה, אפשר לדלג עליו ולהשתמש בהדמיה. (4) לבדוק בתוכנה: האם החלון Edit Colors מציע שדות Start ו-End תחת Advanced, והשם המדויק של Number Format בתפריט Default Properties.</div>
+</section>
+
+<section class="sec" id="m7-9" data-t="מפה בדשבורד">
+  <div class="sec-h"><div class="sec-n">9</div><h2>מפה בדשבורד: לחיצה שמסננת</h2></div>
+  <p class="lead">מפה בדשבורד היא לא רק תמונה. אפשר להפוך אותה לכפתורים: לוחצים על עיר, וכל שאר הגיליונות מתמקדים באותה עיר. זה הרבה פעמים התפקיד הכי טוב של מפה בדשבורד.</p>
+
+  <div class="defline"><b>שימוש כמסנן (<code>Use as Filter</code>):</b> הגדרה על גיליון בדשבורד שאומרת: מה שבוחרים כאן מסנן את שאר הגיליונות. דוגמה: לוחצים על ירושלים במפה, והעמודות מציגות רק את המכירות של ירושלים.</div>
+
+  <p>נסו את זה לפני שבונים. מפה סכמטית משמאל, עמודות מימין: לחצו על עיר (Ctrl או Shift כדי להוסיף עוד אחת), ולחצו שוב על אותה עיר כדי לבטל. זו הדמיה של ההתנהגות, והמספרים אמיתיים מהקובץ.</p>
+  <div class="sim" data-id="m7-sim-dash"><div class="sh">לחיצה על עיר מסננת את העמודות</div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1 1 230px;max-width:300px"><div id="m7-dm-map"></div></div>
+      <div style="flex:1 1 260px;min-width:240px"><div id="m7-dm-bars" style="direction:ltr"></div></div>
+    </div>
+    <div class="out" id="m7-dm-out" aria-live="polite">טוען נתונים...</div>
+  </div>
+  <script>(function(){ FL.dom(function(){
+    var box = document.querySelector('[data-id="m7-sim-dash"]'); if (!box) return;
+    var mapEl = box.querySelector('#m7-dm-map'), barEl = box.querySelector('#m7-dm-bars'), out = box.querySelector('#m7-dm-out');
+    var C = {'Tel Aviv-Yafo':[32.0853,34.7818],'Jerusalem':[31.7683,35.2137],'Haifa':[32.7940,34.9896],'Beer Sheva':[31.2530,34.7915],'Eilat':[29.5577,34.9519],'Netanya':[32.3215,34.8532],'Rehovot':[31.8928,34.8113],'Ashdod':[31.8044,34.6553]};
+    var LAND = [[33.09,35.10],[32.93,35.07],[32.83,34.95],[32.70,34.93],[32.46,34.88],[32.33,34.85],[32.08,34.76],[31.80,34.63],[31.66,34.55],[31.35,34.30],[31.22,34.27],[30.87,34.40],[30.0,34.78],[29.49,34.90],[29.55,34.99],[30.0,35.15],[30.6,35.15],[31.0,35.40],[31.5,35.50],[32.5,35.55],[33.3,35.8]];
+    var K = 95, OX = 110, OY = 10, CK = Math.cos(31.5 * Math.PI / 180), LEFT = {'Haifa':1,'Netanya':1,'Tel Aviv-Yafo':1,'Ashdod':1}, LY = {'Netanya':-5,'Tel Aviv-Yafo':2,'Ashdod':12,'Rehovot':-10,'Jerusalem':2};
+    function px(lat, lon){ return [OX + (lon - 34.15) * CK * K, OY + (33.45 - lat) * K]; }
+    var CATS = ['Cups','Drinks','Cones','Sundaes','Sticks'], tot = {}, cat = {}, sel = {}, clicked = false;
+    function f1(v){ return v.toLocaleString('en-US', {minimumFractionDigits:1, maximumFractionDigits:1}); }
+    function nsel(){ return Object.keys(sel).length; }
+    function drawMap(){
+      var mx = 0; Object.keys(tot).forEach(function(c){ if (tot[c] > mx) mx = tot[c]; });
+      var s = '<svg viewBox="0 0 300 410" width="100%" style="direction:ltr;" role="img" aria-label="מפה סכמטית ללחיצה על עיר"><rect width="300" height="410" fill="#f8fafc" rx="8"/>';
+      s += '<path d="M' + LAND.map(function(p){ var q = px(p[0], p[1]); return q[0].toFixed(1) + ' ' + q[1].toFixed(1); }).join(' L') + ' Z" fill="#e9eef4" stroke="#cbd5e1"/>';
+      var any = nsel() > 0, ord = Object.keys(tot).sort(function(a, b){ return tot[b] - tot[a]; });
+      ord.forEach(function(c){ var q = px(C[c][0], C[c][1]), r = 20 * Math.sqrt(tot[c] / mx), on = sel[c];
+        s += '<circle data-c="' + FL.esc(c) + '" cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) + '" r="' + r.toFixed(1) + '" fill="#4e79a7" fill-opacity="' + (any && !on ? '.18' : '.7') + '" stroke="' + (on ? '#e8741f' : '#14507a') + '" stroke-width="' + (on ? 3 : 1.2) + '" style="cursor:pointer"/>'; });
+      ord.forEach(function(c){ var q = px(C[c][0], C[c][1]), r = 20 * Math.sqrt(tot[c] / mx), L = LEFT[c];
+        s += '<text x="' + (L ? q[0] - r - 4 : q[0] + r + 4).toFixed(1) + '" y="' + (q[1] + 4 + (LY[c] || 0)).toFixed(1) + '" text-anchor="' + (L ? 'end' : 'start') + '" font-size="11" fill="#1e293b" pointer-events="none">' + FL.esc(c) + '</text>'; });
+      mapEl.innerHTML = s + '</svg>';
+    }
+    function drawBars(){
+      var names = nsel() ? Object.keys(sel) : Object.keys(tot), v = CATS.map(function(k){ return names.reduce(function(a, c){ return a + cat[c][k]; }, 0); }), mx = Math.max.apply(null, v), h = '';
+      CATS.forEach(function(k, i){ h += '<div style="display:flex;align-items:center;gap:8px;margin:7px 0;font-size:.9rem"><span style="width:62px;text-align:right">' + k + '</span><span style="display:block;height:22px;background:#4e79a7;width:' + (v[i] / mx * 62).toFixed(1) + '%;min-width:2px;transition:width .35s"></span><span style="color:#475569;white-space:nowrap">' + f1(v[i]) + '</span></div>'; });
+      barEl.innerHTML = '<div style="font-weight:700;margin-bottom:4px;direction:rtl;text-align:right">Sales לפי Category</div>' + h;
+      var total = v.reduce(function(a, b){ return a + b; }, 0);
+      out.innerHTML = (nsel() ? 'נבחרו: <b dir="ltr">' + names.map(FL.esc).join(', ') + '</b>. ' : 'לא נבחרה עיר, ולכן העמודות מציגות את כל הרשת. ') + 'סך הכול: <b>' + f1(total) + '</b>.';
+    }
+    function all(){ drawMap(); drawBars(); }
+    mapEl.addEventListener('click', function(e){
+      var t = e.target.closest ? e.target.closest('circle[data-c]') : null, c = t ? t.getAttribute('data-c') : null;
+      if (!c){ sel = {}; all(); return; }
+      if (e.ctrlKey || e.shiftKey || e.metaKey){ if (sel[c]) delete sel[c]; else sel[c] = 1; }
+      else if (sel[c] && nsel() === 1) sel = {}; else { sel = {}; sel[c] = 1; }
+      all(); if (window.FL && !clicked){ clicked = true; FL.done('m7-sim-dash'); }
+    });
+    TF.loadScoop(function(D){
+      var cc = D.cols.City, kc = D.cols.Category, sv = D.cols.Sales.v;
+      for (var i = 0; i < D.n; i++){ var c = cc.dict[cc.v[i]], k = kc.dict[kc.v[i]]; tot[c] = (tot[c] || 0) + sv[i]; cat[c] = cat[c] || {}; cat[c][k] = (cat[c][k] || 0) + sv[i]; }
+      all();
+    });
+  }); })();</script>
+
+  <p>בדשבורד אמיתי זה נעשה בשני שלבים: בונים גיליון מפה וגיליון עמודות, מניחים את שניהם בדשבורד, ומדליקים את ה-<code>Use as Filter</code> במפה. הסמל נמצא בסרגל הקטן שמופיע בפינה של גיליון נבחר:</p>
+  <figure class="shot">
+    <img src="img/dash-first.png" alt="דשבורד ב-Tableau Public, כשגיליון נבחר ובפינתו סרגל כלים קטן ובו סמל משפך" style="max-width:520px;margin:0 auto">
+    <figcaption>דשבורד ב-Tableau Public (על נתוני משחקי וידאו, רק כדי להראות היכן הדברים). בפינה העליונה של הגיליון הנבחר סרגל קטן: הסמל השלישי, המשפך, הוא <code>Use as Filter</code>. על המפה שלנו הוא נראה בדיוק אותו דבר.</figcaption>
+  </figure>
+
+  <div class="box try" data-id="m7-try-dash">
+    <ol>
+      <li>במפה שלכם (המקורית, עם Size ו-Color) לחצו ימני על לשונית הגיליון, <code>Rename</code>, וקראו לה <code>Map</code>. <b>למה:</b> שמות ברורים עוזרים כשיש כמה גיליונות.</li>
+      <li>צרו גיליון חדש בשם <code>By Category</code>: <code>Category</code> על <code>Rows</code>, <code>Sales</code> על <code>Columns</code>, ממוין מהגדול לקטן. <b>תוצאה:</b> Cups 69,470.0, Drinks 54,553.3, Cones 48,317.0, Sundaes 47,037.2, Sticks 17,443.4. הסכום 236,820.9.</li>
+      <li>לחצו על סמל הגיליון החדש בתחתית ובחרו <code>New Dashboard</code>. <b>למה:</b> זה הקנבס שבו מחברים גיליונות.</li>
+      <li>גררו מהרשימה משמאל את <code>Map</code> אל הקנבס, ואחר כך את <code>By Category</code> לצידה או מתחתיה. <b>למה:</b> שתיהן יופיעו יחד.</li>
+      <li>לחצו על המפה בדשבורד כדי לבחור אותה, ובפינה שלה לחצו על המשפך (<code>Use as Filter</code>). <b>למה:</b> זה מה שמחבר בין המפה לעמודות.</li>
+      <li>לחצו על העיגול של ירושלים. <b>למה:</b> זו הבדיקה.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> אחרי הלחיצה העמודות מציגות רק ירושלים: Cups 9,347.2, Drinks 7,971.3, Cones 7,219.7, Sundaes 6,324.6, Sticks 2,588.0, והסכום 33,450.8. שאר הערים נחלשות על המפה. לחיצה חוזרת על הבועה, או על רקע ריק, מחזירה את כל הרשת.</p>
+  </div>
+
+  <div class="box trap">
+    <p><b>מסנן אחד לא מגיע לכל הגיליונות.</b> אם הוספתם מסנן שנה לגיליון המפה בלבד, הוא לא יסנן את העמודות. הבחירה במפה (<code>Use as Filter</code>) ומסנן רגיל הם שני דברים שונים. כדי שמסנן שנה יפעל על כל הגיליונות, מגדירים אותו להתאים לכמה גיליונות, ולימוד מלא של דשבורדים יש במודול <a href="module13.html">13</a>.</p>
+  </div>
+
+  <div class="box meaning">
+    <p>מפה שמשמשת כמסנן מרוויחה פעמיים: היא מראה את הגיאוגרפיה, והיא נותנת לקורא דרך להתמקד. בדשבורד עם הרבה גיליונות היא הופכת לתפריט: במקום רשימה נפתחת של ערים, לוחצים על העיר עצמה. זה הרבה פעמים הנימוק הכי טוב לשים מפה בדשבורד של שמונה ערים.</p>
+  </div>
+
+  <div class="box real">
+    <p>מפה שמסננת היא דפוס מקובל בדשבורדים של רשתות עם סניפים: על המפה הסניפים או האזורים, ולידה כרטיסים ועמודות שמתעדכנים לפי הבחירה. מפרסמים אותה ב-Tableau Public כדי שכל אחד יוכל ללחוץ. כל נתון שמוצג שם גלוי לכולם, ולכן משתמשים רק בנתונים הבדויים שלנו.</p>
+  </div>
+
+  <div class="quiz" data-id="m7-q-filter" data-a="2"><p class="qq">בדשבורד יש מפה ועמודות. לחצתם על העיגול של אילת, ושום דבר לא השתנה בעמודות. מה הסיבה הסבירה?</p>
+    <button class="opt">המפה והעמודות בנויות מקובצי נתונים שונים, ולכן Tableau לא יכולה לחבר ביניהם</button>
+    <button class="opt">ה-<code>Use as Filter</code> לא הופעל על גיליון המפה</button>
+    <button class="opt">אי אפשר לסנן עמודות לפי מפה</button>
+    <div class="why">בדרך כלל זו הסיבה: הבחירה במפה לא מסננת כלום עד שמדליקים את Use as Filter. הנתונים אצלנו מאותו מקור, ולכן אין בעיית חיבור. ואפשר בהחלט לסנן עמודות לפי מפה, זו אחת הסיבות העיקריות לשים אותה בדשבורד.</div></div>
+
+  <div class="teach"><b>🎓 למרצה:</b> דשבורדים נלמדים לעומק במודול 13, וכאן נוגעים רק בשימוש כמסנן. לבדוק לפני השיעור שהמשפך מופיע בפינת הגיליון הנבחר בגרסה שלכם. אם סטודנטים מתקשים בבניית הדשבורד, אפשר לתת להם את ההדמיה הזו כתחליף לתרגיל, ולחזור אליו אחרי מודול 13.</div>
+</section>
+
+<section class="sec" id="m7-10" data-t="בונים ועונים">
+  <div class="sec-h"><div class="sec-n">10</div><h2>בונים ועונים: איפה אנחנו מאבדים קרקע</h2></div>
+  <p class="lead">הנהלת Scoop &amp; Go מסתכלת על המספר הכולל: המכירות ב-2025 עלו מ-107,047.6 ל-129,773.3. נשמע מצוין. השאלה: האם הצמיחה בכל הרשת, או שיש עיר שבה נופלים? וכמה בדיוק?</p>
+
+  <p>זה התרגיל המסכם של המודול. נבנה מפה, נשווה בין שנים, ואז נחשב בידיים מספר אחד שעונה על השאלה. כל שלב נבדק בתוצאה צפויה, כך שאפשר לדעת אם טעיתם לפני שמתקדמים.</p>
+  <div class="flow"><span class="nd">1. נתונים ומפה</span><span class="ar">←</span><span class="nd">2. מסנן שנה</span><span class="ar">←</span><span class="nd">3. חישוב התשובה</span><span class="ar">←</span><span class="nd">4. בדיקה: איפה בשנה?</span><span class="ar">←</span><span class="nd">5. משפט למנהל</span></div>
+
+  <div class="box try" data-id="m7-try-b1">
+    <p><b>שלב 1: נתונים, מפה, ובדיקת בסיס.</b></p>
+    <ol>
+      <li>פתחו חוברת חדשה ב-Tableau Public. התחברו אל <code>scoop_sales_2024_2025.csv</code>. אם City זוהה והמפה בסעיף 3 הצליחה עם 8 marks, אפשר להסתפק בזה. אם לא, הוסיפו את <code>scoop_city_coords.csv</code> כמו בסעיף 4. <b>למה:</b> אנחנו בונים על מקור שאנחנו יודעים שעובד.</li>
+      <li>בגיליון חדש בשם <code>Check</code>: גררו <code>Sales</code> אל <code>Text</code>. אחר כך גררו אליו את שדה הספירה של הטבלה (בסוף רשימת המדדים, בשם דומה ל-<code>scoop_sales_2024_2025.csv (Count)</code>). <b>למה:</b> בדיקת בסיס, כמו שעשינו בכל מודול. <b>תוצאה:</b> Sales 236,820.9 ו-6,575 שורות.</li>
+      <li>בגיליון חדש בשם <code>Map</code> בנו את המפה: <code>City</code> על Detail (דרך לחיצה כפולה, או על קואורדינטות עם Latitude, Longitude), <code>Sales</code> על Size, <code>Profit</code> על Color. הפעילו Light, ושימו תוויות City. <b>תוצאה:</b> 8 marks.</li>
+    </ol>
+  </div>
+
+  <div class="box try" data-id="m7-try-b2">
+    <p><b>שלב 2: מסנן שנה, והשוואה בין שנים.</b></p>
+    <ol>
+      <li>גררו <code>Order Date</code> אל <code>Filters</code>, בחרו <code>Years</code>, ובחרו רק 2024. <b>למה:</b> כך המפה תראה שנה אחת בכל פעם. <b>תוצאה:</b> <b>6 marks</b>. רחובות ואשדוד נעלמות, כי לא היה להן מה למכור ב-2024.</li>
+      <li>עברו עם העכבר על הערים וקראו את Sales מהתיבה. השוו לטבלה למטה.</li>
+      <li>החליפו את המסנן ל-2025. <b>תוצאה:</b> <b>8 marks</b>, וכל המספרים של 2025 מהטבלה.</li>
+      <li>לחצו ימני על הפיל של המסנן, <code>Show Filter</code>, ובתפריט של הכרטיס בחרו אפשרות של בחירה בודדת. <b>למה:</b> כך הצופה בדשבורד יחליף שנה בלי להיכנס לתוכנה.</li>
+    </ol>
+    <div class="tw"><table class="tbl">
+      <thead><tr><th>City</th><th>2024</th><th>2025</th><th>שינוי</th></tr></thead>
+      <tbody>
+        <tr><td>Tel Aviv-Yafo</td><td>39,723.1</td><td>43,917.0</td><td>+10.6%</td></tr>
+        <tr><td>Jerusalem</td><td>16,105.9</td><td>17,344.9</td><td>+7.7%</td></tr>
+        <tr><td>Eilat</td><td>14,548.1</td><td>16,925.6</td><td>+16.3%</td></tr>
+        <tr><td>Haifa</td><td>12,982.0</td><td>14,407.2</td><td>+11.0%</td></tr>
+        <tr><td>Netanya</td><td>12,579.7</td><td>14,260.5</td><td>+13.4%</td></tr>
+        <tr><td><b>Beer Sheva</b></td><td><b>11,108.8</b></td><td><b>7,688.4</b></td><td><b>-30.8%</b></td></tr>
+        <tr><td>Rehovot</td><td>אין</td><td>9,925.2</td><td>עיר חדשה</td></tr>
+        <tr><td>Ashdod</td><td>אין</td><td>5,304.5</td><td>עיר חדשה</td></tr>
+        <tr><th>סך הכול</th><th>107,047.6</th><th>129,773.3</th><th>+21.2%</th></tr>
+      </tbody></table></div>
+    <p>Tableau עשויה להציג 2 ספרות אחרי הנקודה או לעגל לשלמים, לפי הפורמט. השינוי באחוזים אינו מוצג בתיבה, מחשבים אותו בידיים.</p>
+  </div>
+
+  <div class="box try" data-id="m7-try-b3">
+    <p><b>שלב 3: מחשבים את התשובה.</b></p>
+    <ol>
+      <li>בגיליון חדש בשם <code>Years</code>: <code>Order Date</code> (שנה) על <code>Rows</code> ו-<code>Sales</code> על <code>Text</code>. <b>תוצאה:</b> 107,047.6 ו-129,773.3. עליית הרשת: 129,773.3 פחות 107,047.6 זה 22,725.7, כלומר 21.2%.</li>
+      <li>גררו <code>City</code> אל <code>Filters</code> והוציאו (<code>Exclude</code>) את <code>Rehovot</code> ו-<code>Ashdod</code>. <b>למה:</b> שתי הערים האלה לא פעלו ב-2024, ולכן אי אפשר להשוות אותן. זו השוואה בין שש הערים שפעלו בשתי השנים. <b>תוצאה:</b> 107,047.6 ו-114,543.6. העלייה: 7,496.0 ו-<b>7.0%</b>.</li>
+      <li>בחלון הסינון של City בחרו רק את <code>Beer Sheva</code> (במקום ההוצאה הקודמת). <b>תוצאה:</b> 11,108.8 ו-7,688.4. הירידה: 11,108.8 פחות 7,688.4 זה <b>3,420.4</b>, כלומר <b>30.8%</b>. (3,420.4 חלקי 11,108.8 הוא 0.3079.)</li>
+    </ol>
+    <p>המספר שעונה על השאלה: <b>באר שבע ירדה ב-3,420.4, כלומר ב-30.8%, והיא העיר היחידה שירדה.</b></p>
+  </div>
+
+  <div class="box try" data-id="m7-try-b4">
+    <p><b>שלב 4: איפה בשנה זה קרה?</b> מפה לא עונה על זה, אבל עמודות כן.</p>
+    <ol>
+      <li>בגיליון חדש בשם <code>Beer Sheva by quarter</code>: סננו <code>City</code> ל-Beer Sheva בלבד. גררו <code>Order Date</code> אל <code>Columns</code> פעמיים. בכל פיל פתחו את החץ ובחרו את רמת התאריך: באחד <code>Year</code> ובשני <code>Quarter</code>, שתיהן מהסוג הרגיל (לא Continuous). <code>Sales</code> על <code>Rows</code>. <b>למה:</b> כותרות מקוננות של שנה ורבעון.</li>
+      <li>קראו את הרבעונים.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> 2024: Q1 1,155.0, Q2 3,368.1, Q3 4,967.6, Q4 1,618.1. 2025: Q1 1,221.0, Q2 2,365.4, Q3 2,627.0, Q4 1,475.0. שני הרבעונים של האביב והקיץ (Q2 ו-Q3) ירדו מ-8,335.7 ל-4,992.4, ירידה של 3,343.3. זה כ-97.7% מכל הירידה השנתית (3,420.4). שאר השנה כמעט לא השתנתה.</p>
+  </div>
+
+  <div class="box meaning">
+    <p>הסיפור הוא לא ״המכירות עלו ב-21.2%״. הסיפור הוא שכמעט שני שלישים מהעלייה (15,229.7 מתוך 22,725.7) הגיעו משתי ערים שנפתחו ב-2025, ושעיר ותיקה אחת, באר שבע, ירדה בשליש, כמעט כולה בקיץ. ההנהלה רואה תמונה אחרת בלי המפה ובלי ההשוואה. מפה עוזרת לראות איפה, העמודות והחישוב אומרים כמה.</p>
+  </div>
+
+  <h3>המשפט למנהל</h3>
+  <p>הנה איך נראה סיכום של שלוש שורות, עם מספרים שאפשר לבדוק:</p>
+  <div class="defline"><b>דוגמה לתשובה:</b> ״ב-2025 מכירות הרשת עלו ב-21.2% (מ-107,047.6 ל-129,773.3). כ-15,230 מהעלייה הגיעו מרחובות ומאשדוד שנפתחו השנה. בשש הערים שפעלו בשתי השנים העלייה היא 7.0%. באר שבע היא העיר היחידה שירדה, מ-11,108.8 ל-7,688.4 (3,420.4, כלומר 30.8%), וכמעט כל הירידה ברבעונים השני והשלישי.״</div>
+
+  <div class="box think" data-id="m7-th-beersheva"><p>ההנהלה שואלת: ״האם לסגור את הסניף בבאר שבע?״ מה תבדקו בנתונים לפני שתענו, ומה אי אפשר לדעת מהם?</p>
+    <div class="ans">בודקים איפה בדיוק הירידה: ב-Channel, באר שבע Walk-in ירד מ-8,612.2 ל-5,574.4 (ירידה של 3,037.8), Delivery ירד מ-1,452.4 ל-707.8, ו-App דווקא עלה מ-1,044.2 ל-1,406.2. כלומר הבעיה נמצאת בעיקר בקונים שמגיעים לסניף. בודקים גם Category ו-Profit (הרווח ירד ב-34.8%, מ-5,803.8 ל-3,785.4). מה שהנתונים לא אומרים: למה. תחרות חדשה, שיפוץ, שינוי בצוות או מקום חניה, משהו שדורש שיחה עם מי שעובד שם. הנתונים מצביעים על המקום והזמן, ולא על הסיבה, ולכן עוד מוקדם להחליט על סגירה.</div></div>
+
+  <div class="box try" data-id="m7-try-b5">
+    <p><b>שלב 5: בדיקה אחרונה לפני שמראים למישהו.</b></p>
+    <ol>
+      <li>לכל גיליון כותרת שאומרת מה הוא מראה, למשל ״Sales לפי עיר, 2025״. <b>למה:</b> מי שרואה את המפה בלי הסבר לא יודע אם הגודל הוא מכירות או רווח.</li>
+      <li>מקרא של Size קריא, ויחידות כמו בקובץ (המטבע לא מצוין בקובץ, ולכן לא כותבים סמל מטבע). <b>למה:</b> לא ממציאים יחידה.</li>
+      <li>שורת המצב: מספר ה-marks שציפיתם לו (6 ב-2024, 8 ב-2025), ואין <code>unknown</code>. <b>למה:</b> בדיקה שלא נעלמה עיר בשקט.</li>
+      <li>שימו מספר אחד בכותרת הדשבורד: ״באר שבע: מינוס 30.8%״ רק אם בדקתם אותו, ושאתם יכולים להסביר איך חישבתם.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> שלושה גיליונות מסודרים (Map, Years, Beer Sheva by quarter), ובכל אחד מספרים שתואמים לטבלאות שבסעיף הזה.</p>
+  </div>
+
+  <div class="quiz" data-id="m7-q-answer" data-a="1"><p class="qq">איזה משפט נכון על הנתונים?</p>
+    <button class="opt">הצמיחה של הרשת כולה היא 21.2%, אבל בשש הערים שפעלו בשתי השנים היא 7.0%, ובאר שבע ירדה ב-30.8%</button>
+    <button class="opt">הצמיחה של כל עיר גבוהה מ-7.0%, כי הצמיחה הכוללת היא 21.2%</button>
+    <button class="opt">באר שבע ירדה ב-3,420.4%, כי זה ההפרש בין שתי השנים</button>
+    <div class="why">הראשון נכון ומחושב. השני טעות קלאסית של ממוצע: הצמיחה הכוללת כוללת שתי ערים חדשות, וירושלים עלתה רק ב-7.7%. בשלישי, 3,420.4 הוא הפרש במספרים מוחלטים, ובאחוזים הוא 30.8% (3,420.4 חלקי 11,108.8).</div></div>
+
+  <div class="teach"><b>🎓 למרצה:</b> אפשר לבקש מכל סטודנט להקליד את המספר שלו ל-chat לפני שמראים את הפתרון: מי קיבל 6 marks ב-2024? מי קיבל -30.8%? שגיאות נפוצות: שכחו להוציא את רחובות ואשדוד לפני חישוב ה-7.0%, חילקו באחוזים בלי להתחשב ב-2024 בכלל, או שמו את המסנן של השנה על הגיליון הלא נכון. את שלב 4 אפשר לדלג אם הזמן קצר, והמספר המרכזי הוא 30.8%. לבדוק לפני השיעור: שם הפיל של ספירת הרשומות (Count) בגרסה שלכם, ואיך Tableau מציגה את ערכי Sales בתיבה (עם או בלי ספרה אחרי הנקודה).</div>
+</section>
+
+<section class="sec" id="m7-11" data-t="סיכום">
+  <div class="sec-h"><div class="sec-n">11</div><h2>סיכום: מה עברנו במודול</h2></div>
+  <div class="box recap">
+    <ul>
+      <li>מפה מתחילה בשדה עם <b>תפקיד גיאוגרפי</b> (סמל כדור הארץ). לחיצה כפולה מוסיפה Longitude ו-Latitude (generated) ושמה City ב-Detail, ומספר ה-marks הוא מספר הערכים השונים.</li>
+      <li><b>unknown לא נעלם בשקט.</b> בדקו את שורת המצב ואת פינת המפה. עברית לא אומתה: בדקו בניסוי, ובנו על עמודה באנגלית, על מדינה לפני העיר, או על קואורדינטות.</li>
+      <li>אורך (Longitude) הולך על Columns ורוחב (Latitude) על Rows. ב-GeoJSON הסדר הפוך: קודם אורך. בישראל הרוחב בין 29.5 ל-33.3 והאורך בין 34.3 ל-35.9.</li>
+      <li>מחלישים את הרקע, משתמשים בשקיפות, ובציר כפול (שכבות) רק כשצריך שני סוגי סימן.</li>
+      <li>סמלים לסכומים, מפה צבועה לשיעורים (על שדה שהוא שטח), צפיפות לנקודות מדויקות, וקובץ מרחבי לצורות שאין ב-Tableau.</li>
+      <li>לא תמיד מפה: דירוג עדיף על עמודות. השוו בצורה הוגנת (לפי סניף וחודש פעיל), בדקו שכל הסימנים מופיעים, והשתמשו במפה גם כמסנן.</li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-id="m7-q-end1" data-a="2"><p class="qq">אחרי סינון ל-2024, המפה מציגה 6 marks במקום 8. למה?</p>
+    <button class="opt">שני שמות עיר לא זוהו בשנה הזו, ולכן Tableau הסתירה אותם</button>
+    <button class="opt">לרחובות ולאשדוד אין שורות ב-2024, ולכן אין להן סימנים. מסנן מסיר סימנים, לא מציג אפס</button>
+    <button class="opt">Tableau מגבילה מפות ל-6 סימנים כשיש מסנן שנה</button>
+    <div class="why">רחובות ואשדוד נפתחו ב-2025. אחרי הסינון אין להן אף שורה, ובמפה סימן קיים רק עבור ערך שיש לו נתונים. זה לא unknown (שם אין מיקום), וגם אין שום הגבלה על מספר הסימנים.</div></div>
+
+  <div class="quiz" data-id="m7-q-end2" data-a="3"><p class="qq">מה נכון על זיהוי שמות מקומות בעברית ב-Tableau Public?</p>
+    <button class="opt">הוא עובד בוודאות, כי Tableau תומכת ביוניקוד</button>
+    <button class="opt">הוא לא עובד בוודאות, כי אין ממשק בעברית</button>
+    <button class="opt">לא אומת, ולכן בודקים בניסוי ומחזיקים גם עמודת שם באנגלית או קואורדינטות</button>
+    <div class="why">התמיכה ביוניקוד אומרת שהעברית מוצגת נכון, לא שהשמות מקודדים כמקומות. העובדה שהממשק באנגלית לא קשורה לשאלה. לכן הדרך הנכונה: לבדוק, ולהחזיק חלופה בטוחה.</div></div>
+
+  <div class="quiz" data-id="m7-q-end3" data-a="1"><p class="qq">הסימן של באר שבע מציג 11,108.8 ב-2024 ו-7,688.4 ב-2025. מה הירידה, באחוזים?</p>
+    <button class="opt">כ-30.8%, כלומר 3,420.4 חלקי 11,108.8</button>
+    <button class="opt">כ-44.5%, כלומר 3,420.4 חלקי 7,688.4</button>
+    <button class="opt">3,420.4%, כי זה ההפרש בין שני המספרים</button>
+    <div class="why">אחוז שינוי מחושב ביחס לנקודת ההתחלה, כלומר 2024. חלוקה ב-7,688.4 מחזירה אחוז אחר, ושם בעצם שואלים כמה הייתה העלייה מ-2025 ל-2024 וזה לא מה ששאלנו. ההפרש לבדו הוא מספר מוחלט.</div></div>
+
+  <p><b>קריאה נוספת, תיעוד רשמי של Tableau (באנגלית):</b>
+    <a class="tool" href="https://help.tableau.com/current/pro/desktop/en-us/maps_howto_simple.htm" target="_blank" rel="noopener">Build a simple map</a>
+    <a class="tool" href="https://help.tableau.com/current/pro/desktop/en-us/maps_howto_symbol.htm" target="_blank" rel="noopener">Symbol map</a>
+    <a class="tool" href="https://help.tableau.com/current/pro/desktop/en-us/maps_howto_choropleth.htm" target="_blank" rel="noopener">Filled map</a>
+    <a class="tool" href="https://help.tableau.com/current/pro/desktop/en-us/maps_howto_heatmap.htm" target="_blank" rel="noopener">Density map</a>
+    <a class="tool" href="https://help.tableau.com/current/pro/desktop/en-us/maps_dualaxis.htm" target="_blank" rel="noopener">Dual-axis map</a></p>
+  <p>לתרגול מפה צבועה על שטחים אמיתיים, בדף הדוגמאות של Tableau Public יש קבצים עם מדינות ומחוזות, למשל מפה של מדינות ארה״ב: <a class="tool" href="https://public.tableau.com/app/learn/sample-data" target="_blank" rel="noopener">Sample data</a>. בדקו אם הקובץ נפתח אצלכם.</p>
+
+  <p><b>הבא:</b> <a class="tool" href="module8.html">מודול 8: שדות מחושבים</a>. שם נבנה את Profit Margin בצורה מסודרת, ואת המדד ״מכירות לסניף לחודש פעיל״ שהשתמשנו בו בהדמיה.</p>
+
+  <div class="teach"><b>🎓 למרצה:</b> בסוף מודול כדאי לאסוף מהכיתה את תוצאות ניסוי העברית (איזו גרסה, מה זוהה). זה המידע החסר בחומר ההכנה. אם יש תוצאה אחידה, כדאי לעדכן את הסעיף לפני הקבוצה הבאה.</div>
+</section>
+
+
+<div class="pager"><a href="module6.html">→ 6. סינון, מיון, קיבוץ וסדר הפעולות</a><a href="module8.html">8. שדות מחושבים ←</a></div>
+</main>
+<footer class="foot">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ · Tableau Public מאפס · כל נתוני הדוגמה בדויים</footer>
+</body>
+</html>
