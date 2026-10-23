@@ -32,7 +32,8 @@
 <div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
 <div class="box note">
 <p><span class="lvl b">בונים</span> <b>מה נבנה במודול הזה.</b> מפה של Scoop &amp; Go: שמונה ערים, וכל עיר היא סימן עגול על המפה. גודל הסימן הוא המכירות וצבע הסימן הוא הרווח. מעל זה שכבה של שמות הערים, מסנן לפי שנה, ובסוף מפה ועמודות באותו דשבורד, כשלחיצה על עיר מסננת את העמודות. בסוף תענו על שאלה עסקית במספר שחישבתם בעצמכם.</p>
-<p><b>מה צריך להיות מוכן.</b> Tableau Public על המחשב, והקובץ <a class="tool" href="data/scoop_sales_2024_2025.csv">scoop_sales_2024_2025.csv</a> (אותו קובץ של המודולים הקודמים). כדאי להכיר ממודולים <a href="module3.html">3</a> עד <a href="module6.html">6</a> את המדפים, כרטיס Marks ומסנן. המפות של Tableau צריכות חיבור לאינטרנט, אז בדקו שיש לכם.</p>
+<p><b>מה צריך להיות מוכן.</b> Tableau Public על המחשב, חוברת הקורס <span class="n">scoop-course.twbx</span> (ממודול <a href="module1.html">1</a>), והקובץ <a class="tool" href="data/scoop_sales_2024_2025.csv">scoop_sales_2024_2025.csv</a> (אותו קובץ של המודולים הקודמים). כדאי להכיר ממודולים <a href="module3.html">3</a> עד <a href="module6.html">6</a> את המדפים, כרטיס Marks ומסנן. המפות של Tableau צריכות חיבור לאינטרנט, אז בדקו שיש לכם.</p>
+<p><b>דבר אחד שכדאי לדעת מראש:</b> כשמציירים את הערים של Scoop &amp; Go בפעם הראשונה, Tableau לא מזהה אף אחת מהן. בפינת המפה כתוב <code>8 unknown</code>. זה לא באג אצלכם: Tableau מחפשת את השמות בארצות הברית. בסעיף 3 מתקנים את זה בכמה לחיצות (<code>Edit Locations...</code> ואז מדינה Israel), ואחרי זה הכול עובד.</p>
 <p>כל התרגילים כאן עובדים ב-Tableau Public בלבד. כשיש דרך לעקוף משהו שחסר לכם, היא כתובה בלי טריקים.</p>
 </div>
 
@@ -115,7 +116,7 @@
       <g data-s="2"><rect x="330" y="70" width="180" height="170" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
         <text x="420" y="98" text-anchor="middle" font-size="16" font-weight="700" fill="#3730a3">רשימת המקומות</text>
         <text x="420" y="118" text-anchor="middle" font-size="14" fill="#475569">המובנית של Tableau</text></g>
-      <g data-only="2"><text x="420" y="196" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">מחפשים: Haifa</text></g>
+      <g data-only="2"><text x="420" y="180" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">מחפשים: Haifa</text><text x="420" y="206" text-anchor="middle" font-size="14" fill="#475569">בתוך מדינה: Israel</text></g>
       <g data-s="3"><text x="420" y="168" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">נמצא ✓</text><text x="420" y="194" text-anchor="middle" font-size="14" fill="#475569">שני מספרים:</text><text x="420" y="216" text-anchor="middle" font-size="14" fill="#475569">רוחב ואורך</text></g>
       <g data-s="3"><rect x="320" y="250" width="200" height="28" rx="8" fill="#d9f0d6" stroke="#a8d4a3"/><text x="420" y="269" text-anchor="middle" font-size="14" font-weight="600" fill="#1c6b1c">Latitude (generated)</text>
         <rect x="320" y="286" width="200" height="28" rx="8" fill="#d9f0d6" stroke="#a8d4a3"/><text x="420" y="305" text-anchor="middle" font-size="14" font-weight="600" fill="#1c6b1c">Longitude (generated)</text></g>
@@ -140,34 +141,35 @@
     </svg></div>
     <ol class="caps">
       <li>שורה אחת בקובץ: City = Haifa. אין שם קו רוחב או קו אורך, רק שם.</li>
-      <li>Tableau לוקחת את השם ומחפשת אותו ברשימת המקומות שמובנית בתוכנה.</li>
-      <li>אם השם נמצא, חוזרים שני מספרים: קו רוחב וקו אורך. אלה השדות <code>Latitude (generated)</code> ו-<code>Longitude (generated)</code> שמופיעים לכם ב-Data pane אחרי שמניחים City.</li>
+      <li>Tableau לוקחת את השם ומחפשת אותו ברשימת המקומות שמובנית בתוכנה, בתוך מדינה מסוימת. את המדינה קובעים בחלון <code>Edit Locations</code>. אם לא קבעתם, יש ברירת מחדל, ואצלנו היא הייתה <code>United States</code>. שם לא תמצא את חיפה, ולכן בסעיף 3 נקבע Israel.</li>
+      <li>אם השם נמצא, חוזרים שני מספרים: קו רוחב וקו אורך. Tableau שמה אותם בשדות <code>Latitude (generated)</code> ו-<code>Longitude (generated)</code>, שכבר מחכים לכם בתחתית רשימת השדות.</li>
       <li>עכשיו יש לסימן מקום: הוא מצויר על המפה. הנתונים עצמם לא השתנו, רק נוסף להם מיקום.</li>
       <li>אותו דבר קורה לכל שמונה הערים, וכל עיר מקבלת סימן.</li>
-      <li>שם שלא ברשימה, למשל שגיאת כתיבה, לא מקבל מיקום. Tableau לא ממציאה: היא מסמנת בפינת המפה כמה שמות <code>unknown</code> יש.</li>
+      <li>שם שלא נמצא, בגלל שגיאת כתיבה או בגלל שחיפשו אותו במדינה הלא נכונה, לא מקבל מיקום. Tableau לא ממציאה: היא מסמנת בפינת המפה כמה שמות <code>unknown</code> יש.</li>
     </ol>
   </div>
 
-  <p>אחרי שהחיפוש מצליח, Tableau מוסיפה לרשימת השדות שני שדות מחושבים: קו הרוחב והאורך שהיא מצאה. הם מסומנים ב-<code>(generated)</code>, כלומר Tableau יצרה אותם, ולא היו בקובץ. נראה אותם עוד מעט על המדפים.</p>
+  <p>ברגע שלשדה אחד יש תפקיד גיאוגרפי, Tableau מוסיפה לרשימת השדות שני שדות משלה: <code>Latitude (generated)</code> ו-<code>Longitude (generated)</code>. המילה <code>(generated)</code> אומרת ש-Tableau יצרה אותם, והם לא היו בקובץ. הם מופיעים מיד כשהקובץ נטען, בתחתית רשימת המדדים, ומתמלאים במספרים רק כשהחיפוש מצליח. נראה אותם עוד מעט על המדפים.</p>
 
-  <p>ככה נראה חלון הנתונים של Scoop &amp; Go. שימו לב לסמל כדור הארץ ליד <code>City</code>, ולכך שאין סמל כזה ליד <code>Region</code> ו-<code>Branch</code>:</p>
-  <div class="tws" style="max-width:360px" aria-label="הדמיה סכמטית של חלון הנתונים">
+  <p>ככה נראית חלונית הנתונים של Scoop &amp; Go. בגרסה הזו הכותרת שלה היא <code>Tables</code>: הממדים למעלה, קו דק, והמדדים מתחתיו. שימו לב לסמל כדור הארץ ליד <code>City</code>, ולכך שליד <code>Region</code> ו-<code>Branch</code> כתוב <code>Abc</code>:</p>
+  <div class="tws" style="max-width:360px" aria-label="הדמיה סכמטית של חלונית הנתונים">
     <div class="tws-data" style="padding:8px 12px">
-      <h6>Dimensions</h6>
-      <div><span class="fld dim"><i>🌐</i>City</span> <span style="color:#e8741f;font-size:.74rem">(תפקיד גיאוגרפי)</span></div>
+      <h6>Tables</h6>
       <div><span class="fld dim"><i>Abc</i>Branch</span></div>
       <div><span class="fld dim"><i>Abc</i>Branch Code</span></div>
-      <div><span class="fld dim"><i>Abc</i>Region</span></div>
-      <div><span class="fld dim"><i>Abc</i>Channel</span></div>
       <div><span class="fld dim"><i>Abc</i>Category</span></div>
-      <h6>Measures</h6>
+      <div><span class="fld dim"><i>Abc</i>Channel</span></div>
+      <div><span class="fld dim"><i>🌐</i>City</span> <span style="color:#e8741f;font-size:.74rem">(תפקיד גיאוגרפי)</span></div>
+      <div><span class="fld dim"><i>Abc</i>Region</span></div>
+      <div style="border-top:1px solid #cbd5e1;margin:4px 0" title="מעל הקו: ממדים. מתחת לקו: מדדים"></div>
       <div><span class="fld mea"><i>#</i>Profit</span></div>
       <div><span class="fld mea"><i>#</i>Sales</span></div>
-      <div><span class="fld mea"><i>🌐</i>Latitude (generated)</span> <span style="color:#e8741f;font-size:.74rem">(אחרי שמניחים City)</span></div>
-      <div><span class="fld mea"><i>🌐</i>Longitude (generated)</span></div>
+      <div><span class="fld mea"><i>🌐</i><em>Latitude (generated)</em></span> <span style="color:#e8741f;font-size:.74rem">(Tableau יצרה)</span></div>
+      <div><span class="fld mea"><i>🌐</i><em>Longitude (generated)</em></span></div>
+      <div><span class="fld mea"><i>#</i><em>scoop_sales_2024_2025.csv (Count)</em></span></div>
     </div>
   </div>
-  <p style="font-size:.85rem;color:#64748b">הדמיה סכמטית. הרשימה מקוצרת, וייתכן שבגרסה שלכם הסמלים נראים קצת אחרת.</p>
+  <p style="font-size:.85rem;color:#64748b">הדמיה סכמטית לפי הגרסה Tableau Public 2026.2. הרשימה מקוצרת (חסרים למשל Item, Order Date, Quantity). שדה הספירה בתחתית נקרא על שם הטבלה, <code>scoop_sales_2024_2025.csv (Count)</code>. בגרסאות ישנות הוא נקרא <code>Number of Records</code>.</p>
 
   <div class="box meaning">
     <p><code>Region</code> אצלנו הוא חלוקה של הרשת, לא מקום ש-Tableau מכירה. ״North״ ו-״Center״ הם לא ממש שמות של שטחים במאגר שלה, לכן אי אפשר לצבוע אותם במפה. כשתרצו לצבוע אזורים, צריך שדה שהוא באמת שטח: מדינה, מחוז או מיקוד. נחזור לזה בסעיף 6.</p>
@@ -177,10 +179,11 @@
     <ol>
       <li>פתחו Tableau Public והתחברו לקובץ <code>scoop_sales_2024_2025.csv</code> (בחלונית <code>Connect</code>, <code>Text file</code>). <b>למה:</b> אנחנו עובדים על אותם נתונים של המודולים הקודמים.</li>
       <li>עברו ל-<code>Sheet 1</code> ושימו לב לחלונית Data בצד שמאל. <b>למה:</b> שם רואים את סוג כל שדה לפי הסמל שלידו.</li>
-      <li>חפשו ליד <code>City</code> סמל של כדור הארץ. ליד <code>Branch</code> ו-<code>Region</code> אמור להיות <code>Abc</code>. <b>למה:</b> רק City קיבל תפקיד גיאוגרפי. בדרך כלל Tableau מזהה את זה לבד, לפי שם העמודה והערכים שבה.</li>
+      <li>חפשו ליד <code>City</code> סמל של כדור הארץ. ליד <code>Branch</code> ו-<code>Region</code> כתוב <code>Abc</code>. <b>למה:</b> רק City קיבל תפקיד גיאוגרפי. Tableau נותנת אותו לבד, לפי שם העמודה.</li>
+      <li>גללו לתחתית הרשימה, מתחת לקו הדק. <b>למה:</b> שם יושבים <code>Latitude (generated)</code> ו-<code>Longitude (generated)</code>, בכתב נטוי, שני השדות ש-Tableau יצרה בגלל City.</li>
       <li>לחצו בכפתור הימני על <code>City</code> ופתחו <code>Geographic Role</code>. <b>למה:</b> זה המקום לשנות או להוסיף תפקיד כשהזיהוי האוטומטי טועה. אל תשנו כלום עכשיו.</li>
     </ol>
-    <p><b>תוצאה צפויה:</b> סמל כדור הארץ ליד City, ורשימת תפקידים שבה City מסומן. ליד Branch, Region ו-Channel: <code>Abc</code>. אם בגרסה שלכם Tableau זיהתה גם שדה נוסף כמקום, רשמו אותו ואל תדאגו, זה לא ישפיע על התרגילים הבאים. אם ליד City אין סמל, בחרו ידנית <code>Geographic Role &gt; City</code>.</p>
+    <p><b>תוצאה צפויה:</b> סמל כדור הארץ ליד City בלבד, ורשימת תפקידים שבה City מסומן. ליד Branch, Region ו-Channel: <code>Abc</code>. בתחתית הרשימה שני שדות (generated). אם אצלכם ליד City אין סמל, בחרו ידנית <code>Geographic Role &gt; City</code>.</p>
   </div>
 
   <div class="sim" data-id="m7-sim-geocoder"><div class="sh">מנסים לתרגם שם למקום</div>
@@ -244,20 +247,23 @@
 
 <section class="sec" id="m7-3" data-t="המפה הראשונה">
   <div class="sec-h"><div class="sec-n">3</div><h2>לחיצה כפולה אחת וכבר יש מפה</h2></div>
-  <p class="lead">מפה נבנית בשתי פעולות: לחיצה כפולה על שדה גיאוגרפי, ואז מושכים מדד לכרטיס Marks. זה הכול. הקושי מגיע אחר כך, כשצריך לבדוק שהמפה אומרת אמת.</p>
+  <p class="lead">מפה נבנית בשלוש פעולות: לחיצה כפולה על שדה גיאוגרפי, קביעת המדינה פעם אחת ב-<code>Edit Locations...</code>, ומדד לכרטיס Marks. עם הערים של Scoop &amp; Go השלב האמצעי הוא חובה.</p>
 
   <div class="defline"><b>מפת סמלים (<code>symbol map</code>):</b> מפה שבה כל מקום הוא סימן אחד, ואפשר לשנות לו גודל וצבע לפי מדד. דוגמה: עיגול גדול לתל אביב-יפו ועיגול קטן לאשדוד, כי המכירות שלהן שונות מאוד.</div>
 
-  <p>כשמניחים שדה גיאוגרפי על הגיליון, Tableau עושה לבד שלושה דברים. היא מוסיפה את <code>Longitude (generated)</code> ל-<code>Columns</code>, את <code>Latitude (generated)</code> ל-<code>Rows</code>, ומניחה את <code>City</code> ב-<code>Detail</code>. תזכורת ממודול 3: <code>Detail</code> קובע כמה סימנים יהיו. סימן אחד לכל ערך שונה של City, אז <b>8 ערים, 8 סימנים</b>.</p>
+  <p>כשמניחים שדה גיאוגרפי על הגיליון, Tableau עושה לבד שלושה דברים. היא מוסיפה את <code>Longitude (generated)</code> ל-<code>Columns</code>, את <code>Latitude (generated)</code> ל-<code>Rows</code>, ומניחה את <code>City</code> ב-<code>Detail</code>. תזכורת ממודול 3: <code>Detail</code> קובע כמה סימנים יהיו. סימן אחד לכל ערך שונה של City, אז <b>8 ערים, 8 סימנים</b>. אבל רק אחרי שהערים זוהו.</p>
+  <p>מה שקורה בפועל עם Scoop &amp; Go: מופיעה מפת עולם בלי אף סימן, ובפינה הימנית התחתונה <code>8 unknown</code>. הסיבה: בחלון <code>Edit Locations</code> המדינה (<code>Country/Region</code>) מוגדרת כברירת מחדל ל-<code>United States</code>, ושם אין Haifa או Eilat. Jerusalem מסומנת <code>Ambiguous</code> והשאר <code>Unrecognized</code>. התיקון:</p>
+  <div class="flow"><span class="nd">8 unknown</span><span class="ar">←</span><span class="nd">Edit Locations...</span><span class="ar">←</span><span class="nd">Country/Region: Fixed</span><span class="ar">←</span><span class="nd">Israel</span><span class="ar">←</span><span class="nd">OK: 8 marks</span></div>
+  <div class="defline"><b>Edit Locations:</b> חלון שבו אומרים ל-Tableau באיזו מדינה לחפש את השמות, ומתאימים ידנית שם שלא נמצא. דוגמה: Country/Region = Israel, ואז Beer Sheva מותאמת ל-Be&#39;er Sheva ו-Haifa ל-Hefa.</div>
 
   <div class="tw"><div class="tws" style="min-width:620px" aria-label="הדמיה סכמטית של מפת הערים ב-Tableau">
     <div class="tws-top"><b>Sheet 1 · Tableau Public</b><span class="tws-btn">Undo</span><span class="tws-btn">Show Me</span><span class="tws-btn">Map</span></div>
     <div class="tws-body" style="min-height:330px">
       <div class="tws-data">
-        <h6>Dimensions</h6>
-        <div><span class="fld dim"><i>🌐</i>City</span></div>
+        <h6>Tables</h6>
         <div><span class="fld dim"><i>Abc</i>Branch</span></div>
-        <h6>Measures</h6>
+        <div><span class="fld dim"><i>🌐</i>City</span></div>
+        <div style="border-top:1px solid #cbd5e1;margin:4px 0"></div>
         <div><span class="fld mea"><i>#</i>Profit</span></div>
         <div><span class="fld mea"><i>#</i>Sales</span></div>
         <div><span class="fld mea"><i>🌐</i>Latitude (generated)</span></div>
@@ -282,25 +288,35 @@
     </div>
     <div class="tws-tabs"><span class="on">Sheet 1</span><span>8 marks</span></div>
   </div></div>
-  <ol class="callouts"><li>שני שדות ה-<code>(generated)</code> הם המיקום שנמצא לכל עיר. אפשר גם לראות אותם בחלונית Data.</li><li>על המדפים: אורך ב-Columns ורוחב ב-Rows. כמו ציר x וציר y, אבל של כדור הארץ.</li><li>הכרטיס Marks: City ב-Detail קובע שיהיו 8 סימנים, Sales קובע גודל, Profit קובע צבע.</li><li>שורת המצב בתחתית: ״8 marks״. זו הבדיקה הראשונה שלכם שהכול זוהה.</li></ol>
+  <ol class="callouts"><li>שני שדות ה-<code>(generated)</code> הם המיקום שנמצא לכל עיר. אפשר גם לראות אותם בחלונית Data.</li><li>על המדפים: אורך ב-Columns ורוחב ב-Rows. כמו ציר x וציר y, אבל של כדור הארץ.</li><li>הכרטיס Marks: City ב-Detail קובע שיהיו 8 סימנים, Sales קובע גודל, Profit קובע צבע.</li><li>שורת המצב בתחתית: ״8 marks״, ואין סימון unknown בפינה. זה המצב אחרי התיקון ב-Edit Locations.</li></ol>
 
   <div class="box try" data-id="m7-try-first-map">
     <ol>
-      <li>צרו גיליון חדש: לחצו על סמל הגיליון החדש בתחתית החלון, או <code>Worksheet &gt; New Worksheet</code>. <b>למה:</b> מתחילים מגיליון ריק, כדי לראות מה Tableau מניחה בעצמה.</li>
-      <li>לחצו פעמיים על <code>City</code> בחלונית Data. <b>למה:</b> לחיצה כפולה על שדה גיאוגרפי מציירת מפה מיד.</li>
-      <li>הסתכלו בשורת המצב בתחתית החלון, ובפינה הימנית התחתונה של המפה. <b>למה:</b> שם Tableau מדווחת כמה סימנים צוירו, ואם יש שמות שלא זוהו (<code>unknown</code>).</li>
-      <li>גררו <code>Sales</code> אל <code>Size</code> בכרטיס Marks. <b>למה:</b> גודל העיגול יציג את גודל המכירות, כך שמבט אחד מספיק כדי להבין מי גדולה.</li>
-      <li>גררו <code>Profit</code> אל <code>Color</code>. <b>למה:</b> עכשיו גם הצבע מספר משהו. נראה בהמשך מה הוא אומר באמת.</li>
-      <li>עברו עם העכבר על העיגול של תל אביב-יפו ועל זה של אשדוד, וקראו את התיבה (tooltip). <b>למה:</b> זה הצ׳קפוינט שלכם: המספרים בתיבה הם המספרים שחישבנו בטבלה בסעיף 1.</li>
+      <li>בחוברת הקורס צרו גיליון חדש: הסמל הראשון אחרי הלשוניות בתחתית (<code>New Worksheet</code>). <b>למה:</b> מתחילים מגיליון ריק, כדי לראות מה Tableau מניחה בעצמה.</li>
+      <li>לחצו פעמיים על <code>City</code> בחלונית הנתונים. <b>למה:</b> לחיצה כפולה על שדה גיאוגרפי מציירת מפה. <b>תוצאה:</b> <code>Longitude (generated)</code> ב-Columns, <code>Latitude (generated)</code> ב-Rows, City ב-Detail, מפת עולם בלי סימנים, ובפינה הימנית התחתונה <code>8 unknown</code>.</li>
+      <li>לחצו על <code>8 unknown</code>. נפתח החלון <code>Special Values for [City]</code>: ״There are 8 values that have unknown geographic locations.״ בחרו <code>Edit Locations...</code>. <b>למה:</b> רוצים לתקן. <code>Filter data</code> היה מוציא את שמונה הערים מהתצוגה ומהחישובים.</li>
+      <li>בחלון <code>Edit Locations</code> קראו: <code>Country/Region</code> הוא <code>United States</code>, ליד City כתוב <code>8 issues</code>, Jerusalem <code>Ambiguous</code> ושבע הערים האחרות <code>Unrecognized</code>. <b>למה:</b> רואים את הסיבה לפני שמתקנים.</li>
+      <li>פתחו את הרשימה של <code>Country/Region</code>, בחרו <code>Fixed:</code> ואז <code>Israel</code>. <b>למה:</b> מעכשיו Tableau מחפשת את השמות בישראל. <b>תוצאה:</b> כל שמונה השורות מותאמות: Beer Sheva ל-Be&#39;er Sheva, Haifa ל-Hefa, והשאר באותו שם. האזהרה <code>8 issues</code> נעלמת.</li>
+      <li>לחצו <code>OK</code>. <b>למה:</b> שומרים את ההתאמה בחוברת. <b>תוצאה:</b> המפה מתמקדת בישראל, ושורת המצב מציגה <b>8 marks</b>.</li>
+      <li>גררו <code>Sales</code> אל <code>Size</code> ו-<code>Profit</code> אל <code>Color</code>. <b>למה:</b> הגודל מראה מכירות והצבע רווח.</li>
+      <li>עברו עם העכבר על תל אביב-יפו ועל אשדוד. <b>למה:</b> זה הצ׳קפוינט מול הטבלה של סעיף 1.</li>
     </ol>
-    <p><b>תוצאה צפויה:</b> שורת המצב מציגה <b>8 marks</b>, בלי סימון unknown. העיגול של תל אביב-יפו הכי גדול והכי כהה, ושל אשדוד הכי קטן. תל אביב-יפו: Sales כ-83,640.1 ו-Profit כ-43,289.6. אשדוד: Sales כ-5,304.5 ו-Profit כ-2,585. Tableau עשויה להציג את המספרים עם פחות ספרות אחרי הנקודה (למשל 83,640 או 83,640.10), לפי פורמט ברירת המחדל שבגרסה שלכם.</p>
-    <p>אם שורת המצב מציגה פחות מ-8, או שמופיע ״unknown״: זה לא כישלון שלכם. זה מה שסעיף 4 בא לפתור. עברו אליו, ואחר כך חזרו לכאן.</p>
+    <p><b>תוצאה צפויה:</b> שורת המצב: <code>8 marks   1 row by 1 column   SUM(Profit): 120,723</code>. התיבה מעל תל אביב-יפו: <code>City: Tel Aviv-Yafo / Profit: 43,290 / Sales: 83,640</code> (בקובץ 43,289.6 ו-83,640.1, והתיבה מעגלת לשלמים). אשדוד היא העיגול הקטן והבהיר ביותר: Sales 5,305 ו-Profit 2,585. במקרא של Size הטווח 5,305 עד 83,640, ובמקרא של Color 2,585 עד 43,290.</p>
+    <p>התיקון נשמר בחוברת, לא בקובץ ה-CSV. בחוברת חדשה עושים אותו שוב. דרך אחרת היא להוסיף לקובץ עמודה <code>Country</code> עם הערך Israel, ולבחור ב-<code>Country/Region</code> את <code>From field:</code> Country.</p>
+  </div>
+
+  <figure class="shot" data-shot="m7-unknown-indicator">
+    <div class="fb"><div style="max-width:380px;margin:0 auto;direction:ltr;text-align:left;font-size:.85rem"><div style="background:#e9eef4;border:1px solid #cbd5e1;border-radius:8px;height:120px;position:relative"><span style="position:absolute;right:8px;bottom:8px;background:#6b7280;color:#fff;border-radius:6px;padding:1px 10px;font-weight:700">8 unknown</span></div><div style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;margin:4px 0 0 auto;width:230px"><div style="padding:4px 10px">Edit Locations...</div><div style="padding:4px 10px">Filter data</div><div style="padding:4px 10px">Show data at default position</div></div></div></div>
+    <figcaption>שלב 3: מפת עולם בלי סימנים, הסימון <code>8 unknown</code> בפינה הימנית התחתונה, והחלון <code>Special Values for [City]</code> עם שלוש האפשרויות: <code>Edit Locations...</code> (״Correct the unknown locations.״), <code>Filter data</code> ו-<code>Show data at default position</code>.</figcaption>
+  </figure>
+  <div class="cols2" style="display:flex;gap:12px;flex-wrap:wrap">
+    <figure class="shot" style="flex:1 1 260px"><img src="img/m7-edit-locations-before.png" alt="חלון Edit Locations עם Country/Region United States: Jerusalem Ambiguous ושבע ערים Unrecognized"><figcaption>שלב 4: <code>Country/Region</code> הוא <code>United States</code>, ליד City <code>8 issues</code>. Jerusalem <code>Ambiguous</code>, השאר <code>Unrecognized</code>.</figcaption></figure>
+    <figure class="shot" style="flex:1 1 260px"><img src="img/m7-edit-locations-after.png" alt="חלון Edit Locations עם Country/Region Israel: כל שמונה הערים מותאמות"><figcaption>שלב 5: אחרי <code>Fixed: Israel</code> כל השמונה מותאמות. Beer Sheva ל-Be&#39;er Sheva, Haifa ל-Hefa.</figcaption></figure>
   </div>
 
   <figure class="shot" data-shot="m7-first-map">
-    <div class="fb"><svg viewBox="0 0 300 312" width="100%" style="direction:ltr;max-width:300px;display:block;margin:0 auto" role="img" aria-label="הדמיה סכמטית של מפה עם שמונה סימנים"><rect width="300" height="312" fill="#f8fafc"/><path d="M156.7 33.2 L154.9 44.4 L147.7 51.4 L146.6 60.5 L143.6 77.3 L141.8 86.4 L136.4 103.9 L128.6 123.5 L123.9 133.3 L109.0 155.0 L107.2 164.1 L114.9 188.6 L137.6 249.5 L144.8 285.2 L150.1 281.0 L159.7 249.5 L159.7 207.5 L174.6 179.5 L180.6 144.5 L183.6 74.5 L198.5 18.5 Z" fill="#e9eef4" stroke="#cbd5e1"/><circle cx="137.7" cy="103.5" r="17.0" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="163.5" cy="125.7" r="10.8" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="147.9" cy="280.5" r="10.4" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="150.1" cy="53.9" r="9.7" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="142.0" cy="87.0" r="9.6" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="138.3" cy="161.8" r="8.1" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="139.5" cy="117.0" r="5.9" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="130.2" cy="123.2" r="4.3" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><text x="115.7" y="109.2" text-anchor="end" font-size="10.0" fill="#1e293b">Tel Aviv-Yafo</text><text x="179.2" y="131.4" text-anchor="start" font-size="10.0" fill="#1e293b">Jerusalem</text><text x="163.3" y="284.5" text-anchor="start" font-size="10.0" fill="#1e293b">Eilat</text><text x="135.4" y="57.9" text-anchor="end" font-size="10.0" fill="#1e293b">Haifa</text><text x="127.3" y="86.8" text-anchor="end" font-size="10.0" fill="#1e293b">Netanya</text><text x="151.3" y="165.8" text-anchor="start" font-size="10.0" fill="#1e293b">Beer Sheva</text><text x="150.3" y="112.7" text-anchor="start" font-size="10.0" fill="#1e293b">Rehovot</text><text x="120.9" y="137.2" text-anchor="end" font-size="10.0" fill="#1e293b">Ashdod</text><text x="290" y="302" text-anchor="end" font-size="11" fill="#64748b">8 marks</text></svg>
-    <div class="need">צילום מסך נדרש: Tableau Public עם Scoop &amp; Go, מפה אחרי תרגיל ״לחיצה כפולה על City״: Sales על Size, Profit על Color, שורת המצב ״8 marks״ נראית בתחתית, בלי unknown</div></div>
-    <figcaption>המפה אחרי שלב 5 בתרגיל. הצילום מתעדכן אוטומטית כשקובץ התמונה קיים.</figcaption>
+    <div class="fb"><p style="text-align:center;color:#64748b">מפת ישראל, 8 marks</p></div>
+    <figcaption>המפה אחרי התיקון ואחרי שלב 7: Profit על Color, Sales על Size, City על Detail. התיבה מעל תל אביב-יפו: Profit 43,290, Sales 83,640. בשורת המצב: 8 marks. (בחלונית הנתונים בצילום יש גם שדה <code>Full Price</code> ממודול 8. אצלכם הוא עוד לא קיים.)</figcaption>
   </figure>
 
   <div class="box meaning">
@@ -323,10 +339,10 @@
     <div class="why">מספר הסימנים הוא מספר הצירופים השונים של כל הממדים שבגיליון. ברוב הערים סניף אחד, ולכן אותו סימן. בתל אביב-יפו שני סניפים (Dizengoff ו-Port), אז שני סימנים באותה נקודה. 6,575 הוא מספר השורות, והוא יופיע רק אם נוסיף ל-Detail שדה שונה בכל שורה כמו Order ID.</div></div>
 
   <div class="box trap">
-    <p><b>המפה ריקה או אפורה.</b> אם רואים רק רקע אפור, או שהסימנים מרחפים בלי מפה מאחוריהם, בדרך כלל חסר חיבור לאינטרנט, או שרשת המכללה חוסמת. Tableau Public צריכה גישה לרשת בשביל מפות. בדקו חיבור, נסו רשת אחרת, ואם זה לא עוזר בקשו עזרה לפני שמתחילים לחפש טעות בגיליון.</p>
+    <p><b>מפת עולם בלי סימנים, ו-unknown בפינה:</b> זו לא בעיית אינטרנט. זו המדינה ב-Edit Locations (שלבים 3 עד 6). <b>המפה ריקה או אפורה בלי unknown:</b> אם רואים רק רקע אפור, או שהסימנים מרחפים בלי מפה מאחוריהם, בדרך כלל חסר חיבור לאינטרנט, או שרשת המכללה חוסמת. Tableau Public צריכה גישה לרשת בשביל מפות. בדקו חיבור, נסו רשת אחרת, ואם זה לא עוזר בקשו עזרה לפני שמתחילים לחפש טעות בגיליון.</p>
   </div>
 
-  <div class="teach"><b>🎓 למרצה:</b> בקשו מכולם לקרוא בקול את שורת המצב (כמה marks). זה מגלה מיד מי מקבל 6 או 7 ומי 8. לפני השיעור בדקו מה מופיע בפינה הימנית התחתונה אצלכם, ואיך נקראת האפשרות שם (לפי מדריכים, יש בה Edit Locations). הדוגמה עם Show Me: בגרסה שלכם ייתכן שהאריחים בסדר אחר.</div>
+  <div class="teach"><b>🎓 למרצה:</b> נבדק בתוכנה (Tableau Public 2026.2.3, מק): כל 8 הערים unknown עד שקובעים Country/Region > Fixed > Israel, ואז כל 8 מותאמות ו-8 marks. בקשו מכולם לקרוא בקול את שורת המצב לפני התיקון ואחריו. נשאר פתוח: האם ברירת המחדל United States תלויה בהגדרות האזור של המחשב.</div>
 </section>
 
 <section class="sec" id="m7-4" data-t="מיקום שלא זוהה">
@@ -338,7 +354,7 @@
   </div>
 
   <h3>איך נראה שם שלא זוהה</h3>
-  <p>כשחלק מהשמות לא נמצאים, Tableau לא מצייר אותם, ובפינה הימנית התחתונה של המפה מופיע סימון בסגנון <code>2 unknown</code>. לפי מדריכים מקובלים, לחיצה עליו פותחת תפריט עם אפשרויות כמו <code>Edit Locations</code> (תיקון המיקומים), סינון הנתונים שלא זוהו, והצגתם בנקודת ברירת מחדל. בגרסה שלכם ייתכן שהשמות שונים מעט.</p>
+  <p>כשחלק מהשמות לא נמצאים, Tableau לא מצייר אותם, ובפינה הימנית התחתונה של המפה מופיע סימון כמו <code>2 unknown</code>. לחיצה עליו פותחת את החלון שראיתם בסעיף 3, עם <code>Edit Locations...</code>, <code>Filter data</code> ו-<code>Show data at default position</code>. את אותו חלון אפשר לפתוח גם מהתפריט <code>Map &gt; Edit Locations...</code>. בטבלה <code>Match values to locations</code> לוחצים על שורה <code>Unrecognized</code> ובוחרים מהרשימה מקום מוכר, או <code>Enter a Latitude and Longitude...</code>.</p>
   <div class="mk" aria-label="הדמיה סכמטית של חלון Edit Locations">
     <div class="mk-bar"><i></i><i></i><i></i><span class="url">Edit Locations · הדמיה סכמטית</span></div>
     <div class="mk-body">
@@ -351,11 +367,6 @@
       <p style="margin:8px 0 0;font-size:.8rem;color:#64748b;direction:rtl;text-align:right">דוגמה בדויה: שני שמות עם שגיאות כתיבה. הרעיון: לכל שם שלא זוהה בוחרים התאמה לשם מוכר, או מקלידים קו רוחב וקו אורך. זה לא בהכרח מה שיופיע אצלכם.</p>
     </div>
   </div>
-  <figure class="shot" data-shot="m7-unknown-indicator">
-    <div class="fb"><div style="max-width:380px;margin:0 auto;direction:ltr;text-align:left;font-size:.85rem"><div style="background:#e9eef4;border:1px solid #cbd5e1;border-radius:8px;height:120px;position:relative"><span style="position:absolute;right:8px;bottom:8px;background:#6b7280;color:#fff;border-radius:6px;padding:1px 10px;font-weight:700">2 unknown</span></div><div style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;margin:4px 0 0 auto;width:230px;box-shadow:0 6px 16px rgba(15,23,42,.15)"><div style="padding:4px 10px">Edit Locations...</div><div style="padding:4px 10px">Filter Data</div><div style="padding:4px 10px">Show Data at Default Position</div></div></div>
-    <div class="need">צילום מסך נדרש: Tableau Public, מפה שבה חלק מהשמות לא זוהו (למשל שם עם שגיאת כתיבה בעמודת City), לחיצה על הסימון unknown בפינה הימנית התחתונה, והתפריט שנפתח</div></div>
-    <figcaption>הסימון unknown והתפריט שלו (הדמיה סכמטית, עד שיתווסף צילום אמיתי).</figcaption>
-  </figure>
   <p>התיקון הזה נשמר בתוך חוברת העבודה ולא בקובץ הנתונים. מי שיקבל מחר את אותו קובץ יצטרך לתקן שוב. ולכן, בדרך כלל, עדיף לתקן את הנתונים עצמם.</p>
 
   <h3>קו רוחב וקו אורך</h3>
@@ -486,7 +497,7 @@ Ashdod,31.8044,34.6553</pre>
 
   <div class="defline"><b>שכבת רקע (<code>background layer</code>):</b> מה שמצויר מאחורי הסימנים שלכם, כמו חופים, גבולות, כבישים ושמות. דוגמה: לכבות את שמות המדינות, כדי שלא יתחרו בשמות הערים שלכם.</div>
 
-  <p>את הרקע משנים מהתפריט <code>Map &gt; Map Layers</code> (ובתיעוד הרשמי מופיע גם <code>Background Layers</code>, אז אם השם אצלכם שונה מעט, זה בסדר). החלונית שנפתחת מחליפה זמנית את חלונית Data. שלושה סגנונות רקע לדוגמה, בהדמיה סכמטית:</p>
+  <p>את הרקע משנים מהתפריט <code>Map &gt; Background Layers...</code>, שפותח את החלונית <code>Map Layers</code> (עם <code>Style:</code> ו-<code>Washout:</code>). החלונית שנפתחת מחליפה זמנית את חלונית Data. שלושה סגנונות רקע לדוגמה, בהדמיה סכמטית:</p>
   <div class="cols3">
     <div class="card" style="text-align:center"><h4>Normal</h4><svg viewBox="0 0 170 196" width="100%" role="img" aria-label="רקע רגיל, הדמיה סכמטית"><rect width="170" height="196" fill="#cfe3f2"/><path d="M96.5 24.2 L95.3 31.4 L90.7 35.9 L89.9 41.8 L88.0 52.6 L86.9 58.4 L83.4 69.7 L78.4 82.3 L75.3 88.6 L65.8 102.5 L64.6 108.4 L69.6 124.1 L84.2 163.3 L88.8 186.2 L92.2 183.5 L98.4 163.3 L98.4 136.3 L108.0 118.3 L111.8 95.8 L113.7 50.8 L123.3 14.8 Z" fill="#ebe7da" stroke="#bdb7a3"/><circle cx="84.2" cy="69.4" r="11.0" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="100.8" cy="83.7" r="7.0" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="90.8" cy="183.2" r="6.7" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="92.2" cy="37.5" r="6.3" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="87.0" cy="58.8" r="6.2" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="84.6" cy="106.9" r="5.2" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="85.4" cy="78.1" r="3.8" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="79.4" cy="82.1" r="2.8" fill="#e8741f" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/></svg><p style="margin:2px 0;font-size:.82rem;color:#64748b">צבעוני. הרקע מתחרה בסימנים.</p></div>
     <div class="card" style="text-align:center"><h4>Light</h4><svg viewBox="0 0 170 196" width="100%" role="img" aria-label="רקע בהיר, הדמיה סכמטית"><rect width="170" height="196" fill="#f4f6f8"/><path d="M96.5 24.2 L95.3 31.4 L90.7 35.9 L89.9 41.8 L88.0 52.6 L86.9 58.4 L83.4 69.7 L78.4 82.3 L75.3 88.6 L65.8 102.5 L64.6 108.4 L69.6 124.1 L84.2 163.3 L88.8 186.2 L92.2 183.5 L98.4 163.3 L98.4 136.3 L108.0 118.3 L111.8 95.8 L113.7 50.8 L123.3 14.8 Z" fill="#ffffff" stroke="#d5dbe3"/><circle cx="84.2" cy="69.4" r="11.0" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="100.8" cy="83.7" r="7.0" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="90.8" cy="183.2" r="6.7" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="92.2" cy="37.5" r="6.3" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="87.0" cy="58.8" r="6.2" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="84.6" cy="106.9" r="5.2" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="85.4" cy="78.1" r="3.8" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/><circle cx="79.4" cy="82.1" r="2.8" fill="#4e79a7" fill-opacity=".62" stroke="#14507a" stroke-width="1.2"/></svg><p style="margin:2px 0;font-size:.82rem;color:#64748b">מחליש את הרקע. בדרך כלל הבחירה הטובה למפת נתונים.</p></div>
@@ -496,7 +507,7 @@ Ashdod,31.8044,34.6553</pre>
 
   <div class="box try" data-id="m7-try-style">
     <ol>
-      <li>במפה של סעיף 3 (או 4) פתחו <code>Map &gt; Map Layers</code>. <b>למה:</b> שם כל הגדרות הרקע.</li>
+      <li>במפה של סעיף 3 (או 4) פתחו <code>Map &gt; Background Layers...</code> (החלונית <code>Map Layers</code>). <b>למה:</b> שם כל הגדרות הרקע.</li>
       <li>בחרו <code>Style</code> בהיר (<code>Light</code>), ואם אין, <code>Normal</code>. <b>למה:</b> רקע חיוור מבליט סימנים צבעוניים.</li>
       <li>בטלו שכבות רקע שאתם לא צריכים: שמות מדינות, ושמות מקומות אם מופיעים. <b>למה:</b> לא רוצים טקסט של הרקע שיתחרה בשמות הערים שלכם.</li>
       <li>אם יש מחוון <code>Washout</code>, הזיזו אותו קצת למעלה. <b>למה:</b> זה מחליש את הרקע עוד, בלי לגעת בסימנים.</li>
@@ -1063,9 +1074,9 @@ Ashdod,31.8044,34.6553</pre>
   <div class="box try" data-id="m7-try-b1">
     <p><b>שלב 1: נתונים, מפה, ובדיקת בסיס.</b></p>
     <ol>
-      <li>פתחו חוברת חדשה ב-Tableau Public. התחברו אל <code>scoop_sales_2024_2025.csv</code>. אם City זוהה והמפה בסעיף 3 הצליחה עם 8 marks, אפשר להסתפק בזה. אם לא, הוסיפו את <code>scoop_city_coords.csv</code> כמו בסעיף 4. <b>למה:</b> אנחנו בונים על מקור שאנחנו יודעים שעובד.</li>
-      <li>בגיליון חדש בשם <code>Check</code>: גררו <code>Sales</code> אל <code>Text</code>. אחר כך גררו אליו את שדה הספירה של הטבלה (בסוף רשימת המדדים, בשם דומה ל-<code>scoop_sales_2024_2025.csv (Count)</code>). <b>למה:</b> בדיקת בסיס, כמו שעשינו בכל מודול. <b>תוצאה:</b> Sales 236,820.9 ו-6,575 שורות.</li>
-      <li>בגיליון חדש בשם <code>Map</code> בנו את המפה: <code>City</code> על Detail (דרך לחיצה כפולה, או על קואורדינטות עם Latitude, Longitude), <code>Sales</code> על Size, <code>Profit</code> על Color. הפעילו Light, ושימו תוויות City. <b>תוצאה:</b> 8 marks.</li>
+      <li>פתחו חוברת חדשה ב-Tableau Public. התחברו אל <code>scoop_sales_2024_2025.csv</code>. עבדו בחוברת הקורס, שבה City כבר מתוקן מסעיף 3. בחוברת חדשה חזרו על התיקון: <code>8 unknown</code> > <code>Edit Locations...</code> > <code>Country/Region</code> > <code>Fixed:</code> Israel > <code>OK</code>. <b>למה:</b> אנחנו בונים על מקור שאנחנו יודעים שעובד.</li>
+      <li>בגיליון חדש בשם <code>Check</code>: גררו <code>Sales</code> אל <code>Text</code>. אחר כך גררו אליו את שדה הספירה של הטבלה (בסוף רשימת המדדים: <code>scoop_sales_2024_2025.csv (Count)</code>, בגרסאות ישנות <code>Number of Records</code>). <b>למה:</b> בדיקת בסיס, כמו שעשינו בכל מודול. <b>תוצאה:</b> Sales 236,820.9 ו-6,575 שורות.</li>
+      <li>בגיליון חדש בשם <code>Map</code> בנו את המפה: <code>City</code> על Detail (דרך לחיצה כפולה, או על קואורדינטות עם Latitude, Longitude), <code>Sales</code> על Size, <code>Profit</code> על Color. הפעילו Light, ושימו תוויות City. <b>תוצאה:</b> 8 marks בלי unknown (רק אחרי התיקון של Edit Locations).</li>
     </ol>
   </div>
 

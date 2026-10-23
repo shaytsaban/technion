@@ -26,7 +26,7 @@
   <div class="eyebrow">הטכניון · היחידה ללימודי חוץ · ד״ר שי צבאן · Tableau Public מאפס</div>
   <h1>חישובי טבלה<br><span>וניתוח רץ</span></h1>
   <p>בונים על Scoop & Go סכום מצטבר, שינוי מחודש לחודש, דירוג סניפים וממוצע נע. לומדים מה זה חישוב טבלה, איך Tableau מחליט לאן ללכת (Compute Using), ולמה מספר משתנה כשמוסיפים מסנן. בסוף מרכיבים כרטיס KPI של החודש האחרון.</p>
-  <div class="chips"><span>🧪 11 התנסויות ב-Tableau Public</span><span>🎞️ 5 הנפשות</span><span>🧭 סייר Compute Using</span><span>📊 מספרים מחושבים מהנתונים</span></div>
+  <div class="chips"><span>🧪 13 התנסויות ב-Tableau Public</span><span>🎞️ 5 הנפשות</span><span>🧭 סייר Compute Using</span><span>📸 צילומי מסך אמיתיים של החלון</span><span>📊 מספרים מחושבים מהנתונים</span></div>
 </header>
 <main class="wrap">
 <div class="teach"><b>🎓 מצב מרצה פעיל.</b> התיבות הכתומות נראות רק עם <code>?teacher=1</code> בכתובת הדף: מה לומר, איפה לעצור ומה לבדוק לפני שממשיכים.</div>
@@ -77,7 +77,7 @@
   <p><b>מה להכין:</b> את הקובץ <a class="tool" href="data/scoop_sales_2024_2025.csv" download>scoop_sales_2024_2025.csv</a> (יש גם <a class="tool" href="data/scoop_sales_2024_2025.xlsx" download>xlsx</a>) טעון ב-Tableau Public כמו <a href="module2.html">במודול 2</a>. כדאי לדעת להפוך תאריך לחודש רציף (ירוק), כמו <a href="module4.html">במודול 4</a>, ולכתוב שדה מחושב פשוט, כמו <a href="module8.html">במודול 8</a>.</p>
   <p>הכל כאן עובד ב-Tableau Public. אם אתם עובדים בדפדפן (web authoring) התפריטים דומים. אם פקודה חסרה שם, עברו לאפליקציה של Tableau Public.</p>
 </div>
-<div class="teach"><b>🎓 למרצה:</b> חישובי טבלה זה המקום שבו רוב התלמידים נתקעים (״למה המספר השתנה?״). אל תדלגו על סעיף 4 ועל ההדמיה בסעיף 5. לפני השיעור פתחו את Tableau Public ועברו על תרגיל A ועל תרגיל D כדי לוודא שהתפריטים אצלכם נקראים כמו כאן. בדפדפן (web authoring) בדקו שהפקודה Quick Table Calculation זמינה, ואם לא, הציגו את התרגילים מהמסך שלכם.</div>
+<div class="teach"><b>🎓 למרצה:</b> חישובי טבלה זה המקום שבו רוב התלמידים נתקעים (״למה המספר השתנה?״). אל תדלגו על סעיף 4 ועל ההדמיה בסעיף 5. שמות התפריטים והחלון Table Calculation במודול הזה נלקחו מהאפליקציה המותקנת של Tableau Public, ויש צילומים אמיתיים בסעיפים 2 ו-4. דבר אחד עוד פתוח: האם Quick Table Calculation זמין גם בדפדפן (web authoring). אם לא, הציגו את התרגילים מהמסך שלכם.</div>
 
 <section class="sec" id="m9-1" data-t="מה זה חישוב טבלה">
   <div class="sec-h"><div class="sec-n">1</div><h2>מה זה חישוב טבלה</h2></div>
@@ -170,7 +170,7 @@
   <div class="tws" aria-label="הדמיה סכמטית של גיליון עם סכום מצטבר">
     <div class="tws-top"><b>Sheet 1 - Tableau Public</b><span class="tws-btn">Undo</span><span class="tws-btn">Show Me</span></div>
     <div class="tws-body">
-      <div class="tws-data"><h6>Dimensions</h6><div><span class="fld dim"><i>Abc</i>Branch</span></div><div><span class="fld dim"><i>Abc</i>Category</span></div><h6>Measures</h6><div><span class="fld mea"><i>#</i>Sales</span></div><div><span class="fld mea"><i>#</i>Profit</span></div></div>
+      <div class="tws-data"><h6>Tables</h6><div><span class="fld dim"><i>Abc</i>Branch</span></div><div><span class="fld dim"><i>Abc</i>Category</span></div><div style="border-top:1px solid #cbd5e1;margin:4px 0"></div><div><span class="fld mea"><i>#</i>Profit</span></div><div><span class="fld mea"><i>#</i>Sales</span></div></div>
       <div class="tws-main">
         <div class="tws-shelf"><span>Columns</span><span class="pill c">MONTH(Order Date)</span></div>
         <div class="tws-shelf"><span>Rows</span><span class="pill c">SUM(Sales) &Delta;</span></div>
@@ -180,16 +180,16 @@
     </div>
     <div class="tws-tabs"><span class="on">Sheet 1</span><span>+</span></div>
   </div>
-  <ol class="callouts"><li>הפיל הירוק ב-Columns: חודש רציף, 24 נקודות על הציר.</li><li>הפיל ב-Rows עם המשולש (Δ): סכום מצטבר, לא סכום חודשי.</li><li>הקו רק עולה, והנקודה האחרונה שלו שווה לסך כל המכירות, 236,820.9.</li></ol>
+  <ol class="callouts"><li>חלונית השדות (Data) בגרסה הנוכחית: הכותרת היא <code>Tables</code>. הממדים למעלה, קו דק, והמדדים מתחתיו. אין כותרות Dimensions ו-Measures.</li><li>הפיל הירוק ב-Columns: חודש רציף, 24 נקודות על הציר.</li><li>הפיל ב-Rows עם המשולש (Δ): סכום מצטבר, לא סכום חודשי.</li><li>הקו רק עולה, והנקודה האחרונה שלו שווה לסך כל המכירות, 236,820.9.</li></ol>
 
   <div class="box try" data-id="m9-try-running">
     <p><b>תרגיל A: סכום מצטבר של מכירות</b>. כל צעד כולל את הסיבה שלו, ובסוף יש תוצאה צפויה.</p>
     <ol>
       <li>פתחו גיליון חדש (<code>Sheet 1</code>) כשהקובץ <code>scoop_sales_2024_2025.csv</code> טעון. <i>למה:</i> כל התרגילים במודול הזה עובדים על הקובץ הזה.</li>
-      <li>גררו את <code>Order Date</code> אל <code>Columns</code>. לחצו על החץ של הפיל, בחרו <code>Month</code> מהקבוצה השנייה ברשימה (זו שמציגה חודש עם שנה), ואז שוב על החץ ובחרו <code>Continuous</code>. הפיל צריך להיות ירוק. <i>למה:</i> חודש רציף נותן ציר זמן אמיתי של 24 חודשים. אם זה לא ברור, חזרו ל<a href="module4.html">מודול 4</a>. בגרסה שלכם ייתכן שהשם שונה מעט.</li>
-      <li>גררו את <code>Sales</code> אל <code>Rows</code>. <i>למה:</i> כך נקבל את המכירות של כל חודש. <b>תוצאה צפויה:</b> קו עם 24 נקודות. השיא הוא אוגוסט 2025 עם 23,259.9, והנקודה הראשונה היא ינואר 2024 עם 4,139.3 (העמדת העכבר מראה את זה בחלון הקופץ; Tableau עשוי לעגל לפי העיצוב).</li>
+      <li>גררו את <code>Order Date</code> אל <code>Columns</code>. לחצו על החץ של הפיל, בחרו <code>Month</code> מהקבוצה השנייה ברשימה (זו שמציגה חודש עם שנה, בתפריט כתוב שם למשל <code>May 2015</code>), ואז שוב על החץ ובחרו <code>Continuous</code>. הפיל צריך להיות ירוק. <i>למה:</i> חודש רציף נותן ציר זמן אמיתי של 24 חודשים. אם זה לא ברור, חזרו ל<a href="module4.html">מודול 4</a>.</li>
+      <li>גררו את <code>Sales</code> אל <code>Rows</code>. <i>למה:</i> כך נקבל את המכירות של כל חודש. <b>תוצאה צפויה:</b> קו עם 24 נקודות, ובשורת המצב בתחתית החלון כתוב <code>24 marks</code>. השיא הוא אוגוסט 2025 עם 23,259.9, והנקודה הראשונה היא ינואר 2024 עם 4,139.3 (העמדת העכבר מראה את זה בחלון הקופץ; Tableau עשוי לעגל לפי העיצוב).</li>
       <li>לחצו ימנית על הפיל <code>SUM(Sales)</code> ב-<code>Rows</code>, בחרו <code>Quick Table Calculation</code> ואז <code>Running Total</code>. <i>למה:</i> זו הדרך המהירה להפוך את הסכום החודשי לסכום מצטבר.</li>
-      <li>לחצו שוב ימנית על הפיל ופתחו <code>Compute Using</code>. ודאו שמסומן <code>Table (Across)</code>. <i>למה:</i> כאן אתם אומרים ל-Tableau לאן ללכת. כאן ״לאורך הציר״ הוא ההליכה על החודשים.</li>
+      <li>לחצו שוב ימנית על הפיל. עכשיו יש בתפריט פריטים חדשים: <code>Compute Using</code>, <code>Edit Table Calculation...</code> ו-<code>Clear Table Calculation</code>. פתחו את <code>Compute Using</code> וודאו שמסומן <code>Table (across)</code>. <i>למה:</i> כאן אתם אומרים ל-Tableau לאן ללכת. כאן ״לאורך הציר״ הוא ההליכה על החודשים.</li>
       <li>העמידו עכבר על כמה נקודות.</li>
     </ol>
     <p><b>תוצאה צפויה:</b> הקו רק עולה. בנקודה האחרונה (דצמבר 2025) הערך הוא <span class="n">236,820.9</span>, וזה בדיוק הסכום של כל עמודת Sales בקובץ. חודש מרץ 2024 מראה 14,406.3. הסכום המצטבר עבר 100,000 לראשונה בנובמבר 2024 (שם הערך הוא 102,097.6; באוקטובר 2024 הוא עוד 97,117.7). זו התשובה לדנה.</p>
@@ -203,7 +203,7 @@
     <button class="opt">בזמן שהקובץ נטען, פעם אחת, ואז התוצאה קבועה</button>
     <div class="why">חישוב טבלה רץ על המספרים שבתצוגה אחרי שקובצו (אפשרות ב). חישוב על שורת הזמנה בודדת הוא שדה מחושב ברמת שורה. והתוצאה לא קבועה: כשהתצוגה משתנה, החישוב רץ מחדש.</div>
   </div>
-  <div class="teach"><b>🎓 למרצה:</b> חזרו על המשפט ״החישוב רואה רק מה שבתצוגה״ שלוש פעמים לאורך המודול. הוא פותר כמעט כל שאלה של ״למה זה השתנה״. בתרגיל A עצרו אחרי שלב 4 ושאלו: מה יקרה לקו אם אסנן את 2024? (תשובה: הסכום המצטבר יתחיל מחדש מ-6,246.1 בינואר 2025.) התפריט Quick Table Calculation נמצא בלחיצה ימנית על הפיל; אם לא רואים אותו, וודאו שזה פיל של מדד.</div>
+  <div class="teach"><b>🎓 למרצה:</b> חזרו על המשפט ״החישוב רואה רק מה שבתצוגה״ שלוש פעמים לאורך המודול. הוא פותר כמעט כל שאלה של ״למה זה השתנה״. בתרגיל A עצרו אחרי שלב 4 ושאלו: מה יקרה לקו אם אסנן את 2024? (תשובה: הסכום המצטבר יתחיל מחדש מ-6,246.1 בינואר 2025.) התפריט Quick Table Calculation נמצא בלחיצה ימנית על הפיל, מתחת ל-Add Table Calculation...; אם לא רואים אותו, וודאו שזה פיל של מדד. אחרי שמוסיפים חישוב, אותו תפריט מקבל את Compute Using, Edit Table Calculation... ו-Clear Table Calculation (ראינו את זה בתוכנה).</div>
 </section>
 
 <section class="sec" id="m9-2" data-t="חישובים מהירים">
@@ -227,17 +227,16 @@
       <tr><td><code>Year Over Year Growth</code></td><td>הצמיחה לעומת אותה תקופה בשנה שעברה</td></tr>
       <tr><td><code>YTD Growth</code></td><td>הצמיחה של הסכום מתחילת השנה לעומת אותה נקודה בשנה שעברה</td></tr>
     </tbody></table></div>
-  <p>לפי התיעוד של Tableau, אפשר להפעיל חישוב מהיר רק על מדד שנמצא בתצוגה.</p>
+  <p>לפי התיעוד של Tableau, אפשר להפעיל חישוב מהיר רק על מדד שנמצא בתצוגה. ועוד דבר שרואים בתוכנה: ארבעת האחרונים ברשימה (<code>YTD Total</code>, <code>Compound Growth Rate</code>, <code>Year Over Year Growth</code>, <code>YTD Growth</code>) עובדים לפי תאריך. כשאין תאריך בתצוגה הם מופיעים בתפריט באפור, ואי אפשר לבחור אותם. בצילום למטה רואים את זה.</p>
 
-  <figure class="shot" data-shot="m9-quick-menu">
+  <figure class="shot" data-shot="m9-quick-menu" style="max-width:560px;margin-inline:auto">
     <div class="fb">
       <div dir="ltr" style="text-align:left">
-        <div class="m9-menu"><div>Add Filter</div><div>Format...</div><div class="sep"></div><div>Measure (Sum) &#9656;</div><div>Discrete</div><div>Continuous</div><div class="sep"></div><div>Add Table Calculation...</div><div class="hl">Quick Table Calculation &#9656;</div><div class="sep"></div><div>Remove</div></div>
-        <div class="m9-menu"><div>None</div><div class="hl">Running Total</div><div>Difference</div><div>Percent Difference</div><div>Percent of Total</div><div>Rank</div><div>Percentile</div><div>Moving Average</div><div>YTD Total</div><div>Compound Growth Rate</div><div>Year Over Year Growth</div><div>YTD Growth</div></div>
+        <div class="m9-menu"><div>Filter...</div><div class="sep"></div><div>Show Filter</div><div>Apply to Worksheets &#9656;</div><div class="sep"></div><div>Format...</div><div>&#10003; Include in Tooltip</div><div class="sep"></div><div>Find in Data pane</div><div class="sep"></div><div>Dimension</div><div>Attribute</div><div>&#10003; Measure (Sum) &#9656;</div><div class="sep"></div><div>Discrete</div><div>&#10003; Continuous</div><div class="sep"></div><div>Edit in Shelf</div><div class="sep"></div><div>Add Table Calculation...</div><div class="hl">Quick Table Calculation &#9656;</div><div>Total using (Automatic) &#9656;</div><div class="sep"></div><div>Remove</div></div>
+        <div class="m9-menu"><div>Running Total</div><div>Difference</div><div>Percent Difference</div><div>Percent of Total</div><div>Rank</div><div>Percentile</div><div>Moving Average</div><div class="dis">YTD Total</div><div class="dis">Compound Growth Rate</div><div class="dis">Year Over Year Growth</div><div class="dis">YTD Growth</div></div>
       </div>
-      <div class="need">צילום מסך נדרש: Tableau Public, לחיצה ימנית על הפיל SUM(Sales) ב-Rows בגיליון של סכום חודשי, עם תת-התפריט Quick Table Calculation פתוח וכל אחד-עשר החישובים נראים</div>
     </div>
-    <figcaption>הדמיה סכמטית של תפריט הלחיצה הימנית. הפריטים והסדר בגרסה שלכם עשויים להיות שונים מעט.</figcaption>
+    <figcaption>צילום מסך מ-Tableau Public: לחיצה ימנית על הפיל <code>SUM(Sales)</code> שיושב על <code>Text</code> בטבלת טקסט של קטגוריה מול ערוץ. בתפריט הראשי רואים את <code>Add Table Calculation...</code>, את <code>Quick Table Calculation</code> (מסומן) ואת <code>Total using (Automatic)</code>. בתת-התפריט אחד עשר החישובים, מ-<code>Running Total</code> ועד <code>YTD Growth</code>. ארבעת האחרונים אפורים, כי בטבלה הזו אין תאריך. בגיליון של תרגיל A, שבו <code>Order Date</code> בתצוגה, הם אמורים להיות פעילים.</figcaption>
   </figure>
 
   <h3>סייר החישובים: מה כל חישוב עושה על 24 החודשים</h3>
@@ -283,7 +282,7 @@
     <button class="opt">המכירות בפברואר גבוהות ב-3.32% מהמכירות בינואר</button>
     <div class="why">אחוז הפרש משווה לסימן הקודם: (4,276.8 פחות 4,139.3) לחלק ל-4,139.3, כלומר כ-3.32%. אחוז מהסך הוא חישוב אחר (<code>Percent of Total</code>, ושם התוצאה 1.81%), ודירוג הוא מספר שלם.</div>
   </div>
-  <div class="teach"><b>🎓 למרצה:</b> בקשו מהכיתה לנחש לפני שהם מעמידים עכבר: מי יהיה מקום 1 ב-<code>Rank</code>? (אוגוסט 2025.) ההגדרות המדויקות של ברירות המחדל (למשל כמה חודשים קודמים נכללים ב-Moving Average) צריך לבדוק בחלון Edit Table Calculation בגרסה שלכם לפני השיעור. שמות הפריטים בתפריט עשויים להיות שונים מעט בין גרסאות, וזה בסדר.</div>
+  <div class="teach"><b>🎓 למרצה:</b> בקשו מהכיתה לנחש לפני שהם מעמידים עכבר: מי יהיה מקום 1 ב-<code>Rank</code>? (אוגוסט 2025.) הרשימה של אחד עשר החישובים והסדר שלהם נבדקו בתוכנה (הצילום בסעיף). מה שעוד פתוח: ברירת המחדל של Moving Average, כלומר כמה חודשים קודמים נכנסים לחלון. פתחו לפני השיעור <code>Edit Table Calculation...</code> על ממוצע נע וראו מה מוגדר אצלכם.</div>
 </section>
 
 <section class="sec" id="m9-3" data-t="שינוי חודשי ושנתי">
@@ -340,7 +339,7 @@
     <ol>
       <li>שכפלו את הגיליון של תרגיל A (לחיצה ימנית על הלשונית, <code>Duplicate</code>). <i>למה:</i> אותו ציר חודשים, חישוב אחר.</li>
       <li>לחצו ימנית על הפיל <code>SUM(Sales)</code>, <code>Quick Table Calculation</code> ואז <code>Percent Difference</code>. <i>למה:</i> אנחנו רוצים אחוז ולא שקלים כדי להשוות בין חודשים קטנים וגדולים.</li>
-      <li>פתחו <code>Edit Table Calculation...</code> (לחיצה ימנית על הפיל). ודאו שמופיע <code>Compute Using: Table (Across)</code> ו-<code>Relative to: Previous</code>. <i>למה:</i> ככה מוודאים שההשוואה היא לחודש הקודם ולא לראשון.</li>
+      <li>לחצו ימנית על הפיל ובחרו <code>Edit Table Calculation...</code>. נפתח החלון <code>Table Calculation</code>. ודאו שב-<code>Compute Using</code> מסומן <code>Table (across)</code>, ושבשדה <code>Relative to</code> נבחר <code>Previous</code> (הקודם). סגרו את החלון ב-X. <i>למה:</i> ככה מוודאים שההשוואה היא לחודש הקודם ולא לראשון.</li>
       <li>העמידו עכבר על נקודות. <b>תוצאה צפויה:</b> בינואר 2024 אין נקודה (אין חודש קודם). פברואר 2024: <span class="n">+3.32%</span>. מרץ 2024: <span class="n">+40.06%</span>. יולי 2024: <span class="n">+42.62%</span>. ספטמבר 2024: <span class="n">-31.05%</span>. אוקטובר 2024: <span class="n">-38.69%</span>, הירידה החדה ביותר. יוני 2025: <span class="n">+61.73%</span>, העלייה החדה ביותר. דצמבר 2025: <span class="n">-22.61%</span>.</li>
       <li>עכשיו שכפלו שוב את הגיליון של תרגיל A ובחרו <code>Year Over Year Growth</code>. <i>למה:</i> כאן כל חודש מושווה לאותו חודש בשנה שלפניה. <b>תוצאה צפויה:</b> כל 12 החודשים של 2024 ריקים (אין שנה שלפניהם). ינואר 2025: <span class="n">+50.90%</span>. פברואר 2025: <span class="n">-4.20%</span>. אוגוסט 2025: <span class="n">+31.39%</span>. דצמבר 2025: <span class="n">+2.95%</span>.</li>
     </ol>
@@ -371,7 +370,7 @@
     <button class="opt">כי Year Over Year מחשב אחוז מהסך הכל ולא הפרש</button>
     <div class="why">ההשוואה לחודש הקודם מושפעת מהעונה (קיץ מול חורף), ולכן מראה עליות וירידות גם כשהעסק יציב. Year Over Year משווה אוגוסט לאוגוסט. האפשרות השנייה לא נכונה, ו-Year Over Year הוא הפרש יחסי ולא אחוז מהסך.</div>
   </div>
-  <div class="teach"><b>🎓 למרצה:</b> הנקודה החשובה: אותו פיל, שאלה אחרת. בקשו מהכיתה לנסח את השאלה לכל קוביית חישוב. לבדוק בתוכנה לפני השיעור: Year Over Year Growth עם חודש רציף (ירוק) מראה ערכים רק ל-2025. אם אצלכם מופיע משהו אחר, בדקו ב-Edit Table Calculation את אפשרויות ההשוואה בגרסה שלכם.</div>
+  <div class="teach"><b>🎓 למרצה:</b> הנקודה החשובה: אותו פיל, שאלה אחרת. בקשו מהכיתה לנסח את השאלה לכל קוביית חישוב. השם <code>Year Over Year Growth</code> והמיקום שלו בתפריט נבדקו בתוכנה. פתוח (התנהגות, לא שם): שעם חודש רציף (ירוק) מופיעים ערכים רק ל-2025. הריצו פעם אחת לפני השיעור. אם אצלכם מופיע משהו אחר, פתחו <code>Edit Table Calculation...</code> וראו מול מה הוא משווה.</div>
 </section>
 
 <section class="sec" id="m9-4" data-t="חלוקה וכיוון">
@@ -388,7 +387,7 @@
 
   <div class="defline"><b>כיוון (Addressing):</b> השדות שלאורכם החישוב הולך, לפי הסדר. דוגמה: בטבלה למעלה, אם הכיוון הוא <code>Category</code>, החישוב הולך לאורך כל שורה, מקטגוריה לקטגוריה.</div>
   <div class="defline"><b>חלוקה (Partitioning):</b> השדות שחותכים את הטבלה לרצועות נפרדות. החישוב רץ בנפרד בכל רצועה ומתחיל מחדש בראשה. דוגמה: אם הכיוון הוא <code>Category</code>, החלוקה היא <code>Region</code>, ולכן כל אזור הוא רצועה, וכל רצועה מסתכמת ל-100%.</div>
-  <div class="defline"><b>Compute Using:</b> ההגדרה שבוחרת את הכיוון. כל שדה אחר בתצוגה הופך לחלוקה. דוגמה: <code>Table (Across)</code> אומר ״לכו לאורך השורות״.</div>
+  <div class="defline"><b>Compute Using:</b> ההגדרה שבוחרת את הכיוון. כל שדה אחר בתצוגה הופך לחלוקה. דוגמה: <code>Table (across)</code> אומר ״לכו לאורך השורות״.</div>
 
   <p>דמיינו את התצוגה מודפסת על דף. שדות החלוקה הם מספריים שחותכות את הדף לרצועות. שדות הכיוון הם חץ שמצויר על כל רצועה ואומר לאן ללכת. כל שדה בתצוגה הוא או מספריים או חץ.</p>
 
@@ -424,15 +423,15 @@
         <path d="M175 227 L745 227 L745 260 L175 260" marker-end="url(#m9a3-ar)" stroke-dasharray="6 4"/>
       </g>
       <g data-only="1"><text x="400" y="300" text-anchor="middle" font-size="17" font-weight="700" fill="#334155">מכירות לפי אזור וקטגוריה, עוד בלי חישוב</text></g>
-      <g data-only="2"><text x="400" y="294" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">Table (Across)</text><text x="400" y="320" text-anchor="middle" font-size="15" fill="#334155">הכיוון: הקטגוריות. החלוקה: האזורים (4 רצועות)</text></g>
-      <g data-only="3"><text x="400" y="294" text-anchor="middle" font-size="17" font-weight="700" fill="#9a3412">Table (Down)</text><text x="400" y="320" text-anchor="middle" font-size="15" fill="#334155">הכיוון: האזורים. החלוקה: הקטגוריות (5 רצועות)</text></g>
-      <g data-only="4"><text x="400" y="294" text-anchor="middle" font-size="17" font-weight="700" fill="#166534">Table (Across then Down)</text><text x="400" y="320" text-anchor="middle" font-size="15" fill="#334155">הכיוון: שני השדות. אין חלוקה: רצועה אחת ארוכה</text></g>
+      <g data-only="2"><text x="400" y="294" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">Table (across)</text><text x="400" y="320" text-anchor="middle" font-size="15" fill="#334155">הכיוון: הקטגוריות. החלוקה: האזורים (4 רצועות)</text></g>
+      <g data-only="3"><text x="400" y="294" text-anchor="middle" font-size="17" font-weight="700" fill="#9a3412">Table (down)</text><text x="400" y="320" text-anchor="middle" font-size="15" fill="#334155">הכיוון: האזורים. החלוקה: הקטגוריות (5 רצועות)</text></g>
+      <g data-only="4"><text x="400" y="294" text-anchor="middle" font-size="17" font-weight="700" fill="#166534">Table (across then down)</text><text x="400" y="320" text-anchor="middle" font-size="15" fill="#334155">הכיוון: שני השדות. אין חלוקה: רצועה אחת ארוכה</text></g>
     </svg></div>
     <ol class="caps">
       <li>הטבלה של אזורים וקטגוריות עם מכירות. עוד אין חישוב.</li>
-      <li><code>Table (Across)</code>: החץ הולך לאורך השורה, מקטגוריה לקטגוריה. השדה שנשאר, <code>Region</code>, חותך ל-4 רצועות. החישוב מתחיל מחדש בכל אזור.</li>
-      <li><code>Table (Down)</code>: החץ יורד לאורך העמודה, מאזור לאזור. <code>Category</code> חותך ל-5 רצועות.</li>
-      <li><code>Table (Across then Down)</code>: החץ עובר על שורה, יורד לשורה הבאה וממשיך. שני השדות הם כיוון, אין חלוקה, וכל הטבלה היא רצועה אחת.</li>
+      <li><code>Table (across)</code>: החץ הולך לאורך השורה, מקטגוריה לקטגוריה. השדה שנשאר, <code>Region</code>, חותך ל-4 רצועות. החישוב מתחיל מחדש בכל אזור.</li>
+      <li><code>Table (down)</code>: החץ יורד לאורך העמודה, מאזור לאזור. <code>Category</code> חותך ל-5 רצועות.</li>
+      <li><code>Table (across then down)</code>: החץ עובר על שורה, יורד לשורה הבאה וממשיך. שני השדות הם כיוון, אין חלוקה, וכל הטבלה היא רצועה אחת.</li>
     </ol>
   </div>
 
@@ -440,44 +439,57 @@
   <div class="tw"><table class="tbl">
     <thead><tr><th>האפשרות</th><th>הכיוון</th></tr></thead>
     <tbody>
-      <tr><td><code>Table (Across)</code></td><td>לאורך השורות</td></tr>
-      <tr><td><code>Table (Down)</code></td><td>לאורך העמודות</td></tr>
-      <tr><td><code>Table (Across then Down)</code> ו-<code>Table (Down then Across)</code></td><td>שני הכיוונים, בסדר שבשם</td></tr>
-      <tr><td><code>Pane (Down)</code>, <code>Pane (Across)</code> ועוד</td><td>כמו Table, אבל כל בלוק של הטבלה (<dfn data-d="בלוק בטבלה שמוקף בכותרות החיצוניות ביותר">Pane</dfn>) לחוד</td></tr>
+      <tr><td><code>Table (across)</code></td><td>לאורך השורות</td></tr>
+      <tr><td><code>Table (down)</code></td><td>לאורך העמודות</td></tr>
+      <tr><td><code>Table (across then down)</code> ו-<code>Table (down then across)</code></td><td>שני הכיוונים, בסדר שבשם. בטבלה פשוטה (שדה אחד בכל צד) החלון מציג במקומן שורה אחת בשם <code>Table</code>: כל הטבלה היא רצועה אחת</td></tr>
+      <tr><td><code>Pane (down)</code>, <code>Pane (across)</code> ועוד</td><td>כמו Table, אבל כל בלוק של הטבלה (<dfn data-d="בלוק בטבלה שמוקף בכותרות החיצוניות ביותר">Pane</dfn>) לחוד. מופיעות רק כשיש יותר משדה אחד בשורות או בעמודות</td></tr>
       <tr><td><code>Cell</code></td><td>בתוך כל תא לבד</td></tr>
       <tr><td><code>Specific Dimensions</code></td><td>אתם מסמנים בדיוק את השדות</td></tr>
     </tbody></table></div>
 
   <h3>Specific Dimensions: הדרך הבטוחה</h3>
   <p>עם <code>Specific Dimensions</code> אתם מסמנים בחלון את השדות שרוצים ללכת לאורכם. כל שדה שלא סימנתם חותך את הטבלה. זה הכי ברור, כי השמות כתובים ולא תלויים במקום שבו הפיל עומד.</p>
-  <figure class="shot" data-shot="m9-edit-dialog">
-    <div class="fb">
-      <div class="m9-dlg"><h6>Table Calculation: SUM(Sales)</h6>
-        <div class="b">
-          <div><b>Calculation Type:</b> Percent of Total</div>
-          <div class="gr">Compute using</div>
-          <div class="rad">Table (Across)</div><div class="rad">Table (Down)</div><div class="rad">Pane (Across)</div>
-          <div class="rad on">Specific Dimensions</div>
-          <div style="margin-inline-start:18px"><div class="ck">Region</div><div class="ck on">Category</div></div>
-          <div class="gr">At the level: Deepest</div>
-        </div>
-      </div>
-      <div class="need">צילום מסך נדרש: Tableau Public, החלון Edit Table Calculation על SUM(Sales) בטבלת Region x Category, עם Specific Dimensions מסומן ורק Category מסומן</div>
-    </div>
-    <figcaption>הדמיה סכמטית של חלון Edit Table Calculation. כאן Category מסומן (כיוון) ו-Region לא (חלוקה), ולכן כל אזור מסתכם ל-100%.</figcaption>
-  </figure>
   <p>כלל אצבע: <b>מסמנים = הולכים לאורכו. לא מסמנים = חותך.</b></p>
+
+  <h3>החלון האמיתי: Table Calculation</h3>
+  <p>כל ההגדרות האלה יושבות בחלון אחד. פותחים אותו בלחיצה ימנית על פיל שיש עליו חישוב טבלה, ואז <code>Edit Table Calculation...</code>. בראש החלון כתוב <code>Table Calculation</code> ומתחתיו שם החישוב (למשל <code>% of Total Sales</code>). מלמעלה למטה יש בו:</p>
+  <ul>
+    <li><code>Calculation Type</code>: איזה חישוב (למשל <code>Percent of Total</code>). מתחתיו תיבת סימון <code>Compute total across all pages</code>. לפי השם, היא נוגעת רק למצב שיש שדה ב-<code>Pages</code>, ולא נשתמש בה כאן.</li>
+    <li><code>Compute Using</code>: רשימת הכיוונים. בטבלה עם שדה אחד בשורות ושדה אחד בעמודות יש בה חמש שורות: <code>Table (across)</code>, <code>Table (down)</code>, <code>Table</code>, <code>Cell</code> ו-<code>Specific Dimensions</code>.</li>
+    <li>מתחת לרשימה: השדות של התצוגה עם תיבות סימון. כשבוחרים <code>Table (across)</code>, Tableau מסמן בעצמו את השדה שבעמודות. כך רואים בדיוק מה הכיוון.</li>
+    <li><code>At the level</code>: רלוונטי רק כשמסמנים יותר משדה אחד. כשמסומן שדה אחד הוא אפור.</li>
+    <li><code>Show calculation assistance</code>: כשמסמנים אותו, Tableau צובע בצהוב בתצוגה רצועה אחת. זו הדרך הכי מהירה לראות את החלוקה בעיניים.</li>
+  </ul>
+
+  <div class="box try" data-id="m9-try-dialog">
+    <p><b>בונים את החלון בעצמכם: קטגוריה מול ערוץ</b>. טבלה קטנה, שני כיוונים, ומספרים שאפשר לבדוק מול הצילומים שלמטה.</p>
+    <ol>
+      <li>פתחו גיליון חדש (כפתור <code>New Worksheet</code> בסרגל הכלים, או Cmd+T במק / Ctrl+T בווינדוס). <i>למה:</i> טבלה נקייה, בלי חישובים קודמים.</li>
+      <li>גררו את <code>Category</code> אל <code>Rows</code> ואת <code>Channel</code> אל <code>Columns</code>. <i>למה:</i> שדה אחד בכל צד, וככה הכי קל לראות כיוון.</li>
+      <li>גררו את <code>Sales</code> אל <code>Text</code> בכרטיס <code>Marks</code>. <i>למה:</i> המספרים יופיעו בתוך התאים. <b>תוצאה צפויה:</b> 15 תאים, ובשורת המצב <code>15 marks</code> ו-<code>5 rows by 3 columns</code>. למשל Cones ב-App: <span class="n">7,441</span> (בקובץ 7,441.1).</li>
+      <li>בתפריט <code>Analysis</code> בחרו <code>Totals</code> ואז <code>Show Row Grand Totals</code>. חזרו לאותו תפריט ובחרו <code>Show Column Grand Totals</code>. <i>למה:</i> שורת סך ועמודת סך יראו לנו איפה יוצא 100%. <b>תוצאה צפויה:</b> בפינה, <code>Grand Total</code> של <span class="n">236,821</span> (בקובץ 236,820.9; Tableau מעגל בתצוגה).</li>
+      <li>לחצו ימנית על הפיל <code>SUM(Sales)</code> בכרטיס <code>Marks</code> (זה שליד הסמל T), ובחרו <code>Quick Table Calculation</code> ואז <code>Percent of Total</code>. <i>למה:</i> עכשיו התאים הם אחוזים.</li>
+      <li>לחצו שוב ימנית על הפיל ובחרו <code>Edit Table Calculation...</code>. בחלון, תחת <code>Compute Using</code>, לחצו <code>Table (across)</code>, וסמנו את <code>Show calculation assistance</code>. <i>למה:</i> לא סומכים על ברירת המחדל, ורוצים לראות את הרצועה צבועה. <b>תוצאה צפויה:</b> שורה אחת נצבעת בצהוב, אצלנו שורת Cones. הערכים בה: <span dir="ltr">App <span class="n">15.40%</span>, Delivery <span class="n">13.24%</span>, Walk-in <span class="n">71.35%</span></span>, ובעמודת <code>Grand Total</code> <span class="n">100.00%</span>. בשורת <code>Grand Total</code> למטה: <span dir="ltr"><span class="n">15.61%</span>, <span class="n">14.82%</span>, <span class="n">69.57%</span></span>. ברשימת השדות מסומן <code>Channel</code>.</li>
+      <li>באותו חלון לחצו <code>Table (down)</code>. <i>למה:</i> עכשיו הכיוון הוא למטה, וכל עמודה היא רצועה. <b>תוצאה צפויה:</b> עמודה נצבעת, אצלנו עמודת App. הערכים בה: <span dir="ltr">Cones <span class="n">20.13%</span>, Cups <span class="n">28.65%</span>, Drinks <span class="n">23.73%</span>, Sticks <span class="n">6.64%</span>, Sundaes <span class="n">20.84%</span></span>. בשורת <code>Grand Total</code> יש <span class="n">100.00%</span> בכל עמודה. ברשימת השדות מסומן <code>Category</code>.</li>
+      <li>לחצו <code>Table</code>. <i>למה:</i> כל הטבלה היא רצועה אחת. <b>תוצאה צפויה:</b> רק התא בפינה הוא 100.00%. Cups ב-Walk-in הוא <span class="n">20.27%</span> מכל המכירות, ו-Sticks ב-App רק <span class="n">1.04%</span>.</li>
+      <li>החזירו ל-<code>Table (across)</code> וסגרו את החלון ב-X. <i>למה:</i> נשתמש בגיליון הזה כדי לענות ״מאיפה כל קטגוריה מוכרת״.</li>
+    </ol>
+    <p><b>מה רואים:</b> ב-Table (across) Walk-in הוא כ-70% מכל קטגוריה, וזה כמעט אותו דבר בכל השורות. ב-Table (down) רואים שבכל ערוץ Cups הוא הנתח הגדול ביותר. אותה טבלה, שתי שאלות.</p>
+  </div>
+
+  <figure class="shot" style="max-width:820px;margin-inline:auto"><img src="img/m9-edit-dialog.png" alt="חלון Table Calculation עם Percent of Total ו-Table (across) מסומן, ובטבלה שורת Cones צבועה בצהוב"><figcaption>צילום מסך מ-Tableau Public: טבלת Category מול Channel עם <code>Percent of Total</code>. החלון <code>Table Calculation</code> (<code>% of Total Sales</code>): <code>Calculation Type</code> הוא <code>Percent of Total</code>, ב-<code>Compute Using</code> מסומן <code>Table (across)</code>, וברשימת השדות מסומן <code>Channel</code>. <code>At the level</code> אפור, ו-<code>Show calculation assistance</code> מסומן, ולכן שורת Cones צבועה: <span dir="ltr">App <span class="n">15.40%</span>, Delivery <span class="n">13.24%</span>, Walk-in <span class="n">71.35%</span></span>, ובסך השורה <span class="n">100.00%</span>. בשורת Grand Total: <span dir="ltr"><span class="n">15.61%</span>, <span class="n">14.82%</span>, <span class="n">69.57%</span></span>.</figcaption></figure>
+  <figure class="shot" style="max-width:820px;margin-inline:auto"><img src="img/m9-edit-dialog-down.png" alt="אותו חלון עם Table (down) מסומן, ובטבלה עמודת App צבועה בצהוב"><figcaption>אותו חלון אחרי לחיצה על <code>Table (down)</code>: עכשיו ברשימה מסומן <code>Category</code>, והרצועה הצבועה היא עמודת App: <span dir="ltr">Cones <span class="n">20.13%</span>, Cups <span class="n">28.65%</span>, Drinks <span class="n">23.73%</span>, Sticks <span class="n">6.64%</span>, Sundaes <span class="n">20.84%</span></span>, וביחד <span class="n">100.00%</span>. גם בעמודות האחרות שורת Grand Total היא 100.00%.</figcaption></figure>
 
   <div class="box meaning">
     <p>כשתראו מספר שנראה מוזר בחישוב טבלה, שאלו שתי שאלות: מה הכיוון, ומה החלוקה. כמעט תמיד הבעיה היא שאחד מהם לא מה שחשבתם. ו-<code>Compute Using</code> הוא המקום היחיד שמגדיר את זה.</p>
   </div>
 
   <div class="quiz" data-id="m9-q-across" data-a="3">
-    <p class="qq">בטבלה עם Region בשורות ו-Category בעמודות, בחרתם <code>Percent of Total</code> עם <code>Table (Down)</code>. מה מסתכם ל-100%?</p>
+    <p class="qq">בטבלה עם Region בשורות ו-Category בעמודות, בחרתם <code>Percent of Total</code> עם <code>Table (down)</code>. מה מסתכם ל-100%?</p>
     <button class="opt">כל שורה (כל אזור)</button>
     <button class="opt">כל הטבלה כולה</button>
     <button class="opt">כל עמודה (כל קטגוריה, על פני האזורים)</button>
-    <div class="why"><code>Table (Down)</code> הולך לאורך העמודה, ולכן כל עמודה היא רצועה אחת, והיא מסתכמת ל-100%. כל שורה היא <code>Table (Across)</code>, וכל הטבלה היא <code>Table (Across then Down)</code>.</div>
+    <div class="why"><code>Table (down)</code> הולך לאורך העמודה, ולכן כל עמודה היא רצועה אחת, והיא מסתכמת ל-100%. כל שורה היא <code>Table (across)</code>, וכל הטבלה היא <code>Table (across then down)</code>.</div>
   </div>
   <div class="quiz" data-id="m9-q-specific" data-a="2">
     <p class="qq">ב-<code>Specific Dimensions</code> סימנתם רק <code>Region</code>. מה Tableau עושה עם <code>Category</code>?</p>
@@ -486,7 +498,7 @@
     <button class="opt">מתעלם ממנו ולא מציג אותו</button>
     <div class="why">שדה שלא מסומן חותך את הטבלה (חלוקה). כשמסמנים רק Region, הכיוון הוא Region (למטה), והחישוב רץ בנפרד לכל קטגוריה.</div>
   </div>
-  <div class="teach"><b>🎓 למרצה:</b> השתמשו במטפורת הנייר: ״מספריים וחץ״. בקשו מהכיתה לצייר חץ על המחברת לפני שאתם לוחצים. לבדוק בתוכנה: (1) בטבלה עם רמה אחת בכל צד, Pane ו-Table נותנים אותו דבר (זו קריאה שלנו של התיעוד, לא מובטחת); (2) האפשרות ״At the level״ בחלון Specific Dimensions מגדירה נקודת התחלה מחדש לפי מיקום ולא לפי ערך. התיעוד לא נותן דוגמה מספרית, ולכן לא בנינו עליה תרגיל. ההסבר הזה מיועד להרחבה בכיתה אחרי שבדקתם אותה בתוכנה.</div>
+  <div class="teach"><b>🎓 למרצה:</b> השתמשו במטפורת הנייר: ״מספריים וחץ״. בקשו מהכיתה לצייר חץ על המחברת לפני שאתם לוחצים. מה נבדק בתוכנה: החלון <code>Table Calculation</code> והחלקים שלו (הצילומים בסעיף), וגם שבטבלה עם שדה אחד בכל צד אין בכלל אפשרויות Pane ברשימה, רק <code>Table (across)</code>, <code>Table (down)</code>, <code>Table</code>, <code>Cell</code> ו-<code>Specific Dimensions</code>. הדגימו את <code>Show calculation assistance</code> חי: הצבע הצהוב עושה את העבודה. מה שעוד פתוח: המשמעות המדויקת של <code>At the level</code> ושל <code>Restarting every</code> (שתי התוויות קיימות בחלון). התיעוד לא נותן דוגמה מספרית, ולכן לא בנינו עליהן תרגיל.</div>
 </section>
 
 <section class="sec" id="m9-5" data-t="Compute Using בפעולה">
@@ -506,18 +518,18 @@
     <div class="out" id="m9-su-explain"><p>טוען את הנתונים...</p></div>
     <p class="m9-note" id="m9-su-note"></p>
   </div>
-  <p>נסו: בחרו <code>Percent of Total</code> ו-<code>Table (Across)</code> וראו שכל שורה מסתכמת ל-100%. עברו ל-<code>Table (Down)</code> וראו שהצבעים והסכומים עוברים לעמודות. אחר כך עברו ל-<code>Running Total</code>: הוא מתחיל מחדש בכל רצועה. לחצו על תא כדי לראות איך הערך שלו חושב.</p>
+  <p>נסו: בחרו <code>Percent of Total</code> ו-<code>Table (across)</code> וראו שכל שורה מסתכמת ל-100%. עברו ל-<code>Table (down)</code> וראו שהצבעים והסכומים עוברים לעמודות. אחר כך עברו ל-<code>Running Total</code>: הוא מתחיל מחדש בכל רצועה. לחצו על תא כדי לראות איך הערך שלו חושב.</p>
 
   <div class="box try" data-id="m9-try-using">
     <p><b>תרגיל D: אחוז מהסך הכל של כל קטגוריה בתוך כל אזור</b></p>
     <ol>
       <li>גיליון חדש. גררו <code>Region</code> אל <code>Rows</code> ו-<code>Category</code> אל <code>Columns</code>. <i>למה:</i> טבלה של 4 אזורים על 5 קטגוריות.</li>
-      <li>גררו <code>Sales</code> אל <code>Text</code> בכרטיס <code>Marks</code>. <i>למה:</i> כך המספרים מופיעים בתוך התאים. <b>תוצאה צפויה:</b> טבלה של 20 תאים. למשל <span class="n">34,914.4</span> במרכז (Center) בכוסות (Cups), וסך כל התאים הוא 236,820.9.</li>
-      <li>לחצו ימנית על <code>SUM(Sales)</code> בכרטיס <code>Marks</code>, <code>Quick Table Calculation</code> ואז <code>Percent of Total</code>. <i>למה:</i> עכשיו התאים הם אחוזים. ברירת המחדל היא <code>Table (Across)</code>.</li>
+      <li>גררו <code>Sales</code> אל <code>Text</code> בכרטיס <code>Marks</code>. <i>למה:</i> כך המספרים מופיעים בתוך התאים. <b>תוצאה צפויה:</b> טבלה של 20 תאים, ובשורת המצב <code>20 marks</code> ו-<code>4 rows by 5 columns</code>. למשל <span class="n">34,914.4</span> במרכז (Center) בכוסות (Cups), וסך כל התאים הוא 236,820.9.</li>
+      <li>לחצו ימנית על <code>SUM(Sales)</code> בכרטיס <code>Marks</code>, <code>Quick Table Calculation</code> ואז <code>Percent of Total</code>. <i>למה:</i> עכשיו התאים הם אחוזים. מיד אחר כך לחצו שוב ימנית על הפיל, <code>Compute Using</code>, ובחרו <code>Table (across)</code> במפורש. לא סומכים על ברירת המחדל.</li>
       <li><b>תוצאה צפויה (Across):</b> כל שורה מסתכמת ל-100% (עד עיגול). מרכז: Cones <span class="n">20.0%</span>, Cups <span class="n">29.0%</span>, Drinks <span class="n">23.4%</span>, Sticks <span class="n">7.7%</span>, Sundaes <span class="n">19.9%</span>. דרום (South): Cones <span class="n">20.3%</span>, Cups <span class="n">30.0%</span>, Drinks <span class="n">20.7%</span>, Sticks <span class="n">7.3%</span>, Sundaes <span class="n">21.8%</span>.</li>
-      <li>לחצו ימנית על הפיל ובחרו <code>Compute Using</code> ואז <code>Table (Down)</code>. <i>למה:</i> עכשיו כל עמודה היא רצועה. <b>תוצאה צפויה:</b> בעמודה Cones: מרכז <span class="n">49.9%</span>, ירושלים <span class="n">14.9%</span>, צפון <span class="n">11.9%</span>, דרום <span class="n">23.3%</span>. זו השאלה ״איזה חלק מהמכירות של קונוסים באזור״.</li>
-      <li>בחרו <code>Table (Across then Down)</code>. <b>תוצאה צפויה:</b> כל הטבלה מסתכמת ל-100%. למשל מרכז/כוסות <span class="n">14.7%</span> ודרום/סטיקים <span class="n">1.7%</span>.</li>
-      <li>חזרו ל-<code>Specific Dimensions</code> וסמנו רק <code>Category</code>. <i>למה:</i> כך אתם רואים את אותה תוצאה כמו <code>Table (Across)</code>, אבל עם שמות בחלון. <b>תוצאה צפויה:</b> שוב 29.0% במרכז/כוסות.</li>
+      <li>לחצו ימנית על הפיל ובחרו <code>Compute Using</code> ואז <code>Table (down)</code>. <i>למה:</i> עכשיו כל עמודה היא רצועה. <b>תוצאה צפויה:</b> בעמודה Cones: מרכז <span class="n">49.9%</span>, ירושלים <span class="n">14.9%</span>, צפון <span class="n">11.9%</span>, דרום <span class="n">23.3%</span>. זו השאלה ״איזה חלק מהמכירות של קונוסים באזור״.</li>
+      <li>בחרו <code>Table (across then down)</code> (בחלון <code>Edit Table Calculation...</code> של טבלה כזו האפשרות מופיעה בשם <code>Table</code>). <b>תוצאה צפויה:</b> כל הטבלה מסתכמת ל-100%. למשל מרכז/כוסות <span class="n">14.7%</span> ודרום/סטיקים <span class="n">1.7%</span>.</li>
+      <li>פתחו <code>Edit Table Calculation...</code>, לחצו <code>Specific Dimensions</code> וסמנו ברשימה רק את <code>Category</code>. <i>למה:</i> כך אתם רואים את אותה תוצאה כמו <code>Table (across)</code>, אבל עם שמות בחלון. <b>תוצאה צפויה:</b> שוב 29.0% במרכז/כוסות.</li>
     </ol>
     <p>התשובה לדנה היא הצעד 4 (או הצעד 7): כל קטגוריה כאחוז מהמכירות של האזור שלה.</p>
   </div>
@@ -527,15 +539,15 @@
     <ol>
       <li>גיליון חדש. גררו את <code>Order Date</code> אל <code>Rows</code> ובחרו <code>Year</code> (הקבוצה הראשונה, הכחולה). גררו שוב את <code>Order Date</code> אל <code>Columns</code> ובחרו <code>Month</code> מאותה קבוצה (כחול). <i>למה:</i> שנה בשורות וחודש בעמודות, שניהם בדידים, כמו במודול 4.</li>
       <li>גררו <code>Sales</code> אל <code>Text</code>. <b>תוצאה צפויה:</b> שתי שורות (2024 ו-2025) ו-12 עמודות. אוגוסט 2025: <span class="n">23,259.9</span>.</li>
-      <li>הוסיפו <code>Running Total</code> על <code>SUM(Sales)</code> (<code>Quick Table Calculation</code>). ברירת המחדל: <code>Table (Across)</code>. <i>למה:</i> השנה היא בשורות, ולכן היא החלוקה: כל שנה היא רצועה. <b>תוצאה צפויה:</b> 2024 מסתיימת ב-דצמבר ב-<span class="n">107,047.6</span>. ב-2025 ינואר הוא <span class="n">6,246.1</span> (מתחילים מחדש!) ודצמבר הוא <span class="n">129,773.3</span>.</li>
-      <li>החליפו ל-<code>Table (Across then Down)</code>. <i>למה:</i> עכשיו החץ ממשיך משורת 2024 אל שורת 2025. <b>תוצאה צפויה:</b> ינואר 2025 הוא <span class="n">113,293.7</span>, ודצמבר 2025 הוא <span class="n">236,820.9</span>, כמו בתרגיל A.</li>
-      <li>החליפו ל-<code>Table (Down)</code>. <i>למה:</i> כל חודש הוא רצועה והחץ עובר מ-2024 ל-2025. <b>תוצאה צפויה:</b> ינואר 2025 הוא <span class="n">10,385.4</span> (4,139.3 ועוד 6,246.1) ודצמבר 2025 הוא <span class="n">10,045.9</span>. זה מספר חסר משמעות עסקית כאן, ובכל זאת הוא בדיוק מה שהכיוון הזה אומר.</li>
+      <li>הוסיפו <code>Running Total</code> על <code>SUM(Sales)</code> (<code>Quick Table Calculation</code>), ואז <code>Compute Using</code> ובחרו <code>Table (across)</code>. <i>למה:</i> השנה היא בשורות, ולכן היא החלוקה: כל שנה היא רצועה. <b>תוצאה צפויה:</b> 2024 מסתיימת ב-דצמבר ב-<span class="n">107,047.6</span>. ב-2025 ינואר הוא <span class="n">6,246.1</span> (מתחילים מחדש!) ודצמבר הוא <span class="n">129,773.3</span>.</li>
+      <li>החליפו ל-<code>Table (across then down)</code>. <i>למה:</i> עכשיו החץ ממשיך משורת 2024 אל שורת 2025. <b>תוצאה צפויה:</b> ינואר 2025 הוא <span class="n">113,293.7</span>, ודצמבר 2025 הוא <span class="n">236,820.9</span>, כמו בתרגיל A.</li>
+      <li>החליפו ל-<code>Table (down)</code>. <i>למה:</i> כל חודש הוא רצועה והחץ עובר מ-2024 ל-2025. <b>תוצאה צפויה:</b> ינואר 2025 הוא <span class="n">10,385.4</span> (4,139.3 ועוד 6,246.1) ודצמבר 2025 הוא <span class="n">10,045.9</span>. זה מספר חסר משמעות עסקית כאן, ובכל זאת הוא בדיוק מה שהכיוון הזה אומר.</li>
     </ol>
-    <p>אותו פיל, שלושה Compute Using, שלוש תוצאות. שימו לב שב-<code>Table (Across)</code> קיבלתם את מה שנקרא ״מתחילת שנה״ (כמו <code>YTD Total</code>).</p>
+    <p>אותו פיל, שלושה Compute Using, שלוש תוצאות. שימו לב שב-<code>Table (across)</code> קיבלתם את מה שנקרא ״מתחילת שנה״ (כמו <code>YTD Total</code>).</p>
   </div>
 
   <div class="box trap">
-    <p><b>הזזת פיל משנה את הכיוון.</b> הטבלה של תרגיל D עובדת עם <code>Table (Across)</code> כשהאזורים בשורות והקטגוריות בעמודות. אם גוררים עכשיו את <code>Region</code> גם לעמודות, <code>Table (Across)</code> הולך לאורך שני השדות, ושורה אחת של 20 תאים מסתכמת ל-100%. אותה בחירה, מספרים אחרים.</p>
+    <p><b>הזזת פיל משנה את הכיוון.</b> הטבלה של תרגיל D עובדת עם <code>Table (across)</code> כשהאזורים בשורות והקטגוריות בעמודות. אם גוררים עכשיו את <code>Region</code> גם לעמודות, <code>Table (across)</code> הולך לאורך שני השדות, ושורה אחת של 20 תאים מסתכמת ל-100%. אותה בחירה, מספרים אחרים.</p>
     <p><b>מה עושים:</b> אחרי כל הזזה של פיל, פתחו שוב את <code>Compute Using</code> ובדקו. וכדאי להשתמש ב-<code>Specific Dimensions</code> עם שמות, כי הוא לא מבולבל מהזזה של שדות.</p>
   </div>
 
@@ -545,17 +557,17 @@
 
   <div class="box think" data-id="m9-th-partition">
     <p>דנה רוצה לדעת איזו קטגוריה מובילה בכל אזור, ולכן היא מבקשת לראות את הנתח של כל קטגוריה בתוך האזור שלה. איזה Compute Using מתאים, ואיך תבדקו שהוא נכון בלי לקרוא את החלון?</p>
-    <div class="ans">צריך לבחור Table (Across) כשהאזורים בשורות והקטגוריות בעמודות (או Specific Dimensions עם Category בלבד). בדיקה: כל שורה צריכה להסתכם ל-100%. בדיקה נוספת: ברירת המחדל לא תמיד מתאימה, ולכן תמיד מוודאים בעין שסכום הרצועה הוא 100%.</div>
+    <div class="ans">צריך לבחור Table (across) כשהאזורים בשורות והקטגוריות בעמודות (או Specific Dimensions עם Category בלבד). בדיקה: כל שורה צריכה להסתכם ל-100%. בדיקה נוספת: ברירת המחדל לא תמיד מתאימה, ולכן תמיד מוודאים בעין שסכום הרצועה הוא 100%.</div>
   </div>
 
   <div class="quiz" data-id="m9-q-restart" data-a="1">
-    <p class="qq">בגיליון של תרגיל E (שנה בשורות, חודש בעמודות) יש <code>Running Total</code> עם <code>Table (Across)</code>. מה הערך של ינואר 2025?</p>
+    <p class="qq">בגיליון של תרגיל E (שנה בשורות, חודש בעמודות) יש <code>Running Total</code> עם <code>Table (across)</code>. מה הערך של ינואר 2025?</p>
     <button class="opt">6,246.1: הסכום מתחיל מחדש בתחילת כל שנה</button>
     <button class="opt">113,293.7: הסכום ממשיך מ-2024</button>
     <button class="opt">10,385.4: סכום ינואר של שתי השנים</button>
-    <div class="why">שנה היא בשורות, ולכן היא החלוקה, והחישוב מתחיל מחדש בכל שורה. 113,293.7 היה הערך עם <code>Table (Across then Down)</code>, ו-10,385.4 עם <code>Table (Down)</code>.</div>
+    <div class="why">שנה היא בשורות, ולכן היא החלוקה, והחישוב מתחיל מחדש בכל שורה. 113,293.7 היה הערך עם <code>Table (across then down)</code>, ו-10,385.4 עם <code>Table (down)</code>.</div>
   </div>
-  <div class="teach"><b>🎓 למרצה:</b> הריצו את הסייר מול הכיתה ובקשו תחזית לפני כל לחיצה: ״מי החלוקה עכשיו?״. כשמסמנים שני שדות ב-Specific Dimensions, הסדר שבו הסייר מציג אותם (Region ואז Category) הוא ההנחה שלנו. בתוכנה הסדר נקבע לפי הרשימה בחלון (לבדוק לפני השיעור). תרגיל E מניח שהכותרות החיצוניות (שנה) יושבות בשורות; אם החודשים נפרסים אצל הסטודנטים בצורה אחרת, התוצאות של Across ו-Down יתחלפו.</div>
+  <div class="teach"><b>🎓 למרצה:</b> הריצו את הסייר מול הכיתה ובקשו תחזית לפני כל לחיצה: ״מי החלוקה עכשיו?״. כשמסמנים שני שדות ב-Specific Dimensions, הסדר שבו הסייר מציג אותם (Region ואז Category) הוא ההנחה שלנו. פתוח: בתוכנה הסדר נקבע לפי הרשימה בחלון, ולא בדקנו אותו עם שני שדות מסומנים. בדקו פעם אחת לפני השיעור. תרגיל E מניח שהכותרות החיצוניות (שנה) יושבות בשורות; אם החודשים נפרסים אצל הסטודנטים בצורה אחרת, התוצאות של Across ו-Down יתחלפו.</div>
 </section>
 
 <section class="sec" id="m9-6" data-t="דירוג">
@@ -567,14 +579,14 @@
   <div class="box try" data-id="m9-try-rank">
     <p><b>תרגיל F: דירוג הסניפים לפי רווח</b></p>
     <ol>
-      <li>גיליון חדש. גררו <code>Branch</code> אל <code>Rows</code>. גררו <code>Profit</code> אל <code>Text</code> בכרטיס <code>Marks</code>, ואז עוד פעם <code>Profit</code> אל <code>Text</code>. <i>למה:</i> שני פילים של רווח: אחד יישאר מספר, ועל השני נחיל דירוג. <b>תוצאה צפויה:</b> 9 שורות, ובכל אחת שני מספרים זהים. למשל Tel Aviv Dizengoff <span class="n">22,979.1</span>.</li>
-      <li>לחצו ימנית על הפיל <code>SUM(Profit)</code> השני, <code>Quick Table Calculation</code> ואז <code>Rank</code>. <i>למה:</i> הפיל הזה יראה עכשיו מקום, לא רווח. ברירת המחדל היא <code>Table (Down)</code>, שמתאימה כי הסניפים מסודרים למטה.</li>
-      <li>מיינו את הסניפים לפי רווח יורד (לחצו על סימן המיון בכותרת <code>Branch</code> או על כפתור <code>Sort</code>). <i>למה:</i> כך הרשימה נקראת מלמעלה למטה.</li>
+      <li>גיליון חדש. גררו <code>Branch</code> אל <code>Rows</code>. גררו <code>Profit</code> אל <code>Text</code> בכרטיס <code>Marks</code>, ואז עוד פעם <code>Profit</code> אל <code>Text</code>. <i>למה:</i> שני פילים של רווח: אחד יישאר מספר, ועל השני נחיל דירוג. <b>תוצאה צפויה:</b> 9 שורות (<code>9 marks</code> בשורת המצב), ובכל אחת שני מספרים זהים. למשל Tel Aviv Dizengoff <span class="n">22,979.1</span>.</li>
+      <li>לחצו ימנית על הפיל <code>SUM(Profit)</code> השני, <code>Quick Table Calculation</code> ואז <code>Rank</code>. <i>למה:</i> הפיל הזה יראה עכשיו מקום, לא רווח. לחצו שוב ימנית על הפיל, <code>Compute Using</code>, ובחרו <code>Table (down)</code>, כי הסניפים מסודרים למטה.</li>
+      <li>מיינו את הסניפים לפי רווח יורד (לחצו על הכפתור <code>Sort Descending</code> בסרגל הכלים, כשהגיליון פעיל). <i>למה:</i> כך הרשימה נקראת מלמעלה למטה.</li>
     </ol>
     <p><b>תוצאה צפויה</b> (מקום, סניף, רווח):</p>
     <div class="tw"><table class="tbl" style="max-width:560px"><thead><tr><th>מקום</th><th>Branch</th><th>SUM(Profit)</th></tr></thead><tbody><tr><td>1</td><td dir="ltr" style="text-align:right">Tel Aviv Dizengoff</td><td><span class="n">22,979.1</span></td></tr><tr><td>2</td><td dir="ltr" style="text-align:right">Tel Aviv Port</td><td><span class="n">20,310.5</span></td></tr><tr><td>3</td><td dir="ltr" style="text-align:right">Jerusalem Mamilla</td><td><span class="n">17,027.8</span></td></tr><tr><td>4</td><td dir="ltr" style="text-align:right">Eilat Promenade</td><td><span class="n">15,741.2</span></td></tr><tr><td>5</td><td dir="ltr" style="text-align:right">Haifa German Colony</td><td><span class="n">14,187.7</span></td></tr><tr><td>6</td><td dir="ltr" style="text-align:right">Netanya Beach</td><td><span class="n">13,507.7</span></td></tr><tr><td>7</td><td dir="ltr" style="text-align:right">Beer Sheva Grand Mall</td><td><span class="n">9,589.2</span></td></tr><tr><td>8</td><td dir="ltr" style="text-align:right">Rehovot Mall</td><td><span class="n">4,794.7</span></td></tr><tr><td>9</td><td dir="ltr" style="text-align:right">Ashdod Beach Pop-up</td><td><span class="n">2,585.0</span></td></tr></tbody></table></div>
     <ol start="4">
-      <li>גררו את <code>Order Date</code> אל <code>Columns</code> ובחרו <code>Year</code> (כחול). <i>למה:</i> עכשיו יש דירוג נפרד לכל שנה, כי השנה הופכת לחלוקה ו-Compute Using נשאר <code>Table (Down)</code>. <b>תוצאה צפויה:</b> ב-2024 יש 7 סניפים בלבד, ו-Tel Aviv Dizengoff הוא 1. ב-2025 יש 9 סניפים: Rehovot Mall הוא מקום 7 (<span class="n">4,794.7</span>), Beer Sheva Grand Mall מקום 8 (<span class="n">3,785.4</span>) ו-Ashdod Beach Pop-up מקום 9 (<span class="n">2,585.0</span>). ב-2024 Beer Sheva היה מקום 7 עם <span class="n">5,803.8</span>.</li>
+      <li>גררו את <code>Order Date</code> אל <code>Columns</code> ובחרו <code>Year</code> (כחול). <i>למה:</i> עכשיו יש דירוג נפרד לכל שנה, כי השנה הופכת לחלוקה ו-Compute Using נשאר <code>Table (down)</code>. <b>תוצאה צפויה:</b> ב-2024 יש 7 סניפים בלבד, ו-Tel Aviv Dizengoff הוא 1. ב-2025 יש 9 סניפים: Rehovot Mall הוא מקום 7 (<span class="n">4,794.7</span>), Beer Sheva Grand Mall מקום 8 (<span class="n">3,785.4</span>) ו-Ashdod Beach Pop-up מקום 9 (<span class="n">2,585.0</span>). ב-2024 Beer Sheva היה מקום 7 עם <span class="n">5,803.8</span>.</li>
     </ol>
   </div>
 
@@ -622,7 +634,7 @@
     <button class="opt">5</button>
     <div class="why">שני התיקו תופסים את מקומות 2 ו-3 (שניהם מסומנים 2), ולכן המקום הבא הוא 4. המספר 3 הוא התוצאה של <code>RANK_DENSE</code>, שלא משאיר חורים.</div>
   </div>
-  <div class="teach"><b>🎓 למרצה:</b> הדוגמה 6, 9, 9, 14 לקוחה מדף הפונקציות הרשמי של Tableau, ולכן אפשר להציג אותה בביטחון. בקובץ של Scoop & Go אין תיקו בין סניפים ברווח, ולכן הסייר הוא המקום לשחק עם תיקו. לבדוק בתוכנה: שהדירוג של 2025 בצעד 4 מתאים לטבלה (במיוחד שבשורת Rehovot Mall ב-2024 אין תא).</div>
+  <div class="teach"><b>🎓 למרצה:</b> הדוגמה 6, 9, 9, 14 לקוחה מדף הפונקציות הרשמי של Tableau, ולכן אפשר להציג אותה בביטחון. בקובץ של Scoop & Go אין תיקו בין סניפים ברווח, ולכן הסייר הוא המקום לשחק עם תיקו. פתוח (התנהגות): שהדירוג של 2025 בצעד 4 מתאים לטבלה, ובמיוחד שבשורת Rehovot Mall ב-2024 אין תא. הריצו פעם אחת לפני השיעור.</div>
 </section>
 
 <section class="sec" id="m9-7" data-t="ממוצע נע וחלונות">
@@ -668,7 +680,8 @@
     <ol>
       <li>שכפלו את הגיליון של תרגיל A (חודש רציף, <code>SUM(Sales)</code> ב-<code>Rows</code> עם <code>Running Total</code>). <i>למה:</i> ציר החודשים כבר מוכן.</li>
       <li>לחצו ימנית על הפיל, <code>Quick Table Calculation</code> ואז <code>Moving Average</code>. <i>למה:</i> עכשיו הפיל מחשב ממוצע נע.</li>
-      <li>לחצו ימנית על הפיל ופתחו <code>Edit Table Calculation...</code>. בדקו שכתוב <code>Previous Values: 2</code>, <code>Next Values: 0</code> ושמסומן <code>Include current value</code>. אם לא, הגדירו כך. <i>למה:</i> זה החלון של 3 חודשים: שני קודמים ועוד הנוכחי.</li>
+      <li>לחצו ימנית על הפיל ופתחו <code>Edit Table Calculation...</code>. בחלק של החלון הנע יש שלושה דברים: <code>Previous values</code> (כמה סימנים אחורה), <code>Next values</code> (כמה קדימה) ותיבת סימון <code>Current value</code> (לכלול את הסימן עצמו). הגדירו <code>Previous values</code> ל-2, <code>Next values</code> ל-0, וסמנו <code>Current value</code>. <i>למה:</i> זה החלון של 3 חודשים: שני קודמים ועוד הנוכחי.</li>
+      <li>השאירו את <code>Null if there are not enough values</code> לא מסומן. <i>למה:</i> אם תסמנו אותו, ינואר ופברואר 2024 יהיו ריקים, כי אין לפניהם שני חודשים. בלי הסימון, Tableau מחשב בהם ממוצע של מה שיש בחלון.</li>
       <li>גררו <code>Sales</code> מחלונית השדות אל <code>Rows</code> שוב, מתחת לפיל הראשון. <i>למה:</i> גרף שני עם המכירות הגולמיות, כדי להשוות.</li>
     </ol>
     <p><b>תוצאה צפויה</b> (הגרף העליון, הממוצע הנע):</p>
@@ -682,7 +695,7 @@
     </tbody></table></div>
     <p>הנקודות הגבוהות ביותר של הקו החלק: ספטמבר 2024 (15,567.1) ואוגוסט 2025 (19,875.3). שימו לב: המכירות הגולמיות הגיעו לשיא באוגוסט 2024, והממוצע הנע מגיע לשיאו חודש מאוחר יותר. Tableau עשוי להציג פחות ספרות אחרי הנקודה.</p>
   </div>
-  <div class="teach"><b>🎓 למרצה:</b> לבדוק בתוכנה לפני השיעור: בשתי הנקודות הראשונות (ינואר ופברואר 2024) אין שלושה חודשים בחלון. לפי ההתנהגות המוכרת, Tableau מחשב שם ממוצע של מה שיש בחלון (ינואר 4,139.3, פברואר 4,208.05). התיעוד לא כותב זאת במפורש, ולכן אל תציגו את זה כעובדה לפני שראיתם במסך. וגם: ברירות המחדל של Moving Average בחלון (2 לפני, 0 אחרי) הן מה שהכרנו, אבל התיעוד לא קובע אותן, ולכן בדקו בגרסה שלכם.</div>
+  <div class="teach"><b>🎓 למרצה:</b> התוויות בחלון נבדקו בתוכנה: <code>Previous values</code>, <code>Next values</code>, <code>Current value</code> ו-<code>Null if there are not enough values</code>. קיום האפשרות האחרונה מראה שבלי הסימון Tableau מחשב בקצה ממוצע של מה שיש (ינואר 4,139.3, פברואר 4,208.05). מה שעוד פתוח: ברירות המחדל של <code>Moving Average</code> (2 לפני, 0 אחרי, נוכחי מסומן) הן מה שהכרנו, אבל לא ראינו אותן בחלון. בדקו פעם אחת לפני השיעור.</div>
 
   <h3>הפונקציות של חלון</h3>
   <p>כשאתם כותבים חישוב בעצמכם, משתמשים בפונקציות <code>WINDOW_...</code>. הן כולן עובדות בהיסט יחסי לסימן הנוכחי:</p>
@@ -737,7 +750,7 @@
 
   <p>שימו לב: כל הפונקציות האלה צריכות <b>ביטוי מקובץ</b> כמו <code>SUM([Sales])</code>, ולא עמודה גולמית <code>[Sales]</code>, כי הן עובדות על מה שכבר בתצוגה.</p>
 
-  <p>והנה <code>INDEX()</code>, <code>FIRST()</code>, <code>LAST()</code> ו-<code>SIZE()</code> על חמשת החודשים הראשונים של התצוגה בת 24 החודשים (Compute Using: <code>Table (Across)</code>), ועל החודש האחרון:</p>
+  <p>והנה <code>INDEX()</code>, <code>FIRST()</code>, <code>LAST()</code> ו-<code>SIZE()</code> על חמשת החודשים הראשונים של התצוגה בת 24 החודשים (Compute Using: <code>Table (across)</code>), ועל החודש האחרון:</p>
   <div class="tw"><table class="tbl" style="max-width:620px"><thead><tr><th>חודש</th><th><code>INDEX()</code></th><th><code>FIRST()</code></th><th><code>LAST()</code></th><th><code>SIZE()</code></th></tr></thead><tbody>
     <tr><td>ינואר 2024</td><td><span class="n">1</span></td><td><span class="n">0</span></td><td><span class="n">23</span></td><td><span class="n">24</span></td></tr>
     <tr><td>פברואר 2024</td><td><span class="n">2</span></td><td><span class="n">-1</span></td><td><span class="n">22</span></td><td><span class="n">24</span></td></tr>
@@ -754,30 +767,30 @@
     <div class="row"><label>הסימן הנוכחי: <input type="range" id="m9-sl-cur" min="0" max="23" value="7"></label><b id="m9-sl-curt" class="n"></b></div>
     <div class="row"><label>היסט של LOOKUP: <input type="range" id="m9-sl-off" min="-6" max="6" value="-1"></label><b id="m9-sl-offt" class="n"></b></div>
     <div class="row"><label>חלון מ-<select id="m9-sl-a"></select></label><label>עד <select id="m9-sl-b"></select></label></div>
-    <div class="m9-pick" id="m9-sl-part" role="radiogroup"><label class="on"><input type="radio" name="m9-sl-pm" value="all" checked> Table (Across): רצועה אחת של 24 חודשים</label><label><input type="radio" name="m9-sl-pm" value="year"> Specific Dimensions: Month בלבד (כל שנה היא רצועה)</label></div>
+    <div class="m9-pick" id="m9-sl-part" role="radiogroup"><label class="on"><input type="radio" name="m9-sl-pm" value="all" checked> Table (across): רצועה אחת של 24 חודשים</label><label><input type="radio" name="m9-sl-pm" value="year"> Specific Dimensions: Month בלבד (כל שנה היא רצועה)</label></div>
     <div id="m9-sl-chart" style="overflow-x:auto"></div>
     <div class="out" id="m9-sl-out"></div>
   </div>
 
-  <figure class="shot" data-shot="calc-valid">
-    <div class="fb"><div class="m9-dlg"><h6>Calculated Field</h6><div class="b"><div><b>MoM pct</b></div><div style="font-family:monospace;color:#e8741f">(SUM([Sales]) - LOOKUP(SUM([Sales]), -1)) / ABS(LOOKUP(SUM([Sales]), -1))</div><div class="gr">The calculation is valid.</div></div></div><div class="need">צילום מסך נדרש: חלון Calculated Field עם הנוסחה של MoM pct</div></div>
-    <figcaption>חלון Calculated Field. בצילום שדה אחר, מהקובץ של משחקי וידאו, אבל החלון זהה: שם בשורה העליונה, נוסחה בגוף, והודעה שהחישוב תקין.</figcaption>
+  <figure class="shot" data-shot="calc-valid" style="max-width:600px;margin-inline:auto">
+    <div class="fb"><div class="m9-dlg"><div class="b"><div><b>MoM pct</b></div><div style="font-family:monospace;color:#e8741f">(SUM([Sales]) - LOOKUP(SUM([Sales]), -1)) / ABS(LOOKUP(SUM([Sales]), -1))</div><div class="gr">The calculation is valid.</div><div class="gr">Apply &nbsp; OK</div></div></div></div>
+    <figcaption>צילום מסך של עורך השדה המחושב ב-Tableau Public. בצילום שדה אחר, מהקובץ של משחקי וידאו (<code>Global Sales No Japan</code>, הנוסחה <code>[Global Sales]-[JP Sales]</code>), אבל העורך זהה: שם השדה בתיבה למעלה, הנוסחה בגוף (שמות שדות בכתום), למטה <code>The calculation is valid.</code> והכפתורים <code>Apply</code> ו-<code>OK</code>. בתרגיל H השם יהיה <code>MoM pct</code>.</figcaption>
   </figure>
 
   <div class="box try" data-id="m9-try-custom">
     <p><b>תרגיל H: שני שדות מחושבים משלכם</b></p>
     <ol>
-      <li>בגיליון של תרגיל A (חודש רציף ב-<code>Columns</code>), לחצו ימנית על שטח ריק בחלונית השדות ובחרו <code>Create</code> ואז <code>Calculated Field...</code>. <i>למה:</i> כך נפתח חלון כתיבת הנוסחה.</li>
+      <li>בגיליון של תרגיל A (חודש רציף ב-<code>Columns</code>), בחרו בתפריט <code>Analysis</code> את <code>Create Calculated Field...</code> (או לחיצה ימנית על שטח ריק בחלונית השדות, <code>Create</code> ואז <code>Calculated Field...</code>). <i>למה:</i> כך נפתח עורך הנוסחה.</li>
       <li>קראו לשדה <code>MoM pct</code> וכתבו:
 <pre class="code" data-lang="tableau">(SUM([Sales]) - LOOKUP(SUM([Sales]), -1))
 / ABS(LOOKUP(SUM([Sales]), -1))</pre>
-        חכו להודעה <code>The calculation is valid</code> ולחצו <code>OK</code>. <i>למה:</i> זו אותה נוסחה שמאחורי <code>Percent Difference</code>.</li>
+        חכו להודעה <code>The calculation is valid.</code> בתחתית העורך ולחצו <code>OK</code>. <i>למה:</i> זו אותה נוסחה שמאחורי <code>Percent Difference</code>.</li>
       <li>גררו את <code>MoM pct</code> אל <code>Rows</code> במקום הפיל הקודם. לחצו ימנית על השדה בחלונית השדות, <code>Default Properties</code>, <code>Number Format...</code> ובחרו Percentage עם 2 ספרות. <i>למה:</i> אחרת תראו 0.0332 במקום 3.32%. <b>תוצאה צפויה:</b> אותם ערכים בדיוק כמו בתרגיל C: פברואר 2024 <span class="n">3.32%</span>, ספטמבר 2024 <span class="n">-31.05%</span>, ובינואר 2024 אין נקודה.</li>
       <li>צרו שדה שני בשם <code>Index vs Jan 2024</code>:
 <pre class="code" data-lang="tableau">100 * SUM([Sales]) / LOOKUP(SUM([Sales]), FIRST())</pre>
         גררו אותו ל-<code>Rows</code>. <i>למה:</i> <code>FIRST()</code> הוא ההיסט אל הסימן הראשון, ולכן כל חודש מחולק במכירות של ינואר 2024. <b>תוצאה צפויה:</b> ינואר 2024 הוא <span class="n">100</span>, פברואר 2024 הוא <span class="n">103.32</span>, דצמבר 2024 הוא <span class="n">119.59</span> ואוגוסט 2025 הוא <span class="n">561.93</span> (הוא פי 5.6 מינואר 2024).</li>
     </ol>
-    <p>אם יש אצלכם נקודות חסרות, בדקו ש-<code>Compute Using</code> הוא <code>Table (Across)</code> ושהתאריך רציף.</p>
+    <p>אם יש אצלכם נקודות חסרות, בדקו ש-<code>Compute Using</code> הוא <code>Table (across)</code> ושהתאריך רציף.</p>
   </div>
 
   <div class="box trap">
@@ -808,7 +821,7 @@
     <button class="opt">0</button>
     <div class="why">ההיסט נחתך בקצוות. אחרי הסימן האחרון אין שום סימן, ולכן אין ערך, כלומר Null. אין ״חזרה להתחלה״, וגם לא 0.</div>
   </div>
-  <div class="teach"><b>🎓 למרצה:</b> הציגו את הסייר ובקשו מהכיתה להזיז את ההיסט עד שהוא יוצא מהטבלה. ובתרגיל H: החלון של Calculated Field מופיע בצילום שלמעלה. אם תצוגת הסטודנטים מציגה שדה ירוק במקום כחול בחלונית השדות, זה בסדר: שדה של חישוב טבלה יושב בחלונית כמו כל שדה מחושב.</div>
+  <div class="teach"><b>🎓 למרצה:</b> הציגו את הסייר ובקשו מהכיתה להזיז את ההיסט עד שהוא יוצא מהטבלה. ובתרגיל H: עורך השדה המחושב מופיע בצילום שלמעלה (שם, נוסחה, <code>The calculation is valid.</code>, <code>Apply</code>, <code>OK</code>). השדה החדש נכנס לחלק של המדדים בחלונית השדות, מתחת לקו הדק, כמו כל שדה מחושב שמחזיר מספר.</div>
 </section>
 
 <section class="sec" id="m9-9" data-t="למה המספר השתנה">
@@ -868,7 +881,7 @@
       <li>עכשיו נשתמש בחישוב טבלה במקום. הסירו את מסנן ה-Top 3 (לחצו ימנית עליו ב-<code>Filters</code> ו-<code>Remove</code>). בגיליון יש שוב את כל סניפי המרכז: 4 פסים.</li>
       <li>צרו שדה מחושב <code>Branch rank</code>:
 <pre class="code" data-lang="tableau">RANK(SUM([Profit]))</pre>
-        גררו אותו אל <code>Filters</code>. בחלון בחרו <code>Range of values</code> והגדירו מקסימום 3 (או <code>At most: 3</code>). ודאו ב-<code>Compute Using</code> של השדה ש-<code>Branch</code> הוא הכיוון (<code>Table (Down)</code> או <code>Specific Dimensions: Branch</code>). <i>למה:</i> מסנן חישוב טבלה מסתיר סימנים בלי להוריד אותם מהחישוב. <b>תוצאה צפויה:</b> שלושה סניפים: Dizengoff <span class="n">22,979.1</span>, Port <span class="n">20,310.5</span> ו-Netanya Beach <span class="n">13,507.7</span>. הרביעי, Rehovot Mall (<span class="n">4,794.7</span>), מוסתר.</li>
+        גררו אותו אל <code>Filters</code>. בחלון המסנן בחרו <code>At Most</code> והקלידו 3 (או <code>Range of Values</code> עם מקסימום 3). ודאו ב-<code>Compute Using</code> של השדה ש-<code>Branch</code> הוא הכיוון (<code>Table (down)</code> או <code>Specific Dimensions: Branch</code>). <i>למה:</i> מסנן חישוב טבלה מסתיר סימנים בלי להוריד אותם מהחישוב. <b>תוצאה צפויה:</b> שלושה סניפים: Dizengoff <span class="n">22,979.1</span>, Port <span class="n">20,310.5</span> ו-Netanya Beach <span class="n">13,507.7</span>. הרביעי, Rehovot Mall (<span class="n">4,794.7</span>), מוסתר.</li>
     </ol>
     <p>אם בשיטה השנייה מוצגים סניפים אחרים, בדקו ב-Compute Using שהכיוון הוא Branch. ובשיטה הראשונה, אפשר לקבל את אותה תוצאה כמו בשנייה אם הופכים את Region למסנן הקשר (<code>Add to Context</code>), כמו שראיתם <a href="module6.html">במודול 6</a>.</p>
   </div>
@@ -885,7 +898,7 @@
 
   <div class="box trap">
     <p><b>״הוספתי מסנן וכל האחוזים התעוותו״.</b> ככה זה עובד: חישוב טבלה מחשב על מה שנשאר. הוא לא ״יודע״ שיש אזורים שסוננו.</p>
-    <p><b>מה עושים:</b> אם רוצים אחוז מהרשת כולה גם כשמסננים, צריך מספר שלא תלוי במסנן: ביטוי <code>FIXED</code> (מודול 10). ואם רוצים רק להסתיר סימנים בלי לשנות את החישוב, משתמשים במסנן חישוב טבלה, או בפקודה <code>Hide</code> (לפי מדריכים מקובלים) ולא בפקודה <code>Exclude</code>, שיוצרת מסנן רגיל.</p>
+    <p><b>מה עושים:</b> אם רוצים אחוז מהרשת כולה גם כשמסננים, צריך מספר שלא תלוי במסנן: ביטוי <code>FIXED</code> (מודול 10). ואם רוצים רק להסתיר סימנים בלי לשנות את החישוב, משתמשים במסנן חישוב טבלה, או בפקודה <code>Hide</code> (לחיצה ימנית על כותרת) ולא בפקודה <code>Exclude</code>, שיוצרת מסנן רגיל. לפי מדריכים מקובלים, <code>Hide</code> מסתיר בלי לשנות את החישוב.</p>
   </div>
 
   <div class="box trap">
@@ -919,7 +932,7 @@
     <button class="opt">כי מסנן חישוב טבלה מסתיר את החודשים האחרים בלי להסיר אותם, וכך החישוב עדיין רואה את החודש הקודם</button>
     <div class="why">אם מסננים בתאריך רגיל, החודש הקודם נעלם מהתצוגה, ו-<code>LOOKUP(..., -1)</code> לא ימצא אותו. מסנן חישוב טבלה רק מסתיר את הסימנים, כך שהם עדיין זמינים לחישוב. נשתמש בזה מיד בסעיף 10.</div>
   </div>
-  <div class="teach"><b>🎓 למרצה:</b> התרגיל I הוא מקבילה של דוגמה רשמית של Tableau (Top 10 בעיר אחת), בנוסח של Scoop & Go. התוצאה שבצעד 3 (שני סניפים) מפתיעה את רוב הכיתה: תנו להם לנחש לפני שאתם מראים. לבדוק בתוכנה: (1) חלון מסנן של שדה חישוב טבלה (אפשרויות Range וה-At most); (2) שהפקודה Hide מסתירה בלי להסיר מהחישוב. חלק ממדריכי Tableau טוענים כך, והתיעוד הרשמי כותב זאת על מסנני חישוב טבלה.</div>
+  <div class="teach"><b>🎓 למרצה:</b> התרגיל I הוא מקבילה של דוגמה רשמית של Tableau (Top 10 בעיר אחת), בנוסח של Scoop & Go. התוצאה שבצעד 3 (שני סניפים) מפתיעה את רוב הכיתה: תנו להם לנחש לפני שאתם מראים. התוויות נבדקו בתוכנה: במסנן מספרי יש <code>Range of Values</code>, <code>At Least</code> ו-<code>At Most</code>, והפקודה נקראת <code>Hide</code>. פתוח (התנהגות): ש-<code>Hide</code> מסתיר בלי להסיר מהחישוב. חלק ממדריכי Tableau טוענים כך, והתיעוד הרשמי כותב זאת על מסנני חישוב טבלה. הראו זאת רק אחרי שבדקתם.</div>
 </section>
 
 <section class="sec" id="m9-10" data-t="בדשבורד">
@@ -947,23 +960,23 @@
     <p><b>תרגיל J: כרטיס KPI של החודש האחרון</b></p>
     <ol>
       <li>גיליון חדש בשם <code>KPI</code>. גררו את <code>Order Date</code> אל <code>Rows</code>, בחרו <code>Month</code> מהקבוצה השנייה (חודש עם שנה) והפכו אותו ל-<code>Discrete</code> (כחול). גררו <code>Sales</code> אל <code>Text</code>. <i>למה:</i> רשימה של 24 חודשים למטה, ובכל אחד המכירות. <b>תוצאה צפויה:</b> 24 שורות. הראשונה: January 2024 עם 4,139.3, והאחרונה: December 2025 עם 5,095.9.</li>
-      <li>גררו את השדה <code>MoM pct</code> מתרגיל H אל <code>Text</code>. (אם אין לכם אותו, צרו שדה מחושב כמו בתרגיל H.) לחצו ימנית על הפיל <code>MoM pct</code> ב-<code>Marks</code>, <code>Compute Using</code> ובחרו <code>Table (Down)</code>. <i>למה:</i> החודשים עכשיו בשורות, ולכן הכיוון הוא למטה. עם <code>Table (Across)</code> כל תא עומד לבד, וכל האחוזים יהיו ריקים. <b>תוצאה צפויה:</b> ליד כל חודש אחוז (חוץ מהראשון).</li>
+      <li>גררו את השדה <code>MoM pct</code> מתרגיל H אל <code>Text</code>. (אם אין לכם אותו, צרו שדה מחושב כמו בתרגיל H.) לחצו ימנית על הפיל <code>MoM pct</code> ב-<code>Marks</code>, <code>Compute Using</code> ובחרו <code>Table (down)</code>. <i>למה:</i> החודשים עכשיו בשורות, ולכן הכיוון הוא למטה. עם <code>Table (across)</code> כל תא עומד לבד, וכל האחוזים יהיו ריקים. <b>תוצאה צפויה:</b> ליד כל חודש אחוז (חוץ מהראשון).</li>
       <li>צרו שדה מחושב <code>Is last month</code>:
 <pre class="code" data-lang="tableau">LAST() = 0</pre>
-        גררו אותו אל <code>Filters</code> וסמנו <code>True</code>. לחצו ימנית על הפיל ב-<code>Filters</code>, <code>Compute Using</code> ו-<code>Table (Down)</code>. <i>למה:</i> <code>LAST() = 0</code> נכון רק בסימן האחרון, ומסנן חישוב טבלה מסתיר את כל היתר בלי להסיר אותם מהחישוב. <b>תוצאה צפויה:</b> שורה אחת: December 2025, מכירות <span class="n">5,095.9</span>, שינוי <span class="n">-22.61%</span>.</li>
+        גררו אותו אל <code>Filters</code> וסמנו <code>True</code>. לחצו ימנית על הפיל ב-<code>Filters</code>, <code>Compute Using</code> ו-<code>Table (down)</code>. <i>למה:</i> <code>LAST() = 0</code> נכון רק בסימן האחרון, ומסנן חישוב טבלה מסתיר את כל היתר בלי להסיר אותם מהחישוב. <b>תוצאה צפויה:</b> שורה אחת: December 2025, מכירות <span class="n">5,095.9</span>, שינוי <span class="n">-22.61%</span>.</li>
       <li>עכשיו מסדרים את המראה: לחצו ימנית על כותרת החודש ובחרו <code>Hide Field Labels for Rows</code> אם רוצים, והגדילו את הגופן ב-<code>Text</code> (לחצו על <code>Text</code> בכרטיס <code>Marks</code>). <i>למה:</i> כרטיס KPI צריך מספר גדול וברור.</li>
       <li><b>בדיקה עצמית:</b> החודש הקודם, נובמבר 2025, הוא 6,584.4. ההפרש הוא <span class="n">-1,488.5</span>, ו-1,488.5 חלקי 6,584.4 הוא 22.61%. אם קיבלתם ערך אחר, בדקו שהמסנן הוא מסנן חישוב טבלה (<code>LAST() = 0</code>) ולא מסנן תאריך.</li>
     </ol>
   </div>
 
   <div class="box trap">
-    <p><b>״כל האחוזים ריקים בכרטיס״.</b> הסיבה השכיחה: <code>Compute Using</code> הוא <code>Table (Across)</code> כשהחודשים בשורות. אין כאן מה לעבור לאורכו, כל תא רואה רק את עצמו, ואין לו ״קודם״. שנו ל-<code>Table (Down)</code>.</p>
+    <p><b>״כל האחוזים ריקים בכרטיס״.</b> הסיבה השכיחה: <code>Compute Using</code> הוא <code>Table (across)</code> כשהחודשים בשורות. אין כאן מה לעבור לאורכו, כל תא רואה רק את עצמו, ואין לו ״קודם״. שנו ל-<code>Table (down)</code>.</p>
     <p><b>טעות שנייה:</b> מסנן תאריך רגיל על ״החודש האחרון״. הוא מסיר את נובמבר מהתצוגה, ולכן אין למה להשוות והאחוז ריק.</p>
   </div>
 
   <div class="quiz" data-id="m9-q-dash" data-a="1">
     <p class="qq">בכרטיס KPI כל הערכים של <code>MoM pct</code> ריקים. מה הסיבה הסבירה ביותר?</p>
-    <button class="opt">Compute Using הוא Table (Across) אבל החודשים מסודרים בשורות, ולכן אין סימן קודם</button>
+    <button class="opt">Compute Using הוא Table (across) אבל החודשים מסודרים בשורות, ולכן אין סימן קודם</button>
     <button class="opt">הנתונים של דצמבר חסרים בקובץ</button>
     <button class="opt">חישובי טבלה לא עובדים בדשבורד</button>
     <div class="why">כיוון הליכה שלא תואם את הסידור של הכותרות לא מוצא שכנים. חישובי טבלה עובדים גם בדשבורד, ודצמבר 2025 קיים בקובץ (5,095.9).</div>
@@ -975,7 +988,7 @@
   <div class="box try" data-id="m9-try-action">
     <p><b>תרגיל K: לחיצה באזור משנה את האחוזים</b></p>
     <ol>
-      <li>בנו שני גיליונות: <code>Region bars</code> (גררו <code>Region</code> אל <code>Rows</code> ו-<code>Sales</code> אל <code>Columns</code>) ו-<code>Category share</code> (גררו <code>Category</code> אל <code>Rows</code>, <code>Sales</code> אל <code>Columns</code>, הוסיפו <code>Percent of Total</code> עם <code>Table (Down)</code>). <i>למה:</i> אחוז כל קטגוריה מכל המכירות. <b>תוצאה צפויה:</b> Cups <span class="n">29.3%</span>, Drinks <span class="n">23.0%</span>, Cones <span class="n">20.4%</span>, Sundaes <span class="n">19.9%</span>, Sticks <span class="n">7.4%</span>.</li>
+      <li>בנו שני גיליונות: <code>Region bars</code> (גררו <code>Region</code> אל <code>Rows</code> ו-<code>Sales</code> אל <code>Columns</code>) ו-<code>Category share</code> (גררו <code>Category</code> אל <code>Rows</code>, <code>Sales</code> אל <code>Columns</code>, הוסיפו <code>Percent of Total</code> עם <code>Table (down)</code>). <i>למה:</i> אחוז כל קטגוריה מכל המכירות. <b>תוצאה צפויה:</b> Cups <span class="n">29.3%</span>, Drinks <span class="n">23.0%</span>, Cones <span class="n">20.4%</span>, Sundaes <span class="n">19.9%</span>, Sticks <span class="n">7.4%</span>.</li>
       <li>לחצו על הכפתור <code>New Dashboard</code> בשורת הלשוניות שבתחתית החלון. גררו את שני הגיליונות לדשבורד. <i>למה:</i> כאן הם מופיעים זה לצד זה.</li>
       <li>סמנו את הגיליון <code>Region bars</code> בדשבורד ולחצו על סימן המסנן (<code>Use as Filter</code>) בפינה שלו. <i>למה:</i> עכשיו לחיצה על אזור מסננת את הגיליונות האחרים.</li>
       <li>לחצו על העמודה של <code>North</code>. <b>תוצאה צפויה:</b> ב-<code>Category share</code> האחוזים הם של הצפון בלבד: Cups <span class="n">31.3%</span>, Drinks <span class="n">25.1%</span>, Cones <span class="n">20.9%</span>, Sundaes <span class="n">16.9%</span>, Sticks <span class="n">5.8%</span>. לחצו על שטח ריק כדי לבטל.</li>
@@ -995,7 +1008,21 @@
     <p>כרטיס ה-KPI מציג באדום <span class="n">-22.61%</span> לדצמבר 2025. מנהלת הרשת מתקשרת בבהלה. מה תגידו לה, ומה תוסיפו לכרטיס?</p>
     <div class="ans">דצמבר הוא חודש חורף חלש בגלידריה, ולכן ירידה מנובמבר צפויה בכל שנה, בלי קשר לביצועים. מול דצמבר 2024 המכירות דווקא גבוהות: <span class="n">+2.95%</span>. אבל כדאי לשים לב לפרט: נובמבר 2025 היה חזק (<span class="n">+32.22%</span> משנה לשנה), ולכן הירידה בדצמבר חדה יותר משהייתה בשנה שעברה (<span class="n">-0.60%</span>). הייתי מוסיף לכרטיס את השינוי משנה לשנה, ומציע לבדוק מה קרה בנובמבר.</div>
   </div>
-  <div class="teach"><b>🎓 למרצה:</b> הנקודה העיקרית בתרגיל J היא שלושת הדברים: Compute Using מפורש, מסנן חישוב טבלה ולא מסנן תאריך, ובדיקה עצמית מול נובמבר. דצמבר 2024 מול נובמבר 2024 הוא <span class="n">-0.60%</span>, ודצמבר 2025 מול נובמבר 2025 הוא <span class="n">-22.61%</span>: הירידה אינה אחידה בין השנים, ולכן אל תגידו לכיתה ש״דצמבר תמיד יורד באותו שיעור״. חצים צבעוניים בכרטיס (▲ ▼) אפשר לקבל עם פורמט מספר מותאם (Format, Numbers, Custom). זה מופיע במדריכים של הקהילה, ולכן בדקו בתוכנה לפני השיעור. תרגיל K: הצגת פעולה בדשבורד מופיעה בהרחבה במודול 13.</div>
+  <div class="teach"><b>🎓 למרצה:</b> הנקודה העיקרית בתרגיל J היא שלושת הדברים: Compute Using מפורש, מסנן חישוב טבלה ולא מסנן תאריך, ובדיקה עצמית מול נובמבר. דצמבר 2024 מול נובמבר 2024 הוא <span class="n">-0.60%</span>, ודצמבר 2025 מול נובמבר 2025 הוא <span class="n">-22.61%</span>: הירידה אינה אחידה בין השנים, ולכן אל תגידו לכיתה ש״דצמבר תמיד יורד באותו שיעור״. חצים בכרטיס (▲ ▼) אפשר לקבל עם פורמט מספר מותאם: <code>Format...</code> על הפיל, <code>Numbers</code>, ואז <code>Number (Custom)</code> (השם קיים בתוכנה). פתוח: איך החצים נראים בגופן של התוכנה. הדרך מופיעה במדריכים של הקהילה, אז נסו פעם אחת לפני שאתם מראים. תרגיל K: הצגת פעולה בדשבורד מופיעה בהרחבה במודול 13.</div>
+  <div class="box try" data-id="m9-try-course-save">
+    <p><b>חוברת הקורס: שני גיליונות של מודול 9</b>. כל מודול מוסיף גיליונות לאותה חוברת, <code>scoop-course.twbx</code>, ושומר אותה שוב. ככה בסוף הקורס יש לכם קובץ אחד עם הכל.</p>
+    <ol>
+      <li>פתחו את החוברת: <code>File</code> ואז <code>Open...</code>, ובחרו <code>scoop-course.twbx</code> (או בחרו אותה מרשימת הקבצים האחרונים בתחתית התפריט <code>File</code>). <i>למה:</i> עובדים על אותה חוברת ולא פותחים קובץ חדש. אם עוד אין לכם אותה, צרו אותה פעם אחת: <code>File</code> ואז <code>Save As...</code>, בשם <code>scoop-course.twbx</code>.</li>
+      <li>פתחו גיליון חדש (<code>New Worksheet</code>), לחצו ימנית על הלשונית שלו למטה, בחרו <code>Rename Sheet...</code> וכתבו <code>M9 Running total</code>. <i>למה:</i> שם עם מספר המודול עוזר למצוא את הגיליון אחר כך.</li>
+      <li>גררו <code>Order Date</code> אל <code>Columns</code>, בחרו <code>Month</code> מהקבוצה השנייה (חודש עם שנה) והפכו אותו ל-<code>Continuous</code>. גררו <code>Sales</code> אל <code>Rows</code>. <i>למה:</i> ציר של 24 חודשים, כמו בתרגיל A. <b>תוצאה צפויה:</b> <code>24 marks</code> בשורת המצב.</li>
+      <li>לחצו ימנית על <code>SUM(Sales)</code>, <code>Quick Table Calculation</code> ואז <code>Running Total</code>. אחר כך שוב לחיצה ימנית, <code>Compute Using</code> ו-<code>Table (across)</code>. <i>למה:</i> סכום מצטבר לאורך החודשים, עם כיוון מפורש. <b>תוצאה צפויה:</b> בדצמבר 2024 <span class="n">107,047.6</span> ובדצמבר 2025 <span class="n">236,820.9</span> (בחלון הקופץ Tableau עשוי לעגל ל-107,048 ול-236,821).</li>
+      <li>לחצו ימנית על הלשונית <code>M9 Running total</code> ובחרו <code>Duplicate</code>. שנו את שם העותק (<code>Rename Sheet...</code>) ל-<code>M9 YoY by month</code>. <i>למה:</i> אותו ציר, חישוב אחר.</li>
+      <li>בגיליון החדש לחצו ימנית על הפיל, <code>Quick Table Calculation</code> ואז <code>Year Over Year Growth</code>. <i>למה:</i> כל חודש מול אותו חודש בשנה הקודמת, בלי השפעה של העונה. <b>תוצאה צפויה:</b> ב-2024 אין ערכים. ינואר 2025 <span class="n">+50.9%</span>, פברואר 2025 <span class="n">-4.2%</span>, אוגוסט 2025 <span class="n">+31.4%</span> (מספר הספרות אחרי הנקודה תלוי בעיצוב).</li>
+      <li>שמרו: בתפריט <code>File</code> בחרו <code>Save</code>. <i>למה:</i> זו שמירה מקומית של אותה חוברת. שימו לב: ב-Tableau Public הקיצור Cmd+S (Ctrl+S) הוא <code>Save to Tableau Public...</code>, כלומר פרסום לאתר. לשמירה במחשב בחרו מהתפריט.</li>
+    </ol>
+    <p><b>תוצאה צפויה:</b> בשורת הלשוניות למטה יש שתי לשוניות חדשות, <code>M9 Running total</code> ו-<code>M9 YoY by month</code>, ליד הגיליונות של המודולים הקודמים. בשורת הכותרת של החלון כתוב שם החוברת.</p>
+    <p><b>למה חוברת אחת:</b> ב-Tableau Public יש מגבלה על מספר החוברות <b>החדשות</b> שאפשר לשמור במחשב בפרק זמן מסוים. שמירה חוזרת של אותה חוברת היא הדרך הבטוחה.</p>
+  </div>
 </section>
 
 <section class="sec" id="m9-11" data-t="סיכום">
@@ -1005,11 +1032,11 @@
   <div class="tw"><table class="tbl">
     <thead><tr><th>השאלה של דנה</th><th>החישוב</th><th>ה-Compute Using</th></tr></thead>
     <tbody>
-      <tr><td>כמה מכרנו מתחילת התקופה?</td><td><code>Running Total</code></td><td><code>Table (Across)</code> על ציר חודשים</td></tr>
+      <tr><td>כמה מכרנו מתחילת התקופה?</td><td><code>Running Total</code></td><td><code>Table (across)</code> על ציר חודשים</td></tr>
       <tr><td>כמה מתחילת השנה?</td><td><code>YTD Total</code>, או Running Total</td><td>שנה בחלוקה (שנה בשורות, חודש בעמודות)</td></tr>
       <tr><td>בכמה השתנינו מהחודש הקודם?</td><td><code>Percent Difference</code></td><td>לאורך החודשים</td></tr>
       <tr><td>בכמה השתנינו משנה שעברה?</td><td><code>Year Over Year Growth</code></td><td>לאורך החודשים</td></tr>
-      <tr><td>מי הכי רווחי?</td><td><code>Rank</code></td><td>לאורך הסניפים (<code>Table (Down)</code> אם הם בשורות)</td></tr>
+      <tr><td>מי הכי רווחי?</td><td><code>Rank</code></td><td>לאורך הסניפים (<code>Table (down)</code> אם הם בשורות)</td></tr>
       <tr><td>מהי המגמה בלי תנודות?</td><td><code>Moving Average</code></td><td>לאורך החודשים</td></tr>
       <tr><td>איזה חלק מהאזור שלי היא כל קטגוריה?</td><td><code>Percent of Total</code></td><td><code>Specific Dimensions: Category</code></td></tr>
     </tbody></table></div>
@@ -1092,7 +1119,7 @@ M9.on(function(m){
     pdiff: {n:'Percent Difference', f:'(SUM([Sales]) - LOOKUP(SUM([Sales]), -1)) / ABS(LOOKUP(SUM([Sales]), -1))', t:'pct', v:function(){ return arr(function(i){ return i ? (S[i]-S[i-1])/Math.abs(S[i-1]) : null; }); }, note:function(){ return 'שימו לב: כל חודש בין ספטמבר לדצמבר שלילי, וכל חודש בין מרץ לאוגוסט חיובי. זו העונה, לא הביצועים.'; }},
     ptot: {n:'Percent of Total', f:'SUM([Sales]) / TOTAL(SUM([Sales]))', t:'pct', v:function(){ return arr(function(i){ return S[i]/tot; }); }, note:function(){ return 'כל 24 האחוזים מסתכמים ל-100%. אוגוסט 2025 הוא החודש הגדול ביותר.'; }},
     rank: {n:'Rank', f:'RANK(SUM([Sales]))', t:'int', v:function(){ return arr(function(i){ var c = 1, j; for (j = 0; j < N; j++) if (S[j] > S[i]) c++; return c; }); }, note:function(){ return 'מקום 1 הוא החודש עם המכירות הגבוהות ביותר. אין תיקו בין חודשים בקובץ הזה.'; }},
-    mavg: {n:'Moving Average (3 חודשים)', f:'WINDOW_AVG(SUM([Sales]), -2, 0)', t:'num', v:function(){ return arr(function(i){ var a = Math.max(0, i-2); return sumTo(a, i)/(i-a+1); }); }, note:function(){ return 'בשתי הנקודות הראשונות יש בחלון פחות משלושה חודשים, והסימולציה מחשבת ממוצע של מה שיש. בתוכנה בדקו שזה מה שמופיע אצלכם.'; }},
+    mavg: {n:'Moving Average (3 חודשים)', f:'WINDOW_AVG(SUM([Sales]), -2, 0)', t:'num', v:function(){ return arr(function(i){ var a = Math.max(0, i-2); return sumTo(a, i)/(i-a+1); }); }, note:function(){ return 'בשתי הנקודות הראשונות יש בחלון פחות משלושה חודשים, והסימולציה מחשבת ממוצע של מה שיש. בתוכנה זה מה שקורה כשהתיבה Null if there are not enough values לא מסומנת.'; }},
     ytd: {n:'YTD Total', f:'RUNNING_SUM(SUM([Sales])) מחושב בנפרד לכל שנה', t:'num', v:function(){ return arr(function(i){ return sumTo(i < 12 ? 0 : 12, i); }); }, note:function(){ return 'הסכום מתחיל מחדש בינואר 2025: 6,246.1.'; }},
     yoy: {n:'Year Over Year Growth', f:'(SUM([Sales]) - LOOKUP(SUM([Sales]), -12)) / ABS(LOOKUP(SUM([Sales]), -12))', t:'pct', v:function(){ return arr(function(i){ return i >= 12 ? (S[i]-S[i-12])/Math.abs(S[i-12]) : null; }); }, note:function(){ return '12 החודשים הראשונים ריקים, כי אין להם שנה קודמת בקובץ.'; }}
   };
@@ -1132,7 +1159,7 @@ M9.on(function(m){
 M9.on(function(m){
   var box = FL.$('[data-id="m9-sim-using"]'); if (!box) return;
   var R = m.regions, C = m.cats;
-  var modes = [['across','Table (Across)'],['down','Table (Down)'],['ad','Table (Across then Down)'],['da','Table (Down then Across)'],['spec','Specific Dimensions'],['cell','Cell']];
+  var modes = [['across','Table (across)'],['down','Table (down)'],['ad','Table (across then down)'],['da','Table (down then across)'],['spec','Specific Dimensions'],['cell','Cell']];
   var st = {calc:'ptot', meas:'Sales', mode:'across', R:true, C:true, src:false, sel:[0,1]}, tried = {};
   var elModes = FL.$('#m9-su-modes', box), elSpec = FL.$('#m9-su-spec', box), elGrid = FL.$('#m9-su-grid', box), elEx = FL.$('#m9-su-explain', box), elNote = FL.$('#m9-su-note', box);
   elModes.innerHTML = modes.map(function(x){ return '<label data-m="'+x[0]+'"><input type="radio" name="m9-su-mode" value="'+x[0]+'"> '+x[1]+'</label>'; }).join('');

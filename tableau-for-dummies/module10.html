@@ -103,7 +103,7 @@
 <p>מה צריך להיות מוכן: הקובץ <a class="tool" href="data/scoop_sales_2024_2025.csv">scoop_sales_2024_2025.csv</a> טעון ב-Tableau Public, ואתם מכירים שדה מחושב (<a href="module8.html">מודול 8</a>). חישובי טבלה (<a href="module9.html">מודול 9</a>) עוזרים בחלק הרביעי של המודול, אבל לא חובה. כל התרגילים כאן רצים ב-Tableau Public בלבד, מתוך קובץ.</p>
 </div>
 
-<div class="teach"><b>🎓 למרצה:</b> המודול הזה עמוס. אם חסר זמן, העבירו את המשימות לפי הסדר: פרמטר להחלפת מדד, Top N, FIXED לאחוז מהרשת, סדר הפעולות עם Top N והקשר. את הקוהורט של הלקוחות ואת חוקר ה-LOD אפשר להשאיר לתרגול עצמי. לפני השיעור הריצו בתוכנה את כל הנוסחאות פעם אחת: מספרי התוצאה הצפויה חושבו בפייתון מהקובץ, לא ב-Tableau. כל מה שסומן &quot;בדקו בתוכנה&quot; הוא פריט שהמחקר לא הצליח לאמת.</div>
+<div class="teach"><b>🎓 למרצה:</b> המודול הזה עמוס. אם חסר זמן, העבירו את המשימות לפי הסדר: פרמטר להחלפת מדד, Top N, FIXED לאחוז מהרשת, סדר הפעולות עם Top N והקשר. את הקוהורט של הלקוחות ואת חוקר ה-LOD אפשר להשאיר לתרגול עצמי. חלון <code>Create Parameter</code>, התפריט של חלונית הנתונים וחלון החישוב עם ביטוי FIXED צולמו ב-Tableau Public המותקנת (גרסה 2026.2.3), והצילומים בסעיפים 1 ו-5. מספרי התוצאה הצפויה חושבו בפייתון מהקובץ. מה שנשאר פתוח מסומן בהערות למרצה במילה &quot;פתוח&quot;: אלה פריטי התנהגות שעוד לא הורצו בתוכנה, ורשימה מרוכזת שלהם נמצאת בסוף המודול.</div>
 
 <section class="sec" id="m10-1" data-t="פרמטר">
 <div class="sec-h"><div class="sec-n">1</div><h2>פרמטר: ידית שהצופה מסובב</h2></div>
@@ -166,37 +166,41 @@
 </ol></div>
 
 <h3>איפה יוצרים פרמטר</h3>
-<p>בחלונית הנתונים, לחיצה ימנית על שדה פותחת תפריט, ובו <code>Create</code> ואחריו <code>Parameter...</code>. אפשר גם מהחץ הקטן ליד מילת החיפוש בחלונית הנתונים. בגרסה שלכם ייתכן שהשם שונה מעט, ואין בכך בעיה.</p>
-<figure class="shot"><img src="img/create-menu-calc.png" alt="תפריט לחיצה ימנית על שדה, עם Create ואחריו Calculated Field, Group, Bins ו-Parameter"><figcaption>התפריט הימני של שדה: <code>Create</code> ואז <code>Parameter...</code>. הצילום מנתוני משחקי וידאו; אצלכם יופיעו שדות Scoop &amp; Go.</figcaption></figure>
+<p>הדרך הקצרה: בראש חלונית הנתונים יש תיבת חיפוש (<code>Search</code>), ולידה סמל עם חץ קטן ▾. לחיצה על החץ פותחת תפריט. הפריט הראשון בו הוא <code>Create Calculated Field...</code> (נשתמש בו בסעיף הבא), והשני הוא <code>Create Parameter...</code>. דרך שנייה: לחיצה ימנית על שדה כלשהו, <code>Create</code> ואז <code>Parameter...</code>. שתי הדרכים פותחות את אותו חלון.</p>
+<figure class="shot"><img src="img/create-menu-calc.png" alt="תפריט לחיצה ימנית על שדה, עם Create ואחריו Calculated Field, Group, Bins ו-Parameter"><figcaption>הדרך השנייה, התפריט הימני של שדה: <code>Create</code> ואז <code>Parameter...</code>. הצילום מנתוני משחקי וידאו; אצלכם יופיעו שדות Scoop &amp; Go.</figcaption></figure>
 
 <figure class="shot" data-shot="m10-param-dialog">
 <div class="fb"><div class="m10-dlg" aria-label="הדמיה סכמטית של חלון יצירת פרמטר">
 <h5>Create Parameter</h5>
-<div class="r"><b>Name:</b><div class="f">Pick Measure</div></div>
-<div class="r"><b>Data type:</b><div class="f">String ▾</div></div>
-<div class="r"><b>Current value:</b><div class="f">Sales ▾</div></div>
-<div class="r"><b>Display format:</b><div class="f off">Automatic</div></div>
-<div class="r"><b>Allowable values:</b><div class="f">( ) All &nbsp; (●) List &nbsp; ( ) Range</div></div>
-<div class="r"><b></b><table><tr><th>Value</th><th>Display As</th></tr><tr><td>Sales</td><td>Sales</td></tr><tr><td>Profit</td><td>Profit</td></tr><tr><td>Quantity</td><td>Quantity</td></tr></table></div>
-<div class="btns"><span>Cancel</span><span class="ok">OK</span></div></div>
-<div class="need">צילום מסך נדרש: Tableau Public, חלון Create Parameter עם השם Pick Measure, Data type = String, Allowable values = List ושלוש השורות Sales, Profit, Quantity</div></div>
-<figcaption>הדמיה סכמטית של חלון יצירת פרמטר. שימו לב לשלוש ההחלטות החשובות: סוג הנתונים, הערך הנוכחי וסוג הערכים המותרים.</figcaption>
+<div class="r"><b>Name</b><div class="f">Pick Measure</div></div>
+<div class="r"><b>Data type</b><div class="f">String ▾</div></div>
+<div class="r"><b>Display format</b><div class="f off">Sales ▾</div></div>
+<div class="r"><b>Current value</b><div class="f">Sales ▾</div></div>
+<div class="r"><b>Value when workbook opens</b><div class="f">Current value ▾</div></div>
+<div class="r"><b>Allowable values</b><div class="f">( ) All &nbsp; (●) List &nbsp; <span style="color:#94a3b8">( ) Range</span></div></div>
+<div class="r"><b></b><table><tr><th>Value</th><th>Display As</th></tr><tr><td>Sales</td><td>Sales</td></tr><tr><td>Profit</td><td>Profit</td></tr><tr><td>Quantity</td><td>Quantity</td></tr><tr><td style="color:#94a3b8">Click to add</td><td></td></tr></table></div>
+<div class="r"><b></b><div>(●) Fixed &nbsp; ( ) When workbook opens &nbsp; <span class="f" style="display:inline-block">Add values from ▾</span></div></div>
+<div class="btns"><span>Cancel</span><span class="ok">OK</span></div></div></div>
+<figcaption>חלון <code>Create Parameter</code> ב-Tableau Public, ממולא לתרגיל שלמטה: השם <code>Pick Measure</code>, סוג <code>String</code>, ערך נוכחי <code>Sales</code>, ו-<code>List</code> עם שלוש שורות בעמודות <code>Value</code> ו-<code>Display As</code>. <code>Range</code> ו-<code>Display format</code> אפורים, כי לטקסט אין טווח ואין פורמט מספר. <code>Value when workbook opens</code> נשאר <code>Current value</code>.</figcaption>
 </figure>
 
 <div class="defline"><b>ערכים מותרים (<code>Allowable values</code>):</b> מה הצופה רשאי לבחור. <code>All</code> זה תיבת הקלדה חופשית. <code>List</code> זו רשימה שאתם קובעים. <code>Range</code> זה מינימום, מקסימום וגודל צעד. דוגמה: <code>Range</code> מ-1 עד 9 בצעד 1 נותן סליידר של תשעה מצבים.</div>
 
-<p>סוגי הנתונים של פרמטר דומים לסוגי השדות שהכרתם: מספר שלם (<code>Integer</code>), מספר עשרוני (<code>Float</code>), טקסט (<code>String</code>), <dfn data-d="בוליאני: ערך שיכול להיות רק אמת או שקר, כמו מתג הדלקה וכיבוי">בוליאני</dfn> (<code>Boolean</code>), תאריך (<code>Date</code>) ותאריך עם שעה (<code>Date &amp; Time</code>). ויש כלל אחד לזכור: לטקסט לא קיים <code>Range</code>, כי אין צעד בין מילים. את שמות הסוגים המדויקים בחלון תראו בגרסה שלכם.</p>
+<p>ברשימה <code>Data type</code> יש שבעה סוגים, באותו סדר כמו בחלון: מספר עשרוני (<code>Float</code>), מספר שלם (<code>Integer</code>), טקסט (<code>String</code>), <dfn data-d="בוליאני: ערך שיכול להיות רק אמת או שקר, כמו מתג הדלקה וכיבוי">בוליאני</dfn> (<code>Boolean</code>), תאריך (<code>Date</code>), תאריך עם שעה (<code>Date/Time</code>) ומרחבי (<code>Spatial</code>, לצורות על מפה; לא נשתמש בו כאן). ויש כלל אחד לזכור: לטקסט אין <code>Range</code>, כי אין צעד בין מילים. בצילום רואים את זה: <code>Range</code> אפור.</p>
+<p>ועוד דבר שרואים רק אחרי <code>OK</code>: בתחתית חלונית הנתונים נוסף אזור חדש בשם <code>Parameters</code>, וכל פרמטר שתיצרו יופיע שם, מתחת למדדים.</p>
 
 <div class="box try" data-id="m10-try-first-param">
 <p><b>פרמטר ראשון: בחר מדד</b></p>
 <ol>
 <li>פתחו גיליון חדש על Scoop &amp; Go. <i>למה: הפרמטר שייך לחוברת, אבל נבדוק אותו על גיליון נקי.</i></li>
-<li>לחיצה ימנית על <span class="fld mea"><i>#</i>Sales</span> בחלונית הנתונים, <code>Create</code>, <code>Parameter...</code>. <i>למה: כך נפתח החלון. הכינוי של השדה שלחצתם עליו לא משנה, הפרמטר לא קשור אליו.</i></li>
-<li>שם: <code>Pick Measure</code>. סוג: <code>String</code>. בחרו <code>List</code> והוסיפו שלוש שורות: <code>Sales</code>, <code>Profit</code>, <code>Quantity</code>. ערך נוכחי: <code>Sales</code>. אישור. <i>למה: טקסט עם רשימה סגורה לא מאפשר שגיאות הקלדה.</i></li>
-<li>בחלונית הנתונים, בתחתית, מופיע אזור <code>Parameters</code> ובו <code>Pick Measure</code>. לחיצה ימנית עליו, <code>Show Parameter</code>. <i>למה: בלי זה הצופה לא רואה את הידית.</i></li>
-<li>בצד ימין של הגיליון מופיע כרטיס קטן עם רשימה נפתחת. פתחו אותו ובחרו <code>Profit</code>.</li>
+<li>בחלונית הנתונים לחצו על החץ הקטן ליד תיבת החיפוש ובחרו <code>Create Parameter...</code> (או: לחיצה ימנית על <span class="fld mea"><i>#</i>Sales</span>, <code>Create</code>, <code>Parameter...</code>). <i>למה: כך נפתח החלון <code>Create Parameter</code>. הפרמטר לא קשור לשדה שלחצתם עליו.</i></li>
+<li>ב-<code>Name</code> כתבו <code>Pick Measure</code>. ב-<code>Data type</code> בחרו <code>String</code>. <i>למה: הערכים יהיו מילים, שמות של מדדים.</i></li>
+<li>ב-<code>Allowable values</code> סמנו <code>List</code>. בטבלה לחצו על השורה הריקה (<code>Click to add</code>), הקלידו <code>Sales</code> ו-Enter, ואחר כך <code>Profit</code> ו-<code>Quantity</code>. העמודה <code>Display As</code> מתמלאת באותה מילה. <i>למה: רשימה סגורה לא מאפשרת שגיאות הקלדה.</i></li>
+<li>ב-<code>Current value</code> בחרו <code>Sales</code>. את <code>Value when workbook opens</code> השאירו על <code>Current value</code>. לחצו <code>OK</code>. <i>למה: זה הערך שמופיע כשפותחים את החוברת.</i></li>
+<li>בתחתית חלונית הנתונים מופיע עכשיו אזור <code>Parameters</code> ובו <code>Pick Measure</code>. לחיצה ימנית עליו, <code>Show Parameter</code>. <i>למה: בלי זה הצופה לא רואה את הידית.</i></li>
+<li>בצד ימין של הגיליון מופיע כרטיס קטן עם רשימה נפתחת. פתחו אותו ובחרו <code>Profit</code>. <i>למה: לבדוק שהידית מגיבה.</i></li>
 </ol>
-<p><b>תוצאה צפויה:</b> בחלונית הנתונים יש פרמטר אחד, ויש כרטיס בצד הגיליון עם שלושה ערכים. כשאתם בוחרים ערך אחר, <b>לא קורה שום דבר</b> בגיליון. הגיליון עדיין ריק. זה לא תקלה: אף חישוב עוד לא קורא את הפרמטר. את זה נתקן בסעיף הבא.</p>
+<p><b>תוצאה צפויה:</b> באזור <code>Parameters</code> יש פרמטר אחד, <code>Pick Measure</code>. בכרטיס יש בדיוק שלושה ערכים: Sales, Profit, Quantity. כשאתם בוחרים ערך אחר <b>לא קורה שום דבר</b>: אין סימנים, ובמרכז הגיליון עדיין כתוב <code>Add data to visualize</code>. זה לא תקלה: אף חישוב עוד לא קורא את הפרמטר. בסעיף הבא נחבר אותו, ואז בגרף של קטגוריות תראו שהסדר זז: לפי <code>Sales</code> הסדר הוא Cups, Drinks, Cones, Sundaes, Sticks; לפי <code>Profit</code> דווקא Drinks ראשון (36,728.3); ולפי <code>Quantity</code> Sticks (1,407) עוקף את Sundaes (1,302).</p>
 </div>
 
 <div class="box trap"><p><b>פרמטר הוא לא מסנן.</b> מי שבונה פרמטר ומצפה שהגרף ישתנה יתאכזב. פרמטר הוא רק ערך. כדי שיעשה משהו צריך ליצור שדה מחושב שמשתמש בו, או לשים אותו בלשונית <code>Top</code> של מסנן, או לבחור אותו בקו עזר. כשתראו כרטיס שלא עושה כלום, השאלה היא: מי קורא את הפרמטר הזה?</p></div>
@@ -215,7 +219,7 @@
 <button class="opt">שדה אפשר לחשב ופרמטר אי אפשר להשתמש בו בחישוב</button>
 <div class="why">נכון: פרמטר הוא ערך אחד שאפשר לשנות. הוא לא מסנן לבד (תשובה ג שגויה), הוא כן מופיע בחישובים (תשובה ד הפוכה) ולא קשור לדשבורד דווקא (תשובה א).</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> עצרו אחרי שלב 5 של ההתנסות ושאלו את הכיתה: &quot;למה הגרף ריק?&quot;. התשובה &quot;אף אחד לא קורא את הפרמטר&quot; היא ההבנה המרכזית של הסעיף. שמות סוגי הנתונים בחלון: המחקר מצטט את ששת הסוגים מתיעוד ה-API של Tableau (רמת ביטחון C לגבי החלון עצמו), לכן בדקו מה כתוב בחלון בגרסה שלכם. פרמטר מסוג מרחבי (<code>spatial</code>) קיים רק בגרסאות חדשות ולא נלמד כאן. <b>פרמטר דינמי</b> (ערך שמתרענן מחישוב כשחוברת נפתחת) מתועד כרשמי, אבל ב-Tableau Public הנתונים הם מיצוי שלא משתנה אחרי פרסום, ולכן אין מה לרענן (זו מסקנה של המחקר, לא נבדקה: בדקו בתוכנה לפני שמזכירים). <b>עריכה בדפדפן (web authoring):</b> המחקר לא בדק אילו חלקים של המודול זמינים בה (יצירת פרמטר, ביטויי LOD, Add to Context). כל התרגילים נכתבו לאפליקציית Tableau Desktop Public Edition. בדקו בדפדפן לפני שאתם אומרים לתלמידים שזה עובד גם שם.</div>
+<div class="teach"><b>🎓 למרצה:</b> עצרו אחרי השלב האחרון של ההתנסות ושאלו את הכיתה: &quot;למה הגרף ריק?&quot;. התשובה &quot;אף אחד לא קורא את הפרמטר&quot; היא ההבנה המרכזית של הסעיף. מה שנבדק בתוכנה ונכתב כעובדה: התפריט של החץ בחלונית הנתונים (<code>Create Calculated Field...</code>, <code>Create Parameter...</code>), החלון <code>Create Parameter</code> עם שבעת סוגי הנתונים, ואזור <code>Parameters</code> שנוסף בתחתית חלונית הנתונים אחרי <code>OK</code>. בחלון יש גם <code>Value when workbook opens</code> ואפשרות <code>When workbook opens</code> לרשימה: זה <b>פרמטר דינמי</b>, שמתמלא מהנתונים כשהחוברת נפתחת. ב-Tableau Public הנתונים הם מיצוי שלא מתעדכן אחרי פרסום, ולכן אין לו כאן תועלת אמיתית ולא לימדנו אותו. פתוח: <b>עריכה בדפדפן (web authoring)</b>. לא בדקנו אילו חלקים של המודול זמינים בה (יצירת פרמטר, ביטויי LOD, <code>Add to Context</code>). כל התרגילים נכתבו לאפליקציית Tableau Desktop Public Edition. בדקו בדפדפן לפני שאתם אומרים לתלמידים שזה עובד גם שם.</div>
 </section>
 
 <section class="sec" id="m10-2" data-t="החלפת מדד">
@@ -239,7 +243,7 @@ END</pre>
 <div class="fb"><div class="tws" aria-label="הדמיה סכמטית של גיליון עם פרמטר להחלפת מדד">
 <div class="tws-top"><b>Sheet 1 - Tableau Public</b><span class="tws-btn">Undo</span><span class="tws-btn">Sort</span></div>
 <div class="tws-body">
-<div class="tws-data"><h6>Dimensions</h6><div><span class="fld dim"><i>Abc</i>Branch</span></div><div><span class="fld dim"><i>Abc</i>Region</span></div><h6>Measures</h6><div><span class="fld mea"><i>#</i>Sales</span></div><div><span class="fld mea"><i>=#</i>Chosen Measure</span></div><h6>Parameters</h6><div><span class="fld mea"><i>#</i>Pick Measure</span></div></div>
+<div class="tws-data"><h6>Tables</h6><div><span class="fld dim"><i>Abc</i>Branch</span></div><div><span class="fld dim"><i>Abc</i>Region</span></div><div style="border-top:1px solid #94a3b8;margin:5px 2px" title="מעל הקו: ממדים. מתחת לקו: מדדים"></div><div><span class="fld mea"><i>=#</i>Chosen Measure</span></div><div><span class="fld mea"><i>#</i>Sales</span></div><h6>Parameters</h6><div><span class="fld dim"><i>Abc</i>Pick Measure</span></div></div>
 <div class="tws-main">
 <div class="tws-shelf"><span>Columns</span><span class="pill c">Chosen Measure</span></div>
 <div class="tws-shelf"><span>Rows</span><span class="pill d">Branch</span></div>
@@ -251,15 +255,16 @@ END</pre>
 <div class="need">צילום מסך נדרש: Tableau Public, גיליון עם Branch ב-Rows, Chosen Measure ב-Columns, ממוין יורד, וכרטיס הפרמטר Pick Measure בצד ימין עם הערך Sales</div></div>
 <figcaption>הדמיה סכמטית של התוצאה: גרף עמודות אחד, וכרטיס פרמטר בצד שמחליף את המדד.</figcaption>
 </figure>
-<ol class="callouts"><li>בחלונית הנתונים, בתחתית, מופיע הפרמטר. השדה המחושב ב-Measures.</li><li>על הציר האופקי יושב <code>Chosen Measure</code>, לא <code>Sales</code>. הוא זה שמשתנה.</li><li>הכרטיס מימין הוא הידית של הצופה.</li></ol>
+<ol class="callouts"><li>חלונית הנתונים (הכותרת שלה <code>Tables</code>): השדה המחושב יושב מתחת לקו המפריד, עם המדדים. הפרמטר נמצא באזור <code>Parameters</code> בתחתית.</li><li>על הציר האופקי יושב <code>Chosen Measure</code>, לא <code>Sales</code>. הוא זה שמשתנה.</li><li>הכרטיס מימין הוא הידית של הצופה.</li></ol>
 
 <div class="box try" data-id="m10-try-swap-measure">
 <p><b>בונים: גיליון אחד, שלושה מדדים</b></p>
 <ol>
-<li>צרו שדה מחושב (<code>Create</code>, <code>Calculated Field...</code>), שם <code>Chosen Measure</code>, והדביקו את הנוסחה למעלה. אשרו כשכתוב &quot;The calculation is valid&quot;. <i>למה: זה החלק שקורא את הפרמטר ומחליט מה לצבור.</i></li>
+<li>צרו שדה מחושב: <code>Analysis</code> ואז <code>Create Calculated Field...</code> (או מהחץ שליד תיבת החיפוש בחלונית הנתונים). בתיבת השם כתבו <code>Chosen Measure</code> והדביקו את הנוסחה למעלה. לחצו <code>OK</code> כשמתחת לנוסחה כתוב <code>The calculation is valid.</code> <i>למה: זה החלק שקורא את הפרמטר ומחליט מה לצבור.</i></li>
 <li>גררו <span class="pill d">Branch</span> ל-<code>Rows</code> ואת <code>Chosen Measure</code> ל-<code>Columns</code>. <i>למה: זה גרף עמודות רגיל, רק שהמדד הוא שדה מחושב.</i></li>
-<li>מיינו יורד (כפתור <code>Sort</code> בסרגל הכלים, או החץ על ציר המדד). <i>למה: כך קל לראות מי ראשון. המיון ירוץ שוב בכל החלפה.</i></li>
-<li>בכרטיס הפרמטר בחרו <code>Sales</code>, אחר כך <code>Profit</code>, אחר כך <code>Quantity</code>. בכל בחירה הסתכלו על הסניף הראשון והאחרון בגרף ועל שורת המצב בתחתית (<code>marks</code> ו-<code>SUM</code>).</li>
+<li>מיינו יורד: כפתור <code>Sort Descending</code> בסרגל הכלים (או הסמל שמופיע על ציר המדד כשמרחפים עליו). <i>למה: כך קל לראות מי ראשון. המיון ירוץ שוב בכל החלפה.</i></li>
+<li>אם הכרטיס של <code>Pick Measure</code> לא מוצג, לחיצה ימנית על הפרמטר, <code>Show Parameter</code>. בכרטיס בחרו <code>Sales</code>, אחר כך <code>Profit</code>, אחר כך <code>Quantity</code>. בכל בחירה הסתכלו על הסניף הראשון והאחרון ועל שורת המצב בתחתית (<code>9 marks</code>). <i>למה: שורת המצב מראה שמספר הסימנים לא השתנה, רק הערכים.</i></li>
+<li>החליפו את <span class="pill d">Branch</span> ב-<span class="pill d">Category</span> (גררו את <code>Category</code> על הפיל שב-<code>Rows</code>) ועברו שוב על שלושת הערכים. <i>למה: בסניפים הסדר לא זז. בקטגוריות הוא כן.</i></li>
 </ol>
 <p><b>תוצאה צפויה:</b> תמיד 9 עמודות (9 סימנים). הסניף הראשון הוא <code>Tel Aviv Dizengoff</code> בשלושת המדדים, והאחרון <code>Ashdod Beach Pop-up</code>. הערכים:</p>
 <div class="tw"><table class="tbl">
@@ -276,6 +281,7 @@ END</pre>
 <tr><td><b>סך הכל</b></td><td><b>236,820.9</b></td><td><b>120,722.9</b></td><td><b>11,426</b></td></tr>
 </table></div>
 <p>Tableau עשוי להציג את המספרים מעוגלים (44,194 במקום 44,194.1), וזה בסדר. בדיקת שפיות: סכום הסניפים בכל עמודה חייב להיות שווה לשורת הסך הכל.</p>
+<p><b>אחרי שלב 6, בקטגוריות:</b> 5 סימנים, והסדר זז. לפי <code>Sales</code>: Cups 69,470.0, Drinks 54,553.3, Cones 48,317.0, Sundaes 47,037.2, Sticks 17,443.4. לפי <code>Profit</code>: Drinks 36,728.3 עוקף את Cups 36,152.5. לפי <code>Quantity</code>: Sticks 1,407 עוקף את Sundaes 1,302.</p>
 </div>
 
 <h3>כותרת שמשתנה, וצורת כתיבה אחרת</h3>
@@ -291,7 +297,7 @@ END</pre>
 <div class="box think" data-id="m10-th-case-else"><p>שאלה: מוסיפים לרשימת הפרמטר ערך רביעי, <code>Discount</code>, ושוכחים להוסיף לו <code>WHEN</code>. מה יראה הצופה שבוחר בו? מה מוסיפים לנוסחה כדי שיראה משהו הגיוני?</p>
 <div class="ans"><code>CASE</code> שלא מצא ענף מתאים ואין בו <code>ELSE</code> מחזיר <code>Null</code>, והגרף יהיה ריק או יציג &quot;Null&quot;. מוסיפים <code>ELSE</code> לפני ה-<code>END</code>, למשל <code>ELSE SUM([Sales])</code>, או עדיף להוסיף את הענף החסר. עוד אפשרות: לבדוק כל ערך חדש מיד אחרי שמוסיפים אותו.</div></div>
 
-<div class="box meaning"><p>הגיליון אחד, אבל הוא עונה על שלוש שאלות. שימו לב שהדירוג זהה בשלושת המדדים: דיזנגוף ראשון ואשדוד אחרון בכולם. זו תוצאה, לא חובה. אם סניף ייתן הרבה הנחות, הוא יהיה גבוה במכירות ונמוך ברווח, והחלפת המדד תחשוף את זה.</p></div>
+<div class="box meaning"><p>הגיליון אחד, אבל הוא עונה על שלוש שאלות. בסניפים הדירוג זהה בשלושת המדדים: דיזנגוף ראשון ואשדוד אחרון בכולם. זו תוצאה, לא חובה. בקטגוריות כבר ראיתם שזה לא כך: Drinks שלישי במכירות אבל ראשון ברווח, כי השוליים שלו גבוהים. בדיוק את זה החלפת מדד חושפת.</p></div>
 
 <div class="box real"><p>החלפת מדד היא אחד השימושים הנפוצים ביותר של פרמטרים. בתיעוד הרשמי של Tableau יש דוגמה בדיוק כזאת, והיא משתמשת באותו ביטוי <code>CASE</code>. הגרסה הרגילה מחליפה גם את הציר האופקי וגם את האנכי, עם שני פרמטרים.</p></div>
 
@@ -309,7 +315,7 @@ END</pre>
 <button class="opt">CASE לא עובד עם טקסט</button>
 <div class="why">הבעיה היא ערבוב של <code>SUM([Sales])</code> עם <code>[Profit]</code> לא מצטבר. פרמטר בתוך <code>CASE</code> זה בדיוק השימוש הנכון, <code>CASE</code> עובד עם טקסט, ואין חובה לכסות כל ערך.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> הציגו קודם את הגרסה השגויה (עם הערבוב) ותנו לכיתה לקרוא את הודעת השגיאה לפני שמתקנים. הוראת הכותרת הדינמית (<code>Insert</code> בחלון הכותרת) וכותרת ציר דינמית: לפי תיעוד רשמי של כותרות ציר דינמיות, שמסומן שם Cloud, Desktop, Server ולא Public. בדקו בתוכנה לפני השיעור שהפריט קיים אצלכם. אם לא, דלגו עליו ואל תבטיחו אותו.</div>
+<div class="teach"><b>🎓 למרצה:</b> הציגו קודם את הגרסה השגויה (עם הערבוב) ותנו לכיתה לקרוא את הודעת השגיאה לפני שמתקנים. <code>Analysis</code> &gt; <code>Create Calculated Field...</code> והשורה <code>The calculation is valid.</code> נבדקו בתוכנה. פתוח: הכותרת הדינמית (<code>Insert</code> בחלון הכותרת) וכותרת ציר דינמית. התיעוד הרשמי של כותרות ציר דינמיות מסומן Cloud, Desktop, Server ולא Public. הריצו פעם אחת לפני השיעור. אם הפריט לא קיים אצלכם, דלגו עליו ואל תבטיחו אותו.</div>
 </section>
 
 <section class="sec" id="m10-3" data-t="Top N ו-What-if">
@@ -365,7 +371,7 @@ END</pre>
 <div class="box try" data-id="m10-try-whatif-cost">
 <p><b>רווח אם עלות החומרים עולה</b></p>
 <ol>
-<li>צרו פרמטר <code>Cost Change</code>: <code>Float</code>, <code>Range</code> עם מינימום <span class="n">-0.1</span>, מקסימום 0.3 וצעד 0.05, ערך נוכחי 0. אם יש בחלון <code>Display format</code>, בחרו אחוזים. <i>למה: 0.1 הוא עלייה של 10 אחוז בעלות.</i></li>
+<li>צרו פרמטר <code>Cost Change</code>: <code>Float</code>, <code>Range</code> עם מינימום <span class="n">-0.1</span>, מקסימום 0.3 וצעד 0.05, ערך נוכחי 0. ב-<code>Display format</code> בחרו פורמט אחוזים (<code>Percentage</code>). <i>למה: 0.1 הוא עלייה של 10 אחוז בעלות, והצופה יראה 10%.</i></li>
 <li>שדה מחושב <code>Profit What-If</code>:
 <pre class="code" data-lang="tableau">SUM([Sales]) - SUM([Cost]) * (1 + [Cost Change])</pre><i>למה: מכירות פחות עלות, כשהעלות מוכפלת בשינוי שהצופה בחר.</i></li>
 <li>גררו <span class="pill d">Branch</span> ל-<code>Rows</code> ו-<code>Profit What-If</code> ל-<code>Columns</code>, והוסיפו <span class="pill c sum">Profit</span> לצידו להשוואה (אפשר ב-<code>Marks</code> כ-<code>Label</code>).</li>
@@ -415,7 +421,7 @@ END</pre>
 
 <div class="box real"><p>בכל חברה שבה מתכננים תקציב, גיליון what-if הוא כלי יומיומי: &quot;מה יקרה אם המחירים יעלו 5 אחוז?&quot;. הערך לא בתשובה המדויקת, אלא בכך שהמנהל מזיז ידית ורואה את הכיוון מיד, בלי לבקש מכם גרף חדש.</p></div>
 
-<div class="box note"><p><b>פעולת פרמטר (<code>Parameter Action</code>):</b> בדשבורד אפשר להגדיר שלחיצה על סימן בגרף תשנה ערך של פרמטר, כך שהצופה לא צריך לגעת בכרטיס. את זה נבנה במודול הדשבורדים (<a href="module13.html">מודול 13</a>). הפעולה מתועדת רשמית, אבל המחקר מעריך שהיא קיימת ב-Tableau Public רק מהסקה, ולכן אין בה תרגיל חובה.</p></div>
+<div class="box note"><p><b>פעולת פרמטר:</b> בדשבורד אפשר להגדיר שלחיצה על סימן בגרף תשנה ערך של פרמטר, כך שהצופה לא צריך לגעת בכרטיס. בחלון הפעולות של הדשבורד (<code>Dashboard</code> &gt; <code>Actions...</code>) זו האפשרות <code>Change Parameter...</code>, והחלון שנפתח נקרא <code>Add Parameter Action</code>. את זה בונים במודול הדשבורדים (<a href="module13.html">מודול 13</a>).</p></div>
 
 <div class="sim" data-id="m10-sim-params"><div class="sh">לוח הפרמטרים של Scoop &amp; Go</div>
 <p>זו הדמיה של מה שבניתם: אותם ארבעה פרמטרים, מחושבים בדפדפן מתוך 6,575 השורות האמיתיות. ה-Top N מדרג לפי מכירות, כמו בתרגיל. הזיזו כל ידית ושימו לב מה משתנה ומה לא.</p>
@@ -494,7 +500,7 @@ END</pre>
 <button class="opt">Tableau עיגל, ולכן המספר לא אמיתי</button>
 <div class="why">סכום המכירות פחות העלות שווה לרווח, ולכן ב-0 מתקבל <code>SUM(Profit)</code> בדיוק. זו בדיקת הנכונות הפשוטה ביותר לכל תרחיש: נקודת האפס חייבת להחזיר את המציאות.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> אחרי הסליידר ב-0 שאלו כמה אחוז רווח כל 5 אחוזי עלות עולים (5,805 בערך). הפרמטר של Top N עם <code>Range</code> דורש Integer; בגרסה שלכם בדקו שרשימת המסנן באמת מציעה פרמטר בתיבת המספר (הצילום האמיתי שבסעיף מראה חץ ליד המספר). הפורמט באחוזים בחלון הפרמטר מסומן במחקר כ&quot;Desktop בלבד&quot;. פעולות פרמטר: מוסק (B) שקיימות ב-Public, בדקו לפני שמראים. על פרמטר <code>Float</code> עם <code>List</code> כמו 0.1: בדקו שההשוואה <code>&lt;=</code> עובדת בלי בעיית עיגול (מסמך הרקע מזהיר משוויון, והכוונה ב-<code>&lt;=</code> כאן בטוחה אבל לא הורצה).</div>
+<div class="teach"><b>🎓 למרצה:</b> אחרי הסליידר ב-0 שאלו כמה רווח שווים כל 5 אחוזי עלות (5,805 בערך). פרמטר <code>Range</code> בצעדים שלמים בונים כ-<code>Integer</code>. בצילום של לשונית <code>Top</code> רואים חץ ליד תיבת המספר: משם בוחרים את הפרמטר. <code>Display format</code> קיים בחלון הפרמטר של Public (בצילום של סעיף 1 הוא אפור רק כי הסוג <code>String</code>). השמות <code>Change Parameter...</code> ו-<code>Add Parameter Action</code> נלקחו מקבצי התוכנה. פתוח: לא הרצנו את ההשוואה <code>&lt;=</code> עם פרמטר <code>Float</code> מרשימה (0.1 מול 0.1). מסמך הרקע מזהיר רק משוויון, ו-<code>&lt;=</code> כאן אמור להיות בטוח, אבל הריצו פעם אחת.</div>
 </section>
 
 <section class="sec" id="m10-4" data-t="רמת פירוט של הגרף">
@@ -587,7 +593,7 @@ END</pre>
 <div class="box try" data-id="m10-try-count-marks">
 <p><b>סופרים סימנים</b></p>
 <ol>
-<li>גיליון חדש. <span class="pill d">Branch</span> ל-<code>Rows</code>, <span class="pill c sum">Sales</span> ל-<code>Columns</code>. הסתכלו בשורת המצב בתחתית החלון: כמה סימנים, וכמה הסכום. <i>למה: שורת המצב היא המונה שלכם לכל התרגילים בהמשך.</i></li>
+<li>גיליון חדש. <span class="pill d">Branch</span> ל-<code>Rows</code>, <span class="pill c sum">Sales</span> ל-<code>Columns</code>. הסתכלו בשורת המצב בתחתית החלון. כתוב שם <code>9 marks</code>, <code>9 rows by 1 column</code> ו-<code>SUM(Sales): 236,821</code>. <i>למה: שורת המצב היא המונה שלכם לכל התרגילים בהמשך.</i></li>
 <li>גררו <span class="pill d">Category</span> אל <code>Detail</code> בכרטיס <code>Marks</code>. הסתכלו שוב. <i>למה: כל עמודה התפצלה לקטעים, אחד לכל קטגוריה.</i></li>
 <li>הוציאו את <span class="pill d">Category</span> והכניסו במקומה <span class="pill d">Item</span> ל-<code>Detail</code>.</li>
 <li>הוציאו את <span class="pill d">Item</span> והכניסו <span class="pill d">Order ID</span> ל-<code>Detail</code>.</li>
@@ -602,7 +608,7 @@ END</pre>
 <tr><td>Branch + Order ID</td><td>6,575</td><td>236,821</td></tr>
 <tr><td>Branch + Order Date (יום)</td><td>3,407</td><td>236,821</td></tr>
 </table></div>
-<p>הסכום קבוע, הסימנים משתנים. ב-6,575 סימנים יש כבר סימן לכל שורת מכירה: ל-<code>Order ID</code> יש ערך ייחודי בכל שורה. שורת המצב עשויה להציג גם את מספר השורות והעמודות; זה לא אותו דבר כמו הסימנים.</p>
+<p>הסכום קבוע, הסימנים משתנים. ב-6,575 סימנים יש כבר סימן לכל שורת מכירה: ל-<code>Order ID</code> יש ערך ייחודי בכל שורה. החלק האמצעי של שורת המצב, <code>9 rows by 1 column</code>, נשאר אותו דבר לאורך כל התרגיל: אלה השורות והעמודות של הטבלה, לא הסימנים.</p>
 </div>
 
 <div class="box trap"><p><b>&quot;הוספתי ממד והמספרים השתנו&quot;.</b> לא נכון: הסכום הכולל לא השתנה. מה שהשתנה הוא החלוקה. אם הסכום הכולל השתנה אחרי שהוספתם משהו, כנראה הוספתם מסנן, או שמדד נחתך. תמיד בדקו את שורת המצב לפני ואחרי.</p></div>
@@ -630,7 +636,7 @@ END</pre>
 <button class="opt">אי אפשר לדעת בלי לבדוק את הנתונים</button>
 <div class="why">ממד חדש מפצל את הסכום ולא משנה אותו: סכום החתיכות שווה לסכום הכולל. אם הסכום השתנה, יש מסנן או שדה שנעלם.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> שורת המצב מציגה סימנים (<code>marks</code>), שורות ועמודות, וסכום, אבל המילים המדויקות תלויות בגרסה. ודאו על המחשב שלכם איך היא נראית לפני שנותנים את תוצאות התרגיל כמספר שצריך לראות. את המספרים (9, 45, 135, 6,575, 3,407) חישבתי בפייתון על הקובץ, לא ב-Tableau. מומלץ ללחוץ קודם על Detail עם Category ולהראות את העמודות המפוצלות.</div>
+<div class="teach"><b>🎓 למרצה:</b> הנוסח של שורת המצב נבדק בתוכנה: <code>N marks</code>, אחריו <code>N rows by M columns</code>, ואחריו <code>SUM(Sales): ...</code> (בצילום של מודול 1: <code>5 marks   1 row by 5 columns   SUM(Sales): 236,821</code>). את מספרי הסימנים (9, 45, 135, 6,575, 3,407) חישבתי בפייתון על הקובץ. מומלץ ללחוץ קודם על Detail עם Category ולהראות את העמודות המפוצלות.</div>
 </section>
 
 <section class="sec" id="m10-5" data-t="FIXED">
@@ -651,17 +657,15 @@ END</pre>
 
 <figure class="shot" data-shot="m10-lod-dialog">
 <div class="fb"><div class="m10-dlg" aria-label="הדמיה סכמטית של חלון שדה מחושב עם ביטוי FIXED">
-<h5>Calculated Field</h5>
-<div class="r"><b>Name:</b><div class="f">Branch Total</div></div>
-<div class="f" style="min-height:64px;font-family:ui-monospace,Menlo,monospace;color:#c2410c">{ FIXED [Branch] : SUM([Sales]) }</div>
-<div style="margin-top:8px;color:#15803d">The calculation is valid.</div>
-<div class="btns"><span>Apply</span><span class="ok">OK</span></div></div>
-<div class="need">צילום מסך נדרש: Tableau Public, חלון שדה מחושב עם השם Branch Total והנוסחה { FIXED [Branch] : SUM([Sales]) } ושורת &quot;The calculation is valid&quot;</div></div>
-<figcaption>הדמיה סכמטית של חלון השדה המחושב עם ביטוי FIXED. הסוגריים המסולסלים הם חלק מהנוסחה.</figcaption>
+<div class="f" style="max-width:220px">Branch Total</div>
+<div class="f" style="min-height:64px;margin-top:8px;font-family:ui-monospace,Menlo,monospace;color:#1f5f99">{ FIXED <span style="color:#c2410c">[Branch]</span> : SUM(<span style="color:#c2410c">[Sales]</span>) }</div>
+<div style="margin-top:8px">The calculation is valid.</div>
+<div class="btns"><span>Apply</span><span class="ok">OK</span></div></div></div>
+<figcaption>חלון השדה המחושב ב-Tableau Public: בתיבת השם <code>Branch Total</code>, בנוסחה <code>{ FIXED [Branch] : SUM([Sales]) }</code>, ושמות השדות צבועים בכתום. למטה <code>The calculation is valid.</code> והכפתורים <code>Apply</code> ו-<code>OK</code>. הסוגריים המסולסלים לא נסגרים לבד: מקלידים גם את הפותח וגם את הסוגר.</figcaption>
 </figure>
 
 <ol class="callouts">
-<li><b>הסוגריים המסולסלים</b> <code>{ }</code> אומרים ל-Tableau שזה ביטוי רמת פירוט, לא חישוב רגיל.</li>
+<li><b>הסוגריים המסולסלים</b> <code>{&nbsp;}</code> אומרים ל-Tableau שזה ביטוי רמת פירוט, לא חישוב רגיל. העורך לא מוסיף את הסוגר לבד, כמו שרואים בצילום.</li>
 <li><b>המילה FIXED</b> אומרת: רק הממדים שאני כותב כאן, בלי קשר למה שיש בגרף.</li>
 <li><b>הממדים אחרי המילה</b> מופרדים בפסיקים. אפשר גם ביטוי, כמו <code>YEAR([Order Date])</code>.</li>
 <li><b>הנקודתיים</b> מפרידים בין הממדים לצבירה.</li>
@@ -750,7 +754,10 @@ END</pre>
 <ol>
 <li>שדה מחושב <code>Branch Cohort</code>:
 <pre class="code" data-lang="tableau">STR( YEAR( [First Sale Date] ) )</pre><i>למה: שנת המכירה הראשונה של הסניף, כטקסט כדי שיהיה ממד.</i></li>
-<li>גררו <span class="pill d">Branch Cohort</span> ל-<code>Rows</code>, <span class="pill d">Year of Order Date</span> (שנה, בדיד) ל-<code>Columns</code> ו-<span class="pill c sum">Sales</span> ל-<code>Text</code>.</li>
+<li>בדקו איפה השדה נחת בחלונית הנתונים: מעל הקו המפריד, עם הממדים, עם הסמל <code>=Abc</code>. <i>למה: <code>STR</code> הפך את השנה לטקסט, וטקסט הוא ממד. בלי <code>STR</code> השנה הייתה מספר שאפשר לסכום.</i></li>
+<li>גררו <span class="pill d">Branch Cohort</span> ל-<code>Rows</code>. גררו <span class="pill c">Order Date</span> ל-<code>Columns</code>: הוא נכנס כ-<span class="pill d">YEAR(Order Date)</span>, כחול ובדיד. <i>למה: שורה לכל קבוצת פתיחה, עמודה לכל שנת מכירה.</i></li>
+<li>גררו <span class="pill c sum">Sales</span> ל-<code>Text</code> בכרטיס <code>Marks</code>. <i>למה: מספר בכל תא.</i></li>
+<li><code>Analysis</code> &gt; <code>Totals</code> &gt; <code>Show Column Grand Totals</code>. <i>למה: שורת סך הכל בתחתית מאפשרת לבדוק שלא איבדנו מכירות.</i></li>
 </ol>
 <p><b>תוצאה צפויה:</b></p>
 <div class="tw"><table class="tbl">
@@ -789,7 +796,7 @@ END</pre>
 <button class="opt">כשרוצים מספר קבוע לקבוצה, כמו סך הרשת או תאריך ראשון, שלא ישתנה בגלל מסננים רגילים</button>
 <div class="why">FIXED נותן ערך יציב ברמה שקבעתם. מי שרוצה תגובה למסנן ישתמש ב-INCLUDE, ב-EXCLUDE או בחישוב טבלה. דירוג של מה שנשאר הוא חישוב טבלה.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> צריך לבדוק בתוכנה לפני השיעור את שלושה דברים: (1) איך מופיע <code>First Sale Date</code> כשגוררים אותו ל-Text (ייתכן שיופיע עם <code>ATTR</code> או <code>MIN</code>; המחקר קובע רק שתוצאה גסה מהגרף משוכפלת, ושברירת המחדל של EXCLUDE היא <code>ATTR</code>). (2) הדפוס לאחוז מהסך. מסמך הרקע מציג את <code>SUM([Sales]) / SUM({ FIXED : SUM([Sales]) })</code> כדפוס רשמי, ומציג את <code>ATTR</code> בדוגמת המסנן הרשמית. בחרתי ב-ATTR במכנה כי הוא נכון בשני המקרים. מסמך הרקע לא הריץ Tableau: ודאו שהאחוזים יוצאים 20.4, 29.3, 23.0, 7.4 ו-19.9, ובדקו גם את גרסת ה-SUM. (3) הפורמט של התאריך. עונתיות: הסכומים החודשיים חושבו מהקובץ (ינואר 4,139, אוגוסט 2024 17,703).</div>
+<div class="teach"><b>🎓 למרצה:</b> הביטוי <code>{ FIXED [Branch] : SUM([Sales]) }</code> נבדק בתוכנה כפי שהוא כתוב כאן, והוא תקין (הצילום). פתוח, להריץ פעם אחת לפני השיעור: (1) איך מופיע <code>First Sale Date</code> כשגוררים אותו ל-Text (עם <code>ATTR</code> או עם <code>MIN</code>; לפי מסמך הרקע תוצאה גסה מהגרף משוכפלת, וברירת המחדל של EXCLUDE היא <code>ATTR</code>). (2) הדפוס לאחוז מהסך. מסמך הרקע מציג את <code>SUM([Sales]) / SUM({ FIXED : SUM([Sales]) })</code> כדפוס רשמי, ואת <code>ATTR</code> בדוגמת המסנן הרשמית. בחרתי ב-ATTR במכנה כי הוא נכון בשני המקרים. ודאו שהאחוזים יוצאים 20.4, 29.3, 23.0, 7.4 ו-19.9, ונסו גם את גרסת ה-SUM. (3) תבנית התאריך במחשב של הכיתה. עונתיות: הסכומים החודשיים חושבו מהקובץ (ינואר 4,139, אוגוסט 2024 17,703).</div>
 </section>
 
 <section class="sec" id="m10-6" data-t="INCLUDE ו-EXCLUDE">
@@ -884,7 +891,10 @@ END</pre>
 <ol>
 <li>שדה מחושב <code>Gap vs Chain Avg</code>:
 <pre class="code" data-lang="tableau">AVG([Sales]) - ATTR({ AVG([Sales]) })</pre><i>למה: מימין, ממוצע שורת מכירה של כל הרשת, תמיד. משמאל, הממוצע של הסימן. ההפרש הוא כמה הסניף שונה מהרשת.</i></li>
-<li><span class="pill d">Branch</span> ל-<code>Rows</code>. ל-<code>Text</code> גררו <span class="pill c">AVG(Sales)</span> ו-<code>Gap vs Chain Avg</code>. פורמט שתי ספרות אחרי הנקודה.</li>
+<li><span class="pill d">Branch</span> ל-<code>Rows</code>. <i>למה: שורה לכל סניף.</i></li>
+<li>גררו <span class="pill c sum">Sales</span> ל-<code>Text</code>. לחיצה ימנית על הפיל, <code>Measure (Sum)</code> &gt; <code>Average</code>. <i>למה: רוצים את הממוצע לשורת מכירה של כל סניף, לא את הסכום.</i></li>
+<li>גררו את <code>Gap vs Chain Avg</code> גם הוא ל-<code>Text</code>. Tableau מוסיף לבד <code>Measure Names</code> ו-<code>Measure Values</code>, כדי להציג שני מדדים זה לצד זה. <i>למה: רואים את הממוצע ואת ההפרש באותה שורה.</i></li>
+<li>לחיצה ימנית על <code>Gap vs Chain Avg</code> בחלונית הנתונים, <code>Default Properties</code> &gt; <code>Number Format...</code>, מספר עם שתי ספרות אחרי הנקודה. <i>למה: ההפרשים קטנים, ובלי עשרוניים הכול ייראה 0 או 1.</i></li>
 </ol>
 <p><b>תוצאה צפויה:</b> ממוצע הרשת 36.02 לשורת מכירה.</p>
 <div class="tw"><table class="tbl">
@@ -930,7 +940,7 @@ END</pre>
 <div class="box think" data-id="m10-th-avg-fair"><p>שאלה: רחובות ואשדוד &quot;נופלות&quot; מול הסניף הממוצע ב-16,388 וב-21,009. האם זו השוואה הוגנת? איך הייתם משפרים אותה?</p>
 <div class="ans">לא בדיוק. לשני הסניפים יש רק חלק מהתקופה: רחובות 7 חודשים ואשדוד שלושה, והממוצע כולל סניפים שעבדו שנתיים. השוואה הוגנת יותר: להשוות רק סניפים שעבדו את כל התקופה, או להשוות מכירות לחודש פעילות (סך חלקי מספר החודשים שבהם הסניף מכר). אפשר לבנות אותה בעצמכם עם <code>First Sale Date</code> מהסעיף הקודם.</div></div>
 
-<div class="box trap"><p><b>ממוצע של ממוצעים.</b> ממוצע שורת מכירה ברשת הוא 36.02. ממוצע של תשעת ממוצעי הסניפים הוא 36.19. הם שונים, כי לסניפים יש גודל שונה (מ-139 שורות באשדוד ועד 1,235 בדיזנגוף). כל סניף בממוצע-של-ממוצעים שווה אותו דבר, בלי קשר לכמות. מי שמחשב ממוצע על ממוצעים עונה על שאלה אחרת: &quot;מה הממוצע של הסניף הטיפוסי&quot;, לא &quot;מה הממוצע של קנייה&quot;. אם אתם רוצים לראות את 36.19 ב-Tableau, נסו <code>AVG({ INCLUDE [Branch] : AVG([Sales]) })</code> בגיליון בלי ממדים. (בדקו בתוכנה: זה פריט שהמחקר לא אימת ב-Tableau עצמו.)</p></div>
+<div class="box trap"><p><b>ממוצע של ממוצעים.</b> ממוצע שורת מכירה ברשת הוא 36.02. ממוצע של תשעת ממוצעי הסניפים הוא 36.19. הם שונים, כי לסניפים יש גודל שונה (מ-139 שורות באשדוד ועד 1,235 בדיזנגוף). כל סניף בממוצע-של-ממוצעים שווה אותו דבר, בלי קשר לכמות. מי שמחשב ממוצע על ממוצעים עונה על שאלה אחרת: &quot;מה הממוצע של הסניף הטיפוסי&quot;, לא &quot;מה הממוצע של קנייה&quot;. אם אתם רוצים לראות את 36.19 ב-Tableau, נסו <code>AVG({ INCLUDE [Branch] : AVG([Sales]) })</code> בגיליון בלי ממדים. (את הנוסחה הזאת לא הרצנו ב-Tableau עצמו, רק בפייתון. אם יוצא לכם מספר אחר, זו הזדמנות טובה לבדוק איך Tableau ממצע.)</p></div>
 
 <div class="box trap"><p><b>EXCLUDE על ממד שאינו בגרף.</b> אם תנסו <code>{ EXCLUDE [Branch] : ... }</code> בגרף שאין בו <code>Branch</code>, אין מה להוריד, והתוצאה זהה לרמת הגרף. שימו לב שהממד מופיע בגרף. וגם: ממד שנכתב כביטוי (למשל <code>YEAR([Order Date])</code>) חייב להיכתב בדיוק כמו שהוא מופיע על המדף.</p></div>
 
@@ -957,7 +967,7 @@ END</pre>
 <button class="opt">השני לא תקין בלי ממד</button>
 <div class="why">לפי התיעוד הרשמי, ביטוי ברמת הטבלה הוא הצורה הקצרה של FIXED בלי ממדים. שניהם מחשבים על כל הטבלה ושניהם תקינים.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> אלה הפריטים שהמחקר לא הצליח לאמת בתוכנה ולכן יש לבדוק לפני השיעור: (1) <code>AVG({ INCLUDE [Branch] : SUM([Sales]) })</code> ו-<code>AVG({ INCLUDE [Branch] : AVG([Sales]) })</code> בגיליון ריק. לפי התיעוד הרשמי תוצאות INCLUDE &quot;לעולם לא משוכפלות&quot;, ולכן הממוצע הוא על הקבוצות. (2) <code>SUM([Sales]) - ATTR([Chain Avg Branch])</code> שבנוי משני ביטויי FIXED בחילוק: ייתכן ש-Tableau ידרוש עטיפה אחרת. (3) האם <code>ATTR({ AVG([Sales]) })</code> תקין (מסמך הרקע מציג רק את הצורה <code>[Sales] - { AVG([Sales]) }</code> ברמת שורה). אם הוא לא תקין, השתמשו בנוסחה ברמת שורה: <code>[Sales] - { AVG([Sales]) }</code> והציבו אותה כ-<code>AVG</code>. (4) הכללים הרשמיים: אין <code>ATTR</code> בתוך ביטוי LOD, אין חישובי טבלה בתוכו, <code>EXCLUDE</code> אינו תקף בחישובי שורה. אם יוצא ממוצע שונה מהמספרים כאן, אל תתקנו את הדף, תבדקו מה עשיתם: ייתכן ש-Tableau מחשב ממוצע על השורות ולא על הקבוצות (תיעוד: תוצאה עדינה מהגרף חייבת להיצבר, ולא נאמר כיצד).</div>
+<div class="teach"><b>🎓 למרצה:</b> פתוח, להריץ לפני השיעור (התנהגות שלא הורצה בתוכנה): (1) <code>AVG({ INCLUDE [Branch] : SUM([Sales]) })</code> ו-<code>AVG({ INCLUDE [Branch] : AVG([Sales]) })</code> בגיליון ריק. לפי התיעוד הרשמי תוצאות INCLUDE &quot;לעולם לא משוכפלות&quot;, ולכן הממוצע הוא על הקבוצות. (2) <code>SUM([Sales]) - ATTR([Chain Avg Branch])</code> שבנוי משני ביטויי FIXED בחילוק: ייתכן ש-Tableau ידרוש עטיפה אחרת. (3) האם <code>ATTR({ AVG([Sales]) })</code> תקין (מסמך הרקע מציג רק את הצורה <code>[Sales] - { AVG([Sales]) }</code> ברמת שורה). אם הוא לא תקין, השתמשו בנוסחה ברמת שורה: <code>[Sales] - { AVG([Sales]) }</code> והציבו אותה כ-<code>AVG</code>. (4) הכללים הרשמיים: אין <code>ATTR</code> בתוך ביטוי LOD, אין חישובי טבלה בתוכו, <code>EXCLUDE</code> אינו תקף בחישובי שורה. אם יוצא ממוצע שונה מהמספרים כאן, אל תתקנו את הדף, תבדקו מה עשיתם: ייתכן ש-Tableau מחשב ממוצע על השורות ולא על הקבוצות (תיעוד: תוצאה עדינה מהגרף חייבת להיצבר, ולא נאמר כיצד).</div>
 </section>
 
 <section class="sec" id="m10-7" data-t="חוקר LOD">
@@ -1272,7 +1282,7 @@ SUM([Sales]) / ATTR({ EXCLUDE [Channel] : SUM([Sales]) })</pre><i>למה: בגר
 <button class="opt">0, כי המסנן מוריד הכול</button>
 <div class="why">מסנן רגיל נכנס אחרי FIXED, ולכן סך הרשת נשאר 236,820.9. 120,405.5 היה מתקבל רק עם מסנן הקשר.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> התיקון החשוב: Top N ו-FIXED נמצאים בצעד אחד בתרשים הרשמי (Sets, conditional filters, Top N, FIXED LOD), בין מסנני הקשר למסנני ממדים. מה ששונה הם חישובי טבלה (מסמך הרקע סעיף 7.2). כל המספרים בסעיף חושבו בפייתון מהקובץ ולא הורצו ב-Tableau (דוגמת מסמך הרקע עצמה היא על 10 שורות אחרות), לכן בדקו שהם יוצאים אצלכם. נקודות לבדוק בתוכנה: (1) האפשרות <code>Add to Context</code> בתפריט הפיל, וצבע הפיל האפור. (2) בגרסה שלכם, איך מופיעה בחירת <code>Compute Using</code> למסנן <code>Rank Top 3</code>. (3) שמות השלבים בתרשים הרשמי, לפי מסמך הרקע הם הרשימה בטבלה, אבל התרשים עצמו לא הוטמע כאן: זו הנפשה שצוירה מחדש.</div>
+<div class="teach"><b>🎓 למרצה:</b> התיקון החשוב: Top N ו-FIXED נמצאים בצעד אחד בתרשים הרשמי (Sets, conditional filters, Top N, FIXED LOD), בין מסנני הקשר למסנני ממדים. מה ששונה הם חישובי טבלה (מסמך הרקע סעיף 7.2). השמות <code>Add to Context</code> ו-<code>Remove from Context</code> בתפריט הפיל נבדקו בקבצי התוכנה, וצבע הפיל האפור של מסנן הקשר מתועד רשמית. המספרים בסעיף חושבו בפייתון מהקובץ (דוגמת מסמך הרקע עצמה היא על 10 שורות אחרות). פתוח: (1) הריצו פעם אחת את ארבעת המצבים בטבלה ובדקו שהם יוצאים אצלכם. (2) איך מופיעה בחירת <code>Compute Using</code> למסנן <code>Rank Top 3</code>. ההנפשה צוירה מחדש לפי הרשימה של מסמך הרקע, היא לא התרשים הרשמי עצמו.</div>
 </section>
 
 <section class="sec" id="m10-9" data-t="LOD, חישוב טבלה או מסנן">
@@ -1447,9 +1457,9 @@ SUM([Sales]) / ATTR({ EXCLUDE [Channel] : SUM([Sales]) })</pre><i>למה: בגר
 <div class="box try" data-id="m10-try-yevgeni-load">
 <p><b>בדיקת טעינה לפני כל חישוב</b></p>
 <ol>
-<li>טענו את הקובץ ב-Tableau Public (<code>Text file</code>). בדקו שיש 219 שורות. <i>למה: זו בדיקת הנתונים הראשונה בכל פרויקט.</i></li>
-<li>שמות העמודות מגיעים עם קו תחתון (<code>customer_id</code>). Tableau מציג אותם לפי כללים משלו, ולכן שנו את השמות: לחיצה ימנית, <code>Rename</code>. השתמשו בשמות <code>Customer Id</code>, <code>Order Date</code>, <code>Line Revenue</code>, <code>Status</code> ו-<code>Customer Name</code>. <i>למה: כך הנוסחאות כאן יתאימו לשמות אצלכם בדיוק.</i></li>
-<li><code>Customer Id</code> נטען כמספר ולכן הוא מדד (ירוק). לחיצה ימנית, <code>Convert to Dimension</code>. <i>למה: מזהה הוא תווית, לא משהו שמחברים.</i></li>
+<li>טענו את הקובץ ב-Tableau Public (<code>Text file</code>). בדף <code>Data Source</code>, מעל הגריד, צריך להיות כתוב <code>14 fields 219 rows</code>. <i>למה: זו בדיקת הנתונים הראשונה בכל פרויקט.</i></li>
+<li>בקובץ השמות כתובים עם קו תחתון (<code>customer_id</code>). Tableau מחליף קו תחתון ברווח, כמו שראיתם ב-Scoop &amp; Go (<code>Order_Date</code> הופך ל-<code>Order Date</code>). אם השמות אצלכם לא יוצאים בדיוק <code>Customer Id</code>, <code>Order Date</code>, <code>Line Revenue</code>, <code>Status</code> ו-<code>Customer Name</code>, שנו אותם: לחיצה ימנית על השדה, <code>Rename</code>. <i>למה: כך הנוסחאות כאן יתאימו לשמות אצלכם בדיוק.</i></li>
+<li><code>Customer Id</code> הוא עמודת מספרים, ולכן הוא נטען מתחת לקו המפריד, עם המדדים (כמו <code>Order Hour</code> ב-Scoop &amp; Go). לחיצה ימנית, <code>Convert to Dimension</code>. <i>למה: מזהה הוא תווית, לא משהו שמחברים.</i></li>
 <li>גררו <span class="pill c sum">Line Revenue</span> ל-<code>Text</code> בגיליון חדש. </li>
 </ol>
 <p><b>תוצאה צפויה:</b> <span class="n">13,592</span> בדיוק. אם יצא מספר אחר, הקובץ לא נטען נכון. זה גם ה-checkpoint של המודול הזה לנתוני המסעדה.</p>
@@ -1528,9 +1538,12 @@ DATEDIFF('month', [First Order], [Order Date])</pre><i>למה: הראשון הו
 <ol>
 <li>שדה מחושב <code>On First Order Date</code>:
 <pre class="code" data-lang="tableau">[Order Date] = [First Order]</pre><i>למה: אמת אם ההזמנה היא ביום ההזמנה הראשונה של הלקוח, אחרת שקר.</i></li>
-<li>הוציאו את <code>Months Since First</code> ואת <code>Cohort Month</code> מהגיליון (או שכפלו אותו). גררו <code>On First Order Date</code> ל-<code>Rows</code> ו-<span class="pill c sum">Line Revenue</span> ל-<code>Text</code>. השאירו את אותם מסננים.</li>
+<li>לחיצה ימנית על הלשונית של טבלת הקבוצות, <code>Duplicate</code>. <i>למה: העותק שומר את שני המסננים (<code>delivered</code> ובלי <code>Null</code>), ולא צריך לבנות אותם שוב.</i></li>
+<li>בעותק גררו את <code>Months Since First</code> ואת <code>Cohort Month</code> החוצה מהמדפים, ואת <code>CNTD(Customer Id)</code> החוצה מ-<code>Marks</code>. <i>למה: השאלה עכשיו היא לא &quot;איזו קבוצה&quot; אלא &quot;איזה יום&quot;.</i></li>
+<li>גררו <code>On First Order Date</code> ל-<code>Rows</code>. <span class="pill c sum">Line Revenue</span> נשאר על <code>Text</code>. <i>למה: שתי שורות, True ו-False, וסכום בכל אחת.</i></li>
+<li>גררו שוב <span class="pill c sum">Line Revenue</span> ל-<code>Text</code>, לחיצה ימנית על הפיל החדש, <code>Quick Table Calculation</code> &gt; <code>Percent of Total</code>. <i>למה: האחוז עונה ישר על השאלה של יבגני.</i></li>
 </ol>
-<p><b>תוצאה צפויה:</b> <code>True</code>: 3,586 (כ-33.9%). <code>False</code>: 6,982. הסכום 10,568, כמו קודם. כלומר שני שלישים מההכנסות מגיעים מהזמנות שאחרי היום הראשון של הלקוח.</p>
+<p><b>תוצאה צפויה:</b> 2 שורות. <code>True</code>: 3,586, כלומר 33.93%. <code>False</code>: 6,982, כלומר 66.07%. הסכום 10,568, כמו קודם. כלומר שני שלישים מההכנסות מגיעים מהזמנות שאחרי היום הראשון של הלקוח.</p>
 </div>
 
 <div class="box meaning"><p>הנתונים קטנים (19 לקוחות), ולכן לא מסיקים מהם מסקנות עסקיות. אבל הצורה חשובה: קבוצת מרץ הוציאה 3,905 בחודש הראשון, 2,336 בשני ו-1,809 בשלישי. הסכום יורד, אבל לא קורס. כך נראית &quot;עקומת שימור&quot; בהכנסות. בנתונים מלאים עם אלפי לקוחות, אותה טבלה מראה מיד אם הלקוחות שחוזרים מחזיקים את העסק.</p></div>
@@ -1560,7 +1573,7 @@ GROUP BY customer_id;</pre>
 <button class="opt">אין צורך, ה-Null לא משפיע על הסכומים</button>
 <div class="why">ל-Tableau ערך ריק הוא קבוצה לכל דבר. כל ההזמנות בלי לקוח רשום (44 שורות) נכנסות ל&quot;לקוח&quot; אחד. הוא לא מבוטל בלבד (תשובה ג שגויה), ו-FIXED כן מחשב עליו (ב שגויה), והוא משפיע: 2,316 בהכנסות המסופקות.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> כל המספרים בסעיף חושבו בפייתון מ-<code>yevgeni_fact_sales.csv</code>, לא ב-Tableau: 219 שורות, 13,592 סך הכל, 44 שורות בלי מזהה לקוח (2,608), 12 שורות מבוטלות (708), 167 שורות מסופקות עם לקוח מזוהה (10,568, 64 הזמנות, 19 לקוחות). בדקו בתוכנה: (1) שמות העמודות אחרי הטעינה והאם <code>Rename</code> נדרש; (2) ש-<code>Customer Id</code> אכן נטען כמספר, ושהמרה לממד עובדת לפני שמשתמשים בו ב-FIXED; (3) שערך ריק מופיע כ-<code>Null</code> בחלון המסנן; (4) שמזהה 99 (בלי שם) נשאר בגרף לפי מזהה; (5) שמוסכמת התאריך ב-<code>DATEDIFF</code> עם <code>'month'</code> סופרת גבולות חודש, ולא ימים, כפי שנאמר בתיעוד.</div>
+<div class="teach"><b>🎓 למרצה:</b> כל המספרים בסעיף חושבו בפייתון מ-<code>yevgeni_fact_sales.csv</code>, לא ב-Tableau: 219 שורות, 13,592 סך הכל, 44 שורות בלי מזהה לקוח (2,608), 12 שורות מבוטלות (708), 167 שורות מסופקות עם לקוח מזוהה (10,568, 64 הזמנות, 19 לקוחות). מה שכבר ידוע מהתוכנה: קו תחתון בשם עמודה הופך לרווח, ועמודת מספרים נטענת כמדד (ראינו את שניהם בקובץ של Scoop &amp; Go). פתוח, להריץ פעם אחת: (1) האם השמות יוצאים <code>Customer Id</code> (אות גדולה בכל מילה) או אחרת; (2) שערך ריק מופיע כ-<code>Null</code> בחלון המסנן; (3) שמזהה 99 (בלי שם) נשאר בגרף לפי מזהה. <code>DATEDIFF</code> עם <code>'month'</code> סופר גבולות חודש ולא ימים, לפי התיעוד.</div>
 </section>
 
 <section class="sec" id="m10-11" data-t="סיכום ומשימה">
@@ -1595,6 +1608,26 @@ END</pre><i>למה: לכל מדד, סך הרשת חלקי מספר הסניפי�
 <tr><td>Ashdod Beach Pop-up</td><td><span class="n">-21,008.93</span></td><td><span class="n">-10,828.66</span></td><td><span class="n">-1,021.56</span></td></tr>
 </table></div>
 <p>שימו לב: ל-Netanya Beach הפער במכירות הוא +526.77, וברווח רק +94.04. כמעט ממוצעת ברווח. זה בדיוק מה שמדד מתחלף מגלה.</p>
+</div>
+
+<h3>שומרים לחוברת הקורס</h3>
+<p>עד עכשיו בניתם הרבה גיליונות בדרך. את שני החשובים שומרים בחוברת הקורס, <code>scoop-course.twbx</code>: החוברת האחת שאתם בונים מאז מודול 1, וכל מודול מוסיף לה גיליונות עם שם קבוע. למה חוברת אחת? ב-Tableau Public יש הגבלה על מספר החוברות <b>החדשות</b> שאפשר לשמור במחשב בפרק זמן מסוים. שמירה חוזרת של אותה חוברת לא נספרת כחוברת חדשה. לכן פותחים את אותו קובץ ושומרים אותו שוב.</p>
+<div class="box try" data-id="m10-try-course-save">
+<p><b>חוברת הקורס: M10 Pick Measure ו-M10 Same store</b></p>
+<ol>
+<li><code>File</code> &gt; <code>Open...</code> ובחרו את <code>scoop-course.twbx</code>. אם הקובץ עוד לא קיים אצלכם, פתחו את <code>scoop_sales_2024_2025.csv</code> ושמרו פעם אחת ב-<code>File</code> &gt; <code>Save As...</code> בשם <code>scoop-course</code>. <i>למה: חוברת אחת לכל הקורס, בקובץ אחד.</i></li>
+<li>גיליון חדש: כפתור <code>New Worksheet</code> בסרגל הכלים (<code>⌘T</code> במק, <code>Ctrl+T</code> בחלונות). לחיצה ימנית על הלשונית בתחתית, <code>Rename Sheet...</code>, והשם <code>M10 Pick Measure</code>. <i>למה: שם עם מספר המודול, כדי שתמצאו אותו גם בעוד חודש.</i></li>
+<li>אם החוברת עוד לא מכירה את <code>Pick Measure</code> ואת <code>Chosen Measure</code>, צרו אותם כמו בסעיפים 1 ו-2. גררו <span class="pill d">Category</span> ל-<code>Rows</code> ואת <code>Chosen Measure</code> ל-<code>Columns</code>, מיינו יורד, ולחיצה ימנית על הפרמטר <code>Show Parameter</code>. <i>למה: זה הגיליון שמראה איך הסדר זז כשמחליפים מדד.</i></li>
+<li>גיליון חדש נוסף, בשם <code>M10 Same store</code>. צרו את <code>First Sale Date</code> ואת <code>Branch Cohort</code> (סעיף 5). <span class="pill d">Branch Cohort</span> ל-<code>Rows</code>, <span class="pill d">YEAR(Order Date)</span> ל-<code>Columns</code>, <span class="pill c sum">Sales</span> ל-<code>Text</code>. <i>למה: זו הטבלה שמפרידה בין צמיחה של סניפים ותיקים לבין פתיחה של סניפים חדשים.</i></li>
+<li>בתפריט <code>File</code> בחרו <code>Save</code>. <i>למה: שומרים על אותו קובץ. שימו לב שהקיצור <code>⌘S</code> (<code>Ctrl+S</code>) שייך ל-<code>Save to Tableau Public...</code>, כלומר לפרסום ברשת, ולא לשמירה במחשב. לכן בוחרים <code>Save</code> מהתפריט.</i></li>
+</ol>
+<p><b>תוצאה צפויה:</b></p>
+<div class="tw"><table class="tbl">
+<tr><th>גיליון</th><th>מה רואים</th><th>מספרים לבדיקה</th></tr>
+<tr><td><code>M10 Pick Measure</code></td><td>5 סימנים, כרטיס פרמטר עם 3 ערכים</td><td>ב-<code>Sales</code> ראשון Cups (69,470.0). ב-<code>Profit</code> ראשון Drinks (36,728.3). ב-<code>Quantity</code> Sticks (1,407) לפני Sundaes (1,302)</td></tr>
+<tr><td><code>M10 Same store</code></td><td>3 תאים עם מספר (לקבוצת 2025 אין מכירות ב-2024)</td><td>קבוצת 2024: ב-2024 יש 107,047.6, וב-2025 יש 114,543.6. קבוצת 2025: רק ב-2025, 15,229.7</td></tr>
+</table></div>
+<p>החשבון שהגיליון השני מראה: אותם סניפים צמחו ב-7.0% (114,543.6 מול 107,047.6), והרשת כולה ב-21.2% (129,773.3 מול 107,047.6). אחרי <code>Save</code> הלשוניות <code>M10 Pick Measure</code> ו-<code>M10 Same store</code> נשמרות בקובץ, לצד הגיליונות של המודולים הקודמים. אם Tableau מציג הודעה על מגבלת שמירות במחשב, אל תיצרו קובץ חדש: המשיכו לעבוד באותה חוברת.</p>
 </div>
 
 <div class="box meaning"><p>שני הכלים משלימים זה את זה. הפרמטר שואל &quot;איזה מדד?&quot;, ו-FIXED עונה &quot;מה הנורמה?&quot;. בלי FIXED היה צריך לעדכן ממוצע ידנית בכל החלפת מדד. עם FIXED הממוצע מתעדכן לבד, כי הוא חלק מאותה נוסחה.</p></div>
@@ -1636,7 +1669,7 @@ END</pre><i>למה: לכל מדד, סך הרשת חלקי מספר הסניפי�
 
 <p>במודול הבא עוברים ממקור נתונים אחד למספר מקורות: <a href="module11.html">מודול 11, שילוב נתונים ושינוי צורה</a>. שם נשתמש שוב בנתוני המסעדה, והפעם בשש הטבלאות הקשורות.</p>
 
-<div class="teach"><b>🎓 למרצה:</b> רשימת בדיקה לפני השיעור, פריטים שהמחקר סימן כלא-מאומתים או שצריך להריץ: (1) ביטוי <code>ATTR({ ... })</code> עם צבירה פנימית, ושימוש ב-<code>ATTR</code> במכנה של אחוזים; (2) <code>AVG({ INCLUDE [Branch] : ... })</code> ממוצע על קבוצות; (3) חילוק של שני ביטויי FIXED ללא ממדים; (4) כותרת דינמית עם <code>Insert</code> של פרמטר וכותרת ציר דינמית (מסומנת Cloud, Desktop, Server בתיעוד); (5) פורמט אחוזים בחלון הפרמטר (Desktop בלבד לפי התיעוד); (6) פעולות פרמטר ב-Public; (7) תפריט <code>Add to Context</code> וצבע הפיל; (8) שמות עמודות אחרי טעינת קובץ המסעדה; (9) שורת המצב ושמות הכפתורים בגרסה שלכם. כל המספרים בעמוד חושבו בפייתון מהקבצים, לא ב-Tableau. אם משהו לא יוצא, תקנו את הדף ולא את הנתונים.</div>
+<div class="teach"><b>🎓 למרצה:</b> רשימת בדיקה לפני השיעור, רק מה שעוד פתוח (התנהגות שלא הורצה בתוכנה): (1) <code>ATTR({ ... })</code> עם צבירה פנימית, ו-<code>ATTR</code> במכנה של אחוזים; (2) <code>AVG({ INCLUDE [Branch] : ... })</code> כממוצע על קבוצות; (3) חילוק של שני ביטויי FIXED בלי ממדים; (4) כותרת דינמית עם <code>Insert</code> של פרמטר, וכותרת ציר דינמית; (5) ההשוואה <code>&lt;=</code> עם פרמטר <code>Float</code> מרשימה; (6) הכתיב של שמות העמודות אחרי טעינת קובץ המסעדה; (7) עריכה בדפדפן. מה שכבר נבדק ב-Tableau Public ולא צריך לבדוק שוב: התפריט של חלונית הנתונים, חלון <code>Create Parameter</code> וסוגי הנתונים שלו, ביטוי FIXED תקין, <code>Add to Context</code>, <code>Quick Table Calculation</code> ושורת המצב (<code>N marks</code>). כל המספרים בעמוד חושבו בפייתון מהקבצים. אם משהו לא יוצא, תקנו את הדף ולא את הנתונים.</div>
 </section>
 
 <div class="pager"><a href="module9.html">→ 9. חישובי טבלה וניתוח רץ</a><a href="module11.html">11. שילוב נתונים ושינוי צורה ←</a></div>

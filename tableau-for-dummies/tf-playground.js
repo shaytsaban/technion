@@ -66,7 +66,7 @@ function buildDS(raw){
     }
     fields.push(f); map[name] = f;
   });
-  var rec = {name:'Number of Records', label:'Number of Records', kind:'rec', role:'mea', vals:new Float64Array(n).fill(1), min:1, max:1};
+  var rec = {name:'Number of Records', label:'scoop_sales_2024_2025.csv (Count)', kind:'rec', role:'mea', vals:new Float64Array(n).fill(1), min:1, max:1};
   fields.push(rec); map[rec.name] = rec;
   var lower = Object.create(null); fields.forEach(function(f){ lower[f.name.toLowerCase()] = f; lower[f.name.toLowerCase().replace(/ /g,'_')] = f; lower[f.label.toLowerCase()] = f; });
   return {n:n, fields:fields, map:map, lower:lower, rec:rec};
@@ -843,7 +843,7 @@ P.build = function(){
     (sh('label') ? '<button type="button" data-act="labels" aria-pressed="false" aria-label="הצגה או הסתרה של תוויות על הסימנים">תוויות</button>' : '')+
     '<span class="tfp-sp"></span><span class="tfp-sel" aria-live="polite"></span></div>';
   html += '<div class="tfp-body">';
-  html += '<aside class="tfp-side" aria-label="חלונית הנתונים"><div class="tfp-ds">Scoop · 6,575 שורות</div><h6>Dimensions</h6><div class="tfp-dl"></div><h6>Measures</h6><div class="tfp-ml"></div></aside>';
+  html += '<aside class="tfp-side" aria-label="חלונית הנתונים"><div class="tfp-ds">Scoop · 6,575 שורות</div><h6>Tables</h6><div class="tfp-dl"></div><div class="tfp-sep" title="מעל הקו: ממדים. מתחת לקו: מדדים" style="border-top:1px solid #94a3b8;margin:5px 2px"></div><div class="tfp-ml"></div></aside>';
   html += '<div class="tfp-mid">';
   html += this.shelfHTML('columns', 'Columns');
   html += this.shelfHTML('rows', 'Rows');

@@ -42,8 +42,8 @@
 <div class="defline"><b>מקור נתונים (<code>Data Source</code>):</b> הקובץ או השירות ש-Tableau קורא ממנו את הנתונים. דוגמה: הקובץ <span class="n">scoop_sales_2024_2025.csv</span>. פותחים אותו באקסל ורואים שכל שורה היא שורת הזמנה אחת.</div>
 <div class="defline"><b>מחבר (<code>Connector</code>):</b> החלק ב-Tableau שיודע לקרוא סוג מסוים של מקור. דוגמה: המחבר <code>Text file</code> קורא קבצי CSV, והמחבר <code>Microsoft Excel</code> קורא קבצי xlsx.</div>
 
-<p>בואו נראה איך זה נראה במסך. זו חלונית <code>Connect</code> של Tableau Public, בצילום אמיתי. שימו לב לכותרת של החלון בגרסה שלכם: היא צריכה לומר Tableau Public.</p>
-<figure class="shot" style="max-width:560px;margin-inline:auto"><img src="img/connect-pane.png" alt="חלונית Connect ב-Tableau Public עם רשימת מחברי הקבצים"><figcaption>חלונית Connect. תחת <code>To a File</code> שישה סוגי קבצים: Excel, Text, JSON, PDF, Spatial, Statistical. תחת <code>To a Server</code> יש <code>OData</code> ו-<code>More...</code>, ושם אמורים להיות עוד מחברים (למשל Google Drive). בגרסה שלכם הסדר עשוי להיות שונה מעט.</figcaption></figure>
+<p>בואו נראה איך זה נראה במסך. זו חלונית <code>Connect</code> של Tableau Public, בצילום אמיתי. בכותרת החלון אצלכם צריך להיות כתוב Tableau Public.</p>
+<figure class="shot" style="max-width:560px;margin-inline:auto"><img src="img/connect-pane.png" alt="חלונית Connect ב-Tableau Public עם רשימת מחברי הקבצים"><figcaption>חלונית Connect. תחת <code>To a File</code> שישה סוגי קבצים: Excel, Text, JSON, PDF, Spatial, Statistical. תחת <code>To a Server</code> יש <code>OData</code> ו-<code>More...</code>. בקבצי התוכנה Google Drive מסומן כמחבר שזמין ב-Public, ואילו Box, Dropbox ו-OneDrive and SharePoint Online מסומנים כלא זמינים.</figcaption></figure>
 
 <h3>הרשימה המלאה, עם מלכודת אחת לכל שורה</h3>
 <div class="tw"><table class="tbl m2-mx">
@@ -104,13 +104,15 @@
 <div class="box note"><p><b>לא זמין ב-Tableau Public: ככה עובדים סביב זה.</b> אין מחבר למסד נתונים (SQL Server, MySQL, PostgreSQL, Oracle, Snowflake, BigQuery ועוד), אין חיבור חי, ואין ריענון מתוזמן (חוץ מ-Google Drive). הדרך עוקפת: מריצים את השאילתה בכלי של מסד הנתונים, מייצאים את התוצאה ל-CSV וטוענים את ה-CSV. אותו דבר שעשיתם ב-SQL במפגש המסכם, רק שהשלב האחרון הוא קובץ. נחזור לזה בסוף הקורס, ב<a href="module15.html">מודול 15</a>, ובמפגש המסכם ב<a href="../final-lesson/part2.html">חלק 2 (SQL)</a>.</p></div>
 
 <div class="box try" data-id="m2-try-connect-pane">
+<p><b>תרגיל: מה בדיוק יש בחלונית Connect</b></p>
 <ol>
-<li>פתחו את Tableau Public. אם הוא נפתח על דף ההתחלה, זה בסדר. אם נפתח גיליון ריק, חזרו אל דף ההתחלה עם <code>File &gt; Show Start Page</code>. <em>למה: משם מתחברים.</em></li>
-<li>בחלונית <code>Connect</code> רשמו את שמות המחברים תחת <code>To a File</code> ותחת <code>To a Server</code>. <em>למה: זו הרשימה של מה שאפשר לעשות, ואין בה יותר.</em></li>
-<li>לחצו על <code>More...</code> ורשמו מה יש שם. אל תבחרו כלום ואל תתחברו לשום דבר. <em>למה: להכיר את המקום שבו מסתתר Google Drive.</em></li>
+<li>פתחו את Tableau Public. אם נפתח גיליון ולא מסך הפתיחה, בחרו <code>File</code> ואז <code>Show Start Page</code>. <em>למה: משם מתחברים.</em></li>
+<li>תחת <code>To a File</code> ספרו את הפריטים ורשמו את השמות. <em>למה: זו כל הרשימה של סוגי קבצים, ואין בה יותר.</em></li>
+<li>תחת <code>To a Server</code> רשמו מה מופיע. <em>למה: כאן מחפשים מסדי נתונים, ומגלים שאין.</em></li>
+<li>לחצו על <code>More...</code> וקראו את הרשימה שנפתחת. חפשו בה <code>Google Drive</code>, ובדקו אם יש <code>Box</code>, <code>Dropbox</code> או <code>OneDrive</code>. אל תבחרו כלום ואל תתחברו. <em>למה: להכיר את המקום שבו נמצא המחבר היחיד שמתרענן לבד.</em></li>
 <li>הסתכלו על כותרת החלון. <em>למה: אם כתוב Tableau Public, אתם בגרסה הנכונה.</em></li>
 </ol>
-<p><b>תוצאה צפויה:</b> שישה מחברי קבצים (Excel, Text, JSON, PDF, Spatial, Statistical), ועוד <code>OData</code> ו-<code>More...</code>. בתוך <code>More...</code> אמורה להופיע רשימה קצרה, עם Google Drive. אם אתם רואים רשימה ארוכה של שרתי מסדי נתונים, כנראה זו לא Public Edition (המלכודת הבאה).</p>
+<p><b>תוצאה צפויה:</b> תחת <code>To a File</code> שישה פריטים: <code>Microsoft Excel</code>, <code>Text file</code>, <code>JSON file</code>, <code>PDF file</code>, <code>Spatial file</code>, <code>Statistical file</code>. תחת <code>To a Server</code> שניים: <code>OData</code> ו-<code>More...</code>. ב-<code>More...</code> יש <code>Google Drive</code>. <code>Box</code>, <code>Dropbox</code> ו-<code>OneDrive and SharePoint Online</code> מסומנים בקבצי התוכנה כלא זמינים ב-Public, ולכן לא אמורים להופיע. אם אתם רואים רשימה ארוכה של שרתי מסדי נתונים, כנראה זו לא Public Edition (המלכודת הבאה).</p>
 </div>
 
 <div class="box trap"><p><b>הורדתי את הגרסה הלא נכונה.</b> יש היום שתי הורדות חינמיות: Tableau Desktop Public Edition (שומרת גם ל-Tableau Public) ו-Tableau Desktop Free Edition, שיודעת להתחבר ליותר מקורות אבל <u>לא</u> שומרת ל-Tableau Public. הסימנים: רשימת חיבורים ארוכה במיוחד, וכפתור שמירה לאתר שחסר. הפתרון: חזרו להורדה מ-public.tableau.com (ראו מודול 1).</p></div>
@@ -135,7 +137,7 @@
 <button class="opt">את הנתונים כפי שהיו ברגע הפרסום, עד שתפרסמו שוב</button>
 <div class="why">הדוח מבוסס על Extract, צילום שנשמר בזמן הפרסום. הקובץ המקורי לא מחובר לאתר. כדי לעדכן, טוענים את הקובץ המעודכן ומפרסמים מחדש.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> להקרין את חלונית ה-Connect ולהקריא ביחד את הרשימה. לעצור על ״אין מסדי נתונים״ כי זה מה שמפתיע מי שמכיר SQL מהמפגש המסכם. לבדוק לפני השיעור: מה בתוך <code>More...</code> אצלכם, באיזה מקום מופיע Google Drive, והאם Public Edition פותח גם קובץ <span class="n">.xls</span> ישן (לא נדרש לתרגילים כאן, כולם xlsx). הרשימה בטבלה היא מהתיעוד הרשמי: Google Sheets כמחבר נפרד הופסק, ו-Web Data Connector הוצא משימוש, ולכן אין להם שורה.</div>
+<div class="teach"><b>🎓 למרצה:</b> להקרין את חלונית ה-Connect ולהקריא ביחד את הרשימה. לעצור על ״אין מסדי נתונים״ כי זה מה שמפתיע מי שמכיר SQL מהמפגש המסכם. רשימת המחברים שתחת To a File ו-To a Server נראתה בצילום מהתוכנה. בקבצי התוכנה Google Drive מסומן כזמין ב-Public, ו-Box, Dropbox, OneDrive and SharePoint Online ו-Azure Data Lake כלא זמינים. נשאר פתוח: איך בדיוק נראית הרשימה שבתוך <code>More...</code>, והאם Public Edition פותח קובץ <span class="n">.xls</span> ישן (מסך הפתיחה מזכיר xls, אבל לא בדקנו קובץ. לא נדרש לתרגילים כאן, כולם xlsx). הרשימה בטבלה היא מהתיעוד הרשמי: Google Sheets כמחבר נפרד הופסק, ו-Web Data Connector הוצא משימוש, ולכן אין להם שורה.</div>
 </section>
 <section class="sec" id="m2-2" data-t="מתחברים צעד אחר צעד">
 <div class="sec-h"><div class="sec-n">2</div><h2>מתחברים צעד אחר צעד: טוענים את Scoop &amp; Go</h2></div>
@@ -182,7 +184,7 @@
 <tr><td>SG-00004</td><td><bdi dir="ltr">2024-01-02</bdi></td><td>20</td><td>BR07</td><td>Netanya Beach</td><td>Netanya</td><td>Center</td><td>Walk-in</td><td>Cones</td><td>Classic Cone</td><td>1</td><td>16</td><td>0</td><td>16</td><td>7</td><td>9</td></tr>
 <tr><td>SG-00005</td><td><bdi dir="ltr">2024-01-03</bdi></td><td>18</td><td>BR01</td><td>Tel Aviv Dizengoff</td><td>Tel Aviv-Yafo</td><td>Center</td><td>Walk-in</td><td>Cones</td><td>Double Cone</td><td>1</td><td>26</td><td>0</td><td>26</td><td>12</td><td>14</td></tr>
 </tbody></table></div>
-<p style="font-size:.88rem;color:var(--muted)">הגריד מציג את השמות המתוקנים (עם רווח) ולא את הקו התחתון. בגרסה שלכם ייתכן עיצוב מעט שונה של המספרים.</p>
+<p style="font-size:.88rem;color:var(--muted)">הגריד מציג את השמות המתוקנים (עם רווח) ולא את הקו התחתון. התאריך מוצג לפי הגדרות האזור במחשב: בצילום מ-Mac שבסעיף 3 הוא מופיע כ-<bdi dir="ltr">01/01/2024</bdi>.</p>
 
 <h3>אותו דבר מקובץ Excel</h3>
 <p>אותם נתונים קיימים גם כקובץ xlsx עם שני גיליונות: <span class="n">Sales</span> (6,575 שורות) ו-<span class="n">Branches</span> (תשעה סניפים, עם מנהל, תאריך פתיחה ושטח). בואו נראה מה שונה כשטוענים אותו.</p>
@@ -197,7 +199,7 @@
 <p><b>תוצאה צפויה:</b> <span class="n">16 fields 6575 rows</span>, בדיוק כמו ב-CSV. ב-<code>Branches</code> יש 9 שורות ו-7 שדות. במודולים הבאים נעבוד עם ה-CSV, אבל כל מה שנעשה עובד גם עם ה-xlsx.</p>
 </div>
 
-<div class="box trap"><p><b>הכול נכנס לעמודה אחת.</b> אם אחרי הטעינה כל השורה מופיעה בתוך שדה בודד, Tableau קרא את הקובץ עם מפריד שגוי (פסיק, נקודה-פסיק או טאב). הפתרון: על הקנבס לחצו על החץ של הטבלה, בחרו <code>Text File Properties</code> (בגרסה שלכם ייתכן שהשם שונה מעט) ושנו את <code>Field separator</code>. שם אפשר לשנות גם את <code>Character set</code> ואת <code>Locale</code>.</p></div>
+<div class="box trap"><p><b>הכול נכנס לעמודה אחת.</b> אם אחרי הטעינה כל השורה מופיעה בתוך שדה בודד, Tableau קרא את הקובץ עם מפריד שגוי (פסיק, נקודה-פסיק או טאב). הפתרון: על הקנבס לחצו על החץ של הטבלה, בחרו <code>Text File Properties...</code> ושנו את <code>Field separator</code>. שם אפשר לשנות גם את <code>Character set</code> ואת <code>Locale</code>.</p></div>
 
 <div class="box trap"><p><b>מספר השורות לא מסתדר.</b> אם הוצג 6,574 או 6,576, הכותרת התפרשה אחרת: שורת נתונים נבלעה בתור כותרת, או שורת כותרת נספרה כנתונים. בקובץ בלי כותרות, Tableau לא יכול לנחש, ואפשר להגיד לו לייצר שמות בעצמו. הכלל: קודם בודקים את המספר, ורק אחר כך בונים.</p></div>
 
@@ -214,7 +216,7 @@
 <button class="opt">יש בעיה: Tableau ספר שורה ריקה בסוף הקובץ</button>
 <div class="why">עורך טקסט סופר גם את שורת הכותרת. Tableau סופר רק שורות נתונים, ולכן 6,576 פחות 1 הוא 6,575. זה בדיוק מה שמצופה.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> לעבוד ביחד, צעד אחר צעד, ולעצור אחרי שלב 4: כל אחד מקריא את המספר שלו. מי שיש לו מספר אחר, מטפלים בו עכשיו (קובץ אחר, קידוד, מפריד). לבדוק מראש: באיזו שפה מופיעה שורת הסטטוס אצלכם, וכיצד נקראת אצלכם האפשרות של Text File Properties. הסיבה לכך שאנחנו לא גוררים את Branches: בקובץ יש תשעה סניפים, אבל לא אותם תשעה כמו בטבלת המכירות (Kiryat Shmona נפתח ב-2026 ואין לו מכירות, ו-Ashdod Beach Pop-up לא מופיע ב-Branches). נחזור לזה במודול 11.</div>
+<div class="teach"><b>🎓 למרצה:</b> לעבוד ביחד, צעד אחר צעד, ולעצור אחרי שלב 4: כל אחד מקריא את המספר שלו. מי שיש לו מספר אחר, מטפלים בו עכשיו (קובץ אחר, קידוד, מפריד). שורת הסטטוס באנגלית (16 fields 6575 rows) נראתה בצילום, והשמות Text File Properties..., Field separator, Character set ו-Locale לקוחים מקבצי התוכנה. הסיבה לכך שאנחנו לא גוררים את Branches: בקובץ יש תשעה סניפים, אבל לא אותם תשעה כמו בטבלת המכירות (Kiryat Shmona נפתח ב-2026 ואין לו מכירות, ו-Ashdod Beach Pop-up לא מופיע ב-Branches). נחזור לזה במודול 11.</div>
 </section>
 <section class="sec" id="m2-3" data-t="דף Data Source">
 <div class="sec-h"><div class="sec-n">3</div><h2>דף Data Source: מה יש על המסך ומה עושים בו</h2></div>
@@ -222,8 +224,8 @@
 
 <div class="defline"><b>דף Data Source (<code>Data Source page</code>):</b> המסך שנפתח אחרי החיבור. מציג את המקור, את הטבלאות ואת השורות עצמן, ומאפשר לתקן שמות וסוגים. דוגמה: שורת הסטטוס שאומרת <span class="n">16 fields 6575 rows</span>.</div>
 
-<p>הנה הצילום האמיתי, מקובץ vgsales (קובץ ידוע של משחקי וידאו, רק כדי לראות את המסך):</p>
-<figure class="shot"><img src="img/datasource-page.png" alt="דף Data Source ב-Tableau Public עם הקובץ vgsales.csv"><figcaption>דף Data Source ב-Tableau Public. למעלה, בקנבס: הטבלה במלבן כחול והדרכה לצירוף טבלאות נוספות. באמצע: <span class="n">11 fields 16598 rows</span> ותיבה של מספר השורות שמוצגות (בצילום: 100). משמאל למטה: רשימת השדות עם Type, Field Name, Physical Table ו-Remote Field Name. מימין: הגריד, עם סמל סוג מעל כל עמודה.</figcaption></figure>
+<p>הנה הצילום האמיתי, אחרי שחיברנו את <span class="n">scoop_sales_2024_2025.csv</span>:</p>
+<figure class="shot"><img src="img/m2-scoop-datasource.png" alt="דף Data Source ב-Tableau Public אחרי חיבור scoop_sales_2024_2025.csv: 16 fields 6575 rows, Use Data Interpreter ו-New Union בצד שמאל"><figcaption>דף Data Source עם Scoop &amp; Go, צילום מ-Mac. <b>משמאל למעלה</b>: <code>Connections</code> עם המקור והמחבר (<code>Text file</code>). מתחת: <code>Files</code>, תיבת הסימון <code>Use Data Interpreter</code> עם ההערה שהכלי עשוי לנקות את הקובץ, ורשימת כל הקבצים שבאותה תיקייה. בתחתית הרשימה <code>New Union</code> (זמין) ו-<code>New Table Extension</code> (אפור). <b>בקנבס</b>: הטבלה במלבן, ושתי הדרכות: <code>Relate tables</code> ו-<code>Add a base table</code>. <b>באמצע</b>: <span class="n">16 fields 6575 rows</span>, ומימין התיבה <span class="n">100</span> ואז <span class="n">rows</span>. <b>למטה משמאל</b>: רשימת השדות עם Type, Field Name, Physical Table ו-Remote Field Name. <b>מימין</b>: הגריד. מעל City יש גלובוס, מעל Order Date לוח שנה, ומעל Order Hour הסימן #. בפינה הימנית העליונה <code>Filters</code> עם <span class="n">0</span> ו-<code>Add</code>.</figcaption></figure>
 
 <p>ועכשיו אותו מסך עם Scoop &amp; Go, בהדמיה. לחצו על כל אחד מהמספרים הכתומים ותראו מה אפשר לעשות באזור הזה.</p>
 
@@ -231,9 +233,9 @@
 <div class="m2-dsp" dir="ltr" aria-label="הדמיה סכמטית של דף Data Source">
  <div class="m2-dsp-top"><button type="button" class="m2-z" data-k="conn">1</button><b>Connections</b><span>scoop_sales_2024_2025.csv <i>Text file</i></span><span class="m2-sp"></span><b>Filters</b><span>0 | Add</span></div>
  <div class="m2-dsp-body">
-  <div class="m2-left"><button type="button" class="m2-z" data-k="files">2</button><h6>Files</h6><div class="m2-it on">scoop_sales_2024_2025.csv</div><label class="m2-cb"><input type="checkbox" disabled> Use Data Interpreter</label></div>
+  <div class="m2-left"><button type="button" class="m2-z" data-k="files">2</button><h6>Files</h6><div class="m2-it on">scoop_sales_2024_2025.csv</div><label class="m2-cb"><input type="checkbox" disabled> Use Data Interpreter</label><div class="m2-it" style="margin-top:8px;color:#334155">New Union</div></div>
   <div class="m2-right">
-   <div class="m2-canvas"><button type="button" class="m2-z" data-k="canvas">3</button><div class="m2-card">scoop_sales_2024_2025.csv</div><span class="m2-hint">Drag tables here to relate them</span></div>
+   <div class="m2-canvas"><button type="button" class="m2-z" data-k="canvas">3</button><div class="m2-card">scoop_sales_2024_2025.csv</div><span class="m2-hint">Relate tables · Add a base table</span></div>
    <div class="m2-bar"><button type="button" class="m2-z" data-k="count">4</button><span>scoop_sales_2024_2025.csv</span><span>16 fields 6575 rows</span><span class="m2-sp"></span><span>100 &rarr; rows</span></div>
    <div class="m2-gwrap"><button type="button" class="m2-z" data-k="head" style="top:-4px;left:auto;right:4px">5</button><button type="button" class="m2-z" data-k="rows" style="top:auto;bottom:-4px;left:4px;right:auto">6</button><div class="m2-gw"><table class="m2-gt"><thead><tr><th><i class="ic s">Abc</i>Order ID</th><th><i class="ic d">&#128197;</i>Order Date</th><th><i class="ic n">#</i>Order Hour</th><th><i class="ic s">Abc</i>Branch</th><th><i class="ic s">Abc</i>City</th><th><i class="ic n">#</i>Sales</th></tr></thead>
    <tbody><tr><td>SG-00001</td><td><bdi dir="ltr">2024-01-01</bdi></td><td>19</td><td>Haifa German Colony</td><td>Haifa</td><td>40</td></tr><tr><td>SG-00002</td><td><bdi dir="ltr">2024-01-02</bdi></td><td>13</td><td>Eilat Promenade</td><td>Eilat</td><td>24</td></tr><tr><td>SG-00003</td><td><bdi dir="ltr">2024-01-02</bdi></td><td>16</td><td>Tel Aviv Port</td><td>Tel Aviv-Yafo</td><td>26</td></tr></tbody></table></div></div>
@@ -244,17 +246,12 @@
 <div class="out" id="m2-dsp-out" aria-live="polite">לחצו על מספר כדי לראות הסבר.</div>
 </div>
 
-<figure class="shot" data-shot="m2-scoop-datasource">
-<div class="fb"><div class="m2-dsp" dir="ltr"><div class="m2-dsp-top"><b>Connections</b><span>scoop_sales_2024_2025.csv <i>Text file</i></span></div><div class="m2-bar"><span>scoop_sales_2024_2025.csv</span><span>16 fields 6575 rows</span><span class="m2-sp"></span><span>100 &rarr; rows</span></div><div class="m2-gw"><table class="m2-gt"><thead><tr><th><i class="ic s">Abc</i>Order ID</th><th><i class="ic d">&#128197;</i>Order Date</th><th><i class="ic n">#</i>Order Hour</th><th><i class="ic s">Abc</i>Branch</th><th><i class="ic n">#</i>Sales</th></tr></thead><tbody><tr><td>SG-00001</td><td><bdi dir="ltr">2024-01-01</bdi></td><td>19</td><td>Haifa German Colony</td><td>40</td></tr></tbody></table></div></div>
-<div class="need">צילום מסך נדרש: Tableau Public, דף Data Source אחרי טעינת scoop_sales_2024_2025.csv, עם שורת הסטטוס 16 fields 6575 rows, הגריד עם סמלי הסוג והלשונית Sheet 1 בתחתית</div></div>
-<figcaption>דף Data Source אחרי טעינת Scoop &amp; Go (הדמיה סכמטית).</figcaption>
-</figure>
 
 <script>(function(){ FL.dom(function(){
   var T={
    conn:['1. Connections','כאן רשום המקור שחיברתם ואיזה מחבר קורא אותו (Text file, Excel...). הכפתור Add מוסיף מקור נוסף, ואותו נפגוש במודול 11.','מה עושים: בודקים שזה הקובץ הנכון.'],
-   files:['2. רשימת הקבצים או הגיליונות','ב-Excel רואים כאן את הגיליונות (Sales, Branches). בוחרים מה נכנס. אם יש אצלכם תיבה בשם Use Data Interpreter, היא מנסה לנקות גיליון מבולגן (סעיף 6).','מה עושים: גוררים או לוחצים פעמיים על מה שרוצים.'],
-   canvas:['3. הקנבס (Canvas)','האזור שבו טבלאות מונחות. טבלה אחת: אין מה לעשות. כשגוררים עוד טבלה, Tableau מציג קו שמחבר ביניהן (קשר או Join).','מה עושים: בינתיים כלום. זה המקום של מודול 11.'],
+   files:['2. רשימת הקבצים או הגיליונות','בקובץ טקסט רואים כאן את כל הקבצים שבאותה תיקייה, וב-Excel את הגיליונות (Sales, Branches). בוחרים מה נכנס. התיבה Use Data Interpreter מנסה לנקות קובץ מבולגן, ו-New Union מאחד קבצים זה מתחת לזה (שניהם בסעיף 6).','מה עושים: גוררים או לוחצים פעמיים על מה שרוצים.'],
+   canvas:['3. הקנבס (Canvas)','האזור שבו טבלאות מונחות. ליד טבלה אחת מופיעות שתי הדרכות: Relate tables (לגרור טבלה לידה כדי לקשר) ו-Add a base table. כשגוררים עוד טבלה, Tableau מציג קו שמחבר ביניהן.','מה עושים: בינתיים כלום. זה המקום של מודול 11.'],
    count:['4. שורת הסטטוס','כמה שדות (עמודות) וכמה שורות יש במקור. המספר הוא הסך הכול, לא מה שנראה בגריד. התיבה rows קובעת כמה שורות להציג בגריד.','מה עושים: משווים ל-6,575. זו הבדיקה הראשונה.'],
    head:['5. כותרת עמודה','סמל הסוג (Abc, #, תאריך), שם השדה ותפריט. לחיצה על הסמל משנה סוג. החץ פותח תפריט: Rename, Hide ועוד.','מה עושים: מתקנים סוג שגוי ושמות לא ברורים (סעיפים 4 ו-7).'],
    rows:['6. הגריד','מדגם של שורות, כמו גיליון אקסל. שורה היא רשומה אחת: כאן הזמנה אחת.','מה עושים: מסתכלים על שורות ראשונות ואחרונות, וזוכרים שזה רק מדגם.'],
@@ -284,12 +281,12 @@
 <li>לחצו על סמל הסוג מעל <code>Order Date</code> וראו את רשימת הסוגים. סגרו עם <kbd>Esc</kbd>. <em>למה: כאן מתקנים סוג שגוי.</em></li>
 <li>לחצו על <code>Sheet 1</code> בתחתית. משמאל מופיעה רשימת השדות. חזרו עם <code>Data Source</code>. <em>למה: להיווכח שהשינויים בדף הזה משפיעים על הגיליון.</em></li>
 </ol>
-<p><b>תוצאה צפויה:</b> אתם יודעים להצביע על שבעת האזורים בלי לחשוב. ברשימת השדות של הגיליון יש, בדרך כלל, 9 ממדים (כחול) ו-7 מדדים (ירוק), עוד שדה ספירה בשם <span class="n">scoop_sales_2024_2025.csv (Count)</span>, ושני שדות מיוחדים בשם <span class="n">Measure Names</span> ו-<span class="n">Measure Values</span>. אם Order Hour אצלכם נמצא בין הממדים, Tableau ניחש אחרת ממה שנראה כאן, וזה בסדר: בסעיף 4 נבין למה.</p>
+<p><b>תוצאה צפויה:</b> אתם יודעים להצביע על שבעת האזורים בלי לחשוב. ברשימת השדות של הגיליון, תחת הכותרת <code>Tables</code>, יש 9 ממדים מעל הקו הדק (Branch, Branch Code, Category, Channel, City, Item, Order Date, Order ID, Region) ו-7 מדדים מתחתיו (Cost, Discount, Order Hour, Profit, Quantity, Sales, Unit Price). בנוסף יש שדות ש-Tableau יוצרת לבד, בנטוי: <span class="n">Measure Names</span> מעל הקו, ומתחתיו <span class="n">Latitude (generated)</span> ו-<span class="n">Longitude (generated)</span> (כי City קיבל תפקיד של עיר), שדה הספירה <span class="n">scoop_sales_2024_2025.csv (Count)</span> ו-<span class="n">Measure Values</span>. שימו לב ש-Order Hour נמצא בין המדדים. בסעיף 4 נבין למה זה בעיה.</p>
 </div>
 
 <div class="box note"><p><b>ב-web authoring (בדפדפן):</b> מעלים קובץ xlsx, csv או tsv (עד 1 GB לקובץ), ולכן את התרגילים עם קבצי Scoop &amp; Go ו-sausage אפשר לעשות גם שם. בדף הנתונים בדפדפן ייתכן שחלק מהכלים שבמודול חסרים או נמצאים במקום אחר, למשל שינוי סוג שדה, הסתרה ותפקיד גיאוגרפי: בדקו אם זמין אצלכם. JSON, PDF ו-Shapefile טוענים ב-Desktop.</p></div>
 
-<div class="box trap"><p><b>הגריד מציג רק מדגם.</b> בצילום למעלה הוא מציג 100 שורות מתוך 16,598. אם השורות הראשונות נראות תקינות, זה עדיין לא אומר שהקובץ תקין: בקובץ vgsales, למשל, הערך <span class="n">N/A</span> בעמודת השנה מופיע לראשונה רק בשורה 180, ובסך הכול ב-271 שורות. לכן לא מסתפקים במבט בגריד, ובסעיף 10 בודקים גם בסכומים.</p></div>
+<div class="box trap"><p><b>הגריד מציג רק מדגם.</b> בצילום למעלה הוא מציג 100 שורות מתוך 6,575. אם השורות הראשונות נראות תקינות, זה עדיין לא אומר שהקובץ תקין: בקובץ אחר, vgsales של משחקי הווידאו, הערך <span class="n">N/A</span> בעמודת השנה מופיע לראשונה רק בשורה 180, ובסך הכול ב-271 שורות. לכן לא מסתפקים במבט בגריד, ובסעיף 10 בודקים גם בסכומים.</p></div>
 
 <div class="box meaning"><p>הגריד מראה מה בעצם יש בקובץ: שורה היא רשומה אחת, ועמודה היא דבר אחד שמודדים עליה. אם הגריד נראה כמו דוח (כותרות באמצע, שורות סיכום), Tableau לא יידע לעבוד איתו, ובסעיף 9 נראה למה.</p></div>
 
@@ -304,7 +301,7 @@
 <button class="opt">נטענו רק 100 שורות, ובשאר צריך לטפל ידנית</button>
 <div class="why">שורת הסטטוס מדווחת על כל הנתונים במקור. התיבה rows קובעת רק כמה שורות מוצגות בגריד, כדי שהמסך יהיה מהיר.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> להקרין את ההדמיה ולעבור על שבעת המספרים. אחר כך לפתוח את המסך האמיתי ולתת לכל אחד למצוא אותם בעצמו. הצילום האמיתי מהקובץ של משחקי הווידאו משמש רק להמחשה, כי הוא נלקח מגרסה קודמת של המסך. לבדוק לפני השיעור: האם הכיתוב ב-Public הוא <code>rows</code> עם תיבה (כמו בצילום), מה האפשרויות בתיבה, והאם בגרסה שלכם יש גם כפתור Filters עם Add בפינה הימנית עליונה. ב-web authoring ייתכן שהמסך מצומצם יותר: לבדוק איפה מתקנים סוג שדה.</div>
+<div class="teach"><b>🎓 למרצה:</b> להקרין את ההדמיה ולעבור על שבעת המספרים. אחר כך לפתוח את המסך האמיתי ולתת לכל אחד למצוא אותם בעצמו. הצילום של Scoop &amp; Go צולם בגרסה 2026.2.3, ומאשר: התיבה 100 עם הכיתוב rows, Filters עם Add בפינה הימנית העליונה, Use Data Interpreter ו-New Union בצד שמאל, ו-City שמקבל גלובוס לבד. נשאר פתוח: אילו ערכים מציעה התיבה rows. ב-web authoring ייתכן שהמסך מצומצם יותר: לבדוק איפה מתקנים סוג שדה.</div>
 </section>
 <section class="sec" id="m2-4" data-t="סוגי נתונים">
 <div class="sec-h"><div class="sec-n">4</div><h2>סוגי נתונים: מה Tableau מנחש, ואיפה הוא טועה</h2></div>
@@ -372,12 +369,12 @@
 
 <div class="box trap"><p><b>מספר זיהוי שהוא מספר.</b> אם עמודת מזהים (מספר הזמנה, מספר עובד, טלפון) נטענת כמספר, Tableau מניח שאפשר לחבר אותה. בדוגמה פשוטה, מזהים 1 עד 10 נותנים סכום של 55, מספר שאין לו שום משמעות. בטלפון זה גרוע יותר: <span class="n">0501234567</span> הופך ל-<span class="n">501234567</span>. התיקון: <code>Convert to Dimension</code> (לפי תפקיד), או <code>Change Data Type &gt; String</code> (לפי סוג). בקובץ Scoop &amp; Go אין לכם את הבעיה הזאת, כי <span class="n">Order ID</span> מכיל אותיות. אבל <span class="n">Order Hour</span> הוא המקרה הבא.</p></div>
 
-<div class="box trap"><p><b>שעה שהיא מדד.</b> Order Hour הוא מספר, ולכן Tableau, בדרך כלל, שם אותו בין המדדים. Tableau מחבר את העמודה כברירת מחדל (SUM, סוג של <dfn data-d="איך Tableau מצמצם הרבה שורות למספר אחד: סכום, ממוצע או ספירה">אגרגציה</dfn>), והסכום של כל השעות הוא 118,214, מספר שלם ונחמד שאין לו שום משמעות. מה שרוצים לדעת הוא כמה הזמנות היו בכל שעה. אז הופכים את השדה לממד, והוא מחלק את הנתונים ל-14 קבוצות (שעות 10 עד 23).</p></div>
+<div class="box trap"><p><b>שעה שהיא מדד.</b> Order Hour הוא מספר, ולכן Tableau שם אותו בין המדדים, מתחת לקו הדק (כך זה נראה גם בצילום של Scoop &amp; Go). Tableau מחבר את העמודה כברירת מחדל (SUM, סוג של <dfn data-d="איך Tableau מצמצם הרבה שורות למספר אחד: סכום, ממוצע או ספירה">אגרגציה</dfn>), והסכום של כל השעות הוא 118,214, מספר שלם ונחמד שאין לו שום משמעות. מה שרוצים לדעת הוא כמה הזמנות היו בכל שעה. אז הופכים את השדה לממד, והוא מחלק את הנתונים ל-14 קבוצות (שעות 10 עד 23).</p></div>
 
 <div class="box try" data-id="m2-try-fix-types">
 <ol>
-<li>בדף ה-Data Source, ודאו שמעל <code>Order Date</code> יש סמל תאריך. אם יש <code>Abc</code>, לחצו על הסמל ובחרו <code>Date</code>. <em>למה: בלי סוג תאריך אי אפשר לעבוד עם חודשים ושנים (מודול 4).</em></li>
-<li>עברו ל-<code>Sheet 1</code> ולחצו פעמיים על <code>Order Hour</code> ברשימת השדות. רשמו את המספר שמופיע. <em>למה: זה מה שמקבלים משדה שהסוג או התפקיד שלו לא מתאימים: מספר בטוח בעצמו וחסר משמעות. אם Order Hour כבר בין הממדים (Tableau ניחש נכון), דלגו לשלב 4.</em></li>
+<li>בדף ה-Data Source, ודאו שמעל <code>Order Date</code> יש סמל של לוח שנה (כך זה בצילום). אם יש <code>Abc</code>, לחצו על הסמל ובחרו <code>Date</code>. <em>למה: בלי סוג תאריך אי אפשר לעבוד עם חודשים ושנים (מודול 4).</em></li>
+<li>עברו ל-<code>Sheet 1</code> ולחצו פעמיים על <code>Order Hour</code> ברשימת השדות. רשמו את המספר שמופיע. <em>למה: זה מה שמקבלים משדה שהתפקיד שלו לא מתאים: מספר בטוח בעצמו וחסר משמעות.</em></li>
 <li>בטלו (<kbd>Ctrl</kbd>+<kbd>Z</kbd>, או <kbd>Cmd</kbd>+<kbd>Z</kbd> ב-Mac). לחצו על <code>Order Hour</code> קליק ימני ובחרו <code>Convert to Dimension</code>. <em>למה: הוא עדיין מספר, אבל עכשיו הוא מחלק את הנתונים לקבוצות ולא מצטבר.</em></li>
 <li>לחצו פעמיים על <code>scoop_sales_2024_2025.csv (Count)</code>, ואז על <code>Order Hour</code>. <em>למה: סופרים שורות בכל שעה.</em></li>
 <li>עכשיו שנו את ההנחה: קליק ימני על <code>Discount</code>, <code>Convert to Dimension</code>, וגררו אותו במקום Order Hour. <em>למה: בודקים אותו כקבוצות.</em></li>
@@ -404,7 +401,7 @@
 <button class="opt">להסתכל על השורה הראשונה, ואם היא נראית טוב להמשיך</button>
 <div class="why">התאריך הראשון יכול להיות שני תאריכים שונים, והשורה הראשונה לא מוכיחה כלום על השאר. הפורמט המפורש מבטל את הניחוש.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> אחרי ״בלשי הסוגים״ לעצור על Order Hour ולשאול: מה הסכום? זה בדיוק 118,214, ועדיף שיגלו אותו בעצמם. לבדוק לפני השיעור: האם Order Hour מגיע אצלכם כמדד או כממד, והאם Order Date ב-CSV מזוהה כתאריך (פורמט ISO, ציפייה: כן). בהסבר על DATEPARSE אין צורך להיכנס לעומק, המודול על שדות מחושבים יחזור לזה. 132 תאריכים הם 12 ימים כפול 12 חודשים פחות 12 ימים שבהם היום והחודש זהים (1.1, 2.2 וכן הלאה).</div>
+<div class="teach"><b>🎓 למרצה:</b> אחרי ״בלשי הסוגים״ לעצור על Order Hour ולשאול: מה הסכום? זה בדיוק 118,214, ועדיף שיגלו אותו בעצמם. בצילום של הקובץ ב-2026.2.3: Order Hour מגיע כמדד (#), ו-Order Date מזוהה כתאריך (לוח שנה). בהסבר על DATEPARSE אין צורך להיכנס לעומק, המודול על שדות מחושבים יחזור לזה. 132 תאריכים הם 12 ימים כפול 12 חודשים פחות 12 ימים שבהם היום והחודש זהים (1.1, 2.2 וכן הלאה).</div>
 </section>
 <section class="sec" id="m2-5" data-t="עברית וקידוד">
 <div class="sec-h"><div class="sec-n">5</div><h2>קובץ בעברית: מה עובד, ואיפה נתקעים</h2></div>
@@ -473,7 +470,7 @@ print(df["היקף מכירות (₪)"].min())   # -221.21</pre>
 <tr><td>סימני שאלה אמיתיים בקובץ עצמו</td><td>ייצוא שאיבד את האותיות</td><td>אין תיקון בתוך Tableau. מייצאים שוב ממקור טוב.</td></tr>
 </tbody></table></div>
 
-<div class="box trap"><p><b>ג׳יבריש בעברית.</b> זו בעיית קידוד של הקובץ, לא של Tableau ולא של הנתונים. הדרך הבטוחה: לשמור קובץ בעברית כ-xlsx (אותיות Unicode בתוכו, בלי ויכוח על קידוד). אם חייבים CSV: באקסל <code>Save As</code> ובחירה ב-<code>CSV UTF-8</code>. אם הנתונים כבר מגיעים מקובץ שנראה משובש, ב-<code>Text File Properties</code> אפשר לשנות Character set. בגרסה שלכם ייתכן שהשם שונה מעט, ובדקו איזה קידוד מוצע כברירת מחדל.</p></div>
+<div class="box trap"><p><b>ג׳יבריש בעברית.</b> זו בעיית קידוד של הקובץ, לא של Tableau ולא של הנתונים. הדרך הבטוחה: לשמור קובץ בעברית כ-xlsx (אותיות Unicode בתוכו, בלי ויכוח על קידוד). אם חייבים CSV: באקסל <code>Save As</code> ובחירה ב-<code>CSV UTF-8</code>. אם הנתונים כבר מגיעים מקובץ שנראה משובש, ב-<code>Text File Properties...</code> אפשר לשנות את <code>Character set</code>. בדקו איזה קידוד מוצע שם כברירת מחדל.</p></div>
 
 <div class="box trap"><p><b>PDF בעברית.</b> התיעוד של Tableau אומר במפורש: אין תמיכה בשפות שנכתבות מימין לשמאל, ואם ב-PDF יש עברית, האותיות עלולות להיראות בסדר הפוך. כך זה עלול להיראות (הדמיה):</p>
 <div class="kpis"><div class="kpi"><b dir="rtl">שלום עולם</b><span>ב-PDF</span></div><div class="kpi r"><b dir="ltr">םלוע םולש</b><span>ב-Tableau (הדמיה של הסדר ההפוך)</span></div></div>
@@ -536,16 +533,16 @@ print(df["היקף מכירות (₪)"].min())   # -221.21</pre>
 <button class="opt">להעתיק את הטבלה ל-Excel, לבדוק, ולטעון את קובץ ה-Excel</button>
 <div class="why">Tableau לא תומך בשפות שנכתבות מימין לשמאל במחבר ה-PDF, ואין הגדרה שמתקנת את זה. הדרך הבטוחה היא לעבור דרך קובץ שהוא טבלה אמיתית.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> חלק מהתשובות כאן תלויות במחשב של כל אחד, ולכן חשוב לבקש מהסטודנטים לרשום מה הם רואים. <b>לבדוק לפני השיעור (לא נבדק בתוכנה):</b> איך נראות כותרות עם סוגריים ו-₪ ו-% בגריד וברשימת השדות; האם <code>שנה</code> מגיעה כמדד; איך נראה שם שדה בעברית בתוך סוגריים מרובעים בעורך החישובים; מהו Character set כברירת מחדל ב-Text File Properties ואילו קידודים מוצעים; האם בגרסה שלכם יש תמיכה ב-BOM; מה יוצא מ-PDF העברית. אין להבטיח בכיתה מה יקרה. המספרים של שורת הסטטוס והסכומים חושבו מהקובץ ב-Python.</div>
+<div class="teach"><b>🎓 למרצה:</b> חלק מהתשובות כאן תלויות במחשב של כל אחד, ולכן חשוב לבקש מהסטודנטים לרשום מה הם רואים. השמות Text File Properties..., Character set, Field separator, Locale ו-UTF-8 מופיעים בקבצי התוכנה. <b>נשאר פתוח, לבדוק לפני השיעור:</b> איך נראות כותרות עם סוגריים ו-₪ ו-% בגריד וברשימת השדות; האם <code>שנה</code> מגיעה כמדד; איך נראה שם שדה בעברית בתוך סוגריים מרובעים בעורך החישובים; מהו Character set כברירת מחדל ב-Text File Properties ואילו קידודים מוצעים; האם בגרסה שלכם יש תמיכה ב-BOM; מה יוצא מ-PDF העברית. אין להבטיח בכיתה מה יקרה. המספרים של שורת הסטטוס והסכומים חושבו מהקובץ ב-Python.</div>
 </section>
 <section class="sec" id="m2-6" data-t="ניקוי ושינוי צורה">
 <div class="sec-h"><div class="sec-n">6</div><h2>ניקוי ושינוי צורה: Data Interpreter, Pivot, Split ו-Union</h2></div>
 <p class="lead">יבגני מעביר לכם קובץ שנראה כמו דוח: כותרת גדולה למעלה, הערה, תאים ממוזגים. בני אדם מבינים אותו מיד. Tableau לא. בסעיף הזה נראה איך הופכים קובץ כזה לטבלה, ובאילו כלים.</p>
 
-<div class="box note"><p><b>בדקו אם זמין אצלכם.</b> Data Interpreter, Pivot, Union ו-Split קיימים בגרסאות המורשות של Tableau Desktop. התיעוד של Public לא מפרט אותם במפורש, ולכן שום תרגיל חובה כאן לא תלוי בהם. מה שעובד בוודאות ב-Public: לנקות את הקובץ במקור (Excel, Google Sheets או קוד Python), ושדות מחושבים כמו <code>SPLIT</code> ו-<code>DATEPARSE</code>. לכל כלי מופיע כאן גם הדרך שמובטחת. אם הכלי זמין לכם, מצוין, תנסו אותו כתרגיל רשות.</p></div>
+<div class="box note"><p><b>מה ראינו בתוכנה, ומה עוד לא.</b> בדף ה-Data Source של Tableau Public, עם קובץ טקסט, יש בצד שמאל את התיבה <code>Use Data Interpreter</code> ואת <code>New Union</code> (ראו את הצילום בסעיף 3). לכן את שניהם לומדים כאן כרגיל, עם תרגיל. <code>Pivot</code> ו-<code>Split</code> מופיעים בקבצי התוכנה, אבל לא ראינו אותם בפעולה ב-Public: בדקו בגרסה שלכם, ושום תרגיל חובה לא תלוי בהם. מה שעובד תמיד: לנקות את הקובץ במקור (Excel, Google Sheets או קוד Python), ושדות מחושבים כמו <code>SPLIT</code> ו-<code>DATEPARSE</code>.</p></div>
 
 <h3>קובץ מבולגן: מה Data Interpreter עושה</h3>
-<div class="defline"><b>Data Interpreter:</b> כלי ש-Tableau מפעיל על גיליון Excel מבולגן, ומנסה לנחש איפה הטבלה האמיתית שלו: מדלג על כותרת, הערות והערות שוליים, ומפרק תאים ממוזגים. דוגמה: מתחת לרשימת הגיליונות מופיעה תיבה בשם <code>Use Data Interpreter</code>.</div>
+<div class="defline"><b>Data Interpreter:</b> כלי ש-Tableau מפעיל על קובץ מבולגן (גיליון Excel, קובץ טקסט ועוד), ומנסה לנחש איפה הטבלה האמיתית שלו: מדלג על כותרת, הערות והערות שוליים, ומפרק תאים ממוזגים. דוגמה: בצד שמאל של דף ה-Data Source, תחת <code>Files</code>, מופיעה התיבה <code>Use Data Interpreter</code>, ומתחתיה ההערה &quot;Data Interpreter might be able to clean your Text file workbook.&quot;</div>
 <p>סמנו את התיבה בהדמיה וראו אילו שורות נשארות. ההדמיה מראה את העיקרון, ולא את מה ש-Tableau עושה בדיוק בכל קובץ.</p>
 
 <div class="sim" data-id="m2-sim-di"><div class="sh">Data Interpreter: לפני ואחרי (הדמיה סכמטית)</div>
@@ -562,15 +559,33 @@ print(df["היקף מכירות (₪)"].min())   # -221.21</pre>
 <tr><td>דרום</td><td>25,656.9</td><td>29,918.5</td></tr>
 <tr data-j="1"><td colspan="3">* הנתונים לפני החזרות</td></tr>
 </tbody></table></div>
-<div class="out" id="m2-di-out">בלי Data Interpreter: Tableau רואה 9 שורות, והשורה הראשונה (הכותרת הגדולה) היא שמות השדות.</div></div>
+<div class="out" id="m2-di-out">בלי Data Interpreter: Tableau רואה 9 שורות, והשורה הראשונה (הכותרת הגדולה) היא שמות השדות.</div>
+<div class="row"><button type="button" class="btn sec2" id="m2-di-dl">הורדת אותה טבלה כקובץ: messy_region_report.csv</button><span id="m2-di-dlo"></span></div></div>
 <script>(function(){ FL.dom(function(){
   var cb=FL.$('#m2-di-cb'), out=FL.$('#m2-di-out'), t=FL.$('#m2-di-t');
   function r(){ var on=cb.checked; FL.$$('tr[data-j]',t).forEach(function(tr){ tr.style.opacity=on?'.25':'1'; tr.style.textDecoration=on?'line-through':'none'; });
     out.textContent=on?'עם Data Interpreter: הכותרת, ההערה, השורה הריקה והערת השוליים מדולגות. הטבלה האמיתית היא שורת הכותרת ו-4 שורות נתונים.':'בלי Data Interpreter: Tableau רואה 9 שורות, והשורה הראשונה (הכותרת הגדולה) היא שמות השדות.';
     if(on) FL.done('m2-sim-di'); }
   cb.addEventListener('change',r);
+  var dlb=FL.$('#m2-di-dl'), dlo=FL.$('#m2-di-dlo');
+  dlb.addEventListener('click',function(){
+    var csv='Sales by region,,\nAs of 31.12.2025 (draft),,\n,,\nRegion,2024,2025\nCenter,52302.8,68102.7\nJerusalem,16105.9,17344.9\nNorth,12982.0,14407.2\nSouth,25656.9,29918.5\n* before returns,,\n';
+    var a=document.createElement('a'); a.className='tool'; a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download='messy_region_report.csv'; a.textContent='messy_region_report.csv'; a.style.margin='4px';
+    dlo.innerHTML=''; dlo.appendChild(a); a.click(); });
 }); })();</script>
-<p>הדרך שמובטחת ב-Public: פותחים את הקובץ באקסל ומוחקים את שורות הכותרת וההערה, מבטלים תאים ממוזגים וכותבים את הכותרות בשורה הראשונה. זה קל, ואז הקובץ נקי לכל כלי.</p>
+<p>הדרך שעובדת תמיד: פותחים את הקובץ באקסל ומוחקים את שורות הכותרת וההערה, מבטלים תאים ממוזגים וכותבים את הכותרות בשורה הראשונה. זה קל, ואז הקובץ נקי לכל כלי.</p>
+
+<div class="box try" data-id="m2-try-interpreter">
+<p><b>תרגיל: Data Interpreter על קובץ שנראה כמו דוח</b></p>
+<ol>
+<li>בהדמיה למעלה לחצו על הכפתור והורידו את <span class="n">messy_region_report.csv</span>. זו אותה טבלה, באנגלית: כותרת, הערה, שורה ריקה, ארבעה אזורים והערת שוליים. <em>למה: קובץ שבני אדם קוראים בקלות ו-Tableau לא.</em></li>
+<li>פתחו חוברת חדשה לניסוי (<code>File</code> ואז <code>New</code>), וחברו את הקובץ דרך <code>Text file</code>. <em>למה: זה ניסוי, ולכן חוברת שלא שומרים. חוברת הקורס נשארת נקייה.</em></li>
+<li>קראו את שורת הסיכום מעל הגריד ואת שמות העמודות. <em>למה: כך רואים מה Tableau הבינה לבד, בלי עזרה.</em></li>
+<li>סמנו את <code>Use Data Interpreter</code> בצד שמאל, וקראו שוב את שורת הסיכום ואת שמות העמודות. <em>למה: לראות מה הכלי ניקה.</em></li>
+<li>השוו לטבלה הנקייה שחישבנו מראש. <em>למה: הכלי מנחש, ואתם אלה שבודקים.</em></li>
+</ol>
+<p><b>תוצאה צפויה:</b> לפני הסימון, השורה הראשונה (<span class="n">Sales by region</span>) הופכת לשם של עמודה, והשורות של ההערה והשוליים נכנסות לגריד כאילו הן נתונים. הטבלה הנקייה, שאליה צריך להגיע: <span class="n">3 fields 4 rows</span>, עם העמודות <span class="n">Region</span>, <span class="n">2024</span> ו-<span class="n">2025</span>. סכום העמודה 2024 הוא <span class="n">107,047.6</span> וסכום 2025 הוא <span class="n">129,773.3</span>, בדיוק כמו בכל הקובץ של Scoop &amp; Go. אם Data Interpreter הגיע לזה, מצוין. אם לא, תקנו את הקובץ בעורך טקסט או באקסל: מחקו את שלוש השורות הראשונות ואת האחרונה, שמרו, ובדף ה-Data Source טענו מחדש. גם אז התוצאה חייבת להיות <span class="n">3 fields 4 rows</span>. סגרו את החוברת בלי לשמור.</p>
+</div>
 
 <div class="box trap"><p><b>PivotTable של אקסל אינה Pivot של Tableau.</b> התיעוד אומר ש-Tableau לא תומך ב-PivotTable של אקסל (הטבלה הדינמית עם Row Labels ו-Grand Total). אם הקובץ שקיבלתם הוא כזה, מעתיקים את הערכים לגיליון חדש (<code>Paste Special &gt; Values</code>) וטוענים אותו. ה-Pivot של Tableau הוא דבר אחר, וגם הוא לא קשור לטבלה דינמית: הוא מחליף עמודות בשורות, ונראה אותו עכשיו.</p></div>
 
@@ -582,7 +597,7 @@ print(df["היקף מכירות (₪)"].min())   # -221.21</pre>
 <ol class="caps">
 <li>טבלה רחבה: כל שנה היא עמודה משלה. אלה המכירות האמיתיות של Scoop &amp; Go לפי אזור ושנה.</li>
 <li>בוחרים את שתי עמודות השנים. הן אלה שהופכות לשורות.</li>
-<li>Pivot: Tableau (בגרסאות המורשות) יוצר שני שדות חדשים, אחד לשם העמודה (כאן Year) ואחד לערך (כאן Sales).</li>
+<li>Pivot: Tableau יוצר שני שדות חדשים, אחד לשם העמודה (כאן Year) ואחד לערך (כאן Sales). את הכלי עצמו לא ראינו בפעולה ב-Public, ולכן בדקו אם הוא קיים אצלכם.</li>
 <li>טבלה ארוכה: 4 אזורים כפול 2 שנים הם 8 שורות. כעת Year הוא ממד שאפשר לצבוע, לסנן ולהשוות.</li>
 </ol></div>
 
@@ -657,16 +672,20 @@ print(df["היקף מכירות (₪)"].min())   # -221.21</pre>
 <li>שני קבצים עם אותן 16 עמודות: מכירות 2024 (2,898 שורות) ומכירות 2025 (3,677 שורות).</li>
 <li>Union: Tableau מצמיד אותם זה מתחת לזה.</li>
 <li>התוצאה היא טבלה אחת עם 6,575 שורות. שמות העמודות והסוגים צריכים להתאים.</li>
-<li>בגרסאות המורשות נוסף שדה בשם Table Name שאומר מאיזה קובץ הגיעה כל שורה. 2,898 ועוד 3,677 הם בדיוק 6,575.</li>
+<li>Tableau מוסיפה שדה בשם Table Name שאומר מאיזה קובץ הגיעה כל שורה. 2,898 ועוד 3,677 הם בדיוק 6,575.</li>
 </ol></div>
 
 <div class="box try" data-id="m2-try-union">
-<p><b>תרגיל רשות: רק אם יש לכם Union.</b> הדרך שמובטחת ב-Public היא לטעון את הקובץ השלם <span class="n">scoop_sales_2024_2025.csv</span>.</p>
+<p><b>תרגיל: מאחדים שני קבצים עם New Union</b></p>
 <ol>
-<li>בהדמיה של שינוי הצורה לחצו על <b>שני קבצים: 2024 ו-2025</b>, והורידו את שניהם. <em>למה: יש לכם שני קבצים שאתם רוצים לאחד.</em></li>
-<li>ב-Tableau טענו את <span class="n">scoop_2024.csv</span>. גררו את <span class="n">scoop_2025.csv</span> אל האפשרות <code>New Union</code> בקנבס (אם היא קיימת). <em>למה: כך מצמידים את הקבצים.</em></li>
+<li>בהדמיה של שינוי הצורה לחצו על <b>שני קבצים: 2024 ו-2025</b>, והורידו את שניהם לאותה תיקייה. <em>למה: Union מאחד קבצים מאותו חיבור, ובקובץ טקסט החיבור הוא התיקייה.</em></li>
+<li>פתחו חוברת חדשה לניסוי (<code>File</code> ואז <code>New</code>), בחרו <code>Text file</code> ואת <span class="n">scoop_2024.csv</span>. <em>למה: ניסוי, בלי לשמור.</em></li>
+<li>בקנבס, הסירו את <span class="n">scoop_2024.csv</span> (קליק ימני עליו ו-<code>Remove</code>, או גרירה החוצה). <em>למה: האיחוד יחליף אותו, ולא יעמוד לידו.</em></li>
+<li>בצד שמאל, תחת <code>Files</code>, רואים את שני הקבצים, ובתחתית הרשימה את <code>New Union</code>. לחצו עליו פעמיים. <em>למה: כך נפתח חלון האיחוד.</em></li>
+<li>גררו אל החלון את <span class="n">scoop_2024.csv</span> ואחריו את <span class="n">scoop_2025.csv</span>, ולחצו <code>OK</code>. <em>למה: כך הם מוצמדים זה מתחת לזה.</em></li>
+<li>קראו את שורת הסיכום. אחר כך ב-<code>Sheet 1</code> גררו את <code>Table Name</code> אל <code>Rows</code> ולחצו פעמיים על שדה הספירה. <em>למה: בודקים שכל השורות הגיעו, ומאיזה קובץ כל אחת.</em></li>
 </ol>
-<p><b>תוצאה צפויה:</b> <span class="n">6575 rows</span>. אם יש לכם שדה <code>Table Name</code>, ספירה לפיו נותנת 2,898 ו-3,677.</p>
+<p><b>תוצאה צפויה:</b> <span class="n">6575 rows</span>, ו-17 שדות: 16 העמודות של הקבצים ועוד <code>Table Name</code>. בגיליון: <span class="n">scoop_2024.csv</span> עם <b>2,898</b> שורות ו-<span class="n">scoop_2025.csv</span> עם <b>3,677</b>. אם יצא מספר אחר, אחד הקבצים לא נכנס לחלון, או ששמות העמודות לא זהים. סגרו בלי לשמור: בקורס ממשיכים עם הקובץ השלם <span class="n">scoop_sales_2024_2025.csv</span>.</p>
 </div>
 
 <div class="box meaning"><p>שלושה כלים, ושלוש שאלות שונות. Pivot עונה על ״איך הופכים עמודות של שנים לשדה אחד של שנה״. Union עונה על ״איך מאחדים שני קבצים של אותה טבלה״. Split עונה על ״איך מוציאים חלק מתוך טקסט״. מי שמבלבל ביניהם גורם לנתונים להיראות תקינים ולהיות שגויים, ולכן כל אחד מהם בא עם בדיקה: מספר השורות אחרי.</p></div>
@@ -688,7 +707,7 @@ print(df["היקף מכירות (₪)"].min())   # -221.21</pre>
 <button class="opt">6,575, הסכום של שניהם</button>
 <div class="why">Union מצמיד שורות, לכן הסכום. אם מספר השורות אחרי איחוד שונה מהסכום, משהו לא התאים: שמות עמודות, סוגים או גיליון חסר.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> <b>לבדוק לפני השיעור (לא נבדק בתוכנה):</b> האם Public מציג תיבת Use Data Interpreter, ובאילו קבצים; האם אפשרות Pivot זמינה בתפריט של עמודות בגריד ושמות השדות Pivot Field Names ו-Pivot Field Values; האם New Union קיים בקנבס של קבצי טקסט, ואם שדה Table Name נוצר. התרגילים החובה לא תלויים בכל אלה: הקבצים נוצרים בדפדפן ונטענים כרגיל, ו-SPLIT הוא שדה מחושב שקיים ב-Public. אפשר להסביר את ההבדל בין Union ל-Join בשורה: Union מוסיף שורות, Join מוסיף עמודות. המספר 21,618,600 הוא 6,575 כפול 6,576 חלקי 2.</div>
+<div class="teach"><b>🎓 למרצה:</b> בצילום מ-2026.2.3, עם קובץ טקסט, רואים את Use Data Interpreter (עם ההערה על Text file) ואת New Union בצד שמאל, ולכן שני התרגילים שלהם הם חובה. <b>נשאר פתוח, לבדוק פעם אחת לפני השיעור:</b> מה בדיוק Data Interpreter עושה ל-messy_region_report.csv (אם הוא לא מנקה, התרגיל כבר מוביל לתיקון בקובץ); שהחלון שנפתח בלחיצה כפולה על New Union מקבל גרירה של שני הקבצים, ושנוצר Table Name ולא עוד שדה; והאם Pivot ו-Custom Split... זמינים בתפריט של עמודות בגריד (השמות קיימים בקבצי התוכנה). התרגילים החובה לא תלויים בכל אלה: הקבצים נוצרים בדפדפן ונטענים כרגיל, ו-SPLIT הוא שדה מחושב שקיים ב-Public. אפשר להסביר את ההבדל בין Union ל-Join בשורה: Union מוסיף שורות, Join מוסיף עמודות. המספר 21,618,600 הוא 6,575 כפול 6,576 חלקי 2.</div>
 </section>
 <section class="sec" id="m2-7" data-t="שמות, הסתרה ותפקידים">
 <div class="sec-h"><div class="sec-n">7</div><h2>שמות, הסתרה, תפקידים גיאוגרפיים ומאפייני ברירת מחדל</h2></div>

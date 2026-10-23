@@ -291,7 +291,7 @@ var D={"ORD":[[1,"2026-03-02",19,"app","delivered",1,37,13,4],[2,"2026-03-04",13
 <p>כל תרגיל ב-Tableau כאן רץ ב-Tableau Public בלבד, מתוך קובץ או מגיליון בגוגל דרייב. כשמשהו קיים רק בגרסאות המורשות, הוא מסומן במפורש &quot;לא זמין ב-Tableau Public: ככה עובדים סביב זה&quot;.</p>
 </div>
 
-<div class="teach"><b>🎓 למרצה:</b> המודול הזה הוא הגשר בין שיעור ה-SQL לבין Tableau Public. הציר: הנתונים נולדים במסד, Public קורא רק קבצים וגיליון בגוגל, ולכן בונים גשר ומחליטים בו מה יוצא החוצה. כל המספרים בתוצאות הצפויות חושבו בפייתון (sqlite3 על עותק של <code>yevgeni-sqlite.sql</code>); Tableau עשוי לעגל אחרת בתוויות. מה שלא אומת בתוכנה מסומן בהערות &quot;לבדוק לפני השיעור&quot;: פתיחת קובץ <code>.hyper</code> ב-Public, תפריט Connect &gt; More..., מחבר JSON על קובץ שטוח, יצירת Join בין שני קובצי טקסט, וכל מה שדורש חשבון גוגל. הסעיף האחרון הוא ידע, לא תרגיל.</div>
+<div class="teach"><b>🎓 למרצה:</b> המודול הזה הוא הגשר בין שיעור ה-SQL לבין Tableau Public. הציר: הנתונים נולדים במסד, Public קורא רק קבצים וגיליון בגוגל, ולכן בונים גשר ומחליטים בו מה יוצא החוצה. כל המספרים בתוצאות הצפויות חושבו בפייתון (sqlite3 על עותק של <code>yevgeni-sqlite.sql</code>); Tableau עשוי לעגל אחרת בתוויות. מה שנבדק מול התוכנה המותקנת (Tableau Public 2026.2.3) כתוב בדף כעובדה: חלונית Connect עם ששת מחברי הקבצים, החלונית Data שכותרתה <code>Tables</code>, שדה הספירה שנקרא על שם הקובץ, מחבר Google Drive שמסומן בתוכנה כזמין ב-Public, תיבת <code>Keep my data in sync with the data source and embed my credentials</code> בחלון השמירה ל-Public, וההודעות של Public על Custom SQL, מסנני משתמש וסקריפטים. מה שעוד פתוח (המקום של Google Drive בתוך More..., פתיחת <code>.hyper</code>, חלון הרמות של JSON, Join בין שני קובצי טקסט, Request Update באתר, BOM) מרוכז ברשימת הבדיקה לפני הקורס ב<a href="module19.html#m19-9">מודול 19</a>. הסעיף האחרון הוא ידע, לא תרגיל.</div>
 
 <section class="sec" id="m15-1" data-t="איפה הנתונים גרים">
 <div class="sec-h"><div class="sec-n">1</div><h2>איפה הנתונים גרים, ואיך הם מגיעים אליכם</h2></div>
@@ -414,7 +414,7 @@ var D={"ORD":[[1,"2026-03-02",19,"app","delivered",1,37,13,4],[2,"2026-03-04",13
 <div class="sec-h"><div class="sec-n">2</div><h2>מה Tableau Public קורא, ומה לא</h2></div>
 <p class="lead">פתחתם את Tableau Public ורוצים לחבר את המסד של יבגני. אתם פותחים את חלונית Connect ומחפשים את PostgreSQL. תראו מה באמת יש שם.</p>
 
-<figure class="shot"><img src="img/connect-pane.png" alt="חלונית Connect של Tableau Public: קבוצת To a File עם Microsoft Excel, Text file, JSON file, PDF file, Spatial file ו-Statistical file, וקבוצת To a Server עם OData ו-More"><figcaption>החלונית <code>Connect</code> בתוכנה עצמה. בקבוצה <code>To a File</code> יש רק קבצים, ובקבוצה <code>To a Server</code> יש <code>OData</code> ו-<code>More...</code>. אין שורה של PostgreSQL, MySQL או BigQuery. לפי התיעוד הרשמי, מחבר <code>Google Drive</code> נמצא תחת <code>More...</code>. בגרסה שלכם ייתכן שהסדר שונה מעט.</figcaption></figure>
+<figure class="shot"><img src="img/connect-pane.png" alt="חלונית Connect של Tableau Public: קבוצת To a File עם Microsoft Excel, Text file, JSON file, PDF file, Spatial file ו-Statistical file, וקבוצת To a Server עם OData ו-More"><figcaption>החלונית <code>Connect</code> בתוכנה עצמה. בקבוצה <code>To a File</code> יש רק קבצים, ובקבוצה <code>To a Server</code> יש <code>OData</code> ו-<code>More...</code>. אין שורה של PostgreSQL, MySQL או BigQuery. המחבר <code>Google Drive</code> זמין ב-Public (ברשימת המחברים של התוכנה הוא מסומן ככזה), ולפי התיעוד הרשמי הוא ברשימה שנפתחת מ-<code>More...</code>.</figcaption></figure>
 
 <p>זה לא בעיה של התקנה. זה תכנון של התוכנה. לפי השאלות והתשובות הרשמיות של Tableau Public, היא תומכת רק בנתונים שנשמרים כ-extract, ולא בחיבורים חיים. הרשימה הרשמית של מה שאפשר לחבר: קבצי Excel, קבצי טקסט (CSV ודומיו), JSON, PDF, קבצים גאוגרפיים, קבצים סטטיסטיים, ושני מחברים: Google Drive ו-OData. אין שם מסדי נתונים בכלל.</p>
 
@@ -465,7 +465,7 @@ var D={"ORD":[[1,"2026-03-02",19,"app","delivered",1,37,13,4],[2,"2026-03-04",13
 }); })();
 </script>
 
-<div class="box trap"><p><b>רשימות ישנות מטעות.</b> בדף המפרט הרשמי של Tableau עדיין מופיעים Google Sheets כמחבר נפרד ו-Web Data Connector. שניהם מיושנים: המחבר הנפרד של גוגל שיטס הוצא משימוש ב-2023, וגיליונות בוחרים היום דרך Google Drive, ו-Web Data Connector 2.0 פרש. <b>מה עושים:</b> מסתמכים על החלונית שבתוכנה, ועל השאלות והתשובות של Tableau Public, ולא על רשימה שמצאתם בבלוג. בגרסה שלכם ייתכן שהשם שונה מעט.</p></div>
+<div class="box trap"><p><b>רשימות ישנות מטעות.</b> בדף המפרט הרשמי של Tableau עדיין מופיעים Google Sheets כמחבר נפרד ו-Web Data Connector. שניהם מיושנים: המחבר הנפרד של גוגל שיטס הוצא משימוש ב-2023, וגיליונות בוחרים היום דרך Google Drive, ו-Web Data Connector 2.0 פרש. <b>מה עושים:</b> מסתמכים על החלונית שבתוכנה, ועל השאלות והתשובות של Tableau Public, ולא על רשימה שמצאתם בבלוג.</p></div>
 
 <h3>מה קורה אחרי הפרסום: הנפשה</h3>
 <div class="anim" data-id="m15-anim-extract" data-speed="3400">
@@ -515,11 +515,11 @@ var D={"ORD":[[1,"2026-03-02",19,"app","delivered",1,37,13,4],[2,"2026-03-04",13
 <ol>
 <li>העתיקו את <code>yevgeni_dishes.csv</code> לתיקייה חדשה ושנו את שם ההעתק ל-<code>dishes_demo.csv</code>. למה: משנים רק העתק, והקובץ המקורי של הקורס נשאר שלם.</li>
 <li>ב-Tableau Public: <code>Connect</code>, אחר כך <code>Text file</code>, ובחרו את ההעתק. בגיליון 1 גררו <code>name</code> ל-<code>Rows</code> ו-<code>price</code> ל-<code>Columns</code>. למה: גרף עמודות פשוט של מחירי המנות.</li>
-<li>פרסמו עם <code>Save to Tableau Public As...</code> בשם <code>dishes demo</code>. בגרסה שלכם ייתכן שהתפריט או השם שונים מעט.</li>
+<li>פרסמו: <code>File</code> ואז <code>Save to Tableau Public As...</code>. בחלון <code>Save Workbook to Tableau Public</code> כתבו בשדה <code>Workbook Title</code> את השם <code>dishes demo</code> ולחצו <code>Save</code>. למה: נוצר ויז חדש בפרופיל, וחוברת הקורס שלכם לא משתנה.</li>
 <li>פתחו את <code>dishes_demo.csv</code> בעורך טקסט או באקסל, שנו את המחיר של סלמון בתנור מ-89 ל-95 ושמרו. למה: מדמים שינוי במקור אחרי הפרסום.</li>
 <li>רעננו את דף הדשבורד המפורסם בדפדפן.</li>
 </ol>
-<p><b>תוצאה צפויה:</b> בגרף, ליד סלמון בתנור, עדיין מופיע 89. השינוי נמצא רק בקובץ שלכם. כדי שיופיע 95, פתחו את חוברת העבודה, רעננו את מקור הנתונים (בתפריט <code>Data</code>, הפקודה <code>Refresh Data Source</code>, בגרסה שלכם ייתכן שהשם שונה) ופרסמו שוב. המחירים של המנות האחרות לא משתנים.</p></div>
+<p><b>תוצאה צפויה:</b> בגרף, ליד סלמון בתנור, עדיין מופיע 89. השינוי נמצא רק בקובץ שלכם. כדי שיופיע 95, פתחו את חוברת העבודה, רעננו את מקור הנתונים (<code>Data</code> ואז <code>Refresh Data Source</code>) ופרסמו שוב עם <code>File</code> ואז <code>Save to Tableau Public...</code>, כדי לעדכן את אותו ויז. המחירים של המנות האחרות לא משתנים.</p></div>
 
 <div class="box meaning"><p>ב-Public אין &quot;מעודכן לעכשיו&quot;. יש רק &quot;מעודכן לרגע הפרסום&quot; (או לריענון האחרון של גיליון בגוגל). זה לא פגם בתוכנה, זו הדרך שבה היא עובדת, ולכן כל דשבורד שאתם מפרסמים צריך לומר מאיזה תאריך הנתונים שלו. בסעיף 8 תוסיפו שורה כזאת.</p></div>
 
@@ -542,7 +542,7 @@ var D={"ORD":[[1,"2026-03-02",19,"app","delivered",1,37,13,4],[2,"2026-03-04",13
 <div class="box think" data-id="m15-th-public"><p>ב-Public אין מחבר למסד נתונים ואין חיבור חי. תנסו להסביר, בהיגיון ולא בציטוט: מה היה יכול להשתבש אילו כל צופה בדשבורד ציבורי היה מפעיל שאילתה על מסד של מישהו?</p>
 <div class="ans">כל צופה בעולם היה שולח שאילתות למסד של המחבר: עומס, סיסמה שצריכה לעמוד איפשהו, ופתח לנתונים שלא נועדו לציבור. Extract פותר את שלושתם: אין שאילתה למסד, אין סיסמה, ומה שיוצא הוא מה שבחרתם. (זה היגיון, לא הסבר רשמי של Tableau.) המחיר הוא שהנתונים לא חיים.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> לפני השיעור פתחו את Tableau Public ותראו את חלונית Connect. לחצו על <code>More...</code> כדי לוודא שמחבר Google Drive שם. לפי המחקר הוא אמור להיות שם, אבל התפריט הזה לא נבדק מול העין. לפי התיעוד הרשמי, ריענון אוטומטי תקף רק לגיליונות גוגל, ולכן &quot;OData מתרענן?&quot; הוא ניחוש: אל תתחייבו. את תרגיל הצילום אפשר להדגים בעצמכם על מסך אחד, בלי שהסטודנטים מפרסמים. הפקודה <code>Refresh Data Source</code> ושם התפריט לבדוק בגרסה שמותקנת.</div>
+<div class="teach"><b>🎓 למרצה:</b> הראו את חלונית Connect בתוכנה (הצילום בסעיף זהה לה). Google Drive מסומן ברשימת המחברים של התוכנה כזמין ב-Public, והפקודה <code>Data</code> ואז <code>Refresh Data Source</code> קיימת בתפריט. פתוח: המקום המדויק של Google Drive בתוך <code>More...</code> (לחצו עליו פעם אחת לפני השיעור). לפי התיעוד הרשמי ריענון אוטומטי תקף רק לגיליונות גוגל, ולכן &quot;OData מתרענן?&quot; הוא ניחוש: אל תתחייבו. את תרגיל הצילום אפשר להדגים בעצמכם על מסך אחד, בלי שהסטודנטים מפרסמים.</div>
 </section>
 
 <section class="sec" id="m15-3" data-t="מ-SQL לקובץ">
@@ -683,7 +683,7 @@ GROUP BY d.id, d.name, d.category
 ORDER BY revenue DESC;
 .output stdout
 .quit</pre>
-<p class="m15-note-sm">הקובץ שיוצא כאן הוא UTF-8 בלי BOM. אם בטעינה ל-Tableau העברית נראית ג׳יבריש, בחרו קידוד UTF-8 באפשרויות של קובץ הטקסט בעמוד Data Source (שם האפשרות בגרסה שלכם עשוי להיות שונה).</p>
+<p class="m15-note-sm">הקובץ שיוצא כאן הוא UTF-8 בלי BOM. אם בטעינה ל-Tableau העברית נראית ג׳יבריש, בעמוד Data Source פתחו את החץ של הטבלה, בחרו <code>Text File Properties...</code>, ובשדה <code>Character set</code> בחרו UTF-8.</p>
 
 <h4>דרך ג: הסימולטור</h4>
 <div class="sim" data-id="m15-sim-sql"><div class="sh">מריצים שאילתה ומקבלים קובץ CSV</div>
@@ -756,7 +756,7 @@ ORDER BY revenue DESC;
 <div class="tws" aria-label="הדמיה סכמטית של התוצאה הצפויה ב-Tableau Public">
 <div class="tws-top"><b>Sheet 1 - Tableau Public</b><span class="tws-btn">Sort Descending</span><span class="tws-btn">Show Mark Labels</span></div>
 <div class="tws-body">
-<div class="tws-data"><h6>Dimensions</h6><div><span class="fld dim"><i>Abc</i>category</span></div><div><span class="fld dim"><i>Abc</i>dish</span></div><h6>Measures</h6><div><span class="fld mea"><i>#</i>gross_profit</span></div><div><span class="fld mea"><i>#</i>revenue</span></div><div><span class="fld mea"><i>#</i>units</span></div></div>
+<div class="tws-data"><h6>Tables</h6><div><span class="fld dim"><i>Abc</i>category</span></div><div><span class="fld dim"><i>Abc</i>dish</span></div><div style="border-top:1px solid #cbd5e1;margin:4px 0"></div><div><span class="fld mea"><i>#</i>gross_profit</span></div><div><span class="fld mea"><i>#</i>revenue</span></div><div><span class="fld mea"><i>#</i>units</span></div><div><span class="fld mea"><i>#</i><em>dish_revenue.csv (Count)</em></span></div></div>
 <div class="tws-main">
 <div class="tws-shelf"><span>Columns</span><span class="pill c sum">revenue</span></div>
 <div class="tws-shelf"><span>Rows</span><span class="pill d">dish</span></div>
@@ -768,11 +768,23 @@ ORDER BY revenue DESC;
 </div>
 <ol class="callouts"><li>הממד <code>dish</code> על <code>Rows</code> והמדד <code>revenue</code> על <code>Columns</code>: מנה בכל שורה.</li><li>הצבע לפי <code>category</code>. הצבעים בתוכנה עשויים להיות שונים מאלה שבהדמיה.</li><li>הערכים הם סכומים מהקובץ: למשל סלמון 3,204 ולימונדה 558.</li></ol>
 
+<div class="box note"><p><b>מה תראו בחלונית Data בתוכנה עצמה.</b> בגרסה הנוכחית אין כותרות <code>Dimensions</code> ו-<code>Measures</code>. הרשימה נקראת <code>Tables</code>: הממדים (<code>category</code>, <code>dish</code>) למעלה, קו דק, והמדדים (<code>gross_profit</code>, <code>revenue</code>, <code>units</code>) מתחתיו. בתחתית יש שדה ספירה ש-Tableau מוסיפה לבד, בנטוי, ושמו הוא שם הקובץ: <code>dish_revenue.csv (Count)</code>. בגרסאות ישנות קראו לו <code>Number of Records</code>. גררו אותו ל-<code>Text</code> וקבלו 10, מספר השורות בקובץ. כך זה נראה על הקובץ של Scoop &amp; Go: <a href="module3.html">מודול 3</a>.</p></div>
+
 <div class="box meaning"><p>הקובץ הוא תוצר של שאלה. הוא לא &quot;הנתונים של יבגני&quot;, הוא התשובה לשאילתה אחת. מי שרוצה לדעת לפי שעה, או לפי עיר, לא ימצא את זה בקובץ הזה. מצד שני, לא היה כאן שום JOIN ב-Tableau: הכול כבר סוכם ונקי. זו הסיבה שהגרף נבנה בשש פעולות.</p></div>
 
 <div class="box trap"><p><b>שני מספרים להכנסות של אותה מסעדה.</b> בחבילת הקורס יש גם <code>yevgeni_fact_sales.csv</code>, וסך ההכנסות שם 13,592. בקובץ שהוצאתם עכשיו הסך 12,884. ההפרש, 708, הוא ההכנסה של 5 הזמנות שבוטלו. השאילתה שלנו כוללת <code>WHERE o.status = 'delivered'</code>, והקובץ השטוח כולל הכול (12 שורות פריט של הזמנות מבוטלות). לחצו בסימולטור שלמעלה על <code>dish_revenue_all.csv</code> ותראו 13,592. <b>מה עושים:</b> כותבים את ההגדרה על הקובץ ועל הדשבורד (&quot;הכנסות מהזמנות שנמסרו&quot;), ובוחרים שם קובץ שמסביר מה בו.</p></div>
 
 <div class="box real"><p>בארגונים אמיתיים השאילתה הזאת שייכת למי שאחראי על הנתונים, ולא למי שבונה את הגרף. אחרת כל אנליסט מגדיר &quot;הכנסה&quot; אחרת. הרעיון של הגדרה אחת לכל מדד נלמד ב<a href="../final-lesson/part4.html#s4-6">חלק 4 של המפגש המסכם</a>. כאן אתם בתפקיד של שניהם, ולכן כתבו את ההגדרה.</p></div>
+
+<div class="box try" data-id="m15-try-course-save"><p><b>חוברת הקורס: מוסיפים את המנות כמקור נתונים שני.</b> לא פותחים חוברת חדשה. מוסיפים את <code>dish_revenue.csv</code> לאותה חוברת, <code>scoop-course.twbx</code>.</p>
+<ol>
+<li>פתחו את חוברת הקורס: <code>File</code> ואז <code>Open...</code> ובחרו <code>scoop-course.twbx</code>. למה: ב-Public יש מגבלה על מספר החוברות החדשות שנשמרות במחשב בתקופה מסוימת, ושמירה חוזרת של אותה חוברת לא פותחת קובץ חדש. אם עוד אין לכם חוברת כזאת, צרו אותה פעם אחת עם <code>File</code> ואז <code>Save As...</code> (<a href="module1.html">מודול 1</a>).</li>
+<li><code>Data</code> ואז <code>New Data Source</code> (בסרגל הכלים: <code>New Data Source</code>, ב-Mac <kbd>⌘D</kbd>), <code>Text file</code>, ובחרו את <code>dish_revenue.csv</code>. למה: חוברת אחת יכולה להחזיק כמה מקורות נתונים. ל-Scoop &amp; Go לא נוגעים.</li>
+<li>פתחו גיליון חדש (<code>New Worksheet</code>), לחצו ימנית על הלשונית שלו, <code>Rename Sheet...</code>, וכתבו <code>M15 Dishes</code>. למה: שם עם מספר המודול עוזר למצוא את הגיליון בסוף הקורס.</li>
+<li>בראש החלונית Data בחרו את מקור הנתונים <code>dish_revenue</code>. גררו <code>dish</code> ל-<code>Rows</code> ו-<code>revenue</code> ל-<code>Columns</code>, ולחצו <code>Sort Descending</code>. למה: אותו גרף כמו בתרגיל הקודם, עכשיו שמור בחוברת.</li>
+<li>שמרו עם <code>File</code> ואז <code>Save</code>, מהתפריט. למה: ב-Mac הקיצור <kbd>⌘S</kbd> שייך ל-<code>Save to Tableau Public...</code> ומעלה לרשת. כאן רוצים לשמור במחשב.</li>
+</ol>
+<p><b>תוצאה צפויה:</b> בראש החלונית Data שני מקורות: <code>scoop_sales_2024_2025</code> ו-<code>dish_revenue</code>. בגיליון <code>M15 Dishes</code> שורת המצב מראה <code>10 marks</code>, <code>10 rows by 1 column</code> ו-<code>SUM(revenue): 12,884</code>. הראשונה סלמון בתנור 3,204, האחרונה לימונדה 558. הגיליונות של המודולים הקודמים עדיין שם, ולא נוצר קובץ חדש במחשב.</p></div>
 
 <div class="quiz" data-id="m15-q-where-status" data-a="2"><p class="qq">הקובץ שהוצאתם מראה הכנסות של 12,884, ו-<code>yevgeni_fact_sales.csv</code> מראה 13,592. מה הסיבה?</p>
 <button class="opt">Tableau מעגל את המספרים בצורה שונה בכל קובץ</button>
@@ -789,7 +801,7 @@ ORDER BY revenue DESC;
 <div class="box think" data-id="m15-th-why-agg"><p>לייצא טבלה מסוכמת של 10 שורות, או לייצא את כל 219 שורות הפריט ולסכם ב-Tableau? מה הצדדים של כל אחת מהדרכים?</p>
 <div class="ans">מסוכם: הקובץ קטן, ההגדרה (&quot;נמסרו בלבד&quot;) נעולה במקום אחד, אין בו עמודות אישיות, והגרף מהיר. פירוט: אפשר לענות על שאלות נוספות בלי לחזור למסד, אבל צריך לסכם נכון ב-Tableau, והקובץ מכיל יותר ממה שרצית לפרסם. אין תשובה אחת. הכלל: מוציאים את הרמה (grain) שהשאלה צריכה, ולא פחות. על זה ממשיכים בסעיף 4.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> מספרים שאומתו בפייתון על עותק של yevgeni-sqlite.sql: 10 שורות, סך 12,884, סלמון 3,204 (36 יחידות), פסטה 1,770, לימונדה 558; בלי WHERE הסך הוא 13,592, וההפרש 708 הוא 5 הזמנות מבוטלות (12 שורות פריט). לפני השיעור לבדוק בתוכנה: שהעמודה dish נקראת כ-Abc, שהצבעים ב-Tableau 10, ושבשורת המצב מופיע הסכום. לבדוק שקידוד UTF-8 עם BOM נקרא נכון ב-Tableau Public (המחקר ממליץ על BOM, אבל לא אימת את Tableau עצמו). לא לתת לסטודנטים לפרסם את הגרף הזה אלא אם הם בחרו בכך.</div>
+<div class="teach"><b>🎓 למרצה:</b> מספרים שאומתו בפייתון על עותק של yevgeni-sqlite.sql: 10 שורות, סך 12,884, סלמון 3,204 (36 יחידות), פסטה 1,770, לימונדה 558; בלי WHERE הסך הוא 13,592, וההפרש 708 הוא 5 הזמנות מבוטלות (12 שורות פריט). עמודות טקסט נקראות כ-Abc, ושורת המצב מציגה סכום (בתוכנה, על Scoop &amp; Go: <code>5 marks</code>, <code>1 row by 5 columns</code>, <code>SUM(Sales): 236,821</code>). פתוח (רשימת הבדיקה במודול 19): איזו פלטת צבעים תופיע, ושקובץ UTF-8 עם BOM נקרא נכון ב-Public (המחקר ממליץ על BOM, אבל לא בדק את Tableau עצמו). לא לתת לסטודנטים לפרסם את הגרף הזה אלא אם הם בחרו בכך.</div>
 </section>
 
 <section class="sec" id="m15-4" data-t="זמני משלוח וגרגר">
@@ -954,8 +966,8 @@ ORDER BY courier, channel, order_hour</pre>
 <ul>
 <li>כל חוברת מתפרסמת עם extract, גם כשהמקור הוא גיליון בגוגל.</li>
 <li>פעם ב-24 שעות Tableau Public מרעננת את מקורות הנתונים שמגיעים מגוגל שיטס. היא מקצה לכל חוברת אחד משלושה חלונות זמן ביום, ואי אפשר לבחור שעה אחרת או תדירות אחרת.</li>
-<li>המחבר יכול לבקש ריענון מיידי עם <code>Request Update</code>.</li>
-<li>בתוכנה (Desktop Public Edition) יש אפשרות בשם <code>Keep this data in sync</code>.</li>
+<li>המחבר יכול לבקש ריענון מיידי באתר, בדף הוויז, עם <code>Request Update</code>.</li>
+<li>בתוכנה, בחלון השמירה לרשת (<code>Save Workbook to Tableau Public</code>), יש תיבת סימון: <code>Keep my data in sync with the data source and embed my credentials</code>. היא מפעילה את הסנכרון.</li>
 <li>לכל מקור נתונים אחר, כמו Excel או CSV, ריענון אוטומטי לא נתמך.</li>
 </ul>
 
@@ -997,10 +1009,10 @@ ORDER BY courier, channel, order_hour</pre>
 <li>המחבר לא חייב לחכות: <code>Request Update</code> מבקש ריענון עכשיו.</li>
 </ol></div>
 
-<p>עכשיו נשחק עם זה על נתונים אמיתיים של יבגני. הגיליון מתחיל עם הימים עד 23 במאי 2026, ויש עוד שש שורות של ימים שמחכות. נסו קודם עם <code>Keep this data in sync</code> מסומן, ואחר כך בלי.</p>
+<p>עכשיו נשחק עם זה על נתונים אמיתיים של יבגני. הגיליון מתחיל עם הימים עד 23 במאי 2026, ויש עוד שש שורות של ימים שמחכות. נסו קודם עם תיבת הסנכרון (<code>Keep my data in sync...</code>) מסומנת, ואחר כך בלי.</p>
 
 <div class="sim" data-id="m15-sim-sheet"><div class="sh">הגיליון בגוגל מול הדשבורד המפורסם</div>
-<div class="m15-btns"><label style="font-weight:700;display:flex;gap:6px;align-items:center"><input type="checkbox" data-k="sync" checked> <span dir="ltr" style="unicode-bidi:isolate">Keep this data in sync</span></label>
+<div class="m15-btns"><label style="font-weight:700;display:flex;gap:6px;align-items:center"><input type="checkbox" data-k="sync" checked> <span dir="ltr" style="unicode-bidi:isolate">Keep my data in sync...</span></label>
 <button type="button" class="btn" data-k="add">יבגני מוסיף יום לגיליון</button>
 <button type="button" class="btn sec2" data-k="day">עברו 24 שעות</button>
 <button type="button" class="btn sec2" data-k="req" dir="ltr">Request Update</button>
@@ -1010,7 +1022,7 @@ ORDER BY courier, channel, order_hour</pre>
 <div><h5>הדשבורד שהצופים רואים</h5><div class="big" data-k="vizTot"></div><div data-k="vizInfo"></div></div>
 </div>
 <div class="out" data-k="msg"></div>
-<p class="m15-note-sm">הדמיה לפי התיעוד, לא לפי התוכנה. אין בה שעות, כי אי אפשר לבחור את שעת הריענון. ההתנהגות של האפשרות <code>Keep this data in sync</code> לפי התיעוד: היא מפעילה את הסנכרון. בדקו את השם והמיקום שלה בגרסה שלכם.</p>
+<p class="m15-note-sm">הדמיה לפי התיעוד, לא לפי התוכנה. אין בה שעות, כי אי אפשר לבחור את שעת הריענון. התיבה המלאה נקראת <code>Keep my data in sync with the data source and embed my credentials</code> והיא בחלון <code>Save Workbook to Tableau Public</code> (השם והמקום נבדקו מול המחרוזות של התוכנה). מה שקורה בלעדיה מתואר כאן לפי התיעוד.</p>
 </div>
 <script>
 (function () { FL.dom(function () {
@@ -1053,16 +1065,16 @@ ORDER BY courier, channel, order_hour</pre>
 <li>הוציאו את <code>daily_revenue.csv</code> (בסקריפט, בדרך ב, או בסימולטור של סעיף 3). למה: זה הקובץ שיהפוך לגיליון.</li>
 <li>בגוגל שיטס צרו גיליון ריק, ובתפריט <code>File</code> בחרו <code>Import</code> והעלו את הקובץ. למה: ככה מתקבל גיליון גוגל אמיתי (ולא קובץ CSV שיושב בדרייב), וזה מה שה-Public מרענן. שמות הכפתורים בממשק של גוגל עשויים להיות שונים.</li>
 <li>בדקו בגיליון: שורת כותרת (<code>order_date</code>, <code>orders</code>, <code>revenue</code>) ו-56 שורות נתונים.</li>
-<li>ב-Tableau Public: <code>Connect</code>, אחר כך <code>More...</code> ובו <code>Google Drive</code>. התחברו לחשבון גוגל ובחרו את הגיליון. בגרסה שלכם ייתכן שהמיקום או השם שונים מעט.</li>
+<li>ב-Tableau Public: <code>Connect</code>, אחר כך <code>More...</code> ובו <code>Google Drive</code>. התחברו לחשבון גוגל ובחרו את הגיליון. למה: Google Drive הוא המחבר היחיד מחוץ לקבצים שמתרענן ב-Public. לפי התיעוד הוא ברשימה של <code>More...</code>.</li>
 <li>בעמוד Data Source: 3 שדות. גררו <code>order_date</code> ל-<code>Columns</code> ובחרו מהתפריט של ה-pill את <code>Exact Date</code>, וגררו <code>revenue</code> ל-<code>Rows</code>. למה: ציר זמן רציף, בלי איחוד לחודשים.</li>
-<li>בפרסום, בחרו את האפשרות <code>Keep this data in sync</code> אם היא מוצעת (פרטי הפרסום במודול 14). בגרסה שלכם ייתכן שהיא נמצאת במקום אחר.</li>
+<li>פרסמו: <code>File</code> ואז <code>Save to Tableau Public As...</code>. בחלון <code>Save Workbook to Tableau Public</code> סמנו <code>Keep my data in sync with the data source and embed my credentials</code> ולחצו <code>Save</code>. למה: לפי התיעוד, בלי התיבה הזאת Public לא חוזרת לגיליון (פרטי הפרסום ב<a href="module14.html">מודול 14</a>).</li>
 </ol>
 <p><b>תוצאה צפויה:</b> 56 סימנים על הקו. הראשון ב-2 במרץ 2026, 110. האחרון ב-31 במאי 2026, 118. היום החזק ביותר הוא 8 במאי, 661 (שלוש הזמנות). סך <code>SUM(revenue)</code> הוא 12,884, וסך ההזמנות 82, בדיוק כמו בקובץ של המנות. את הריענון עצמו אפשר לראות רק אחרי זמן: הוסיפו שורה לגיליון ובדקו את הדשבורד המפורסם למחרת.</p></div>
 
 <figure class="shot" data-shot="m15-connect-drive">
 <div class="fb"><div style="direction:ltr;display:grid;grid-template-columns:200px 1fr;border-radius:10px;overflow:hidden;border:1px solid #c7cfd9;max-width:560px;margin:auto"><div style="background:#365a7c;color:#fff;padding:10px 14px;font-size:.84rem;line-height:1.9"><b style="font-size:1.1rem">Connect</b><br><span style="opacity:.6">To a File</span><br>Microsoft Excel<br>Text file<br>JSON file<br>PDF file<br>Spatial file<br>Statistical file<br><span style="opacity:.6">To a Server</span><br>OData<br>More... ›</div><div style="background:#f9f9f9;padding:10px 14px;font-size:.84rem;line-height:1.9;color:#334155"><b>More...</b><br><span style="background:#d7e7f5;border-radius:4px;padding:0 6px">Google Drive</span><br><span style="opacity:.4">(שאר המחברים בגרסה שלכם)</span></div></div>
 <div class="need">צילום מסך נדרש: Tableau Public, חלונית Connect אחרי לחיצה על More..., עם Google Drive ברשימה</div></div>
-<figcaption>הדמיה סכמטית של מקום המחבר, לפי התיעוד הרשמי. המיקום המדויק לא אומת מול התוכנה, ובגרסה שלכם הוא עשוי להיות שונה.</figcaption>
+<figcaption>הדמיה סכמטית. החלק השמאלי זהה לחלונית האמיתית (הצילום בסעיף 2). המקום של <code>Google Drive</code> בתוך <code>More...</code> מצויר לפי התיעוד הרשמי.</figcaption>
 </figure>
 
 <h3>הגיליון שקורא את הקובץ בעצמו: IMPORTDATA</h3>
@@ -1154,7 +1166,7 @@ ws.update([header] + rows, "A1")</pre>
 <div class="box think" data-id="m15-th-cadence"><p>עם ריענון של פעם ב-24 שעות: לאילו משאלות של יבגני זה מספיק, ולאילו לא? בדקו על שתי שאלות: &quot;איזו מנה מכניסה הכי הרבה השנה?&quot; ו&quot;כמה משלוחים בדרך עכשיו?&quot;</p>
 <div class="ans">לשאלה הראשונה מספיק, ואפילו ריענון שבועי היה עושה את העבודה: המספר זז לאט. לשנייה לא: &quot;עכשיו&quot; פירושו חי, ובקרוב אפילו שעה היא יותר מדי. זו שאלה למערכת תפעולית, לא לדשבורד ציבורי. הכלל: מתאימים את תדירות הנתונים לקצב שבו ההחלטה משתנה.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> התרגילים בסעיף הזה דורשים חשבונות גוגל, GitHub ו-Tableau Public, ולכן הם אופציונליים. מה שלא נבדק בתוכנה, ויש לבדוק לפני השיעור: האם מחבר Google Drive נמצא תחת More...; איפה בדיוק מופיעה האפשרות Keep this data in sync (בחלון השמירה ל-Public או בהגדרות המקור) ומה קורה כשלא מסמנים; האם הכפתור Request Update קיים בממשק הפרסום; האם קובץ CSV או XLSX שבדרייב (לא גיליון) ניתן לחיבור ולריענון. תדירות הריענון של IMPORTDATA לא תועדה בדף של גוגל שנקרא (הנפוץ בקהילה: פעם בשעה, לא מאומת), ולכן לא נבנה עליו דבר. מה שכן נבדק בפועל במחקר: כתובת raw ב-GitHub עונה עם מטמון של עד 5 דקות. סקריפט ה-gspread והדוגמה של GitHub Actions לא הורצו מול שירותים חיים. תפריט File, Import בגוגל שיטס: שמות הכפתורים לא תועדו במחקר. המספרים בתוצאות הצפויות (56 שורות, 12,884, 82 הזמנות, שיא של 661 ב-8 במאי) חושבו מהשאילתה בפייתון.</div>
+<div class="teach"><b>🎓 למרצה:</b> התרגילים בסעיף הזה דורשים חשבונות גוגל, GitHub ו-Tableau Public, ולכן הם אופציונליים. נבדק מול המחרוזות של התוכנה: Google Drive מסומן כמחבר של Public, והתיבה <code>Keep my data in sync with the data source and embed my credentials</code> נמצאת בחלון <code>Save Workbook to Tableau Public</code>. <code>Request Update</code> הוא כפתור באתר, לא בתוכנה. פתוח (ברשימה במודול 19): המקום של Google Drive בתוך More..., מה קורה כשלא מסמנים את התיבה, ואם קובץ CSV או XLSX שבדרייב (לא גיליון) ניתן לחיבור ולריענון. תדירות הריענון של IMPORTDATA לא תועדה בדף של גוגל שנקרא (הנפוץ בקהילה: פעם בשעה, לא מאומת), ולכן לא נבנה עליו דבר. מה שכן נבדק בפועל במחקר: כתובת raw ב-GitHub עונה עם מטמון של עד 5 דקות. סקריפט ה-gspread והדוגמה של GitHub Actions לא הורצו מול שירותים חיים. תפריט File, Import בגוגל שיטס: שמות הכפתורים לא תועדו במחקר. המספרים בתוצאות הצפויות (56 שורות, 12,884, 82 הזמנות, שיא של 661 ב-8 במאי) חושבו מהשאילתה בפייתון.</div>
 </section>
 
 <section class="sec" id="m15-6" data-t="פייתון ו-JSON">
@@ -1223,7 +1235,7 @@ missing if you read only "device": 13</div></div>
 <ol>
 <li>הריצו את הסקריפט. למה: הוא יוצר את <code>app_events_flat.csv</code> ואת <code>app_events_flat.json</code>.</li>
 <li>ב-Tableau Public חברו את <code>app_events_flat.csv</code> כקובץ טקסט. בעמוד Data Source: 7 שדות ו-42 שורות.</li>
-<li>בגיליון: גררו <code>device</code> ל-<code>Rows</code> ו-<code>id</code> ל-<code>Columns</code>, ושנו את <code>SUM(id)</code> ל-<code>Count</code> (לחיצה ימנית על ה-pill, <code>Measure</code>, <code>Count</code>). למה: סכום של מספרי זיהוי לא אומר כלום, אנחנו סופרים אירועים.</li>
+<li>בגיליון: גררו <code>device</code> ל-<code>Rows</code> ו-<code>id</code> ל-<code>Columns</code>, ושנו את <code>SUM(id)</code> ל-<code>Count</code> (לחיצה ימנית על ה-pill, <code>Measure (Sum)</code>, <code>Count</code>). למה: סכום של מספרי זיהוי לא אומר כלום, אנחנו סופרים אירועים. דרך קצרה יותר: במקום <code>id</code> גררו את שדה הספירה שבתחתית החלונית, <code>app_events_flat.csv (Count)</code> (בגרסאות ישנות: <code>Number of Records</code>).</li>
 <li>גררו <code>promo</code> ל-<code>Color</code>.</li>
 </ol>
 <p><b>תוצאה צפויה:</b> שלוש עמודות: android 16, web 14, ios 12, סך הכול 42, בלי עמודת <code>Null</code> עבור המכשיר. הצבע לפי <code>promo</code> מראה 20 אירועים עם קוד מבצע (FRIDAY5 או SPRING10) ו-22 בלי (<code>Null</code>). בחלוקה לפי מכשיר: android 6 עם מבצע ו-10 בלי, ios 5 ו-7, web 9 ו-5.</p></div>
@@ -1231,7 +1243,7 @@ missing if you read only "device": 13</div></div>
 <div class="box try" data-id="m15-try-json">
 <p><b>אותו מידע דרך מחבר ה-JSON (אופציונלי).</b></p>
 <ol>
-<li>ב-Tableau Public: <code>Connect</code>, אחר כך <code>JSON file</code>, ובחרו את <code>app_events_flat.json</code>. למה: זה מחבר רשמי של Public. ייתכן שייפתח חלון לבחירת הרמות של הסכמה (<code>schema</code>). סמנו את הכול. בגרסה שלכם ייתכן שהשם שונה.</li>
+<li>ב-Tableau Public: <code>Connect</code>, אחר כך <code>JSON file</code>, ובחרו את <code>app_events_flat.json</code>. למה: <code>JSON file</code> הוא אחד מששת מחברי הקבצים בחלונית Connect (הצילום בסעיף 2). ייתכן שייפתח חלון לבחירת הרמות של הסכמה (<code>schema</code>). סמנו את הכול.</li>
 <li>בדקו בעמוד Data Source כמה שדות וכמה שורות יש.</li>
 </ol>
 <p><b>תוצאה צפויה:</b> שדות בשמות המפתחות (<code>id</code>, <code>order_id</code>, <code>event_ts</code>, <code>type</code>, <code>device</code>, <code>items</code>, <code>promo</code>) ו-42 שורות, כלומר אותו מידע כמו ב-CSV. Tableau סורק רק את 10,000 השורות הראשונות כדי להבין את המבנה, ולכן בקובץ גדול שדה שמופיע רק בשורה 20,000 עלול לא להיות שם.</p></div>
@@ -1245,6 +1257,9 @@ missing if you read only "device": 13</div></div>
 <tr><td>לסכם</td><td>מילון (<code>defaultdict</code>) שמסכם לפי מפתח, או <code>GROUP BY</code> ב-SQL</td></tr>
 <tr><td>לצרף טבלאות</td><td><code>JOIN</code> ב-SQL (סעיף 3), או מילון</td></tr>
 <tr><td>לתקן תאריכים וטקסט</td><td>פונקציות טקסט של פייתון, וכתיבת תאריך בצורה ISO (<code>2026-05-31</code>)</td></tr>
+<tr><td>לאחד קבצים באותו מבנה (Union)</td><td>בסקריפט: קוראים כמה קבצים וכותבים אחד. וגם ב-Public עצמה: <code>New Union</code> בעמוד Data Source, לקבצי טקסט (נראה בתוכנה, <a href="module11.html">מודול 11</a>)</td></tr>
+<tr><td>לנקות כותרות ושורות מיותרות בקובץ</td><td>בסקריפט: מדלגים על השורות. וגם ב-Public עצמה: תיבת <code>Use Data Interpreter</code> בעמוד Data Source (נראתה בתוכנה, <a href="module2.html">מודול 2</a>)</td></tr>
+<tr><td>להפוך עמודות לשורות (Pivot)</td><td>בסקריפט: <code>melt</code> ב-pandas. הפקודה <code>Pivot</code> קיימת בתפריט העמודות של עמוד Data Source, אבל בדקו אם היא פעילה אצלכם</td></tr>
 </table></div>
 <p>הדוגמה הבאה לוקחת את הקובץ השטוח <code>yevgeni_fact_sales.csv</code> (219 שורות, עם שם הלקוח, העיר והשליח), ומוציאה ממנו קובץ לפרסום: בלי עמודות אישיות, רק הזמנות שנמסרו, ומסוכם לפי תאריך, ערוץ וקטגוריה.</p>
 <pre class="code" data-lang="python">import csv
@@ -1323,7 +1338,7 @@ with HyperProcess(Telemetry.DO_NOT_SEND_USAGE_DATA_TO_TABLEAU) as hyper:
 <div class="box think" data-id="m15-th-python"><p>אתם יכולים לעשות את הניקוי ב-SQL, בסקריפט פייתון, או באקסל. מתי הייתם בוחרים בכל אחד?</p>
 <div class="ans">SQL: כשהנתונים כבר במסד והשאלה היא חיבור וסיכום. פייתון: כשיש צורך במשהו שקשה ב-SQL, כמו פתיחת JSON, כתיבה לכמה קבצים, או שליחה לגיליון בגוגל. אקסל: כשהקובץ קטן, חד-פעמי, ומי שיחזור עליו הוא בן אדם. הקריטריון הוא כמה פעמים זה יחזור ומי צריך להבין מה נעשה.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> מספרים שאומתו בהרצה אמיתית של הסקריפטים: 42 אירועים; android 16, ios 12, web 14; 20 עם מבצע (FRIDAY5 11, SPRING10 9); 13 אירועים בשם device_type; public_sales.csv 147 שורות, 264 יחידות, 12,884 (app 6,180, phone 3,492, walk-in 3,212). לבדוק בתוכנה לפני השיעור: חלון בחירת הרמות של מחבר ה-JSON ושמות השדות שמתקבלים מקובץ שטוח, ופתיחת קובץ .hyper ב-Public דרך More... (המחקר רק ראה שהתוכנה רושמת את הסיומת ושלא נוצרה שגיאה, לא את המסך). סקריפט ה-Hyper API הורץ במחקר על קובץ אחר באותו מבנה, לא על dish_revenue.csv, ולכן להריץ לפני השיעור, ועל מק עם גרסה ישנה יותר של החבילה. אם המכונה לא מסוגלת, מדלגים: זו הרחבה, לא חובה.</div>
+<div class="teach"><b>🎓 למרצה:</b> מספרים שאומתו בהרצה אמיתית של הסקריפטים: 42 אירועים; android 16, ios 12, web 14; 20 עם מבצע (FRIDAY5 11, SPRING10 9); 13 אירועים בשם device_type; public_sales.csv 147 שורות, 264 יחידות, 12,884 (app 6,180, phone 3,492, walk-in 3,212). פתוח (ברשימה במודול 19): חלון בחירת הרמות של מחבר ה-JSON ושמות השדות שמתקבלים מקובץ שטוח, ופתיחת קובץ .hyper ב-Public דרך More... (המחקר רק ראה שהתוכנה רושמת את הסיומת ושלא נוצרה שגיאה, לא את המסך). סקריפט ה-Hyper API הורץ במחקר על קובץ אחר באותו מבנה, לא על dish_revenue.csv, ולכן להריץ לפני השיעור, ועל מק עם גרסה ישנה יותר של החבילה. אם המכונה לא מסוגלת, מדלגים: זו הרחבה, לא חובה.</div>
 </section>
 
 <section class="sec" id="m15-7" data-t="מבנה הנתונים">
@@ -1396,7 +1411,7 @@ order_items 219</div>
 </ol></div>
 
 <div class="box try" data-id="m15-try-fanout">
-<p><b>רואים את הקפיצה ב-Tableau Public.</b> הקבצים הם <a class="tool" href="data/yevgeni_orders.csv">yevgeni_orders.csv</a> ו-<a class="tool" href="data/yevgeni_order_items.csv">yevgeni_order_items.csv</a>. הפעולות המדויקות בעמוד Data Source (איך מגדירים קשר, איך פותחים Join) מפורטות ב<a href="module11.html">מודול 11</a>. בגרסה שלכם ייתכן שהשמות שונים מעט.</p>
+<p><b>רואים את הקפיצה ב-Tableau Public.</b> הקבצים הם <a class="tool" href="data/yevgeni_orders.csv">yevgeni_orders.csv</a> ו-<a class="tool" href="data/yevgeni_order_items.csv">yevgeni_order_items.csv</a>. הפעולות המדויקות בעמוד Data Source (איך מגדירים קשר, איך פותחים Join) מפורטות ב<a href="module11.html">מודול 11</a>. בעמוד Data Source של Public תראו על הקנבס את הרמזים <code>Relate tables</code> ו-<code>Add a base table</code>: גרירה של טבלה שנייה לקנבס יוצרת קשר.</p>
 <ol>
 <li>חברו את <code>yevgeni_orders.csv</code>, וגררו אליו את <code>yevgeni_order_items.csv</code> כך שייווצר <b>קשר</b> (קו בין הטבלאות). הגדירו שהשדה <code>id</code> של ההזמנות תואם ל-<code>order_id</code> של הפריטים. למה: ככה שתי הטבלאות נשארות נפרדות.</li>
 <li>בגיליון גררו את <code>tip</code> ל-<code>Text</code> בכרטיס <code>Marks</code>. התוצאה היא <code>SUM(tip)</code>. רשמו אותה.</li>
@@ -1447,7 +1462,7 @@ order_items 219</div>
 <div class="box think" data-id="m15-th-flat"><p>הקובץ השטוח <code>yevgeni_fact_sales.csv</code> כולל את שם הלקוח ואת העיר בכל אחת מ-219 השורות. מה היתרון של זה, ומה החיסרון?</p>
 <div class="ans">יתרון: אפשר לחבר ולצייר מיד, בלי להבין חיבורים. חיסרון: פרטים כפולים בכל שורה (גודל, ושינוי שם דורש הרבה שורות), פרטים אישיים שיוצאים עם הקובץ אם מפרסמים אותו, ואי אפשר להכניס בבטחה מדדים של ההזמנה. לכן לפני פרסום מורידים עמודות (סעיף 6 ו-9), או עוברים לקשרים.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> מספרים שאומתו בפייתון: 87 הזמנות, 219 שורות פריט, 18 לקוחות, 10 מנות, 3 שליחים; SUM(tip) 209 לפני החיבור ו-517 אחריו (על 219 שורות); 29 הזמנות עם תשר; הזמנה 12 עם תשר 10 וארבע שורות פריט; Inner Join בין הזמנות ללקוחות משאיר 67 הזמנות (19 בלי לקוח, אחת עם לקוח 99), והכנסה של 10,880 מול 13,592. לבדוק בתוכנה לפני השיעור: איך מגדירים שדות תואמים בשמות שונים בעמוד Data Source (id מול order_id), איך פותחים Join בתוך הטבלה, ושמספר השורות בעמוד Data Source הוא 219. הפעולות האלה מתועדות רשמית ב-Desktop, אבל הדף לא מציין את Public. מסמך הרקע סימן אותן &quot;נראה אפשרי, לא נבדק בממשק&quot;. אם Join לא זמין אצלכם, מציגים רק את הקשר ואת ההנפשה. את תיקון ה-FIXED (מסמך הרקע מציע SUM של FIXED ברמת ההזמנה) להריץ בתוכנה לפני השיעור: אם התוצאה אינה 209, מוחקים את שלב 5 ונשארים עם הקשר.</div>
+<div class="teach"><b>🎓 למרצה:</b> מספרים שאומתו בפייתון: 87 הזמנות, 219 שורות פריט, 18 לקוחות, 10 מנות, 3 שליחים; SUM(tip) 209 לפני החיבור ו-517 אחריו (על 219 שורות); 29 הזמנות עם תשר; הזמנה 12 עם תשר 10 וארבע שורות פריט; Inner Join בין הזמנות ללקוחות משאיר 67 הזמנות (19 בלי לקוח, אחת עם לקוח 99), והכנסה של 10,880 מול 13,592. פתוח (ברשימה במודול 19): איך מגדירים שדות תואמים בשמות שונים בעמוד Data Source (id מול order_id), איך פותחים Join בתוך הטבלה, ושמספר השורות בעמוד Data Source הוא 219. הפעולות האלה מתועדות רשמית ב-Desktop, אבל הדף לא מציין את Public. מסמך הרקע סימן אותן &quot;נראה אפשרי, לא נבדק בממשק&quot;. אם Join לא זמין אצלכם, מציגים רק את הקשר ואת ההנפשה. את תיקון ה-FIXED (מסמך הרקע מציע SUM של FIXED ברמת ההזמנה) להריץ בתוכנה לפני השיעור: אם התוצאה אינה 209, מוחקים את שלב 5 ונשארים עם הקשר.</div>
 </section>
 
 <section class="sec" id="m15-8" data-t="טרי או ישן וגבולות">
@@ -1485,7 +1500,7 @@ order_items 219</div>
 <div class="box try" data-id="m15-try-asof">
 <p><b>מוסיפים שורה כזאת לדשבורד.</b> הקובץ: <code>daily_revenue.csv</code> (מהסעיף הקודם) או הגיליון בגוגל שחוברתם אליו.</p>
 <ol>
-<li>גיליון חדש. צרו שדה מחושב בשם <code>Data As Of</code> (<code>Create</code>, אחר כך <code>Calculated Field...</code>) עם הנוסחה:
+<li>גיליון חדש. צרו שדה מחושב בשם <code>Data As Of</code> (<code>Analysis</code> ואז <code>Create Calculated Field...</code>; שם ברירת המחדל <code>Calculation1</code>, מחליפים אותו) עם הנוסחה:
 <pre class="code" data-lang="tableau">"Data as of " + STR(MAX([order_date]))</pre>
 למה: <code>MAX</code> של התאריך נותן את היום האחרון בנתונים, ו-<code>STR</code> הופך אותו לטקסט שאפשר לחבר למשפט.</li>
 <li>גררו את <code>Data As Of</code> ל-<code>Text</code> בכרטיס <code>Marks</code>. אם התאריך נטען כטקסט ולא כתאריך, אין בעיה: <code>MAX</code> עובד גם על טקסט בפורמט ISO.</li>
@@ -1570,7 +1585,7 @@ order_items 219</div>
 <div class="box think" data-id="m15-th-asof"><p>הדשבורד של יבגני מתרענן פעם ב-24 שעות, בשעה שלא בוחרים. מה כדאי לכתוב עליו, ומה לא כדאי להבטיח?</p>
 <div class="ans">לכתוב: &quot;נתונים עד&quot; ואחריו התאריך האחרון בנתונים (שדה מחושב, כדי שיזוז לבד), ו&quot;מתעדכן פעם ביממה&quot;. לא להבטיח &quot;מתעדכן בשעה 06:00&quot;, כי אי אפשר לבחור שעה, ולא &quot;עדכני&quot;. מי שצריך משהו חי צריך כלי אחר.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> הגבולות לפי המחקר (נכון ל-13.10.2026 בקובץ 12): 15 מיליון שורות, 10 GB אחסון, העלאה בדפדפן עד 1 GB, סריקת JSON של 10,000 שורות. הניסוח הרשמי של 15M הוא &quot;לחוברת&quot; בשאלות הנפוצות ו&quot;שורות במקור הנתונים&quot; בדף ההשוואה, ולכן אל תטענו משהו מעבר. המספר 2.52 פריטים להזמנה הוא 219 חלקי 87. תוצאה צפויה לשדה Data As Of: 31 במאי 2026. לבדוק בתוכנה אם תאריך שנטען כמחרוזת ISO נקרא כתאריך, ואיך STR מציג אותו בהגדרות האזור של המחשב.</div>
+<div class="teach"><b>🎓 למרצה:</b> הגבולות לפי המחקר (נכון ל-13.10.2026 בקובץ 12): 15 מיליון שורות, 10 GB אחסון, העלאה בדפדפן עד 1 GB, סריקת JSON של 10,000 שורות. הניסוח הרשמי של 15M הוא &quot;לחוברת&quot; בשאלות הנפוצות ו&quot;שורות במקור הנתונים&quot; בדף ההשוואה, ולכן אל תטענו משהו מעבר. המספר 2.52 פריטים להזמנה הוא 219 חלקי 87. תוצאה צפויה לשדה Data As Of: 31 במאי 2026. פתוח (ברשימה במודול 19): אם תאריך שנטען כמחרוזת ISO נקרא כתאריך, ואיך STR מציג אותו בהגדרות האזור של המחשב.</div>
 </section>
 
 <section class="sec" id="m15-9" data-t="פרטיות לפני פרסום">
@@ -1659,7 +1674,7 @@ order_items 219</div>
 <p><b>בדיקת הזר (אופציונלי, דורש לפרסם).</b> אם פרסמתם את גרף המנות של סעיף 3 (<a href="module14.html">מודול 14</a>):</p>
 <ol>
 <li>פתחו חלון גלישה פרטי והדביקו את כתובת הוויז. למה: ככה רואה אותו מי שאין לו חשבון.</li>
-<li>לחצו על <code>Download</code> ובחרו להציג את הנתונים. בגרסה שלכם ייתכן שהשם שונה.</li>
+<li>בסרגל הכלים של הוויז לחצו <code>Download</code>. ברשימה יש בין השאר <code>Image</code>, <code>Data</code>, <code>Crosstab</code> ו-<code>PDF</code>. בחרו <code>Data</code>. למה: זו בדיוק הטבלה שזר יכול להוריד.</li>
 </ol>
 <p><b>תוצאה צפויה:</b> אפשר לראות 10 שורות ו-5 עמודות (<code>dish</code>, <code>category</code>, <code>units</code>, <code>revenue</code>, <code>gross_profit</code>): בדיוק הקובץ שייצאתם, ואף עמודה אישית.</p></div>
 
@@ -1684,7 +1699,7 @@ order_items 219</div>
 <div class="box think" data-id="m15-th-courier"><p>הגרף של זמני המשלוח מציג את דימה, נועה ואורי בשמותיהם, ודימה הוא האיטי. מה הבעיה, ומה הייתם עושים?</p>
 <div class="ans">אלה עובדים. פרסום ציבורי של הביצועים שלהם בשם הוא פגיעה אפשרית, ועם 16 משלוחים בלבד גם התוצאה לא יציבה. הייתי מציג לפי סוג רכב (scooter, e-bike, motorbike), בלי שם, או מבקש הסכמה. כאן הנתונים בדויים, אבל אותו שיקול חל בעולם האמיתי.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> הרשימה מבוססת על שתים עשרה הבדיקות של מסמך הרקע והעובדות מקובץ 12 (הורדה כברירת מחדל, הסתרה אינה הגנה, משפט מדיניות הנתונים על אימון מודלים). לא אומת: האם הסתרת שדה או מסנן מקור נתונים מוציאים נתונים מה-extract שמתפרסם ב-Public (לכן הכלל: מוחקים במקור). מספרים אומתו: 18 לקוחות עם 18 אימיילים; עיר: תל אביב 7, חיפה 4, גבעתיים 3, רמת גן 3, ללא עיר 1. שם הכפתור Download ושלבי ההצגה בחלון הפרטי לבדוק בתוכנה.</div>
+<div class="teach"><b>🎓 למרצה:</b> הרשימה מבוססת על שתים עשרה הבדיקות של מסמך הרקע והעובדות מקובץ 12 (הורדה כברירת מחדל, הסתרה אינה הגנה, משפט מדיניות הנתונים על אימון מודלים). לא אומת: האם הסתרת שדה או מסנן מקור נתונים מוציאים נתונים מה-extract שמתפרסם ב-Public (לכן הכלל: מוחקים במקור). מספרים אומתו: 18 לקוחות עם 18 אימיילים; עיר: תל אביב 7, חיפה 4, גבעתיים 3, רמת גן 3, ללא עיר 1. האפשרויות של <code>Download</code> (Image, Data, Crosstab, PDF, PowerPoint, Tableau Workbook) לקוחות מהמחרוזות של Tableau. ההצגה בפועל באתר, בחלון פרטי, פתוחה (רשימת הבדיקה במודול 19).</div>
 </section>
 
 <section class="sec" id="m15-10" data-t="נספח: לא ב-Public">
@@ -1731,13 +1746,23 @@ order_items 219</div>
 <div class="card"><h4>חיבור חי</h4><p>Tableau שולח שאילתה למקור בכל אינטראקציה. הצד השני חייב להיות נגיש. ב-Public כל מה שנשמר הוא extract.</p></div>
 <div class="card"><h4>Custom SQL</h4><p>כותבים <code>SELECT</code> בעצמכם במקום לבחור טבלה, ו-Tableau עוטף אותו. הכללים (לפי התיעוד): <code>SELECT</code> אחד, פרמטר יכול להחליף רק ערך ולא שם, ושמות עמודות כפולים גורמים לשגיאה. <b>הדרך סביב:</b> אותה שאילתה נכנסת לסקריפט הייצוא.</p></div>
 <div class="card"><h4>Initial SQL</h4><p>פקודה שרצה פעם אחת כשמתחברים (הגדרות, טבלאות זמניות). לא זמין ב-Public.</p></div>
-<div class="card"><h4>Join בין מסדים (cross-database)</h4><p>חיבור בין טבלאות משני חיבורים נפרדים. לפי התיעוד אינו נתמך למשל על מקורות extract בלבד כמו OData. ב-Public אין מסדים, ולכן הדרך היא לייצא לקבצים ולחבר בין קבצים (בדקו אם זמין אצלכם).</p></div>
+<div class="card"><h4>Join בין מסדים (cross-database)</h4><p>חיבור בין טבלאות משני חיבורים נפרדים. לפי התיעוד אינו נתמך למשל על מקורות extract בלבד כמו OData. ב-Public אין מסדים, ולכן הדרך היא לייצא לקבצים ולחבר בין הקבצים בעמוד Data Source (<a href="module11.html">מודול 11</a>).</p></div>
 <div class="card"><h4>Tableau Prep</h4><p>מוצר נפרד שבונה זרימות לניקוי, חיבור ואיחוד, ושומר ל-<code>.hyper</code>, CSV או <code>.xlsx</code>. תזמון דורש Cloud או Server. <b>הדרך סביב:</b> סקריפט פייתון (סעיף 6).</p></div>
 <div class="card"><h4>פרסום ל-Cloud או Server</h4><p>תזמון ריענון (גם דרך Bridge לנתונים בארגון), הרשאות ופרטיות אמיתית. ב-Public הכול ציבורי. <b>הדרך סביב:</b> אין, חוץ מלעבור למוצר אחר.</p></div>
 </div>
 
+<div class="box real"><p><b>Public עצמה אומרת את זה.</b> בתוכנה יש הודעות שקיימות רק ב-Public, ומופיעות כשמנסים לשמור לרשת משהו שלא נתמך. חמש מהן:</p>
+<ul>
+<li><code>Custom SQL is not allowed in public workbooks.</code></li>
+<li><code>Workbooks saved to Tableau Public must use extracts.</code></li>
+<li><code>User filters cannot be used with Tableau Public.</code></li>
+<li><code>Tableau Public does not support running scripts for Analytics Extensions.</code></li>
+<li><code>Data sources cannot be published to Tableau Public.</code></li>
+</ul>
+<p>כלומר: כל מה שבנספח הזה נחסם כבר בשלב השמירה לרשת. אם ראיתם הודעה כזאת, חזרו לגשר: שאילתה, קובץ, וטעינה.</p></div>
+
 <h3>פייתון בתוך החישובים: TabPy</h3>
-<p>פונקציות <code>SCRIPT_REAL</code> ודומותיה שולחות את ערכי התצוגה לשרת פייתון (TabPy) או R ומקבלות תשובה. לפי התיעוד: לא ניתן לפרסם ל-Public חוברות עם סקריפטים חיצוניים. אין ל-Public חיבור לשרת כזה. אזהרה מהתיעוד של TabPy: כברירת מחדל הוא רץ בלי אימות, ואז מי שמגיע אליו יכול להריץ קוד על המחשב.</p>
+<p>פונקציות <code>SCRIPT_REAL</code> ודומותיה שולחות את ערכי התצוגה לשרת פייתון (TabPy) או R ומקבלות תשובה. לפי התיעוד, וגם לפי ההודעה של התוכנה עצמה (<code>Tableau Public does not support running scripts for Analytics Extensions.</code>): לא ניתן לפרסם ל-Public חוברות עם סקריפטים חיצוניים. אין ל-Public חיבור לשרת כזה. אזהרה מהתיעוד של TabPy: כברירת מחדל הוא רץ בלי אימות, ואז מי שמגיע אליו יכול להריץ קוד על המחשב.</p>
 <p><b>הדרך סביב:</b> לחשב בפייתון לפני Tableau ולכתוב עמודה בקובץ. הנה ציון תקן (z-score) להכנסות לפי מנה:</p>
 <pre class="code" data-lang="python">import csv
 import statistics
@@ -1770,7 +1795,7 @@ print(rows[-1]["dish"], rows[-1]["revenue_z"])</pre>
 
 <div class="box real"><p>REST API, <code>Tableau Server Client</code> ב-Python, Metadata API ו-webhooks הם כולם של Cloud ו-Server. אין להם שום קשר ל-Public: פרסום ל-Public הוא פעולה ידנית בלבד.</p></div>
 
-<div class="box trap"><p><b>RAWSQL.</b> הדף של פונקציות ה-<code>RAWSQL_</code> מציין את Public, אבל אין ב-Public מסד שאפשר לשלוח אליו SQL. לא ידוע אם הן רצות על extract. אל תבנו על זה.</p></div>
+<div class="box trap"><p><b>RAWSQL.</b> הדף של פונקציות ה-<code>RAWSQL_</code> מציין את Public, אבל אין ב-Public מסד שאפשר לשלוח אליו SQL, ובתוכנה יש הודעה מפורשת: <code>Custom SQL is not allowed in public workbooks.</code> לא ידוע אם הן רצות על extract. אל תבנו על זה.</p></div>
 
 <div class="quiz" data-id="m15-q-customsql" data-a="2"><p class="qq">רוצים להריץ <code>Custom SQL</code> על מסד של המסעדה, ולהישאר ב-Tableau Public. מה עושים?</p>
 <button class="opt">מחברים את המסד דרך More...</button>
