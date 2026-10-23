@@ -55,6 +55,8 @@
 .p4-two>*{min-width:0}
 @media(max-width:640px){.p4-two{grid-template-columns:1fr}.p4-bar>span:first-child{min-width:96px}}
 .p4-svgwrap{overflow-x:auto}
+.p4-stk{font-size:.86rem}
+.p4-stk code{white-space:normal;word-break:break-all}
 @media(max-width:700px){.p4-svgwrap svg{min-width:640px}}
 .p4-node{cursor:pointer}
 .p4-node rect{transition:fill .3s,stroke .3s}
@@ -152,7 +154,7 @@ GROUP BY month</pre>
 <h3>ארבע סיבות להפריד</h3>
 <div class="cols2">
   <div class="card"><h4>1. ביצועים</h4><p>דוח כבד וקליטת הזמנות מתחרים על אותו מעבד, זיכרון ודיסק. ראיתם בהדמיה: כל דוח נוסף מאריך את ההמתנה של המטבח.</p></div>
-  <div class="card"><h4>2. אבטחה</h4><p>אנליסט צריך לקרוא נתונים, לא למחוק אותם. בעותק לדיווח נותנים הרשאת קריאה בלבד, ושדות רגישים, כמו אימייל, לא עוברים לשם בכלל. אז פקודה כמו <code>DELETE FROM orders</code> פשוט לא תעבוד שם.</p></div>
+  <div class="card"><h4>2. אבטחה</h4><p>אנליסט צריך לקרוא נתונים, לא למחוק אותם. בעותק לדיווח נותנים הרשאת קריאה בלבד, ושדות רגישים, כמו אימייל, לא עוברים לשם בכלל. אז פקודה כמו <code>DELETE FROM orders</code> פשוט לא תעבוד שם. נבנה את זה בסעיף ״<a href="#s4-6v">חלון לכל תפקיד</a>״.</p></div>
   <div class="card"><h4>3. מבנה</h4><p>המסד החי מפוצל לטבלאות קטנות, כדי לשמור כל עובדה פעם אחת. שאלה עסקית אחת דורשת כמה חיבורים. במחסן מכינים צורה שנוחה לשאילתות. נבנה אותה בסעיף 4.</p></div>
   <div class="card"><h4>4. היסטוריה</h4><p>המסד החי מחזיק את המצב הנוכחי. כששינו מחיר, הישן נעלם. בלי עותק נפרד אי אפשר לדעת מה היה נכון בעבר. המעבדה הבאה מראה את הבעיה.</p></div>
 </div>
@@ -165,7 +167,7 @@ SET price = 72
 -- הוסיפו תנאי כדי לשנות רק את ההמבורגר</pre>
   <pre class="check">UPDATE dishes SET price = 72 WHERE id = 3</pre>
   <ol class="hints"><li>בלי <code>WHERE</code> כל המחירים בתפריט יהפכו ל-72.</li><li>המבורגר בקר הוא מנה מספר 3.</li></ol>
-  <div class="why-src">ההכנסה ההיסטורית עלתה ב-88 שקלים: 22 המבורגרים כפול 4 שקלים. לא נמכרה אף מנה נוספת. ההזמנות הישנות פשוט התומחרו מחדש. בגלל זה מחסן שומר את המחיר שהיה בזמן המכירה, ולא מחשב אותו שוב מהטבלה החיה.</div>
+  <div class="why-src">ההכנסה ההיסטורית עלתה ב-88 שקלים: 22 המבורגרים כפול 4 שקלים. לא נמכרה אף מנה נוספת. ההזמנות הישנות פשוט התומחרו מחדש. בגלל זה מחסן שומר את המחיר שהיה בזמן המכירה, ולא מחשב אותו שוב מהטבלה החיה. בחלק 3 בניתם טריגר שרושם כל שינוי מחיר. טבלת ההיסטוריה הזו, או מחיר שנשמר בשורת ההזמנה, היא מה שמונע את זה.</div>
 </div>
 
 <div class="anim" data-id="p4-anim-copy" data-speed="3200">
@@ -216,7 +218,7 @@ SET price = 72
 </section>
 <section class="sec" id="s4-2" data-t="שורות ועמודות">
 <div class="sec-h"><div class="sec-n">2</div><h2>למה המחסן מהיר: קורא רק את העמודות שצריך</h2></div>
-<p class="lead">דנה שואלת: מה זמן המשלוח הממוצע בכל ערוץ? בטבלת ההזמנות יש תשע עמודות, ובשביל התשובה צריך רק שתיים.</p>
+<p class="lead">דנה, האנליסטית, שואלת: מה זמן המשלוח הממוצע בכל ערוץ? בטבלת ההזמנות יש תשע עמודות, ובשביל התשובה צריך רק שתיים.</p>
 
 <div class="defline"><b>אחסון שורות:</b> שומרים את כל התאים של שורה אחת ביחד. זה מתאים למסך שצריך הזמנה שלמה. דוגמה: הזמנה 42 עם כל תשעת השדות שלה, במקום אחד.</div>
 <div class="defline"><b>אחסון עמודות:</b> שומרים כל עמודה בנפרד, כל הערכים שלה ברצף. זה מתאים לשאלות שמסכמות עמודה אחת על הרבה שורות. דוגמה: כל זמני המשלוח ברצף אחד.</div>
@@ -273,7 +275,7 @@ FROM orders
 -- הוסיפו קיבוץ</pre>
   <pre class="check">SELECT channel, AVG(delivery_min) FROM orders GROUP BY channel</pre>
   <ol class="hints"><li>כל ערוץ הוא קבוצה.</li><li>גם <code>COUNT(*)</code> מכיל כוכבית. לא צריך אותו כאן.</li></ol>
-  <div class="why-src">הערוצים: app עם בערך 35 דקות, phone עם 36.2 דקות, ו-walk-in בלי ערך, כי אין שם משלוח. השאילתה נגעה בשתי עמודות, וזה מה שהמחסן גובה עליו: שתיים ולא תשע. אגב, ההדמיה סופרת תאים. במחסן אמיתי הסריקה נמדדת בבתים, ועמודת טקסט ארוכה שוקלת יותר מעמודת מספרים.</div>
+  <div class="why-src">הערוצים: app עם בערך 35 דקות, phone עם 36.2 דקות, ו-walk-in (ישיבה במקום) בלי ערך, כי אין שם משלוח. השאילתה נגעה בשתי עמודות, וזה מה שהמחסן גובה עליו: שתיים ולא תשע. אגב, ההדמיה סופרת תאים. במחסן אמיתי הסריקה נמדדת בבתים, ועמודת טקסט ארוכה שוקלת יותר מעמודת מספרים.</div>
 </div>
 
 <h3>כמה זה עולה: סריקה</h3>
@@ -314,7 +316,7 @@ FROM `bigquery-public-data.thelook_ecommerce.order_items`;</pre>
   <p class="tools"><a class="tool" href="https://console.cloud.google.com/bigquery" target="_blank" rel="noopener">קונסולת BigQuery</a><a class="tool" href="https://cloud.google.com/bigquery/docs/sandbox" target="_blank" rel="noopener">מידע על sandbox</a></p>
 </div>
 
-<div class="box meaning"><p>אחסון שורות ואחסון עמודות מתאימים לשני סוגי עבודה. מסך הזמנה צריך שורה שלמה במהירות. דוח צריך עמודה אחת על כל ההיסטוריה. מי שכותב שאילתות במחסן משפיע ישר על החשבון: שאילתה בזבזנית היא לא רק איטית, היא גם יקרה.</p></div>
+<div class="box meaning"><p>אחסון שורות ואחסון עמודות מתאימים לשני סוגי עבודה. מסך הזמנה צריך שורה שלמה במהירות. דוח צריך עמודה אחת על כל ההיסטוריה. מי שכותב שאילתות במחסן משפיע ישר על החשבון: שאילתה בזבזנית היא לא רק איטית, היא גם יקרה. החשבון של המחסן מגיע ליבגני, אבל מי שקובע אותו הוא מי שכותב את השאילתות. לכן תקרת החיוב (maximum bytes billed) היא החלטה של בעל התקציב, לא רק הגדרה טכנית.</p></div>
 
 <div class="box real"><p>מחסני נתונים מודרניים בנויים סביב אחסון עמודות. גם <dfn data-d="פורמט קובץ לנתונים אנליטיים ששומר כל עמודה בנפרד.">Parquet</dfn>, פורמט קבצים לניתוח, שומר כל עמודה בנפרד מאותה סיבה. מסדים תפעוליים כמו PostgreSQL שומרים שורות. אותו מידע נשמר אחרת, לפי מה שצריך לעשות איתו.</p></div>
 
@@ -549,7 +551,7 @@ WHERE order_ts &gt; '2026-05-30 00:00';   -- את התאריך מחליף הפר
 </section>
 <section class="sec" id="s4-4" data-t="סכמת כוכב">
 <div class="sec-h"><div class="sec-n">4</div><h2>סכמת כוכב: טבלה אחת באמצע וטבלאות תיאור מסביב</h2></div>
-<p class="lead">דנה רוצה הכנסות לפי חודש, קטגוריית מנה וערוץ. במסד החי המידע מפוזר בין הזמנות, שורות פריט ומנות. במחסן מסדרים אותו כך שכל שאלה כזו נראית אותו דבר. הרעיון הזה מוסבר גם <a href="../lec11-part2.1.html">בשיעור על OLTP, OLAP וסכמת כוכב</a>.</p>
+<p class="lead">דנה, האנליסטית, רוצה הכנסות לפי חודש, קטגוריית מנה וערוץ. במסד החי המידע מפוזר בין הזמנות, שורות פריט ומנות. במחסן מסדרים אותו כך שכל שאלה כזו נראית אותו דבר. הרעיון הזה מוסבר גם <a href="../lec11-part2.1.html">בשיעור על OLTP, OLAP וסכמת כוכב</a>.</p>
 
 <div class="defline"><b>טבלת עובדות (fact):</b> טבלה שכל שורה בה היא אירוע עסקי אחד, עם המספרים שמודדים עליו. דוגמה: שורה אחת לכל מנה בהזמנה, עם הכמות, ההכנסה והרווח.</div>
 <div class="defline"><b>טבלת ממד (dimension):</b> טבלה שמתארת את ההקשר של האירועים: מה, מי, מתי. דוגמה: טבלת המנות, שבה לכל מנה יש שם וקטגוריה.</div>
@@ -590,17 +592,17 @@ WHERE order_ts &gt; '2026-05-30 00:00';   -- את התאריך מחליף הפר
     <g data-s="4"><rect x="20" y="56" width="240" height="8" rx="4" fill="#d8b862"/><text x="140" y="46" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">SUM(revenue)</text><text x="140" y="84" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">GROUP BY month, category</text></g>
     <g data-s="5">
       <rect x="28" y="188" width="179" height="22" rx="5" fill="#fff" stroke="#f59e0b"/><text x="117" y="204" text-anchor="middle" font-size="13" fill="#92400e">0 · אורח במסעדה</text>
-      <rect x="28" y="214" width="179" height="22" rx="5" fill="#fff" stroke="#f59e0b"/><text x="117" y="230" text-anchor="middle" font-size="13" fill="#92400e">-1 · לקוח לא מזוהה</text>
+      <rect x="28" y="214" width="179" height="22" rx="5" fill="#fff" stroke="#f59e0b"/><text x="117" y="230" text-anchor="middle" font-size="13" fill="#92400e">&#x2066;-1&#x2069; · לקוח לא מזוהה</text>
     </g>
   </svg></div>
   <ol class="caps"><li>1. המסד החי מחלק את המידע לטבלאות לפי נושא. זה טוב לשמירה נכונה, ופחות נוח לשאלות רחבות.</li><li>2. במחסן בונים טבלת עובדות אחת. כל שורה בה היא מנה אחת בהזמנה אחת, וההכנסה והרווח כבר מחושבים.</li><li>3. מסביב בונים טבלאות ממד: מנות, תאריכים ולקוחות. כל אחת נותנת הקשר לאירועים.</li><li>4. כל שאלה נראית אותו דבר: מחברים את העובדות לממדים שצריך, מקבצים ומסכמים.</li><li>5. הזמנות בלי לקוח מזוהה לא נעלמות. הן מצביעות על שורות ״לא ידוע״ מיוחדות בממד הלקוחות.</li></ol>
 </div>
 
 <h3>בונים את הכוכב בשלבים</h3>
-<p>כל מעבדה מתחילה ממסד חדש, אז המעבדות שאחרי הראשונה מכינות לעצמן את מה שקדם להן. נתחיל מטבלת העובדות. תשימו לב לשורה עם <code>CASE</code> בעמודת הלקוח: הזמנה בלי לקוח מקבלת מפתח 0, והזמנה שמצביעה על לקוח שלא קיים מקבלת מפתח -1.</p>
+<p>כל מעבדה מתחילה ממסד חדש, אז המעבדות שאחרי הראשונה מכינות לעצמן את מה שקדם להן. נתחיל מטבלת העובדות. תשימו לב לשורה עם <code>CASE</code> בעמודת הלקוח: הזמנה בלי לקוח מקבלת מפתח 0, והזמנה שמצביעה על לקוח שלא קיים מקבלת מפתח <span class="n">-1</span>.</p>
 
 <div class="lab" data-id="p4-lab-fact" data-title="בונים את טבלת העובדות" data-require="CREATE TABLE" data-require-msg="הטבלה נוצרת בפקודת CREATE TABLE ... AS SELECT.">
-  <div class="q-src">צרו <code>fact_sales</code> מהזמנות, שורות פריט ומנות: שורה לכל שורת פריט, עם <code>revenue = qty * price</code> ו-<code>margin = qty * (price - cost)</code>. בעמודה <code>customer_key</code> שימו 0 להזמנה בלי לקוח, ו-(-1) להזמנה עם לקוח שלא קיים בטבלת הלקוחות. סיימו בשאילתה על הטבלה החדשה, כמו בתבנית.</div>
+  <div class="q-src">צרו <code>fact_sales</code> מהזמנות, שורות פריט ומנות: שורה לכל שורת פריט, עם <code>revenue = qty * price</code> ו-<code>margin = qty * (price - cost)</code>. בעמודה <code>customer_key</code> שימו 0 להזמנה בלי לקוח, ו-<span class="n">-1</span> להזמנה עם לקוח שלא קיים בטבלת הלקוחות. סיימו בשאילתה על הטבלה החדשה, כמו בתבנית.</div>
   <pre class="start">CREATE TABLE fact_sales AS
 SELECT oi.order_id,
        date(o.order_ts) AS date_key,
@@ -656,7 +658,7 @@ SELECT COUNT(*) AS lines, SUM(revenue) AS revenue, SUM(margin) AS margin,
        SUM(customer_key = 0) AS guests, SUM(customer_key = -1) AS unknown
 FROM fact_sales;</pre>
   <ol class="hints"><li>המחיר והעלות נמצאים בטבלת <code>dishes</code>, אז צריך <code>JOIN dishes d ON d.id = oi.dish_id</code>.</li><li>לקוח שלא קיים: <code>WHEN o.customer_id NOT IN (SELECT id FROM customers) THEN -1</code>.</li><li>בטבלת העובדות המחיר נשמר כמו שהיה ברגע הבנייה: <code>d.price AS unit_price</code>. הרווח: <code>oi.qty * (d.price - d.cost) AS margin</code>.</li></ol>
-  <div class="why-src">219 שורות, כמספר שורות הפריט. סך ההכנסה 13,592 והרווח 9,015. 44 שורות שייכות להזמנות בלי לקוח (מפתח 0), ושתי שורות שייכות להזמנה 85 עם הלקוח שלא קיים (מפתח -1). ההכנסה והרווח מחושבים פעם אחת בעת הטעינה, עם המחיר שהיה אז. מי ששינה מחיר בטבלת המנות לא ישנה את ההיסטוריה.</div>
+  <div class="why-src">219 שורות, כמספר שורות הפריט. סך ההכנסה 13,592 (כל ההזמנות, כולל 708 ש״ח של הזמנות שבוטלו. בסעיף 6 נראה למה זה לא ״ההכנסה״) והרווח 8,913. 44 שורות שייכות להזמנות בלי לקוח (מפתח 0), ושתי שורות שייכות להזמנה 85 עם הלקוח שלא קיים (מפתח <span class="n">-1</span>). ההכנסה והרווח מחושבים פעם אחת בעת הטעינה, עם המחיר שהיה אז. מי ששינה מחיר בטבלת המנות לא ישנה את ההיסטוריה.</div>
 </div>
 
 <div class="defline"><b>שורת ״לא ידוע״ (unknown member):</b> שורה מיוחדת בטבלת ממד, שאליה מצביעות עובדות שאין להן ערך אמיתי. דוגמה: מפתח 0 הוא ״אורח במסעדה״, אז הזמנה בלי חשבון לקוח עדיין מתחברת ולא נופלת.</div>
@@ -678,7 +680,7 @@ SELECT oi.order_id,
 FROM order_items oi
 JOIN orders o ON o.id = oi.order_id
 JOIN dishes d ON d.id = oi.dish_id;</pre>
-  <div class="q-src">הטבלה <code>fact_sales</code> כבר קיימת. צרו <code>dim_customer</code> שמכילה את כל הלקוחות (עיר ריקה הופכת ל-״לא ידוע״), ובנוסף שורה 0 (״אורח במסעדה״, עיר ״במקום״) ושורה -1 (״לקוח לא מזוהה״, עיר ״לא ידוע״). אחר כך החזירו הכנסה לפי עיר, מהזמנות שנמסרו בלבד, בעמודות <code>city</code> ו-<code>revenue</code>, עם <code>JOIN</code> רגיל.</div>
+  <div class="q-src">הטבלה <code>fact_sales</code> כבר קיימת. צרו <code>dim_customer</code> שמכילה את כל הלקוחות (עיר ריקה הופכת ל-״לא ידוע״), ובנוסף שורה 0 (״אורח במסעדה״, עיר ״במקום״) ושורה <span class="n">-1</span> (״לקוח לא מזוהה״, עיר ״לא ידוע״). אחר כך החזירו הכנסה לפי עיר, מהזמנות שנמסרו בלבד, בעמודות <code>city</code> ו-<code>revenue</code>, עם <code>JOIN</code> רגיל.</div>
   <pre class="start">CREATE TABLE dim_customer AS
 SELECT id AS customer_key, name, COALESCE(city, 'לא ידוע') AS city FROM customers
 -- הוסיפו שתי שורות UNION ALL
@@ -701,7 +703,7 @@ FROM fact_sales f
 JOIN dim_customer c ON c.customer_key = f.customer_key
 WHERE f.status = 'delivered'
 GROUP BY c.city;</pre>
-  <ol class="hints"><li>כל שורה מיוחדת נכתבת כך: <code>UNION ALL SELECT 0, 'אורח במסעדה', 'במקום'</code>.</li><li>שני הערכים המיוחדים הם מפתחות שלא קיימים בטבלת הלקוחות: 0 ו-(-1).</li></ol>
+  <ol class="hints"><li>כל שורה מיוחדת נכתבת כך: <code>UNION ALL SELECT 0, 'אורח במסעדה', 'במקום'</code>.</li><li>שני הערכים המיוחדים הם מפתחות שלא קיימים בטבלת הלקוחות: 0 ו-<span class="n">-1</span>.</li></ol>
   <div class="why-src">סכום ההכנסות לפי עיר הוא 12,884, כל מה שנמסר. אם ה-JOIN היה מול טבלת הלקוחות בלבד, הזמנות של אורחים בלי חשבון והזמנה אחת עם לקוח שלא קיים היו נעלמות בשקט, והסכום היה 10,464. שורות ״לא ידוע״ הופכות את החיבור לבטוח.</div>
 </div>
 
@@ -741,18 +743,8 @@ FROM fact_sales f
   <div class="why-src">ככה נראית כל שאלה על הכוכב: עובדות, ממד לכל מאפיין שמבקשים, סינון, קיבוץ וסכום. הצורה לא משתנה כשהשאלה משתנה. בשאלה על ערוץ במקום קטגוריה לא צריך חיבור בכלל, כי הערוץ כבר עמודה בטבלת העובדות.</div>
 </div>
 
-<div class="defline"><b>רמת פירוט (grain):</b> ההגדרה של מה שורה אחת בטבלת העובדות מייצגת. דוגמה: אצלנו שורה היא מנה אחת בהזמנה אחת, אז אפשר לסכם עליה הכנסה, אבל לא טיפ של הזמנה שלמה.</div>
-<div class="lab" data-id="p4-lab-grain" data-title="רמת הפירוט והטיפ שהוכפל" data-require="tip" data-require-msg="הסכום צריך להיות של עמודת tip.">
-  <div class="q-src">דנה סיכמה טיפים וקיבלה 522. הטיפים שמורים ברמת ההזמנה, אבל היא חיברה אותם לשורות הפריט. תקנו את השאילתה כך שתחזיר את סך הטיפים התקינים (<code>tip &gt;= 0</code>) של הזמנות שנמסרו, בלי כפל.</div>
-  <pre class="start">SELECT SUM(o.tip) AS tips
-FROM orders o
-JOIN order_items oi ON oi.order_id = o.id
-WHERE o.status = 'delivered' AND o.tip &gt;= 0;
--- המספר הזה גדול מדי. הסירו את מה שמכפיל אותו.</pre>
-  <pre class="check">SELECT SUM(tip) AS tips FROM orders WHERE status = 'delivered' AND tip &gt;= 0</pre>
-  <ol class="hints"><li>הטיפ שייך להזמנה. לכל הזמנה יש כמה שורות פריט, אז כל טיפ נספר כמספר שורות הפריט שלה.</li><li>לא צריך את טבלת הפריטים כדי לסכם טיפים.</li></ol>
-  <div class="why-src">הסכום התקין הוא 214. ה-522 נוצרו כי הטיפ של כל הזמנה נספר פעם לכל מנה בה. בדיוק את זה קובעת רמת הפירוט: בטבלת עובדות ברמת מנה בהזמנה אפשר לסכם הכנסה וכמות, אבל נתון ברמת הזמנה, כמו טיפ או זמן משלוח, כדאי לשמור בטבלת עובדות נפרדת ברמת הזמנה.</div>
-</div>
+<div class="defline"><b>רמת פירוט (grain):</b> זו הגרנולריות מחלק 2: מה שורה אחת מייצגת. בטבלת עובדות מחליטים עליה מראש. אצלנו שורה היא מנה אחת בהזמנה אחת, אז אפשר לסכם עליה הכנסה, אבל לא טיפ של הזמנה שלמה.</div>
+<p>זו אותה הכפלה שראיתם <a href="part2.html#s2-4">בחלק 2, סעיף Fan-out</a>: אחרי חיבור לשורות פריט, טיפ של הזמנה נספר כמספר המנות. בטבלת עובדות מחליטים על זה פעם אחת, מראש: טיפ, דירוג וזמן משלוח הולכים לטבלת עובדות ברמת הזמנה.</p>
 
 <p>יש להודות: במסד הקטן של יבגני, בשאלה על חודש וקטגוריה מספר החיבורים זהה למסד החי, שניים בשני המקרים. היתרון לא בקיצור הקוד. היתרון הוא שההכנסה כבר מחושבת פעם אחת, שהמחיר נשמר כמו שהיה, שיש לתאריך שדות מוכנים, ושמפתח חסר לא מפיל חיבור.</p>
 
@@ -779,7 +771,7 @@ Ref: fact_sales.dish_key &gt; dim_dish.dish_key</pre>
   <p class="tools"><a class="tool" href="https://dbdiagram.io" target="_blank" rel="noopener">dbdiagram.io</a><a class="tool" href="https://app.diagrams.net" target="_blank" rel="noopener">diagrams.net</a></p>
 </div>
 
-<div class="box meaning"><p>מבנה הכוכב עושה את הדוחות יציבים: אותה צורת שאילתה, אותן הגדרות ואותה היסטוריה. לרוב מספיק להוסיף ממד כדי לענות על שאלה חדשה. והוא מחייב להחליט מראש על רמת הפירוט, החלטה שמונעת את הטעות שראיתם עם הטיפים.</p></div>
+<div class="box meaning"><p>מי משתמש בזה: דנה וכלי ה-BI שלה. מה זה חוסך: שאלה חדשה כמו ״רווח לפי קטגוריה וחודש״ היא שאילתה של כמה דקות במקום פרויקט, וכל דוח משתמש באותה הכנסה שחושבה פעם אחת. מבנה הכוכב עושה את הדוחות יציבים: אותה צורת שאילתה, אותן הגדרות ואותה היסטוריה. לרוב מספיק להוסיף ממד כדי לענות על שאלה חדשה. והוא מחייב להחליט מראש על רמת הפירוט, החלטה שמונעת את טעות הטיפים מחלק 2.</p></div>
 <div class="box real"><p>זו צורה מקובלת מאוד לבניית מחסני נתונים, והיא מוכרת גם בכלי BI: Power BI ו-Tableau עובדים בצורה טבעית עם טבלת עובדות וממדים מסביב. בפרויקטים אמיתיים מוסיפים גם ממד זמן מלא, ממד מוצר ועוד, אבל העיקרון זהה. ממדים כמו ״לקוח״ ו״מוצר״ משתנים עם הזמן, ויש טכניקות לשמור גם את הגרסאות הישנות שלהם.</p></div>
 
 <div class="box think" data-id="p4-th-grain"><p>יבגני רוצה להוסיף למחסן את הדירוג של ההזמנה (1 עד 5) ואת זמן המשלוח. להוסיף אותם ל-<code>fact_sales</code>?</p>
@@ -792,7 +784,7 @@ Ref: fact_sales.dish_key &gt; dim_dish.dish_key</pre>
 <button class="opt">לאפשר להזמנות בלי חשבון להתחבר לממד ולהישאר בדוח, במקום להיעלם בשקט</button>
 <div class="why">בלי שורת ״לא ידוע״, JOIN רגיל מול הממד זורק הזמנות שהמפתח שלהן חסר. ההכנסה בדוח נראית נמוכה, בלי שום הודעת שגיאה. מפתח 0 לא מהיר יותר ולא מסתיר מידע. הוא שומר על שלמות הסכום.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> טבלת העובדות נבנית עם אותו JOIN שהסטודנטים כבר מכירים מחלק 2. מה שחדש הוא ההחלטה על רמת הפירוט. במעבדת הטיפים כדאי לשאול את הכיתה לפני ההרצה: מה לדעתכם יצא?</div>
+<div class="teach"><b>🎓 למרצה:</b> טבלת העובדות נבנית עם אותו JOIN שהסטודנטים כבר מכירים מחלק 2. מה שחדש הוא ההחלטה על רמת הפירוט. את הכפל של הטיפים הם כבר ראו בחלק 2, אז כאן מספיק לשאול: לאיזו טבלת עובדות הטיפ שייך?</div>
 </section>
 <section class="sec" id="s4-5" data-t="איכות נתונים">
 <div class="sec-h"><div class="sec-n">5</div><h2>אפשר לסמוך על המספר? ארבע תקלות שמשבשות אותו</h2></div>
@@ -857,27 +849,19 @@ Ref: fact_sales.dish_key &gt; dim_dish.dish_key</pre>
   });
 }); })();</script>
 
-<h3>ארבע בדיקות שכדאי להכיר ביד</h3>
-<div class="lab" data-id="p4-lab-q-missing" data-title="בדיקת ערך חסר" data-require="IS NULL" data-require-msg="ערך חסר בודקים עם IS NULL, לא עם = NULL.">
-  <div class="q-src">החזירו את הלקוחות שאין להם עיר: <code>id</code> ו-<code>name</code>.</div>
-  <pre class="start">SELECT id, name
-FROM customers
--- השלימו תנאי</pre>
-  <pre class="check">SELECT id, name FROM customers WHERE city IS NULL</pre>
-  <ol class="hints"><li>השוואה <code>= NULL</code> אף פעם לא נכונה. משתמשים ב-<code>IS NULL</code>.</li></ol>
-  <div class="why-src">תוצאה אחת: גיל נחום. לקוח אחד מתוך 18, אבל בדוח לפי עיר הוא נעלם או מופיע תחת ריק. כל שורה כזו היא שאלה: המידע באמת חסר, או שפשוט לא נאסף?</div>
-</div>
+<p>את בדיקת הערך החסר כתבתם כבר בחלק 1 (״מי חסר עיר״). כאן היא שורה קבועה בכרטיס הבריאות: לקוח 14, גיל נחום, בלי עיר.</p>
+<h3>שלוש בדיקות שכדאי להכיר ביד</h3>
 <div class="lab" data-id="p4-lab-q-dup" data-title="בדיקת כפילות" data-require="HAVING" data-require-msg="כפילות בודקים עם GROUP BY ו-HAVING COUNT(*) &gt; 1.">
   <div class="q-src">החזירו אימיילים שמופיעים יותר מפעם אחת בטבלת הלקוחות, עם מספר השורות שלהם: <code>email</code> ו-<code>n</code>.</div>
   <pre class="start">SELECT email, COUNT(*) AS n
 FROM customers
 -- השלימו קיבוץ ותנאי על הקבוצה</pre>
   <pre class="check">SELECT email, COUNT(*) AS n FROM customers GROUP BY email HAVING COUNT(*) &gt; 1</pre>
-  <ol class="hints"><li>מקבצים לפי האימייל, ומסננים קבוצות עם יותר משורה אחת ב-<code>HAVING</code>.</li></ol>
+  <ol class="hints"><li>מקבצים לפי האימייל, ומסננים קבוצות עם יותר משורה אחת ב-<code>HAVING</code>.</li><li>רוצים לראות גם אילו מספרי לקוח כפולים? הוסיפו <code>group_concat(id) AS ids</code>. (לבדיקה עצמה מספיקים email ו-n.)</li></ol>
   <div class="why-src">רונית מלכה: שתי שורות עם אותו אימייל. בטבלת ההזמנות לכל אחד משני המספרים יש שתי הזמנות, ולכן כל אחד נראה כלקוח עם שתי הזמנות, ולא כלקוחה אחת עם ארבע. ספירת לקוחות וממוצע הזמנות ללקוח שגויים עד שמאחדים. תנסו גם <code>LOWER(TRIM(email))</code>: כאן התוצאה זהה, אבל בטעינה חדשה היא כבר לא תהיה.</div>
 </div>
 <div class="lab" data-id="p4-lab-q-orphan" data-title="בדיקת יתום" data-require="LEFT JOIN" data-require-msg="יתומים מוצאים עם LEFT JOIN ובדיקת IS NULL בצד הימני.">
-  <div class="q-src">החזירו הזמנות שמצביעות על לקוח שלא קיים: <code>id</code> ו-<code>customer_id</code>. שימו לב: הזמנות walk-in רגילות הן בלי לקוח (NULL), וזה תקין.</div>
+  <div class="q-src">החזירו הזמנות שמצביעות על לקוח שלא קיים: <code>id</code> ו-<code>customer_id</code>. שימו לב: הזמנות במקום (walk-in) הן בלי לקוח (NULL), וזה תקין.</div>
   <pre class="start">SELECT o.id, o.customer_id
 FROM orders o
 LEFT JOIN customers c ON c.id = o.customer_id
@@ -893,7 +877,7 @@ FROM orders
 -- השלימו תנאי</pre>
   <pre class="check">SELECT id, tip FROM orders WHERE tip &lt; 0</pre>
   <ol class="hints"><li>תנאי פשוט על עמודת הטיפ.</li></ol>
-  <div class="why-src">הזמנה 86 עם טיפ של מינוס 5. סך הטיפים של הזמנות שנמסרו הוא 209 עם הערך השלילי ו-214 בלעדיו. זו תקלה שקל להחמיץ, כי אף שורה לא נראית ריקה או כפולה.</div>
+  <div class="why-src">הזמנה 86 עם טיפ של מינוס 5. בחלק 2 ראיתם 209: זה הסכום הישיר של עמודת tip בהזמנות שנמסרו, והוא כולל את המינוס 5. בלי הערך הבלתי אפשרי, הסכום התקין הוא 214. זו תקלה שקל להחמיץ, כי אף שורה לא נראית ריקה או כפולה.</div>
 </div>
 
 <div class="box trap"><p>לא כל NULL הוא תקלה. 19 הזמנות בטבלה מופיעות בלי לקוח, וזה בסדר: מי שאוכל במסעדה לא נרשם. בדיקה שתסמן אותן כתקלה תלמד את הצוות להתעלם מהבדיקות. לכן כותבים בדיקה לפי כלל עסקי: ״הזמנת משלוח חייבת לקבל שליח״, ולא ״אסור NULL״.</p></div>
@@ -936,12 +920,12 @@ SELECT COUNT(*) AS clean_orders FROM orders WHERE id NOT IN (SELECT order_id FRO
 ALTER TABLE orders ADD CONSTRAINT orders_tip_nonneg CHECK (tip &gt;= 0);</pre>
 
 <div class="box try" data-id="p4-try-supabase-fk">
-  <p>אם בניתם מסד ב-Supabase או ב-Neon בחלק 1, תנסו את הבדיקה על מסד אמיתי.</p>
+  <p>אם בניתם את המסד ב-Supabase או ב-Neon בחלק 1, כבר ראיתם שם את השגיאה על לקוח 99 (סעיף ״בונים בענן״). עכשיו מחליטים מה עושים איתה.</p>
   <ol>
-    <li>פתחו את עורך ה-SQL של הפרויקט והריצו את ה-<code>ALTER TABLE ... FOREIGN KEY</code> מהמוקאפ. תראו את השגיאה.</li>
-    <li>הריצו את שאילתת היתומים מהמעבדה (בפוסטגרס היא זהה).</li>
-    <li>תחליטו מה עושים עם הזמנה 85. היא הזמנה מהאפליקציה, אז היא לא אורח במסעדה. אפשר ליצור שורת לקוח חדשה עם id 99 ולהשלים את הפרטים אחר כך, או להעביר את ההזמנה להסגר. אחרי שתיקנתם, הריצו שוב את ה-<code>ALTER TABLE</code> וודאו שהוא עובר.</li>
-    <li>נסו להוסיף הזמנה עם <code>customer_id = 98</code> (לקוח שלא קיים) ותראו את הודעת השגיאה.</li>
+    <li>הריצו בעורך ה-SQL של הפרויקט את שאילתת היתומים מהמעבדה (בפוסטגרס היא זהה), וודאו שהיא מוצאת את הזמנה 85.</li>
+    <li>תחליטו מה עושים עם הזמנה 85. היא הזמנה מהאפליקציה, אז היא לא אורח במסעדה. לא ממציאים לקוח 99. מבררים מול מערכת האפליקציה מי הזמין, ואם מוצאים, מעדכנים את <code>customer_id</code> למספר הנכון. אם לא מוצאים, רושמים את ההזמנה בטבלת ההסגר עם הסיבה, ומציבים בה <code>customer_id = NULL</code>, כדי שההכנסה לא תיעלם והקשר השבור לא יישאר. (בטבלת העובדות מסעיף 4, NULL הופך ל״אורח במסעדה״. את מה שמופיע בהסגר כדאי למפות שם ל-<span class="n">-1</span>, ״לקוח לא מזוהה״.)</li>
+    <li>הריצו שוב את ה-<code>ALTER TABLE ... FOREIGN KEY</code> מהמוקאפ וודאו שהוא עובר.</li>
+    <li>נסו להוסיף הזמנה עם <code>customer_id = 98</code> (לקוח שלא קיים) ותראו שהמסד מסרב.</li>
   </ol>
   <p class="tools"><a class="tool" href="https://supabase.com" target="_blank" rel="noopener">Supabase</a><a class="tool" href="https://neon.tech" target="_blank" rel="noopener">Neon</a></p>
 </div>
@@ -1021,7 +1005,7 @@ FROM orders o
 SELECT SUM(revenue) AS total FROM official_revenue;</pre>
   <pre class="check">CREATE VIEW official_revenue AS SELECT date(o.order_ts) AS day, SUM(oi.qty * d.price) AS revenue FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status = 'delivered' GROUP BY date(o.order_ts); SELECT SUM(revenue) AS total FROM official_revenue;</pre>
   <ol class="hints"><li>צריך את הזמנות, שורות פריט ומנות, וסינון <code>status = 'delivered'</code>.</li><li>הקיבוץ הוא לפי <code>date(o.order_ts)</code>.</li></ol>
-  <div class="why-src">12,884, ההגדרה של הנהלת החשבונות. מעכשיו כל דשבורד, כל דוח וכל שאילתה ש-AI כותב פונים לתצוגה, ולא כותבים הגדרה משלהם. אם יבגני ישנה את ההגדרה, משנים במקום אחד.</div>
+  <div class="why-src">12,884, ההגדרה של הנהלת החשבונות. מעכשיו כל דשבורד, כל דוח וכל שאילתה ש-AI כותב פונים לתצוגה, ולא כותבים הגדרה משלהם. אם יבגני ישנה את ההגדרה, משנים במקום אחד. ובסעיף הבא נשתמש באותו כלי למטרה אחרת: <a href="#s4-6v">חלון לכל תפקיד</a>, כך שכל אחד רואה רק את מה שהוא צריך.</div>
 </div>
 
 <div class="tw"><table class="tbl"><caption style="caption-side:top;text-align:start;font-weight:700;padding:4px 0">גם ״לקוח פעיל״ הוא מדד, ויש לו כמה הגדרות (הזמנות שנמסרו, לקוחות שקיימים בטבלה)</caption>
@@ -1031,20 +1015,6 @@ SELECT SUM(revenue) AS total FROM official_revenue;</pre>
 <tr><td>הזמין שלוש פעמים לפחות</td><td class="n">11</td><td class="n">12</td></tr>
 </tbody></table></div>
 <p>שימו לב לשורה האחרונה: אחרי איחוד הכפילות יש <b>יותר</b> לקוחות עם שלוש הזמנות, כי רונית מלכה מצטברת לארבע הזמנות. איחוד כפילויות מזיז ספירות לשני הכיוונים.</p>
-
-<h3>גם הנתונים האישיים בתוך הכללים</h3>
-<div class="defline"><b>הסתרת מידע אישי (masking):</b> מחליפים ערך רגיש בגרסה חלקית, כך שאפשר לעבוד עם הנתונים בלי לחשוף אותם. דוגמה: <code>dana.levi@example.com</code> הופך ל-<code>d***@example.com</code>.</div>
-<p>דנה צריכה לספור לקוחות לפי עיר, לא לקרוא כתובות אימייל. אז הצינור מעביר למחסן רק את מה שצריך, ומסתיר את השאר. המעבדה הבאה עושה את זה.</p>
-<div class="lab" data-id="p4-lab-mask" data-title="מסתירים אימיילים" data-require="substr" data-require-msg="השתמשו ב-substr (או substring) כדי לחתוך את האימייל.">
-  <div class="q-src">החזירו <code>id</code>, <code>city</code> ו-<code>email_masked</code> לכל לקוח: האות הראשונה של האימייל, אחריה <code>***</code>, ואז הסימן <code>@</code> והדומיין.</div>
-  <pre class="start">SELECT id, city,
-       substr(email, 1, 1) || '***@' || -- השלימו את הדומיין
-       AS email_masked
-FROM customers</pre>
-  <pre class="check">SELECT id, city, substr(email, 1, 1) || '***@' || substr(email, instr(email, '@') + 1) AS email_masked FROM customers</pre>
-  <ol class="hints"><li><code>instr(email, '@')</code> מחזיר את המיקום של ה-@.</li><li>הדומיין הוא מה שאחרי ה-@: <code>substr(email, instr(email, '@') + 1)</code>.</li></ol>
-  <div class="why-src">קיבלתם 18 שורות בלי אף כתובת מלאה, וכל מה שדנה צריכה לספירה לפי עיר עדיין שם. בפוסטגרס וב-BigQuery כותבים פונקציות דומות, וגם יש הרשאות שמונעות מראש גישה לעמודה.</div>
-</div>
 
 <div class="box trap"><p>כשמבקשים מ-AI שאילתה על ״הכנסות״ בלי להגדיר, הוא עלול לנחש הגדרה, לרוב הפשוטה ביותר. השאילתה תרוץ והמספר ייראה סביר. הפתרון: להדביק לפרומפט את הגדרת המדד מהמילון, ולבדוק את התוצאה מול המספר הרשמי. נעמיק בבדיקה כזו בחלק 5.</p></div>
 <pre class="prompt">הקשר: מסד SQLite של מסעדה. טבלאות: orders(id, customer_id, order_ts, channel, status), order_items(order_id, dish_id, qty), dishes(id, name, price).
@@ -1106,11 +1076,324 @@ FROM customers</pre>
 <button class="opt">לבקש מ-AI להכריע מי צודק</button>
 <div class="why">ההבדל מגיע מהגדרות ולא מטעות בחישוב, אז צריך להחליט מי מוסמך להגדיר. מספר גבוה או ממוצע יוצרים מספר שאף אחד לא הגדיר. AI לא יכול לדעת למה בעל העסק התכוון.</div></div>
 
-<div class="teach"><b>🎓 למרצה:</b> תציגו את שלושת המספרים לפני המעבדה ותבקשו מהכיתה לנחש מי צודק. התשובה ״כולם״ היא הנקודה. המעבדה השנייה מראה איך ממשל נראה בקוד, ומעבדת ההסתרה מראה שממשל זה גם מה מעבירים למחסן. בשיחה על התפקידים תזכירו שבעסק קטן אדם אחד ממלא כמה תפקידים.</div>
+<div class="teach"><b>🎓 למרצה:</b> תציגו את שלושת המספרים לפני המעבדה ותבקשו מהכיתה לנחש מי צודק. התשובה ״כולם״ היא הנקודה. המעבדה השנייה מראה איך ממשל נראה בקוד. הצד של ״מי רואה מה״ מגיע בסעיף הבא. בשיחה על התפקידים תזכירו שבעסק קטן אדם אחד ממלא כמה תפקידים.</div>
+</section>
+<section class="sec" id="s4-6v" data-t="חלון לכל תפקיד">
+<div class="sec-h"><div class="sec-n">7</div><h2>VIEW: חלון מותאם לכל בעל עניין</h2></div>
+<p class="lead">בסעיף הקודם בניתם תצוגה כדי שלכולם יהיה אותו מספר. עכשיו אותו כלי, מטרה אחרת. במטבח צריכים את ההזמנות והמנות, בלי אימיילים ובלי טיפים. נועה השליחה צריכה את המשלוחים שלה, בלי הכנסות. דנה, האנליסטית, צריכה הכנסות לפי עיר, בלי כתובות. ועוזר ה-AI מחלק 5 צריך סיכומים, לא שמות. אם כולם מקבלים את הטבלאות עצמן, כל אחד רואה הכול ויכול לשבור הכול. מה עושים?</p>
+
+<p>תזכורת מהסעיף הקודם: תצוגה היא שאילתה ששמורה בשם ומתנהגת כמו טבלה. מה שלא אמרנו שם: היא לא שומרת עותק של הנתונים. בכל פעם ששואלים אותה, השאילתה רצה מחדש על הטבלאות. בואו נוכיח את זה.</p>
+
+<div class="lab" data-id="p4-lab-view-live" data-title="תצוגה היא לא עותק: היא תמיד עדכנית" data-require="INSERT" data-require-msg="צריך להוסיף את ההזמנה החדשה לטבלאות עצמן, עם INSERT.">
+  <pre class="setup">CREATE VIEW v_revenue_monthly AS
+SELECT strftime('%Y-%m', o.order_ts) AS month,
+       COUNT(DISTINCT o.id) AS orders,
+       SUM(oi.qty * d.price) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+JOIN dishes d ON d.id = oi.dish_id
+WHERE o.status = 'delivered'
+GROUP BY month;</pre>
+  <div class="q-src">התצוגה <code>v_revenue_monthly</code> כבר קיימת, וההכנסה של מאי בה היא 3,552. הוסיפו לטבלאות הזמנה חדשה שנמסרה: הזמנה 88, לקוח 3, שליח 1, ב-<code>'2026-05-31 20:00'</code>, ערוץ app, עם שתי מנות סלמון (מנה 5). אחר כך שאלו את התצוגה מה ההכנסה של מאי. אל תיגעו בתצוגה עצמה.</div>
+  <pre class="start">INSERT INTO orders (id, customer_id, courier_id, order_ts, channel, delivery_min, rating, tip, status)
+VALUES (88, 3, 1, '2026-05-31 20:00', 'app', 30, 5, 10, 'delivered');
+-- הוסיפו את שורת הפריט: הזמנה 88, מנה 5, כמות 2
+
+SELECT * FROM v_revenue_monthly WHERE month = '2026-05';</pre>
+  <pre class="check">INSERT INTO orders (id, customer_id, courier_id, order_ts, channel, delivery_min, rating, tip, status) VALUES (88, 3, 1, '2026-05-31 20:00', 'app', 30, 5, 10, 'delivered'); INSERT INTO order_items (order_id, dish_id, qty) VALUES (88, 5, 2); SELECT * FROM v_revenue_monthly WHERE month = '2026-05';</pre>
+  <ol class="hints"><li><code>INSERT INTO order_items (order_id, dish_id, qty) VALUES (88, 5, 2);</code></li></ol>
+  <div class="why-src">מאי קפץ מ-3,552 ל-3,730 (שני סלמונים כפול 89), ו-26 הזמנות במקום 25. לא הרצתם שום פקודת רענון ולא בניתם מחדש כלום. התצוגה פשוט רצה שוב על הטבלאות. זה היתרון הגדול שלה: אין עותק שמתיישן, ואין ״איזו גרסה נכונה״.</div>
+</div>
+
+<h3>שאילתה על הטבלאות מול שאילתה דרך תצוגה</h3>
+<p>מה משתנה אם כל אחד ניגש ישר לטבלאות, ומה משתנה אם כל אחד מקבל תצוגה? תכל׳ס, זה נראה אחרת לכל צד:</p>
+<div class="tw"><table class="tbl"><thead><tr><th></th><th>ניגשים ישר לטבלאות</th><th>ניגשים דרך תצוגה</th></tr></thead><tbody>
+<tr><th>האפליקציה</th><td>כל מסך כותב חיבורים בעצמו. שינוי שם של עמודה שובר מסכים.</td><td>המסך קורא שם קבוע עם עמודות קבועות. את מה שמתחת מתקנים פעם אחת, בתצוגה.</td></tr>
+<tr><th>דנה, האנליסטית</th><td>צריכה לדעת איך מחברים, מה מסננים, ואיזו הכנסה ״נכונה״.</td><td>שואלת <code>SELECT * FROM v_revenue_monthly</code> ומקבלת את ההגדרה הרשמית.</td></tr>
+<tr><th>צוות האבטחה</th><td>מי שקורא את <code>orders</code> רואה גם טיפים וגם מי הזמין. אין דרך לתת ״חצי טבלה״.</td><td>נותנים הרשאה על התצוגה בלבד, והטבלאות סגורות. כל תפקיד רואה רק את החלון שלו.</td></tr>
+</tbody></table></div>
+
+<div class="defline"><b>תפקיד (role):</b> שם לקבוצת הרשאות, שמצמידים אותו לאנשים או לתוכנות. דוגמה: kitchen, courier, analyst, ai_agent.</div>
+<div class="defline"><b>הרשאה (GRANT):</b> פקודה שנותנת לתפקיד פעולה מסוימת על טבלה או תצוגה. דוגמה: <code>GRANT SELECT ON v_courier_deliveries TO courier</code> נותן לשליחים לקרוא את התצוגה, וזהו.</div>
+<div class="defline"><b>הרשאה מינימלית וצמצום מידע:</b> כל תפקיד מקבל רק את העמודות והשורות שהוא צריך כדי לעבוד. דוגמה: המטבח מקבל מנות וכמויות, ולשליח אין סיבה לראות הכנסות או אימיילים.</div>
+
+<h3>חלון לכל בעל עניין: מי רואה מה, ומי מחליט</h3>
+<p>זו הטבלה שמסכמת את כל החלק הזה מנקודת המבט של ״מי רואה מה״. העמודה האחרונה חשובה כמו האחרות: מישהו צריך להחליט ולאשר. כל המספרים חושבו על מסד המסעדה.</p>
+<div class="tw"><table class="tbl p4-stk"><thead><tr><th>תפקיד</th><th>תצוגה</th><th>אילו שורות</th><th>אילו עמודות</th><th>מה מוסתר</th><th>איזו החלטה היא משרתת</th><th>אחראי</th></tr></thead><tbody>
+<tr><td>מטבח</td><td><code>v_kitchen_tickets</code></td><td>207 שורות מנה מ-82 הזמנות שלא בוטלו</td><td>הזמנה, שעה, ערוץ, מנה, קטגוריה, כמות</td><td>שם ואימייל, מחירים, טיפים</td><td>מה מכינים ומתי</td><td>ראש המטבח מבקש, יבגני מאשר</td></tr>
+<tr><td>שליחה (נועה)</td><td><code>v_courier_2_runs</code></td><td>22 המשלוחים שלה שנמסרו</td><td>הזמנה, שעה, עיר, דקות, טיפ</td><td>שליחים אחרים, שם ואימייל של הלקוח</td><td>המסלול שלה והטיפים שלה</td><td>מנהל השליחים</td></tr>
+<tr><td>מנהלת סניף חיפה</td><td><code>v_branch_haifa_orders</code></td><td>14 הזמנות של לקוחות מחיפה</td><td>הזמנה, שעה, ערוץ, סטטוס, דקות, דירוג</td><td>שאר הערים, פרטי הלקוח</td><td>איך הסניף עובד</td><td>יבגני</td></tr>
+<tr><td>אנליסטית שיווק</td><td><code>v_marketing_customers</code></td><td>18 לקוחות, שורה לכל אחד</td><td>מספר לקוח, עיר, חודש הצטרפות, הזמנות, הכנסה</td><td>שם ואימייל</td><td>למי שולחים מבצע</td><td>מנהלת השיווק, באישור יבגני</td></tr>
+<tr><td>כספים</td><td><code>v_revenue_monthly</code></td><td>3 חודשים</td><td>חודש, הזמנות, הכנסה</td><td>כל פרט על הזמנה בודדת</td><td>תקציב ותזרים</td><td>יבגני, בעל המדד</td></tr>
+<tr><td>שותף משלוחים חיצוני</td><td><code>v_menu_public</code></td><td>10 מנות</td><td>מנה, קטגוריה, מחיר</td><td>עלות המנה והרווח</td><td>מה מציגים באפליקציה שלו</td><td>יבגני, לפי החוזה</td></tr>
+<tr><td>מבקר</td><td><code>v_audit_exceptions</code></td><td>4 ממצאים</td><td>סוג תקלה, מספר רשומה</td><td>אין לו הרשאת כתיבה בכלל</td><td>מה מתקנים</td><td>יבגני ממנה, המבקר רק קורא</td></tr>
+</tbody></table></div>
+<p>שתי הערות כנות. אין במסד עמודת סניף, אז ״סניף חיפה״ כאן הוא לקוחות שגרים בחיפה, רק לצורך הדוגמה. ובתצוגת השיווק יש מספר לקוח בלי שם. זה מצמצם מידע, אבל זה לא מידע אנונימי: מי שיש לו גם את טבלת הלקוחות יכול לחבר בחזרה.</p>
+
+<div class="anim" data-id="p4-anim-windows" data-speed="3400">
+  <div class="stage"><svg viewBox="0 0 800 340" role="img" aria-label="אותן טבלאות בסיס, ומסביב ארבעה חלונות: מטבח, שליחה, שיווק ושותף חיצוני">
+    <defs><marker id="p4a6-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+    <rect x="290" y="95" width="220" height="150" rx="16" fill="#eef2ff" stroke="#4f46e5" stroke-width="2.5"/>
+    <text x="400" y="122" text-anchor="middle" font-size="18" font-weight="800" fill="#3730a3">טבלאות הבסיס</text>
+    <text x="400" y="150" text-anchor="middle" font-size="14" fill="#334155">customers: name, email, city</text>
+    <text x="400" y="174" text-anchor="middle" font-size="14" fill="#334155">orders: tip, courier, status</text>
+    <text x="400" y="198" text-anchor="middle" font-size="14" fill="#334155">dishes: price, cost</text>
+    <text x="400" y="226" text-anchor="middle" font-size="14" font-weight="700" fill="#991b1b">כל מי שניגש לכאן רואה הכול</text>
+    <g data-s="2"><path d="M515 120 L585 75" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a6-ar)"/>
+      <rect x="590" y="20" width="200" height="100" rx="14" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="690" y="46" text-anchor="middle" font-size="17" font-weight="800" fill="#92400e">מטבח</text>
+      <text x="690" y="72" text-anchor="middle" font-size="14" fill="#0f172a">רואה: מנה, כמות, שעה</text>
+      <text x="690" y="96" text-anchor="middle" font-size="14" fill="#991b1b">לא רואה: לקוח, כסף</text></g>
+    <g data-s="3"><path d="M515 220 L585 265" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a6-ar)"/>
+      <rect x="590" y="220" width="200" height="100" rx="14" fill="#ccfbf1" stroke="#0f766e" stroke-width="2"/>
+      <text x="690" y="246" text-anchor="middle" font-size="17" font-weight="800" fill="#0f766e">שליחה (נועה)</text>
+      <text x="690" y="272" text-anchor="middle" font-size="14" fill="#0f172a">רואה: 22 משלוחים שלה</text>
+      <text x="690" y="296" text-anchor="middle" font-size="14" fill="#991b1b">לא רואה: שליחים אחרים</text></g>
+    <g data-s="4"><path d="M285 120 L215 75" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a6-ar)"/>
+      <rect x="10" y="20" width="200" height="100" rx="14" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+      <text x="110" y="46" text-anchor="middle" font-size="17" font-weight="800" fill="#5b21b6">שיווק</text>
+      <text x="110" y="72" text-anchor="middle" font-size="14" fill="#0f172a">רואה: עיר, הזמנות, הכנסה</text>
+      <text x="110" y="96" text-anchor="middle" font-size="14" fill="#991b1b">לא רואה: שם, אימייל</text></g>
+    <g data-s="5"><path d="M285 220 L215 265" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#p4a6-ar)"/>
+      <rect x="10" y="220" width="200" height="100" rx="14" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+      <text x="110" y="246" text-anchor="middle" font-size="17" font-weight="800" fill="#991b1b">שותף חיצוני</text>
+      <text x="110" y="272" text-anchor="middle" font-size="14" fill="#0f172a">רואה: מנה, מחיר</text>
+      <text x="110" y="296" text-anchor="middle" font-size="14" fill="#991b1b">לא רואה: עלות, רווח</text></g>
+    <g data-s="6" data-pulse><rect x="290" y="280" width="220" height="44" rx="10" fill="#0e1b2e"/><text x="400" y="308" text-anchor="middle" font-size="15" font-weight="700" fill="#d8b862">הרשאה על החלון, לא על הטבלה</text></g>
+  </svg></div>
+  <ol class="caps"><li>1. אלה טבלאות הבסיס. מי שמקבל אותן רואה את כל העמודות ואת כל השורות.</li><li>2. המטבח מקבל חלון: מה להכין ומתי. אין שם שמות ואין כסף.</li><li>3. נועה מקבלת חלון: רק המשלוחים שלה. זה סינון של שורות, לא רק של עמודות.</li><li>4. השיווק מקבל חלון: התנהגות של לקוחות, בלי שם ובלי אימייל.</li><li>5. שותף משלוחים מבחוץ מקבל את התפריט והמחירים. העלות והרווח נשארים בבית.</li><li>6. והחלק החשוב: נותנים הרשאה על החלון ולא על הטבלה. בלי זה, החלונות הם רק נוחות.</li></ol>
+</div>
+
+<h3>הדמיה: אותם נתונים, שבעה חלונות</h3>
+<p>בחרו בעל עניין. ההדמיה בונה את התצוגה שלו על מסד המסעדה האמיתי ומריצה אותה. תראו אילו עמודות מהטבלאות הוא מקבל, כמה שורות, ומה נשאר בחוץ.</p>
+<div class="sim" data-id="p4-sim-windows"><div class="sh">חלון לכל בעל עניין</div>
+  <div class="p4-btns" id="p4w-b"></div>
+  <div id="p4w-cols" style="margin:6px 0"></div>
+  <div class="out" id="p4w-out"><b>בחרו בעל עניין.</b></div>
+  <div class="p4-btns"><button type="button" id="p4w-raw">ומה אם הוא ניגש ישר לטבלת customers?</button></div>
+  <div class="out" id="p4w-raw-out" style="display:none"></div>
+</div>
+<script>(function(){ FL.dom(function(){
+  const box = FL.$('[data-id="p4-sim-windows"]'); if (!box) return;
+  const BASE = {customers:['id','name','city','joined','email'], orders:['id','customer_id','courier_id','order_ts','channel','delivery_min','rating','tip','status'], order_items:['order_id','dish_id','qty'], dishes:['id','name','category','price','cost'], couriers:['id','name','vehicle']};
+  const W = [
+    {k:'kitchen', n:'מטבח', v:'v_kitchen_tickets', sql:"CREATE VIEW v_kitchen_tickets AS SELECT o.id AS order_id, o.order_ts, o.channel, d.name AS dish, d.category, oi.qty FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status <> 'cancelled';",
+      cols:['orders.id','orders.order_ts','orders.channel','dishes.name','dishes.category','order_items.qty'], calc:[], rows:'הזמנות שלא בוטלו', hide:'שם ואימייל, מחירים, טיפים', dec:'מה מכינים ומתי', own:'ראש המטבח מבקש, יבגני מאשר'},
+    {k:'courier', n:'שליחה (נועה)', v:'v_courier_2_runs', sql:"CREATE VIEW v_courier_2_runs AS SELECT o.id AS order_id, o.order_ts, c.city AS delivery_city, o.delivery_min, o.tip FROM orders o LEFT JOIN customers c ON c.id = o.customer_id WHERE o.courier_id = 2 AND o.status = 'delivered';",
+      cols:['orders.id','orders.order_ts','customers.city','orders.delivery_min','orders.tip'], calc:[], rows:'רק המשלוחים של שליחה 2 שנמסרו', hide:'שליחים אחרים, שם ואימייל של הלקוח', dec:'המסלול והטיפים שלה', own:'מנהל השליחים'},
+    {k:'branch', n:'מנהלת סניף חיפה', v:'v_branch_haifa_orders', sql:"CREATE VIEW v_branch_haifa_orders AS SELECT o.id AS order_id, o.order_ts, o.channel, o.status, o.delivery_min, o.rating FROM orders o JOIN customers c ON c.id = o.customer_id WHERE c.city = 'חיפה';",
+      cols:['orders.id','orders.order_ts','orders.channel','orders.status','orders.delivery_min','orders.rating'], calc:[], rows:'הזמנות של לקוחות מחיפה (אין עמודת סניף, אז העיר משמשת כדוגמה)', hide:'שאר הערים, פרטי הלקוח', dec:'איך הסניף עובד', own:'יבגני'},
+    {k:'mkt', n:'אנליסטית שיווק', v:'v_marketing_customers', sql:"CREATE VIEW v_marketing_customers AS SELECT c.id AS customer_id, c.city, substr(c.joined, 1, 7) AS joined_month, COUNT(DISTINCT o.id) AS delivered_orders, COALESCE(SUM(oi.qty * d.price), 0) AS revenue FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND o.status = 'delivered' LEFT JOIN order_items oi ON oi.order_id = o.id LEFT JOIN dishes d ON d.id = oi.dish_id GROUP BY c.id, c.city, c.joined;",
+      cols:['customers.id','customers.city','customers.joined'], calc:['delivered_orders','revenue'], rows:'שורה לכל לקוח', hide:'שם ואימייל', dec:'למי שולחים מבצע', own:'מנהלת השיווק, באישור יבגני'},
+    {k:'fin', n:'כספים', v:'v_revenue_monthly', sql:"CREATE VIEW v_revenue_monthly AS SELECT strftime('%Y-%m', o.order_ts) AS month, COUNT(DISTINCT o.id) AS orders, SUM(oi.qty * d.price) AS revenue FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status = 'delivered' GROUP BY month;",
+      cols:[], calc:['month','orders','revenue'], rows:'שורה לכל חודש, רק הזמנות שנמסרו', hide:'כל פרט על הזמנה בודדת', dec:'תקציב ותזרים', own:'יבגני, בעל המדד'},
+    {k:'partner', n:'שותף משלוחים חיצוני', v:'v_menu_public', sql:"CREATE VIEW v_menu_public AS SELECT id AS dish_id, name AS dish, category, price FROM dishes;",
+      cols:['dishes.id','dishes.name','dishes.category','dishes.price'], calc:[], rows:'כל המנות', hide:'עלות המנה והרווח', dec:'מה מציגים באפליקציה שלו', own:'יבגני, לפי החוזה'},
+    {k:'audit', n:'מבקר', v:'v_audit_exceptions', sql:"CREATE VIEW v_audit_exceptions AS SELECT 'orphan_customer' AS issue, o.id AS record_id FROM orders o WHERE o.customer_id IS NOT NULL AND o.customer_id NOT IN (SELECT id FROM customers) UNION ALL SELECT 'negative_tip', id FROM orders WHERE tip < 0 UNION ALL SELECT 'missing_city', id FROM customers WHERE city IS NULL UNION ALL SELECT 'duplicate_customer', c2.id FROM customers c1 JOIN customers c2 ON c1.email = c2.email AND c1.id < c2.id;",
+      cols:[], calc:['issue','record_id'], rows:'שורה לכל ממצא של בדיקת איכות', hide:'אין לו הרשאת כתיבה בכלל', dec:'מה מתקנים', own:'יבגני ממנה, המבקר רק קורא'}
+  ];
+  const seen = {}; let cur = null;
+  const bb = FL.$('#p4w-b', box), colsEl = FL.$('#p4w-cols', box), out = FL.$('#p4w-out', box), rawOut = FL.$('#p4w-raw-out', box);
+  W.forEach((w,i)=>{ const b = document.createElement('button'); b.type = 'button'; b.textContent = w.n; b.addEventListener('click', ()=>show(i)); bb.appendChild(b); });
+  function show(i){
+    if (!FL.ok()){ out.textContent = 'מנוע ה-SQL לא נטען.'; return; }
+    const w = W[i]; cur = i; seen[w.k] = 1; rawOut.style.display = 'none';
+    FL.$$('button', bb).forEach((b,j)=>b.classList.toggle('on', j === i));
+    let html = '';
+    Object.keys(BASE).forEach(t=>{ html += '<div style="margin:3px 0"><b style="font-size:.85rem;direction:ltr;display:inline-block;min-width:92px">' + t + '</b> ' + BASE[t].map(c=>{ const on = w.cols.indexOf(t + '.' + c) >= 0; return '<span class="chip ' + (on ? 'g' : '') + '" style="' + (on ? '' : 'opacity:.45;text-decoration:line-through') + '">' + c + '</span>'; }).join(' ') + '</div>'; });
+    if (w.calc.length) html += '<div style="margin:3px 0"><b style="font-size:.85rem">עמודות מחושבות:</b> ' + w.calc.map(c=>'<span class="chip b">' + c + '</span>').join(' ') + '</div>';
+    colsEl.innerHTML = html;
+    let res = null, n = 0;
+    try { res = FL.exec(w.sql + ' SELECT * FROM ' + w.v + ';'); n = res ? res.values.length : 0; } catch(e){ res = null; }
+    out.innerHTML = '<b>' + w.n + ': <code>' + w.v + '</code></b> <span class="chip b">' + n + ' שורות</span>'
+      + '<p style="margin:6px 0">שורות: ' + w.rows + '. מוסתר: ' + w.hide + '.</p>'
+      + '<div class="tw">' + FL.tableHTML(res, 6) + '</div>'
+      + '<p style="margin:6px 0"><b>ההחלטה:</b> ' + w.dec + '. <b>אחראי:</b> ' + w.own + '.</p>';
+    if (Object.keys(seen).length >= 4) FL.done('p4-sim-windows');
+  }
+  FL.$('#p4w-raw', box).addEventListener('click', ()=>{
+    if (!FL.ok()) return;
+    let r = null; try { r = FL.exec('SELECT id, name, city, email FROM customers'); } catch(e){}
+    rawOut.style.display = 'block';
+    rawOut.innerHTML = '<p><b>כאן, במעבדה בדפדפן (SQLite):</b> זה עובד. אין ב-SQLite משתמשים והרשאות, ולכן כל מי שפותח את הקובץ קורא הכול, כולל ' + (r ? r.values.length : 0) + ' כתובות אימייל:</p><div class="tw">' + FL.tableHTML(r, 3) + '</div>'
+      + '<p><b>במסד שרת (PostgreSQL, Supabase, BigQuery), אחרי REVOKE על הטבלה ו-GRANT רק על התצוגה:</b> הבקשה נכשלת. הודעה טיפוסית ב-PostgreSQL: <code>permission denied for table customers</code>. (את השורה הזו אנחנו מדמים כאן, היא לא רצה בדפדפן.)</p>';
+  });
+}); })();</script>
+
+<h3>בונים חלונות ביד</h3>
+<p>כל הרצה במעבדה מתחילה ממסד חדש. לכן יוצרים את התצוגה ושואלים אותה באותה הרצה, או שהתצוגה כבר נבנית בשבילכם מראש.</p>
+
+<div class="lab" data-id="p4-lab-view-courier" data-title="חלון לשליחים" data-require="CREATE VIEW" data-require-msg="קודם יוצרים את התצוגה עם CREATE VIEW, ואז שואלים אותה.">
+  <div class="q-src">צרו תצוגה <code>v_courier_deliveries</code> עם <code>courier_id</code>, <code>order_id</code>, <code>order_ts</code>, <code>city</code> של הלקוח ו-<code>delivery_min</code>, רק להזמנות שנמסרו ויש להן שליח. אחר כך החזירו מהתצוגה כמה משלוחים יש לדימה (שליח 3), בעמודה <code>dima_deliveries</code>.</div>
+  <pre class="start">CREATE VIEW v_courier_deliveries AS
+SELECT o.courier_id, o.id AS order_id, o.order_ts, c.city, o.delivery_min
+FROM orders o
+LEFT JOIN customers c ON c.id = o.customer_id
+-- השלימו את הסינון: נמסרו, ויש שליח
+;
+SELECT COUNT(*) AS dima_deliveries FROM v_courier_deliveries WHERE courier_id = 3;</pre>
+  <pre class="check">CREATE VIEW v_courier_deliveries AS
+SELECT o.courier_id, o.id AS order_id, o.order_ts, c.city, o.delivery_min
+FROM orders o
+LEFT JOIN customers c ON c.id = o.customer_id
+WHERE o.status = 'delivered' AND o.courier_id IS NOT NULL; SELECT COUNT(*) AS dima_deliveries FROM v_courier_deliveries WHERE courier_id = 3;</pre>
+  <pre class="solution">CREATE VIEW v_courier_deliveries AS
+SELECT o.courier_id, o.id AS order_id, o.order_ts, c.city, o.delivery_min
+FROM orders o
+LEFT JOIN customers c ON c.id = o.customer_id
+WHERE o.status = 'delivered' AND o.courier_id IS NOT NULL;
+SELECT COUNT(*) AS dima_deliveries FROM v_courier_deliveries WHERE courier_id = 3;</pre>
+  <ol class="hints"><li><code>WHERE o.status = 'delivered' AND o.courier_id IS NOT NULL</code>.</li></ol>
+  <div class="why-src">16 משלוחים לדימה. בתצוגה אין טיפים, אין הכנסות, אין שם ואין אימייל. אבל שימו לב מה היא לא עושה: היא לא דואגת שדימה יראה רק את השורות שלו. את זה עושה RLS (חלק 1) או השרת (חלק 3), שמוסיף את התנאי לפי מי שמחובר.</div>
+</div>
+
+<div class="lab" data-id="p4-lab-view-kitchen" data-title="חלון למטבח: כמה מנות מכל סוג" data-require="CREATE VIEW" data-require-msg="קודם יוצרים את התצוגה של המטבח.">
+  <div class="q-src">ראש המטבח רוצה לדעת כמה מנות יצאו מכל קטגוריה, בלי לראות לקוחות ובלי כסף. השלימו את <code>v_kitchen_tickets</code> (הזמנות שלא בוטלו, עם שם המנה, הקטגוריה והכמות), ואז החזירו מהתצוגה <code>category</code> ו-<code>portions</code>, סכום הכמויות.</div>
+  <pre class="start">CREATE VIEW v_kitchen_tickets AS
+SELECT o.id AS order_id, o.order_ts, o.channel,
+       d.name AS dish, d.category, oi.qty
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+-- השלימו חיבור למנות וסינון של הזמנות שבוטלו
+;
+SELECT category, SUM(qty) AS portions
+FROM v_kitchen_tickets
+GROUP BY category;</pre>
+  <pre class="check">CREATE VIEW v_kitchen_tickets AS SELECT o.id AS order_id, o.order_ts, o.channel, d.name AS dish, d.category, oi.qty FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN dishes d ON d.id = oi.dish_id WHERE o.status &lt;&gt; 'cancelled'; SELECT category, SUM(qty) AS portions FROM v_kitchen_tickets GROUP BY category;</pre>
+  <ol class="hints"><li><code>JOIN dishes d ON d.id = oi.dish_id</code>.</li><li><code>WHERE o.status &lt;&gt; 'cancelled'</code>.</li></ol>
+  <div class="why-src">130 מנות עיקריות, 59 משקאות, 56 ראשונות ו-19 קינוחים: 264 מנות מ-82 הזמנות. זה מה שהמטבח צריך כדי להזמין סחורה ולתכנן משמרת. אין כאן אף שם, אף אימייל ואף שקל.</div>
+</div>
+
+<div class="lab" data-id="p4-lab-view-readonly" data-title="דרך תצוגה לא משנים נתונים" data-require="UPDATE\s+orders" data-require-msg="את השינוי עושים בטבלה orders עצמה.">
+  <pre class="setup">CREATE VIEW v_courier_deliveries AS
+SELECT o.courier_id, o.id AS order_id, o.order_ts, c.city, o.delivery_min
+FROM orders o
+LEFT JOIN customers c ON c.id = o.customer_id
+WHERE o.status = 'delivered' AND o.courier_id IS NOT NULL;</pre>
+  <pre class="show">SELECT order_id, delivery_min FROM v_courier_deliveries WHERE order_id = 1</pre>
+  <div class="q-src">התצוגה <code>v_courier_deliveries</code> כבר קיימת. נועה דיווחה שזמן המשלוח של הזמנה 1 היה 20 דקות. קודם הריצו את השורה שבתבנית, שמנסה לעדכן דרך התצוגה, ותראו מה קורה. אחר כך כתבו את העדכון הנכון, על הטבלה עצמה, ותראו שהתצוגה מציגה את הערך החדש.</div>
+  <pre class="start">UPDATE v_courier_deliveries SET delivery_min = 20 WHERE order_id = 1;</pre>
+  <pre class="check">UPDATE orders SET delivery_min = 20 WHERE id = 1</pre>
+  <ol class="hints"><li>ב-SQLite אי אפשר לשנות תצוגה. העדכון הולך לטבלה <code>orders</code>.</li><li>שימו לב לשם העמודה: בטבלה המפתח נקרא <code>id</code>, לא <code>order_id</code>.</li></ol>
+  <div class="why-src">הניסיון הראשון נכשל עם ״cannot modify v_courier_deliveries because it is a view״. העדכון על הטבלה עבר, והתצוגה הראתה אותו מיד. כאן זה כלל של SQLite. ב-PostgreSQL תצוגה פשוטה על טבלה אחת יכולה דווקא לקבל עדכונים, ולכן שם ההגנה לא באה מהתצוגה, אלא מזה שנותנים לתפקיד רק הרשאת SELECT עליה.</div>
+</div>
+
+<div class="defline"><b>הסתרת מידע אישי (masking):</b> מחליפים ערך רגיש בגרסה חלקית, כך שאפשר לעבוד עם הנתונים בלי לחשוף אותם. דוגמה: <code>dana.levi@example.com</code> הופך ל-<code>d***@example.com</code>.</div>
+<p>דנה, האנליסטית, צריכה לספור לקוחות לפי עיר, לא לקרוא כתובות אימייל. אז בונים לה חלון שבו האימייל כבר מוסתר, וכל דוח שלה רץ עליו.</p>
+<div class="lab" data-id="p4-lab-mask" data-title="חלון לאנליסטית: אימייל מוסתר" data-require="CREATE VIEW" data-require-msg="בנו את ההסתרה בתוך תצוגה, עם CREATE VIEW.">
+  <div class="q-src">צרו תצוגה <code>v_customers_analyst</code> עם <code>id</code>, <code>city</code> (עיר ריקה הופכת ל-״לא ידוע״) ו-<code>email_masked</code>: האות הראשונה של האימייל, אחריה <code>***</code>, ואז <code>@</code> והדומיין. אחר כך החזירו מהתצוגה <code>city</code> ומספר לקוחות בכל עיר (<code>customers</code>).</div>
+  <pre class="start">CREATE VIEW v_customers_analyst AS
+SELECT id,
+       COALESCE(city, 'לא ידוע') AS city,
+       substr(email, 1, 1) || '***@' || -- השלימו את הדומיין
+       AS email_masked
+FROM customers;
+SELECT city, COUNT(*) AS customers FROM v_customers_analyst GROUP BY city;</pre>
+  <pre class="check">CREATE VIEW v_customers_analyst AS SELECT id, COALESCE(city, 'לא ידוע') AS city, substr(email, 1, 1) || '***@' || substr(email, instr(email, '@') + 1) AS email_masked FROM customers; SELECT city, COUNT(*) AS customers FROM v_customers_analyst GROUP BY city;</pre>
+  <pre class="solution">CREATE VIEW v_customers_analyst AS
+SELECT id,
+       COALESCE(city, 'לא ידוע') AS city,
+       substr(email, 1, 1) || '***@' || substr(email, instr(email, '@') + 1) AS email_masked
+FROM customers;
+SELECT city, COUNT(*) AS customers FROM v_customers_analyst GROUP BY city;</pre>
+  <ol class="hints"><li><code>instr(email, '@')</code> מחזיר את המקום של ה-@.</li><li>הדומיין הוא מה שאחרי ה-@: <code>substr(email, instr(email, '@') + 1)</code>.</li></ol>
+  <div class="why-src">7 לקוחות בתל אביב, 4 בחיפה, 3 ברמת גן, 3 בגבעתיים ואחד בלי עיר. דנה מקבלת את כל מה שהיא צריכה לספירה, ואף כתובת מלאה לא עוברת. תזכורת כנה: כאן, ב-SQLite, היא עדיין יכולה לקרוא את <code>customers</code> ישירות. ההגנה האמיתית באה מההרשאות במסד שרת, בהמשך הסעיף.</div>
+</div>
+
+<h3>השכבה שבאמת נועלת: הרשאות במסד שרת</h3>
+<p>ב-SQLite אין משתמשים ואין הרשאות. מי שיכול לפתוח את הקובץ קורא הכול, ופקודת <code>GRANT</code> פשוט לא קיימת שם. לכן במעבדה התצוגות מלמדות צורה, סדר והגדרות, אבל לא מגינות. במסד שרת כמו PostgreSQL (וגם Supabase, שבנוי עליו) הדפוס הוא: נועלים את הטבלאות, ונותנים לכל תפקיד הרשאה על התצוגה שלו בלבד.</p>
+<p style="font-weight:700">הקוד הבא הוא להצגה בלבד. הוא לא רץ במעבדה בדפדפן.</p>
+<pre class="code" data-lang="sql">-- PostgreSQL: תפקיד לכל קהל, הרשאה על התצוגה, לא על הטבלה
+CREATE SCHEMA reporting;
+CREATE ROLE kitchen_role NOLOGIN;
+CREATE ROLE partner_role NOLOGIN;
+
+-- סוגרים את הטבלאות (ב-PostgreSQL אין הרשאות ל-PUBLIC על טבלאות כברירת מחדל, וזה מתעד את הכוונה)
+REVOKE ALL ON customers, dishes, couriers, orders, order_items FROM PUBLIC;
+GRANT USAGE ON SCHEMA reporting TO kitchen_role, partner_role;
+
+CREATE VIEW reporting.v_menu_public AS
+SELECT id AS dish_id, name AS dish, category, price
+FROM public.dishes;
+GRANT SELECT ON reporting.v_menu_public TO partner_role;
+
+-- partner_role:  SELECT * FROM reporting.v_menu_public   -- 10 שורות, 4 עמודות
+-- partner_role:  SELECT cost FROM public.dishes           -- permission denied for table dishes</pre>
+
+<div class="defline"><b>security_invoker:</b> הגדרה של תצוגה ב-PostgreSQL 15 ומעלה, שגורמת לבדוק את ההרשאות ואת כללי ה-RLS מול מי שקורא את התצוגה, ולא מול מי שיצר אותה. דוגמה: נועה קוראת <code>v_my_runs</code> ומקבלת רק את המשלוחים שלה, כי ה-RLS נבדק מולה.</div>
+<p>למה זה חשוב? ב-PostgreSQL תצוגה רצה כברירת מחדל עם ההרשאות של מי שיצר אותה. אם היוצר הוא משתמש שעוקף RLS, גם התצוגה עוקפת. בתיעוד של Supabase זה כתוב ישירות: ״Views bypass RLS by default because they are usually created with the postgres user.״ כלומר: תצוגות עוקפות RLS כברירת מחדל, כי בדרך כלל יוצר אותן המשתמש postgres. בבדיקה שעשינו על PostgreSQL 17 עם נתוני המסעדה, תצוגה רגילה כזו החזירה לנועה את כל 82 ההזמנות שנמסרו. אותה תצוגה עם <code>security_invoker</code> החזירה רק את 22 המשלוחים שלה.</p>
+<pre class="code" data-lang="sql">-- Supabase או PostgreSQL 15 ומעלה. להצגה בלבד, לא רץ בדפדפן.
+-- courier_accounts היא טבלה שמקשרת כל שליח למשתמש שלו ב-Supabase Auth
+alter table public.orders enable row level security;
+create policy "courier reads own orders"
+  on public.orders for select to authenticated
+  using (courier_id in (select ca.courier_id from public.courier_accounts ca
+                        where ca.user_id = (select auth.uid())));
+
+-- עם security_invoker הקורא צריך הרשאה על הטבלה: נותנים רק את העמודות הנחוצות
+revoke select on public.orders from anon, authenticated;
+grant select (id, courier_id, order_ts, delivery_min, tip, status) on public.orders to authenticated;
+
+create view public.v_my_runs
+with (security_invoker = true) as
+select id as order_id, order_ts, delivery_min, tip
+from public.orders
+where status = 'delivered';
+
+revoke all on public.v_my_runs from anon;
+grant select on public.v_my_runs to authenticated;</pre>
+<p>ועוד משפט אחד, על <code>security_barrier</code>: תצוגה שה-WHERE שלה הוא מסנן אבטחה (״רק חיפה״, ״רק נועה״) מקבלת <code>WITH (security_barrier = true)</code>, כדי שפונקציה שמשתמש כתב לא תוכל להציץ בשורות לפני שהמסנן רץ. בדקו את גרסת ה-PostgreSQL בפרויקט שלכם (<code>select version();</code>) לפני שאתם סומכים על <code>security_invoker</code>.</p>
+<p>ב-BigQuery אותו רעיון נקרא תצוגה מורשית (authorized view): בונים את התצוגה ב-dataset נפרד, מאשרים לה לקרוא את ה-dataset של הנתונים, ונותנים לאנשים גישה רק ל-dataset של התצוגות. הם יכולים להריץ שאילתות על מה שהתצוגה מראה, אבל לא לגשת לטבלאות המקור. ויש שם גם כללי שורות (row access policy) ותגיות לעמודות רגישות.</p>
+
+<div class="box trap"><p>תצוגה היא לא מנעול לבד. אם לתפקיד נשארה הרשאה על הטבלה עצמה, הוא פשוט יעקוף את התצוגה. ועוד דבר: ב-PostgreSQL תצוגה רצה כברירת מחדל עם ההרשאות של מי שיצר אותה, ולכן היא עלולה לעקוף את ה-RLS שהפעלתם בחלק 1. בגרסה 15 ומעלה מוסיפים <code>WITH (security_invoker = true)</code>, כדי שהכללים ייבדקו מול מי שקורא.</p></div>
+
+<h3>תצוגה ממומשת: כשהשאילתה כבדה מדי</h3>
+<div class="defline"><b>תצוגה ממומשת (materialized view):</b> תצוגה ששומרת את התוצאה שלה. קריאה ממנה מהירה, אבל הנתונים ישנים כמו הרענון האחרון. דוגמה: סיכום הכנסות חודשי שמתרענן כל לילה, בשביל דשבורד שנפתח מאה פעם ביום.</div>
+<p>תצוגה רגילה רצה מחדש בכל פעם. אם היא מחברת שלוש טבלאות גדולות ודשבורד שואל אותה כל דקה, זה מחיר. תצוגה ממומשת פותרת את זה, ומשלמת בעדכניות: במעבדה למעלה, תצוגה רגילה הראתה מיד 3,730 למאי, ותצוגה ממומשת הייתה ממשיכה להראות 3,552 עד הרענון הבא. ב-PostgreSQL מרעננים בפקודה <code>REFRESH MATERIALIZED VIEW</code>. ב-BigQuery המערכת מרעננת אותן ברקע. ל-SQLite אין תצוגות ממומשות בכלל, והתחליף הוא מה שעשיתם בסעיף 4: <code>CREATE TABLE ... AS SELECT</code> שבונים מחדש לפי לוח זמנים. ועוד הערה מהתיעוד של Supabase: על תצוגה ממומשת אי אפשר להפעיל RLS, ולכן לא חושפים אותה ל-API של המשתמשים.</p>
+
+<h3>מלכודות</h3>
+<div class="cols2">
+  <div class="card"><h4>1. חלון בלי מנעול</h4><p>תצוגה לבד לא מגינה. בלי <code>REVOKE</code> על הטבלה ו-<code>GRANT</code> על התצוגה, היא רק נוחות. וב-SQLite אין הרשאות בכלל.</p></div>
+  <div class="card"><h4>2. SELECT * בתוך תצוגה</h4><p>מוסיפים לטבלה עמודה חדשה, למשל טלפון. ב-PostgreSQL היא לא תופיע בתצוגה, כי הכוכבית נפרשת ברגע היצירה. ב-SQLite היא כן תופיע, ואז מידע אישי חדש דולף לתצוגה ״בטוחה״. כותבים את שמות העמודות במפורש.</p></div>
+  <div class="card"><h4>3. כפל שמתחבא בתצוגה</h4><p>תצוגה ברמת שורת פריט נראית כמו ״טבלה אחת״. מי שמסכם עליה טיפים מקבל 517 במקום 209 (סכום עמודת tip בהזמנות שנמסרו), כי כל טיפ נספר פעם לכל מנה. כותבים בתיאור של כל תצוגה מה שורה אחת מייצגת.</p></div>
+  <div class="card"><h4>4. תצוגה על תצוגה על תצוגה</h4><p>כל שכבה נראית פשוטה ומסתירה חיבור. שלוש שכבות זה שאילתה כבדה שאף אחד לא רואה. שומרים על מעט שכבות ומתעדים מה בנוי על מה (זו השושלת מהסעיף הבא).</p></div>
+  <div class="card"><h4>5. ברירת המחדל עוקפת RLS</h4><p>תצוגה שנוצרה על ידי משתמש שעוקף RLS מחזירה הכול: 82 הזמנות במקום 22. ב-PostgreSQL 15 ומעלה: <code>security_invoker</code>.</p></div>
+</div>
+
+<div class="box meaning"><p>״מי רואה מה״ היא החלטה של בעל העסק, לא של מי שכותב את הקוד. תצוגה לכל תפקיד הופכת אותה להחלטה כתובה: עובד חדש מקבל תפקיד, ולא הסבר ממה להיזהר. דליפה של טבלת לקוחות עולה באמון הלקוחות, ובישראל חל עליה חוק הגנת הפרטיות. ותצוגה גם חוסכת: היא ממשק קבוע. האפליקציה, כלי ה-BI וה-AI קוראים שם קבוע עם עמודות קבועות, ואם הטבלאות מתחת משתנות, מתקנים פעם אחת. בכלי BI שמתחבר למסד, כמו Tableau Desktop, בדרך כלל בוחרים את התצוגה כמו טבלה. ואם היא לא מופיעה ברשימה, כותבים <code>SELECT * FROM</code> התצוגה כשאילתה מותאמת (Custom SQL). Tableau Public עובד רק עם קבצים, אז מריצים את התצוגה ומייצאים את התוצאה ל-CSV. כך גם בסעיף 10: <code>fact_sales.csv</code> כולל שמות לקוחות, ומה שמפרסמים בפומבי כדאי לייצא מתצוגה מצומצמת.</p></div>
+
+<div class="box real"><p>זה הדפוס המקובל במסדי שרת. ב-PostgreSQL משתמשים בפקודות <code>GRANT</code> ו-<code>REVOKE</code> על תצוגות כמו על טבלאות. ב-Supabase התיעוד מקדיש פרק לתצוגות ול-RLS וממליץ על <code>security_invoker</code>. ב-BigQuery יש תצוגות מורשות, כללי שורות ותגיות לעמודות רגישות. כלי BI גדולים מוסיפים גם סינון שורות לפי מי שצופה בדשבורד. בכל המקרים הרעיון זהה: הנתונים במקום אחד, וכל קהל מקבל חלון.</p>
+<p class="tools"><a class="tool" href="https://www.postgresql.org/docs/current/sql-grant.html" target="_blank" rel="noopener">PostgreSQL: GRANT</a><a class="tool" href="https://supabase.com/docs/guides/database/postgres/row-level-security" target="_blank" rel="noopener">Supabase: RLS ותצוגות</a><a class="tool" href="https://cloud.google.com/bigquery/docs/authorized-views" target="_blank" rel="noopener">BigQuery: תצוגות מורשות</a></p></div>
+
+<div class="box think" data-id="p4-th-view-temp"><p>דנה מבקשת גישה לטבלת customers ״רק לחמש דקות״, כדי לבדוק כפילויות. מה עושים?</p>
+<div class="ans">בונים לה תצוגה לבדיקה (אימייל מנוקה ומספר שורות, בלי שם), או מריצים את הבדיקה בשבילה. גישה ״זמנית״ נוטה להישאר, ואף אחד לא זוכר לסגור אותה.</div></div>
+
+<div class="quiz" data-id="p4-q-view-email" data-a="3"><p class="qq">מה מגן על האימיילים של הלקוחות מאפליקציית השליחים?</p>
+<button class="opt">תצוגה בלי עמודת email, וזהו</button>
+<button class="opt">להסתיר את העמודה במסך של האפליקציה</button>
+<button class="opt">תצוגה בלי עמודת email, והרשאת SELECT רק עליה ולא על customers</button>
+<button class="opt">לבקש מהשליחים לא להסתכל</button>
+<div class="why">תצוגה בלי הרשאות היא רק נוחות: מי שיש לו הרשאה על customers יעקוף אותה. הסתרה במסך לא עוזרת, כי הנתונים כבר הגיעו לטלפון. ההגנה היא השילוב: חלון בלי העמודה, והרשאה רק על החלון.</div></div>
+
+<div class="quiz" data-id="p4-q-view-rls" data-a="2"><p class="qq">ב-PostgreSQL, על טבלת orders מופעל RLS שמראה לכל שליח רק את המשלוחים שלו. משתמש שעוקף RLS יוצר תצוגה רגילה על orders ונותן לשליחים הרשאה עליה. מה נועה רואה?</p>
+<button class="opt">רק את המשלוחים שלה, כי RLS מופעל</button>
+<button class="opt">את כל ההזמנות, כי התצוגה רצה כברירת מחדל עם ההרשאות של מי שיצר אותה</button>
+<button class="opt">כלום</button>
+<button class="opt">שגיאה</button>
+<div class="why">בבדיקה על נתוני המסעדה: 82 הזמנות במקום 22. התיקון ב-PostgreSQL 15 ומעלה הוא <code>WITH (security_invoker = true)</code>, שגורם לבדוק את ה-RLS מול מי שקורא.</div></div>
+
+<div class="quiz" data-id="p4-q-view-sqlite" data-a="4"><p class="qq">במעבדה בדפדפן בניתם <code>v_customers_analyst</code> בלי אימייל מלא. האימיילים מוגנים עכשיו?</p>
+<button class="opt">כן, התצוגה מסתירה אותם</button>
+<button class="opt">כן, אבל רק עד שסוגרים את הדף</button>
+<button class="opt">רק אחרי שמריצים GRANT ב-SQLite</button>
+<button class="opt">לא. ב-SQLite אין הרשאות, וכל מי שפותח את הקובץ יכול לקרוא את customers</button>
+<div class="why">ב-SQLite אין משתמשים ואין GRANT בכלל. שם תצוגה היא ממשק ונוחות, לא מנעול. הגנה אמיתית צריכה מסד שרת (PostgreSQL, Supabase, BigQuery) עם הרשאות.</div></div>
+
+<div class="teach"><b>🎓 למרצה:</b> תתחילו מהשאלה בפתיחה ותנו לכיתה לענות לפני שמראים את טבלת בעלי העניין. בהדמיה, תלחצו אחרי שלושה חלונות על ״ומה אם הוא ניגש ישר לטבלה?״. זה הרגע שבו מבינים שתצוגה לבד לא נועלת. קטעי ה-PostgreSQL וה-Supabase הם להצגה בלבד. מי שבנה פרויקט ב-Supabase בחלק 1 יכול לנסות אותם שם, אחרי שבדק את גרסת ה-PostgreSQL.</div>
 </section>
 <section class="sec" id="s4-7" data-t="שושלת נתונים">
-<div class="sec-h"><div class="sec-n">7</div><h2>מאיפה המספר הגיע: מוצאים את מקור התקלה</h2></div>
-<p class="lead">בדשבורד של דנה יש אריח ״מכשירים בהזמנות״. ב-13 מתוך 42 האירועים כתוב ״לא ידוע״. אין הודעת שגיאה והשאילתה תקינה. איפה הבעיה נולדה? בלי מפה מחפשים בכל מקום.</p>
+<div class="sec-h"><div class="sec-n">8</div><h2>מאיפה המספר הגיע: מוצאים את מקור התקלה</h2></div>
+<p class="lead">בדשבורד של דנה, האנליסטית, יש אריח ״מכשירים בהזמנות״. ב-13 מתוך 42 האירועים כתוב ״לא ידוע״. אין הודעת שגיאה והשאילתה תקינה. איפה הבעיה נולדה? בלי מפה מחפשים בכל מקום.</p>
 
 <div class="defline"><b>שושלת נתונים (lineage):</b> מפה של מאיפה מספר הגיע: מהמקור, דרך כל שלב עיבוד, ועד האריח בדשבורד. דוגמה: ״מכשירים בהזמנות״ נבנה מ-<code>stg_events</code>, שנבנה מ-<code>app_events</code>. על זה דיברנו גם <a href="../lecture10part2-15.6.2026.html">בשיעור על מחזור החיים של נתונים</a>.</div>
 <div class="defline"><b>מעלה הזרם ומורד הזרם:</b> מעלה הזרם (upstream) הוא כל מה שהנקודה נבנתה ממנו. מורד הזרם (downstream) הוא כל מה שנבנה ממנה. דוגמה: מעלה הזרם של האריח הוא <code>app_events</code>, ומורד הזרם של <code>app_events</code> הוא האריח.</div>
@@ -1229,8 +1512,8 @@ FROM app_events
 <div class="teach"><b>🎓 למרצה:</b> תנו לכיתה ללחוץ על האריח השגוי ולהתקדם לבד. כדאי לעצור כשמישהו מגיע ל-stg_events ולשאול: האם הבעיה כאן? אחרי שמצאו את המקור, הפעילו את כפתור מורד הזרם ושאלו מי עוד היה נשבר אילו התקלה הייתה בהזמנות. שימו לב ללחיצה על orders: יש שם תקלות מסעיף 5, אבל הן לא משפיעות על האריחים האלה.</div>
 </section>
 <section class="sec" id="s4-8" data-t="אגם, מחסן, זמן אמת">
-<div class="sec-h"><div class="sec-n">8</div><h2>איפה שומרים ומתי מעדכנים</h2></div>
-<p class="lead">יבגני מתחיל לאסוף עוד דברים: תמונות של חשבוניות, אירועי אפליקציה בפורמט JSON וקבצי הרשמה. והשותף שלו מבקש דבר אחד: ״אני רוצה לראות את ההכנסות בזמן אמת״. כדאי להבין קודם איפה כל דבר שייך, ומה זה בכלל ״זמן אמת״.</p>
+<div class="sec-h"><div class="sec-n">9</div><h2>איפה שומרים ומתי מעדכנים</h2></div>
+<p class="lead">יבגני מתחיל לאסוף עוד דברים: תמונות של חשבוניות ספקים, אירועי אפליקציה בפורמט JSON וקבצי הרשמה. החשבוניות הן לא ארכיון: מהן מתעדכנת עלות המנה (עמודת cost בטבלת dishes), ואם הספק העלה את מחיר הסלמון, הרווח מהמנה הכי נמכרת יורד. והשותף שלו מבקש דבר אחד: ״אני רוצה לראות את ההכנסות בזמן אמת״. כדאי להבין קודם איפה כל דבר שייך, ומה זה בכלל ״זמן אמת״.</p>
 
 <div class="defline"><b>אגם נתונים (data lake):</b> מקום זול לשמור בו קבצים כמו שהם, בכל פורמט, ולהחליט על המבנה רק כשקוראים אותם (קוראים לזה schema on read). דוגמה: תיקייה אחת עם תמונות חשבוניות, קובצי JSON וקובצי CSV.</div>
 <div class="defline"><b>מחסן נתונים:</b> כמו שהגדרנו בסעיף 1: טבלאות מסודרות עם מבנה שנקבע מראש, שנבנו לשאילתות. דוגמה: <code>fact_sales</code> שבנינו בסעיף 4.</div>
@@ -1270,7 +1553,7 @@ FROM app_events
       <text x="405" y="328" text-anchor="middle" font-size="16" font-weight="700" fill="#5b21b6">קטלוג: מה יש כאן, מאיפה זה הגיע ומי אחראי</text>
     </g>
   </svg></div>
-  <ol class="caps"><li>1. קבצים נשמרים באזור הגולמי כמו שהגיעו: תמונה, JSON, CSV. לא צריך להחליט מראש מה יעשו איתם.</li><li>2. אזור מנוקה: הקבצים שמועילים לדיווח הופכים לטבלאות עם סוגים ותאריכים תקינים. החשבונית נשארת קובץ.</li><li>3. אזור מוכן: עובדות, ממדים ומדדים רשמיים, בצורה שאפשר לשאול.</li><li>4. דנה וכלי ה-BI קוראים מהאזור המוכן. הקטלוג מתעד מה יש בכל אזור. בלי קטלוג האגם הופך ל״ביצת נתונים״ (data swamp): תיקייה שאף אחד לא יודע מה יש בה.</li></ol>
+  <ol class="caps"><li>1. קבצים נשמרים באזור הגולמי כמו שהגיעו: תמונה, JSON, CSV. לא צריך להחליט מראש מה יעשו איתם.</li><li>2. אזור מנוקה: הקבצים שמועילים לדיווח הופכים לטבלאות עם סוגים ותאריכים תקינים. החשבונית נשארת קובץ.</li><li>3. אזור מוכן: עובדות, ממדים ומדדים רשמיים, בצורה שאפשר לשאול.</li><li>4. דנה, האנליסטית, וכלי ה-BI קוראים מהאזור המוכן. הקטלוג מתעד מה יש בכל אזור. בלי קטלוג האגם הופך ל״ביצת נתונים״ (data swamp): תיקייה שאף אחד לא יודע מה יש בה.</li></ol>
 </div>
 
 <div class="sim" data-id="p4-sim-store"><div class="sh">איפה זה שייך</div>
@@ -1395,7 +1678,7 @@ FROM orders o
 <button class="opt">במסד התפעולי, בטבלה שמתאימה לכל אפשרות עתידית</button>
 <button class="opt">רק במחסן, אחרי שמגדירים עשרות עמודות</button>
 <button class="opt">לא לשמור, כי אי אפשר לנתח נתונים שאינם טבלאיים</button>
-<div class="why">כשלא ברור מה ישאלו, גמישות חשובה יותר ממבנה. אגם שומר גולמי בזול. מסד תפעולי לא נועד להיסטוריה אנליטית גדולה, ומחסן דורש לדעת את המבנה מראש. ואפשר לנתח נתונים חצי מובנים כמו JSON, כמו שעשינו בסעיף 7.</div></div>
+<div class="why">כשלא ברור מה ישאלו, גמישות חשובה יותר ממבנה. אגם שומר גולמי בזול. מסד תפעולי לא נועד להיסטוריה אנליטית גדולה, ומחסן דורש לדעת את המבנה מראש. ואפשר לנתח נתונים חצי מובנים כמו JSON, כמו שעשינו בסעיף 8.</div></div>
 
 <div class="quiz" data-id="p4-q-stream" data-a="4"><p class="qq">דשבורד ההכנסות החודשיות של יבגני מתעדכן פעם בלילה. השותף מבקש לעבור לזרימה. מה השאלה הכי חשובה?</p>
 <button class="opt">איזה כלי זרימה הכי פופולרי</button>
@@ -1407,7 +1690,7 @@ FROM orders o
 <div class="teach"><b>🎓 למרצה:</b> במשחק ״איפה זה שייך״ יש פריטים שאפשר להתווכח עליהם, וזה בסדר. בהדמיית העדכון תבקשו מהכיתה למצוא שעה שבה הפער גדול, ותשאלו אם היא הייתה משנה החלטה. תדגישו שרשת נתונים לא מיועדת לעסק קטן.</div>
 </section>
 <section class="sec" id="s4-9" data-t="דשבורד והחלטה">
-<div class="sec-h"><div class="sec-n">9</div><h2>מנתונים לדשבורד ולהחלטה</h2></div>
+<div class="sec-h"><div class="sec-n">10</div><h2>מנתונים לדשבורד ולהחלטה</h2></div>
 <p class="lead">הנתונים נקיים, המבנה נכון וההגדרות סגורות. נשארו שלוש שאלות: מי הולך להסתכל, מה הוא רוצה לדעת, ומה יעשה אחרי שיראה. דשבורד שלא מוביל להחלטה לא שווה את המקום שהוא תופס.</p>
 
 <div class="defline"><b>דשבורד:</b> מסך אחד עם כמה מדדים וגרפים שעונים על שאלה אחת של קהל מסוים. דוגמה: מסך הבוקר של יבגני, עם הכנסות, הזמנות ומגמה חודשית.</div>
@@ -1538,7 +1821,7 @@ SELECT COUNT(*) AS orders,
        AVG(delivery_min) AS avg_delivery
 FROM ord</pre>
   <ol class="hints"><li>השלב <code>ord</code> מחזיר שורה אחת לכל הזמנה. אחר כך מחשבים עליו את המדדים.</li><li>ממוצע זמן המשלוח על <code>ord</code> סופר כל הזמנה פעם אחת.</li></ol>
-  <div class="why-src">82 הזמנות, הכנסה 12,884, ממוצע להזמנה בערך 157.12, וזמן משלוח ממוצע בערך 35.39 דקות (על ההזמנות שיש בהן משלוח). בשלב הביניים כל הזמנה נספרת פעם אחת, אז אין כפל. זו אותה בעיית רמת פירוט מסעיף 4, בתוך שאילתה אחת.</div>
+  <div class="why-src">82 הזמנות, הכנסה 12,884, ממוצע להזמנה בערך 157.12, וזמן משלוח ממוצע בערך 35.39 דקות (על ההזמנות שיש בהן משלוח). בשלב הביניים כל הזמנה נספרת פעם אחת, אז אין כפל. זה אותו כפל מחלק 2 (Fan-out), ואותה החלטה על רמת פירוט מסעיף 4, הפעם בתוך שאילתה אחת.</div>
 </div>
 
 <div class="mk mk-dash"><div class="mk-bar"><i></i><i></i><i></i><span class="url">הדמיה סכמטית · מסך הבוקר של יבגני</span></div>
@@ -1556,7 +1839,7 @@ FROM ord</pre>
   <ol>
     <li>הורידו את <code>fact_sales.csv</code> מחבילת הנתונים של הקורס. שורה אחת לכל שורת פריט, אותה צורה של הטבלה שבניתם בסעיף 4, עם שם הלקוח, העיר, השליח והמנה כבר מצורפים. פתחו אותו ב-Google Sheets (ייבוא קובץ). אפשר גם להעלות את הקובץ ישירות, אם יש לכם ב-Looker Studio את המחבר להעלאת קבצים.</li>
     <li>צרו דוח חדש ב-Looker Studio וחברו אליו את הגיליון.</li>
-    <li><b>לפני שמציירים, בודקים</b>: 219 שורות, <code>line_revenue</code> הוא מספר, ו-<code>order_date</code> הוא תאריך. סכום <code>line_revenue</code> בלי שום סינון צריך להיות 13,592.</li>
+    <li><b>לפני שמציירים, בודקים</b>: 219 שורות, <code>line_revenue</code> הוא מספר, ו-<code>order_date</code> הוא תאריך. סכום <code>line_revenue</code> בלי שום סינון צריך להיות 13,592 (כולל הזמנות שבוטלו).</li>
     <li>בנו כרטיס ״הכנסות״: סכום <code>line_revenue</code> עם סינון <code>status = delivered</code>. אמור לצאת 12,884, בדיוק המדד הרשמי מסעיף 6. אם יצא משהו אחר, זו הבדיקה הראשונה שלכם.</li>
     <li>הוסיפו: הכנסות לפי חודש (לפי <code>order_date</code>), הכנסות לפי קטגוריה, ומספר הזמנות (ספירה ייחודית של <code>order_id</code>, שצריכה לתת 82 להזמנות שנמסרו).</li>
     <li>הוסיפו בקרת סינון לפי <code>channel</code> או <code>city</code>, וכותרת שאומרת עד איזה תאריך הנתונים נכונים.</li>
@@ -1569,7 +1852,7 @@ FROM ord</pre>
     <li>התקינו את Tableau Public והתחברו ל-<code>fact_sales.csv</code> כקובץ טקסט.</li>
     <li>בדקו שיש 219 שורות ושה-<code>order_date</code> מזוהה כתאריך.</li>
     <li>בנו גיליון: קטגוריה בציר אחד וסכום <code>line_revenue</code> בציר השני, עם צבע לפי ערוץ. סננו <code>status</code> ל-delivered, והסכום הכולל יהיה 12,884.</li>
-    <li>לפני פרסום: כל מה שמתפרסם ב-Tableau Public פומבי. נתוני המסעדה בדויים, אבל תתרגלו את השאלה ״הייתי מוכן לתלות את זה על לוח מודעות?״.</li>
+    <li>לפני פרסום: כל מה שמתפרסם ב-Tableau Public פומבי. נתוני המסעדה בדויים, אבל תתרגלו את השאלה ״הייתי מוכן לתלות את זה על לוח מודעות?״. ב-<code>fact_sales.csv</code> יש שמות לקוחות, אז אם מפרסמים, מפרסמים מתצוגה מצומצמת (בלי שמות לקוחות), כמו בסעיף ״<a href="#s4-6v">חלון לכל תפקיד</a>״.</li>
   </ol>
   <p>מדריך מלא, צעד אחר צעד, עם קבצי תרגול ובדיקות, יש <a href="../tableau-4h/tableau-4h.html">בדף המקור על Tableau Public</a>.</p>
   <p class="tools"><a class="tool" href="https://public.tableau.com" target="_blank" rel="noopener">Tableau Public</a></p>
@@ -1587,18 +1870,10 @@ FROM ord</pre>
 <button class="opt">שמותר להציג רק גרף אחד בכל מסך</button>
 <button class="opt">שבונים את הדשבורד אחרי שהקהל כבר ראה את הנתונים</button>
 <div class="why">העיקרון לא מגביל את מספר הגרפים או המשתמשים. הוא דורש בהירות: מי מסתכל, מה הוא שואל, ומה יעשה. דשבורד שמנסה לשרת את כולם בבת אחת לא משרת אף אחד.</div></div>
-
-<div class="quiz" data-id="p4-q-avg" data-a="1"><p class="qq">חיברתם הזמנות לשורות פריט וחישבתם <code>AVG(delivery_min)</code> ישר על התוצאה. מה הבעיה?</p>
-<button class="opt">הזמנות עם הרבה מנות נספרות יותר פעמים, והממוצע מוטה</button>
-<button class="opt">אין בעיה: ממוצע לא מושפע מכפילות</button>
-<button class="opt">הממוצע תמיד יהיה גבוה מדי</button>
-<button class="opt">SQL לא מאפשר ממוצע אחרי JOIN</button>
-<div class="why">כל הזמנה מופיעה בשורה אחת לכל מנה, אז זמן המשלוח שלה נספר כמספר המנות. כיוון ההטיה תלוי בנתונים: לא תמיד גבוה ולא תמיד נמוך. הפתרון: לחשב ברמת הזמנה לפני הממוצע.</div></div>
-
 <div class="teach"><b>🎓 למרצה:</b> במשחק הגרפים עצרו אחרי כל שאלה ושאלו מה היה קורה אילו נבחרה עוגה. בבונה הדשבורדים תנו לשני צוותים לבנות לאותו קהל ולהשוות. שאלו כל אחד: איזו החלטה האריח שלו משרת? המספרים בדוגמת המסך מחושבים מהנתונים של היום, ואם הנתונים משתנים צריך לעדכן אותם.</div>
 </section>
 <section class="sec" id="s4-10" data-t="סיכום">
-<div class="sec-h"><div class="sec-n">10</div><h2>סיכום: מה עברנו בחלק הזה</h2></div>
+<div class="sec-h"><div class="sec-n">11</div><h2>סיכום: מה עברנו בחלק הזה</h2></div>
 <p class="lead">הזמנה נכנסת למטבח ונגמרת בהחלטה של יבגני. בדרך היא עוברת שישה שלבים, ובכל אחד מהם אפשר לטעות בלי שאף אחד ישים לב. מה שלמדתם הוא איך מוודאים בכל שלב שהמספר עדיין נכון.</p>
 
 <div class="anim" data-id="p4-anim-chain" data-speed="3200">
@@ -1615,7 +1890,7 @@ FROM ord</pre>
     <g data-s="6"><path d="M140 190 Q440 270 740 190" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#p4a5-ar)"/><text x="440" y="262" text-anchor="middle" font-size="15" font-weight="700" fill="#475569">שושלת: כשמספר חשוד, חוזרים אחורה שלב אחרי שלב</text></g>
     <circle r="9" cx="740" cy="60" fill="#d8b862" data-move="1:0,0|2:-150,0|3:-300,0|4:-450,0|5:-600,0|6:-710,0"/>
   </svg></div>
-  <ol class="caps"><li>1. הזמנה נשמרת במסד החי, וזו העבודה היחידה שלו בזמן שירות.</li><li>2. תהליך העתקה מוציא ממנו את הנתונים החדשים ומנקה אותם.</li><li>3. בדיקות איכות מחפשות ערכים חסרים, כפולים, יתומים ובלתי אפשריים. שורות פגומות הולכות להסגר.</li><li>4. הנתונים נכנסים למחסן במבנה כוכב, עם מדדים שמוגדרים פעם אחת.</li><li>5. הדשבורד מציג את המדדים הרשמיים לקהל מוגדר, עם זמן ברור של עדכון.</li><li>6. יבגני מחליט. בנתוני הדוגמה, 47 מתוך 82 ההזמנות שנמסרו הן בשישי ובשבת, ולכן שם כדאי לחזק את המטבח והשליחים. אם מספר נראה חשוד, חוזרים אחורה לפי השושלת.</li></ol>
+  <ol class="caps"><li>1. הזמנה נשמרת במסד החי, וזו העבודה היחידה שלו בזמן שירות.</li><li>2. תהליך העתקה מוציא ממנו את הנתונים החדשים ומנקה אותם.</li><li>3. בדיקות איכות מחפשות ערכים חסרים, כפולים, יתומים ובלתי אפשריים. שורות פגומות הולכות להסגר.</li><li>4. הנתונים נכנסים למחסן במבנה כוכב, עם מדדים שמוגדרים פעם אחת.</li><li>5. הדשבורד מציג את המדדים הרשמיים לקהל מוגדר, דרך החלון שלו, עם זמן ברור של עדכון.</li><li>6. יבגני מחליט. כמו שראינו בחלק 1, שישי ושבת הם הימים העמוסים (בהזמנות שנמסרו: 47 מתוך 82), ולכן שם כדאי לחזק את המטבח והשליחים. אם מספר נראה חשוד, חוזרים אחורה לפי השושלת.</li></ol>
 </div>
 
 <div class="box recap">
@@ -1624,7 +1899,7 @@ FROM ord</pre>
 <li>ETL או ELT מעבירים נתונים ומנקים אותם: חיתוך, ניקוי אותיות, איחוד כפילויות, ושורות פגומות הולכות להסגר. הסדר חשוב. מידע אישי מסתירים בדרך.</li>
 <li>סכמת כוכב היא עובדות באמצע וממדים מסביב. רמת הפירוט קובעת מה בטוח לסכם, ושורות ״לא ידוע״ שומרות על הסכום.</li>
 <li>איכות נתונים נבדקת בארבע בדיקות: חסר, כפול, יתום ובלתי אפשרי. בדיקה שעברה נותנת סיבה לסמוך, לא הוכחה.</li>
-<li>הגדרה אחת לכל מדד, בעלים אחד ותיעוד אחד. שלוש הגדרות של הכנסה נתנו שלושה מספרים: 13,592, 12,884 ו-10,464.</li>
+<li>הגדרה אחת לכל מדד, בעלים אחד ותיעוד אחד. שלוש הגדרות של הכנסה נתנו שלושה מספרים: 13,592, 12,884 ו-10,464. ותצוגה לכל תפקיד: כל אחד רואה רק את העמודות והשורות שהוא צריך, וההגנה עצמה באה מהרשאות על התצוגה, לא על הטבלה.</li>
 <li>שושלת נתונים מקצרת חקירה ומראה מי יושפע משינוי. בוחרים אחסון לפי סוג הנתונים ומי שואל, ועדכון בזמן אמת רק כשהחלטה תלויה בו. דשבורד טוב עונה על שאלה אחת של קהל אחד ומוביל להחלטה.</li>
 </ul>
 </div>
