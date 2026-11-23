@@ -8,7 +8,7 @@ D = open(os.path.join(H, '..', 'lectures', 'lecture-1', 'presentation.html'), en
 NS = D.count('<section class="slide')
 NA = len(__import__('json').load(open(os.path.join(H, 'tests', 'manifest.json'), encoding='utf8')))
 BUILT = {1}
-REC = {}     # meeting -> YouTube id
+REC = {1: 'WZCEIEwClEE'}     # meeting -> YouTube id
 css = open(os.path.join(H, 'shell', 'hub.css'), encoding='utf8').read() + '''
 .hero h1{font-size:clamp(38px,7vw,64px)}.hero .h1s{font-size:clamp(20px,3vw,28px);font-weight:700;color:#7fe3d6;margin-top:6px;line-height:1.25}
 .cred{margin-top:18px;display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);border-radius:14px;padding:10px 18px;font-size:16px;line-height:1.55;color:#e4ebfb}.cred b{color:#ffd37a}
