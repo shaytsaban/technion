@@ -68,7 +68,7 @@ $$('.qviz').forEach(v=>{const eff=JSON.parse(v.dataset.eff),steps=$$('.qstep',v)
   $$('[data-c]',v).forEach(c=>{c.classList.toggle('chl',!!cols&&cols.includes(+c.dataset.c));c.classList.toggle('cdim',!!cols&&!cols.includes(+c.dataset.c));});
   rows.forEach(r=>r.classList.toggle('rout',!!keep&&!keep.includes(+r.dataset.r)));(order||rows.map((_,i)=>i)).forEach(i=>tb.appendChild(rows[i]));
   steps.forEach((s,i)=>s.classList.toggle('qcur',i===k-1));};
- let busy=false;new MutationObserver(()=>{if(busy)return;busy=true;sync();setTimeout(()=>{busy=false;},0);}).observe($('.qcode',v),{attributes:true,subtree:true,attributeFilter:['class']});sync();});
+ const code=$('.qcode',v),opt={attributes:true,subtree:true,attributeFilter:['class']};const mo=new MutationObserver(()=>{mo.disconnect();sync();mo.takeRecords();mo.observe(code,opt);});mo.observe(code,opt);sync();});
 
 
 /* static slides use the whole height: the body is enlarged until it fills the slide */

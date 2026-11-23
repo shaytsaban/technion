@@ -68,6 +68,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-t]');if(t&
 /* ---------- footers and boot ---------- */
 slides.forEach((s,i)=>{if(s.id==='s-title'||s.id==='s-end'||s.classList.contains('pd'))return;const f=document.createElement('div');f.className='ft';f.innerHTML='<span class="fcr">ד״ר שי צבאן · הטכניון, היחידה ללימודי חוץ</span><span>'+COURSE+' · מפגש '+LESSON+' · <span class="n">'+(i+1)+'</span></span>';s.appendChild(f);});
 (function(){const h=location.hash.slice(1);const hi=slides.findIndex(s=>s.id===h);show(hi>=0?hi:0);})();
+addEventListener('hashchange',()=>{const i=slides.findIndex(x=>x.id===location.hash.slice(1));if(i>=0&&i!==cur)show(i);});
 window.__deck={show,next,prev,go,slides,groups,pending,setAll,openTerm,closeOverlays,cur:()=>cur};
 
 stage.addEventListener('scroll',()=>{stage.scrollLeft=0;stage.scrollTop=0;});addEventListener('load',()=>{stage.scrollLeft=0;stage.scrollTop=0;});
