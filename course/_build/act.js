@@ -64,19 +64,20 @@ $$('.checker').forEach(b=>{const R=RULES[b.dataset.kind],ta=$('.ckin',b),list=$(
 
 /* query visualiser: the table reacts to the clause that was just revealed */
 $$('.qviz').forEach(v=>{const eff=JSON.parse(v.dataset.eff),steps=$$('.qstep',v),tb=$('tbody',v),rows=$$('tbody tr',v);
- const sync=()=>{const k=steps.filter(s=>s.classList.contains('show')).length;let cols=null,keep=null,order=null;for(let i=1;i<=k;i++){const e=eff[i];if(!e)continue;if(e.cols)cols=e.cols;if(e.rows)keep=e.rows;if(e.order)order=e.order;}
+ const sync=()=>{const k=steps.filter(s=>s.classList.contains('show')).length;let cols=null,keep=null,order=null,warn=null;for(let i=1;i<=k;i++){const e=eff[i];if(!e)continue;if(e.cols)cols=e.cols;if(e.rows)keep=e.rows;if(e.order)order=e.order;warn=e.warn||null;}
   $$('[data-c]',v).forEach(c=>{c.classList.toggle('chl',!!cols&&cols.includes(+c.dataset.c));c.classList.toggle('cdim',!!cols&&!cols.includes(+c.dataset.c));});
-  rows.forEach(r=>r.classList.toggle('rout',!!keep&&!keep.includes(+r.dataset.r)));(order||rows.map((_,i)=>i)).forEach(i=>tb.appendChild(rows[i]));
+  rows.forEach(r=>{r.classList.toggle('rout',!!keep&&!keep.includes(+r.dataset.r));r.classList.toggle('rwarn',!!warn&&warn.includes(+r.dataset.r));});steps.forEach((st,i)=>st.classList.toggle('qbad',!!(eff[i+1]&&eff[i+1].warn)&&i===k-1));(order||rows.map((_,i)=>i)).forEach(i=>tb.appendChild(rows[i]));
   steps.forEach((s,i)=>s.classList.toggle('qcur',i===k-1));};
  const code=$('.qcode',v),opt={attributes:true,subtree:true,attributeFilter:['class']};const mo=new MutationObserver(()=>{mo.disconnect();sync();mo.takeRecords();mo.observe(code,opt);});mo.observe(code,opt);sync();});
 
 
 /* static slides use the whole height: the body is enlarged until it fills the slide */
-function fitSlides(){const k=()=>stage.getBoundingClientRect().width/1280||1;const LIM=655;
- slides.forEach(s=>{if(s.classList.contains('pd')||s.classList.contains('s1')||s.querySelector('.act,.hands,.qviz,.mc,.flow,.memew'))return;
-  const kids=[...s.children].filter(c=>!c.matches('.kick,h2,.ft,.toon'));if(!kids.length)return;kids.forEach(c=>c.style.zoom='');
+function fitSlides(){const k=()=>stage.getBoundingClientRect().width/1280||1;
+ slides.forEach(s=>{if(s.classList.contains('pd')||s.classList.contains('s1')||s.querySelector('.order,.checker,.memew,.mc'))return;
+  const grows=!!s.querySelector('.act:not(.sorter),.mc');const LIM=grows?612:664;
+  const kids=[...s.children].filter(c=>!c.matches('.kick,h2,.ft,.toon,.crumb'));if(!kids.length)return;kids.forEach(c=>c.style.zoom='');
   const bottom=()=>{const sr=s.getBoundingClientRect();return Math.max(...kids.map(c=>c.getBoundingClientRect().bottom-sr.top))/k();};
-  const top=(kids[0].getBoundingClientRect().top-s.getBoundingClientRect().top)/k();const room=LIM-top,h=bottom()-top;if(h<=0||h>room*0.93)return;
-  let z=Math.min(1.4,room/h);for(let i=0;i<14&&z>1.03;i++){kids.forEach(c=>c.style.zoom=z);if(bottom()<=LIM)break;z-=0.04;}
+  const top=(kids[0].getBoundingClientRect().top-s.getBoundingClientRect().top)/k();const room=LIM-top,h=bottom()-top;if(h<=0||h>room*0.95)return;
+  let z=Math.min(1.7,room/h);for(let i=0;i<20&&z>1.03;i++){kids.forEach(c=>c.style.zoom=z);if(bottom()<=LIM)break;z-=0.035;}
   if(z<=1.03||bottom()>LIM)kids.forEach(c=>c.style.zoom='');});}
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(fitSlides);window.__fitSlides=fitSlides;

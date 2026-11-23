@@ -78,7 +78,7 @@ body += f'<section class="part"><h1>מילון מושגים</h1><div class="glc"
 body += f'<section class="part"><h1>במפגש הבא: {LMETA["next_h"]}</h1><p>' + TX(LMETA['next_t']) + '</p></section>'
 cover = (f'<div class="cover"><div class="c-top">{INST}</div><div class="c-title">{LMETA["h1"][0]} {LMETA["h1"][1]}</div>'
          f'<div class="c-sub">{COURSE}: סיכום מורחב של מפגש {LESSON}. {LMETA["cover"]}</div><div class="c-line"></div>'
-         '<div class="c-meta">' + TX('כל ההגדרות, הדוגמאות, הפעילויות עם התשובות והנימוקים, משימות העבודה העצמית עם תשובה לדוגמה, התרגילים המסכמים, ומילון מושגים.') + '</div>'
+         '<div class="c-meta">' + TX('כל ההגדרות, הדוגמאות, הפעילויות עם התשובות והנימוקים, שאלות לכיתה, התרגילים המסכמים, ומילון מושגים.') + '</div>'
          f'<div class="c-author">ד״ר שי צבאן<div class="c-mail">shay.tsaban@gmail.com</div></div></div>')
 toc = '<div class="toc"><h1>תוכן העניינים</h1><ol>' + ''.join(f'<li>{next(s for s in parts[k] if s["kind"] == "opener")["h"]}</li>' for k in range(1, TOTAL + 1)) + '</ol></div>'
 page = f'<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>{COURSE} | מפגש {LESSON} | סיכום</title><style>{CSS}</style></head><body>{cover}{toc}{body}</body></html>'

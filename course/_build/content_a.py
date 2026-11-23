@@ -164,6 +164,9 @@ def MC1(sid, title, q, opts, why, art=None, story=None):
 RST = '<button class="abtn ghost rst">איפוס</button>'
 
 
+SART = {'a-sort': '👷', 'c-sort': '🪜', 'd-sort1': '🩺', 'e-sort': '🧱', 'f-sort': '🪤', 'g-sort': '📣'}
+
+
 def SORTER(aid, title, h, task, options, rows, story=None):
     """Each row gets one right answer out of options. rows: (text, answer index, why)."""
     if MODE == 'pdf':
@@ -177,8 +180,8 @@ def SORTER(aid, title, h, task, options, rows, story=None):
         bs = ''.join(f'<button class="so" data-i="{i}">{TX(o)}</button>' for i, o in enumerate(options))
         r += f'<tr class="srow" data-a="{b}" data-w="{_html.escape(TX(c), quote=True)}"><td>{TX(a)}</td><td>{bs}</td></tr>'
     st = f'<div class="card qstem sm"><p>{TX(story)}</p></div>' if story else ''
-    body = (f'{st}<div class="act sorter" id="{aid}-w"><div class="tasktxt"><b>המשימה:</b> {TX(task)}</div><table class="stbl">{r}</table>'
-            f'<div class="fbbar">בחרו תשובה בכל שורה.</div><div class="actbar">{RST}<span class="score">0 / {len(rows)}</span></div></div>')
+    body = (f'{st}<div class="act sorter" id="{aid}-w"><div class="tasktxt"><b>המשימה:</b> {TX(task)}</div><div class="sgrid"><table class="stbl">{r}</table><div class="sart"><span class="emo">{SART.get(aid, "🗂️")}</span>'
+            f'<div class="fbbar">בחרו תשובה בכל שורה.</div><div class="actbar">{RST}<span class="score">0 / {len(rows)}</span></div></div></div></div>')
     S(aid, title, h, body, kick=KICK('פעילות'))
 
 
@@ -238,7 +241,7 @@ def COMPOSE(aid, title, h, task, slots, story=None, out_label='התוצאה של
     S(aid, title, h, body, kick=KICK('מגרש משחקים'))
 
 
-def HANDS(sid, title, h, story, steps, mins, sample, out=None, where='בצ׳אט של המפגש'):
+def HANDS_OLD(sid, title, h, story, steps, mins, sample, out=None, where='בצ׳אט של המפגש'):
     """A hands-on task: full story, numbered steps, a countdown, and a sample answer behind a button."""
     if MODE == 'pdf':
         S(sid, title, h, f'<p>{TX(story)}</p><ol class="steps">' + ''.join(f'<li>{TX(x)}</li>' for x in steps) + f'</ol><div class="band ans"><b>תשובה לדוגמה:</b> {sample if sample.startswith("<") else TX(sample)}</div>')
@@ -285,7 +288,7 @@ def HAVE(sid, items, done):
     if MODE == 'pdf':
         S(sid, 'עצירת ביניים: מה כבר ביד', 'עצירת ביניים: מה כבר ביד', '<ul class="pl">' + ''.join(f'<li>{"✔" if i < done else "☐"} {TX(t)}</li>' for i, (ic, t) in enumerate(items)) + '</ul>'); return
     cs = ''.join(f'<div class="hv {"ok" if i < done else ("now" if i == done else "")}"><span class="hi">{ic}</span><b>{TX(t)}</b><em>{"הושלם" if i < done else ("החלק הבא" if i == done else "בהמשך")}</em></div>' for i, (ic, t) in enumerate(items))
-    S(sid, 'עצירת ביניים: מה כבר ביד', 'עצירת ביניים: מה כבר ביד', f'<div class="have">{cs}</div>' + BAND('dg', 'בסוף המפגש כל התוצרים האלה מתחברים למסמך אחד: דף המערכת שלכם.'), kick=KICK('איפה אנחנו במשפך'))
+    S(sid, 'עצירת ביניים: מה כבר ביד', 'עצירת ביניים: מה כבר ביד', f'<div class="have">{cs}</div>' + BAND('dg', 'כל תוצר נשען על זה שלפניו. בסוף המפגש הם מתחברים למסמך אחד: דף המערכת של הביסטרו.'), kick=KICK('איפה אנחנו במשפך'))
 
 
 
@@ -308,3 +311,35 @@ def QUERY(sid, title, h, question, lines, table, result, kick='קוראים שא
             f'<div class="qtab"><div class="mock"><div class="mb"><span>הטבלה <bdi dir="ltr">{name}</bdi></span><small>הדמיה</small></div><div class="mi"><table><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table></div></div></div></div>'
             + ST(n + 2, f'<b>התשובה במילים, למנהל:</b> {TX(result)}', cls='band ans') + (BAND('dg', note, n + 3) if note else '') + '</div>')
     S(sid, title, h, body, kick=KICK(kick), cls='qsl')
+
+
+
+def HANDS(*a, **k):
+    """Removed from the class route (frontal lesson). Kept as a no-op so that old content files still build."""
+    return
+
+
+def SCENE(stations, token='📝', kind='slow', cap=None, n=0, mark=None):
+    """A looping animation of something travelling along the stations of a process. stations: (emoji, label, sub).
+    kind: 'slow' (paper: stops, wobbles, falls on the way) or 'fast' (tablet: arrives at once). mark: {index: css class}."""
+    if MODE == 'pdf':
+        return '<p>' + ' ← '.join(f'<b>{TX(t)}</b>' + (f' ({TX(d)})' if d else '') for e, t, d in stations) + '</p>' + (f'<p>{TX(cap)}</p>' if cap else '')
+    mark = mark or {}
+    st = ''.join(f'<div class="sc-st {mark.get(i, "")}"><span class="sc-e">{e}</span><b>{TX(t)}</b>' + (f'<small>{TX(d)}</small>' if d else '') + '</div>' for i, (e, t, d) in enumerate(stations))
+    inner = f'<div class="scene {kind}" style="--ns:{len(stations)}"><div class="sc-road"></div><div class="sc-track">{st}</div><div class="sc-tok">{token}</div>' + (f'<div class="sc-cap">{TX(cap)}</div>' if cap else '') + '</div>'
+    return ST(n, inner) if n else inner
+
+
+def ASK(sid, h, q, points, art='🙋', mins=1, link=None):
+    """A short, defined class question: the lecturer asks, the class answers aloud, the points are revealed by clicks."""
+    if MODE == 'pdf':
+        S(sid, h, h, f'<p><b>שאלה לכיתה:</b> {TX(q)}</p><ul class="pl">' + ''.join(f'<li>{TX(x)}</li>' for x in points) + '</ul>'); return
+    pts = ''.join(ST(i + 1, TX(x), cls='askp') for i, x in enumerate(points))
+    lk = f'<div class="band note">{TX(link)}</div>' if link else ''
+    S(sid, h, h, f'<div class="ask"><div class="askq"><span class="emo">{art}</span><p>{TX(q)}</p></div><div class="askps"><b class="ct">מה כדאי שיעלה בכיתה</b>{pts}</div></div>{lk}', kick=KICK(f'שאלה לכיתה · כ-{mins} דק׳'))
+
+
+def PIC(emoji, title, text, n=0, cls=''):
+    """A picture card: a large emoji, a title and one line."""
+    inner = f'<span class="pic-e">{emoji}</span><b>{TX(title)}</b><p>{TX(text)}</p>'
+    return ST(n, inner, cls='card pic ' + cls) if n else f'<div class="card pic {cls}">{inner}</div>'

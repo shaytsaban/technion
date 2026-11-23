@@ -618,3 +618,53 @@ svg.diag .mi{font-family:'Times New Roman',Times,serif;font-style:italic}
 .cm.u{background:#dfe9ff;color:#16213a;border:1px solid #b9c8ee}
 .meme{background:#fff;color:#16213a;border:2px solid #cdd5ea;box-shadow:0 2px 0 var(--line)}.meme .mt{color:#c4421f}.meme .mp{background:#f6f2ea}
 .cl{background:#e8eefb;color:#1b2d55}
+
+/* v2 review */
+/* process diagrams always fill the width, in one row */
+.flow{display:grid!important;grid-auto-flow:column;grid-auto-columns:1fr;gap:0;margin:16px 0}
+.fs{display:flex;align-items:stretch;min-width:0}.fs .fb{width:auto!important;flex:1 1 0;min-width:0}
+.fa{padding:0 4px!important}
+/* sorter: the answers sit right next to the statement */
+.stbl{width:auto;max-width:100%}.stbl td:first-child{padding-left:26px}
+/* the thread of the meeting, on every slide */
+.crumb{position:absolute;left:56px;top:9px;display:flex;gap:4px;direction:rtl;align-items:center}
+.crumb span{font-size:13.5px;font-weight:700;color:#8a93aa;background:#ebe6da;border-radius:99px;padding:1px 10px;white-space:nowrap}
+.crumb span.was{background:#dcf5e6;color:#107c41}.crumb span.now{background:#ff6a4d;color:#fff}
+/* looping scenes */
+.scene{position:relative;background:#fff;border-radius:18px;box-shadow:0 2px 0 var(--line);padding:16px 14px 12px;margin:10px 0;overflow:hidden}
+.sc-track{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;position:relative;z-index:1}
+.sc-st{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
+.sc-e{font-size:54px;line-height:1.1}.sc-st b{font-size:20px;color:#1b2d55}.sc-st small{font-size:16.5px;color:#3b4a6b}
+.sc-st.hot b{color:#c4421f}.sc-st.hot .sc-e{filter:drop-shadow(0 0 8px #ff6a4d)}
+.sc-st.tag b{background:#1b2d55;color:#fff;border-radius:99px;padding:0 12px}
+.sc-road{position:absolute;right:8%;left:8%;top:50px;border-top:4px dashed #cdd5ea}
+.sc-tok{position:absolute;top:4px;font-size:40px;z-index:2;right:6%;animation:trip 9s ease-in-out infinite}
+.scene.fast .sc-tok{animation:tripf 2.6s cubic-bezier(.7,0,.3,1) infinite}
+.sc-cap{margin-top:8px;text-align:center;font-size:19px;font-weight:700;color:#1b2d55}
+@keyframes trip{0%{right:6%;transform:none;opacity:0}6%{opacity:1}22%{right:26%;transform:rotate(-8deg)}34%{right:26%;transform:rotate(6deg)}50%{right:47%;transform:rotate(-6deg)}58%{right:50%;transform:translateY(64px) rotate(80deg)}70%{right:50%;transform:translateY(64px) rotate(80deg)}78%{right:52%;transform:rotate(0)}94%{right:88%;transform:rotate(4deg);opacity:1}100%{right:88%;opacity:0}}
+@keyframes tripf{0%{right:6%;opacity:0}12%{right:6%;opacity:1}55%{right:88%;opacity:1}90%{right:88%;opacity:1}100%{right:88%;opacity:0}}
+/* class question */
+.ask{display:grid;grid-template-columns:1fr 1.2fr;gap:18px;align-items:start;margin-top:8px}
+.askq{background:#fff;border-radius:18px;box-shadow:0 2px 0 var(--line);padding:16px 22px;border-top:8px solid #ff6a4d;text-align:center}
+.askq p{font-size:27px;font-weight:800;line-height:1.35;color:#1b2d55}.askq .emo{font-size:70px}
+.askps{display:flex;flex-direction:column;gap:8px}.askp{background:#fff;border-radius:12px;padding:9px 16px;font-size:21px;line-height:1.35;border-right:7px solid #25a65f;box-shadow:0 2px 0 var(--line)}
+/* picture cards */
+.pic{text-align:center;padding:14px 14px 16px}.pic-e{font-size:66px;line-height:1.1;display:block}.pic b{display:block;font-size:22px;color:#1b2d55;margin:2px 0 4px}.pic p{font-size:18.5px;line-height:1.35}
+/* a wrong row and a wrong clause in the query visualiser */
+.qtab tr.rwarn td{background:#fde8e6!important;color:#b8391f;font-weight:800;opacity:1}
+.qtab tr.rwarn{animation:shk .35s 2}
+.qstep.qbad code{border-color:#e5484d!important;background:#fde8e6!important;color:#b8391f!important}.qstep.qbad .qex{background:#fde8e6!important}
+.qstep.fix code{border-color:#25a65f;background:#dcf5e6;color:#0d5c30}
+/* free text mock (notes without structure) */
+.notes{display:flex;flex-direction:column;gap:6px}.notes div{background:#fffbe6;border:1px solid #ecd98a;border-radius:6px;padding:6px 12px;font-size:19px;transform:rotate(-.6deg);box-shadow:1px 2px 0 #e4dccd}.notes div:nth-child(even){transform:rotate(.7deg)}
+
+/* v2: the sorter hugs the reading side */
+.stbl{margin:0 0 0 auto}.sorter .stbl td:first-child{padding-left:30px}
+
+.sgrid{display:flex;gap:18px;align-items:center}.sgrid .stbl{flex:none;margin:0;max-width:100%}
+.sart{flex:1 1 0;min-width:0;overflow:hidden;text-align:center}.sart .emo{font-size:150px;line-height:1.1;animation:bob 3.5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px) rotate(-4deg)}}
+
+.sgrid{align-items:stretch}.sgrid .stbl{flex:0 1 auto;max-width:calc(100% - 300px)}.sgrid .stbl td:first-child{white-space:normal}
+.sart{flex:1 1 0;min-width:270px;display:flex;flex-direction:column;justify-content:center;gap:8px;overflow:visible}
+.sart .emo{font-size:110px}.sart .fbbar{min-height:96px;text-align:right;margin-top:0}.sart .actbar{justify-content:center}

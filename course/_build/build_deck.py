@@ -21,13 +21,15 @@ def render(s, total):
                 f'<div class="kick" style="color:#ffb199"><span>חלק <span class="n">{n}</span> מתוך <span class="n">{total}</span> · {TX("כ-" + str(s["mins"]) + " דקות")}</span></div><div class="pd-h">{s["h"]}</div><div class="pd-q">{TX(s["q"])}</div>{note}'
                 f'<div class="pd-cols"><div class="pd-box"><b>מה נעשה בחלק הזה</b><ul>{"".join("<li>" + TX(x) + "</li>" for x in s["learn"])}</ul></div></div></div></section>')
     kick = f'<div class="kick"><span>{TX(s["kick"])}</span></div>' if s.get('kick') else ''
+    if s.get('part') and globals().get('THREAD_L'):
+        kick = '<div class="crumb">' + ''.join(f'<span class="{"now" if j + 1 == s["part"] else ("was" if j + 1 < s["part"] else "")}">{x}</span>' for j, x in enumerate(THREAD_L)) + '</div>' + kick
     return f'<section class="slide {s["cls"]}" id="{s["id"]}" data-title="{re.sub("<[^>]+>", "", s["title"])}">{kick}<h2>{TX(s["h"])}</h2>{s["body"]}</section>'
 
 
 body = '\n'.join(render(s, TOTAL) for s in SL)
 NMC = body.count('class="mc"')
 NHANDS = body.count('class="hands"')
-chips = [f'{NACT[0]} פעילויות בתוך השקפים', f'{NHANDS} משימות עבודה עצמית', 'כל רעיון נבנה קליק אחר קליק']
+chips = [f'{NACT[0]} פעילויות בתוך השקפים', 'מקרה אחד, מאפס', 'כל רעיון נבנה קליק אחר קליק']
 title_s = ('<section class="slide dark s1 on" id="s-title" data-title="פתיחה">'
            '<div class="orb" style="width:320px;height:320px;background:radial-gradient(circle at 30% 30%,#58e0cf,#0f9d90 60%,transparent 72%);left:-90px;top:-70px"></div>'
            '<div class="orb" style="width:180px;height:180px;background:radial-gradient(circle at 30% 30%,#ffd37a,#e8960c 60%,transparent 72%);left:230px;bottom:90px;animation-delay:-3s"></div>'
