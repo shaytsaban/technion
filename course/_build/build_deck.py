@@ -5,7 +5,10 @@ sys.path.insert(0, H)
 R = lambda f: open(os.path.join(H, f), encoding='utf8').read()
 MODE = 'deck'
 LESSON = int(sys.argv[1]) if len(sys.argv) > 1 else 1
-exec(R('content_a.py'))
+# A taught lesson builds from the kit as it was in class (frozen/l<N>/), so changes to the shared kit never alter it.
+KIT = os.path.join(H, 'frozen', f'l{LESSON}')
+K = lambda f: open(os.path.join(KIT, f), encoding='utf8').read() if os.path.exists(os.path.join(KIT, f)) else R(f)
+exec(K('content_a.py'))
 exec(R('content_g.py'))
 exec(R(f'content_l{LESSON}.py'))
 TOTAL = max(s['part'] or 0 for s in SL)
@@ -49,10 +52,10 @@ fonts, base, tail = R('shell/fonts.css'), R('shell/base.css'), R('shell/tail.htm
 _used = set(re.findall(r'data-t="(\w+)"', slides_html))
 assert _used <= set(G), _used - set(G)
 gj = json.dumps({k: {f: (TX(v) if f != 'en' else v) for f, v in g.items()} for k, g in G.items()}, ensure_ascii=False)
-js = f'const COURSE={json.dumps(COURSE, ensure_ascii=False)};const LESSON={LESSON};\nconst G={gj};\n' + R('deck.js') + '\n' + R('act.js')
+js = f'const COURSE={json.dumps(COURSE, ensure_ascii=False)};const LESSON={LESSON};\nconst G={gj};\n' + R('deck.js') + '\n' + K('act.js')
 title = f'{COURSE} | מפגש {LESSON} | {LMETA["title"]}'
 html = (f'<!doctype html>\n<html lang="he" dir="rtl">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n<title>{title}</title>\n<style>\n'
-        + fonts + base + R('deck.css') + '</style>\n</head>\n<body>\n<div class="stage" id="stage">\n' + slides_html + '\n' + tail
+        + fonts + base + K('deck.css') + '</style>\n</head>\n<body>\n<div class="stage" id="stage">\n' + slides_html + '\n' + tail
         + '<script>\n(function(){\n' + js + '\n})();\n</script>\n</body>\n</html>\n')
 for bad in ('—', '־', '–', '…'):
     assert bad not in html.replace(fonts, ''), 'forbidden character ' + bad + ' near: ' + html.replace(fonts, '')[max(0, html.replace(fonts, '').find(bad) - 60):html.replace(fonts, '').find(bad) + 20]

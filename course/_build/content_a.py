@@ -153,7 +153,9 @@ def MC1(sid, title, q, opts, why, art=None, story=None):
     """One multiple choice question on its own slide, in large type, with the story it rests on beside it."""
     item = mc(sid + '-q', q, opts, why)
     if MODE == 'pdf':
-        S(sid, title, title, (f'<p>{TX(story)}</p>' if story else '') + item); return
+        st = f'<p>{TX(story)}</p>' if story else ''
+        qv = re.sub(r'<div class="w">.*?</div>', '', item.replace(' correct', ''), flags=re.S)
+        S(sid, title, title, f'<!--QV-->{st}{qv}<!--/QV--><!--AV-->{st}{item}<!--/AV-->'); return
     NACT[0] += 1
     side = f'<div class="mc1art">{ART(art)}</div>' if art else ''
     st = f'<div class="card qstem mc1s"><p>{TX(story)}</p></div>' if story else ''
@@ -171,7 +173,9 @@ def SORTER(aid, title, h, task, options, rows, story=None):
     """Each row gets one right answer out of options. rows: (text, answer index, why)."""
     if MODE == 'pdf':
         t = ''.join(f'<tr><td>{TX(a)}</td><td><b>{TX(options[b])}</b></td><td>{TX(c)}</td></tr>' for a, b, c in rows)
-        S(aid, title, h, (f'<p>{TX(story)}</p>' if story else '') + f'<p>{TX(task)}</p><table class="tbl2"><tr><th>השורה</th><th>תשובה</th><th>נימוק</th></tr>{t}</table>')
+        st = (f'<p>{TX(story)}</p>' if story else '') + f'<p>{TX(task)}</p>'
+        q = f'<p class="opts"><b>האפשרויות:</b> ' + ' · '.join(TX(o) for o in options) + '</p><table class="tbl2"><tr><th>השורה</th><th>התשובה שלכם</th></tr>' + ''.join(f'<tr><td>{TX(a)}</td><td class="blankc"></td></tr>' for a, b, c in rows) + '</table>'
+        S(aid, title, h, f'<!--QV-->{st}{q}<!--/QV--><!--AV-->{st}<table class="tbl2"><tr><th>השורה</th><th>תשובה</th><th>נימוק</th></tr>{t}</table><!--/AV-->')
         return
     MAN.append(dict(kind='sorter', id=aid + '-w', n=len(rows)))
     NACT[0] += 1
@@ -187,15 +191,17 @@ def SORTER(aid, title, h, task, options, rows, story=None):
 
 def ORDER(aid, title, h, task, items, story=None, hint='חשבו: מה חייב להיות ידוע לפני שאפשר לבצע את השלב הזה?'):
     """Put the steps in order. items: (text, why) in the RIGHT order; shown shuffled by a fixed rotation."""
-    if MODE == 'pdf':
-        S(aid, title, h, (f'<p>{TX(story)}</p>' if story else '') + f'<p>{TX(task)}</p><ol class="steps">' + ''.join(f'<li><b>{TX(t)}.</b> {TX(w)}</li>' for t, w in items) + '</ol>')
-        return
-    MAN.append(dict(kind='order', id=aid + '-w', n=len(items)))
-    NACT[0] += 1
     k = (sum(map(ord, aid)) % (len(items) - 1)) + 1
     idx = list(range(len(items)))
     sh = idx[k:] + idx[:k]
     sh = sh[::2] + sh[1::2]
+    if MODE == 'pdf':
+        st = (f'<p>{TX(story)}</p>' if story else '') + f'<p>{TX(task)}</p>'
+        q = '<ul class="pl">' + ''.join(f'<li>{TX(items[i][0])}</li>' for i in sh) + '</ul>'
+        S(aid, title, h, f'<!--QV-->{st}{q}<!--/QV--><!--AV-->{st}<ol class="steps">' + ''.join(f'<li><b>{TX(t)}.</b> {TX(w)}</li>' for t, w in items) + '</ol><!--/AV-->')
+        return
+    MAN.append(dict(kind='order', id=aid + '-w', n=len(items)))
+    NACT[0] += 1
     chips = ''.join(f'<button class="oc" data-i="{i}" data-w="{_html.escape(TX(items[i][1]), quote=True)}">{TX(items[i][0])}</button>' for i in sh)
     st = f'<div class="card qstem sm"><p>{TX(story)}</p></div>' if story else ''
     body = (f'{st}<div class="act order" id="{aid}-w" data-hint="{_html.escape(TX(hint), quote=True)}"><div class="tasktxt"><b>המשימה:</b> {TX(task)}</div>'
@@ -208,7 +214,9 @@ def PICK(aid, title, h, task, items, story=None, cols=1):
     """Find every right item. items: (text, is_right, why)."""
     if MODE == 'pdf':
         t = ''.join(f'<tr><td>{TX(a)}</td><td><b>{"כן" if b else "לא"}</b></td><td>{TX(c)}</td></tr>' for a, b, c in items)
-        S(aid, title, h, (f'<p>{TX(story)}</p>' if story else '') + f'<p>{TX(task)}</p><table class="tbl2"><tr><th>הפריט</th><th>לסמן?</th><th>נימוק</th></tr>{t}</table>')
+        st = (f'<p>{TX(story)}</p>' if story else '') + f'<p>{TX(task)}</p>'
+        q = '<ul class="pkq">' + ''.join(f'<li>☐ {TX(a)}</li>' for a, b, c in items) + '</ul>'
+        S(aid, title, h, f'<!--QV-->{st}{q}<!--/QV--><!--AV-->{st}<table class="tbl2"><tr><th>הפריט</th><th>לסמן?</th><th>נימוק</th></tr>{t}</table><!--/AV-->')
         return
     nr = sum(1 for _, b, _ in items if b)
     MAN.append(dict(kind='pick', id=aid + '-w', n=len(items), right=nr))
@@ -224,7 +232,12 @@ def COMPOSE(aid, title, h, task, slots, story=None, out_label='התוצאה של
     """Build a text from parts. slots: (label, [(text, score 0..2, feedback)]). The best option has score 2."""
     if MODE == 'pdf':
         t = ''.join(f'<tr><td><b>{TX(lab)}</b></td><td>{TX(max(opts, key=lambda o: o[1])[0])}</td><td>{TX(max(opts, key=lambda o: o[1])[2])}</td></tr>' for lab, opts in slots)
-        S(aid, title, h, (f'<p>{TX(story)}</p>' if story else '') + f'<p>{TX(task)}</p><table class="tbl2"><tr><th>החלק</th><th>הניסוח המומלץ</th><th>מדוע</th></tr>{t}</table>')
+        st = (f'<p>{TX(story)}</p>' if story else '') + f'<p>{TX(task)}</p>'
+        q = ''
+        for si, (lab, opts) in enumerate(slots):
+            kk = sum(map(ord, aid + str(si))) % len(opts)
+            q += f'<p class="cq"><b>{TX(lab)}:</b></p><ul class="pkq">' + ''.join(f'<li>☐ {TX(o[0])}</li>' for o in opts[kk:] + opts[:kk]) + '</ul>'
+        S(aid, title, h, f'<!--QV-->{st}{q}<!--/QV--><!--AV-->{st}<table class="tbl2"><tr><th>החלק</th><th>הניסוח המומלץ</th><th>מדוע</th></tr>{t}</table><!--/AV-->')
         return
     MAN.append(dict(kind='compose', id=aid + '-w', n=len(slots)))
     NACT[0] += 1
@@ -366,6 +379,35 @@ def _qtable(name, head, rows, eff, opts=None, own=False):
             f'<div class="mi"><table><thead>{th}</thead><tbody>{tr}</tbody></table></div></div></div>')
 
 
+def FINAL(name, head, rows, eff, opts=None):
+    """The table as it stands after the last step of a walk, for print: changed cells, painted columns, rows that are out."""
+    steps = sorted(k for k in eff if isinstance(k, int))
+    hid, hidc = set(eff.get('hide', [])), set(eff.get('hidec', []))
+    sets, cw, cg, keep, order, warn, pc = [], [], [], None, None, [], {}
+    for k in steps:
+        e = eff[k]
+        hid -= set(e.get('show', [])); hidc -= set(e.get('showc', []))
+        sets += e.get('set', []); cw = e.get('cw', []); warn = e.get('warn', [])
+        if 'cg' in e: cg = e['cg']
+        if 'rows' in e: keep = e['rows']
+        if 'order' in e: order = e['order']
+        for c, cl in e.get('pc', []): pc[c] = cl
+    val = {(r, c): v for r, c, v in sets}
+    cols = [c for c in range(len(head)) if c not in hidc]
+    th = ''.join(f'<th class="{pc.get(c, "")}">{TX(head[c])}</th>' for c in cols)
+    body = ''
+    for r in (order or range(len(rows))):
+        if r in hid: continue
+        rc = 'fout' if keep is not None and r not in keep else ('fwarn' if r in warn else '')
+        tds = ''
+        for c in cols:
+            cl = 'fg' if [r, c] in cg else ('fr' if [r, c] in cw else pc.get(c, ''))
+            if (r, c) in val and not cl: cl = 'fset'
+            tds += f'<td class="{cl}">{TX(str(val.get((r, c), rows[r][c])))}</td>'
+        body += f'<tr class="{rc}">{tds}</tr>'
+    return f'<div class="fin"><div class="finh">{TX(name)} · <span>המצב בסוף</span></div><table class="tbl2 fint"><tr>{th}</tr>{body}</table></div>'
+
+
 def _effx(eff):
     """Effects as the browser reads them: html values of 'set' pass through TX."""
     return {str(k): ({kk: ([[a, b, TX(str(c))] for a, b, c in vv] if kk == 'set' else vv) for kk, vv in e.items()} if isinstance(e, dict) else e) for k, e in eff.items()}
@@ -378,7 +420,8 @@ def TABFX(sid, title, h, question, steps, table, result, note=None, kick='רוא
     tables: several tables, each with its own effects. top: html above the walk. layout: '' | 'stack' (tables in a row above the steps)."""
     tl = tables or [table]
     if MODE == 'pdf':
-        S(sid, title, h, f'<p>{TX(question)}</p><ol class="steps">' + ''.join(f'<li>{TX(x)}</li>' for x in steps) + f'</ol><div class="band ans"><b>השורה התחתונה:</b> {TX(result)}</div>' + (BAND('dg', note) if note else ''))
+        fins = '<div class="fins">' + ''.join(FINAL(*t) for t in tl) + '</div>'
+        S(sid, title, h, f'<p>{TX(question)}</p><ol class="steps">' + ''.join(f'<li>{TX(x)}</li>' for x in steps) + f'</ol>{fins}<div class="band ans"><b>השורה התחתונה:</b> {TX(result)}</div>' + (BAND('dg', note) if note else ''))
         return
     NACT[0] += 1
     MAN.append(dict(kind='query', id=sid))
@@ -512,7 +555,7 @@ def MAP(nodes, edges, w=1168, h=460, cls='', extra=''):
         svg += f'<g class="st an-draw medge {c}" data-n="{s * 10}">{g}</g>' if s else f'<g class="medge {c}">{g}</g>'
         if lab:
             lx, ly = (p1[0] + p2[0]) / 4 + mx / 2 + (nud[0][0] if nud else 0), (p1[1] + p2[1]) / 4 + my / 2 + (nud[0][1] if nud else 0)
-            out += f'<div class="elw" style="left:{lx:.0f}px;top:{ly:.0f}px">' + (ST(s, TX(lab), cls='mlab') if s else f'<div class="mlab">{TX(lab)}</div>') + '</div>'
+            out += f'<div class="elw" style="left:{lx:.0f}px;top:{ly:.0f}px">' + (ST(s, TX(lab), cls='maplab') if s else f'<div class="maplab">{TX(lab)}</div>') + '</div>'
     defs = '<defs><marker id="mah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e0452b"/></marker></defs>'
     return f'<div class="map {cls}" style="width:{w}px;height:{h}px"><svg viewBox="0 0 {w} {h}" width="{w}" height="{h}" dir="ltr" aria-hidden="true">{defs}{svg}</svg>{out}{extra}</div>'
 
@@ -590,7 +633,8 @@ def DBTOOL(sid, title, h, question, steps, blocks, result, setup='', side=(), ta
             res = (f'<span class="serr">✘ <bdi dir="ltr">Error: {_html.escape(e[4:])}</bdi> · {TX(b.get("he", ""))}</span>' if e.startswith('err:')
                    else f'<span class="sok">✔ {TX(b.get("he", "בוצע"))}</span>')
             rows += f'<div class="sqlb"><code dir="ltr">{code}</code><div class="sqlo">{res}</div></div>'
-        S(sid, title, h, f'<p>{TX(question)}</p>{rows}<ol class="steps">' + ''.join(f'<li>{TX(x)}</li>' for x in steps) + f'</ol><div class="band ans"><b>השורה התחתונה:</b> {TX(result)}</div>' + (BAND('dg', note) if note else ''))
+        fins = ('<div class="fins">' + ''.join(FINAL(*t) for t in tables) + '</div>') if tables else ''
+        S(sid, title, h, f'<p>{TX(question)}</p>{rows}{fins}<ol class="steps">' + ''.join(f'<li>{TX(x)}</li>' for x in steps) + f'</ol><div class="band ans"><b>השורה התחתונה:</b> {TX(result)}</div>' + (BAND('dg', note) if note else ''))
         return
     NACT[0] += 1
     MAN.append(dict(kind='query', id=sid))

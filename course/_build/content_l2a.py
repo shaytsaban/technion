@@ -5,7 +5,7 @@ def DASH(title, tiles, n0=1):
     """A manager's dashboard mock up: tiles of (emoji, question, value html, what must be recorded)."""
     if MODE == 'pdf':
         return '<table class="tbl2"><tr><th>השאלה של המנהל</th><th>בלוח</th><th>כדי לחשב את זה צריך לרשום</th></tr>' + ''.join(f'<tr><td>{TX(q)}</td><td>{re.sub("<[^>]+>", " ", v)}</td><td>{TX(nd)}</td></tr>' for e, q, v, nd in tiles) + '</table>'
-    t = ''.join(ST(n0 + i, f'<div class="dq"><span class="de">{e}</span><b>{TX(q)}</b></div><div class="dv">{v}</div><div class="dn"><span>🧾 כדי לחשב את זה צריך לרשום</span>{TX(nd)}</div>', cls='dtile pop')
+    t = ''.join(ST(n0 + i, f'<div class="dq"><span class="de">{e}</span><b>{TX(q)}</b></div><div class="dv">{v}</div><div class="dneed"><span>🧾 כדי לחשב את זה צריך לרשום</span>{TX(nd)}</div>', cls='dtile pop')
                 for i, (e, q, v, nd) in enumerate(tiles))
     return f'<div class="dash"><div class="dbar0"><span>{TX(title)}</span><small>הדמיה</small></div><div class="dgrid">{t}</div></div>'
 
@@ -305,6 +305,30 @@ DBTOOL('b-fix', 'אותן שלוש פעולות, אחרי הפירוק', 'אות
        tables=[('waiters', ['waiter_id', 'name', 'phone'], W_ROWS, {1: {'set': [[0, 2, '`050-9999917`']], 'cg': [[0, 2]]}, 3: {'cg': [[3, 1], [3, 2]]}}),
                ('dishes', ['dish_id', 'name', 'price'], [r[:3] for r in D_ROWS] + [['7', 'שקשוקה', '54']], {'hide': [4], 2: {'show': [4], 'cg': [[4, 0], [4, 1], [4, 2]]}})],
        kick='SQL ראשון: קוראים, לא משננים')
+
+_W3 = ['waiter_id', 'name', 'phone']
+DBTOOL('b-anat', 'קוראים פקודה לפי חלקים: UPDATE', 'קוראים פקודה לפי חלקים: UPDATE',
+       'הפקודה ששינתה את הטלפון של יוסי, לאט. עקבו אחרי הסדר שבו השורות מופיעות: המסד אינו עובד משמאל לימין.',
+       ['`UPDATE waiters`: באיזו טבלה משנים. עוד לא נגענו באף שורה.',
+        '`WHERE waiter_id = 17`: באילו שורות. המסד מוצא קודם את השורות שעומדות בתנאי. כאן יש אחת: יוסי של הערב.',
+        "`SET phone = '050-9999917'`: מה משנים בשורות שנמצאו: איזו עמודה, ואיזה ערך חדש.",
+        'מריצים. השורה הנכונה, העמודה הנכונה, ושום דבר אחר.'],
+       [dict(lines=[(1, 'UPDATE waiters'), (3, "SET phone = '050-9999917'"), (2, 'WHERE waiter_id = 17;')], run=4, expect='n:1', he='שורה אחת עודכנה.')],
+       'כותבים UPDATE, SET, WHERE, אבל המסד עובד בסדר אחר: **קודם מוצא את השורות, ורק אחר כך משנה אותן.** החלק שקובע כמה שורות ישתנו הוא WHERE.',
+       setup=SETUP('waiters'), tables=[('waiters', _W3, W_ROWS, {2: {'cg': [[0, 0]]}, 3: {'cg': [[0, 0]], 'cols': [2]}, 4: {'cols': [0, 1, 2], 'set': [[0, 2, '`050-9999917`']], 'cg': [[0, 0], [0, 2]]}})],
+       kick='פקודה אחת, לפי חלקים', grid='minmax(0,1fr) minmax(0,1.1fr)')
+
+_ALL = [[i, 2, '`050-9999917`'] for i in range(4)]
+DBTOOL('b-nowhere', 'שגיאה נפוצה: UPDATE בלי WHERE', 'שגיאה נפוצה: UPDATE בלי WHERE',
+       'אותה פקודה, אבל השורה האחרונה נשכחה. מה יקרה?',
+       ['מריצים את הפקודה בלי WHERE.',
+        'המסד אינו שואל אם זה בכוונה. בלי תנאי, כל השורות מתאימות: לכל ארבעת המלצרים יש עכשיו הטלפון החדש של יוסי.',
+        'ההרגל שמונע את זה: לפני כל UPDATE מריצים SELECT עם אותו WHERE, ורואים בדיוק אילו שורות ישתנו.'],
+       [dict(lines=[(1, "UPDATE waiters SET phone = '050-9999917';")], run=1, expect='n:4', he='4 שורות עודכנו.'),
+        dict(lines=[(3, 'SELECT waiter_id, name FROM waiters'), (3, 'WHERE waiter_id = 17;')], run=3, he='שורה אחת: זו השורה שה-UPDATE ישנה.', rows=[['17', 'יוסי']])],
+       'פקודה בלי WHERE חלה על כל הטבלה. **לכן בודקים קודם ב-SELECT. ובמערכת אמיתית רק מעטים רשאים להריץ פקודות כאלה, ויש גיבוי.**',
+       setup=SETUP('waiters'), tables=[('waiters', _W3, W_ROWS, {1: {'set': _ALL, 'cw': [[i, 2] for i in range(4)]}, 2: {'cw': [[i, 2] for i in range(4)]}, 3: {'cg': [[0, 0], [0, 1]]}})],
+       kick='שגיאה נפוצה, קליק אחר קליק', grid='minmax(0,1fr) minmax(0,1.1fr)')
 
 SORTER('b-sortf', 'על מה העובדה?', 'פעילות: על מה העובדה, ולאן היא עוברת?',
        'לכל עמודה מהגיליון של אתי קבעו על מה היא מספרת, וכך לאיזו טבלה היא עוברת.', ['הזמנה', 'מלצר', 'מנה'],

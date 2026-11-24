@@ -136,8 +136,9 @@ html = f"""<!doctype html>
 <li>מזהה ראשי ומפתח זר, עם ניסיונות לשבור אותם במסד</li>
 <li>קשרים: שלושה סוגים על שורות אמיתיות, רגל העורב, ואיך יוצרים קשר בפועל</li>
 <li>הזמנה עם כמה מנות: טבלת שורות ההזמנה, בצעדים קטנים, עד חשבונית שנבנית בשאילתה</li>
-<li>התרשים המלא, ובדיקה מול ההחלטה והדרישות של מפגש 1</li>
-<li>פקודות SQL והתוצר: סקריפט שרץ, מילון נתונים ותיק מודל הנתונים</li>
+<li>כל פקודת SQL לפי חלקים ובסדר שבו המסד עובד, ושלוש שגיאות נפוצות: בלי WHERE, וערכים בסדר הפוך</li>
+<li>התרשים המלא, ובדיקה מול ההחלטה והדרישות של מפגש 1; הרשאות ופרטיות</li>
+<li>פקודות SQL והתוצר: סקריפט שרץ, מילון נתונים, ניקוי נתוני הגיליון ותוכנית העבודה של הפרויקט</li>
 </ul>
 <div class="rec1" id="rec-2"><h4>הקלטת המפגש</h4>{rec(2, True)}</div>
 </div>
@@ -148,7 +149,10 @@ html = f"""<!doctype html>
 <a class="lk p" href="lectures/lecture-2/bistro.sql" download><span class="e">🛢️</span><span><b>הסקריפט של הביסטרו, bistro.sql</b><span class="d">שש הטבלאות של המפגש ונתונים לדוגמה. פותחים בכל כלי SQLite חינמי ומריצים כמו שהוא.</span></span></a>
 </div></div>
 <div class="grp"><h5>2. תרגול</h5><div class="links">
-<a class="lk p" href="lectures/lecture-2/presentation.html#q-open"><span class="e">✍️</span><span><b>תרגילים מסכמים, בתוך המצגת</b><span class="d">שמונה שאלות שבונות את מודל הנתונים של עמותת ״יד שנייה״, מהקל אל הקשה, עם הסבר לכל תשובה.</span></span></a>
+<a class="lk p" href="lectures/lecture-2/presentation.html#q-open"><span class="e">✍️</span><span><b>תרגילים מסכמים, בתוך המצגת</b><span class="d">שתים עשרה משימות על עמותת ״יד שנייה״, מהקל אל הקשה: בחירה, מיון, סידור, איתור טעויות ופאזל, עם הסבר לכל תשובה.</span></span></a>
+<a class="lk p" href="lectures/lecture-2/homework.html" target="_blank" rel="noopener"><span class="e">🏠</span><span><b>עבודת בית: תיק מודל הנתונים של העמותה</b><span class="d">דף עבודה מקוון בשבעה חלקים: ממלאים בדפדפן, התשובות נשמרות, ושומרים כ-PDF להגשה. 100 נקודות ובונוס.</span></span></a>
+<a class="lk s" href="lectures/lecture-2/homework.pdf" target="_blank" rel="noopener"><span class="e">🖨️</span><span><b>עבודת הבית להדפסה (PDF)</b><span class="d">אותו דף עבודה, למי שמעדיף לכתוב על נייר.</span></span></a>
+<a class="lk p" href="lectures/lecture-2/amuta_starter.sql" download><span class="e">🛢️</span><span><b>קובץ ההתחלה לחלק ו, amuta_starter.sql</b><span class="d">המסד של העמותה עם שש מילים חסרות. משלימים, ומריצים בכל כלי SQLite חינמי כדי לבדוק את עצמכם.</span></span></a>
 </div></div>
 </div>
 </div>

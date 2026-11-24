@@ -4,7 +4,9 @@ H = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, H)
 R = lambda f: open(os.path.join(H, f), encoding='utf8').read()
 MODE = 'pdf'
 LESSON = int(sys.argv[1]) if len(sys.argv) > 1 else 1
-exec(R('content_a.py')); exec(R('content_g.py')); exec(R(f'content_l{LESSON}.py'))
+KIT = os.path.join(H, 'frozen', f'l{LESSON}')   # a taught lesson uses the kit as it was in class
+K = lambda f: open(os.path.join(KIT, f), encoding='utf8').read() if os.path.exists(os.path.join(KIT, f)) else R(f)
+exec(K('content_a.py')); exec(R('content_g.py')); exec(R(f'content_l{LESSON}.py'))
 from pdfkit import *
 SKIP = {'s-how'}
 CSS = BASE + '''
@@ -57,6 +59,8 @@ table.tbl2{width:100%;margin:1mm 0 2mm;font-size:11pt}.tbl2 th{background:var(--
 .gl .th{font-weight:700;color:var(--navy);font-size:11.6pt}.gl small{color:var(--mut);direction:ltr;unicode-bidi:isolate;margin-right:1.5mm;font-size:9.8pt}.gl p{margin:0 0 .3mm}
 .glc{columns:2;column-gap:5mm}
 .goal{color:#087469;font-size:10.8pt;margin:-.4mm 0 1mm}
+'''
+CSS2 = '''
 /* lesson 2 */
 .mflow{background:#f6f2ea;border-radius:1.4mm;padding:1.2mm 2.4mm;line-height:1.5}.mflow span{font-weight:700;color:var(--navy)}
 .sqlb{border:.25mm solid #cdd5ea;border-radius:1.4mm;margin:0 0 1.4mm;break-inside:avoid;overflow:hidden}
@@ -91,31 +95,86 @@ table.tbl2{width:100%;margin:1mm 0 2mm;font-size:11pt}.tbl2 th{background:var(--
 .dd td,.dd th{font-size:10.2pt}.def.fam1,.def.fam2{border-top:1mm solid var(--coral)}
 table.inst{width:auto;min-width:60%}
 .wnote,.wtab,.wsql,.wdash,.wchip,.wstrip,.lanes{display:none}
+.fig{margin:1.5mm 0 2.5mm;text-align:center;break-inside:avoid}.fig img{width:100%;border:.3mm solid var(--line);border-radius:2mm}.fig figcaption{font-size:10pt;color:var(--mut);margin-top:.6mm}
+.fins{display:flex;gap:2mm;flex-wrap:wrap;margin:1mm 0 1.6mm}.fin{flex:1 1 45%;break-inside:avoid}.finh{font-weight:700;font-size:10.4pt;color:var(--navy)}.finh span{color:#087469}
+table.fint{font-size:10.2pt;margin:.4mm 0}table.fint td{padding:.4mm 1.6mm}.fint .fg,.fint .fset{background:#dcf5e6;color:#0d5c30;font-weight:700}.fint .fr{background:#fde8e6;color:#b8391f;font-weight:700}
+.fint tr.fout td{color:#a0a8ba;text-decoration:line-through}.fint tr.fwarn td{background:#fde8e6}
+.fint .p1,.mini .p1{background:#e3edff}.fint .p2,.mini .p2{background:#fff0d2}.fint .p3,.mini .p3{background:#dcf5e6}.fint .p4,.mini .p4{background:#ece8ff}.fint th.p1,.fint th.p2,.fint th.p3,.fint th.p4{color:#16213a}
+.cheat{display:grid;grid-template-columns:1fr 1fr;gap:2mm}.chc{border:.25mm solid var(--line);border-radius:1.4mm;padding:1mm 2mm;break-inside:avoid}.chh span{display:none}.chh b{color:var(--navy)}
+.cht,.chx{display:block;direction:ltr;text-align:left;font-family:Menlo,Consolas,monospace;font-size:9pt;white-space:pre-wrap;margin:.4mm 0}.chx{color:#3b4a6b}
+.phd{font-family:"David";font-weight:700;border:.25mm solid var(--navy);border-radius:1mm;padding:0 1mm}.phd.p1{background:#e3edff}.phd.p2{background:#fff0d2}.phd.p3{background:#dcf5e6}.phd.p4{background:#ece8ff}
+.cp{font-weight:700;border:.25mm solid var(--navy);border-radius:1mm;padding:0 1mm}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:2mm}.bcol{border:.25mm solid var(--line);border-radius:1.4mm;padding:1mm 2mm}.bch{display:block;color:var(--navy)}.bcard{display:block;margin:.8mm 0;break-inside:avoid}.bcard>b{display:block}.bce{display:none}.bcard>span{display:block;font-size:10.2pt}
+table.perm td,table.perm th{text-align:center}.dneed{font-size:10.2pt}
+.opts{font-size:10.6pt}.blankc{min-width:40mm}.pkq{list-style:none;padding-right:2mm}.cq{margin:1mm 0 .2mm}
+.key{border-right:1mm solid #25a65f;padding:.4mm 2.4mm;margin:0 0 2mm;break-inside:avoid}.key>b{display:block;color:var(--navy);font-size:12pt}.keyp .mc .q{font-weight:700}
+.tocx{color:var(--mut);margin-top:1mm}.ka{margin:.4mm 0}.kw{background:#eef2ff;border-radius:1.2mm;padding:.8mm 2mm}
 '''
+if LESSON >= 2: CSS += CSS2   # lesson 1 keeps its print styles as taught
+import base64, io, subprocess, tempfile
+from PIL import Image
+AV = lambda b: re.sub(r'<!--QV-->.*?<!--/QV-->', '', b, flags=re.S).replace('<!--AV-->', '').replace('<!--/AV-->', '')
+QV = lambda b: (re.search(r'<!--QV-->(.*?)<!--/QV-->', b, re.S) or re.search(r'(.*)', b, re.S)).group(1)
+PRACTICE = [x for x in SL if x['id'].startswith('q-')] if LESSON >= 2 else []   # lesson 1 keeps its summary as taught
+FIGS = globals().get('SUMMARY_FIGS', {})
+
+
+def shoot(ids):
+    # pictures of chosen slides, fully revealed, from the built deck
+    deck = os.path.abspath(os.path.join(H, '..', 'lectures', f'lecture-{LESSON}', 'presentation.html'))
+    d = tempfile.mkdtemp(dir=os.environ.get('TMPDIR')); out = {}
+    for i, sid in enumerate(ids):
+        png = os.path.join(d, f'{i}.png')
+        try:
+            subprocess.run([CHROME, '--headless=new', '--disable-gpu', '--no-sandbox', f'--user-data-dir={d}/u{i}', '--window-size=1280,778', '--hide-scrollbars', '--virtual-time-budget=6000', f'--screenshot={png}', f'file://{deck}?all#{sid}'], capture_output=True, timeout=180)
+        except subprocess.TimeoutExpired:
+            continue
+        if not os.path.exists(png): continue
+        im = Image.open(png).convert('RGB').crop((40, 104, 1240, 690)); b = io.BytesIO(); im.save(b, 'JPEG', quality=86)
+        out[sid] = base64.b64encode(b.getvalue()).decode()
+    return out
+
+
+from pdfkit import CHROME as _C
+CHROME = _C
+PICS = shoot(list(FIGS)) if FIGS else {}
+FIG = lambda sid: (f'<figure class="fig"><img src="data:image/jpeg;base64,{PICS[sid]}" alt=""><figcaption>{TX(FIGS[sid])}</figcaption></figure>' if sid in PICS else '')
 parts = {}
 for s in SL:
-    if s['id'] in SKIP: continue
+    if s['id'] in SKIP or s in PRACTICE: continue
     parts.setdefault(s['part'], []).append(s)
 TOTAL = max(k for k in parts if k)
-front = ''.join(f'<h3>{TX(s["h"])}</h3>{s["body"]}' for s in parts[None])
+front = ''.join(f'<h3>{TX(s["h"])}</h3>{FIG(s["id"])}{AV(s["body"])}' for s in parts[None])
 body = f'<section class="part"><h1>לפני שמתחילים</h1>{front}</section>'
 for nn in range(1, TOTAL + 1):
     op = next(s for s in parts[nn] if s['kind'] == 'opener')
     inner = f'<p class="pq">{TX(op["q"])}</p><p>{TX(op.get("note") or "")}</p><ul class="pl">' + ''.join(f'<li>{TX(x)}</li>' for x in op['learn']) + '</ul>'
     for s in parts[nn]:
         if s['kind'] == 'opener': continue
-        inner += f'<h3>{TX(s["h"])}</h3>' + s['body']
+        inner += f'<h3>{TX(s["h"])}</h3>' + FIG(s['id']) + AV(s['body'])
     body += f'<section class="part"><h1><span class="sn">{nn}</span>{op["h"]}</h1>{inner}</section>'
+if PRACTICE:
+    body += '<section class="part"><h1>תרגילים מסכמים</h1>' + ''.join(f'<h3>{TX(x["h"])}</h3>' + QV(x['body']) for x in PRACTICE) + '</section>'
+    def keyof(b):
+        a = AV(b)
+        m = re.search(r'<button class="o correct"[^>]*>(.*?)</button>', a, re.S)
+        if m:
+            w = re.search(r'<div class="w">(.*?)</div>', a, re.S)
+            return f'<p class="ka"><b>התשובה:</b> {m.group(1)}</p>' + (f'<p class="kw">{w.group(1)}</p>' if w else '')
+        return re.sub(r'^(\s*<p>.*?</p>)+', '', a, flags=re.S)
+    key = ''.join(f'<div class="key"><b>{TX(x["h"])}</b>' + keyof(x['body']) + '</div>' for x in PRACTICE if '<!--AV-->' in x['body'])
+    body += f'<section class="part keyp"><h1>פתרונות לתרגילים המסכמים</h1><p>' + TX('נסו קודם לבד. לכל תשובה מצורף ההסבר.') + f'</p>{key}</section>'
 used = set(re.findall(r'data-t="(\w+)"', ''.join(s['body'] for s in SL)))
 gl = ''.join(f'<div class="gl"><div class="th">{g["h"]}<small>{g["en"]}</small></div><p><b>בפשטות:</b> {TX(g["p"])}</p><p><b>בלשון מקצועית:</b> {TX(g["f"])}</p><p><b>דוגמה:</b> {TX(g["ex"])}</p><p><b>שימו לב:</b> {TX(g["tr"])}</p></div>' for k, g in ((k, G[k]) for k in (globals().get('GL_LESSON') or list(G))))
 body += f'<section class="part"><h1>מילון מושגים</h1><div class="glc">{gl}</div></section>'
 body += f'<section class="part"><h1>במפגש הבא: {LMETA["next_h"]}</h1><p>' + TX(LMETA['next_t']) + '</p></section>'
 cover = (f'<div class="cover"><div class="c-top">{INST}</div><div class="c-title">{LMETA["h1"][0]} {LMETA["h1"][1]}</div>'
          f'<div class="c-sub">{COURSE}: סיכום מורחב של מפגש {LESSON}. {LMETA["cover"]}</div><div class="c-line"></div>'
-         '<div class="c-meta">' + TX('כל ההגדרות, הדוגמאות, הפעילויות עם התשובות והנימוקים, שאלות לכיתה, התרגילים המסכמים, ומילון מושגים.') + '</div>'
+         '<div class="c-meta">' + TX(LMETA.get('cover_meta', 'כל ההגדרות, הדוגמאות, הפעילויות עם התשובות והנימוקים, שאלות לכיתה, התרגילים המסכמים, ומילון מושגים.')) + '</div>'
          f'<div class="c-author">ד״ר שי צבאן<div class="c-mail">shay.tsaban@gmail.com</div></div></div>')
-toc = '<div class="toc"><h1>תוכן העניינים</h1><ol>' + ''.join(f'<li>{next(s for s in parts[k] if s["kind"] == "opener")["h"]}</li>' for k in range(1, TOTAL + 1)) + '</ol></div>'
+toc = ('<div class="toc"><h1>תוכן העניינים</h1><ol>' + ''.join(f'<li>{next(s for s in parts[k] if s["kind"] == "opener")["h"]}</li>' for k in range(1, TOTAL + 1)) + '</ol>'
+       + ('<p class="tocx">' + TX('ובסוף: תרגילים מסכמים, פתרונות עם הסברים, ומילון מושגים.') + '</p>' if PRACTICE else '') + '</div>')
 page = f'<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>{COURSE} | מפגש {LESSON} | סיכום</title><style>{CSS}</style></head><body>{cover}{toc}{body}</body></html>'
 page = re.sub(r'<button class="rcard"[^>]*>.*?</button>', '', page, flags=re.S)
-page = page.replace('href="bistro.sql"', f'href="{SITE}lectures/lecture-{LESSON}/bistro.sql"').replace(' download>', '>')
+page = page.replace('href="bistro.sql"', f'href="{SITE}lectures/lecture-{LESSON}/bistro.sql"').replace('href="homework.html"', f'href="{SITE}lectures/lecture-{LESSON}/homework.html"').replace(' download>', '>')
 to_pdf(page, os.path.join(H, '..', 'lectures', f'lecture-{LESSON}', 'summary.pdf'), 12000)

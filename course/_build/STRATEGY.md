@@ -151,3 +151,14 @@ These hold for every later lesson. The full list of his remarks and what was don
 10. **Facts.** Only verified quotes and facts.
 11. **AI-assistant material is done.** It does not come back.
 12. **Product.** Each lesson ends with a concrete product.
+
+### Added after the second review round (24.11.2026, evening)
+
+13. **Reading SQL.** Every new command is read part by part, in the order the database executes it. The lines are revealed in that order. Each command is followed by its common mistake: no WHERE, or values in the wrong order.
+14. **Wrap-up slides.** A cheat sheet of command templates, a permissions and privacy slide, and the project view: data cleaning and a work plan derived from the model.
+15. **Summary PDF.** It contains:
+    - the final state of every table walk;
+    - pictures of the key slides;
+    - the practice set without answers, with a compact key at the end;
+    - the lesson's own glossary.
+16. **Take-home.** An online worksheet (`build_homework.py`), filled in and saved as PDF, with a rubric. SQL work is completing missing words and predicting outcomes. The starter file has blanks. The solution is kept outside the repo.

@@ -26,3 +26,16 @@ Each line: his remark, what is done about it, status. Slide numbers refer to the
 | 20 | The junction table is too hard; break it down | Rebuilt in small steps: the receipt, header and lines, the two questions on real rows, a table built column by column, reading one line across three tables, then the name, the SQL and the receipt rebuilt by a query || done: f-two to f-join (8 steps) |
 | 21 | Drop the AI assistant part; expand SQL commands where relevant and end with a real product | Part 8 is now SQL: two families of commands, the creation order, the note as INSERT commands, business events as commands, a change request, and the final product: diagram, data dictionary, SQL script (bistro.sql, runs as is) and assumptions || done: part 8: h-fam to h-product |
 | 22 | Think about the spirit, also for later lessons | Principles written to STRATEGY.md and to memory || done: STRATEGY.md, memory |
+
+## Round 3 (24.11.2026, evening): proofread, queries, real world, summary, take-home
+
+| # | Request | Action | Status |
+|---|---|---|---|
+| 23 | Proofread again | Full text of the deck, worksheet and glossary proofread by a second reader; story conflicts fixed (the new waiter got two ids; an order "opened by mistake" that had a dish) | done |
+| 24 | Gradual build and illustration of queries | Every new command read part by part in the order the database executes it, lines revealed in that order: b-anat (UPDATE), c-ins (INSERT, values coloured to their columns), d-delall (DELETE), f-join (FROM, JOIN, WHERE, SELECT with the source tables reacting) | done |
+| 25 | Common mistakes in SQL | b-nowhere (UPDATE without WHERE), d-delall (DELETE without WHERE), f-swap (values in the wrong order: accepted silently) | done |
+| 26 | Real world and the managerial side | g-priv (permissions table, Amendment 13 of the Privacy Protection Law, in force 14.8.2025), h-migr (cleaning Etti's sheet before migration), h-pm (work plan derived from the model), NASA units example in h-dict, delivery-app example in f-junc | done |
+| 27 | Visual pass | Gate stamps fixed (a kit rule forced left to right), cheat-sheet chips, class-name collisions with the original kit removed | done |
+| 28 | How the summary is built | Final table state after every walk, pictures of five key slides, practice in its own section without answers, compact answer key at the end, lesson glossary | done |
+| 29 | Homework / take-home | Online worksheet in seven parts with rubric (homework.html, homework.pdf), starter SQL with six blanks (amuta_starter.sql), private solution outside the repo | done |
+| 30 | Taught lesson untouched | Lesson 1 builds from `frozen/l1/`, byte-identical to the deck taught on 23.11 (commit 6a249cf) | done |
