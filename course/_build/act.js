@@ -62,26 +62,34 @@ $$('.checker').forEach(b=>{const R=RULES[b.dataset.kind],ta=$('.ckin',b),list=$(
  $('.rst',b).addEventListener('click',()=>{ta.value='';$$('li',list).forEach(li=>{li.className='';$('i',li).textContent='○';});bar.style.width='0';ml.textContent='כתבו ניסוח ולחצו על ״בדקו״';b.classList.remove('solved');});});
 
 
-/* query visualiser: the table reacts to the clause that was just revealed */
-$$('.qviz').forEach(v=>{const eff=JSON.parse(v.dataset.eff),steps=$$('.qstep',v),tb=$('tbody',v),rows=$$('tbody tr',v);
- const tds=$$('tbody td',v);tds.forEach(t=>t.dataset.o=t.innerHTML);const hid=eff.hide||[];const cell=(r,c)=>v.querySelector('tbody tr[data-r="'+r+'"] td[data-c="'+c+'"]');
- const sync=()=>{const k=steps.filter(s=>s.classList.contains('show')).length;let cols=null,keep=null,order=null,warn=null,sets=[],cw=[],cg=[],shw=[];for(let i=1;i<=k;i++){const e=eff[i];if(!e)continue;if(e.cols)cols=e.cols;if(e.rows)keep=e.rows;if(e.order)order=e.order;warn=e.warn||null;cw=e.cw||[];if(e.cg)cg=e.cg;if(e.set)sets=sets.concat(e.set);if(e.show)shw=shw.concat(e.show);}
-  tds.forEach(t=>{if(t.innerHTML!==t.dataset.o)t.innerHTML=t.dataset.o;t.classList.remove('cset','cwarn','cgood');});
-  sets.forEach(([r,c,x])=>{const t=cell(r,c);if(t){t.innerHTML=x;t.classList.add('cset');}});cw.forEach(([r,c])=>{const t=cell(r,c);if(t)t.classList.add('cwarn');});cg.forEach(([r,c])=>{const t=cell(r,c);if(t)t.classList.add('cgood');});
+/* query visualiser: the tables react to the step that was just revealed. One table takes the effects of the walk;
+   several tables (or a database tool, class multi) each carry their own. Effects: cols, rows, order, warn, set, cw, cg, show, showc, pc; hide, hidec. */
+$$('.qviz').forEach(v=>{const steps=$$('.qstep',v);const own=v.classList.contains('multi');
+ const T=$$('.qtab',v).map((q,qi)=>{const eff=JSON.parse((own?q.dataset.eff:(qi?'{}':v.dataset.eff))||'{}');const tds=$$('tbody td',q);tds.forEach(t=>t.dataset.o=t.innerHTML);return{q,eff,tb:$('tbody',q),rows:$$('tbody tr',q),tds};});
+ const dbl=$$('.dbl',v);
+ const syncT=(t,k)=>{const q=t.q,eff=t.eff,tb=t.tb,rows=t.rows;const hid=eff.hide||[],hidc=eff.hidec||[];const cell=(r,c)=>q.querySelector('tbody tr[data-r="'+r+'"] td[data-c="'+c+'"]');
+  let cols=null,keep=null,order=null,warn=null,sets=[],cw=[],cg=[],shw=[],shc=[],pc=[];
+  for(let i=1;i<=k;i++){const e=eff[i];if(!e)continue;if(e.cols)cols=e.cols;if(e.rows)keep=e.rows;if(e.order)order=e.order;warn=e.warn||null;cw=e.cw||[];if(e.cg)cg=e.cg;if(e.set)sets=sets.concat(e.set);if(e.show)shw=shw.concat(e.show);if(e.showc)shc=shc.concat(e.showc);if(e.pc)pc=pc.concat(e.pc);}
+  t.tds.forEach(x=>{if(x.innerHTML!==x.dataset.o)x.innerHTML=x.dataset.o;x.classList.remove('cset','cwarn','cgood');});
+  sets.forEach(s=>{const e=cell(s[0],s[1]);if(e){e.innerHTML=s[2];e.classList.add('cset');}});cw.forEach(s=>{const e=cell(s[0],s[1]);if(e)e.classList.add('cwarn');});cg.forEach(s=>{const e=cell(s[0],s[1]);if(e)e.classList.add('cgood');});
   rows.forEach(r=>r.classList.toggle('rhid',hid.includes(+r.dataset.r)&&!shw.includes(+r.dataset.r)));
-  $$('[data-c]',v).forEach(c=>{c.classList.toggle('chl',!!cols&&cols.includes(+c.dataset.c));c.classList.toggle('cdim',!!cols&&!cols.includes(+c.dataset.c));});
-  rows.forEach(r=>{r.classList.toggle('rout',!!keep&&!keep.includes(+r.dataset.r));r.classList.toggle('rwarn',!!warn&&warn.includes(+r.dataset.r));});steps.forEach((st,i)=>st.classList.toggle('qbad',!!(eff[i+1]&&(eff[i+1].warn||eff[i+1].cw))&&i===k-1));steps.forEach((st,i)=>st.classList.toggle('qok',!!(eff[i+1]&&eff[i+1].cg)&&i===k-1));(order||rows.map((_,i)=>i)).forEach(i=>tb.appendChild(rows[i]));
-  steps.forEach((s,i)=>s.classList.toggle('qcur',i===k-1));};
- const code=$('.qcode',v),opt={attributes:true,subtree:true,attributeFilter:['class']};const mo=new MutationObserver(()=>{mo.disconnect();sync();mo.takeRecords();mo.observe(code,opt);});mo.observe(code,opt);sync();});
+  $$('[data-c]',q).forEach(c=>{const ci=+c.dataset.c;c.classList.toggle('chl',!!cols&&cols.includes(ci));c.classList.toggle('cdim',!!cols&&!cols.includes(ci));c.classList.toggle('chid',hidc.includes(ci)&&!shc.includes(ci));
+   c.classList.remove('p1','p2','p3','p4');const pp=pc.filter(x=>x[0]===ci).pop();if(pp)c.classList.add(pp[1]);});
+  rows.forEach(r=>{r.classList.toggle('rout',!!keep&&!keep.includes(+r.dataset.r));r.classList.toggle('rwarn',!!warn&&warn.includes(+r.dataset.r));});(order||rows.map((_,i)=>i)).forEach(i=>tb.appendChild(rows[i]));};
+ const sync=()=>{const k=steps.filter(s=>s.classList.contains('show')).length;T.forEach(t=>syncT(t,k));
+  const bad=i=>T.some(t=>t.eff[i]&&(t.eff[i].warn||t.eff[i].cw)),good=i=>T.some(t=>t.eff[i]&&t.eff[i].cg);
+  steps.forEach((st,i)=>{st.classList.toggle('qbad',bad(i+1)&&i===k-1);st.classList.toggle('qok',good(i+1)&&i===k-1);st.classList.toggle('qcur',i===k-1);});
+  const cn=k?steps[k-1].dataset.n:'';dbl.forEach(l=>l.classList.toggle('cur',l.dataset.n===cn));};
+ const code=$('.qcode',v),opt={attributes:true,subtree:true,attributeFilter:['class']};const mo=new MutationObserver(()=>{mo.disconnect();sync();mo.takeRecords();mo.observe(code,opt);});mo.observe(code,opt);sync();v.__sync=sync;});
 
 
 /* static slides use the whole height: the body is enlarged until it fills the slide */
 function fitSlides(){const k=()=>stage.getBoundingClientRect().width/1280||1;
- slides.forEach(s=>{if(s.classList.contains('pd')||s.classList.contains('s1')||s.querySelector('.order,.checker,.memew,.mc'))return;
+ slides.forEach(s=>{if(s.classList.contains('pd')||s.classList.contains('s1')||s.querySelector('.order,.checker,.memew,.mc,.qviz'))return;
   const grows=!!s.querySelector('.act:not(.sorter),.mc');const LIM=grows?612:664;
   const kids=[...s.children].filter(c=>!c.matches('.kick,h2,.ft,.toon,.crumb'));if(!kids.length)return;kids.forEach(c=>c.style.zoom='');
   const bottom=()=>{const sr=s.getBoundingClientRect();return Math.max(...kids.map(c=>c.getBoundingClientRect().bottom-sr.top))/k();};
   const top=(kids[0].getBoundingClientRect().top-s.getBoundingClientRect().top)/k();const room=LIM-top,h=bottom()-top;if(h<=0||h>room*0.95)return;
-  const wide=()=>s.scrollWidth>s.clientWidth+1;let z=Math.min(1.7,room/h);for(let i=0;i<20&&z>1.03;i++){kids.forEach(c=>c.style.zoom=z);if(bottom()<=LIM&&!wide())break;z-=0.035;}
+  const wide=()=>s.scrollWidth>s.clientWidth+1||[...s.querySelectorAll('.mock .mi')].some(m=>m.scrollWidth>m.clientWidth+1);let z=Math.min(1.7,room/h);for(let i=0;i<20&&z>1.03;i++){kids.forEach(c=>c.style.zoom=z);if(bottom()<=LIM&&!wide())break;z-=0.035;}
   if(z<=1.03||bottom()>LIM||wide())kids.forEach(c=>c.style.zoom='');});}
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(fitSlides);window.__fitSlides=fitSlides;

@@ -30,7 +30,7 @@ function solve(s){
  s.querySelectorAll('.qviz').forEach(v=>{A(s.id,'query',v.querySelectorAll('.qstep').length>1);});
 }
 if(window.__fitSlides)window.__fitSlides();
-D.slides.forEach((s,i)=>{D.show(i);measure(s,i,'first');D.setAll(s,true);measure(s,i,'all');small(s);solve(s);measure(s,i,'solved');});
+D.slides.forEach((s,i)=>{D.show(i);measure(s,i,'first');D.setAll(s,true);s.querySelectorAll('.qviz').forEach(v=>v.__sync&&v.__sync());measure(s,i,'all');small(s);solve(s);measure(s,i,'solved');});
 const pre=document.createElement('pre');pre.id='__res';pre.textContent=JSON.stringify(R);document.body.appendChild(pre);
 }catch(e){document.documentElement.setAttribute('data-err',String(e&&e.stack||e));}});
 '''

@@ -349,28 +349,48 @@ def PIC(emoji, title, text, n=0, cls=''):
 
 # ---------------------------------------------------------------- lesson 2 components
 
-def _qtable(name, head, rows, eff):
+def _qtable(name, head, rows, eff, opts=None, own=False):
+    """A mock table for the table walks. opts: xl (spreadsheet look: column letters and row numbers), sub (the small label).
+    own: the table carries its own effects (several tables in one walk)."""
+    o = opts or {}
     th = ''.join(f'<th data-c="{i}">{TX(x)}</th>' for i, x in enumerate(head))
-    tr = ''.join(f'<tr data-r="{ri}">' + ''.join(f'<td data-c="{ci}">{TX(str(v))}</td>' for ci, v in enumerate(r)) + '</tr>' for ri, r in enumerate(rows))
-    return f'<div class="qtab"><div class="mock"><div class="mb"><span>{TX(name)}</span><small>הדמיה</small></div><div class="mi"><table><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table></div></div></div>'
+    if o.get('xl'):
+        th = '<tr class="xlh"><th class="xlr"></th>' + ''.join(f'<th class="xlc">{chr(65 + i)}</th>' for i in range(len(head))) + f'</tr><tr><th class="xlr">1</th>{th}</tr>'
+        tr = ''.join(f'<tr data-r="{ri}"><td class="xlr">{ri + 2}</td>' + ''.join(f'<td data-c="{ci}">{TX(str(v))}</td>' for ci, v in enumerate(r)) + '</tr>' for ri, r in enumerate(rows))
+    else:
+        th = f'<tr>{th}</tr>'
+        tr = ''.join(f'<tr data-r="{ri}">' + ''.join(f'<td data-c="{ci}">{TX(str(v))}</td>' for ci, v in enumerate(r)) + '</tr>' for ri, r in enumerate(rows))
+    ea = f' data-eff="{_html.escape(json.dumps(_effx(eff), ensure_ascii=False), quote=True)}"' if own else ''
+    cls = ' xl' if o.get('xl') else ''
+    return (f'<div class="qtab"{ea}><div class="mock{cls}"><div class="mb"><span>{TX(name)}</span><small>{TX(o.get("sub", "הדמיה"))}</small></div>'
+            f'<div class="mi"><table><thead>{th}</thead><tbody>{tr}</tbody></table></div></div></div>')
 
 
-def TABFX(sid, title, h, question, steps, table, result, note=None, kick='רואים את זה קורה, קליק אחר קליק', wide=False):
+def _effx(eff):
+    """Effects as the browser reads them: html values of 'set' pass through TX."""
+    return {str(k): ({kk: ([[a, b, TX(str(c))] for a, b, c in vv] if kk == 'set' else vv) for kk, vv in e.items()} if isinstance(e, dict) else e) for k, e in eff.items()}
+
+
+def TABFX(sid, title, h, question, steps, table, result, note=None, kick='רואים את זה קורה, קליק אחר קליק', wide=False, top='', tables=None, layout=''):
     """A table that reacts, step by step, to a short story (no code). steps: text per click.
-    table: (name, head, rows, effects). effects per step: cols, rows, order, warn (rows), set [[r, c, html]], cw / cg [[r, c]] cells,
-    show [rows]; and 'hide': rows hidden until shown."""
-    name, head, rows, eff = table
+    table: (name, head, rows, effects[, opts]). effects per step: cols, rows, order, warn (rows), set [[r, c, html]], cw / cg [[r, c]] cells,
+    show [rows], showc [cols], pc [[c, 'p1'..'p4']] painted columns; and top level 'hide' (rows) and 'hidec' (cols) hidden until shown.
+    tables: several tables, each with its own effects. top: html above the walk. layout: '' | 'stack' (tables in a row above the steps)."""
+    tl = tables or [table]
     if MODE == 'pdf':
         S(sid, title, h, f'<p>{TX(question)}</p><ol class="steps">' + ''.join(f'<li>{TX(x)}</li>' for x in steps) + f'</ol><div class="band ans"><b>השורה התחתונה:</b> {TX(result)}</div>' + (BAND('dg', note) if note else ''))
         return
     NACT[0] += 1
     MAN.append(dict(kind='query', id=sid))
-    eff = {str(k): ({kk: ([[a, b, TX(str(c))] for a, b, c in vv] if kk == 'set' else vv) for kk, vv in e.items()} if isinstance(e, dict) else e) for k, e in eff.items()}
+    multi = len(tl) > 1
+    eff = {} if multi else _effx(tl[0][3])
     ql = ''.join(f'<div class="st qstep qprose" data-n="{(i + 2) * 10}"><span class="qno">{i + 1}</span><span class="qex">{TX(w)}</span></div>' for i, w in enumerate(steps))
     n = len(steps)
-    body = (f'<div class="qviz{" wide" if wide else ""}" data-eff="{_html.escape(json.dumps(eff, ensure_ascii=False), quote=True)}"><div class="card qstem sm"><p>{TX(question)}</p></div>'
-            f'<div class="qgrid"><div class="qcode prose"><div class="st qhd" data-n="10">מה קורה, צעד אחר צעד:</div>{ql}</div>{_qtable(name, head, rows, eff)}</div>'
-            + ST(n + 2, f'<b>השורה התחתונה:</b> {TX(result)}', cls='band ans') + (BAND('dg', note, n + 3) if note else '') + '</div>')
+    tabs = ''.join(_qtable(t[0], t[1], t[2], t[3], t[4] if len(t) > 4 else None, own=multi) for t in tl)
+    if multi: tabs = f'<div class="qtabs n{len(tl)}">{tabs}</div>'
+    body = (f'<div class="qviz{" wide" if wide else ""}{" multi" if multi else ""}" data-eff="{_html.escape(json.dumps(eff, ensure_ascii=False), quote=True)}"><div class="card qstem sm"><p>{TX(question)}</p></div>{top}'
+            f'<div class="qgrid {layout}"><div class="qcode prose"><div class="st qhd" data-n="10">מה קורה, צעד אחר צעד:</div>{ql}</div>'
+            f'<div class="qleft">{tabs}' + ST(n + 2, f'<b>השורה התחתונה:</b> {TX(result)}', cls='band ans') + (BAND('dg', note, n + 3) if note else '') + '</div></div></div>')
     S(sid, title, h, body, kick=KICK(kick), cls='qsl')
 
 
@@ -437,3 +457,158 @@ def CODEWALK(lines, right, n0=1, head='קוראים את הטקסט שעוזר �
 def MK(n, html, cls=''):
     """Always visible; highlighted from step n."""
     return f'<span class="st mk {cls}" data-n="{n * 10}">{html}</span>'
+
+
+# ---------------------------------------------------------------- lesson 2, second round: maps, strips, bridges, the database tool
+
+def MOCK(name, head, rows, sub='הדמיה', cls='', n0=0):
+    """A small window with a table in it."""
+    return f'<div class="mock {cls}"><div class="mb"><span>{TX(name)}</span><small>{TX(sub)}</small></div><div class="mi">' + TABLE(head, rows, n0=n0) + '</div></div>'
+
+
+def MINI(head, rows, marks=None, cls=''):
+    """A tiny table for a picture. marks: {(r, c): 'g' | 'r' | 'y' | 'p1'..'p4' | 'x'} paints a cell (r = -1 is the header)."""
+    m = marks or {}
+    th = ''.join(f'<th class="{m.get((-1, i), "")}">{TX(x)}</th>' for i, x in enumerate(head))
+    tr = ''.join('<tr>' + ''.join(f'<td class="{m.get((ri, ci), "")}">{TX(str(v))}</td>' for ci, v in enumerate(r)) + '</tr>' for ri, r in enumerate(rows))
+    return f'<table class="mini {cls}"><tr>{th}</tr>{tr}</table>'
+
+
+def COMIC(panels, n0=1, cls=''):
+    """A strip of illustrated panels, one per click, joined by arrows. panels: (art html, caption)."""
+    if MODE == 'pdf':
+        return '<ol class="steps">' + ''.join(f'<li>{TX(c)}</li>' for a, c in panels) + '</ol>'
+    out = ''
+    for i, (a, c) in enumerate(panels):
+        ar = '<div class="cmar">←</div>' if i else ''
+        out += ST(n0 + i, f'{ar}<div class="cmp"><div class="cmno">{i + 1}</div><div class="cma">{a}</div><div class="cmc">{TX(c)}</div></div>', cls='cmw pop')
+    return f'<div class="comic n{len(panels)} {cls}">{out}</div>'
+
+
+def MAP(nodes, edges, w=1168, h=460, cls='', extra=''):
+    """A process map with nodes anywhere and curved arrows, revealed click by click; arrows marked 'flow' carry moving dots.
+    nodes: (key, x, y, w, h, html, step, cls). edges: (from, to, step, label, bend, cls); bend bows the arrow sideways (px)."""
+    if MODE == 'pdf':
+        return '<ul class="pl">' + ''.join(f'<li>{re.sub("<[^>]+>", " ", hh)}</li>' for k, x, y, bw, bh, hh, s, c in nodes) + '</ul>'
+    geo, out, svg = {}, '', ''
+    for k, x, y, bw, bh, hh, s, c in nodes:
+        geo[k] = (x + bw / 2, y + bh / 2, bw / 2, bh / 2)
+        stl = f'left:{x}px;top:{y}px;width:{bw}px;height:{bh}px'
+        out += f'<div class="mnode st pop {c}" data-n="{s * 10}" style="{stl}">{hh}</div>' if s else f'<div class="mnode {c}" style="{stl}">{hh}</div>'
+    for a, b, s, lab, bend, c, *nud in edges:
+        ax, ay, ahw, ahh = geo[a] if isinstance(a, str) else (a[0], a[1], 0, 0)
+        bx, by, bhw, bhh = geo[b] if isinstance(b, str) else (b[0], b[1], 0, 0)
+        dx, dy = bx - ax, by - ay
+        L = (dx * dx + dy * dy) ** .5 or 1
+        ux, uy = dx / L, dy / L
+        p1 = _edge(ax, ay, ahw + 6, ahh + 6, ux, uy) if isinstance(a, str) else (ax, ay)
+        p2 = _edge(bx, by, bhw + 10, bhh + 10, -ux, -uy) if isinstance(b, str) else (bx, by)
+        mx, my = (p1[0] + p2[0]) / 2 - uy * bend, (p1[1] + p2[1]) / 2 + ux * bend
+        d = f'M{p1[0]:.1f},{p1[1]:.1f} Q{mx:.1f},{my:.1f} {p2[0]:.1f},{p2[1]:.1f}'
+        dot = (f'<circle r="7" class="mdot"><animateMotion dur="2.6s" repeatCount="indefinite" path="{d}"/></circle>'
+               f'<circle r="7" class="mdot"><animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite" path="{d}"/></circle>') if 'flow' in c else ''
+        g = f'<path pathLength="1" d="{d}"' + ('' if 'noarrow' in c else ' marker-end="url(#mah)"') + f'/>{dot}'
+        svg += f'<g class="st an-draw medge {c}" data-n="{s * 10}">{g}</g>' if s else f'<g class="medge {c}">{g}</g>'
+        if lab:
+            lx, ly = (p1[0] + p2[0]) / 4 + mx / 2 + (nud[0][0] if nud else 0), (p1[1] + p2[1]) / 4 + my / 2 + (nud[0][1] if nud else 0)
+            out += f'<div class="elw" style="left:{lx:.0f}px;top:{ly:.0f}px">' + (ST(s, TX(lab), cls='mlab') if s else f'<div class="mlab">{TX(lab)}</div>') + '</div>'
+    defs = '<defs><marker id="mah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e0452b"/></marker></defs>'
+    return f'<div class="map {cls}" style="width:{w}px;height:{h}px"><svg viewBox="0 0 {w} {h}" width="{w}" height="{h}" dir="ltr" aria-hidden="true">{defs}{svg}</svg>{out}{extra}</div>'
+
+
+def KQ(text, n=0, who='ד״ר קונדילה, המובילה הטכנולוגית'):
+    """A question of the tech lead, in her own voice."""
+    inner = f'<span class="kqa">👩‍🔬</span><div><b>{TX(who)}</b><p>״{TX(text)}״</p></div>'
+    return ST(n, inner, cls='kq') if n else f'<div class="kq">{inner}</div>'
+
+
+def BRIDGE(sid, h, have, need, ask, link):
+    """The first slide of a part: what we already have (mock ups), what is still missing, the question that opens the part."""
+    if MODE == 'pdf':
+        S(sid, h, h, f'<p><b>הקשר לחלק הקודם:</b> {TX(link)}</p><ul class="pl">' + ''.join(f'<li>{TX(x)}</li>' for x in need) + f'</ul><p><b>השאלה:</b> {TX(ask)}</p>'); return
+    body = (f'<div class="bridge2"><div class="brl">{TX(link)}</div><div class="brt">{have}</div>'
+            f'<div class="brn"><b class="ct">ומה עוד אי אפשר לעשות</b>{UL(need, 1, "blt bneed")}</div><div class="brk">{KQ(ask, len(need) + 1)}</div></div>')
+    S(sid, h, h, body, kick=KICK('מחברים לחלק הקודם'))
+
+
+SQLKW = set('CREATE TABLE INTEGER PRIMARY KEY VARCHAR TEXT NOT NULL UNIQUE DECIMAL CHECK BOOLEAN DEFAULT TRUE FALSE INSERT INTO VALUES UPDATE SET WHERE DELETE FROM SELECT ORDER BY DESC ASC FOREIGN REFERENCES JOIN ON ALTER ADD COLUMN TIMESTAMP DATE AND OR AS SUM COUNT GROUP DROP IN PRAGMA'.split())
+
+
+def _sqlhl(line):
+    """Colours one line of SQL: keywords, strings, numbers, comments. Hebrew inside a string is isolated."""
+    out, pos = '', 0
+    for m in re.finditer(r"(--.*$)|('(?:[^']|'')*')|\b([A-Za-z_]+)\b|\b(\d+(?:\.\d+)?)\b", line):
+        out += _html.escape(line[pos:m.start()])
+        t = m.group(0)
+        if m.group(1): out += f'<span class="sc">{_html.escape(t)}</span>'
+        elif m.group(2):
+            inner = _html.escape(t[1:-1])
+            if re.search('[֐-׿]', inner): inner = f'<bdi dir="rtl">{inner}</bdi>'
+            out += f"<span class=\"ss\">'{inner}'</span>"
+        elif m.group(3): out += f'<span class="sk">{t}</span>' if t.upper() in SQLKW and t.isupper() else _html.escape(t)
+        else: out += f'<span class="sd">{t}</span>'
+        pos = m.end()
+    return out + _html.escape(line[pos:])
+
+
+def _sqlcheck(sid, setup, blocks):
+    """Runs the statements of a slide in SQLite, in order, and checks that each one does what the slide says."""
+    import sqlite3
+    con = sqlite3.connect(':memory:')
+    con.execute('PRAGMA foreign_keys = ON')
+    if setup: con.executescript(setup)
+    for b in blocks:
+        sql = '\n'.join(t for _, t in b['lines'])
+        exp = b.get('expect', 'ok')
+        if b.get('script'):
+            con.executescript(b['script'])
+            continue
+        try:
+            cur = con.execute(sql)
+            rows = cur.fetchall() if sql.lstrip().upper().startswith('SELECT') else None
+            got = f'n:{cur.rowcount}' if exp.startswith('n:') else 'ok'
+            if b.get('rows') is not None:
+                assert [list(map(str, r)) for r in rows] == [list(map(str, r)) for r in b['rows']], (sid, sql, rows)
+        except sqlite3.Error as e:
+            got = 'err:' + str(e)
+        assert got == exp, f'{sid}: SQL check failed\n{sql}\nexpected {exp}\ngot {got}'
+    return con
+
+
+def DBTOOL(sid, title, h, question, steps, blocks, result, setup='', side=(), tables=(), note=None, kick='רואים את זה במסד, קליק אחר קליק', db='bistro.db', grid='minmax(0,1fr) minmax(0,1.3fr)'):
+    """A database tool, click by click. steps: one explanation per click. blocks: statements, each
+    dict(lines=[(step, text)], run=step, expect='ok' | 'n:N' | 'err:<message>', he=what the message says, rows=[...] for a SELECT).
+    Every statement really runs in SQLite at build time, after setup, and must give what the slide shows.
+    side: [(table, step)] in the side bar (step 0: there from the start). tables: grids, (name, head, rows, effects[, opts])."""
+    _sqlcheck(sid, setup, blocks)
+    if MODE == 'pdf':
+        code = '<br>'.join(_html.escape(t) for b in blocks for _, t in b['lines'])
+        S(sid, title, h, f'<p>{TX(question)}</p><div class="card"><bdi class="en" dir="ltr">{code}</bdi></div><ol class="steps">' + ''.join(f'<li>{TX(x)}</li>' for x in steps) + f'</ol><div class="band ans"><b>השורה התחתונה:</b> {TX(result)}</div>')
+        return
+    NACT[0] += 1
+    MAN.append(dict(kind='query', id=sid))
+    N = lambda s: (s + 1) * 10
+    ql = ''.join(f'<div class="st qstep qprose" data-n="{N(i + 1)}"><span class="qno">{i + 1}</span><span class="qex">{TX(w)}</span></div>' for i, w in enumerate(steps))
+    ln, k = '', 0
+    for b in blocks:
+        for s, t in b['lines']:
+            k += 1
+            ln += f'<div class="st dbl" data-n="{N(s)}"><i>{k}</i><code>{_sqlhl(t) or "&nbsp;"}</code></div>'
+    lg = ''
+    for b in blocks:
+        e = b.get('expect', 'ok')
+        if e.startswith('err:'):
+            lg += f'<div class="st dbm err" data-n="{N(b["run"])}"><b dir="ltr">✘ Error: {_html.escape(e[4:])}</b><span>{TX(b.get("he", ""))}</span></div>'
+        else:
+            lg += f'<div class="st dbm ok" data-n="{N(b["run"])}"><b>✔</b><span>{TX(b.get("he", "בוצע"))}</span></div>'
+    sd = ''.join((f'<div class="st dbti" data-n="{N(s)}">▦ {t}</div>' if s else f'<div class="dbti">▦ {t}</div>') for t, s in side)
+    gr = ''.join(_qtable(t[0], t[1], t[2], t[3], t[4] if len(t) > 4 else None, own=True) for t in tables)
+    win = (f'<div class="dbw"><div class="dbt"><span>🛢️ <bdi dir="ltr">{db}</bdi></span><small>הדמיה של כלי מסד נתונים</small></div><div class="dbb">'
+           + (f'<div class="dbside"><b>טבלאות</b>{sd}</div>' if side else '') +
+           f'<div class="dbmain"><div class="dbbar"><span class="dbtab">SQL</span><span class="dbrun">▶ הרצה</span></div><div class="dbed">{ln}</div>'
+           f'<div class="dblog">{lg}</div>' + (f'<div class="dbgrid">{gr}</div>' if gr else '') + '</div></div></div>')
+    n = len(steps)
+    body = (f'<div class="qviz db multi" data-eff="{{}}"><div class="card qstem sm"><p>{TX(question)}</p></div>'
+            f'<div class="qgrid dbg" style="grid-template-columns:{grid}"><div class="qcode prose"><div class="st qhd" data-n="10">מה קורה, צעד אחר צעד:</div>{ql}'
+            + ST(n + 2, f'<b>השורה התחתונה:</b> {TX(result)}', cls='band ans') + (BAND('dg', note, n + 3) if note else '') + f'</div>{win}</div></div>')
+    S(sid, title, h, body, kick=KICK(kick), cls='qsl dbsl')

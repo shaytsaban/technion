@@ -134,3 +134,20 @@
 
 `course/_build/`: `content_a.py` (רכיבים), `content_g.py` (מילון), `content_l1*.py` (מפגש 1), `plan.py` (תוכנית המפגשים), `build_deck.py`, `build_hub.py`, `build_summary.py`, `test_deck.py`.
 בנייה: `python3 build_deck.py 1 && python3 test_deck.py 1 && python3 build_summary.py 1 && python3 build_hub.py`.
+
+## Design rules after Shay's review of lesson 2 (24.11.2026)
+
+These hold for every later lesson. The full list of his remarks and what was done about each is in `REVIEW_CHECKLIST_L2.md`.
+
+1. **Opening.** Each lesson opens with one large animated flow of the whole lesson, built as a loop or with branches rather than a straight line. It doubles as the road map, so no text slides of "what we do today" are needed.
+2. **Recap.** A recap shows the earlier artefact being born again (for example, process events creating rows), never a page of text.
+3. **Management first.** Every technical item starts from the management question or cost it answers.
+4. **Order of a concept:** picture or analogy, then the intuition, then the name, then the SQL together with the table it produces, then practice.
+5. **SQL inside the database-tool mock-up (`DBTOOL`).** Every statement runs in SQLite at build time, and the slide shows the real message.
+6. **Bridges.** A bridge slide (`BRIDGE`) opens every main topic: mock-ups of what exists, what it still cannot do, and the question of the part.
+7. **Cases.** The bistro is the one teaching thread. The charity appears only in badged practice blocks.
+8. **Hard topics** are split into numbered small steps.
+9. **Structure.** No interim "what we have" stops. Titles use business language.
+10. **Facts.** Only verified quotes and facts.
+11. **AI-assistant material is done.** It does not come back.
+12. **Product.** Each lesson ends with a concrete product.
