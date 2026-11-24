@@ -90,7 +90,7 @@ CSS2 = '''
 .wcard{text-align:center}.wcard .why1{margin:.4mm 0}.sbub{display:inline-block;background:var(--navy);color:#fff;border-radius:2mm;padding:0 2mm;font-weight:700}.sbub.bad{background:#e0452b}.sbub.ok{background:#25a65f}
 .zero{direction:ltr;font-family:Menlo,Consolas,monospace;font-weight:700}.z0{color:#e0452b}
 .rcpt{border:.3mm dashed #8a96b4;padding:1.4mm 3mm;width:80mm;margin:0 auto 1.6mm;font-family:Menlo,Consolas,"David",monospace;break-inside:avoid}.rh .mk{display:flex;flex-direction:column;text-align:center}
-.rl .mk{display:grid;grid-template-columns:1fr 12mm 10mm}.rl i{font-style:normal;color:#4a2fc0;font-size:10pt}.rt{display:flex;justify-content:space-between;border-top:.3mm solid var(--ink);font-weight:700}
+.rl .mk{display:grid;grid-template-columns:1fr 18mm 10mm}.rl i{font-style:normal;color:#4a2fc0;font-size:10pt}.rt{display:flex;justify-content:space-between;border-top:.3mm solid var(--ink);font-weight:700}
 .tool,.fkc{direction:ltr}.tbar{font-weight:700}.tb{border:.25mm solid #0f9d90;border-radius:1mm;padding:0 1.4mm;font-family:Menlo,Consolas,monospace}
 .dd td,.dd th{font-size:10.2pt}.def.fam1,.def.fam2{border-top:1mm solid var(--coral)}
 table.inst{width:auto;min-width:60%}

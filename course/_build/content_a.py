@@ -46,8 +46,9 @@ def DEF(name, text, demo, n=0, cls=''):
     return ST(n, inner, cls='card def ' + cls) if n else f'<div class="card def {cls}">{inner}</div>'
 
 
-def BAND(kind, text, n=0):
-    lab = {'dg': 'דגש', 'trap': 'המלכודת', 'tip': 'טיפ', 'real': 'בעולם האמיתי', 'why': 'למה זה חשוב', 'do': 'מחר בעבודה'}.get(kind, '')
+def BAND(kind, text, n=0, lab=None):
+    """A coloured callout. lab replaces the default label of its kind."""
+    lab = lab if lab is not None else {'dg': 'דגש', 'trap': 'המלכודת', 'tip': 'טיפ', 'real': 'בעולם האמיתי', 'why': 'למה זה חשוב', 'do': 'מחר בעבודה'}.get(kind, '')
     k = {'real': 'note', 'why': 'dg', 'do': 'tip'}.get(kind, kind)
     inner = (f'<b>{lab}:</b> ' if lab else '') + TX(text)
     return ST(n, inner, cls='band ' + k) if n else f'<div class="band {k}">{inner}</div>'
@@ -571,7 +572,7 @@ def BRIDGE(sid, h, have, need, ask, link):
     if MODE == 'pdf':
         S(sid, h, h, f'<p><b>הקשר לחלק הקודם:</b> {TX(link)}</p><ul class="pl">' + ''.join(f'<li>{TX(x)}</li>' for x in need) + f'</ul><p><b>השאלה:</b> {TX(ask)}</p>'); return
     body = (f'<div class="bridge2"><div class="brl">{TX(link)}</div><div class="brt">{have}</div>'
-            f'<div class="brn"><b class="ct">ומה עוד אי אפשר לעשות</b>{UL(need, 1, "blt bneed")}</div><div class="brk">{KQ(ask, len(need) + 1)}</div></div>')
+            f'<div class="brn"><b class="ct">מה עוד חסר</b>{UL(need, 1, "blt bneed")}</div><div class="brk">{KQ(ask, len(need) + 1)}</div></div>')
     S(sid, h, h, body, kick=KICK('מחברים לחלק הקודם'))
 
 
