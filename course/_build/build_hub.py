@@ -144,6 +144,7 @@ html = f"""<!doctype html>
 <div><h4>חומרי המפגש</h4>
 <div class="grp"><h5>1. במפגש</h5><div class="links">
 <a class="lk p" href="lectures/lecture-2/presentation.html"><span class="e">🖥️</span><span><b>מצגת המפגש (טיוטה)</b><span class="d">{n(DK[2])} שקפים ו-{n(AK[2])} פעילויות: תרשים זרימה מונפש, גיליון שנשבר מול העיניים, הדמיה של כלי מסד נתונים שבה כל פקודת SQL רצה באמת, מיון, פאזלים ושאלות קצרות לכיתה.</span></span></a>
+<a class="lk s" href="lectures/lecture-2/summary.pdf" target="_blank" rel="noopener"><span class="e">📄</span><span><b>סיכום המפגש (PDF, טיוטה)</b><span class="d">כל תוכן המצגת במסמך אחד: הגדרות, דוגמאות, כל פקודת SQL עם התוצאה שלה, הפעילויות עם התשובות והנימוקים, התרגילים המסכמים, ומילון של 22 מושגים.</span></span></a>
 <a class="lk p" href="lectures/lecture-2/bistro.sql" download><span class="e">🛢️</span><span><b>הסקריפט של הביסטרו, bistro.sql</b><span class="d">שש הטבלאות של המפגש ונתונים לדוגמה. פותחים בכל כלי SQLite חינמי ומריצים כמו שהוא.</span></span></a>
 </div></div>
 <div class="grp"><h5>2. תרגול</h5><div class="links">

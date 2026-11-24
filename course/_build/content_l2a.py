@@ -3,6 +3,8 @@
 
 def DASH(title, tiles, n0=1):
     """A manager's dashboard mock up: tiles of (emoji, question, value html, what must be recorded)."""
+    if MODE == 'pdf':
+        return '<table class="tbl2"><tr><th>השאלה של המנהל</th><th>בלוח</th><th>כדי לחשב את זה צריך לרשום</th></tr>' + ''.join(f'<tr><td>{TX(q)}</td><td>{re.sub("<[^>]+>", " ", v)}</td><td>{TX(nd)}</td></tr>' for e, q, v, nd in tiles) + '</table>'
     t = ''.join(ST(n0 + i, f'<div class="dq"><span class="de">{e}</span><b>{TX(q)}</b></div><div class="dv">{v}</div><div class="dn"><span>🧾 כדי לחשב את זה צריך לרשום</span>{TX(nd)}</div>', cls='dtile pop')
                 for i, (e, q, v, nd) in enumerate(tiles))
     return f'<div class="dash"><div class="dbar0"><span>{TX(title)}</span><small>הדמיה</small></div><div class="dgrid">{t}</div></div>'
@@ -40,10 +42,19 @@ _WE = [('w', 'o', 3, '🔗 waiter_id', 0, 'flow', (0, -24)), ('o', 'i', 3, '🔗
        ('sql', 'dash', 5, 'שאילתה', -40, 'flow green'),
        ((132, 92), (968, 76), 6, '🔁 ההחלטה של אולאף קובעת מה נרשם בפתק הבא', -150, 'dash red')]
 _WS = [(1, 0), (2, 1), (3, 2), (4, 3), (5, 3), (6, 3), (7, 3), (8, 4)]
-SS('s-big', 'המסע של היום: מפתק נייר לתשובה למנהל',
-   MAP(_WN, _WE, w=1168, h=516, cls='wow', extra=_WCH) +
-   '<div class="wstrip">' + ''.join((ST(s, f'<i>{p}</i>{THREAD_L[p - 1]}', cls='wsp') if s else f'<div class="wsp on"><i>{p}</i>{THREAD_L[p - 1]}</div>') for p, s in _WS) + '</div>',
-   kick='המסע של היום, בשמונה חלקים')
+_ROAD = ['כל שורה בטבלה נולדת מאירוע בתהליך, והשאלות של המנהל קובעות מה רושמים.', 'שלוש תקלות של גיליון אחד, ונרמול: כל עובדה במקום אחד.', 'סוגי נתונים ואילוצים: קודם בתמונה, אחר כך ב-SQL.',
+         'מזהה ראשי ומפתח זר: איך טבלה מוצאת שורה בטבלה אחרת.', 'אחד לאחד, אחד לרבים, רבים לרבים, ורגל העורב.', 'טבלת קישור, בשמונה צעדים קטנים, עד חשבונית שנבנית בשאילתה.',
+         'התרשים המלא, ומסלול לכל דרישה.', 'פקודות SQL, סקריפט שרץ, מילון נתונים ותיק מודל הנתונים.']
+if MODE == 'pdf':
+    SS('s-big', 'המסע של המפגש: מפתק נייר לתשובה למנהל',
+       P('הפתק ממפגש 1, ״שולחן 6, יוסי, פסטה בלי בצל, 2 סלט״, מתפרק לעובדות. כל עובדה נכנסת לטבלה משלה, הטבלאות מתחברות במפתחות, פקודות SQL בונות מהן מסד, והמסד עונה לאולאף. ההחלטה של אולאף קובעת מה יירשם בפתק הבא.') +
+       '<ol class="steps">' + ''.join(f'<li><b>{TX(THREAD_L[i])}:</b> {TX(x)}</li>' for i, x in enumerate(_ROAD)) + '</ol>' +
+       BAND('note', '**שני מקרים, ותפקיד ברור לכל אחד:** ביסטרו אולאף הוא החוט של המפגש, וכל רעיון נבנה עליו. עמותת ״יד שנייה״ היא מגרש האימון: בסוף כל חלק מיישמים עליה את אותו רעיון.'))
+else:
+    SS('s-big', 'המסע של היום: מפתק נייר לתשובה למנהל',
+       MAP(_WN, _WE, w=1168, h=516, cls='wow', extra=_WCH) +
+       '<div class="wstrip">' + ''.join((ST(s, f'<i>{p}</i>{THREAD_L[p - 1]}', cls='wsp') if s else f'<div class="wsp on"><i>{p}</i>{THREAD_L[p - 1]}</div>') for p, s in _WS) + '</div>',
+       kick='המסע של היום, בשמונה חלקים')
 
 SS('s-how', 'שני מקרים, ותפקיד ברור לכל אחד',
    '<div class="lanes">' +

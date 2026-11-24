@@ -107,6 +107,7 @@ def L(step, sql):
     return [(step, x) for x in sql.split('\n')]
 
 
+exec(R('content_g2.py'))
 for _f in 'abcd':
     exec(R(f'content_l2{_f}.py'))
 

@@ -57,6 +57,40 @@ table.tbl2{width:100%;margin:1mm 0 2mm;font-size:11pt}.tbl2 th{background:var(--
 .gl .th{font-weight:700;color:var(--navy);font-size:11.6pt}.gl small{color:var(--mut);direction:ltr;unicode-bidi:isolate;margin-right:1.5mm;font-size:9.8pt}.gl p{margin:0 0 .3mm}
 .glc{columns:2;column-gap:5mm}
 .goal{color:#087469;font-size:10.8pt;margin:-.4mm 0 1mm}
+/* lesson 2 */
+.mflow{background:#f6f2ea;border-radius:1.4mm;padding:1.2mm 2.4mm;line-height:1.5}.mflow span{font-weight:700;color:var(--navy)}
+.sqlb{border:.25mm solid #cdd5ea;border-radius:1.4mm;margin:0 0 1.4mm;break-inside:avoid;overflow:hidden}
+.sqlb code{display:block;direction:ltr;text-align:left;font-family:Menlo,Consolas,monospace;font-size:9.4pt;line-height:1.4;background:#fbfcfe;padding:1mm 2.4mm;white-space:pre-wrap}
+.sqlo{padding:.6mm 2.4mm;font-size:10.6pt}.sok{color:#0d5c30;font-weight:700}.serr{color:#b8391f;font-weight:700}.serr bdi{font-family:Menlo,Consolas,monospace;font-size:9.2pt}
+.sk{color:#1d4fa8;font-weight:700}.ss{color:#b3541e}.sd{color:#0b7a6e;font-weight:700}.sc{color:#8a93aa}
+.mock{border:.25mm solid #8a96b4;border-radius:1.4mm;margin:0 0 1.6mm;break-inside:avoid;overflow:hidden}.mock .mb{background:#e8eefb;color:var(--navy);font-weight:700;padding:.4mm 2.4mm;display:flex;justify-content:space-between;font-size:10.4pt}
+.mock .mb small{color:#a86703}.mock .mi{padding:.6mm 1.6mm}.mock table{width:100%;margin:0}.mock .tbl2{font-size:10.4pt}
+.twot{display:grid;grid-template-columns:1fr 1fr;gap:2mm}.twot.t3{grid-template-columns:repeat(3,1fr)}.cnt{font-weight:700;font-size:10.4pt;text-align:center}
+.mini{border-collapse:collapse;font-size:10pt;margin:.6mm auto}.mini td,.mini th{border:.25mm solid #d9dfec;padding:.2mm 1.6mm}.mini th{background:#eef2ff}
+.st.mk{font-weight:700}.qmark{font-weight:700;color:#c4421f;text-align:center}
+.layers,.bins,.press,.kpis,.dossier,.stair{display:grid;grid-template-columns:repeat(3,1fr);gap:2mm;margin:1mm 0 1.6mm}.kpis,.stair{grid-template-columns:repeat(4,1fr)}.dossier{grid-template-columns:repeat(5,1fr)}
+.ly,.bin,.clip,.kpi,.ds,.stp{border:.25mm solid var(--line);border-radius:1.4mm;padding:1.2mm 2mm;break-inside:avoid;background:#fff}
+.ly b,.bin b,.ds b,.stp b{display:block;color:var(--navy)}.lyx{font-style:italic;color:var(--mut)}.ly em,.ds em{font-style:normal;font-weight:700;color:#087469;font-size:10.2pt}
+.lye,.bne,.dse,.pz,.me,.pic-e,.ge,.gdoor,.gguard,.kqa,.sc-e{display:none}
+.chips span{display:inline-block;background:#eef2ff;border-radius:2mm;padding:0 1.6mm;margin:.3mm;font-size:10.4pt}
+.kpi b{font-size:15pt;color:var(--navy)}.kpi span{display:block;font-size:10.4pt}
+.pq{font-weight:700}.ps{font-size:9.8pt;color:var(--mut);border-top:.25mm solid var(--line);margin-top:.6mm;padding-top:.4mm}
+.mail{border:.25mm solid #cdd5ea;border-radius:1.4mm;padding:1.2mm 2.4mm;margin-bottom:1.6mm}.mh{display:flex;flex-direction:column;font-size:10.4pt;color:var(--mut)}.kql{padding-right:6mm}
+.kpt{display:inline-block;background:var(--coral);color:#fff;border-radius:2mm;padding:0 1.4mm;font-size:9.6pt;margin-right:1.4mm}
+.qcard,.quote{font-weight:700}.qwho{font-size:10.4pt;color:var(--mut)}
+.phones{display:grid;grid-template-columns:1fr 1fr;gap:2mm}.phone{border:.5mm solid var(--navy);border-radius:3mm;padding:1.2mm 2.4mm}.pbar{font-weight:700;color:var(--navy)}.pc,.pmsg{display:block;margin:.4mm 0}.pav{display:none}.pln{display:block;font-weight:700;color:#087469}
+.gate{display:grid;grid-template-columns:1.2fr .5fr 1fr;gap:2mm;align-items:center}.gcard{display:flex;gap:2mm;justify-content:space-between;border-bottom:.25mm solid var(--line);padding:.4mm 0}
+.stamp.ok{color:#0d5c30;font-weight:700}.stamp.no{color:#b8391f;font-weight:700}.gg{text-align:center;border:.3mm dashed var(--navy);border-radius:1.4mm;padding:1mm}.gg b{display:block}.gin{background:#dcf5e6;border-radius:1mm;padding:0 1.6mm;margin:.4mm 0}
+.crule{text-align:center}.crule b{display:block;color:var(--navy)}.rsql bdi{font-family:Menlo,Consolas,monospace;font-weight:700;color:#1d4fa8}.rbis,.rsrc{font-size:10.4pt}
+.sqlchip code{font-family:Menlo,Consolas,monospace;direction:ltr;display:block;text-align:left}
+.wcard{text-align:center}.wcard .why1{margin:.4mm 0}.sbub{display:inline-block;background:var(--navy);color:#fff;border-radius:2mm;padding:0 2mm;font-weight:700}.sbub.bad{background:#e0452b}.sbub.ok{background:#25a65f}
+.zero{direction:ltr;font-family:Menlo,Consolas,monospace;font-weight:700}.z0{color:#e0452b}
+.rcpt{border:.3mm dashed #8a96b4;padding:1.4mm 3mm;width:80mm;margin:0 auto 1.6mm;font-family:Menlo,Consolas,"David",monospace;break-inside:avoid}.rh .mk{display:flex;flex-direction:column;text-align:center}
+.rl .mk{display:grid;grid-template-columns:1fr 12mm 10mm}.rl i{font-style:normal;color:#4a2fc0;font-size:10pt}.rt{display:flex;justify-content:space-between;border-top:.3mm solid var(--ink);font-weight:700}
+.tool,.fkc{direction:ltr}.tbar{font-weight:700}.tb{border:.25mm solid #0f9d90;border-radius:1mm;padding:0 1.4mm;font-family:Menlo,Consolas,monospace}
+.dd td,.dd th{font-size:10.2pt}.def.fam1,.def.fam2{border-top:1mm solid var(--coral)}
+table.inst{width:auto;min-width:60%}
+.wnote,.wtab,.wsql,.wdash,.wchip,.wstrip,.lanes{display:none}
 '''
 parts = {}
 for s in SL:
@@ -73,7 +107,7 @@ for nn in range(1, TOTAL + 1):
         inner += f'<h3>{TX(s["h"])}</h3>' + s['body']
     body += f'<section class="part"><h1><span class="sn">{nn}</span>{op["h"]}</h1>{inner}</section>'
 used = set(re.findall(r'data-t="(\w+)"', ''.join(s['body'] for s in SL)))
-gl = ''.join(f'<div class="gl"><div class="th">{g["h"]}<small>{g["en"]}</small></div><p><b>בפשטות:</b> {TX(g["p"])}</p><p><b>בלשון מקצועית:</b> {TX(g["f"])}</p><p><b>דוגמה:</b> {TX(g["ex"])}</p><p><b>שימו לב:</b> {TX(g["tr"])}</p></div>' for k, g in G.items())
+gl = ''.join(f'<div class="gl"><div class="th">{g["h"]}<small>{g["en"]}</small></div><p><b>בפשטות:</b> {TX(g["p"])}</p><p><b>בלשון מקצועית:</b> {TX(g["f"])}</p><p><b>דוגמה:</b> {TX(g["ex"])}</p><p><b>שימו לב:</b> {TX(g["tr"])}</p></div>' for k, g in ((k, G[k]) for k in (globals().get('GL_LESSON') or list(G))))
 body += f'<section class="part"><h1>מילון מושגים</h1><div class="glc">{gl}</div></section>'
 body += f'<section class="part"><h1>במפגש הבא: {LMETA["next_h"]}</h1><p>' + TX(LMETA['next_t']) + '</p></section>'
 cover = (f'<div class="cover"><div class="c-top">{INST}</div><div class="c-title">{LMETA["h1"][0]} {LMETA["h1"][1]}</div>'
@@ -83,4 +117,5 @@ cover = (f'<div class="cover"><div class="c-top">{INST}</div><div class="c-title
 toc = '<div class="toc"><h1>תוכן העניינים</h1><ol>' + ''.join(f'<li>{next(s for s in parts[k] if s["kind"] == "opener")["h"]}</li>' for k in range(1, TOTAL + 1)) + '</ol></div>'
 page = f'<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>{COURSE} | מפגש {LESSON} | סיכום</title><style>{CSS}</style></head><body>{cover}{toc}{body}</body></html>'
 page = re.sub(r'<button class="rcard"[^>]*>.*?</button>', '', page, flags=re.S)
+page = page.replace('href="bistro.sql"', f'href="{SITE}lectures/lecture-{LESSON}/bistro.sql"').replace(' download>', '>')
 to_pdf(page, os.path.join(H, '..', 'lectures', f'lecture-{LESSON}', 'summary.pdf'), 12000)

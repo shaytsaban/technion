@@ -4,6 +4,8 @@
 def INSTD(rt, lt, R, Lf, links, s, w=360, h=205, cls=''):
     """An instance diagram: real rows of two tables as chips, and a line for every pair that is related.
     rt / lt: titles of the right and left columns, R / Lf: their rows, links: (right index, left index), s: the step that draws the lines."""
+    if MODE == 'pdf':
+        return '<table class="tbl2 inst"><tr><th>' + TX(rt) + '</th><th>' + TX(lt) + '</th></tr>' + ''.join(f'<tr><td>{TX(x)}</td><td>{TX(", ".join(Lf[b] for a, b in links if a == i))}</td></tr>' for i, x in enumerate(R)) + '</table>'
     cw, ch = 118, 36
     gy = lambda n, i: 34 + (h - 44 - ch * n) / max(n - 1, 1) * i + ch * i if n > 1 else (h - ch) / 2
     nodes = [(f'r{i}', w - cw - 6, gy(len(R), i), cw, ch, f'<b>{TX(x)}</b>', 0, 'ichip ir') for i, x in enumerate(R)]

@@ -489,7 +489,8 @@ def MAP(nodes, edges, w=1168, h=460, cls='', extra=''):
     """A process map with nodes anywhere and curved arrows, revealed click by click; arrows marked 'flow' carry moving dots.
     nodes: (key, x, y, w, h, html, step, cls). edges: (from, to, step, label, bend, cls); bend bows the arrow sideways (px)."""
     if MODE == 'pdf':
-        return '<ul class="pl">' + ''.join(f'<li>{re.sub("<[^>]+>", " ", hh)}</li>' for k, x, y, bw, bh, hh, s, c in nodes) + '</ul>'
+        items = [re.sub(r'\s+', ' ', re.sub('<[^>]+>', ' ', hh)).strip() for k, x, y, bw, bh, hh, s, c in nodes]
+        return '<p class="mflow">' + ' ← '.join(f'<span>{x}</span>' for x in items if x) + '</p>'
     geo, out, svg = {}, '', ''
     for k, x, y, bw, bh, hh, s, c in nodes:
         geo[k] = (x + bw / 2, y + bh / 2, bw / 2, bh / 2)
@@ -582,8 +583,14 @@ def DBTOOL(sid, title, h, question, steps, blocks, result, setup='', side=(), ta
     side: [(table, step)] in the side bar (step 0: there from the start). tables: grids, (name, head, rows, effects[, opts])."""
     _sqlcheck(sid, setup, blocks)
     if MODE == 'pdf':
-        code = '<br>'.join(_html.escape(t) for b in blocks for _, t in b['lines'])
-        S(sid, title, h, f'<p>{TX(question)}</p><div class="card"><bdi class="en" dir="ltr">{code}</bdi></div><ol class="steps">' + ''.join(f'<li>{TX(x)}</li>' for x in steps) + f'</ol><div class="band ans"><b>השורה התחתונה:</b> {TX(result)}</div>')
+        rows = ''
+        for b in blocks:
+            code = '<br>'.join(_sqlhl(t) for _, t in b['lines'])
+            e = b.get('expect', 'ok')
+            res = (f'<span class="serr">✘ <bdi dir="ltr">Error: {_html.escape(e[4:])}</bdi> · {TX(b.get("he", ""))}</span>' if e.startswith('err:')
+                   else f'<span class="sok">✔ {TX(b.get("he", "בוצע"))}</span>')
+            rows += f'<div class="sqlb"><code dir="ltr">{code}</code><div class="sqlo">{res}</div></div>'
+        S(sid, title, h, f'<p>{TX(question)}</p>{rows}<ol class="steps">' + ''.join(f'<li>{TX(x)}</li>' for x in steps) + f'</ol><div class="band ans"><b>השורה התחתונה:</b> {TX(result)}</div>' + (BAND('dg', note) if note else ''))
         return
     NACT[0] += 1
     MAN.append(dict(kind='query', id=sid))
