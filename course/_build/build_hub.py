@@ -4,10 +4,11 @@ import os, re, sys
 H = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, H)
 exec(open(os.path.join(H, 'plan.py'), encoding='utf8').read())
 n = lambda s: f'<span class="n">{s}</span>'
-D = open(os.path.join(H, '..', 'lectures', 'lecture-1', 'presentation.html'), encoding='utf8').read()
-NS = D.count('<section class="slide')
-NA = len(__import__('json').load(open(os.path.join(H, 'tests', 'manifest.json'), encoding='utf8')))
-BUILT = {1}
+DK = {i: open(os.path.join(H, '..', 'lectures', f'lecture-{i}', 'presentation.html'), encoding='utf8').read().count('<section class="slide') for i in (1, 2)}
+AK = {i: len(__import__('json').load(open(os.path.join(H, 'tests', f'manifest-{i}.json'), encoding='utf8'))) for i in (1, 2)}
+NS, NA = DK[1], AK[1]
+BUILT = {1, 2}
+DRAFT = {2}   # built, not yet taught: marked as a draft
 REC = {}     # meeting -> YouTube id
 css = open(os.path.join(H, 'shell', 'hub.css'), encoding='utf8').read() + '''
 .hero h1{font-size:clamp(38px,7vw,64px)}.hero .h1s{font-size:clamp(20px,3vw,28px);font-weight:700;color:#7fe3d6;margin-top:6px;line-height:1.25}
@@ -27,6 +28,7 @@ css = open(os.path.join(H, 'shell', 'hub.css'), encoding='utf8').read() + '''
 .pc:hover{transform:translateY(-3px)}.pc.b{border-right-color:#6d4df2}.pc.c{border-right-color:#e8960c}.pc.d{border-right-color:#c4421f}
 .pc.on{box-shadow:0 0 0 3px var(--coral),0 14px 30px rgba(255,106,77,.22)}
 .pc .pn{display:inline-grid;place-items:center;min-width:32px;height:32px;border-radius:10px;background:var(--navy2);color:#fff;font-weight:800;font-size:17px;margin-bottom:6px}
+.draft{display:inline-block;background:#fff0d2;color:#a86703;border:1px solid #e8960c;border-radius:99px;padding:1px 12px;font-size:15px;font-weight:800;vertical-align:middle;margin-right:8px}
 .pc b{display:block;font-size:17px;line-height:1.3;font-weight:800;color:var(--navy2)}
 .pc em{position:absolute;bottom:10px;right:16px;font-style:normal;font-size:13px;font-weight:800;color:var(--mut);background:#eef0f6;border-radius:99px;padding:1px 12px}
 .pc.on em{background:var(--coral);color:#fff}
@@ -40,7 +42,7 @@ css = open(os.path.join(H, 'shell', 'hub.css'), encoding='utf8').read() + '''
 @media (max-width:560px){.plan{grid-template-columns:1fr}.pc{min-height:0}.facts{grid-template-columns:1fr;margin-top:-22px}}
 '''
 lk = lambda k, href, e, b, d: f'<a class="lk {k}" href="{href}" target="_blank" rel="noopener"><span class="e">{e}</span><span><b>{b}</b><span class="d">{d}</span></span></a>'
-plan = ''.join(f'<a class="pc {k}{" on" if i in BUILT else ""}" href="#lesson-{i}"><span class="pn">{n(i)}</span><b>{t}</b><small>התוצר: {p}</small><em>{"באתר" if i in BUILT else "בקרוב"}</em></a>' for i, t, d, k, p in PLAN)
+plan = ''.join(f'<a class="pc {k}{" on" if i in BUILT else ""}" href="#lesson-{i}"><span class="pn">{n(i)}</span><b>{t}</b><small>התוצר: {p}</small><em>{"טיוטה" if i in DRAFT else ("באתר" if i in BUILT else "בקרוב")}</em></a>' for i, t, d, k, p in PLAN)
 FUN = ['תהליך עסקי', 'החלטה', 'דרישות', 'נתונים', 'שאילתות', 'מערכת', 'לוח מחוונים', 'בקרה ותקשורת']
 funnel = '<i>←</i>'.join(f'<span class="{"now" if j < 3 else ""}">{x}</span>' for j, x in enumerate(FUN))
 
@@ -123,6 +125,31 @@ html = f"""<!doctype html>
 <li><b>לתרגל</b> את שמונת התרגילים המסכמים שבסוף המצגת.</li>
 <li><b>רשות, למי שרוצה להעמיק:</b> למלא את תבנית שבע השורות על תהליך אחד מהעבודה שלכם.</li>
 </ol></div>
+</article>
+<article class="lec" id="lesson-2">
+<div class="lec-head"><div class="lec-n">2</div><div><h3>מישויות לטבלאות <span class="draft">טיוטה</span></h3><div class="sub">מפגש {n(2)} · {n(5)} שעות · טיוטה לקראת המפגש, עשויה להשתנות</div></div></div>
+<div class="lec-body">
+<div><h4>מה עושים במפגש</h4><ul class="learn">
+<li>חוזרים לדף המערכת: מארבע ישויות לחמש שאלות פתוחות</li>
+<li>למה גיליון אחד נשבר: תקלות עדכון, הוספה ומחיקה, וכל עובדה במקום אחד</li>
+<li>עמודות, סוגי נתונים ואילוצים: דרישה הופכת לכלל שהמסד אוכף</li>
+<li>מזהה ראשי ומפתח זר, ושגיאות נפוצות מונפשות</li>
+<li>קשרים: שתי שאלות שמכריעות כל קשר, ורגל העורב</li>
+<li>רבים לרבים: הזמנה ומנות, וטבלת הקישור</li>
+<li>תרשים ישויות וקשרים, ובדיקה מול הדרישות של מפגש 1</li>
+<li>ביקורת על מודל שעוזר AI הציע, ותרשים בטקסט</li>
+</ul>
+<div class="rec1" id="rec-2"><h4>הקלטת המפגש</h4>{rec(2, True)}</div>
+</div>
+<div><h4>חומרי המפגש</h4>
+<div class="grp"><h5>1. במפגש</h5><div class="links">
+<a class="lk p" href="lectures/lecture-2/presentation.html"><span class="e">🖥️</span><span><b>מצגת המפגש (טיוטה)</b><span class="d">{n(DK[2])} שקפים ו-{n(AK[2])} פעילויות: גיליון שנשבר מול העיניים, הגדרות טבלה ותרשימים שנקראים קליק אחר קליק, מיון, פאזלים ושאלות קצרות לכיתה.</span></span></a>
+</div></div>
+<div class="grp"><h5>2. תרגול</h5><div class="links">
+<a class="lk p" href="lectures/lecture-2/presentation.html#q-open"><span class="e">✍️</span><span><b>תרגילים מסכמים, בתוך המצגת</b><span class="d">שמונה שאלות שבונות את מודל הנתונים של עמותת ״יד שנייה״, מהקל אל הקשה, עם הסבר לכל תשובה.</span></span></a>
+</div></div>
+</div>
+</div>
 </article>
 {ups}
 </section>

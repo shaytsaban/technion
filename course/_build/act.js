@@ -64,9 +64,13 @@ $$('.checker').forEach(b=>{const R=RULES[b.dataset.kind],ta=$('.ckin',b),list=$(
 
 /* query visualiser: the table reacts to the clause that was just revealed */
 $$('.qviz').forEach(v=>{const eff=JSON.parse(v.dataset.eff),steps=$$('.qstep',v),tb=$('tbody',v),rows=$$('tbody tr',v);
- const sync=()=>{const k=steps.filter(s=>s.classList.contains('show')).length;let cols=null,keep=null,order=null,warn=null;for(let i=1;i<=k;i++){const e=eff[i];if(!e)continue;if(e.cols)cols=e.cols;if(e.rows)keep=e.rows;if(e.order)order=e.order;warn=e.warn||null;}
+ const tds=$$('tbody td',v);tds.forEach(t=>t.dataset.o=t.innerHTML);const hid=eff.hide||[];const cell=(r,c)=>v.querySelector('tbody tr[data-r="'+r+'"] td[data-c="'+c+'"]');
+ const sync=()=>{const k=steps.filter(s=>s.classList.contains('show')).length;let cols=null,keep=null,order=null,warn=null,sets=[],cw=[],cg=[],shw=[];for(let i=1;i<=k;i++){const e=eff[i];if(!e)continue;if(e.cols)cols=e.cols;if(e.rows)keep=e.rows;if(e.order)order=e.order;warn=e.warn||null;cw=e.cw||[];if(e.cg)cg=e.cg;if(e.set)sets=sets.concat(e.set);if(e.show)shw=shw.concat(e.show);}
+  tds.forEach(t=>{if(t.innerHTML!==t.dataset.o)t.innerHTML=t.dataset.o;t.classList.remove('cset','cwarn','cgood');});
+  sets.forEach(([r,c,x])=>{const t=cell(r,c);if(t){t.innerHTML=x;t.classList.add('cset');}});cw.forEach(([r,c])=>{const t=cell(r,c);if(t)t.classList.add('cwarn');});cg.forEach(([r,c])=>{const t=cell(r,c);if(t)t.classList.add('cgood');});
+  rows.forEach(r=>r.classList.toggle('rhid',hid.includes(+r.dataset.r)&&!shw.includes(+r.dataset.r)));
   $$('[data-c]',v).forEach(c=>{c.classList.toggle('chl',!!cols&&cols.includes(+c.dataset.c));c.classList.toggle('cdim',!!cols&&!cols.includes(+c.dataset.c));});
-  rows.forEach(r=>{r.classList.toggle('rout',!!keep&&!keep.includes(+r.dataset.r));r.classList.toggle('rwarn',!!warn&&warn.includes(+r.dataset.r));});steps.forEach((st,i)=>st.classList.toggle('qbad',!!(eff[i+1]&&eff[i+1].warn)&&i===k-1));(order||rows.map((_,i)=>i)).forEach(i=>tb.appendChild(rows[i]));
+  rows.forEach(r=>{r.classList.toggle('rout',!!keep&&!keep.includes(+r.dataset.r));r.classList.toggle('rwarn',!!warn&&warn.includes(+r.dataset.r));});steps.forEach((st,i)=>st.classList.toggle('qbad',!!(eff[i+1]&&(eff[i+1].warn||eff[i+1].cw))&&i===k-1));steps.forEach((st,i)=>st.classList.toggle('qok',!!(eff[i+1]&&eff[i+1].cg)&&i===k-1));(order||rows.map((_,i)=>i)).forEach(i=>tb.appendChild(rows[i]));
   steps.forEach((s,i)=>s.classList.toggle('qcur',i===k-1));};
  const code=$('.qcode',v),opt={attributes:true,subtree:true,attributeFilter:['class']};const mo=new MutationObserver(()=>{mo.disconnect();sync();mo.takeRecords();mo.observe(code,opt);});mo.observe(code,opt);sync();});
 
@@ -78,6 +82,6 @@ function fitSlides(){const k=()=>stage.getBoundingClientRect().width/1280||1;
   const kids=[...s.children].filter(c=>!c.matches('.kick,h2,.ft,.toon,.crumb'));if(!kids.length)return;kids.forEach(c=>c.style.zoom='');
   const bottom=()=>{const sr=s.getBoundingClientRect();return Math.max(...kids.map(c=>c.getBoundingClientRect().bottom-sr.top))/k();};
   const top=(kids[0].getBoundingClientRect().top-s.getBoundingClientRect().top)/k();const room=LIM-top,h=bottom()-top;if(h<=0||h>room*0.95)return;
-  let z=Math.min(1.7,room/h);for(let i=0;i<20&&z>1.03;i++){kids.forEach(c=>c.style.zoom=z);if(bottom()<=LIM)break;z-=0.035;}
-  if(z<=1.03||bottom()>LIM)kids.forEach(c=>c.style.zoom='');});}
+  const wide=()=>s.scrollWidth>s.clientWidth+1;let z=Math.min(1.7,room/h);for(let i=0;i<20&&z>1.03;i++){kids.forEach(c=>c.style.zoom=z);if(bottom()<=LIM&&!wide())break;z-=0.035;}
+  if(z<=1.03||bottom()>LIM||wide())kids.forEach(c=>c.style.zoom='');});}
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(fitSlides);window.__fitSlides=fitSlides;

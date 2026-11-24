@@ -288,28 +288,30 @@ def HAVE(sid, items, done):
     if MODE == 'pdf':
         S(sid, 'עצירת ביניים: מה כבר ביד', 'עצירת ביניים: מה כבר ביד', '<ul class="pl">' + ''.join(f'<li>{"✔" if i < done else "☐"} {TX(t)}</li>' for i, (ic, t) in enumerate(items)) + '</ul>'); return
     cs = ''.join(f'<div class="hv {"ok" if i < done else ("now" if i == done else "")}"><span class="hi">{ic}</span><b>{TX(t)}</b><em>{"הושלם" if i < done else ("החלק הבא" if i == done else "בהמשך")}</em></div>' for i, (ic, t) in enumerate(items))
-    S(sid, 'עצירת ביניים: מה כבר ביד', 'עצירת ביניים: מה כבר ביד', f'<div class="have">{cs}</div>' + BAND('dg', 'כל תוצר נשען על זה שלפניו. בסוף המפגש הם מתחברים למסמך אחד: דף המערכת של הביסטרו.'), kick=KICK('איפה אנחנו במשפך'))
+    S(sid, 'עצירת ביניים: מה כבר ביד', 'עצירת ביניים: מה כבר ביד', f'<div class="have">{cs}</div>' + BAND('dg', globals().get('HAVE_END', 'כל תוצר נשען על זה שלפניו. בסוף המפגש הם מתחברים למסמך אחד: דף המערכת של הביסטרו.')), kick=KICK('איפה אנחנו במשפך'))
 
 
 
-def QUERY(sid, title, h, question, lines, table, result, kick='קוראים שאילתה, קליק אחר קליק', note=None):
+def QUERY(sid, title, h, question, lines, table, result, kick='קוראים שאילתה, קליק אחר קליק', note=None,
+          stem='השאלה העסקית', head='כך נראית השאילתה שעוזר ה-AI כתב. קוראים אותה חלק אחר חלק:', ans='התשובה במילים, למנהל'):
     """A query explained click by click. lines: (code, what it does). table: (name, head, rows, effects) where
     effects = {step: {'cols': [i..] highlighted, 'rows': [i..] kept, 'order': [row order]}}. result: the sentence to the manager."""
-    name, head, rows, eff = table
+    full = table is None
+    name, thead, rows, eff = table or ('', [], [], {})
     if MODE == 'pdf':
         t = ''.join(f'<tr><td><bdi class="en" dir="ltr">{_html.escape(c)}</bdi></td><td>{TX(w)}</td></tr>' for c, w in lines)
-        S(sid, title, h, f'<p><b>השאלה העסקית:</b> {TX(question)}</p><table class="tbl2"><tr><th>החלק בשאילתה</th><th>מה הוא עושה</th></tr>{t}</table><div class="band ans"><b>התשובה במילים:</b> {TX(result)}</div>' + (BAND('dg', note) if note else ''))
+        S(sid, title, h, f'<p><b>{stem}:</b> {TX(question)}</p><table class="tbl2"><tr><th>החלק בשאילתה</th><th>מה הוא עושה</th></tr>{t}</table><div class="band ans"><b>{ans}:</b> {TX(result)}</div>' + (BAND('dg', note) if note else ''))
         return
     NACT[0] += 1
     MAN.append(dict(kind='query', id=sid))
     ql = ''.join(f'<div class="st qstep" data-n="{(i + 2) * 10}"><code dir="ltr">{_html.escape(c)}</code><span class="qar">→</span><span class="qex">{TX(w)}</span></div>' for i, (c, w) in enumerate(lines))
-    th = ''.join(f'<th data-c="{i}">{TX(x)}</th>' for i, x in enumerate(head))
+    th = ''.join(f'<th data-c="{i}">{TX(x)}</th>' for i, x in enumerate(thead))
     tr = ''.join(f'<tr data-r="{ri}">' + ''.join(f'<td data-c="{ci}">{TX(str(v))}</td>' for ci, v in enumerate(r)) + '</tr>' for ri, r in enumerate(rows))
     n = len(lines)
-    body = (f'<div class="qviz" data-eff="{_html.escape(json.dumps(eff), quote=True)}"><div class="card qstem sm"><p><b>השאלה העסקית:</b> {TX(question)}</p></div>'
-            f'<div class="qgrid"><div class="qcode"><div class="st qhd" data-n="10">כך נראית השאילתה שעוזר ה-AI כתב. קוראים אותה חלק אחר חלק:</div>{ql}</div>'
-            f'<div class="qtab"><div class="mock"><div class="mb"><span>הטבלה <bdi dir="ltr">{name}</bdi></span><small>הדמיה</small></div><div class="mi"><table><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table></div></div></div></div>'
-            + ST(n + 2, f'<b>התשובה במילים, למנהל:</b> {TX(result)}', cls='band ans') + (BAND('dg', note, n + 3) if note else '') + '</div>')
+    body = (f'<div class="qviz" data-eff="{_html.escape(json.dumps(eff), quote=True)}"><div class="card qstem sm"><p><b>{stem}:</b> {TX(question)}</p></div>'
+            f'<div class="qgrid{" qfull" if full else ""}"><div class="qcode"><div class="st qhd" data-n="10">{TX(head)}</div>{ql}</div>'
+            + ('' if full else f'<div class="qtab"><div class="mock"><div class="mb"><span>הטבלה <bdi dir="ltr">{name}</bdi></span><small>הדמיה</small></div><div class="mi"><table><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table></div></div></div>') + '</div>'
+            + ST(n + 2, f'<b>{ans}:</b> {TX(result)}', cls='band ans') + (BAND('dg', note, n + 3) if note else '') + '</div>')
     S(sid, title, h, body, kick=KICK(kick), cls='qsl')
 
 
@@ -343,3 +345,95 @@ def PIC(emoji, title, text, n=0, cls=''):
     """A picture card: a large emoji, a title and one line."""
     inner = f'<span class="pic-e">{emoji}</span><b>{TX(title)}</b><p>{TX(text)}</p>'
     return ST(n, inner, cls='card pic ' + cls) if n else f'<div class="card pic {cls}">{inner}</div>'
+
+
+# ---------------------------------------------------------------- lesson 2 components
+
+def _qtable(name, head, rows, eff):
+    th = ''.join(f'<th data-c="{i}">{TX(x)}</th>' for i, x in enumerate(head))
+    tr = ''.join(f'<tr data-r="{ri}">' + ''.join(f'<td data-c="{ci}">{TX(str(v))}</td>' for ci, v in enumerate(r)) + '</tr>' for ri, r in enumerate(rows))
+    return f'<div class="qtab"><div class="mock"><div class="mb"><span>{TX(name)}</span><small>הדמיה</small></div><div class="mi"><table><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table></div></div></div>'
+
+
+def TABFX(sid, title, h, question, steps, table, result, note=None, kick='רואים את זה קורה, קליק אחר קליק', wide=False):
+    """A table that reacts, step by step, to a short story (no code). steps: text per click.
+    table: (name, head, rows, effects). effects per step: cols, rows, order, warn (rows), set [[r, c, html]], cw / cg [[r, c]] cells,
+    show [rows]; and 'hide': rows hidden until shown."""
+    name, head, rows, eff = table
+    if MODE == 'pdf':
+        S(sid, title, h, f'<p>{TX(question)}</p><ol class="steps">' + ''.join(f'<li>{TX(x)}</li>' for x in steps) + f'</ol><div class="band ans"><b>השורה התחתונה:</b> {TX(result)}</div>' + (BAND('dg', note) if note else ''))
+        return
+    NACT[0] += 1
+    MAN.append(dict(kind='query', id=sid))
+    eff = {str(k): ({kk: ([[a, b, TX(str(c))] for a, b, c in vv] if kk == 'set' else vv) for kk, vv in e.items()} if isinstance(e, dict) else e) for k, e in eff.items()}
+    ql = ''.join(f'<div class="st qstep qprose" data-n="{(i + 2) * 10}"><span class="qno">{i + 1}</span><span class="qex">{TX(w)}</span></div>' for i, w in enumerate(steps))
+    n = len(steps)
+    body = (f'<div class="qviz{" wide" if wide else ""}" data-eff="{_html.escape(json.dumps(eff, ensure_ascii=False), quote=True)}"><div class="card qstem sm"><p>{TX(question)}</p></div>'
+            f'<div class="qgrid"><div class="qcode prose"><div class="st qhd" data-n="10">מה קורה, צעד אחר צעד:</div>{ql}</div>{_qtable(name, head, rows, eff)}</div>'
+            + ST(n + 2, f'<b>השורה התחתונה:</b> {TX(result)}', cls='band ans') + (BAND('dg', note, n + 3) if note else '') + '</div>')
+    S(sid, title, h, body, kick=KICK(kick), cls='qsl')
+
+
+def _edge(cx, cy, hw, hh, dx, dy):
+    t = min(hw / abs(dx) if dx else 1e9, hh / abs(dy) if dy else 1e9)
+    return cx + dx * t, cy + dy * t
+
+
+def ERD(boxes, links, w=1160, h=440, cls=''):
+    """An entity relationship diagram, revealed click by click.
+    boxes: (key, x, y, width, title, sub, [(column, 'pk' | 'fk' | 'pkfk' | '')], step). links: (one_key, many_key, kind, label, step),
+    kind '1N' (crow's foot at the many end), '11', 'NM'."""
+    if MODE == 'pdf':
+        bl = ''.join(f'<li><b>{TX(t)}</b> ({TX(sb)}): ' + ', '.join(f'<bdi dir="ltr">{c}</bdi>' + {'pk': ' (מזהה ראשי)', 'fk': ' (מפתח זר)', 'pkfk': ' (מזהה ומפתח זר)'}.get(m, '') for c, m in cols) + '</li>' for k, x, y, bw, t, sb, cols, s in boxes)
+        ll = ''.join(f'<li>{TX(l[3])}</li>' for l in links)
+        return f'<div class="card"><b class="ct">הטבלאות</b><ul class="pl">{bl}</ul><b class="ct">הקשרים</b><ul class="pl">{ll}</ul></div>'
+    geo = {}
+    out = ''
+    for k, x, y, bw, t, sb, cols, s in boxes:
+        bh = 52 + 31 * len(cols)
+        geo[k] = (x + bw / 2, y + bh / 2, bw / 2, bh / 2)
+        cs = ''.join(f'<div class="ec {m}"><span class="em">{ {"pk": "🔑", "fk": "🔗", "pkfk": "🔑🔗"}.get(m, "") }</span>{c}</div>' for c, m in cols)
+        inner = f'<div class="eh"><bdi dir="ltr">{t}</bdi><small>{TX(sb)}</small></div>{cs}'
+        out += f'<div class="ebw" style="left:{x}px;top:{y}px;width:{bw}px">' + (ST(s, inner, cls='ebox') if s else f'<div class="ebox">{inner}</div>') + '</div>'
+    svg = ''
+    for a, b, kd, lab, s, *off in links:
+        ax, ay, ahw, ahh = geo[a]
+        bx, by, bhw, bhh = geo[b]
+        dx, dy = bx - ax, by - ay
+        L = (dx * dx + dy * dy) ** .5
+        ux, uy = dx / L, dy / L
+        p1 = _edge(ax, ay, ahw, ahh, ux, uy)
+        p2 = _edge(bx, by, bhw, bhh, -ux, -uy)
+        px, py = -uy, ux
+
+        def one(p, u):
+            r = ''
+            for d in (14, 22):
+                cx, cy = p[0] + u[0] * d, p[1] + u[1] * d
+                r += f'<line x1="{cx + px * 11:.1f}" y1="{cy + py * 11:.1f}" x2="{cx - px * 11:.1f}" y2="{cy - py * 11:.1f}"/>'
+            return r
+
+        def many(p, u):
+            cx, cy = p[0] + u[0] * 24, p[1] + u[1] * 24
+            return ''.join(f'<line x1="{cx:.1f}" y1="{cy:.1f}" x2="{p[0] + px * o:.1f}" y2="{p[1] + py * o:.1f}"/>' for o in (-13, 0, 13))
+        ua, ub = (ux, uy), (-ux, -uy)
+        marks = (one(p1, ua) if kd in ('1N', '11') else many(p1, ua)) + (many(p2, ub) if kd in ('1N', 'NM') else one(p2, ub))
+        g = f'<path pathLength="1" d="M{p1[0]:.1f},{p1[1]:.1f} L{p2[0]:.1f},{p2[1]:.1f}"/><g class="mk">{marks}</g>'
+        svg += f'<g class="st an-draw elink" data-n="{s * 10}">{g}</g>' if s else f'<g class="elink">{g}</g>'
+        mx, my = (p1[0] + p2[0]) / 2 + (off[0][0] if off else 0), (p1[1] + p2[1]) / 2 + (off[0][1] if off else 0)
+        out += f'<div class="elw" style="left:{mx:.0f}px;top:{my:.0f}px">' + (ST(s, TX(lab), cls='elab') if s else f'<div class="elab">{TX(lab)}</div>') + '</div>'
+    return f'<div class="erd {cls}" style="width:{w}px;height:{h}px"><svg viewBox="0 0 {w} {h}" width="{w}" height="{h}" dir="ltr" aria-hidden="true">{svg}</svg>{out}</div>'
+
+
+def CODEWALK(lines, right, n0=1, head='קוראים את הטקסט שעוזר ה-AI הפיק, שורה אחר שורה:', cls=''):
+    """Code lines with an arrow and an explanation, one per click, beside any revealed html (right). Line i appears at step n0 + 1 + i."""
+    if MODE == 'pdf':
+        t = ''.join(f'<tr><td><bdi class="en" dir="ltr">{_html.escape(c)}</bdi></td><td>{TX(w)}</td></tr>' for c, w in lines)
+        return f'<table class="tbl2"><tr><th>השורה</th><th>מה היא אומרת</th></tr>{t}</table>' + right
+    ql = ''.join(f'<div class="st qstep" data-n="{(n0 + 1 + i) * 10}"><code dir="ltr">{_html.escape(c)}</code><span class="qar">→</span><span class="qex">{TX(w)}</span></div>' for i, (c, w) in enumerate(lines))
+    return f'<div class="qgrid cw {cls}"><div class="qcode"><div class="st qhd" data-n="{n0 * 10}">{TX(head)}</div>{ql}</div><div class="cwr">{right}</div></div>'
+
+
+def MK(n, html, cls=''):
+    """Always visible; highlighted from step n."""
+    return f'<span class="st mk {cls}" data-n="{n * 10}">{html}</span>'

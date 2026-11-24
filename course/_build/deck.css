@@ -668,3 +668,41 @@ svg.diag .mi{font-family:'Times New Roman',Times,serif;font-style:italic}
 .sgrid{align-items:stretch}.sgrid .stbl{flex:0 1 auto;max-width:calc(100% - 300px)}.sgrid .stbl td:first-child{white-space:normal}
 .sart{flex:1 1 0;min-width:270px;display:flex;flex-direction:column;justify-content:center;gap:8px;overflow:visible}
 .sart .emo{font-size:110px}.sart .fbbar{min-height:96px;text-align:right;margin-top:0}.sart .actbar{justify-content:center}
+/* ---------- lesson 2: table effects, entity relationship diagrams, code walks, marks ---------- */
+.qtab td.cset{background:#e3f6ec!important;color:#0d5c30;font-weight:800;animation:pulse .6s}
+.qtab td.cwarn{background:#fde8e6!important;color:#b8391f;font-weight:800;outline:3px solid #e5484d;outline-offset:-3px;animation:shk .35s 2}
+.qtab td.cgood{background:#dcf5e6!important;color:#0d5c30;font-weight:800;outline:3px solid #25a65f;outline-offset:-3px}
+.qtab tr.rhid{display:none}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+.qcode.prose{background:#fff}.qstep.qprose{display:flex;direction:rtl;gap:8px;align-items:flex-start}
+.qstep.qprose .qno{flex:0 0 30px;height:30px;border-radius:50%;background:#0f9d90;color:#fff;font-weight:800;display:grid;place-items:center;font-size:17px}
+.qstep.qprose .qex{flex:1;font-size:19px}
+.qstep.qprose.qbad .qno{background:#e5484d}.qstep.qok .qex{background:#dcf5e6!important}.qstep.qprose.qok .qno{background:#25a65f}
+.qviz.wide .qgrid{grid-template-columns:1fr 1.35fr}
+.erd{position:relative;margin:6px auto 0}
+.erd svg{position:absolute;inset:0;overflow:visible}
+.erd .elink path,.erd .elink line{stroke:#1b2d55;stroke-width:2.6;fill:none}
+.erd .elink .mk line{stroke:#e0452b;stroke-width:3}
+.erd .elink.st .mk{opacity:0;transition:opacity .4s ease .7s}.erd .elink.st.show .mk{opacity:1}
+.ebw{position:absolute}
+.ebox{background:#fff;border:2.5px solid #0f9d90;border-radius:12px;overflow:hidden;box-shadow:0 3px 0 #d9d2c3}
+.ebox .eh{background:#e6f7f5;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;border-bottom:2px solid #0f9d90}
+.ebox .eh bdi{font-family:Menlo,Consolas,monospace;font-weight:800;font-size:19px;color:#0b5f56}.ebox .eh small{font-size:16.5px;color:#5a6788}
+.ebox .ec{height:31px;line-height:31px;font-family:Menlo,Consolas,monospace;font-size:17px;direction:ltr;text-align:left;padding:0 10px;border-bottom:1px solid #edf0f7;white-space:nowrap}
+.ebox .ec .em{display:inline-block;min-width:26px;font-size:17px}
+.ebox .ec.pk{font-weight:800;background:#fff8e1}.ebox .ec.fk{color:#6d4df2;font-weight:700}.ebox .ec.pkfk{font-weight:800;color:#6d4df2;background:#fff8e1}
+.elw{position:absolute;transform:translate(-50%,-50%);z-index:2}
+.elab{background:#fff;border:2px solid #e0452b;color:#8a2a17;border-radius:20px;padding:2px 12px;font-size:17px;font-weight:700;white-space:nowrap}
+.qgrid.cw{grid-template-columns:1.1fr 1fr}.cwr{display:flex;flex-direction:column;gap:10px}
+.st.mk{opacity:1;transform:none;pointer-events:auto;border-radius:6px;transition:background .4s,outline .4s}
+.st.mk.show{background:#fff3c4;outline:3px solid #e8960c;outline-offset:1px;font-weight:800}
+.st.mk.bad.show{background:#fde8e6;outline-color:#e5484d;color:#b8391f}
+.st.mk.ok.show{background:#dcf5e6;outline-color:#25a65f;color:#0d5c30}
+.twot{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.arrowline{font-size:22px;font-weight:800;color:#e0452b;text-align:center}
+@media print{.st.mk{background:none;outline:none}.qtab tr.rhid{display:table-row}}
+.opr.now{border:3px solid #e8960c!important;background:#fff8e6!important}
+.erd .elink .mk line{stroke-dasharray:none!important;stroke-dashoffset:0!important}
+.qgrid.qfull{grid-template-columns:1fr}.qgrid.qfull .qstep{grid-template-columns:1.2fr 34px 1fr}.qgrid.qfull .qstep code{white-space:pre}
+.qgrid.qfull .qcode{gap:5px;min-height:0}.qgrid.qfull .qstep code{padding:4px 10px}
+.qviz:has(.qprose) .qtab .mock{font-size:20px}.qviz:has(.qprose) .qtab td,.qviz:has(.qprose) .qtab th{padding:8px 8px}.qviz:has(.qprose) .qstep.qprose .qex{font-size:21px;padding:8px 12px}.qviz:has(.qprose) .qcode{gap:10px}.qviz:has(.qprose) .qstem p{font-size:22px}

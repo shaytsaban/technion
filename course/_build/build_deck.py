@@ -29,7 +29,7 @@ def render(s, total):
 body = '\n'.join(render(s, TOTAL) for s in SL)
 NMC = body.count('class="mc"')
 NHANDS = body.count('class="hands"')
-chips = [f'{NACT[0]} פעילויות בתוך השקפים', 'מקרה אחד, מאפס', 'כל רעיון נבנה קליק אחר קליק']
+chips = [f'{NACT[0]} פעילויות בתוך השקפים', 'מקרה אחד, מאפס', 'כל רעיון נבנה קליק אחר קליק'] + (['טיוטה לקראת המפגש'] if LMETA.get('draft') else [])
 title_s = ('<section class="slide dark s1 on" id="s-title" data-title="פתיחה">'
            '<div class="orb" style="width:320px;height:320px;background:radial-gradient(circle at 30% 30%,#58e0cf,#0f9d90 60%,transparent 72%);left:-90px;top:-70px"></div>'
            '<div class="orb" style="width:180px;height:180px;background:radial-gradient(circle at 30% 30%,#ffd37a,#e8960c 60%,transparent 72%);left:230px;bottom:90px;animation-delay:-3s"></div>'
@@ -61,4 +61,4 @@ os.makedirs(out, exist_ok=True)
 open(os.path.join(out, 'presentation.html'), 'w', encoding='utf8').write(html)
 print('slides', html.count('<section class="slide'), 'activities', NACT[0], 'hands', NHANDS, 'mc', NMC, 'bytes', len(html))
 os.makedirs(os.path.join(H, 'tests'), exist_ok=True)
-json.dump(MAN, open(os.path.join(H, 'tests', 'manifest.json'), 'w', encoding='utf8'), ensure_ascii=False, indent=1)
+json.dump(MAN, open(os.path.join(H, 'tests', f'manifest-{LESSON}.json'), 'w', encoding='utf8'), ensure_ascii=False, indent=1)
